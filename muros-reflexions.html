@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Muros Reflexions | ADIS Catálogo</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header>
+    <div class="header-inner">
+      <a href="index.html" class="logo">
+        <img src="LOGO ADIS.png" alt="ADIS Logo">
+      </a>
+      <nav class="desktop-nav">
+        <a href="index.html">← Inicio</a>
+        <a href="index.html#categorias">Catálogo</a>
+        <a href="index.html#contacto">Contacto</a>
+      </nav>
+      <button class="menu-btn" onclick="toggleMenu()">☰</button>
+    </div>
+  </header>
+
+  <div class="mobile-menu" id="mobileMenu">
+    <button class="close-menu" onclick="toggleMenu()">✕</button>
+    <a href="index.html" onclick="toggleMenu()">← Inicio</a>
+    <a href="index.html#categorias" onclick="toggleMenu()">Catálogo</a>
+    <a href="index.html#contacto" onclick="toggleMenu()">Contacto</a>
+  </div>
+
+  <section class="hero-cat">
+    <h1>Muros Reflexions</h1>
+    <p>Placas con acabado altamente reflectivo tipo espejo, dorado o metal cepillado. Un toque de lujo y modernidad para interiores.</p>
+  </section>
+
+  <section class="ficha-section">
+    <div class="section-header">
+      <h2>Ficha Técnica</h2>
+      <div class="divider"></div>
+    </div>
+    <table class="ficha-table">
+      <thead>
+        <tr><th>Especificación</th><th>Detalle</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Material</td><td>Placa reflectiva</td></tr>
+        <tr><td>Medidas</td><td>2440 x 1220 x 5 mm</td></tr>
+        <tr><td>Cobertura</td><td>2.977 m² / pieza</td></tr>
+        <tr><td>Presentación</td><td>1 pz / caja</td></tr>
+        <tr><td>Peso</td><td>10.5 kg / pieza</td></tr>
+        <tr><td>Garantía</td><td>15 años</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section class="products-section">
+    <div class="section-header">
+      <h2>Productos</h2>
+      <div class="divider"></div>
+    </div>
+    <div class="products-grid">
+      <div class="product-card">
+        <div class="product-gallery">
+          <img src="Muros Reflexions/PLACA TIPO ESPEJO DORADO.jpg" alt="PLACA TIPO ESPEJO DORADO" loading="lazy">
+        </div>
+        <div class="product-name">PLACA TIPO ESPEJO DORADO</div>
+      </div>
+      <div class="product-card">
+        <div class="product-gallery">
+          <img src="Muros Reflexions/PLACA TIPO ESPEJO.jpg" alt="PLACA TIPO ESPEJO" loading="lazy">
+        </div>
+        <div class="product-name">PLACA TIPO ESPEJO</div>
+      </div>
+      <div class="product-card">
+        <div class="product-gallery">
+          <img src="Muros Reflexions/PLACA TIPO METAL.jpg" alt="PLACA TIPO METAL" loading="lazy">
+        </div>
+        <div class="product-name">PLACA TIPO METAL</div>
+      </div>
+    </div>
+    <div style="text-align: center; margin-top: 3rem;">
+      <a href="index.html" class="btn-back">← Volver al Inicio</a>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-logo">
+      <img src="LOGO ADIS.png" alt="ADIS Logo">
+    </div>
+    <div class="footer-info">
+      <strong>ADI'S DISEÑO & REMODELACIÓN</strong><br>
+      Creando espacios, reinventando hogares.<br>
+      Nogales, Sonora · Rio Rico, AZ<br>
+      Tel. MX: +52 631-192-8993 · Tel. USA: +1 (520) 839-2877<br>
+      adis.remodelacion@gmail.com
+    </div>
+    <div class="copyright">
+      © 2026 ADIS DISEÑO & REMODELACIÓN. TODOS LOS DERECHOS RESERVADOS.
+    </div>
+  </footer>
+
+  <script>
+    function toggleMenu() {
+      document.getElementById('mobileMenu').classList.toggle('active');
+    }
+  </script>
+
+</body>
+</html>

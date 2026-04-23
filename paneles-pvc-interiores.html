@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Paneles PVC Interiores | ADIS Catálogo</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header>
+    <div class="header-inner">
+      <a href="index.html" class="logo">
+        <img src="LOGO ADIS.png" alt="ADIS Logo">
+      </a>
+      <nav class="desktop-nav">
+        <a href="index.html">← Inicio</a>
+        <a href="index.html#categorias">Catálogo</a>
+        <a href="index.html#contacto">Contacto</a>
+      </nav>
+      <button class="menu-btn" onclick="toggleMenu()">☰</button>
+    </div>
+  </header>
+
+  <div class="mobile-menu" id="mobileMenu">
+    <button class="close-menu" onclick="toggleMenu()">✕</button>
+    <a href="index.html" onclick="toggleMenu()">← Inicio</a>
+    <a href="index.html#categorias" onclick="toggleMenu()">Catálogo</a>
+    <a href="index.html#contacto" onclick="toggleMenu()">Contacto</a>
+  </div>
+
+  <section class="hero-cat">
+    <h1>Paneles PVC Interiores</h1>
+    <p>Paneles de PVC livianos y resistentes para interiores. Fáciles de instalar, limpiar y mantener. Perfectos para cocinas y baños.</p>
+  </section>
+
+  <section class="ficha-section">
+    <div class="section-header">
+      <h2>Ficha Técnica</h2>
+      <div class="divider"></div>
+    </div>
+    <table class="ficha-table">
+      <thead>
+        <tr><th>Especificación</th><th>Detalle</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Material</td><td>PVC rígido</td></tr>
+        <tr><td>Medidas</td><td>2800 x 300 x 9 mm</td></tr>
+        <tr><td>Cobertura</td><td>0.84 m² / pieza</td></tr>
+        <tr><td>Presentación</td><td>10 pz / caja (8.4 m²)</td></tr>
+        <tr><td>Peso</td><td>2.8 kg/m²</td></tr>
+        <tr><td>Garantía</td><td>15 años</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section class="products-section">
+    <div class="section-header">
+      <h2>Productos</h2>
+      <div class="divider"></div>
+    </div>
+    <div class="products-grid">
+      <div class="product-card">
+        <div class="product-gallery">
+          <img src="PANELES PVC INTERIORES/Bristol.jpg" alt="Bristol" loading="lazy">
+        </div>
+        <div class="product-name">Bristol</div>
+      </div>
+      <div class="product-card">
+        <div class="product-gallery">
+          <img src="PANELES PVC INTERIORES/Cambridge.jpg" alt="Cambridge" loading="lazy">
+        </div>
+        <div class="product-name">Cambridge</div>
+      </div>
+      <div class="product-card">
+        <div class="product-gallery">
+          <img src="PANELES PVC INTERIORES/Liverpool.jpg" alt="Liverpool" loading="lazy">
+        </div>
+        <div class="product-name">Liverpool</div>
+      </div>
+      <div class="product-card">
+        <div class="product-gallery">
+          <img src="PANELES PVC INTERIORES/York.jpg" alt="York" loading="lazy">
+        </div>
+        <div class="product-name">York</div>
+      </div>
+    </div>
+    <div style="text-align: center; margin-top: 3rem;">
+      <a href="index.html" class="btn-back">← Volver al Inicio</a>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-logo">
+      <img src="LOGO ADIS.png" alt="ADIS Logo">
+    </div>
+    <div class="footer-info">
+      <strong>ADI'S DISEÑO & REMODELACIÓN</strong><br>
+      Creando espacios, reinventando hogares.<br>
+      Nogales, Sonora · Rio Rico, AZ<br>
+      Tel. MX: +52 631-192-8993 · Tel. USA: +1 (520) 839-2877<br>
+      adis.remodelacion@gmail.com
+    </div>
+    <div class="copyright">
+      © 2026 ADIS DISEÑO & REMODELACIÓN. TODOS LOS DERECHOS RESERVADOS.
+    </div>
+  </footer>
+
+  <script>
+    function toggleMenu() {
+      document.getElementById('mobileMenu').classList.toggle('active');
+    }
+  </script>
+
+</body>
+</html>
