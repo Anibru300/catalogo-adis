@@ -1,0 +1,2371 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Catálogo ADIS | Diseño & Remodelación</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --gold: #C5A059;
+      --gold-light: #E8D5A3;
+      --black: #0F0F0F;
+      --dark: #1A1A1A;
+      --gray: #2A2A2A;
+      --light: #F5F5F5;
+      --white: #FFFFFF;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background: var(--black);
+      color: var(--light);
+      overflow-x: hidden;
+    }
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: var(--dark); }
+    ::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 4px; }
+
+    header {
+      position: fixed; top: 0; left: 0; width: 100%; z-index: 1000;
+      background: rgba(15,15,15,0.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(197,160,89,0.2);
+    }
+    .header-inner {
+      max-width: 1400px; margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0.8rem 2rem;
+    }
+    .logo {
+      display: flex; align-items: center; gap: 0.8rem; text-decoration: none;
+    }
+    .logo img {
+      height: 60px; width: auto;
+      filter: drop-shadow(0 0 8px rgba(197,160,89,0.3));
+      transition: filter 0.3s ease;
+    }
+    .logo:hover img {
+      filter: drop-shadow(0 0 15px rgba(197,160,89,0.6));
+    }
+    .logo-text { display: flex; flex-direction: column; }
+    .logo-text span:first-child {
+      font-size: 1.3rem; font-weight: 700; color: var(--white);
+      letter-spacing: 3px; line-height: 1;
+    }
+    .logo-text span:last-child {
+      font-size: 0.6rem; color: var(--gold);
+      letter-spacing: 4px; text-transform: uppercase; margin-top: 2px;
+    }
+    nav.desktop-nav { display: flex; gap: 1.5rem; align-items: center; }
+    nav.desktop-nav a {
+      color: var(--light); text-decoration: none; font-size: 0.75rem;
+      text-transform: uppercase; letter-spacing: 1.5px; font-weight: 600;
+      position: relative; padding: 0.3rem 0; transition: color 0.3s;
+    }
+    nav.desktop-nav a::after {
+      content: ''; position: absolute; bottom: 0; left: 0;
+      width: 0; height: 2px; background: var(--gold); transition: width 0.3s;
+    }
+    nav.desktop-nav a:hover { color: var(--gold); }
+    nav.desktop-nav a:hover::after { width: 100%; }
+    .menu-btn {
+      display: none; background: none; border: none; color: var(--gold);
+      font-size: 1.5rem; cursor: pointer;
+    }
+    .mobile-menu {
+      position: fixed; inset: 0; z-index: 999;
+      background: rgba(15,15,15,0.98);
+      display: none; flex-direction: column; align-items: center; justify-content: center;
+      gap: 2rem;
+    }
+    .mobile-menu.active { display: flex; }
+    .mobile-menu a {
+      color: var(--white); text-decoration: none; font-size: 1.2rem;
+      text-transform: uppercase; letter-spacing: 3px; font-weight: 600;
+    }
+    .mobile-menu .close-menu {
+      position: absolute; top: 1.5rem; right: 1.5rem;
+      background: none; border: none; color: var(--gold); font-size: 2rem; cursor: pointer;
+    }
+
+    .hero {
+      min-height: 100vh;
+      display: flex; align-items: center; justify-content: center;
+      position: relative; padding: 6rem 2rem 4rem;
+      background: radial-gradient(ellipse at center, #1a1a1a 0%, #0f0f0f 70%);
+      overflow: hidden;
+    }
+    .hero::before {
+      content: ''; position: absolute; inset: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23c5a059' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+      opacity: 0.5;
+    }
+    .hero-content {
+      max-width: 900px; text-align: center; position: relative; z-index: 2;
+    }
+    .hero-badge {
+      display: inline-block; padding: 0.4rem 1.2rem;
+      border: 1px solid var(--gold); color: var(--gold);
+      font-size: 0.7rem; letter-spacing: 4px; text-transform: uppercase;
+      margin-bottom: 2rem;
+    }
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.5rem, 6vw, 5rem);
+      color: var(--white); line-height: 1.1; margin-bottom: 1.5rem;
+    }
+    .hero h1 em {
+      color: var(--gold); font-style: normal;
+      background: linear-gradient(90deg, var(--gold), var(--gold-light));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .hero p {
+      font-size: 1.1rem; color: rgba(245,245,245,0.7);
+      line-height: 1.8; max-width: 700px; margin: 0 auto 2.5rem;
+    }
+    .hero-buttons {
+      display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;
+    }
+    .btn {
+      padding: 0.9rem 2.2rem; font-family: 'Montserrat', sans-serif;
+      font-size: 0.8rem; font-weight: 700; letter-spacing: 2px;
+      text-transform: uppercase; text-decoration: none; cursor: pointer;
+      border: 2px solid var(--gold); transition: all 0.3s ease;
+    }
+    .btn-primary {
+      background: var(--gold); color: var(--black);
+    }
+    .btn-primary:hover {
+      background: transparent; color: var(--gold);
+    }
+    .btn-outline {
+      background: transparent; color: var(--gold);
+    }
+    .btn-outline:hover {
+      background: var(--gold); color: var(--black);
+    }
+    .scroll-indicator {
+      position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%);
+      display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+      animation: bounce 2s infinite;
+    }
+    .scroll-indicator span {
+      font-size: 0.6rem; letter-spacing: 3px; text-transform: uppercase; color: var(--gold);
+    }
+    .scroll-line {
+      width: 1px; height: 40px; background: linear-gradient(to bottom, var(--gold), transparent);
+    }
+
+    .info-section {
+      padding: 5rem 2rem; background: var(--dark);
+      border-top: 1px solid rgba(197,160,89,0.1);
+    }
+    .container {
+      max-width: 1200px; margin: 0 auto;
+    }
+    .section-header {
+      text-align: center; margin-bottom: 3rem;
+    }
+    .section-header h2 {
+      font-family: 'Playfair Display', serif; font-size: 2.2rem; color: var(--white);
+      margin-bottom: 0.8rem;
+    }
+    .section-header p {
+      color: rgba(245,245,245,0.6); font-size: 0.95rem; max-width: 600px; margin: 0 auto;
+    }
+    .divider {
+      width: 60px; height: 3px; background: var(--gold); margin: 1rem auto;
+    }
+    .info-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 2rem;
+    }
+    .info-card {
+      background: var(--gray); padding: 2rem; border: 1px solid rgba(197,160,89,0.1);
+      transition: all 0.3s ease; text-align: center;
+    }
+    .info-card:hover {
+      border-color: var(--gold); transform: translateY(-5px);
+      box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+    }
+    .info-card .icon {
+      width: 50px; height: 50px; margin: 0 auto 1rem;
+      border: 1px solid var(--gold); border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--gold); font-size: 1.3rem;
+    }
+    .info-card h3 {
+      font-size: 0.85rem; letter-spacing: 2px; text-transform: uppercase;
+      color: var(--white); margin-bottom: 0.5rem;
+    }
+    .info-card p {
+      font-size: 0.8rem; color: rgba(245,245,245,0.6); line-height: 1.6;
+    }
+
+    .cat-nav {
+      position: sticky; top: 69px; z-index: 100;
+      background: rgba(26,26,26,0.98);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(197,160,89,0.15);
+      padding: 1rem 2rem;
+    }
+    .cat-nav-inner {
+      max-width: 1400px; margin: 0 auto;
+      display: flex; gap: 0.5rem; justify-content: center; flex-wrap: wrap;
+    }
+    .cat-link {
+      padding: 0.5rem 1rem; background: transparent;
+      border: 1px solid rgba(197,160,89,0.3); color: var(--light);
+      font-family: 'Montserrat', sans-serif; font-size: 0.7rem;
+      font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase;
+      text-decoration: none; cursor: pointer; transition: all 0.3s;
+    }
+    .cat-link:hover, .cat-link.active {
+      background: var(--gold); border-color: var(--gold); color: var(--black);
+    }
+
+    .category {
+      padding: 4rem 2rem;
+    }
+    .category:nth-child(odd) { background: var(--black); }
+    .category:nth-child(even) { background: var(--dark); }
+    .cat-title {
+      display: flex; align-items: center; gap: 1rem; margin-bottom: 3rem;
+      justify-content: center;
+    }
+    .cat-title h2 {
+      font-family: 'Playfair Display', serif; font-size: 1.8rem; color: var(--white); text-align: center;
+    }
+    .cat-title .line {
+      flex: 1; max-width: 80px; height: 1px; background: rgba(197,160,89,0.4);
+    }
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 2rem; max-width: 1400px; margin: 0 auto;
+    }
+
+    .product-card {
+      background: var(--gray);
+      border: 1px solid rgba(197,160,89,0.08);
+      overflow: hidden; transition: all 0.4s ease;
+      display: flex; flex-direction: column;
+    }
+    .product-card:hover {
+      border-color: rgba(197,160,89,0.4);
+      box-shadow: 0 15px 50px rgba(0,0,0,0.4);
+      transform: translateY(-8px);
+    }
+    .product-specs {
+      padding: 1.5rem;
+      border-bottom: 1px solid rgba(197,160,89,0.1);
+    }
+    .product-header {
+      display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem;
+      gap: 0.5rem;
+    }
+    .product-name {
+      font-family: 'Playfair Display', serif; font-size: 1.3rem; color: var(--white);
+    }
+    .product-code {
+      font-size: 0.6rem; color: var(--gold); letter-spacing: 1.5px;
+      text-transform: uppercase; background: rgba(197,160,89,0.1);
+      padding: 0.2rem 0.5rem; border-radius: 2px; white-space: nowrap;
+    }
+    .specs-list {
+      list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: 0.4rem 1rem;
+    }
+    .specs-list li {
+      font-size: 0.72rem; color: rgba(245,245,245,0.6);
+      display: flex; align-items: center; gap: 0.4rem;
+    }
+    .specs-list li::before {
+      content: '•'; color: var(--gold); font-size: 1rem; line-height: 0;
+    }
+    .specs-list .full-width { grid-column: 1 / -1; }
+    .product-gallery {
+      position: relative; flex: 1; min-height: 220px;
+      background: #111; overflow: hidden;
+    }
+    .product-gallery img {
+      width: 100%; height: 100%; object-fit: cover;
+      transition: transform 0.6s ease; display: block;
+    }
+    .product-card:hover .product-gallery img {
+      transform: scale(1.05);
+    }
+    .gallery-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 50%);
+      opacity: 0; transition: opacity 0.3s;
+      display: flex; align-items: flex-end; justify-content: center;
+      padding-bottom: 1rem;
+    }
+    .product-card:hover .gallery-overlay { opacity: 1; }
+    .gallery-btn {
+      padding: 0.5rem 1.2rem; background: var(--gold); color: var(--black);
+      font-size: 0.7rem; font-weight: 700; letter-spacing: 1px;
+      text-transform: uppercase; border: none; cursor: pointer;
+      transition: transform 0.3s;
+    }
+    .gallery-btn:hover { transform: scale(1.05); }
+    .no-image {
+      width: 100%; height: 100%; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
+      color: rgba(245,245,245,0.3); gap: 0.5rem; min-height: 220px;
+    }
+    .no-image span:first-child { font-size: 2rem; color: var(--gold); opacity: 0.3; }
+    .no-image span:last-child { font-size: 0.75rem; letter-spacing: 2px; text-transform: uppercase; }
+
+    .lightbox {
+      position: fixed; inset: 0; z-index: 2000;
+      background: rgba(0,0,0,0.95);
+      display: none; align-items: center; justify-content: center;
+      padding: 2rem;
+    }
+    .lightbox.active { display: flex; }
+    .lightbox img {
+      max-width: 90vw; max-height: 85vh; object-fit: contain;
+      border: 1px solid rgba(197,160,89,0.2);
+    }
+    .lightbox-close {
+      position: absolute; top: 2rem; right: 2rem;
+      background: none; border: none; color: var(--gold);
+      font-size: 2.5rem; cursor: pointer; line-height: 1;
+    }
+    .lightbox-caption {
+      position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%);
+      color: var(--white); font-size: 0.9rem; letter-spacing: 2px;
+      text-transform: uppercase; background: rgba(0,0,0,0.6);
+      padding: 0.5rem 1.5rem;
+    }
+
+    footer {
+      background: var(--black); border-top: 1px solid rgba(197,160,89,0.1);
+      padding: 4rem 2rem 2rem; text-align: center;
+    }
+    .footer-logo {
+      display: inline-flex; align-items: center; gap: 0.8rem; margin-bottom: 1.5rem;
+    }
+    .footer-logo img { height: 80px; width: auto; filter: drop-shadow(0 0 10px rgba(197,160,89,0.2)); }
+    .footer-info {
+      color: rgba(245,245,245,0.5); font-size: 0.85rem; line-height: 1.8;
+      max-width: 500px; margin: 0 auto 2rem;
+    }
+    .footer-info strong { color: var(--gold); font-weight: 600; }
+    .social-links {
+      display: flex; gap: 1rem; justify-content: center; margin-bottom: 2rem;
+    }
+    .social-links a {
+      width: 40px; height: 40px; border: 1px solid rgba(197,160,89,0.3);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--gold); text-decoration: none; font-size: 0.8rem;
+      transition: all 0.3s;
+    }
+    .social-links a:hover { background: var(--gold); color: var(--black); }
+    .copyright {
+      font-size: 0.7rem; color: rgba(245,245,245,0.3); letter-spacing: 2px;
+      border-top: 1px solid rgba(197,160,89,0.1); padding-top: 1.5rem;
+    }
+
+    @keyframes bounce {
+      0%, 20%, 50%, 80%, 100% { transform: translateX(-50%) translateY(0); }
+      40% { transform: translateX(-50%) translateY(-10px); }
+      60% { transform: translateX(-50%) translateY(-5px); }
+    }
+
+    @media (max-width: 768px) {
+      .desktop-nav { display: none; }
+      .menu-btn { display: block; }
+      .hero h1 { font-size: 2.2rem; }
+      .products-grid { grid-template-columns: 1fr; }
+      .specs-list { grid-template-columns: 1fr; }
+      .cat-nav-inner { gap: 0.4rem; }
+      .cat-link { padding: 0.4rem 0.8rem; font-size: 0.6rem; }
+      .header-inner { padding: 0.8rem 1rem; }
+      .product-header { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+
+  <header id="header">
+    <div class="header-inner">
+      <a href="#" class="logo">
+        <img src="LOGO ADIS.png" alt="ADIS Logo">
+      </a>
+      <nav class="desktop-nav">
+        <a href="#inicio">Inicio</a>
+        <a href="#nosotros">Nosotros</a>
+        <a href="#muro-marmol-digital">Muro Mármol Digital</a>
+        <a href="#fachada-y-muro-interior-flexible">Fachada y Muro Interior Flexible</a>
+        <a href="#lambirn-wpc-interior">Lambrín WPC Interior</a>
+        <a href="#lambrin-wpc-exterior">Lambrín WPC Exterior</a>
+        <a href="#paneles-pvc-interiores">Paneles PVC Interiores</a>
+        <a href="#paneles-decorativos-3d">Paneles Decorativos 3D</a>
+        <a href="#paneles-metalicos-auto-aderibles">Paneles Metálicos Autoadheribles</a>
+        <a href="#paneles-xpc-3d-autoadheribles">Paneles XPC 3D Autoadheribles</a>
+        <a href="#muros-reflexions">Muros Reflexions</a>
+        <a href="#contacto">Contacto</a>
+      </nav>
+      <button class="menu-btn" onclick="toggleMenu()">☰</button>
+    </div>
+  </header>
+
+  <div class="mobile-menu" id="mobileMenu">
+    <button class="close-menu" onclick="toggleMenu()">✕</button>
+    <a href="#inicio" onclick="toggleMenu()">Inicio</a>
+    <a href="#nosotros" onclick="toggleMenu()">Nosotros</a>
+    <a href="#muro-marmol-digital" onclick="toggleMenu()">Muro Mármol Digital</a>
+    <a href="#fachada-y-muro-interior-flexible" onclick="toggleMenu()">Fachada y Muro Interior Flexible</a>
+    <a href="#lambirn-wpc-interior" onclick="toggleMenu()">Lambrín WPC Interior</a>
+    <a href="#lambrin-wpc-exterior" onclick="toggleMenu()">Lambrín WPC Exterior</a>
+    <a href="#paneles-pvc-interiores" onclick="toggleMenu()">Paneles PVC Interiores</a>
+    <a href="#paneles-decorativos-3d" onclick="toggleMenu()">Paneles Decorativos 3D</a>
+    <a href="#paneles-metalicos-auto-aderibles" onclick="toggleMenu()">Paneles Metálicos Autoadheribles</a>
+    <a href="#paneles-xpc-3d-autoadheribles" onclick="toggleMenu()">Paneles XPC 3D Autoadheribles</a>
+    <a href="#muros-reflexions" onclick="toggleMenu()">Muros Reflexions</a>
+    <a href="#contacto" onclick="toggleMenu()">Contacto</a>
+  </div>
+
+  <section class="hero" id="inicio">
+    <div class="hero-content">
+      <div style="margin-bottom: 1.5rem;">
+        <img src="LOGO ADIS.png" alt="ADIS Logo" style="height: 140px; width: auto; filter: drop-shadow(0 0 20px rgba(197,160,89,0.4));">
+      </div>
+      <div class="hero-badge">Catálogo 2025 — 2026</div>
+      <h1>Transforma tus espacios con <em>ADIS</em></h1>
+      <p>En ADI'S DISEÑO & REMODELACIÓN ofrecemos soluciones integrales en recubrimientos: muros de mármol digital, lambrines WPC para interior y exterior, paneles PVC, decorativos 3D, metálicos autoadheribles, XPC y muros reflections.</p>
+      <div class="hero-buttons">
+        <a href="#muro-marmol-digital" class="btn btn-primary">Ver Catálogo</a>
+        <a href="#contacto" class="btn btn-outline">Contáctanos</a>
+      </div>
+    </div>
+    <div class="scroll-indicator">
+      <span>Explorar</span>
+      <div class="scroll-line"></div>
+    </div>
+  </section>
+
+  <section class="info-section" id="nosotros">
+    <div class="container">
+      <div class="section-header">
+        <h2>Sobre ADIS</h2>
+        <div class="divider"></div>
+        <p>En ADI'S DISEÑO & REMODELACIÓN nos especializamos en ofrecer soluciones funcionales, estéticas y duraderas para la transformación de espacios interiores y exteriores.</p>
+      </div>
+      <div class="info-grid">
+        <div class="info-card">
+          <div class="icon">✦</div>
+          <h3>Mármol Digital</h3>
+          <p>Paneles de alto brillo con acabados digitales que imitan mármol, piedra y texturas exclusivas.</p>
+        </div>
+        <div class="info-card">
+          <div class="icon">◈</div>
+          <h3>WPC Interior / Exterior</h3>
+          <p>Lambrines de Wood Plastic Composite resistentes a la humedad, rayos UV y fáciles de instalar.</p>
+        </div>
+        <div class="info-card">
+          <div class="icon">◉</div>
+          <h3>PVC & 3D</h3>
+          <p>Paneles PVC livianos y paneles decorativos 3D autoadheribles para crear ambientes únicos.</p>
+        </div>
+        <div class="info-card">
+          <div class="icon">✚</div>
+          <h3>Metálicos & Reflections</h3>
+          <p>Acabados metálicos autoadheribles y placas tipo espejo para un toque de lujo y modernidad.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="cat-nav">
+    <div class="cat-nav-inner">
+      <a href="#muro-marmol-digital" class="cat-link">Muro Mármol Digital</a>
+      <a href="#fachada-y-muro-interior-flexible" class="cat-link">Fachada y Muro Interior Flexible</a>
+      <a href="#lambirn-wpc-interior" class="cat-link">Lambrín WPC Interior</a>
+      <a href="#lambrin-wpc-exterior" class="cat-link">Lambrín WPC Exterior</a>
+      <a href="#paneles-pvc-interiores" class="cat-link">Paneles PVC Interiores</a>
+      <a href="#paneles-decorativos-3d" class="cat-link">Paneles Decorativos 3D</a>
+      <a href="#paneles-metalicos-auto-aderibles" class="cat-link">Paneles Metálicos Autoadheribles</a>
+      <a href="#paneles-xpc-3d-autoadheribles" class="cat-link">Paneles XPC 3D Autoadheribles</a>
+      <a href="#muros-reflexions" class="cat-link">Muros Reflexions</a>
+    </div>
+  </div>
+
+  <section class="category" id="muro-marmol-digital">
+    <div class="cat-title">
+      <div class="line"></div>
+      <h2>Muro Mármol Digital</h2>
+      <div class="line"></div>
+    </div>
+    <div class="products-grid">
+      <div class="product-card">
+        <div class="product-specs">
+          <div class="product-header">
+            <div class="product-name">AGATA</div>
+            <div class="product-code">AGATA</div>
+          </div>
+          <ul class="specs-list">
+            <li>Material: Panel de alto brillo</li>
+            <li>Acabado: Mármol digital UV</li>
+            <li>Resistencia: Humedad / Rayos UV</li>
+            <li>Uso: Interiores</li>
+            <li>Ficha: Consultar especificaciones</li>
+          </ul>
+        </div>
+        <div class="product-gallery" onclick="openLightbox('MURO MARMOL DIGITAL/AGATA.jpg', 'AGATA')">
+          <img src="MURO MARMOL DIGITAL/AGATA.jpg" alt="AGATA" loading="lazy">
+          <div class="gallery-overlay"><button class="gallery-btn">Ampliar</button></div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-specs">
+          <div class="product-header">
+            <div class="product-name">ARENA</div>
+            <div class="product-code">ARENA</div>
+          </div>
+          <ul class="specs-list">
+            <li>Material: Panel de alto brillo</li>
+            <li>Acabado: Mármol digital UV</li>
+            <li>Resistencia: Humedad / Rayos UV</li>
+            <li>Uso: Interiores</li>
+            <li>Ficha: Consultar especificaciones</li>
+          </ul>
+        </div>
+        <div class="product-gallery" onclick="openLightbox('MURO MARMOL DIGITAL/ARENA.jpg', 'ARENA')">
+          <img src="MURO MARMOL DIGITAL/ARENA.jpg" alt="ARENA" loading="lazy">
+          <div class="gallery-overlay"><button class="gallery-btn">Ampliar</button></div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-specs">
+          <div class="product-header">
+            <div class="product-name">Aurora Dorada</div>
+            <div class="product-code">AURORA-DORADA</div>
+          </div>
+          <ul class="specs-list">
+            <li>Material: Panel de alto brillo</li>
+            <li>Acabado: Mármol digital UV</li>
+            <li>Resistencia: Humedad / Rayos UV</li>
+            <li>Uso: Interiores</li>
+            <li>Ficha: Consultar especificaciones</li>
+          </ul>
+        </div>
+        <div class="product-gallery" onclick="openLightbox('MURO MARMOL DIGITAL/Aurora Dorada.jpg', 'Aurora Dorada')">
+          <img src="MURO MARMOL DIGITAL/Aurora Dorada.jpg" alt="Aurora Dorada" loading="lazy">
+          <div class="gallery-overlay"><button class="gallery-btn">Ampliar</button></div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-specs">
+          <div class="product-header">
+            <div class="product-name">Carrara Oscuro</div>
+            <div class="product-code">CARRARA-OSCURO</div>
+          </div>
+          <ul class="specs-list">
+            <li>Material: Panel de alto brillo</li>
+            <li>Acabado: Mármol digital UV</li>
+            <li>Resistencia: Humedad / Rayos UV</li>
+            <li>Uso: Interiores</li>
+            <li>Ficha: Consultar especificaciones</li>
+          </ul>
+        </div>
+        <div class="product-gallery" onclick="openLightbox('MURO MARMOL DIGITAL/Carrara Oscuro.jpg', 'Carrara Oscuro')">
+          <img src="MURO MARMOL DIGITAL/Carrara Oscuro.jpg" alt="Carrara Oscuro" loading="lazy">
+          <div class="gallery-overlay"><button class="gallery-btn">Ampliar</button></div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-specs">
+          <div class="product-header">
+            <div class="product-name">Cuarzo</div>
+            <div class="product-code">CUARZO</div>
+          </div>
+          <ul class="specs-list">
+            <li>Material: Panel de alto brillo</li>
+            <li>Acabado: Mármol digital UV</li>
+            <li>Resistencia: Humedad / Rayos UV</li>
+            <li>Uso: Interiores</li>
+            <li>Ficha: Consultar especificaciones</li>
+          </ul>
+        </div>
+        <div class="product-gallery" onclick="openLightbox('MURO MARMOL DIGITAL/Cuarzo.jpg', 'Cuarzo')">
+          <img src="MURO MARMOL DIGITAL/Cuarzo.jpg" alt="Cuarzo" loading="lazy">
+          <div class="gallery-overlay"><button class="gallery-btn">Ampliar</button></div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-specs">
+          <div class="product-header">
+            <div class="product-name">Grafito</div>
+            <div class="product-code">GRAFITO</div>
+          </div>
+          <ul class="specs-list">
+            <li>Material: Panel de alto brillo</li>
+            <li>Acabado: Mármol digital UV</li>
+            <li>Resistencia: Humedad / Rayos UV</li>
+            <li>Uso: Interiores</li>
+            <li>Ficha: Consultar especificaciones</li>
+          </ul>
+        </div>
+        <div class="product-gallery" onclick="openLightbox('MURO MARMOL DIGITAL/Grafito.jpg', 'Grafito')">
+          <img src="MURO MARMOL DIGITAL/Grafito.jpg" alt="Grafito" loading="lazy">
+          <div class="gallery-overlay"><button class="gallery-btn">Ampliar</button></div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-specs">
+          <div class="product-header">
+            <div class="product-name">Jaspe</div>
+            <div class="product-code">JASPE</div>
+          </div>
+          <ul class="specs-list">
+            <li>Material: Panel de alto brillo</li>
+            <li>Acabado: Mármol digital UV</li>
+            <li>Resistencia: Humedad / Rayos UV</li>
+            <li>Uso: Interiores</li>
+            <li>Ficha: Consultar especificaciones</li>
+          </ul>
+        </div>
+        <div class="product-gallery" onclick="openLightbox('MURO MARMOL DIGITAL/Jaspe.jpg', 'Jaspe')">
+          <img src="MURO MARMOL DIGITAL/Jaspe.jpg" alt="Jaspe" loading="lazy">
+          <div class="gallery-overlay"><button class="gallery-btn">Ampliar</button></div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-specs">
+          <div class="product-header">
+            <div class="product-name">OBSIDIANA</div>
+            <div class="product-code">OBSIDIANA</div>
+          </div>
+          <ul class="specs-list">
+            <li>Material: Panel de alto brillo</li>
+            <li>Acabado: Mármol digital UV</li>
+            <li>Resistencia: Humedad / Rayos UV</li>
+            <li>Uso: Interiores</li>
+            <li>Ficha: Consultar especificaciones</li>
+          </ul>
+        </div>
+        <div class="product-gallery" onclick="openLightbox('MURO MARMOL DIGITAL/OBSIDIANA.jpg', 'OBSIDIANA')">
+          <img src="MURO MARMOL DIGITAL/OBSIDIANA.jpg" alt="OBSIDIANA" loading="lazy">
+          <div class="gallery-overlay"><button class="gallery-btn">Ampliar</button></div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-specs">
+          <div class="product-header">
+            <div class="product-name">Onix</div>
+            <div class="product-code">ONIX</div>
+          </div>
+          <ul class="specs-list">
+            <li>Material: Panel de alto brillo</li>
+            <li>Acabado: Mármol digital UV</li>
+            <li>Resistencia: Humedad / Rayos UV</li>
+            <li>Uso: Interiores</li>
+            <li>Ficha: Consultar especificaciones</li>
+          </ul>
+        </div>
+        <div class="product-gallery" onclick="openLightbox('MURO MARMOL DIGITAL/Onix.jpg', 'Onix')">
+          <img src="MURO MARMOL DIGITAL/Onix.jpg" alt="Onix" loading="lazy">
+          <div class="gallery-overlay"><button class="gallery-btn">Ampliar</button></div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-specs">
+          <div class="product-header">
+            <div class="product-name">Opalo</div>
+            <div class="product-code">OPALO</div>
+          </div>
+          <ul class="specs-list">
+            <li>Material: Panel de alto brillo</li>
+            <li>Acabado: Mármol digital UV</li>
+            <li>Resistencia: Humedad / Rayos UV</li>
+            <li>Uso: Interiores</li>
+            <li>Ficha: Consultar especificaciones</li>
+          </ul>
+        </div>
+        <div class="product-gallery" onclick="openLightbox('MURO MARMOL DIGITAL/Opalo.jpg', 'Opalo')">
+          <img src="MURO MARMOL DIGITAL/Opalo.jpg" alt="Opalo" loading="lazy">
+          <div class="gallery-overlay"><button class="gallery-btn">Ampliar</button></div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-specs">
+          <div class="product-header">
+            <div class="product-name">Perla</div>
+            <div class="product-code">PERLA</div>
+          </div>
+          <ul class="specs-list">
+            <li>Material: Panel de alto brillo</li>
+            <li>Acabado: Mármol digital UV</li>
+            <li>Resistencia: Humedad / Rayos UV</li>
+            <li>Uso: Interiores</li>
+            <li>Ficha: Consultar especificaciones</li>
+          </ul>
+        </div>
+        <div class="product-gallery" onclick="openLightbox('MURO MARMOL DIGITAL/Perla.jpg', 'Perla')">
+          <img src="MURO MARMOL DIGITAL/Perla.jpg" alt="Perla" loading="lazy">
+          <div class="gallery-overlay"><button class="gallery-btn">Ampliar</button></div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-specs">
+          <div class="product-header">
+            <div class="product-name">Topacio</div>
+            <div class="product-code">TOPACIO</div>
+          </div>
+          <ul class="specs-list">
+            <li>Material: Panel de alto brillo</li>
+            <li>Acabado: Mármol digital UV</li>
+            <li>Resistencia: Humedad / Rayos UV</li>
+            <li>Uso: Interiores</li>
+            <li>Ficha: Consultar especificaciones</li>
+          </ul>
+        </div>
+        <div class="product-gallery" onclick="openLightbox('MURO MARMOL DIGITAL/Topacio.jpg', 'Topacio')">
+          <img src="MURO MARMOL DIGITAL/Topacio.jpg" alt="Topacio" loading="lazy">
+          <div class="gallery-overlay"><button class="gallery-btn">Ampliar</button></div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-specs">
+          <div class="product-header">
+            <div class="product-name">ZAFIRO</div>
+            <div class="product-code">ZAFIRO</div>
+          </div>
+          <ul class="specs-list">
+            <li>Material: Panel de alto brillo</li>
+            <li>Acabado: Mármol digital UV</li>
+            <li>Resistencia: Humedad / Rayos UV</li>
+            <li>Uso: Interiores</li>
+            <li>Ficha: Consultar especificaciones</li>
+          </ul>
+        </div>
+        <div class="product-gallery" onclick="openLightbox('MURO MARMOL DIGITAL/ZAFIRO.jpg', 'ZAFIRO')">
+          <img src="MURO MARMOL DIGITAL/ZAFIRO.jpg" alt="ZAFIRO" loading="lazy">
+          <div class="gallery-overlay"><button class="gallery-btn">Ampliar</button></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="category" id="fachada-y-muro-interior-flexible">
+    <div class="cat-title">
+      <div class="line"></div>
+      <h2>Fachada y Muro Interior Flexible</h2>
+      <div class="line"></div>
+    </div>
+    <div class="products-grid">
+      <div class="product-card">
+        <div class="product-specs">
+          <div class="product-header">
+            <div class="product-name">CONCRETO</div>
+            <div class="product-code">CONCRETO</div>
+          </div>
+          <ul class="specs-list">
+            <li>Material: Lámina flexible</li>
+            <li>Acabado: Textura natural</li>
+            <li>Resistencia: Flexible / Adherible</li>
+            <li>Uso: Interiores y fachadas</li>
+            <li>Ficha: Consultar especificaciones</li>
+          </ul>
+        </div>
+        <div class="product-gallery" onclick="openLightbox('FACHADA Y MURO INTERIOR FLEXIBLE/CONCRETO.jpg', 'CONCRETO')">
+          <img src="FACHADA Y MURO INTERIOR FLEXIBLE/CONCRETO.jpg" alt="CONCRETO" loading="lazy">
+          <div class="gallery-overlay"><button class="gallery-btn">Ampliar</button></div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-specs">
+          <div class="product-header">
+            <div class="product-name">Concreto Gris</div>
+            <div class="product-code">CONCRETO-GRIS</div>
+          </div>
+          <ul class="specs-list">
+            <li>Material: Lámina flexible</li>
+            <li>Acabado: Textura natural</li>
+            <li>Resistencia: Flexible / Adherible</li>
+            <li>Uso: Interiores y fachadas</li>
+            <li>Ficha: Consultar especificaciones</li>
+          </ul>
+        </div>
+        <div class="product-gallery" onclick="openLightbox('FACHADA Y MURO INTERIOR FLEXIBLE/Concreto Gris.jpg', 'Concreto Gris')">
+          <img src="FACHADA Y MURO INTERIOR FLEXIBLE/Concreto Gris.jpg" alt="Concreto Gris" loading="lazy">
+          <div class="gallery-overlay"><button class="gallery-btn">Ampliar</button></div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-specs">
+          <div class="product-header">
+            <div class="product-name">Granito Blanco</div>
+            <div class="product-code">GRANITO-BLANCO</div>
+          </div>
+          <ul class="specs-list">
+            <li>Material: Lámina flexible</li>
+            <li>Acabado: Textura natural</li>
+            <li>Resistencia: Flexible / Adherible</li>
+            <li>Uso: Interiores y fachadas</li>
+            <li>Ficha: Consultar especificaciones</li>
+          </ul>
+        </div>
+        <div class="product-gallery" onclick="openLightbox('FACHADA Y MURO INTERIOR FLEXIBLE/Granito Blanco.jpg', 'Granito Blanco')">
+          <img src="FACHADA Y MURO INTERIOR FLEXIBLE/Granito Blanco.jpg" alt="Granito Blanco" loading="lazy">
+          <div class="gallery-overlay"><button class="gallery-btn">Ampliar</button></div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-specs">
+          <div class="product-header">
+            <div class="product-name">Granito Imperial Blanco</div>
+            <div class="product-code">GRANITO-IMPERIA</div>
+          </div>
+          <ul class="specs-list">
+            <li>Material: Lámina flexible</li>
+            <li>Acabado: Textura natural</li>
+            <li>Resistencia: Flexible / Adherible</li>
+            <li>Uso: Interiores y fachadas</li>
+            <li>Ficha: Consultar especificaciones</li>
+          </ul>
+        </div>
+        <div class="product-gallery" onclick="openLightbox('FACHADA Y MURO INTERIOR FLEXIBLE/Granito Imperial Blanco.jpg', 'Granito Imperial Blanco')">
+          <img src="FACHADA Y MURO INTERIOR FLEXIBLE/Granito Imperial Blanco.jpg" alt="Granito Imperial Blanco" loading="lazy">
+          <div class="gallery-overlay"><button class="gallery-btn">Ampliar</button></div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-specs">
+          <div class="product-header">
+            <div class="product-name">Granito Oro</div>
+            <div class="product-code">GRANITO-ORO</div>
+          </div>
+          <ul class="specs-list">
+            <li>Material: Lámina flexible</li>
+            <li>Acabado: Textura natural</li>
+            <li>Resistencia: Flexible / Adherible</li>
+            <li>Uso: Interiores y fachadas</li>
+            <li>Ficha: Consultar especificaciones</li>
+          </ul>
+        </div>
+        <div class="product-gallery" onclick="openLightbox('FACHADA Y MURO INTERIOR FLEXIBLE/Granito Oro.jpg', 'Granito Oro')">
+          <img src="FACHADA Y MURO INTERIOR FLEXIBLE/Granito Oro.jpg" alt="Granito Oro" loading="lazy">
+          <div class="gallery-overlay"><button class="gallery-btn">Ampliar</button></div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-specs">
+          <div class="product-header">
+            <div class="product-name">Madera Roble</div>
+            <div class="product-code">MADERA-ROBLE</div>
+          </div>
+          <ul class="specs-list">
+            <li>Material: Lámina flexible</li>
+            <li>Acabado: Textura natural</li>
+            <li>Resistencia: Flexible / Adherible</li>
+            <li>Uso: Interiores y fachadas</li>
+            <li>Ficha: Consultar especificaciones</li>
+          </ul>
+        </div>
+        <div class="product-gallery" onclick="openLightbox('FACHADA Y MURO INTERIOR FLEXIBLE/Madera Roble.jpeg', 'Madera Roble')">
+          <img src="FACHADA Y MURO INTERIOR FLEXIBLE/Madera Roble.jpeg" alt="Madera Roble" loading="lazy">
+          <div class="gallery-overlay"><button class="gallery-btn">Ampliar</button></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="category" id="lambirn-wpc-interior">
+    <div class="cat-title">
+      <div class="line"></div>
+      <h2>Lambrín WPC Interior</h2>
+      <div class="line"></div>
+    </div>
+    <div class="products-grid">
+      <div class="product-card">
+        <div class="product-specs">
+          <div class="product-header">
+            <div class="product-name">AMANECHER</div>
+            <div class="product-code">AMANECHER</div>
+          </div>
+          <ul class="specs-list">
+            <li>Material: WPC Interior</li>
+            <li>Medidas: 2900 x 160 x 24 mm</li>
+            <li>Cobertura: 0.464 m² / pz</li>
+            <li>Presentación: 14 pz / caja (6.496 m²)</li>
+            <li>Peso: 30.5 kg / caja</li>
+            <li>Garantía: 15 años</li>
+          </ul>
+        </div>
+        <div class="product-gallery" onclick="openLightbox('LAMBIRN WPC INTERIOR/AMANECHER.jpg', 'AMANECHER')">
+          <img src="LAMBIRN WPC INTERIOR/AMANECHER.jpg" alt="AMANECHER" loading="lazy">
+          <div class="gallery-overlay"><button class="gallery-btn">Ampliar</button></div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-specs">
+          <div class="product-header">
+            <div class="product-name">ANGULO WPC PARA INTERIOR</div>
+            <div class="product-code">ANGULO-WPC-PARA</div>
+          </div>
+          <ul class="specs-list">
+            <li>Material: WPC Interior</li>
+            <li>Medidas: 2900 x 160 x 24 mm</li>
+            <li>Cobertura: 0.464 m² / pz</li>
+            <li>Presentación: 14 pz / caja (6.496 m²)</li>
+            <li>Peso: 30.5 kg / caja</li>
+            <li>Garantía: 15 años</li>
+          </ul>
+        </div>
+        <div class="product-gallery" onclick="openLightbox('LAMBIRN WPC INTERIOR/ANGULO WPC PARA INTERIOR.jpg', 'ANGULO WPC PARA INTERIOR')">
+          <img src="LAMBIRN WPC INTERIOR/ANGULO WPC PARA INTERIOR.jpg" alt="ANGULO WPC PARA INTERIOR" loading="lazy">
+          <div class="gallery-overlay"><button class="gallery-btn">Ampliar</button></div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-specs">
+          <div class="product-header">
+            <div class="product-name">Amizade</div>
+            <div class="product-code">AMIZADE</div>
+          </div>
+          <ul class="specs-list">
+            <li>Material: WPC Interior</li>
+            <li>Medidas: 2900 x 160 x 24 mm</li>
+            <li>Cobertura: 0.464 m² / pz</li>
+            <li>Presentación: 14 pz / caja (6.496 m²)</li>
+            <li>Peso: 30.5 kg / caja</li>
+            <li>Garantía: 15 años</li>
+          </ul>
+        </div>
+        <div class="product-gallery" onclick="openLightbox('LAMBIRN WPC INTERIOR/Amizade.jpg', 'Amizade')">
+          <img src="LAMBIRN WPC INTERIOR/Amizade.jpg" alt="Amizade" loading="lazy">
+          <div class="gallery-overlay"><button class="gallery-btn">Ampliar</button></div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-specs">
+          <div class="product-header">
+            <div class="product-name">BAHIA</div>
+            <div class="product-code">BAHIA</div>
+          </div>
+          <ul class="specs-list">
+            <li>Material: WPC Interior</li>
+            <li>Medidas: 2900 x 160 x 24 mm</li>
+            <li>Cobertura: 0.464 m² / pz</li>
+            <li>Presentación: 14 pz / caja (6.496 m²)</li>
+            <li>Peso: 30.5 kg / caja</li>
+            <li>Garantía: 15 años</li>
+          </ul>
+        </div>
+        <div class="product-gallery" onclick="openLightbox('LAMBIRN WPC INTERIOR/BAHIA.jpg', 'BAHIA')">
+          <img src="LAMBIRN WPC INTERIOR/BAHIA.jpg" alt="BAHIA" loading="lazy">
+          <div class="gallery-overlay"><button class="gallery-btn">Ampliar</button></div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-specs">
+          <div class="product-header">
+            <div class="product-name">Brasilia</div>
+            <div class="product-code">BRASILIA</div>
+          </div>
+          <ul class="specs-list">
+            <li>Material: WPC Interior</li>
+            <li>Medidas: 2900 x 160 x 24 mm</li>
+            <li>Cobertura: 0.464 m² / pz</li>
+            <li>Presentación: 14 pz / caja (6.496 m²)</li>
+            <li>Peso: 30.5 kg / caja</li>
+            <li>Garantía: 15 años</li>
+          </ul>
+        </div>
+        <div class="product-gallery" onclick="openLightbox('LAMBIRN WPC INTERIOR/Brasilia.jpg', 'Brasilia')">
+          <img src="LAMBIRN WPC INTERIOR/Brasilia.jpg" alt="Brasilia" loading="lazy">
+          <div class="gallery-overlay"><button class="gallery-btn">Ampliar</button></div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-specs">
+          <div class="product-header">
+            <div class="product-name">Cerezo Macapa</div>
+            <div class="product-code">CEREZO-MACAPA</div>
+          </div>
+          <ul class="specs-list">
+            <li>Material: WPC Interior</li>
+            <li>Medidas: 2900 x 160 x 24 mm</li>
+            <li>Cobertura: 0.464 m² / pz</li>
+            <li>Presentación: 14 pz / caja (6.496 m²)</li>
+            <li>Peso: 30.5 kg / caja</li>
+            <li>Garantía: 15 años</li>
+          </ul>
+        </div>
+        <div class="product-gallery" onclick="openLightbox('LAMBIRN WPC INTERIOR/Cerezo Macapa.jpg', 'Cerezo Macapa')">
+          <img src="LAMBIRN WPC INTERIOR/Cerezo Macapa.jpg" alt="Cerezo Macapa" loading="lazy">
+          <div class="gallery-overlay"><button class="gallery-btn">Ampliar</button></div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-specs">
+          <div class="product-header">
+            <div class="product-name">Estrelado</div>
+            <div class="product-code">ESTRELADO</div>
+          </div>
+          <ul class="specs-list">
+            <li>Material: WPC Interior</li>
+            <li>Medidas: 2900 x 160 x 24 mm</li>
+            <li>Cobertura: 0.464 m² / pz</li>
+            <li>Presentación: 14 pz / caja (6.496 m²)</li>
+            <li>Peso: 30.5 kg / caja</li>
+            <li>Garantía: 15 años</li>
+          </ul>
+        </div>
+        <div class="product-gallery" onclick="openLightbox('LAMBIRN WPC INTERIOR/Estrelado.jpg', 'Estrelado')">
+          <img src="LAMBIRN WPC INTERIOR/Estrelado.jpg" alt="Estrelado" loading="lazy">
+          <div class="gallery-overlay"><button class="gallery-btn">Ampliar</button></div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-specs">
+          <div class="product-header">
+            <div class="product-name">Fortaleza</div>
+            <div class="product-code">FORTALEZA</div>
+          </div>
+          <ul class="specs-list">
+            <li>Material: WPC Interior</li>
+            <li>Medidas: 2900 x 160 x 24 mm</li>
+            <li>Cobertura: 0.464 m² / pz</li>
+            <li>Presentación: 14 pz / caja (6.496 m²)</li>
+            <li>Peso: 30.5 kg / caja</li>
+            <li>Garantía: 15 años</li>
+          </ul>
+        </div>
+        <div class="product-gallery" onclick="openLightbox('LAMBIRN WPC INTERIOR/Fortaleza.jpg', 'Fortaleza')">
+          <img src="LAMBIRN WPC INTERIOR/Fortaleza.jpg" alt="Fortaleza" loading="lazy">
+          <div class="gallery-overlay"><button class="gallery-btn">Ampliar</button></div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-specs">
+          <div class="product-header">
+            <div class="product-name">Manaos</div>
+            <div class="product-code">MANAOS</div>
+          </div>
+          <ul class="specs-list">
+            <li>Material: WPC Interior</li>
+            <li>Medidas: 2900 x 160 x 24 mm</li>
+            <li>Cobertura: 0.464 m² / pz</li>
+            <li>Presentación: 14 pz / caja (6.496 m²)</li>
+            <li>Peso: 30.5 kg / caja</li>
+            <li>Garantía: 15 años</li>
+          </ul>
+        </div>
+        <div class="product-gallery" onclick="openLightbox('LAMBIRN WPC INTERIOR/Manaos.jpg', 'Manaos')">
+          <img src="LAMBIRN WPC INTERIOR/Manaos.jpg" alt="Manaos" loading="lazy">
+          <div class="gallery-overlay"><button class="gallery-btn">Ampliar</button></div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-specs">
+          <div class="product-header">
+            <div class="product-name">Nogal Olinda</div>
+            <div class="product-code">NOGAL-OLINDA</div>
+          </div>
+          <ul class="specs-list">
+            <li>Material: WPC Interior</li>
+            <li>Medidas: 2900 x 160 x 24 mm</li>
+            <li>Cobertura: 0.464 m² / pz</li>
+            <li>Presentación: 14 pz / caja (6.496 m²)</li>
+            <li>Peso: 30.5 kg / caja</li>
+            <li>Garantía: 15 años</li>
+          </ul>
+        </div>
+        <div class="product-gallery" onclick="openLightbox('LAMBIRN WPC INTERIOR/Nogal Olinda.jpg', 'Nogal Olinda')">
+          <img src="LAMBIRN WPC INTERIOR/Nogal Olinda.jpg" alt="Nogal Olinda" loading="lazy">
+          <div class="gallery-overlay"><button class="gallery-btn">Ampliar</button></div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-specs">
+          <div class="product-header">
+            <div class="product-name">Nuvem</div>
+            <div class="product-code">NUVEM</div>
+          </div>
+          <ul class="specs-list">
+            <li>Material: WPC Interior</li>
+            <li>Medidas: 2900 x 160 x 24 mm</li>
+            <li>Cobertura: 0.464 m² / pz</li>
+            <li>Presentación: 14 pz / caja (6.496 m²)</li>
+            <li>Peso: 30.5 kg / caja</li>
+            <li>Garantía: 15 años</li>
+          </ul>
+        </div>
+        <div class="product-gallery" onclick="openLightbox('LAMBIRN WPC INTERIOR/Nuvem.jpg', 'Nuvem')">
+          <img src="LAMBIRN WPC INTERIOR/Nuvem.jpg" alt="Nuvem" loading="lazy">
+          <div class="gallery-overlay"><button class="gallery-btn">Ampliar</button></div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-specs">
+          <div class="product-header">
+            <div class="product-name">Ouro Preto</div>
+            <div class="product-code">OURO-PRETO</div>
+          </div>
+          <ul class="specs-list">
+            <li>Material: WPC Interior</li>
+            <li>Medidas: 2900 x 160 x 24 mm</li>
+            <li>Cobertura: 0.464 m² / pz</li>
+            <li>Presentación: 14 pz / caja (6.496 m²)</li>
+            <li>Peso: 30.5 kg / caja</li>
+            <li>Garantía: 15 años</li>
+          </ul>
+        </div>
+        <div class="product-gallery" onclick="openLightbox('LAMBIRN WPC INTERIOR/Ouro Preto.jpg', 'Ouro Preto')">
+          <img src="LAMBIRN WPC INTERIOR/Ouro Preto.jpg" alt="Ouro Preto" loading="lazy">
+          <div class="gallery-overlay"><button class="gallery-btn">Ampliar</button></div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-specs">
+          <div class="product-header">
+            <div class="product-name">Ribeira</div>
+            <div class="product-code">RIBEIRA</div>
+          </div>
+          <ul class="specs-list">
+            <li>Material: WPC Interior</li>
+            <li>Medidas: 2900 x 160 x 24 mm</li>
+            <li>Cobertura: 0.464 m² / pz</li>
+            <li>Presentación: 14 pz / caja (6.496 m²)</li>
+            <li>Peso: 30.5 kg / caja</li>
+            <li>Garantía: 15 años</li>
+          </ul>
+        </div>
+        <div class="product-gallery" onclick="openLightbox('LAMBIRN WPC INTERIOR/Ribeira.jpg', 'Ribeira')">
+          <img src="LAMBIRN WPC INTERIOR/Ribeira.jpg" alt="Ribeira" loading="lazy">
+          <div class="gallery-overlay"><button class="gallery-btn">Ampliar</button></div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-specs">
+          <div class="product-header">
+            <div class="product-name">Rodeiro</div>
+            <div class="product-code">RODEIRO</div>
+          </div>
+          <ul class="specs-list">
+            <li>Material: WPC Interior</li>
+            <li>Medidas: 2900 x 160 x 24 mm</li>
+            <li>Cobertura: 0.464 m² / pz</li>
+            <li>Presentación: 14 pz / caja (6.496 m²)</li>
+            <li>Peso: 30.5 kg / caja</li>
+            <li>Garantía: 15 años</li>
+          </ul>
+        </div>
+        <div class="product-gallery" onclick="openLightbox('LAMBIRN WPC INTERIOR/Rodeiro.jpg', 'Rodeiro')">
+          <img src="LAMBIRN WPC INTERIOR/Rodeiro.jpg" alt="Rodeiro" loading="lazy">
+          <div class="gallery-overlay"><button class="gallery-btn">Ampliar</button></div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-specs">
+          <div class="product-header">
+            <div class="product-name">Río</div>
+            <div class="product-code">RIO</div>
+          </div>
+          <ul class="specs-list">
+            <li>Material: WPC Interior</li>
+            <li>Medidas: 2900 x 160 x 24 mm</li>
+            <li>Cobertura: 0.464 m² / pz</li>
+            <li>Presentación: 14 pz / caja (6.496 m²)</li>
+            <li>Peso: 30.5 kg / caja</li>
+            <li>Garantía: 15 años</li>
+          </ul>
+        </div>
+        <div class="product-gallery" onclick="openLightbox('LAMBIRN WPC INTERIOR/Río.jpg', 'Río')">
+          <img src="LAMBIRN WPC INTERIOR/Río.jpg" alt="Río" loading="lazy">
+          <div class="gallery-overlay"><button class="gallery-btn">Ampliar</button></div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-specs">
+          <div class="product-header">
+            <div class="product-name">Sabeiro</div>
+            <div class="product-code">SABEIRO</div>
+          </div>
+          <ul class="specs-list">
+            <li>Material: WPC Interior</li>
+            <li>Medidas: 2900 x 160 x 24 mm</li>
+            <li>Cobertura: 0.464 m² / pz</li>
+            <li>Presentación: 14 pz / caja (6.496 m²)</li>
+            <li>Peso: 30.5 kg / caja</li>
+            <li>Garantía: 15 años</li>
+          </ul>
+        </div>
+        <div class="product-gallery" onclick="openLightbox('LAMBIRN WPC INTERIOR/Sabeiro.jpg', 'Sabeiro')">
+          <img src="LAMBIRN WPC INTERIOR/Sabeiro.jpg" alt="Sabeiro" loading="lazy">
+          <div class="gallery-overlay"><button class="gallery-btn">Ampliar</button></div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-specs">
+          <div class="product-header">
+            <div class="product-name">Sao Paulo</div>
+            <div class="product-code">SAO-PAULO</div>
+          </div>
+          <ul class="specs-list">
+            <li>Material: WPC Interior</li>
+            <li>Medidas: 2900 x 160 x 24 mm</li>
+            <li>Cobertura: 0.464 m² / pz</li>
+            <li>Presentación: 14 pz / caja (6.496 m²)</li>
+            <li>Peso: 30.5 kg / caja</li>
+            <li>Garantía: 15 años</li>
+          </ul>
+        </div>
+        <div class="product-gallery" onclick="openLightbox('LAMBIRN WPC INTERIOR/Sao Paulo.jpg', 'Sao Paulo')">
+          <img src="LAMBIRN WPC INTERIOR/Sao Paulo.jpg" alt="Sao Paulo" loading="lazy">
+          <div class="gallery-overlay"><button class="gallery-btn">Ampliar</button></div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-specs">
+          <div class="product-header">
+            <div class="product-name">Sonho</div>
+            <div class="product-code">SONHO</div>
+          </div>
+          <ul class="specs-list">
+            <li>Material: WPC Interior</li>
+            <li>Medidas: 2900 x 160 x 24 mm</li>
+            <li>Cobertura: 0.464 m² / pz</li>
+            <li>Presentación: 14 pz / caja (6.496 m²)</li>
+            <li>Peso: 30.5 kg / caja</li>
+            <li>Garantía: 15 años</li>
+          </ul>
+        </div>
+        <div class="product-gallery" onclick="openLightbox('LAMBIRN WPC INTERIOR/Sonho.jpg', 'Sonho')">
+          <img src="LAMBIRN WPC INTERIOR/Sonho.jpg" alt="Sonho" loading="lazy">
+          <div class="gallery-overlay"><button class="gallery-btn">Ampliar</button></div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-specs">
+          <div class="product-header">
+            <div class="product-name">Teak Aracaju</div>
+            <div class="product-code">TEAK-ARACAJU</div>
+          </div>
+          <ul class="specs-list">
+            <li>Material: WPC Interior</li>
+            <li>Medidas: 2900 x 160 x 24 mm</li>
+            <li>Cobertura: 0.464 m² / pz</li>
+            <li>Presentación: 14 pz / caja (6.496 m²)</li>
+            <li>Peso: 30.5 kg / caja</li>
+            <li>Garantía: 15 años</li>
+          </ul>
+        </div>
+        <div class="product-gallery" onclick="openLightbox('LAMBIRN WPC INTERIOR/Teak Aracaju.jpg', 'Teak Aracaju')">
+          <img src="LAMBIRN WPC INTERIOR/Teak Aracaju.jpg" alt="Teak Aracaju" loading="lazy">
+          <div class="gallery-overlay"><button class="gallery-btn">Ampliar</button></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="category" id="lambrin-wpc-exterior">
+    <div class="cat-title">
+      <div class="line"></div>
+      <h2>Lambrín WPC Exterior</h2>
+      <div class="line"></div>
+    </div>
+    <div class="products-grid">
+      <div class="product-card">
+        <div class="product-specs">
+          <div class="product-header">
+            <div class="product-name">ANGULO PARA EXTERIOR</div>
+            <div class="product-code">ANGULO-PARA-EXT</div>
+          </div>
+          <ul class="specs-list">
+            <li>Material: WPC Exterior</li>
+            <li>Medidas: 2850 x 200 x 26 mm</li>
+            <li>Cobertura: 0.57 m² / pz</li>
+            <li>Presentación: 4 pz / caja (2.28 m²)</li>
+            <li>Peso: 34 kg / caja</li>
+            <li>Garantía: 10 años ext. / 15 años int.</li>
+          </ul>
+        </div>
+        <div class="product-gallery" onclick="openLightbox('LAMBRIN WPC EXTERIOR/ANGULO PARA EXTERIOR.jpg', 'ANGULO PARA EXTERIOR')">
+          <img src="LAMBRIN WPC EXTERIOR/ANGULO PARA EXTERIOR.jpg" alt="ANGULO PARA EXTERIOR" loading="lazy">
+          <div class="gallery-overlay"><button class="gallery-btn">Ampliar</button></div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-specs">
+          <div class="product-header">
+            <div class="product-name">CHARCOAL</div>
+            <div class="product-code">CHARCOAL</div>
+          </div>
+          <ul class="specs-list">
+            <li>Material: WPC Exterior</li>
+            <li>Medidas: 2850 x 200 x 26 mm</li>
+            <li>Cobertura: 0.57 m² / pz</li>
+            <li>Presentación: 4 pz / caja (2.28 m²)</li>
+            <li>Peso: 34 kg / caja</li>
+            <li>Garantía: 10 años ext. / 15 años int.</li>
+          </ul>
+        </div>
+        <div class="product-gallery" onclick="openLightbox('LAMBRIN WPC EXTERIOR/CHARCOAL.jpg', 'CHARCOAL')">
+          <img src="LAMBRIN WPC EXTERIOR/CHARCOAL.jpg" alt="CHARCOAL" loading="lazy">
+          <div class="gallery-overlay"><button class="gallery-btn">Ampliar</button></div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-specs">
+          <div class="product-header">
+            <div class="product-name">DARK BLACK</div>
+            <div class="product-code">DARK-BLACK</div>
+          </div>
+          <ul class="specs-list">
+            <li>Material: WPC Exterior</li>
+            <li>Medidas: 2850 x 200 x 26 mm</li>
+            <li>Cobertura: 0.57 m² / pz</li>
+            <li>Presentación: 4 pz / caja (2.28 m²)</li>
+            <li>Peso: 34 kg / caja</li>
+            <li>Garantía: 10 años ext. / 15 años int.</li>
+          </ul>
+        </div>
+        <div class="product-gallery" onclick="openLightbox('LAMBRIN WPC EXTERIOR/DARK BLACK.jpg', 'DARK BLACK')">
+          <img src="LAMBRIN WPC EXTERIOR/DARK BLACK.jpg" alt="DARK BLACK" loading="lazy">
+          <div class="gallery-overlay"><button class="gallery-btn">Ampliar</button></div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-specs">
+          <div class="product-header">
+            <div class="product-name">REDWOOD</div>
+            <div class="product-code">REDWOOD</div>
+          </div>
+          <ul class="specs-list">
+            <li>Material: WPC Exterior</li>
+            <li>Medidas: 2850 x 200 x 26 mm</li>
+            <li>Cobertura: 0.57 m² / pz</li>
+            <li>Presentación: 4 pz / caja (2.28 m²)</li>
+            <li>Peso: 34 kg / caja</li>
+            <li>Garantía: 10 años ext. / 15 años int.</li>
+          </ul>
+        </div>
+        <div class="product-gallery" onclick="openLightbox('LAMBRIN WPC EXTERIOR/REDWOOD.jpg', 'REDWOOD')">
+          <img src="LAMBRIN WPC EXTERIOR/REDWOOD.jpg" alt="REDWOOD" loading="lazy">
+          <div class="gallery-overlay"><button class="gallery-btn">Ampliar</button></div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-specs">
+          <div class="product-header">
+            <div class="product-name">SLIVER GRAY</div>
+            <div class="product-code">SLIVER-GRAY</div>
+          </div>
+          <ul class="specs-list">
+            <li>Material: WPC Exterior</li>
+            <li>Medidas: 2850 x 200 x 26 mm</li>
+            <li>Cobertura: 0.57 m² / pz</li>
+            <li>Presentación: 4 pz / caja (2.28 m²)</li>
+            <li>Peso: 34 kg / caja</li>
+            <li>Garantía: 10 años ext. / 15 años int.</li>
+          </ul>
+        </div>
+        <div class="product-gallery" onclick="openLightbox('LAMBRIN WPC EXTERIOR/SLIVER GRAY.jpg', 'SLIVER GRAY')">
+          <img src="LAMBRIN WPC EXTERIOR/SLIVER GRAY.jpg" alt="SLIVER GRAY" loading="lazy">
+          <div class="gallery-overlay"><button class="gallery-btn">Ampliar</button></div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-specs">
+          <div class="product-header">
+            <div class="product-name">TEAK</div>
+            <div class="product-code">TEAK</div>
+          </div>
+          <ul class="specs-list">
+            <li>Material: WPC Exterior</li>
+            <li>Medidas: 2850 x 200 x 26 mm</li>
+            <li>Cobertura: 0.57 m² / pz</li>
+            <li>Presentación: 4 pz / caja (2.28 m²)</li>
+            <li>Peso: 34 kg / caja</li>
+            <li>Garantía: 10 años ext. / 15 años int.</li>
+          </ul>
+        </div>
+        <div class="product-gallery" onclick="openLightbox('LAMBRIN WPC EXTERIOR/TEAK.jpg', 'TEAK')">
+          <img src="LAMBRIN WPC EXTERIOR/TEAK.jpg" alt="TEAK" loading="lazy">
+          <div class="gallery-overlay"><button class="gallery-btn">Ampliar</button></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="category" id="paneles-pvc-interiores">
+    <div class="cat-title">
+      <div class="line"></div>
+      <h2>Paneles PVC Interiores</h2>
+      <div class="line"></div>
+    </div>
+    <div class="products-grid">
+      <div class="product-card">
+        <div class="product-specs">
+          <div class="product-header">
+            <div class="product-name">Bristol</div>
+            <div class="product-code">BRISTOL</div>
+          </div>
+          <ul class="specs-list">
+            <li>Material: Panel PVC Interior</li>
+            <li>Medidas: 2800 x 300 x 9 mm</li>
+            <li>Cobertura: 0.84 m² / pz</li>
+            <li>Presentación: 10 pz / caja (8.4 m²)</li>
+            <li>Peso: 2.8 kg/m²</li>
+            <li>Garantía: 15 años</li>
+          </ul>
+        </div>
+        <div class="product-gallery" onclick="openLightbox('PANELES PVC INTERIORES/Bristol.jpg', 'Bristol')">
+          <img src="PANELES PVC INTERIORES/Bristol.jpg" alt="Bristol" loading="lazy">
+          <div class="gallery-overlay"><button class="gallery-btn">Ampliar</button></div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-specs">
+          <div class="product-header">
+            <div class="product-name">Cambridge</div>
+            <div class="product-code">CAMBRIDGE</div>
+          </div>
+          <ul class="specs-list">
+            <li>Material: Panel PVC Interior</li>
+            <li>Medidas: 2800 x 300 x 9 mm</li>
+            <li>Cobertura: 0.84 m² / pz</li>
+            <li>Presentación: 10 pz / caja (8.4 m²)</li>
+            <li>Peso: 2.8 kg/m²</li>
+            <li>Garantía: 15 años</li>
+          </ul>
+        </div>
+        <div class="product-gallery" onclick="openLightbox('PANELES PVC INTERIORES/Cambridge.jpg', 'Cambridge')">
+          <img src="PANELES PVC INTERIORES/Cambridge.jpg" alt="Cambridge" loading="lazy">
+          <div class="gallery-overlay"><button class="gallery-btn">Ampliar</button></div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-specs">
+          <div class="product-header">
+            <div class="product-name">Liverpool</div>
+            <div class="product-code">LIVERPOOL</div>
+          </div>
+          <ul class="specs-list">
+            <li>Material: Panel PVC Interior</li>
+            <li>Medidas: 2800 x 300 x 9 mm</li>
+            <li>Cobertura: 0.84 m² / pz</li>
+            <li>Presentación: 10 pz / caja (8.4 m²)</li>
+            <li>Peso: 2.8 kg/m²</li>
+            <li>Garantía: 15 años</li>
+          </ul>
+        </div>
+        <div class="product-gallery" onclick="openLightbox('PANELES PVC INTERIORES/Liverpool.jpg', 'Liverpool')">
+          <img src="PANELES PVC INTERIORES/Liverpool.jpg" alt="Liverpool" loading="lazy">
+          <div class="gallery-overlay"><button class="gallery-btn">Ampliar</button></div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-specs">
+          <div class="product-header">
+            <div class="product-name">York</div>
+            <div class="product-code">YORK</div>
+          </div>
+          <ul class="specs-list">
+            <li>Material: Panel PVC Interior</li>
+            <li>Medidas: 2800 x 300 x 9 mm</li>
+            <li>Cobertura: 0.84 m² / pz</li>
+            <li>Presentación: 10 pz / caja (8.4 m²)</li>
+            <li>Peso: 2.8 kg/m²</li>
+            <li>Garantía: 15 años</li>
+          </ul>
+        </div>
+        <div class="product-gallery" onclick="openLightbox('PANELES PVC INTERIORES/York.jpg', 'York')">
+          <img src="PANELES PVC INTERIORES/York.jpg" alt="York" loading="lazy">
+          <div class="gallery-overlay"><button class="gallery-btn">Ampliar</button></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="category" id="paneles-decorativos-3d">
+    <div class="cat-title">
+      <div class="line"></div>
+      <h2>Paneles Decorativos 3D</h2>
+      <div class="line"></div>
+    </div>
+    <div class="products-grid">
+      <div class="product-card">
+        <div class="product-specs">
+          <div class="product-header">
+            <div class="product-name">Austin</div>
+            <div class="product-code">AUSTIN</div>
+          </div>
+          <ul class="specs-list">
+            <li>Material: Panel Decorativo 3D</li>
+            <li>Medidas: 500 x 500 x 40/10 mm</li>
+            <li>Cobertura: 0.25 m² / pz</li>
+            <li>Presentación: 10 pz / caja (2.5 m²)</li>
+            <li>Garantía: 1 año</li>
+            <li>Pintura: A base de aceite</li>
+          </ul>
+        </div>
+        <div class="product-gallery" onclick="openLightbox('PANELES DECORATIVOS 3D/Austin.jpg', 'Austin')">
+          <img src="PANELES DECORATIVOS 3D/Austin.jpg" alt="Austin" loading="lazy">
+          <div class="gallery-overlay"><button class="gallery-btn">Ampliar</button></div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-specs">
+          <div class="product-header">
+            <div class="product-name">Boston</div>
+            <div class="product-code">BOSTON</div>
+          </div>
+          <ul class="specs-list">
+            <li>Material: Panel Decorativo 3D</li>
+            <li>Medidas: 500 x 500 x 40/10 mm</li>
+            <li>Cobertura: 0.25 m² / pz</li>
+            <li>Presentación: 10 pz / caja (2.5 m²)</li>
+            <li>Garantía: 1 año</li>
+            <li>Pintura: A base de aceite</li>
+          </ul>
+        </div>
+        <div class="product-gallery" onclick="openLightbox('PANELES DECORATIVOS 3D/Boston.jpg', 'Boston')">
+          <img src="PANELES DECORATIVOS 3D/Boston.jpg" alt="Boston" loading="lazy">
+          <div class="gallery-overlay"><button class="gallery-btn">Ampliar</button></div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-specs">
+          <div class="product-header">
+            <div class="product-name">Charleston</div>
+            <div class="product-code">CHARLESTON</div>
+          </div>
+          <ul class="specs-list">
+            <li>Material: Panel Decorativo 3D</li>
+            <li>Medidas: 500 x 500 x 40/10 mm</li>
+            <li>Cobertura: 0.25 m² / pz</li>
+            <li>Presentación: 10 pz / caja (2.5 m²)</li>
+            <li>Garantía: 1 año</li>
+            <li>Pintura: A base de aceite</li>
+          </ul>
+        </div>
+        <div class="product-gallery" onclick="openLightbox('PANELES DECORATIVOS 3D/Charleston.jpg', 'Charleston')">
+          <img src="PANELES DECORATIVOS 3D/Charleston.jpg" alt="Charleston" loading="lazy">
+          <div class="gallery-overlay"><button class="gallery-btn">Ampliar</button></div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-specs">
+          <div class="product-header">
+            <div class="product-name">Charlotte</div>
+            <div class="product-code">CHARLOTTE</div>
+          </div>
+          <ul class="specs-list">
+            <li>Material: Panel Decorativo 3D</li>
+            <li>Medidas: 500 x 500 x 40/10 mm</li>
+            <li>Cobertura: 0.25 m² / pz</li>
+            <li>Presentación: 10 pz / caja (2.5 m²)</li>
+            <li>Garantía: 1 año</li>
+            <li>Pintura: A base de aceite</li>
+          </ul>
+        </div>
+        <div class="product-gallery" onclick="openLightbox('PANELES DECORATIVOS 3D/Charlotte.jpg', 'Charlotte')">
+          <img src="PANELES DECORATIVOS 3D/Charlotte.jpg" alt="Charlotte" loading="lazy">
+          <div class="gallery-overlay"><button class="gallery-btn">Ampliar</button></div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-specs">
+          <div class="product-header">
+            <div class="product-name">Chicago</div>
+            <div class="product-code">CHICAGO</div>
+          </div>
+          <ul class="specs-list">
+            <li>Material: Panel Decorativo 3D</li>
+            <li>Medidas: 500 x 500 x 40/10 mm</li>
+            <li>Cobertura: 0.25 m² / pz</li>
+            <li>Presentación: 10 pz / caja (2.5 m²)</li>
+            <li>Garantía: 1 año</li>
+            <li>Pintura: A base de aceite</li>
+          </ul>
+        </div>
+        <div class="product-gallery" onclick="openLightbox('PANELES DECORATIVOS 3D/Chicago.jpg', 'Chicago')">
+          <img src="PANELES DECORATIVOS 3D/Chicago.jpg" alt="Chicago" loading="lazy">
+          <div class="gallery-overlay"><button class="gallery-btn">Ampliar</button></div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-specs">
+          <div class="product-header">
+            <div class="product-name">Cleveland</div>
+            <div class="product-code">CLEVELAND</div>
+          </div>
+          <ul class="specs-list">
+            <li>Material: Panel Decorativo 3D</li>
+            <li>Medidas: 500 x 500 x 40/10 mm</li>
+            <li>Cobertura: 0.25 m² / pz</li>
+            <li>Presentación: 10 pz / caja (2.5 m²)</li>
+            <li>Garantía: 1 año</li>
+            <li>Pintura: A base de aceite</li>
+          </ul>
+        </div>
+        <div class="product-gallery" onclick="openLightbox('PANELES DECORATIVOS 3D/Cleveland.jpg', 'Cleveland')">
+          <img src="PANELES DECORATIVOS 3D/Cleveland.jpg" alt="Cleveland" loading="lazy">
+          <div class="gallery-overlay"><button class="gallery-btn">Ampliar</button></div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-specs">
+          <div class="product-header">
+            <div class="product-name">Columbus</div>
+            <div class="product-code">COLUMBUS</div>
+          </div>
+          <ul class="specs-list">
+            <li>Material: Panel Decorativo 3D</li>
+            <li>Medidas: 500 x 500 x 40/10 mm</li>
+            <li>Cobertura: 0.25 m² / pz</li>
+            <li>Presentación: 10 pz / caja (2.5 m²)</li>
+            <li>Garantía: 1 año</li>
+            <li>Pintura: A base de aceite</li>
+          </ul>
+        </div>
+        <div class="product-gallery" onclick="openLightbox('PANELES DECORATIVOS 3D/Columbus.jpg', 'Columbus')">
+          <img src="PANELES DECORATIVOS 3D/Columbus.jpg" alt="Columbus" loading="lazy">
+          <div class="gallery-overlay"><button class="gallery-btn">Ampliar</button></div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-specs">
+          <div class="product-header">
+            <div class="product-name">Dallas</div>
+            <div class="product-code">DALLAS</div>
+          </div>
+          <ul class="specs-list">
+            <li>Material: Panel Decorativo 3D</li>
+            <li>Medidas: 500 x 500 x 40/10 mm</li>
+            <li>Cobertura: 0.25 m² / pz</li>
+            <li>Presentación: 10 pz / caja (2.5 m²)</li>
+            <li>Garantía: 1 año</li>
+            <li>Pintura: A base de aceite</li>
+          </ul>
+        </div>
+        <div class="product-gallery" onclick="openLightbox('PANELES DECORATIVOS 3D/Dallas.jpg', 'Dallas')">
+          <img src="PANELES DECORATIVOS 3D/Dallas.jpg" alt="Dallas" loading="lazy">
+          <div class="gallery-overlay"><button class="gallery-btn">Ampliar</button></div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-specs">
+          <div class="product-header">
+            <div class="product-name">Denver</div>
+            <div class="product-code">DENVER</div>
+          </div>
+          <ul class="specs-list">
+            <li>Material: Panel Decorativo 3D</li>
+            <li>Medidas: 500 x 500 x 40/10 mm</li>
+            <li>Cobertura: 0.25 m² / pz</li>
+            <li>Presentación: 10 pz / caja (2.5 m²)</li>
+            <li>Garantía: 1 año</li>
+            <li>Pintura: A base de aceite</li>
+          </ul>
+        </div>
+        <div class="product-gallery" onclick="openLightbox('PANELES DECORATIVOS 3D/Denver.jpg', 'Denver')">
+          <img src="PANELES DECORATIVOS 3D/Denver.jpg" alt="Denver" loading="lazy">
+          <div class="gallery-overlay"><button class="gallery-btn">Ampliar</button></div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-specs">
+          <div class="product-header">
+            <div class="product-name">Detroit</div>
+            <div class="product-code">DETROIT</div>
+          </div>
+          <ul class="specs-list">
+            <li>Material: Panel Decorativo 3D</li>
+            <li>Medidas: 500 x 500 x 40/10 mm</li>
+            <li>Cobertura: 0.25 m² / pz</li>
+            <li>Presentación: 10 pz / caja (2.5 m²)</li>
+            <li>Garantía: 1 año</li>
+            <li>Pintura: A base de aceite</li>
+          </ul>
+        </div>
+        <div class="product-gallery" onclick="openLightbox('PANELES DECORATIVOS 3D/Detroit.jpg', 'Detroit')">
+          <img src="PANELES DECORATIVOS 3D/Detroit.jpg" alt="Detroit" loading="lazy">
+          <div class="gallery-overlay"><button class="gallery-btn">Ampliar</button></div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-specs">
+          <div class="product-header">
+            <div class="product-name">Filadelfia</div>
+            <div class="product-code">FILADELFIA</div>
+          </div>
+          <ul class="specs-list">
+            <li>Material: Panel Decorativo 3D</li>
+            <li>Medidas: 500 x 500 x 40/10 mm</li>
+            <li>Cobertura: 0.25 m² / pz</li>
+            <li>Presentación: 10 pz / caja (2.5 m²)</li>
+            <li>Garantía: 1 año</li>
+            <li>Pintura: A base de aceite</li>
+          </ul>
+        </div>
+        <div class="product-gallery" onclick="openLightbox('PANELES DECORATIVOS 3D/Filadelfia.jpg', 'Filadelfia')">
+          <img src="PANELES DECORATIVOS 3D/Filadelfia.jpg" alt="Filadelfia" loading="lazy">
+          <div class="gallery-overlay"><button class="gallery-btn">Ampliar</button></div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-specs">
+          <div class="product-header">
+            <div class="product-name">Frisco</div>
+            <div class="product-code">FRISCO</div>
+          </div>
+          <ul class="specs-list">
+            <li>Material: Panel Decorativo 3D</li>
+            <li>Medidas: 500 x 500 x 40/10 mm</li>
+            <li>Cobertura: 0.25 m² / pz</li>
+            <li>Presentación: 10 pz / caja (2.5 m²)</li>
+            <li>Garantía: 1 año</li>
+            <li>Pintura: A base de aceite</li>
+          </ul>
+        </div>
+        <div class="product-gallery" onclick="openLightbox('PANELES DECORATIVOS 3D/Frisco.jpg', 'Frisco')">
+          <img src="PANELES DECORATIVOS 3D/Frisco.jpg" alt="Frisco" loading="lazy">
+          <div class="gallery-overlay"><button class="gallery-btn">Ampliar</button></div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-specs">
+          <div class="product-header">
+            <div class="product-name">Houston</div>
+            <div class="product-code">HOUSTON</div>
+          </div>
+          <ul class="specs-list">
+            <li>Material: Panel Decorativo 3D</li>
+            <li>Medidas: 500 x 500 x 40/10 mm</li>
+            <li>Cobertura: 0.25 m² / pz</li>
+            <li>Presentación: 10 pz / caja (2.5 m²)</li>
+            <li>Garantía: 1 año</li>
+            <li>Pintura: A base de aceite</li>
+          </ul>
+        </div>
+        <div class="product-gallery" onclick="openLightbox('PANELES DECORATIVOS 3D/Houston.jpg', 'Houston')">
+          <img src="PANELES DECORATIVOS 3D/Houston.jpg" alt="Houston" loading="lazy">
+          <div class="gallery-overlay"><button class="gallery-btn">Ampliar</button></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="category" id="paneles-metalicos-auto-aderibles">
+    <div class="cat-title">
+      <div class="line"></div>
+      <h2>Paneles Metálicos Autoadheribles</h2>
+      <div class="line"></div>
+    </div>
+    <div class="products-grid">
+      <div class="product-card">
+        <div class="product-specs">
+          <div class="product-header">
+            <div class="product-name">Kobe</div>
+            <div class="product-code">KOBE</div>
+          </div>
+          <ul class="specs-list">
+            <li>Material: Panel metálico autoadherible</li>
+            <li>Espesor: 3 mm</li>
+            <li>Presentación: 5 pz / caja</li>
+            <li>Garantía: 3 años</li>
+            <li>Acabado: Metal cepillado / reflectivo</li>
+            <li>Instalación: Autoadherible</li>
+          </ul>
+        </div>
+        <div class="product-gallery" onclick="openLightbox('PANELES METALICOS AUTO ADERIBLES/Kobe.jpg', 'Kobe')">
+          <img src="PANELES METALICOS AUTO ADERIBLES/Kobe.jpg" alt="Kobe" loading="lazy">
+          <div class="gallery-overlay"><button class="gallery-btn">Ampliar</button></div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-specs">
+          <div class="product-header">
+            <div class="product-name">Nagano</div>
+            <div class="product-code">NAGANO</div>
+          </div>
+          <ul class="specs-list">
+            <li>Material: Panel metálico autoadherible</li>
+            <li>Espesor: 3 mm</li>
+            <li>Presentación: 5 pz / caja</li>
+            <li>Garantía: 3 años</li>
+            <li>Acabado: Metal cepillado / reflectivo</li>
+            <li>Instalación: Autoadherible</li>
+          </ul>
+        </div>
+        <div class="product-gallery" onclick="openLightbox('PANELES METALICOS AUTO ADERIBLES/Nagano.jpg', 'Nagano')">
+          <img src="PANELES METALICOS AUTO ADERIBLES/Nagano.jpg" alt="Nagano" loading="lazy">
+          <div class="gallery-overlay"><button class="gallery-btn">Ampliar</button></div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-specs">
+          <div class="product-header">
+            <div class="product-name">Nagoya</div>
+            <div class="product-code">NAGOYA</div>
+          </div>
+          <ul class="specs-list">
+            <li>Material: Panel metálico autoadherible</li>
+            <li>Espesor: 3 mm</li>
+            <li>Presentación: 5 pz / caja</li>
+            <li>Garantía: 3 años</li>
+            <li>Acabado: Metal cepillado / reflectivo</li>
+            <li>Instalación: Autoadherible</li>
+          </ul>
+        </div>
+        <div class="product-gallery" onclick="openLightbox('PANELES METALICOS AUTO ADERIBLES/Nagoya.jpg', 'Nagoya')">
+          <img src="PANELES METALICOS AUTO ADERIBLES/Nagoya.jpg" alt="Nagoya" loading="lazy">
+          <div class="gallery-overlay"><button class="gallery-btn">Ampliar</button></div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-specs">
+          <div class="product-header">
+            <div class="product-name">Sakai</div>
+            <div class="product-code">SAKAI</div>
+          </div>
+          <ul class="specs-list">
+            <li>Material: Panel metálico autoadherible</li>
+            <li>Espesor: 3 mm</li>
+            <li>Presentación: 5 pz / caja</li>
+            <li>Garantía: 3 años</li>
+            <li>Acabado: Metal cepillado / reflectivo</li>
+            <li>Instalación: Autoadherible</li>
+          </ul>
+        </div>
+        <div class="product-gallery" onclick="openLightbox('PANELES METALICOS AUTO ADERIBLES/Sakai.jpg', 'Sakai')">
+          <img src="PANELES METALICOS AUTO ADERIBLES/Sakai.jpg" alt="Sakai" loading="lazy">
+          <div class="gallery-overlay"><button class="gallery-btn">Ampliar</button></div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-specs">
+          <div class="product-header">
+            <div class="product-name">Yokohama</div>
+            <div class="product-code">YOKOHAMA</div>
+          </div>
+          <ul class="specs-list">
+            <li>Material: Panel metálico autoadherible</li>
+            <li>Espesor: 3 mm</li>
+            <li>Presentación: 5 pz / caja</li>
+            <li>Garantía: 3 años</li>
+            <li>Acabado: Metal cepillado / reflectivo</li>
+            <li>Instalación: Autoadherible</li>
+          </ul>
+        </div>
+        <div class="product-gallery" onclick="openLightbox('PANELES METALICOS AUTO ADERIBLES/Yokohama.jpg', 'Yokohama')">
+          <img src="PANELES METALICOS AUTO ADERIBLES/Yokohama.jpg" alt="Yokohama" loading="lazy">
+          <div class="gallery-overlay"><button class="gallery-btn">Ampliar</button></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="category" id="paneles-xpc-3d-autoadheribles">
+    <div class="cat-title">
+      <div class="line"></div>
+      <h2>Paneles XPC 3D Autoadheribles</h2>
+      <div class="line"></div>
+    </div>
+    <div class="products-grid">
+      <div class="product-card">
+        <div class="product-specs">
+          <div class="product-header">
+            <div class="product-name">Alicante</div>
+            <div class="product-code">ALICANTE</div>
+          </div>
+          <ul class="specs-list">
+            <li>Material: Panel XPC 3D autoadherible</li>
+            <li>Medidas: 300 x 300 x 4 mm</li>
+            <li>Cobertura: 0.09 m² / pz</li>
+            <li>Presentación: 10 pz / caja (0.9 m²)</li>
+            <li>Garantía: 1 año</li>
+            <li>Instalación: Autoadherible</li>
+          </ul>
+        </div>
+        <div class="product-gallery" onclick="openLightbox('Paneles XPC 3D autoadheribles/Alicante.jpg', 'Alicante')">
+          <img src="Paneles XPC 3D autoadheribles/Alicante.jpg" alt="Alicante" loading="lazy">
+          <div class="gallery-overlay"><button class="gallery-btn">Ampliar</button></div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-specs">
+          <div class="product-header">
+            <div class="product-name">Barcelona</div>
+            <div class="product-code">BARCELONA</div>
+          </div>
+          <ul class="specs-list">
+            <li>Material: Panel XPC 3D autoadherible</li>
+            <li>Medidas: 300 x 300 x 4 mm</li>
+            <li>Cobertura: 0.09 m² / pz</li>
+            <li>Presentación: 10 pz / caja (0.9 m²)</li>
+            <li>Garantía: 1 año</li>
+            <li>Instalación: Autoadherible</li>
+          </ul>
+        </div>
+        <div class="product-gallery" onclick="openLightbox('Paneles XPC 3D autoadheribles/Barcelona.jpg', 'Barcelona')">
+          <img src="Paneles XPC 3D autoadheribles/Barcelona.jpg" alt="Barcelona" loading="lazy">
+          <div class="gallery-overlay"><button class="gallery-btn">Ampliar</button></div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-specs">
+          <div class="product-header">
+            <div class="product-name">Burgos</div>
+            <div class="product-code">BURGOS</div>
+          </div>
+          <ul class="specs-list">
+            <li>Material: Panel XPC 3D autoadherible</li>
+            <li>Medidas: 300 x 300 x 4 mm</li>
+            <li>Cobertura: 0.09 m² / pz</li>
+            <li>Presentación: 10 pz / caja (0.9 m²)</li>
+            <li>Garantía: 1 año</li>
+            <li>Instalación: Autoadherible</li>
+          </ul>
+        </div>
+        <div class="product-gallery" onclick="openLightbox('Paneles XPC 3D autoadheribles/Burgos.jpg', 'Burgos')">
+          <img src="Paneles XPC 3D autoadheribles/Burgos.jpg" alt="Burgos" loading="lazy">
+          <div class="gallery-overlay"><button class="gallery-btn">Ampliar</button></div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-specs">
+          <div class="product-header">
+            <div class="product-name">Caceres</div>
+            <div class="product-code">CACERES</div>
+          </div>
+          <ul class="specs-list">
+            <li>Material: Panel XPC 3D autoadherible</li>
+            <li>Medidas: 300 x 300 x 4 mm</li>
+            <li>Cobertura: 0.09 m² / pz</li>
+            <li>Presentación: 10 pz / caja (0.9 m²)</li>
+            <li>Garantía: 1 año</li>
+            <li>Instalación: Autoadherible</li>
+          </ul>
+        </div>
+        <div class="product-gallery" onclick="openLightbox('Paneles XPC 3D autoadheribles/Caceres.jpg', 'Caceres')">
+          <img src="Paneles XPC 3D autoadheribles/Caceres.jpg" alt="Caceres" loading="lazy">
+          <div class="gallery-overlay"><button class="gallery-btn">Ampliar</button></div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-specs">
+          <div class="product-header">
+            <div class="product-name">Cordoba</div>
+            <div class="product-code">CORDOBA</div>
+          </div>
+          <ul class="specs-list">
+            <li>Material: Panel XPC 3D autoadherible</li>
+            <li>Medidas: 300 x 300 x 4 mm</li>
+            <li>Cobertura: 0.09 m² / pz</li>
+            <li>Presentación: 10 pz / caja (0.9 m²)</li>
+            <li>Garantía: 1 año</li>
+            <li>Instalación: Autoadherible</li>
+          </ul>
+        </div>
+        <div class="product-gallery" onclick="openLightbox('Paneles XPC 3D autoadheribles/Cordoba.jpg', 'Cordoba')">
+          <img src="Paneles XPC 3D autoadheribles/Cordoba.jpg" alt="Cordoba" loading="lazy">
+          <div class="gallery-overlay"><button class="gallery-btn">Ampliar</button></div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-specs">
+          <div class="product-header">
+            <div class="product-name">Cuenca</div>
+            <div class="product-code">CUENCA</div>
+          </div>
+          <ul class="specs-list">
+            <li>Material: Panel XPC 3D autoadherible</li>
+            <li>Medidas: 300 x 300 x 4 mm</li>
+            <li>Cobertura: 0.09 m² / pz</li>
+            <li>Presentación: 10 pz / caja (0.9 m²)</li>
+            <li>Garantía: 1 año</li>
+            <li>Instalación: Autoadherible</li>
+          </ul>
+        </div>
+        <div class="product-gallery" onclick="openLightbox('Paneles XPC 3D autoadheribles/Cuenca.jpg', 'Cuenca')">
+          <img src="Paneles XPC 3D autoadheribles/Cuenca.jpg" alt="Cuenca" loading="lazy">
+          <div class="gallery-overlay"><button class="gallery-btn">Ampliar</button></div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-specs">
+          <div class="product-header">
+            <div class="product-name">Granada</div>
+            <div class="product-code">GRANADA</div>
+          </div>
+          <ul class="specs-list">
+            <li>Material: Panel XPC 3D autoadherible</li>
+            <li>Medidas: 300 x 300 x 4 mm</li>
+            <li>Cobertura: 0.09 m² / pz</li>
+            <li>Presentación: 10 pz / caja (0.9 m²)</li>
+            <li>Garantía: 1 año</li>
+            <li>Instalación: Autoadherible</li>
+          </ul>
+        </div>
+        <div class="product-gallery" onclick="openLightbox('Paneles XPC 3D autoadheribles/Granada.jpg', 'Granada')">
+          <img src="Paneles XPC 3D autoadheribles/Granada.jpg" alt="Granada" loading="lazy">
+          <div class="gallery-overlay"><button class="gallery-btn">Ampliar</button></div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-specs">
+          <div class="product-header">
+            <div class="product-name">Malaga</div>
+            <div class="product-code">MALAGA</div>
+          </div>
+          <ul class="specs-list">
+            <li>Material: Panel XPC 3D autoadherible</li>
+            <li>Medidas: 300 x 300 x 4 mm</li>
+            <li>Cobertura: 0.09 m² / pz</li>
+            <li>Presentación: 10 pz / caja (0.9 m²)</li>
+            <li>Garantía: 1 año</li>
+            <li>Instalación: Autoadherible</li>
+          </ul>
+        </div>
+        <div class="product-gallery" onclick="openLightbox('Paneles XPC 3D autoadheribles/Malaga.jpg', 'Malaga')">
+          <img src="Paneles XPC 3D autoadheribles/Malaga.jpg" alt="Malaga" loading="lazy">
+          <div class="gallery-overlay"><button class="gallery-btn">Ampliar</button></div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-specs">
+          <div class="product-header">
+            <div class="product-name">Murcia</div>
+            <div class="product-code">MURCIA</div>
+          </div>
+          <ul class="specs-list">
+            <li>Material: Panel XPC 3D autoadherible</li>
+            <li>Medidas: 300 x 300 x 4 mm</li>
+            <li>Cobertura: 0.09 m² / pz</li>
+            <li>Presentación: 10 pz / caja (0.9 m²)</li>
+            <li>Garantía: 1 año</li>
+            <li>Instalación: Autoadherible</li>
+          </ul>
+        </div>
+        <div class="product-gallery" onclick="openLightbox('Paneles XPC 3D autoadheribles/Murcia.jpg', 'Murcia')">
+          <img src="Paneles XPC 3D autoadheribles/Murcia.jpg" alt="Murcia" loading="lazy">
+          <div class="gallery-overlay"><button class="gallery-btn">Ampliar</button></div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-specs">
+          <div class="product-header">
+            <div class="product-name">Pamplona</div>
+            <div class="product-code">PAMPLONA</div>
+          </div>
+          <ul class="specs-list">
+            <li>Material: Panel XPC 3D autoadherible</li>
+            <li>Medidas: 300 x 300 x 4 mm</li>
+            <li>Cobertura: 0.09 m² / pz</li>
+            <li>Presentación: 10 pz / caja (0.9 m²)</li>
+            <li>Garantía: 1 año</li>
+            <li>Instalación: Autoadherible</li>
+          </ul>
+        </div>
+        <div class="product-gallery" onclick="openLightbox('Paneles XPC 3D autoadheribles/Pamplona.jpg', 'Pamplona')">
+          <img src="Paneles XPC 3D autoadheribles/Pamplona.jpg" alt="Pamplona" loading="lazy">
+          <div class="gallery-overlay"><button class="gallery-btn">Ampliar</button></div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-specs">
+          <div class="product-header">
+            <div class="product-name">Salamanca</div>
+            <div class="product-code">SALAMANCA</div>
+          </div>
+          <ul class="specs-list">
+            <li>Material: Panel XPC 3D autoadherible</li>
+            <li>Medidas: 300 x 300 x 4 mm</li>
+            <li>Cobertura: 0.09 m² / pz</li>
+            <li>Presentación: 10 pz / caja (0.9 m²)</li>
+            <li>Garantía: 1 año</li>
+            <li>Instalación: Autoadherible</li>
+          </ul>
+        </div>
+        <div class="product-gallery" onclick="openLightbox('Paneles XPC 3D autoadheribles/Salamanca.jpg', 'Salamanca')">
+          <img src="Paneles XPC 3D autoadheribles/Salamanca.jpg" alt="Salamanca" loading="lazy">
+          <div class="gallery-overlay"><button class="gallery-btn">Ampliar</button></div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-specs">
+          <div class="product-header">
+            <div class="product-name">Santander</div>
+            <div class="product-code">SANTANDER</div>
+          </div>
+          <ul class="specs-list">
+            <li>Material: Panel XPC 3D autoadherible</li>
+            <li>Medidas: 300 x 300 x 4 mm</li>
+            <li>Cobertura: 0.09 m² / pz</li>
+            <li>Presentación: 10 pz / caja (0.9 m²)</li>
+            <li>Garantía: 1 año</li>
+            <li>Instalación: Autoadherible</li>
+          </ul>
+        </div>
+        <div class="product-gallery" onclick="openLightbox('Paneles XPC 3D autoadheribles/Santander.jpg', 'Santander')">
+          <img src="Paneles XPC 3D autoadheribles/Santander.jpg" alt="Santander" loading="lazy">
+          <div class="gallery-overlay"><button class="gallery-btn">Ampliar</button></div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-specs">
+          <div class="product-header">
+            <div class="product-name">Segovia</div>
+            <div class="product-code">SEGOVIA</div>
+          </div>
+          <ul class="specs-list">
+            <li>Material: Panel XPC 3D autoadherible</li>
+            <li>Medidas: 300 x 300 x 4 mm</li>
+            <li>Cobertura: 0.09 m² / pz</li>
+            <li>Presentación: 10 pz / caja (0.9 m²)</li>
+            <li>Garantía: 1 año</li>
+            <li>Instalación: Autoadherible</li>
+          </ul>
+        </div>
+        <div class="product-gallery" onclick="openLightbox('Paneles XPC 3D autoadheribles/Segovia.jpg', 'Segovia')">
+          <img src="Paneles XPC 3D autoadheribles/Segovia.jpg" alt="Segovia" loading="lazy">
+          <div class="gallery-overlay"><button class="gallery-btn">Ampliar</button></div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-specs">
+          <div class="product-header">
+            <div class="product-name">Toledo</div>
+            <div class="product-code">TOLEDO</div>
+          </div>
+          <ul class="specs-list">
+            <li>Material: Panel XPC 3D autoadherible</li>
+            <li>Medidas: 300 x 300 x 4 mm</li>
+            <li>Cobertura: 0.09 m² / pz</li>
+            <li>Presentación: 10 pz / caja (0.9 m²)</li>
+            <li>Garantía: 1 año</li>
+            <li>Instalación: Autoadherible</li>
+          </ul>
+        </div>
+        <div class="product-gallery" onclick="openLightbox('Paneles XPC 3D autoadheribles/Toledo.jpg', 'Toledo')">
+          <img src="Paneles XPC 3D autoadheribles/Toledo.jpg" alt="Toledo" loading="lazy">
+          <div class="gallery-overlay"><button class="gallery-btn">Ampliar</button></div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-specs">
+          <div class="product-header">
+            <div class="product-name">Valencia</div>
+            <div class="product-code">VALENCIA</div>
+          </div>
+          <ul class="specs-list">
+            <li>Material: Panel XPC 3D autoadherible</li>
+            <li>Medidas: 300 x 300 x 4 mm</li>
+            <li>Cobertura: 0.09 m² / pz</li>
+            <li>Presentación: 10 pz / caja (0.9 m²)</li>
+            <li>Garantía: 1 año</li>
+            <li>Instalación: Autoadherible</li>
+          </ul>
+        </div>
+        <div class="product-gallery" onclick="openLightbox('Paneles XPC 3D autoadheribles/Valencia.jpg', 'Valencia')">
+          <img src="Paneles XPC 3D autoadheribles/Valencia.jpg" alt="Valencia" loading="lazy">
+          <div class="gallery-overlay"><button class="gallery-btn">Ampliar</button></div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-specs">
+          <div class="product-header">
+            <div class="product-name">Valladolid</div>
+            <div class="product-code">VALLADOLID</div>
+          </div>
+          <ul class="specs-list">
+            <li>Material: Panel XPC 3D autoadherible</li>
+            <li>Medidas: 300 x 300 x 4 mm</li>
+            <li>Cobertura: 0.09 m² / pz</li>
+            <li>Presentación: 10 pz / caja (0.9 m²)</li>
+            <li>Garantía: 1 año</li>
+            <li>Instalación: Autoadherible</li>
+          </ul>
+        </div>
+        <div class="product-gallery" onclick="openLightbox('Paneles XPC 3D autoadheribles/Valladolid.jpg', 'Valladolid')">
+          <img src="Paneles XPC 3D autoadheribles/Valladolid.jpg" alt="Valladolid" loading="lazy">
+          <div class="gallery-overlay"><button class="gallery-btn">Ampliar</button></div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-specs">
+          <div class="product-header">
+            <div class="product-name">Zaragoza</div>
+            <div class="product-code">ZARAGOZA</div>
+          </div>
+          <ul class="specs-list">
+            <li>Material: Panel XPC 3D autoadherible</li>
+            <li>Medidas: 300 x 300 x 4 mm</li>
+            <li>Cobertura: 0.09 m² / pz</li>
+            <li>Presentación: 10 pz / caja (0.9 m²)</li>
+            <li>Garantía: 1 año</li>
+            <li>Instalación: Autoadherible</li>
+          </ul>
+        </div>
+        <div class="product-gallery" onclick="openLightbox('Paneles XPC 3D autoadheribles/Zaragoza.jpg', 'Zaragoza')">
+          <img src="Paneles XPC 3D autoadheribles/Zaragoza.jpg" alt="Zaragoza" loading="lazy">
+          <div class="gallery-overlay"><button class="gallery-btn">Ampliar</button></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="category" id="muros-reflexions">
+    <div class="cat-title">
+      <div class="line"></div>
+      <h2>Muros Reflexions</h2>
+      <div class="line"></div>
+    </div>
+    <div class="products-grid">
+      <div class="product-card">
+        <div class="product-specs">
+          <div class="product-header">
+            <div class="product-name">PLACA TIPO ESPEJO DORADO</div>
+            <div class="product-code">PLACA-TIPO-ESPE</div>
+          </div>
+          <ul class="specs-list">
+            <li>Material: Placa reflectiva</li>
+            <li>Medidas: 2440 x 1220 x 5 mm</li>
+            <li>Cobertura: 2.977 m² / pz</li>
+            <li>Presentación: 1 pz / caja</li>
+            <li>Peso: 10.5 kg / pz</li>
+            <li>Garantía: 15 años</li>
+          </ul>
+        </div>
+        <div class="product-gallery" onclick="openLightbox('Muros Reflexions/PLACA TIPO ESPEJO DORADO.jpg', 'PLACA TIPO ESPEJO DORADO')">
+          <img src="Muros Reflexions/PLACA TIPO ESPEJO DORADO.jpg" alt="PLACA TIPO ESPEJO DORADO" loading="lazy">
+          <div class="gallery-overlay"><button class="gallery-btn">Ampliar</button></div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-specs">
+          <div class="product-header">
+            <div class="product-name">PLACA TIPO ESPEJO</div>
+            <div class="product-code">PLACA-TIPO-ESPE</div>
+          </div>
+          <ul class="specs-list">
+            <li>Material: Placa reflectiva</li>
+            <li>Medidas: 2440 x 1220 x 5 mm</li>
+            <li>Cobertura: 2.977 m² / pz</li>
+            <li>Presentación: 1 pz / caja</li>
+            <li>Peso: 10.5 kg / pz</li>
+            <li>Garantía: 15 años</li>
+          </ul>
+        </div>
+        <div class="product-gallery" onclick="openLightbox('Muros Reflexions/PLACA TIPO ESPEJO.jpg', 'PLACA TIPO ESPEJO')">
+          <img src="Muros Reflexions/PLACA TIPO ESPEJO.jpg" alt="PLACA TIPO ESPEJO" loading="lazy">
+          <div class="gallery-overlay"><button class="gallery-btn">Ampliar</button></div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-specs">
+          <div class="product-header">
+            <div class="product-name">PLACA TIPO METAL</div>
+            <div class="product-code">PLACA-TIPO-META</div>
+          </div>
+          <ul class="specs-list">
+            <li>Material: Placa reflectiva</li>
+            <li>Medidas: 2440 x 1220 x 5 mm</li>
+            <li>Cobertura: 2.977 m² / pz</li>
+            <li>Presentación: 1 pz / caja</li>
+            <li>Peso: 10.5 kg / pz</li>
+            <li>Garantía: 15 años</li>
+          </ul>
+        </div>
+        <div class="product-gallery" onclick="openLightbox('Muros Reflexions/PLACA TIPO METAL.jpg', 'PLACA TIPO METAL')">
+          <img src="Muros Reflexions/PLACA TIPO METAL.jpg" alt="PLACA TIPO METAL" loading="lazy">
+          <div class="gallery-overlay"><button class="gallery-btn">Ampliar</button></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer id="contacto">
+    <div class="footer-logo">
+      <img src="LOGO ADIS.png" alt="ADIS Logo">
+    </div>
+    <div class="footer-info">
+      <strong>ADI'S DISEÑO & REMODELACIÓN</strong><br>
+      Creando espacios, reinventando hogares.<br>
+      Nogales, Sonora · Rio Rico, AZ · Decosonora<br>
+      Tel. MX: +52 631-192-8993 · Tel. USA: +1 (520) 839-2877<br>
+      adis.remodelacion@gmail.com
+    </div>
+    <div class="social-links">
+      <a href="#" title="Facebook">f</a>
+      <a href="#" title="Instagram">i</a>
+      <a href="#" title="WhatsApp">w</a>
+    </div>
+    <div class="copyright">
+      © 2026 ADIS DISEÑO & REMODELACIÓN. TODOS LOS DERECHOS RESERVADOS.
+    </div>
+  </footer>
+
+  <div class="lightbox" id="lightbox" onclick="closeLightbox(event)">
+    <button class="lightbox-close" onclick="closeLightbox(event)">✕</button>
+    <img src="" alt="" id="lightboxImg">
+    <div class="lightbox-caption" id="lightboxCaption"></div>
+  </div>
+
+  <script>
+    function toggleMenu() {
+      document.getElementById('mobileMenu').classList.toggle('active');
+    }
+    function openLightbox(src, caption) {
+      const lb = document.getElementById('lightbox');
+      document.getElementById('lightboxImg').src = src;
+      document.getElementById('lightboxCaption').textContent = caption;
+      lb.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeLightbox(e) {
+      if (e.target.id === 'lightbox' || e.target.classList.contains('lightbox-close')) {
+        document.getElementById('lightbox').classList.remove('active');
+        document.body.style.overflow = '';
+      }
+    }
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        document.getElementById('lightbox').classList.remove('active');
+        document.body.style.overflow = '';
+      }
+    });
+
+    const sections = document.querySelectorAll('.category');
+    const navLinks = document.querySelectorAll('.cat-link');
+    window.addEventListener('scroll', () => {
+      let current = '';
+      sections.forEach(section => {
+        const sectionTop = section.offsetTop - 150;
+        if (scrollY >= sectionTop) current = section.getAttribute('id');
+      });
+      navLinks.forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === '#' + current) link.classList.add('active');
+      });
+    });
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.style.opacity = '1';
+          entry.target.style.transform = 'translateY(0)';
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.product-card').forEach(card => {
+      card.style.opacity = '0';
+      card.style.transform = 'translateY(30px)';
+      card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+      observer.observe(card);
+    });
+  </script>
+
+</body>
+</html>
