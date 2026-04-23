@@ -4,10 +4,19 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ADIS | Diseño & Remodelación</title>
+  <meta name="description" content="Catálogo oficial de ADIS Diseño & Remodelación. Recubrimientos de alta gama: mármol digital, WPC, PVC, paneles 3D, metálicos y reflections. Nogales, Sonora.">
+  <meta name="keywords" content="ADIS, diseño, remodelación, paneles, WPC, PVC, mármol digital, 3D, recubrimientos, Nogales, Sonora">
+  <meta property="og:title" content="ADIS | Diseño & Remodelación">
+  <meta property="og:description" content="Catálogo oficial de ADIS Diseño & Remodelación. Recubrimientos de alta gama: mármol digital, WPC, PVC, paneles 3D, metálicos y reflections. Nogales, Sonora.">
+  <meta property="og:image" content="https://anibru300.github.io/catalogo-adis/LOGO%20ADIS.png">
+  <meta property="og:url" content="https://anibru300.github.io/catalogo-adis/">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <canvas id="bg-canvas"></canvas>
 
   <header>
     <div class="header-inner">
@@ -16,9 +25,9 @@
       </a>
       <nav class="desktop-nav">
         <a href="index.html">Inicio</a>
-        <a href="#nosotros">Nosotros</a>
-        <a href="#categorias">Catálogo</a>
-        <a href="#contacto">Contacto</a>
+        <a href="index.html#nosotros">Nosotros</a>
+        <a href="index.html#categorias">Catálogo</a>
+        <a href="contacto.html">Contacto</a>
       </nav>
       <button class="menu-btn" onclick="toggleMenu()">☰</button>
     </div>
@@ -27,9 +36,9 @@
   <div class="mobile-menu" id="mobileMenu">
     <button class="close-menu" onclick="toggleMenu()">✕</button>
     <a href="index.html" onclick="toggleMenu()">Inicio</a>
-    <a href="#nosotros" onclick="toggleMenu()">Nosotros</a>
-    <a href="#categorias" onclick="toggleMenu()">Catálogo</a>
-    <a href="#contacto" onclick="toggleMenu()">Contacto</a>
+    <a href="index.html#nosotros" onclick="toggleMenu()">Nosotros</a>
+    <a href="index.html#categorias" onclick="toggleMenu()">Catálogo</a>
+    <a href="contacto.html" onclick="toggleMenu()">Contacto</a>
   </div>
 
   <section class="hero-home" id="inicio">
@@ -38,6 +47,7 @@
       <div class="hero-badge">Catálogo 2025 — 2026</div>
       <h1>Transforma tus espacios con <em>ADIS</em></h1>
       <p>Recubrimientos de alta gama para interior y exterior. Mármol digital, WPC, PVC, 3D, metálicos y reflections.</p>
+      <a href="#categorias" class="btn-primary">Ver Catálogo</a>
     </div>
   </section>
 
@@ -160,11 +170,75 @@
     </div>
   </footer>
 
-  <script>
-    function toggleMenu() {
-      document.getElementById('mobileMenu').classList.toggle('active');
-    }
-  </script>
+  <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20vi%20el%20catálogo%20y%20me%20interesa..." class="whatsapp-float" target="_blank" title="Contáctanos por WhatsApp">💬</a>
 
+  <script>function toggleMenu() { document.getElementById('mobileMenu').classList.toggle('active'); }</script>
+  <script>
+(function() {
+  const canvas = document.getElementById('bg-canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  let w, h, particles = [];
+  const COUNT = 60;
+  const CONNECT_DIST = 120;
+  const COLOR = 'rgba(197, 160, 89, ';
+
+  function resize() {
+    w = canvas.width = window.innerWidth;
+    h = canvas.height = window.innerHeight;
+  }
+  window.addEventListener('resize', resize);
+  resize();
+
+  class Particle {
+    constructor() {
+      this.x = Math.random() * w;
+      this.y = Math.random() * h;
+      this.vx = (Math.random() - 0.5) * 0.4;
+      this.vy = (Math.random() - 0.5) * 0.4;
+      this.r = Math.random() * 2 + 1;
+    }
+    update() {
+      this.x += this.vx;
+      this.y += this.vy;
+      if (this.x < 0 || this.x > w) this.vx *= -1;
+      if (this.y < 0 || this.y > h) this.vy *= -1;
+    }
+    draw() {
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
+      ctx.fillStyle = COLOR + '0.5)';
+      ctx.fill();
+    }
+  }
+
+  for (let i = 0; i < COUNT; i++) particles.push(new Particle());
+
+  function animate() {
+    ctx.clearRect(0, 0, w, h);
+    for (let p of particles) {
+      p.update();
+      p.draw();
+    }
+    for (let i = 0; i < particles.length; i++) {
+      for (let j = i + 1; j < particles.length; j++) {
+        let dx = particles[i].x - particles[j].x;
+        let dy = particles[i].y - particles[j].y;
+        let dist = Math.sqrt(dx*dx + dy*dy);
+        if (dist < CONNECT_DIST) {
+          ctx.beginPath();
+          ctx.moveTo(particles[i].x, particles[i].y);
+          ctx.lineTo(particles[j].x, particles[j].y);
+          ctx.strokeStyle = COLOR + (0.15 * (1 - dist/CONNECT_DIST)) + ')';
+          ctx.lineWidth = 0.8;
+          ctx.stroke();
+        }
+      }
+    }
+    requestAnimationFrame(animate);
+  }
+  animate();
+})();
+</script>
 </body>
 </html>
