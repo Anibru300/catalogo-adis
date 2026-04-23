@@ -211,22 +211,26 @@
       padding: 1rem 2rem;
     }
     .cat-nav-inner {
-      max-width: 1400px; margin: 0 auto;
-      display: flex; gap: 0.5rem; justify-content: center; flex-wrap: wrap;
+      max-width: 1200px; margin: 0 auto;
+      display: flex; gap: 0.4rem; justify-content: center; flex-wrap: wrap;
     }
     .cat-link {
-      padding: 0.5rem 1rem; background: transparent;
-      border: 1px solid rgba(197,160,89,0.3); color: var(--light);
-      font-family: 'Montserrat', sans-serif; font-size: 0.7rem;
-      font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase;
+      padding: 0.4rem 0.9rem; background: transparent;
+      border: 1px solid rgba(197,160,89,0.25); color: rgba(245,245,245,0.7);
+      font-family: 'Montserrat', sans-serif; font-size: 0.65rem;
+      font-weight: 600; letter-spacing: 1px; text-transform: uppercase;
       text-decoration: none; cursor: pointer; transition: all 0.3s;
+      border-radius: 20px;
+    }
+    .cat-link:hover, .cat-link.active {
+      background: var(--gold); border-color: var(--gold); color: var(--black);
     }
     .cat-link:hover, .cat-link.active {
       background: var(--gold); border-color: var(--gold); color: var(--black);
     }
 
     .category {
-      padding: 4rem 2rem;
+      padding: 5rem 2rem 4rem;
     }
     .category:nth-child(odd) { background: var(--black); }
     .category:nth-child(even) { background: var(--dark); }
@@ -235,7 +239,8 @@
       justify-content: center;
     }
     .cat-title h2 {
-      font-family: 'Playfair Display', serif; font-size: 1.8rem; color: var(--white); text-align: center;
+      font-family: 'Playfair Display', serif; font-size: 2rem; color: var(--white); text-align: center;
+      letter-spacing: 1px;
     }
     .cat-title .line {
       flex: 1; max-width: 80px; height: 1px; background: rgba(197,160,89,0.4);
@@ -258,15 +263,16 @@
       transform: translateY(-8px);
     }
     .product-specs {
-      padding: 1.5rem;
-      border-bottom: 1px solid rgba(197,160,89,0.1);
+      padding: 1.2rem 1.2rem 0.8rem;
+      border-bottom: 1px solid rgba(197,160,89,0.08);
     }
     .product-header {
       display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem;
       gap: 0.5rem;
     }
     .product-name {
-      font-family: 'Playfair Display', serif; font-size: 1.3rem; color: var(--white);
+      font-family: 'Playfair Display', serif; font-size: 1.2rem; color: var(--white);
+      line-height: 1.2;
     }
     .product-code {
       font-size: 0.6rem; color: var(--gold); letter-spacing: 1.5px;
@@ -274,16 +280,21 @@
       padding: 0.2rem 0.5rem; border-radius: 2px; white-space: nowrap;
     }
     .specs-list {
-      list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: 0.4rem 1rem;
+      list-style: none; display: flex; flex-wrap: wrap; gap: 0.3rem;
     }
     .specs-list li {
-      font-size: 0.72rem; color: rgba(245,245,245,0.6);
-      display: flex; align-items: center; gap: 0.4rem;
+      font-size: 0.65rem; color: rgba(245,245,245,0.7);
+      background: rgba(197,160,89,0.08);
+      padding: 0.2rem 0.5rem;
+      border-radius: 3px;
+      border: 1px solid rgba(197,160,89,0.12);
+      white-space: nowrap;
     }
-    .specs-list li::before {
-      content: '•'; color: var(--gold); font-size: 1rem; line-height: 0;
+    .specs-list li.gold-tag {
+      background: rgba(197,160,89,0.15);
+      color: var(--gold);
+      border-color: rgba(197,160,89,0.25);
     }
-    .specs-list .full-width { grid-column: 1 / -1; }
     .product-gallery {
       position: relative; flex: 1; min-height: 220px;
       background: #111; overflow: hidden;
@@ -398,15 +409,7 @@
       <nav class="desktop-nav">
         <a href="#inicio">Inicio</a>
         <a href="#nosotros">Nosotros</a>
-        <a href="#muro-marmol-digital">Muro Mármol Digital</a>
-        <a href="#fachada-y-muro-interior-flexible">Fachada y Muro Interior Flexible</a>
-        <a href="#lambirn-wpc-interior">Lambrín WPC Interior</a>
-        <a href="#lambrin-wpc-exterior">Lambrín WPC Exterior</a>
-        <a href="#paneles-pvc-interiores">Paneles PVC Interiores</a>
-        <a href="#paneles-decorativos-3d">Paneles Decorativos 3D</a>
-        <a href="#paneles-metalicos-auto-aderibles">Paneles Metálicos Autoadheribles</a>
-        <a href="#paneles-xpc-3d-autoadheribles">Paneles XPC 3D Autoadheribles</a>
-        <a href="#muros-reflexions">Muros Reflexions</a>
+        <a href="#muro-marmol-digital">Catálogo</a>
         <a href="#contacto">Contacto</a>
       </nav>
       <button class="menu-btn" onclick="toggleMenu()">☰</button>
@@ -417,26 +420,18 @@
     <button class="close-menu" onclick="toggleMenu()">✕</button>
     <a href="#inicio" onclick="toggleMenu()">Inicio</a>
     <a href="#nosotros" onclick="toggleMenu()">Nosotros</a>
-    <a href="#muro-marmol-digital" onclick="toggleMenu()">Muro Mármol Digital</a>
-    <a href="#fachada-y-muro-interior-flexible" onclick="toggleMenu()">Fachada y Muro Interior Flexible</a>
-    <a href="#lambirn-wpc-interior" onclick="toggleMenu()">Lambrín WPC Interior</a>
-    <a href="#lambrin-wpc-exterior" onclick="toggleMenu()">Lambrín WPC Exterior</a>
-    <a href="#paneles-pvc-interiores" onclick="toggleMenu()">Paneles PVC Interiores</a>
-    <a href="#paneles-decorativos-3d" onclick="toggleMenu()">Paneles Decorativos 3D</a>
-    <a href="#paneles-metalicos-auto-aderibles" onclick="toggleMenu()">Paneles Metálicos Autoadheribles</a>
-    <a href="#paneles-xpc-3d-autoadheribles" onclick="toggleMenu()">Paneles XPC 3D Autoadheribles</a>
-    <a href="#muros-reflexions" onclick="toggleMenu()">Muros Reflexions</a>
+    <a href="#muro-marmol-digital" onclick="toggleMenu()">Catálogo</a>
     <a href="#contacto" onclick="toggleMenu()">Contacto</a>
   </div>
 
   <section class="hero" id="inicio">
     <div class="hero-content">
       <div style="margin-bottom: 1.5rem;">
-        <img src="LOGO ADIS.png" alt="ADIS Logo" style="height: 140px; width: auto; filter: drop-shadow(0 0 20px rgba(197,160,89,0.4));">
+        <img src="LOGO ADIS.png" alt="ADIS Logo" style="height: 100px; width: auto; filter: drop-shadow(0 0 15px rgba(197,160,89,0.3));">
       </div>
       <div class="hero-badge">Catálogo 2025 — 2026</div>
       <h1>Transforma tus espacios con <em>ADIS</em></h1>
-      <p>En ADI'S DISEÑO & REMODELACIÓN ofrecemos soluciones integrales en recubrimientos: muros de mármol digital, lambrines WPC para interior y exterior, paneles PVC, decorativos 3D, metálicos autoadheribles, XPC y muros reflections.</p>
+      <p>Recubrimientos de alta gama para transformar cualquier espacio. Mármol digital, WPC, PVC, 3D, metálicos y reflections.</p>
       <div class="hero-buttons">
         <a href="#muro-marmol-digital" class="btn btn-primary">Ver Catálogo</a>
         <a href="#contacto" class="btn btn-outline">Contáctanos</a>
