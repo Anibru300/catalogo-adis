@@ -20,13 +20,11 @@
 
   <header>
     <div class="header-inner">
-      <a href="index.html" class="logo">
-        <img src="LOGO ADIS.png" alt="ADIS Logo">
-      </a>
+      <a href="index.html" class="logo"><img src="LOGO ADIS.png" alt="ADIS Logo"></a>
       <nav class="desktop-nav">
         <a href="index.html">Inicio</a>
-        <a href="index.html#nosotros">Nosotros</a>
-        <a href="index.html#categorias">Catálogo</a>
+        <a href="#nosotros">Nosotros</a>
+        <a href="#categorias">Catálogo</a>
         <a href="contacto.html">Contacto</a>
       </nav>
       <button class="menu-btn" onclick="toggleMenu()">☰</button>
@@ -36,26 +34,28 @@
   <div class="mobile-menu" id="mobileMenu">
     <button class="close-menu" onclick="toggleMenu()">✕</button>
     <a href="index.html" onclick="toggleMenu()">Inicio</a>
-    <a href="index.html#nosotros" onclick="toggleMenu()">Nosotros</a>
-    <a href="index.html#categorias" onclick="toggleMenu()">Catálogo</a>
+    <a href="#nosotros" onclick="toggleMenu()">Nosotros</a>
+    <a href="#categorias" onclick="toggleMenu()">Catálogo</a>
     <a href="contacto.html" onclick="toggleMenu()">Contacto</a>
   </div>
 
+  <!-- INICIO -->
   <section class="hero-home" id="inicio">
     <div class="hero-content">
       <img src="LOGO ADIS.png" alt="ADIS Logo">
       <div class="hero-badge">Catálogo 2025 — 2026</div>
       <h1>Transforma tus espacios con <em>ADIS</em></h1>
       <p>Recubrimientos de alta gama para interior y exterior. Mármol digital, WPC, PVC, 3D, metálicos y reflections.</p>
-      <a href="#categorias" class="btn-primary">Ver Catálogo</a>
+      <a href="#categorias" class="btn-primary">Explorar Catálogo</a>
     </div>
   </section>
 
-  <section id="nosotros">
+  <!-- NOSOTROS -->
+  <section class="section-wrap-alt" id="nosotros">
     <div class="section-header">
       <h2>Sobre ADIS</h2>
       <div class="divider"></div>
-      <p>En ADI'S DISEÑO & REMODELACIÓN nos especializamos en ofrecer soluciones funcionales, estéticas y duraderas para la transformación de espacios.</p>
+      <p>En ADI'S DISEÑO & REMODELACIÓN nos especializamos en ofrecer soluciones funcionales, estéticas y duraderas.</p>
     </div>
     <div class="info-grid">
       <div class="info-card">
@@ -76,12 +76,13 @@
       <div class="info-card">
         <div class="icon">✚</div>
         <h3>Metálicos & Reflections</h3>
-        <p>Acabados metálicos autoadheribles y placas tipo espejo para un toque de lujo y modernidad.</p>
+        <p>Acabados metálicos autoadheribles y placas tipo espejo para un toque de lujo.</p>
       </div>
     </div>
   </section>
 
-  <section id="categorias" style="background: var(--black); padding: 5rem 2rem;">
+  <!-- CATÁLOGO -->
+  <section class="section-wrap" id="categorias">
     <div class="section-header">
       <h2>Nuestro Catálogo</h2>
       <div class="divider"></div>
@@ -155,9 +156,7 @@
   </section>
 
   <footer id="contacto">
-    <div class="footer-logo">
-      <img src="LOGO ADIS.png" alt="ADIS Logo">
-    </div>
+    <div class="footer-logo"><img src="LOGO ADIS.png" alt="ADIS Logo"></div>
     <div class="footer-info">
       <strong>ADI'S DISEÑO & REMODELACIÓN</strong><br>
       Creando espacios, reinventando hogares.<br>
@@ -165,38 +164,33 @@
       Tel. MX: +52 631-192-8993 · Tel. USA: +1 (520) 839-2877<br>
       adis.remodelacion@gmail.com
     </div>
-    <div class="copyright">
-      © 2026 ADIS DISEÑO & REMODELACIÓN. TODOS LOS DERECHOS RESERVADOS.
-    </div>
+    <div class="copyright">© 2026 ADIS DISEÑO & REMODELACIÓN. TODOS LOS DERECHOS RESERVADOS.</div>
   </footer>
 
   <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20vi%20el%20catálogo%20y%20me%20interesa..." class="whatsapp-float" target="_blank" title="Contáctanos por WhatsApp">💬</a>
 
-  <script>function toggleMenu() { document.getElementById('mobileMenu').classList.toggle('active'); }</script>
-  <script>
-(function() {
+  <script>function toggleMenu(){{document.getElementById('mobileMenu').classList.toggle('active');}}</script>
+  <script>(function() {
   const canvas = document.getElementById('bg-canvas');
   if (!canvas) return;
   const ctx = canvas.getContext('2d');
   let w, h, particles = [];
-  const COUNT = 60;
-  const CONNECT_DIST = 120;
+  const COUNT = 70;
+  const CONNECT_DIST = 140;
   const COLOR = 'rgba(197, 160, 89, ';
-
   function resize() {
     w = canvas.width = window.innerWidth;
     h = canvas.height = window.innerHeight;
   }
   window.addEventListener('resize', resize);
   resize();
-
   class Particle {
     constructor() {
       this.x = Math.random() * w;
       this.y = Math.random() * h;
-      this.vx = (Math.random() - 0.5) * 0.4;
-      this.vy = (Math.random() - 0.5) * 0.4;
-      this.r = Math.random() * 2 + 1;
+      this.vx = (Math.random() - 0.5) * 0.5;
+      this.vy = (Math.random() - 0.5) * 0.5;
+      this.r = Math.random() * 2.5 + 0.8;
     }
     update() {
       this.x += this.vx;
@@ -207,19 +201,14 @@
     draw() {
       ctx.beginPath();
       ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
-      ctx.fillStyle = COLOR + '0.5)';
+      ctx.fillStyle = COLOR + '0.6)';
       ctx.fill();
     }
   }
-
   for (let i = 0; i < COUNT; i++) particles.push(new Particle());
-
   function animate() {
     ctx.clearRect(0, 0, w, h);
-    for (let p of particles) {
-      p.update();
-      p.draw();
-    }
+    for (let p of particles) { p.update(); p.draw(); }
     for (let i = 0; i < particles.length; i++) {
       for (let j = i + 1; j < particles.length; j++) {
         let dx = particles[i].x - particles[j].x;
@@ -229,7 +218,7 @@
           ctx.beginPath();
           ctx.moveTo(particles[i].x, particles[i].y);
           ctx.lineTo(particles[j].x, particles[j].y);
-          ctx.strokeStyle = COLOR + (0.15 * (1 - dist/CONNECT_DIST)) + ')';
+          ctx.strokeStyle = COLOR + (0.2 * (1 - dist/CONNECT_DIST)) + ')';
           ctx.lineWidth = 0.8;
           ctx.stroke();
         }
@@ -238,7 +227,6 @@
     requestAnimationFrame(animate);
   }
   animate();
-})();
-</script>
+})();</script>
 </body>
 </html>

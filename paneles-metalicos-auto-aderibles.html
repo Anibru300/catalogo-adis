@@ -5,15 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Paneles Metálicos Autoadheribles | ADIS Catálogo</title>
   <meta name="description" content="Paneles Metálicos Autoadheribles - ADIS Diseño & Remodelación. Mosaicos metálicos con acabado cepillado y reflectivo. Autoadheribles para una instalación rápida y sin complicaciones.">
-  <meta property="og:title" content="Paneles Metálicos Autoadheribles | ADIS Catálogo">
-  <meta property="og:description" content="Mosaicos metálicos con acabado cepillado y reflectivo. Autoadheribles para una instalación rápida y sin complicaciones.">
-  <meta property="og:image" content="https://anibru300.github.io/catalogo-adis/LOGO%20ADIS.png">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <canvas id="bg-canvas"></canvas>
-
   <header>
     <div class="header-inner">
       <a href="index.html" class="logo"><img src="LOGO ADIS.png" alt="ADIS Logo"></a>
@@ -25,7 +21,6 @@
       <button class="menu-btn" onclick="toggleMenu()">☰</button>
     </div>
   </header>
-
   <div class="mobile-menu" id="mobileMenu">
     <button class="close-menu" onclick="toggleMenu()">✕</button>
     <a href="index.html" onclick="toggleMenu()">← Inicio</a>
@@ -58,9 +53,7 @@
     
     <div class="calc-box">
       <h3>📐 Calculadora de Materiales</h3>
-      <div class="calc-result">
-        Consulta la ficha técnica o contáctanos para calcular los materiales necesarios.
-      </div>
+      <div class="calc-result">Consulta la ficha técnica o contáctanos para calcular los materiales necesarios.</div>
     </div>
 
   </section>
@@ -122,31 +115,28 @@
 
   <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20vi%20el%20catálogo%20y%20me%20interesa..." class="whatsapp-float" target="_blank" title="Contáctanos por WhatsApp">💬</a>
 
-  <script>function toggleMenu() { document.getElementById('mobileMenu').classList.toggle('active'); }</script>
-  <script>
-(function() {
+  <script>function toggleMenu(){document.getElementById('mobileMenu').classList.toggle('active');}</script>
+  <script>(function() {
   const canvas = document.getElementById('bg-canvas');
   if (!canvas) return;
   const ctx = canvas.getContext('2d');
   let w, h, particles = [];
-  const COUNT = 60;
-  const CONNECT_DIST = 120;
+  const COUNT = 70;
+  const CONNECT_DIST = 140;
   const COLOR = 'rgba(197, 160, 89, ';
-
   function resize() {
     w = canvas.width = window.innerWidth;
     h = canvas.height = window.innerHeight;
   }
   window.addEventListener('resize', resize);
   resize();
-
   class Particle {
     constructor() {
       this.x = Math.random() * w;
       this.y = Math.random() * h;
-      this.vx = (Math.random() - 0.5) * 0.4;
-      this.vy = (Math.random() - 0.5) * 0.4;
-      this.r = Math.random() * 2 + 1;
+      this.vx = (Math.random() - 0.5) * 0.5;
+      this.vy = (Math.random() - 0.5) * 0.5;
+      this.r = Math.random() * 2.5 + 0.8;
     }
     update() {
       this.x += this.vx;
@@ -157,19 +147,14 @@
     draw() {
       ctx.beginPath();
       ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
-      ctx.fillStyle = COLOR + '0.5)';
+      ctx.fillStyle = COLOR + '0.6)';
       ctx.fill();
     }
   }
-
   for (let i = 0; i < COUNT; i++) particles.push(new Particle());
-
   function animate() {
     ctx.clearRect(0, 0, w, h);
-    for (let p of particles) {
-      p.update();
-      p.draw();
-    }
+    for (let p of particles) { p.update(); p.draw(); }
     for (let i = 0; i < particles.length; i++) {
       for (let j = i + 1; j < particles.length; j++) {
         let dx = particles[i].x - particles[j].x;
@@ -179,7 +164,7 @@
           ctx.beginPath();
           ctx.moveTo(particles[i].x, particles[i].y);
           ctx.lineTo(particles[j].x, particles[j].y);
-          ctx.strokeStyle = COLOR + (0.15 * (1 - dist/CONNECT_DIST)) + ')';
+          ctx.strokeStyle = COLOR + (0.2 * (1 - dist/CONNECT_DIST)) + ')';
           ctx.lineWidth = 0.8;
           ctx.stroke();
         }
@@ -188,7 +173,6 @@
     requestAnimationFrame(animate);
   }
   animate();
-})();
-</script>
+})();</script>
 </body>
 </html>

@@ -5,15 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Muros Reflexions | ADIS Catálogo</title>
   <meta name="description" content="Muros Reflexions - ADIS Diseño & Remodelación. Placas con acabado altamente reflectivo tipo espejo, dorado o metal cepillado. Un toque de lujo y modernidad para interiores.">
-  <meta property="og:title" content="Muros Reflexions | ADIS Catálogo">
-  <meta property="og:description" content="Placas con acabado altamente reflectivo tipo espejo, dorado o metal cepillado. Un toque de lujo y modernidad para interiores.">
-  <meta property="og:image" content="https://anibru300.github.io/catalogo-adis/LOGO%20ADIS.png">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <canvas id="bg-canvas"></canvas>
-
   <header>
     <div class="header-inner">
       <a href="index.html" class="logo"><img src="LOGO ADIS.png" alt="ADIS Logo"></a>
@@ -25,7 +21,6 @@
       <button class="menu-btn" onclick="toggleMenu()">☰</button>
     </div>
   </header>
-
   <div class="mobile-menu" id="mobileMenu">
     <button class="close-menu" onclick="toggleMenu()">✕</button>
     <a href="index.html" onclick="toggleMenu()">← Inicio</a>
@@ -59,25 +54,18 @@
     <div class="calc-box">
       <h3>📐 Calculadora de Materiales</h3>
       <div class="calc-row">
-        <label>Metros cuadrados a cubrir:</label>
+        <label>Metros cuadrados:</label>
         <input type="number" id="m2" placeholder="Ej: 10" min="0" step="0.1" oninput="calcular()">
       </div>
-      <div class="calc-result" id="resultado">
-        Ingresa los m² para calcular
-      </div>
+      <div class="calc-result" id="resultado">Ingresa los m² para calcular</div>
     </div>
     <script>
-      function calcular() {
+      function calcular(){
         var m2 = parseFloat(document.getElementById('m2').value);
-        if (!m2 || m2 <= 0) {
-          document.getElementById('resultado').innerHTML = 'Ingresa los m² para calcular';
-          return;
-        }
+        if (!m2 || m2 <= 0){ document.getElementById('resultado').innerHTML = 'Ingresa los m² para calcular'; return; }
         var pz = Math.ceil(m2 / 2.977);
         var cajas = Math.ceil(pz / 1);
-        document.getElementById('resultado').innerHTML = 
-          'Necesitas <strong>' + pz + ' piezas</strong> (' + cajas + ' caja' + (cajas>1?'s':'') + ')' +
-          '<br><span style="font-size:0.75rem;color:rgba(245,245,245,0.5)">Basado en m² / pz</span>';
+        document.getElementById('resultado').innerHTML = 'Necesitas <strong>' + pz + ' piezas</strong> (' + cajas + ' caja' + (cajas>1?'s':'') + ')<br><span style="font-size:0.75rem;color:rgba(245,245,245,0.5)">Basado en m² / pz</span>';
       }
     </script>
 
@@ -128,31 +116,28 @@
 
   <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20vi%20el%20catálogo%20y%20me%20interesa..." class="whatsapp-float" target="_blank" title="Contáctanos por WhatsApp">💬</a>
 
-  <script>function toggleMenu() { document.getElementById('mobileMenu').classList.toggle('active'); }</script>
-  <script>
-(function() {
+  <script>function toggleMenu(){document.getElementById('mobileMenu').classList.toggle('active');}</script>
+  <script>(function() {
   const canvas = document.getElementById('bg-canvas');
   if (!canvas) return;
   const ctx = canvas.getContext('2d');
   let w, h, particles = [];
-  const COUNT = 60;
-  const CONNECT_DIST = 120;
+  const COUNT = 70;
+  const CONNECT_DIST = 140;
   const COLOR = 'rgba(197, 160, 89, ';
-
   function resize() {
     w = canvas.width = window.innerWidth;
     h = canvas.height = window.innerHeight;
   }
   window.addEventListener('resize', resize);
   resize();
-
   class Particle {
     constructor() {
       this.x = Math.random() * w;
       this.y = Math.random() * h;
-      this.vx = (Math.random() - 0.5) * 0.4;
-      this.vy = (Math.random() - 0.5) * 0.4;
-      this.r = Math.random() * 2 + 1;
+      this.vx = (Math.random() - 0.5) * 0.5;
+      this.vy = (Math.random() - 0.5) * 0.5;
+      this.r = Math.random() * 2.5 + 0.8;
     }
     update() {
       this.x += this.vx;
@@ -163,19 +148,14 @@
     draw() {
       ctx.beginPath();
       ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
-      ctx.fillStyle = COLOR + '0.5)';
+      ctx.fillStyle = COLOR + '0.6)';
       ctx.fill();
     }
   }
-
   for (let i = 0; i < COUNT; i++) particles.push(new Particle());
-
   function animate() {
     ctx.clearRect(0, 0, w, h);
-    for (let p of particles) {
-      p.update();
-      p.draw();
-    }
+    for (let p of particles) { p.update(); p.draw(); }
     for (let i = 0; i < particles.length; i++) {
       for (let j = i + 1; j < particles.length; j++) {
         let dx = particles[i].x - particles[j].x;
@@ -185,7 +165,7 @@
           ctx.beginPath();
           ctx.moveTo(particles[i].x, particles[i].y);
           ctx.lineTo(particles[j].x, particles[j].y);
-          ctx.strokeStyle = COLOR + (0.15 * (1 - dist/CONNECT_DIST)) + ')';
+          ctx.strokeStyle = COLOR + (0.2 * (1 - dist/CONNECT_DIST)) + ')';
           ctx.lineWidth = 0.8;
           ctx.stroke();
         }
@@ -194,7 +174,6 @@
     requestAnimationFrame(animate);
   }
   animate();
-})();
-</script>
+})();</script>
 </body>
 </html>

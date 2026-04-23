@@ -189,18 +189,24 @@ for idx, cat in enumerate(categories):
 c.showPage()
 
 # ========== PÁGINAS DE CATEGORÍAS ==========
-PRODUCTS_PER_PAGE = 12
-COLS = 4
+PRODUCTS_PER_PAGE = 9
+COLS = 3
 ROWS = 3
 
 margin = 1.2*cm
+header_h = 1.2*cm
+content_h = page_h - header_h - margin*0.5
 cell_w = (page_w - 2*margin) / COLS
-cell_h = (page_h - 2*margin - 1.5*cm) / ROWS  # espacio extra para header
+cell_h = content_h / ROWS
 
 for cat in categories:
     total_prods = len(cat['products'])
     num_pages = (total_prods + PRODUCTS_PER_PAGE - 1) // PRODUCTS_PER_PAGE
     dest = f"cat_{cat['id']}"
+    
+    # Ficha técnica resumida de la categoría (2 líneas máximo)
+    ficha_linea1 = cat['specs'][0] if len(cat['specs']) > 0 else ''
+    ficha_linea2 = cat['specs'][1] if len(cat['specs']) > 1 else ''
     
     for page_idx in range(num_pages):
         c.setFillColor(BLACK)
@@ -212,23 +218,22 @@ for cat in categories:
             c.addOutlineEntry(cat['title'], dest, level=0)
         
         # Header con nombre de categoría
-        header_h = 1.4*cm
         c.setFillColor(GRAY)
         c.rect(0, page_h - header_h, page_w, header_h, fill=1, stroke=0)
         c.setFillColor(GOLD)
-        c.setFont("Helvetica-Bold", 16)
-        page_text = f"{cat['title']}  —  Página {page_idx + 1} de {num_pages}"
-        c.drawString(margin, page_h - header_h + 0.45*cm, page_text)
+        c.setFont("Helvetica-Bold", 14)
+        page_text = f"{cat['title']}  —  {page_idx + 1}/{num_pages}"
+        c.drawString(margin, page_h - header_h + 0.4*cm, page_text)
         
         # Botón Volver al Índice
-        btn_w_idx = 3.5*cm
-        btn_h_idx = 0.8*cm
+        btn_w_idx = 3.2*cm
+        btn_h_idx = 0.7*cm
         btn_x = page_w - margin - btn_w_idx
-        btn_y = page_h - header_h + 0.3*cm
+        btn_y = page_h - header_h + 0.25*cm
         draw_rounded_rect(c, btn_x, btn_y, btn_w_idx, btn_h_idx, 5, GOLD)
         c.setFillColor(BLACK)
-        c.setFont("Helvetica-Bold", 10)
-        c.drawCentredString(btn_x + btn_w_idx/2, btn_y + 0.25*cm, "← ÍNDICE")
+        c.setFont("Helvetica-Bold", 9)
+        c.drawCentredString(btn_x + btn_w_idx/2, btn_y + 0.2*cm, "← ÍNDICE")
         c.linkAbsolute("", "indice", (btn_x, btn_y, btn_x+btn_w_idx, btn_y+btn_h_idx))
         
         # Productos de esta página
@@ -240,34 +245,39 @@ for cat in categories:
             col = i % COLS
             row = i // COLS
             x = margin + col * cell_w
-            y = page_h - header_h - margin - (row + 1) * cell_h
+            y = page_h - header_h - margin*0.3 - (row + 1) * cell_h
+            
+            pad = 0.2*cm
+            cw = cell_w - pad*2
+            ch = cell_h - pad*2
             
             # Fondo celda
-            draw_rounded_rect(c, x + 0.15*cm, y + 0.15*cm, cell_w - 0.3*cm, cell_h - 0.3*cm, 6, GRAY)
+            draw_rounded_rect(c, x + pad, y + pad, cw, ch, 8, GRAY)
             
-            # Especificaciones arriba (máx 3 líneas)
+            # Ficha técnica compacta arriba
             c.setFillColor(LIGHT)
             c.setFont("Helvetica", 7)
-            spec_y = y + cell_h - 0.6*cm
-            for s_idx, spec in enumerate(cat['specs'][:3]):
-                c.drawString(x + 0.3*cm, spec_y - s_idx*0.32*cm, f"• {spec}")
+            if ficha_linea1:
+                c.drawCentredString(x + cell_w/2, y + ch - 0.15*cm, ficha_linea1)
+            if ficha_linea2:
+                c.drawCentredString(x + cell_w/2, y + ch - 0.45*cm, ficha_linea2)
             
-            # Imagen
+            # Imagen (máximo aprovechamiento)
             img_path = os.path.join(base_dir, cat['folder'], prod_file)
-            img_max_w = cell_w - 0.6*cm
-            img_max_h = cell_h - 2.2*cm
+            img_max_w = cw - 0.4*cm
+            img_max_h = ch - 1.4*cm
             
             if os.path.exists(img_path):
                 iw, ih = get_image_size(img_path, img_max_w, img_max_h)
                 img_x = x + (cell_w - iw) / 2
-                img_y = y + 0.8*cm
+                img_y = y + pad + 0.55*cm
                 c.drawImage(img_path, img_x, img_y, width=iw, height=ih, mask='auto')
             
             # Nombre del producto abajo
             prod_name = os.path.splitext(prod_file)[0]
             c.setFillColor(GOLD)
-            c.setFont("Helvetica-Bold", 8)
-            c.drawCentredString(x + cell_w/2, y + 0.35*cm, prod_name)
+            c.setFont("Helvetica-Bold", 9)
+            c.drawCentredString(x + cell_w/2, y + pad + 0.15*cm, prod_name)
         
         c.showPage()
 

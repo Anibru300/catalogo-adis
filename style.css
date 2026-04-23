@@ -1,12 +1,4 @@
-:root {
-  --gold: #C5A059;
-  --gold-light: #E8D5A3;
-  --black: #0F0F0F;
-  --dark: #1A1A1A;
-  --gray: #2A2A2A;
-  --light: #F5F5F5;
-  --white: #FFFFFF;
-}
+:root { --gold: #C5A059; --gold-light: #E8D5A3; --black: #0F0F0F; --dark: #1A1A1A; --gray: #2A2A2A; --light: #F5F5F5; --white: #FFFFFF; }
 * { margin: 0; padding: 0; box-sizing: border-box; }
 html { scroll-behavior: smooth; }
 body {
@@ -20,17 +12,17 @@ body {
 ::-webkit-scrollbar-track { background: var(--dark); }
 ::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 4px; }
 
-/* ANIMACIÓN DE FONDO */
+/* FONDO ANIMADO COBERTURA TOTAL */
 #bg-canvas {
   position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-  z-index: 0; pointer-events: none; opacity: 0.6;
+  z-index: 0; pointer-events: none;
 }
 
 /* HEADER */
 header {
   position: fixed; top: 0; left: 0; width: 100%; z-index: 1000;
-  background: rgba(15,15,15,0.95);
-  backdrop-filter: blur(10px);
+  background: rgba(15,15,15,0.85);
+  backdrop-filter: blur(12px);
   border-bottom: 1px solid rgba(197,160,89,0.2);
 }
 .header-inner {
@@ -88,40 +80,65 @@ nav.desktop-nav a:hover::after { width: 100%; }
   transition: transform 0.3s, box-shadow 0.3s;
   animation: pulse-wa 2s infinite;
 }
-.whatsapp-float:hover {
-  transform: scale(1.1);
-  box-shadow: 0 6px 30px rgba(37,211,102,0.6);
-}
+.whatsapp-float:hover { transform: scale(1.1); box-shadow: 0 6px 30px rgba(37,211,102,0.6); }
 @keyframes pulse-wa {
   0% { box-shadow: 0 0 0 0 rgba(37,211,102,0.5); }
   70% { box-shadow: 0 0 0 15px rgba(37,211,102,0); }
   100% { box-shadow: 0 0 0 0 rgba(37,211,102,0); }
 }
 
-/* HERO HOME */
+/* SECCIONES GENERALES */
+.section-wrap {
+  position: relative; z-index: 1;
+  padding: 5rem 2rem;
+}
+.section-wrap-alt {
+  position: relative; z-index: 1;
+  padding: 5rem 2rem;
+  background: rgba(26,26,26,0.7);
+  backdrop-filter: blur(4px);
+  border-top: 1px solid rgba(197,160,89,0.08);
+  border-bottom: 1px solid rgba(197,160,89,0.08);
+}
+.section-header {
+  text-align: center; margin-bottom: 3rem;
+}
+.section-header h2 {
+  font-family: 'Playfair Display', serif; font-size: 2.2rem; color: var(--white);
+  margin-bottom: 0.5rem;
+}
+.section-header p {
+  color: rgba(245,245,245,0.6); font-size: 0.95rem; max-width: 600px; margin: 0 auto;
+}
+.divider {
+  width: 60px; height: 3px; background: var(--gold); margin: 1rem auto;
+}
+
+/* HERO HOME - CENTRADO VERTICAL */
 .hero-home {
   min-height: 100vh;
   display: flex; align-items: center; justify-content: center;
-  position: relative; padding: 6rem 2rem 4rem;
-  overflow: hidden;
+  position: relative; padding: 5rem 2rem;
+  text-align: center;
 }
 .hero-content {
-  max-width: 900px; text-align: center; position: relative; z-index: 2;
+  max-width: 800px; position: relative; z-index: 2;
 }
 .hero-content img {
-  height: 120px; width: auto;
-  filter: drop-shadow(0 0 20px rgba(197,160,89,0.4));
-  margin-bottom: 1.5rem;
+  height: 140px; width: auto;
+  filter: drop-shadow(0 0 25px rgba(197,160,89,0.5));
+  margin-bottom: 2rem;
 }
 .hero-badge {
-  display: inline-block; padding: 0.4rem 1.2rem;
+  display: inline-block; padding: 0.5rem 1.5rem;
   border: 1px solid var(--gold); color: var(--gold);
   font-size: 0.7rem; letter-spacing: 4px; text-transform: uppercase;
   margin-bottom: 1.5rem;
+  background: rgba(15,15,15,0.5);
 }
 .hero-home h1 {
   font-family: 'Playfair Display', serif;
-  font-size: clamp(2.2rem, 5vw, 4rem);
+  font-size: clamp(2.5rem, 5vw, 4.5rem);
   color: var(--white); line-height: 1.1; margin-bottom: 1rem;
 }
 .hero-home h1 em {
@@ -130,11 +147,11 @@ nav.desktop-nav a:hover::after { width: 100%; }
   -webkit-background-clip: text; -webkit-text-fill-color: transparent;
 }
 .hero-home p {
-  font-size: 1rem; color: rgba(245,245,245,0.7);
-  line-height: 1.7; max-width: 600px; margin: 0 auto 2rem;
+  font-size: 1.05rem; color: rgba(245,245,245,0.75);
+  line-height: 1.7; max-width: 550px; margin: 0 auto 2rem;
 }
 .btn-primary {
-  display: inline-block; padding: 0.9rem 2.2rem;
+  display: inline-block; padding: 0.9rem 2.5rem;
   background: var(--gold); color: var(--black);
   font-size: 0.8rem; font-weight: 700; letter-spacing: 2px;
   text-transform: uppercase; text-decoration: none;
@@ -144,72 +161,39 @@ nav.desktop-nav a:hover::after { width: 100%; }
   background: transparent; color: var(--gold);
 }
 
-/* HERO CATEGORÍA */
-.hero-cat {
-  padding: 7rem 2rem 3rem;
-  background: var(--dark);
-  text-align: center;
-  border-bottom: 1px solid rgba(197,160,89,0.1);
-  position: relative; z-index: 1;
-}
-.hero-cat h1 {
-  font-family: 'Playfair Display', serif;
-  font-size: clamp(1.8rem, 4vw, 3rem);
-  color: var(--white); margin-bottom: 0.5rem;
-}
-.hero-cat p {
-  color: rgba(245,245,245,0.6); font-size: 0.95rem; max-width: 700px; margin: 0 auto;
-}
-
-/* SECTIONS */
-.section {
-  padding: 4rem 2rem;
-  max-width: 1200px; margin: 0 auto;
-  position: relative; z-index: 1;
-}
-.section-header {
-  text-align: center; margin-bottom: 3rem;
-}
-.section-header h2 {
-  font-family: 'Playfair Display', serif; font-size: 2rem; color: var(--white);
-  margin-bottom: 0.5rem;
-}
-.section-header p {
-  color: rgba(245,245,245,0.6); font-size: 0.9rem; max-width: 600px; margin: 0 auto;
-}
-.divider {
-  width: 50px; height: 3px; background: var(--gold); margin: 1rem auto;
-}
-
-/* INFO CARDS */
+/* INFO CARDS - TRANSPARENTES CON BLUR */
 .info-grid {
   display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem;
-  max-width: 1200px; margin: 0 auto; padding: 0 2rem 4rem;
-  position: relative; z-index: 1;
+  max-width: 1200px; margin: 0 auto;
 }
 .info-card {
-  background: var(--gray); padding: 2rem;
-  border: 1px solid rgba(197,160,89,0.1);
+  background: rgba(42,42,42,0.75);
+  backdrop-filter: blur(10px);
+  padding: 2.5rem 2rem;
+  border: 1px solid rgba(197,160,89,0.15);
   transition: all 0.3s ease; text-align: center;
+  border-radius: 8px;
 }
 .info-card:hover {
-  border-color: var(--gold); transform: translateY(-5px);
+  border-color: var(--gold); transform: translateY(-6px);
+  box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+  background: rgba(42,42,42,0.9);
 }
 .info-card .icon {
-  width: 50px; height: 50px; margin: 0 auto 1rem;
+  width: 55px; height: 55px; margin: 0 auto 1.2rem;
   border: 1px solid var(--gold); border-radius: 50%;
   display: flex; align-items: center; justify-content: center;
-  color: var(--gold); font-size: 1.3rem;
+  color: var(--gold); font-size: 1.4rem;
 }
 .info-card h3 {
   font-size: 0.85rem; letter-spacing: 2px; text-transform: uppercase;
-  color: var(--white); margin-bottom: 0.5rem;
+  color: var(--white); margin-bottom: 0.6rem;
 }
 .info-card p {
-  font-size: 0.8rem; color: rgba(245,245,245,0.6); line-height: 1.6;
+  font-size: 0.82rem; color: rgba(245,245,245,0.65); line-height: 1.6;
 }
 
-/* CATEGORY GRID HOME */
+/* CATEGORY GRID HOME - TARJETAS TRANSPARENTES */
 .cat-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -218,109 +202,130 @@ nav.desktop-nav a:hover::after { width: 100%; }
 }
 .cat-card {
   position: relative; overflow: hidden;
-  background: var(--gray); border: 1px solid rgba(197,160,89,0.1);
+  border-radius: 8px;
   transition: all 0.4s ease; cursor: pointer;
   text-decoration: none; color: inherit;
   display: block;
   height: 280px;
+  border: 1px solid rgba(197,160,89,0.15);
 }
 .cat-card:hover {
   border-color: var(--gold);
-  transform: translateY(-5px);
-  box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+  transform: translateY(-6px);
+  box-shadow: 0 20px 50px rgba(0,0,0,0.5);
 }
 .cat-card img {
   width: 100%; height: 100%; object-fit: cover;
   transition: transform 0.6s ease;
 }
 .cat-card:hover img {
-  transform: scale(1.08);
+  transform: scale(1.1);
 }
 .cat-card-overlay {
   position: absolute; inset: 0;
-  background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, transparent 60%);
+  background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.3) 50%, transparent 100%);
   display: flex; flex-direction: column; justify-content: flex-end;
   padding: 1.5rem;
 }
 .cat-card-overlay h3 {
   font-family: 'Playfair Display', serif;
-  font-size: 1.3rem; color: var(--white); margin-bottom: 0.3rem;
+  font-size: 1.4rem; color: var(--white); margin-bottom: 0.3rem;
 }
 .cat-card-overlay span {
   font-size: 0.75rem; color: var(--gold); text-transform: uppercase;
-  letter-spacing: 2px;
+  letter-spacing: 2px; font-weight: 600;
+}
+
+/* HERO CATEGORÍA */
+.hero-cat {
+  padding: 8rem 2rem 3rem;
+  text-align: center;
+  position: relative; z-index: 1;
+}
+.hero-cat h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2rem, 4vw, 3.2rem);
+  color: var(--white); margin-bottom: 0.6rem;
+}
+.hero-cat p {
+  color: rgba(245,245,245,0.6); font-size: 1rem; max-width: 700px; margin: 0 auto;
 }
 
 /* FICHA TÉCNICA */
 .ficha-section {
-  background: var(--black);
   padding: 3rem 2rem;
+  position: relative; z-index: 1;
+  background: rgba(15,15,15,0.6);
+  backdrop-filter: blur(6px);
   border-top: 1px solid rgba(197,160,89,0.1);
   border-bottom: 1px solid rgba(197,160,89,0.1);
-  position: relative; z-index: 1;
 }
 .ficha-table {
   width: 100%; max-width: 800px; margin: 0 auto;
-  border-collapse: collapse; font-size: 0.85rem;
+  border-collapse: collapse; font-size: 0.9rem;
+  background: rgba(42,42,42,0.6);
+  backdrop-filter: blur(8px);
 }
 .ficha-table th {
   background: var(--gold); color: var(--black);
-  padding: 0.8rem 1rem; text-align: left;
+  padding: 1rem; text-align: left;
   text-transform: uppercase; letter-spacing: 1px; font-weight: 700;
 }
 .ficha-table td {
-  padding: 0.7rem 1rem; color: rgba(245,245,245,0.8);
-  border-bottom: 1px solid rgba(197,160,89,0.1);
+  padding: 0.9rem 1rem; color: rgba(245,245,245,0.85);
+  border-bottom: 1px solid rgba(197,160,89,0.08);
 }
 .ficha-table tr:nth-child(even) td {
-  background: rgba(255,255,255,0.02);
+  background: rgba(255,255,255,0.03);
 }
 .ficha-table td:first-child {
   font-weight: 600; color: var(--white); width: 35%;
 }
 .ficha-desc {
   max-width: 800px; margin: 0 auto 2rem;
-  color: rgba(245,245,245,0.7); font-size: 0.95rem;
+  color: rgba(245,245,245,0.75); font-size: 1rem;
   line-height: 1.7; text-align: center;
 }
 
 /* CALCULADORA */
 .calc-box {
   max-width: 500px; margin: 2rem auto 0;
-  background: var(--gray); border: 1px solid rgba(197,160,89,0.15);
-  padding: 1.5rem; border-radius: 8px;
+  background: rgba(42,42,42,0.8);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(197,160,89,0.2);
+  padding: 2rem; border-radius: 10px;
 }
 .calc-box h3 {
   font-family: 'Playfair Display', serif; color: var(--gold);
-  font-size: 1.1rem; margin-bottom: 1rem; text-align: center;
+  font-size: 1.2rem; margin-bottom: 1.2rem; text-align: center;
 }
 .calc-row {
   display: flex; gap: 1rem; margin-bottom: 1rem;
   align-items: center;
 }
 .calc-row label {
-  font-size: 0.8rem; color: rgba(245,245,245,0.7); white-space: nowrap;
+  font-size: 0.85rem; color: rgba(245,245,245,0.8); white-space: nowrap;
 }
 .calc-row input {
-  flex: 1; padding: 0.5rem; background: var(--black);
+  flex: 1; padding: 0.6rem; background: rgba(15,15,15,0.6);
   border: 1px solid rgba(197,160,89,0.3); color: var(--white);
-  font-family: 'Montserrat', sans-serif; font-size: 0.9rem;
+  font-family: 'Montserrat', sans-serif; font-size: 0.95rem;
+  border-radius: 4px;
 }
 .calc-row input:focus {
   outline: none; border-color: var(--gold);
 }
 .calc-result {
   text-align: center; padding-top: 0.5rem;
-  font-size: 0.85rem; color: var(--light);
+  font-size: 0.9rem; color: var(--light);
 }
 .calc-result strong {
-  color: var(--gold); font-size: 1rem;
+  color: var(--gold); font-size: 1.1rem;
 }
 
 /* PRODUCTOS GRID */
 .products-section {
   padding: 4rem 2rem;
-  background: var(--dark);
   position: relative; z-index: 1;
 }
 .products-grid {
@@ -330,14 +335,17 @@ nav.desktop-nav a:hover::after { width: 100%; }
   max-width: 1400px; margin: 0 auto;
 }
 .product-card {
-  background: var(--gray);
-  border: 1px solid rgba(197,160,89,0.08);
+  background: rgba(42,42,42,0.75);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(197,160,89,0.1);
   overflow: hidden; transition: all 0.4s ease;
+  border-radius: 8px;
 }
 .product-card:hover {
   border-color: rgba(197,160,89,0.4);
   box-shadow: 0 15px 50px rgba(0,0,0,0.4);
   transform: translateY(-6px);
+  background: rgba(42,42,42,0.9);
 }
 .product-gallery {
   position: relative; height: 320px;
@@ -354,15 +362,17 @@ nav.desktop-nav a:hover::after { width: 100%; }
   padding: 1.2rem;
   text-align: center;
   font-family: 'Playfair Display', serif;
-  font-size: 1.15rem; color: var(--gold);
+  font-size: 1.2rem; color: var(--gold);
   border-top: 1px solid rgba(197,160,89,0.1);
 }
 
 /* FOOTER */
 footer {
-  background: var(--black); border-top: 1px solid rgba(197,160,89,0.1);
   padding: 3rem 2rem 2rem; text-align: center;
   position: relative; z-index: 1;
+  background: rgba(15,15,15,0.8);
+  backdrop-filter: blur(6px);
+  border-top: 1px solid rgba(197,160,89,0.1);
 }
 .footer-logo img { height: 70px; width: auto; margin-bottom: 1rem; }
 .footer-info {
@@ -377,8 +387,8 @@ footer {
 
 /* CONTACTO */
 .contact-section {
-  padding: 7rem 2rem 4rem;
-  max-width: 800px; margin: 0 auto;
+  padding: 8rem 2rem 4rem;
+  max-width: 900px; margin: 0 auto;
   position: relative; z-index: 1;
 }
 .contact-grid {
@@ -386,61 +396,59 @@ footer {
   margin-top: 2rem;
 }
 .contact-card {
-  background: var(--gray); padding: 1.5rem;
-  border: 1px solid rgba(197,160,89,0.1); text-align: center;
-  transition: all 0.3s;
+  background: rgba(42,42,42,0.75);
+  backdrop-filter: blur(8px);
+  padding: 2rem 1.5rem;
+  border: 1px solid rgba(197,160,89,0.12);
+  text-align: center; transition: all 0.3s;
+  border-radius: 8px;
 }
 .contact-card:hover {
-  border-color: var(--gold); transform: translateY(-4px);
+  border-color: var(--gold); transform: translateY(-5px);
+  background: rgba(42,42,42,0.9);
 }
 .contact-card .icon {
-  font-size: 1.8rem; margin-bottom: 0.5rem;
+  font-size: 2rem; margin-bottom: 0.8rem;
 }
 .contact-card h3 {
   font-size: 0.8rem; color: var(--white); text-transform: uppercase;
-  letter-spacing: 2px; margin-bottom: 0.3rem;
+  letter-spacing: 2px; margin-bottom: 0.5rem;
 }
 .contact-card p, .contact-card a {
-  font-size: 0.8rem; color: rgba(245,245,245,0.7);
+  font-size: 0.85rem; color: rgba(245,245,245,0.8);
   text-decoration: none;
 }
 .contact-card a:hover { color: var(--gold); }
 
-/* BTN BACK / PDF */
+/* BOTONES */
+.btn-back, .btn-outline {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  padding: 0.8rem 1.8rem;
+  font-size: 0.75rem; font-weight: 700; letter-spacing: 2px;
+  text-transform: uppercase; text-decoration: none;
+  transition: all 0.3s; margin: 0 0.5rem 1rem 0;
+  border-radius: 4px;
+}
 .btn-back {
-  display: inline-flex; align-items: center; gap: 0.5rem;
-  padding: 0.7rem 1.5rem; background: var(--gold); color: var(--black);
-  font-size: 0.75rem; font-weight: 700; letter-spacing: 2px;
-  text-transform: uppercase; text-decoration: none;
-  border: 2px solid var(--gold); transition: all 0.3s;
-  margin: 0 0.5rem 1rem 0;
+  background: var(--gold); color: var(--black); border: 2px solid var(--gold);
 }
-.btn-back:hover {
-  background: transparent; color: var(--gold);
-}
+.btn-back:hover { background: transparent; color: var(--gold); }
 .btn-outline {
-  display: inline-flex; align-items: center; gap: 0.5rem;
-  padding: 0.7rem 1.5rem; background: transparent; color: var(--gold);
-  font-size: 0.75rem; font-weight: 700; letter-spacing: 2px;
-  text-transform: uppercase; text-decoration: none;
-  border: 2px solid var(--gold); transition: all 0.3s;
-  margin: 0 0.5rem 1rem 0;
+  background: transparent; color: var(--gold); border: 2px solid var(--gold);
 }
-.btn-outline:hover {
-  background: var(--gold); color: var(--black);
-}
+.btn-outline:hover { background: var(--gold); color: var(--black); }
 
 /* MOBILE */
 @media (max-width: 768px) {
   .desktop-nav { display: none; }
   .menu-btn { display: block; }
-  .hero-home h1 { font-size: 2rem; }
+  .hero-home h1 { font-size: 2.2rem; }
+  .hero-content img { height: 100px; }
   .products-grid { grid-template-columns: 1fr; }
   .cat-grid { grid-template-columns: 1fr; }
   .info-grid { grid-template-columns: 1fr; }
   .header-inner { padding: 0.8rem 1rem; }
-  .ficha-table { font-size: 0.75rem; }
-  .ficha-table th, .ficha-table td { padding: 0.5rem; }
-  .whatsapp-float { width: 50px; height: 50px; font-size: 1.5rem; }
+  .ficha-table { font-size: 0.8rem; }
   .calc-row { flex-direction: column; align-items: stretch; }
+  .whatsapp-float { width: 50px; height: 50px; font-size: 1.5rem; }
 }
