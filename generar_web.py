@@ -1,5 +1,6 @@
 import os
 import sys
+import shutil
 from pathlib import Path
 
 # Forzar UTF-8 en stdout para evitar errores de codificación
@@ -47,9 +48,48 @@ def slugify(name):
     return name.lower().replace(' ', '-').replace('_', '-').replace('.', '').replace('(', '').replace(')', '')[:40]
 
 
-def get_relative_path(from_dir, to_path):
-    """Obtiene ruta relativa desde from_dir hasta to_path."""
-    return os.path.relpath(to_path, from_dir).replace('\\', '/')
+def sync_images(categories):
+    """Copia imagenes de CATALOGO FINAL a Pagina/img/ para GitHub Pages."""
+    img_dir = BASE_DIR / 'img'
+    if img_dir.exists():
+        shutil.rmtree(img_dir)
+    img_dir.mkdir(parents=True)
+    
+    total = 0
+    for cat in categories:
+        cat_img_dir = img_dir / cat['slug']
+        cat_img_dir.mkdir(exist_ok=True)
+        
+        # Copiar productos directos
+        for prod in cat['direct_products']:
+            src = cat['path'] / prod
+            dst = cat_img_dir / prod
+            shutil.copy2(src, dst)
+            total += 1
+        
+        # Copiar productos de subcategorias
+        for sub in cat['subcategories']:
+            sub_img_dir = cat_img_dir / sub['slug']
+            sub_img_dir.mkdir(exist_ok=True)
+            for prod in sub['products']:
+                src = sub['path'] / prod
+                dst = sub_img_dir / prod
+                shutil.copy2(src, dst)
+                total += 1
+            
+            # Copiar ficha tecnica de subcategoria si existe
+            if sub['ficha']:
+                src = sub['path'] / sub['ficha']
+                dst = sub_img_dir / sub['ficha']
+                shutil.copy2(src, dst)
+        
+        # Copiar ficha tecnica de categoria si existe
+        if cat['ficha']:
+            src = cat['path'] / cat['ficha']
+            dst = cat_img_dir / cat['ficha']
+            shutil.copy2(src, dst)
+    
+    print(f"Imagenes sincronizadas: {total} en {img_dir}")
 
 
 def get_products(folder_path):
@@ -709,8 +749,10 @@ def generate_index(categories):
             total_prods += len(sub['products'])
 
         thumb_src = ''
-        if cat['thumb']:
-            thumb_src = get_relative_path(BASE_DIR, cat['thumb'])
+        if cat['subcategories'] and cat['subcategories'][0]['products']:
+            thumb_src = f"img/{cat['slug']}/{cat['subcategories'][0]['slug']}/{cat['subcategories'][0]['products'][0]}"
+        elif cat['direct_products']:
+            thumb_src = f"img/{cat['slug']}/{cat['direct_products'][0]}"
 
         cat_cards += f'''      <a href="{cat['filename']}" class="cat-card">
         <img src="{thumb_src}" alt="{cat['name']}" loading="lazy">
@@ -880,9 +922,8 @@ def generate_category_page(cat, categories):
         # Ficha técnica de subcategoría
         ficha_html = ''
         if sub['ficha']:
-            ficha_path = get_relative_path(BASE_DIR, sub['path'] / sub['ficha'])
             ficha_html = f'''    <div class="ficha-section">
-      <a href="{ficha_path}" target="_blank" class="ficha-btn">📋 Ver Ficha Técnica — {sub['name']}</a>
+      <a href="img/{cat['slug']}/{sub['slug']}/{sub['ficha']}" target="_blank" class="ficha-btn">📋 Ver Ficha Técnica — {sub['name']}</a>
     </div>
 '''
 
@@ -890,11 +931,10 @@ def generate_category_page(cat, categories):
         products_html = ''
         for prod_file in sub['products']:
             prod_name = os.path.splitext(prod_file)[0]
-            img_path = get_relative_path(BASE_DIR, sub['path'] / prod_file)
             mailto = mailto_link(prod_name, cat['name'], sub['name'])
             products_html += f'''      <div class="product-card">
         <div class="product-gallery">
-          <img src="{img_path}" alt="{prod_name}" loading="lazy">
+          <img src="img/{cat['slug']}/{sub['slug']}/{prod_file}" alt="{prod_name}" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">{prod_name}</div>
@@ -920,11 +960,10 @@ def generate_category_page(cat, categories):
         direct_products_html = ''
         for prod_file in cat['direct_products']:
             prod_name = os.path.splitext(prod_file)[0]
-            img_path = get_relative_path(BASE_DIR, cat['path'] / prod_file)
             mailto = mailto_link(prod_name, cat['name'])
             direct_products_html += f'''      <div class="product-card">
         <div class="product-gallery">
-          <img src="{img_path}" alt="{prod_name}" loading="lazy">
+          <img src="img/{cat['slug']}/{prod_file}" alt="{prod_name}" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">{prod_name}</div>
@@ -947,9 +986,8 @@ def generate_category_page(cat, categories):
     # Ficha técnica a nivel categoría
     cat_ficha = ''
     if cat['ficha']:
-        ficha_path = get_relative_path(BASE_DIR, cat['path'] / cat['ficha'])
         cat_ficha = f'''  <section class="ficha-section">
-    <a href="{ficha_path}" target="_blank" class="ficha-btn">📋 Ver Ficha Técnica General — {cat['name']}</a>
+    <a href="img/{cat['slug']}/{cat['ficha']}" target="_blank" class="ficha-btn">📋 Ver Ficha Técnica General — {cat['name']}</a>
   </section>
 '''
 
@@ -998,6 +1036,9 @@ def main():
     categories = scan_catalog()
     print(f"Encontradas {len(categories)} categorías")
 
+    print("\nSincronizando imagenes...")
+    sync_images(categories)
+
     print("\nGenerando archivos...")
     generate_style()
     generate_index(categories)
@@ -1006,8 +1047,8 @@ def main():
     for cat in categories:
         generate_category_page(cat, categories)
 
-    print("\n🎉 ¡Sitio web generado exitosamente en:", BASE_DIR)
-    print(f"   - {len(categories)} categorías")
+    print("\nSitio web generado exitosamente en:", BASE_DIR)
+    print(f"   - {len(categories)} categorias")
     total_products = sum(len(c['direct_products']) + sum(len(s['products']) for s in c['subcategories']) for c in categories)
     print(f"   - {total_products} productos totales")
 
