@@ -805,7 +805,137 @@
 
   <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20vi%20el%20catálogo%20y%20me%20interesa%20obtener%20información%20sobre%20sus%20productos." class="whatsapp-float" target="_blank" title="Contáctanos por WhatsApp">💬</a>
 
-  <script>function toggleMenu(){document.getElementById('mobileMenu').classList.toggle('active');}</script>
+  <button class="chatbot-float" onclick="toggleChat()" title="Asistente Virtual">🤖</button>
+  <div class="chatbot-window" id="chatbotWindow">
+    <div class="chatbot-header">
+      <h4>🤖 Asistente ADIS</h4>
+      <button class="chatbot-close" onclick="toggleChat()">✕</button>
+    </div>
+    <div class="chatbot-body" id="chatbotBody"></div>
+  </div>
+
+
+  <script>
+    // Toggle mobile menu
+    function toggleMenu() { document.getElementById('mobileMenu').classList.toggle('active'); }
+    
+    // Chatbot
+    (function() {
+      const chatWindow = document.getElementById('chatbotWindow');
+      const chatBody = document.getElementById('chatbotBody');
+      
+      window.toggleChat = function() {
+        chatWindow.classList.toggle('active');
+        if (chatWindow.classList.contains('active') && chatBody.children.length === 0) {
+          showWelcome();
+        }
+      };
+      
+      function addMessage(text, isUser) {
+        const msg = document.createElement('div');
+        msg.className = 'chat-message ' + (isUser ? 'user' : 'bot');
+        msg.innerHTML = text;
+        chatBody.appendChild(msg);
+        chatBody.scrollTop = chatBody.scrollHeight;
+      }
+      
+      function showOptions() {
+        const existing = chatBody.querySelector('.chat-options');
+        if (existing) existing.remove();
+        
+        const opts = document.createElement('div');
+        opts.className = 'chat-options';
+        opts.innerHTML = `
+          <button class="chat-option-btn" onclick="chatOption('ubicacion')">📍 Ubicación</button>
+          <button class="chat-option-btn" onclick="chatOption('fichas')">📋 Fichas técnicas</button>
+          <button class="chat-option-btn" onclick="chatOption('venta')">📦 ¿Cómo se venden?</button>
+          <button class="chat-option-btn" onclick="chatOption('precios')">💰 Precios</button>
+          <button class="chat-option-btn" onclick="chatOption('whatsapp')">💬 Hablar con asesor</button>
+        `;
+        chatBody.appendChild(opts);
+        chatBody.scrollTop = chatBody.scrollHeight;
+      }
+      
+      window.chatOption = function(key) {
+        const existing = chatBody.querySelector('.chat-options');
+        if (existing) existing.remove();
+        
+        const responses = {
+          ubicacion: `📍 <strong>Nogales, Sonora</strong> y atendemos también en <strong>Rio Rico, AZ</strong>.<br><br>Puedes ver nuestra ubicación exacta en la página de <a href="contacto.html" style="color:#C5A059">Contacto</a> o en <a href="https://maps.app.goo.gl/Q3raWUzhCj2rvhjm8" target="_blank" style="color:#C5A059">Google Maps →</a>`,
+          fichas: `📋 Cada producto tiene su ficha técnica disponible.<br><br>Ve al <a href="index.html#categorias" style="color:#C5A059">Catálogo</a>, selecciona la categoría y subcategoría que te interesa, y haz clic en <strong>"Ver Ficha Técnica"</strong>.`,
+          venta: `📦 Vendemos por pieza, caja o metro cuadrado según el producto.<br><br>Usa la <strong>calculadora de materiales</strong> en cada categoría para saber cuánto necesitas, o solicita una <strong>cotización</strong> directamente desde cualquier producto.`,
+          precios: `💰 Los precios varían según el producto y la cantidad.<br><br>¿Te gustaría que un asesor te prepare una cotización personalizada?<br><a href="https://wa.me/526311928993?text=Hola%20ADIS,%20quiero%20una%20cotización" target="_blank" class="chat-whatsapp-btn">📱 Solicitar cotización</a>`,
+          whatsapp: `💬 Te conecto con un asesor por WhatsApp...`
+        };
+        
+        const labels = {
+          ubicacion: '📍 Ubicación',
+          fichas: '📋 Fichas técnicas',
+          venta: '📦 ¿Cómo se venden?',
+          precios: '💰 Precios',
+          whatsapp: '💬 Hablar con asesor'
+        };
+        
+        addMessage(labels[key], true);
+        
+        if (key === 'whatsapp') {
+          setTimeout(() => {
+            window.open('https://wa.me/526311928993?text=Hola%20ADIS,%20tengo%20una%20pregunta', '_blank');
+            addMessage('✅ Se abrió WhatsApp. Un asesor te atenderá pronto.', false);
+            setTimeout(showOptions, 1000);
+          }, 500);
+        } else {
+          setTimeout(() => {
+            addMessage(responses[key], false);
+            setTimeout(showOptions, 500);
+          }, 400);
+        }
+      };
+      
+      function showWelcome() {
+        addMessage('¡Hola! 👋 Soy el <strong>asistente virtual de ADIS</strong>.<br>¿En qué puedo ayudarte hoy?', false);
+        setTimeout(showOptions, 300);
+      }
+    })();
+    
+    // Scroll reveal animations
+    (function() {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('active');
+          }
+        });
+      }, { threshold: 0.1 });
+      
+      document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    })();
+    
+    // Animate stats on scroll
+    (function() {
+      const statsObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting && !entry.target.classList.contains('counted')) {
+            entry.target.classList.add('counted');
+            const target = parseInt(entry.target.dataset.target);
+            const duration = 2000;
+            const start = performance.now();
+            
+            function update(currentTime) {
+              const elapsed = currentTime - start;
+              const progress = Math.min(elapsed / duration, 1);
+              const ease = 1 - Math.pow(1 - progress, 3);
+              entry.target.textContent = Math.floor(ease * target);
+              if (progress < 1) requestAnimationFrame(update);
+            }
+            requestAnimationFrame(update);
+          }
+        });
+      }, { threshold: 0.5 });
+      
+      document.querySelectorAll('.stat-number').forEach(el => statsObserver.observe(el));
+    })();
+  </script>
   <script>(function() {
   const canvas = document.getElementById('bg-canvas');
   if (!canvas) return;

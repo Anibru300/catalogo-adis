@@ -612,6 +612,184 @@ footer {
 }
 .btn-outline:hover { background: var(--gold); color: var(--black); }
 
+/* STATS SECTION */
+.stats-section {
+  padding: 4rem 2rem;
+  position: relative; z-index: 1;
+}
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 2rem;
+  max-width: 1000px; margin: 0 auto;
+}
+.stat-item {
+  text-align: center;
+  padding: 2rem;
+  background: rgba(42,42,42,0.6);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(197,160,89,0.15);
+  border-radius: 12px;
+  transition: all 0.3s;
+}
+.stat-item:hover {
+  border-color: var(--gold);
+  transform: translateY(-5px);
+}
+.stat-number {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.5rem;
+  color: var(--gold);
+  font-weight: 700;
+}
+.stat-label {
+  font-size: 0.85rem;
+  color: rgba(245,245,245,0.6);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-top: 0.5rem;
+}
+
+/* SCROLL ANIMATIONS */
+.reveal {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: all 0.8s ease-out;
+}
+.reveal.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* CHATBOT */
+.chatbot-float {
+  position: fixed;
+  bottom: 25px;
+  left: 25px;
+  z-index: 9998;
+  width: 60px;
+  height: 60px;
+  background: var(--gold);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 20px rgba(197,160,89,0.4);
+  cursor: pointer;
+  font-size: 1.8rem;
+  color: var(--black);
+  transition: transform 0.3s, box-shadow 0.3s;
+  border: none;
+}
+.chatbot-float:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 30px rgba(197,160,89,0.6);
+}
+.chatbot-window {
+  position: fixed;
+  bottom: 95px;
+  left: 25px;
+  z-index: 9998;
+  width: 350px;
+  max-width: calc(100vw - 50px);
+  background: var(--dark);
+  border: 1px solid rgba(197,160,89,0.3);
+  border-radius: 16px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+  display: none;
+  flex-direction: column;
+  overflow: hidden;
+  animation: chatPop 0.3s ease-out;
+}
+@keyframes chatPop {
+  from { opacity: 0; transform: translateY(20px) scale(0.95); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+.chatbot-window.active { display: flex; }
+.chatbot-header {
+  background: var(--gold);
+  color: var(--black);
+  padding: 1rem 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.chatbot-header h4 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1rem;
+  margin: 0;
+}
+.chatbot-close {
+  background: none;
+  border: none;
+  color: var(--black);
+  font-size: 1.2rem;
+  cursor: pointer;
+  font-weight: bold;
+}
+.chatbot-body {
+  padding: 1.2rem;
+  max-height: 400px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+.chat-message {
+  max-width: 85%;
+  padding: 0.8rem 1rem;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  line-height: 1.5;
+}
+.chat-message.bot {
+  background: rgba(197,160,89,0.15);
+  color: var(--light);
+  align-self: flex-start;
+  border-bottom-left-radius: 4px;
+}
+.chat-message.user {
+  background: var(--gold);
+  color: var(--black);
+  align-self: flex-end;
+  border-bottom-right-radius: 4px;
+  font-weight: 600;
+}
+.chat-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+.chat-option-btn {
+  padding: 0.5rem 1rem;
+  background: transparent;
+  border: 1px solid var(--gold);
+  color: var(--gold);
+  border-radius: 20px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.3s;
+  font-family: 'Montserrat', sans-serif;
+}
+.chat-option-btn:hover {
+  background: var(--gold);
+  color: var(--black);
+}
+.chat-whatsapp-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1rem;
+  background: #25D366;
+  color: white;
+  text-decoration: none;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-top: 0.5rem;
+}
+
 /* MOBILE */
 @media (max-width: 768px) {
   .desktop-nav { display: none; }
@@ -623,6 +801,9 @@ footer {
   .info-grid { grid-template-columns: 1fr; }
   .header-inner { padding: 0.8rem 1rem; }
   .whatsapp-float { width: 50px; height: 50px; font-size: 1.5rem; }
+  .chatbot-float { width: 50px; height: 50px; font-size: 1.5rem; }
+  .chatbot-window { width: calc(100vw - 40px); left: 20px; }
+  .stat-number { font-size: 2rem; }
 }
 '''
 
@@ -719,6 +900,130 @@ def generate_header(current_page='index'):
 
 
 def generate_footer():
+    chatbot_js = '''
+  <script>
+    // Toggle mobile menu
+    function toggleMenu() { document.getElementById('mobileMenu').classList.toggle('active'); }
+    
+    // Chatbot
+    (function() {
+      const chatWindow = document.getElementById('chatbotWindow');
+      const chatBody = document.getElementById('chatbotBody');
+      
+      window.toggleChat = function() {
+        chatWindow.classList.toggle('active');
+        if (chatWindow.classList.contains('active') && chatBody.children.length === 0) {
+          showWelcome();
+        }
+      };
+      
+      function addMessage(text, isUser) {
+        const msg = document.createElement('div');
+        msg.className = 'chat-message ' + (isUser ? 'user' : 'bot');
+        msg.innerHTML = text;
+        chatBody.appendChild(msg);
+        chatBody.scrollTop = chatBody.scrollHeight;
+      }
+      
+      function showOptions() {
+        const existing = chatBody.querySelector('.chat-options');
+        if (existing) existing.remove();
+        
+        const opts = document.createElement('div');
+        opts.className = 'chat-options';
+        opts.innerHTML = `
+          <button class="chat-option-btn" onclick="chatOption('ubicacion')">📍 Ubicación</button>
+          <button class="chat-option-btn" onclick="chatOption('fichas')">📋 Fichas técnicas</button>
+          <button class="chat-option-btn" onclick="chatOption('venta')">📦 ¿Cómo se venden?</button>
+          <button class="chat-option-btn" onclick="chatOption('precios')">💰 Precios</button>
+          <button class="chat-option-btn" onclick="chatOption('whatsapp')">💬 Hablar con asesor</button>
+        `;
+        chatBody.appendChild(opts);
+        chatBody.scrollTop = chatBody.scrollHeight;
+      }
+      
+      window.chatOption = function(key) {
+        const existing = chatBody.querySelector('.chat-options');
+        if (existing) existing.remove();
+        
+        const responses = {
+          ubicacion: `📍 <strong>Nogales, Sonora</strong> y atendemos también en <strong>Rio Rico, AZ</strong>.<br><br>Puedes ver nuestra ubicación exacta en la página de <a href="contacto.html" style="color:#C5A059">Contacto</a> o en <a href="https://maps.app.goo.gl/Q3raWUzhCj2rvhjm8" target="_blank" style="color:#C5A059">Google Maps →</a>`,
+          fichas: `📋 Cada producto tiene su ficha técnica disponible.<br><br>Ve al <a href="index.html#categorias" style="color:#C5A059">Catálogo</a>, selecciona la categoría y subcategoría que te interesa, y haz clic en <strong>"Ver Ficha Técnica"</strong>.`,
+          venta: `📦 Vendemos por pieza, caja o metro cuadrado según el producto.<br><br>Usa la <strong>calculadora de materiales</strong> en cada categoría para saber cuánto necesitas, o solicita una <strong>cotización</strong> directamente desde cualquier producto.`,
+          precios: `💰 Los precios varían según el producto y la cantidad.<br><br>¿Te gustaría que un asesor te prepare una cotización personalizada?<br><a href="https://wa.me/526311928993?text=Hola%20ADIS,%20quiero%20una%20cotización" target="_blank" class="chat-whatsapp-btn">📱 Solicitar cotización</a>`,
+          whatsapp: `💬 Te conecto con un asesor por WhatsApp...`
+        };
+        
+        const labels = {
+          ubicacion: '📍 Ubicación',
+          fichas: '📋 Fichas técnicas',
+          venta: '📦 ¿Cómo se venden?',
+          precios: '💰 Precios',
+          whatsapp: '💬 Hablar con asesor'
+        };
+        
+        addMessage(labels[key], true);
+        
+        if (key === 'whatsapp') {
+          setTimeout(() => {
+            window.open('https://wa.me/526311928993?text=Hola%20ADIS,%20tengo%20una%20pregunta', '_blank');
+            addMessage('✅ Se abrió WhatsApp. Un asesor te atenderá pronto.', false);
+            setTimeout(showOptions, 1000);
+          }, 500);
+        } else {
+          setTimeout(() => {
+            addMessage(responses[key], false);
+            setTimeout(showOptions, 500);
+          }, 400);
+        }
+      };
+      
+      function showWelcome() {
+        addMessage('¡Hola! 👋 Soy el <strong>asistente virtual de ADIS</strong>.<br>¿En qué puedo ayudarte hoy?', false);
+        setTimeout(showOptions, 300);
+      }
+    })();
+    
+    // Scroll reveal animations
+    (function() {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('active');
+          }
+        });
+      }, { threshold: 0.1 });
+      
+      document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    })();
+    
+    // Animate stats on scroll
+    (function() {
+      const statsObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting && !entry.target.classList.contains('counted')) {
+            entry.target.classList.add('counted');
+            const target = parseInt(entry.target.dataset.target);
+            const duration = 2000;
+            const start = performance.now();
+            
+            function update(currentTime) {
+              const elapsed = currentTime - start;
+              const progress = Math.min(elapsed / duration, 1);
+              const ease = 1 - Math.pow(1 - progress, 3);
+              entry.target.textContent = Math.floor(ease * target);
+              if (progress < 1) requestAnimationFrame(update);
+            }
+            requestAnimationFrame(update);
+          }
+        });
+      }, { threshold: 0.5 });
+      
+      document.querySelectorAll('.stat-number').forEach(el => statsObserver.observe(el));
+    })();
+  </script>
+  <script>''' + PARTICLES_JS + '''</script>
+'''
     return f'''  <footer>
     <div class="footer-logo"><img src="LOGO ADIS.png" alt="ADIS Logo"></div>
     <div class="footer-info">
@@ -733,9 +1038,16 @@ def generate_footer():
 
   <a href="https://wa.me/{CONTACTO['whatsapp']}?text={CONTACTO['whatsapp_msg'].replace(' ', '%20')}" class="whatsapp-float" target="_blank" title="Contáctanos por WhatsApp">💬</a>
 
-  <script>function toggleMenu(){{document.getElementById('mobileMenu').classList.toggle('active');}}</script>
-  <script>{PARTICLES_JS}</script>
-'''
+  <button class="chatbot-float" onclick="toggleChat()" title="Asistente Virtual">🤖</button>
+  <div class="chatbot-window" id="chatbotWindow">
+    <div class="chatbot-header">
+      <h4>🤖 Asistente ADIS</h4>
+      <button class="chatbot-close" onclick="toggleChat()">✕</button>
+    </div>
+    <div class="chatbot-body" id="chatbotBody"></div>
+  </div>
+
+{chatbot_js}'''
 
 
 def generate_index(categories):
@@ -819,7 +1131,7 @@ def generate_index(categories):
   </section>
 
   <!-- NOSOTROS -->
-  <section class="section-wrap-alt" id="nosotros">
+  <section class="section-wrap-alt reveal" id="nosotros">
     <div class="section-header">
       <h2>Sobre ADIS</h2>
       <div class="divider"></div>
@@ -829,8 +1141,30 @@ def generate_index(categories):
 {info_cards}    </div>
   </section>
 
+  <!-- STATS -->
+  <section class="stats-section reveal">
+    <div class="stats-grid">
+      <div class="stat-item">
+        <div class="stat-number" data-target="250">0</div>
+        <div class="stat-label">Productos</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number" data-target="9">0</div>
+        <div class="stat-label">Categorías</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number" data-target="50">0</div>
+        <div class="stat-label">Proyectos Realizados</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number" data-target="100">0</div>
+        <div class="stat-label">Clientes Satisfechos</div>
+      </div>
+    </div>
+  </section>
+
   <!-- CATÁLOGO -->
-  <section class="section-wrap" id="categorias">
+  <section class="section-wrap reveal" id="categorias">
     <div class="section-header">
       <h2>Nuestro Catálogo</h2>
       <div class="divider"></div>
