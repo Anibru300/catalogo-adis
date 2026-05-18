@@ -5,6 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Plafon PVC | ADIS Catálogo</title>
   <meta name="description" content="Plafon PVC - ADIS Diseño & Remodelación. Explora nuestros productos y solicita tu cotización.">
+  <meta property="og:title" content="Plafon PVC | ADIS Catálogo">
+  <meta property="og:description" content="Plafon PVC - ADIS Diseño & Remodelación. Explora nuestros productos y solicita tu cotización.">
+  <meta property="og:image" content="img/4-plafon-pvc/41-plafon-pvc-laminado/SHERWOOD.jpg">
+  <meta property="og:url" content="https://anibru300.github.io/catalogo-adis/4-plafon-pvc.html">
+  <meta property="og:type" content="website">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
@@ -18,6 +23,11 @@
         <a href="index.html#categorias">Catálogo</a>
         <a href="proyectos.html">Proyectos</a>
         <a href="contacto.html">Contacto</a>
+        <div class="search-box">
+          <input type="text" id="searchInput" placeholder="Buscar producto..." autocomplete="off">
+          <button onclick="performSearch()">🔍</button>
+          <div class="search-dropdown" id="searchDropdown"></div>
+        </div>
       </nav>
       <button class="menu-btn" onclick="toggleMenu()">☰</button>
     </div>
@@ -29,6 +39,11 @@
     <a href="index.html#categorias" onclick="toggleMenu()">Catálogo</a>
     <a href="proyectos.html" onclick="toggleMenu()">Proyectos</a>
     <a href="contacto.html" onclick="toggleMenu()">Contacto</a>
+    <div class="search-box" style="margin-top:1rem;">
+      <input type="text" id="searchInputMobile" placeholder="Buscar producto..." autocomplete="off" style="width:220px;">
+      <button onclick="performSearchMobile()">🔍</button>
+      <div class="search-dropdown" id="searchDropdownMobile"></div>
+    </div>
   </div>
 
 
@@ -40,6 +55,10 @@
     </div>
   </section>
 
+  <div class="subcat-nav">
+    <a href="#41-plafon-pvc-laminado">Plafon pvc laminado</a>
+    <a href="#42-plafon-laminado-wood">Plafon Laminado wood</a>
+    </div>
   <section class="subcat-section reveal" id="41-plafon-pvc-laminado">
     <div class="subcat-header">
       <h3>Plafon pvc laminado</h3>
@@ -55,21 +74,27 @@
     </div>
     <div class="products-grid">
       <div class="product-card reveal">
-        <div class="product-gallery">
+        <div class="product-gallery" onclick="openLightbox('img/4-plafon-pvc/41-plafon-pvc-laminado/SHERWOOD.jpg', 'SHERWOOD')">
           <img src="img/4-plafon-pvc/41-plafon-pvc-laminado/SHERWOOD.jpg" alt="SHERWOOD" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">SHERWOOD</div>
-          <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para SHERWOOD&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: SHERWOOD%0D%0ACategoria: Plafon PVC%0D%0ASubcategoria: Plafon pvc laminado%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+          <div class="product-actions">
+            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para SHERWOOD&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: SHERWOOD%0D%0ACategoria: Plafon PVC%0D%0ASubcategoria: Plafon pvc laminado%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20SHERWOOD%20de%20la%20categoría%20Plafon%20PVC%20/%20subcategoría%20Plafon%20pvc%20laminado" class="btn-whatsapp" target="_blank">WhatsApp</a>
+          </div>
         </div>
       </div>
       <div class="product-card reveal">
-        <div class="product-gallery">
+        <div class="product-gallery" onclick="openLightbox('img/4-plafon-pvc/41-plafon-pvc-laminado/Teesdale.jpg', 'Teesdale')">
           <img src="img/4-plafon-pvc/41-plafon-pvc-laminado/Teesdale.jpg" alt="Teesdale" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">Teesdale</div>
-          <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para Teesdale&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: Teesdale%0D%0ACategoria: Plafon PVC%0D%0ASubcategoria: Plafon pvc laminado%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+          <div class="product-actions">
+            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para Teesdale&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: Teesdale%0D%0ACategoria: Plafon PVC%0D%0ASubcategoria: Plafon pvc laminado%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20Teesdale%20de%20la%20categoría%20Plafon%20PVC%20/%20subcategoría%20Plafon%20pvc%20laminado" class="btn-whatsapp" target="_blank">WhatsApp</a>
+          </div>
         </div>
       </div>
     </div>
@@ -89,66 +114,87 @@
     </div>
     <div class="products-grid">
       <div class="product-card reveal">
-        <div class="product-gallery">
+        <div class="product-gallery" onclick="openLightbox('img/4-plafon-pvc/42-plafon-laminado-wood/Ash Nomad.jpg', 'Ash Nomad')">
           <img src="img/4-plafon-pvc/42-plafon-laminado-wood/Ash Nomad.jpg" alt="Ash Nomad" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">Ash Nomad</div>
-          <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para Ash Nomad&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: Ash Nomad%0D%0ACategoria: Plafon PVC%0D%0ASubcategoria: Plafon Laminado wood%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+          <div class="product-actions">
+            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para Ash Nomad&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: Ash Nomad%0D%0ACategoria: Plafon PVC%0D%0ASubcategoria: Plafon Laminado wood%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20Ash%20Nomad%20de%20la%20categoría%20Plafon%20PVC%20/%20subcategoría%20Plafon%20Laminado%20wood" class="btn-whatsapp" target="_blank">WhatsApp</a>
+          </div>
         </div>
       </div>
       <div class="product-card reveal">
-        <div class="product-gallery">
+        <div class="product-gallery" onclick="openLightbox('img/4-plafon-pvc/42-plafon-laminado-wood/Birch Ember.jpg', 'Birch Ember')">
           <img src="img/4-plafon-pvc/42-plafon-laminado-wood/Birch Ember.jpg" alt="Birch Ember" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">Birch Ember</div>
-          <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para Birch Ember&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: Birch Ember%0D%0ACategoria: Plafon PVC%0D%0ASubcategoria: Plafon Laminado wood%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+          <div class="product-actions">
+            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para Birch Ember&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: Birch Ember%0D%0ACategoria: Plafon PVC%0D%0ASubcategoria: Plafon Laminado wood%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20Birch%20Ember%20de%20la%20categoría%20Plafon%20PVC%20/%20subcategoría%20Plafon%20Laminado%20wood" class="btn-whatsapp" target="_blank">WhatsApp</a>
+          </div>
         </div>
       </div>
       <div class="product-card reveal">
-        <div class="product-gallery">
+        <div class="product-gallery" onclick="openLightbox('img/4-plafon-pvc/42-plafon-laminado-wood/Cocoa Ash.jpg', 'Cocoa Ash')">
           <img src="img/4-plafon-pvc/42-plafon-laminado-wood/Cocoa Ash.jpg" alt="Cocoa Ash" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">Cocoa Ash</div>
-          <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para Cocoa Ash&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: Cocoa Ash%0D%0ACategoria: Plafon PVC%0D%0ASubcategoria: Plafon Laminado wood%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+          <div class="product-actions">
+            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para Cocoa Ash&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: Cocoa Ash%0D%0ACategoria: Plafon PVC%0D%0ASubcategoria: Plafon Laminado wood%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20Cocoa%20Ash%20de%20la%20categoría%20Plafon%20PVC%20/%20subcategoría%20Plafon%20Laminado%20wood" class="btn-whatsapp" target="_blank">WhatsApp</a>
+          </div>
         </div>
       </div>
       <div class="product-card reveal">
-        <div class="product-gallery">
+        <div class="product-gallery" onclick="openLightbox('img/4-plafon-pvc/42-plafon-laminado-wood/Ivory Elm.jpg', 'Ivory Elm')">
           <img src="img/4-plafon-pvc/42-plafon-laminado-wood/Ivory Elm.jpg" alt="Ivory Elm" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">Ivory Elm</div>
-          <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para Ivory Elm&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: Ivory Elm%0D%0ACategoria: Plafon PVC%0D%0ASubcategoria: Plafon Laminado wood%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+          <div class="product-actions">
+            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para Ivory Elm&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: Ivory Elm%0D%0ACategoria: Plafon PVC%0D%0ASubcategoria: Plafon Laminado wood%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20Ivory%20Elm%20de%20la%20categoría%20Plafon%20PVC%20/%20subcategoría%20Plafon%20Laminado%20wood" class="btn-whatsapp" target="_blank">WhatsApp</a>
+          </div>
         </div>
       </div>
       <div class="product-card reveal">
-        <div class="product-gallery">
+        <div class="product-gallery" onclick="openLightbox('img/4-plafon-pvc/42-plafon-laminado-wood/Maple Dusk.jpg', 'Maple Dusk')">
           <img src="img/4-plafon-pvc/42-plafon-laminado-wood/Maple Dusk.jpg" alt="Maple Dusk" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">Maple Dusk</div>
-          <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para Maple Dusk&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: Maple Dusk%0D%0ACategoria: Plafon PVC%0D%0ASubcategoria: Plafon Laminado wood%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+          <div class="product-actions">
+            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para Maple Dusk&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: Maple Dusk%0D%0ACategoria: Plafon PVC%0D%0ASubcategoria: Plafon Laminado wood%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20Maple%20Dusk%20de%20la%20categoría%20Plafon%20PVC%20/%20subcategoría%20Plafon%20Laminado%20wood" class="btn-whatsapp" target="_blank">WhatsApp</a>
+          </div>
         </div>
       </div>
       <div class="product-card reveal">
-        <div class="product-gallery">
+        <div class="product-gallery" onclick="openLightbox('img/4-plafon-pvc/42-plafon-laminado-wood/Walnut Elipse.jpg', 'Walnut Elipse')">
           <img src="img/4-plafon-pvc/42-plafon-laminado-wood/Walnut Elipse.jpg" alt="Walnut Elipse" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">Walnut Elipse</div>
-          <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para Walnut Elipse&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: Walnut Elipse%0D%0ACategoria: Plafon PVC%0D%0ASubcategoria: Plafon Laminado wood%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+          <div class="product-actions">
+            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para Walnut Elipse&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: Walnut Elipse%0D%0ACategoria: Plafon PVC%0D%0ASubcategoria: Plafon Laminado wood%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20Walnut%20Elipse%20de%20la%20categoría%20Plafon%20PVC%20/%20subcategoría%20Plafon%20Laminado%20wood" class="btn-whatsapp" target="_blank">WhatsApp</a>
+          </div>
         </div>
       </div>
       <div class="product-card reveal">
-        <div class="product-gallery">
+        <div class="product-gallery" onclick="openLightbox('img/4-plafon-pvc/42-plafon-laminado-wood/Wild Teak.jpg', 'Wild Teak')">
           <img src="img/4-plafon-pvc/42-plafon-laminado-wood/Wild Teak.jpg" alt="Wild Teak" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">Wild Teak</div>
-          <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para Wild Teak&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: Wild Teak%0D%0ACategoria: Plafon PVC%0D%0ASubcategoria: Plafon Laminado wood%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+          <div class="product-actions">
+            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para Wild Teak&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: Wild Teak%0D%0ACategoria: Plafon PVC%0D%0ASubcategoria: Plafon Laminado wood%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20Wild%20Teak%20de%20la%20categoría%20Plafon%20PVC%20/%20subcategoría%20Plafon%20Laminado%20wood" class="btn-whatsapp" target="_blank">WhatsApp</a>
+          </div>
         </div>
       </div>
     </div>
@@ -162,39 +208,51 @@
     </div>
     <div class="products-grid">
       <div class="product-card reveal">
-        <div class="product-gallery">
+        <div class="product-gallery" onclick="openLightbox('img/4-plafon-pvc/Cambridge.jpg', 'Cambridge')">
           <img src="img/4-plafon-pvc/Cambridge.jpg" alt="Cambridge" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">Cambridge</div>
-          <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para Cambridge&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: Cambridge%0D%0ACategoria: Plafon PVC%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+          <div class="product-actions">
+            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para Cambridge&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: Cambridge%0D%0ACategoria: Plafon PVC%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20Cambridge%20de%20la%20categoría%20Plafon%20PVC" class="btn-whatsapp" target="_blank">WhatsApp</a>
+          </div>
         </div>
       </div>
       <div class="product-card reveal">
-        <div class="product-gallery">
+        <div class="product-gallery" onclick="openLightbox('img/4-plafon-pvc/Liverpool.jpg', 'Liverpool')">
           <img src="img/4-plafon-pvc/Liverpool.jpg" alt="Liverpool" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">Liverpool</div>
-          <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para Liverpool&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: Liverpool%0D%0ACategoria: Plafon PVC%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+          <div class="product-actions">
+            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para Liverpool&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: Liverpool%0D%0ACategoria: Plafon PVC%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20Liverpool%20de%20la%20categoría%20Plafon%20PVC" class="btn-whatsapp" target="_blank">WhatsApp</a>
+          </div>
         </div>
       </div>
       <div class="product-card reveal">
-        <div class="product-gallery">
+        <div class="product-gallery" onclick="openLightbox('img/4-plafon-pvc/York.jpg', 'York')">
           <img src="img/4-plafon-pvc/York.jpg" alt="York" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">York</div>
-          <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para York&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: York%0D%0ACategoria: Plafon PVC%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+          <div class="product-actions">
+            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para York&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: York%0D%0ACategoria: Plafon PVC%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20York%20de%20la%20categoría%20Plafon%20PVC" class="btn-whatsapp" target="_blank">WhatsApp</a>
+          </div>
         </div>
       </div>
       <div class="product-card reveal">
-        <div class="product-gallery">
+        <div class="product-gallery" onclick="openLightbox('img/4-plafon-pvc/bristol.jpg', 'bristol')">
           <img src="img/4-plafon-pvc/bristol.jpg" alt="bristol" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">bristol</div>
-          <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para bristol&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: bristol%0D%0ACategoria: Plafon PVC%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+          <div class="product-actions">
+            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para bristol&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: bristol%0D%0ACategoria: Plafon PVC%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20bristol%20de%20la%20categoría%20Plafon%20PVC" class="btn-whatsapp" target="_blank">WhatsApp</a>
+          </div>
         </div>
       </div>
     </div>
@@ -216,6 +274,10 @@
       Nogales, Sonora · Rio Rico, AZ<br>
       Tel. MX: +52 631-192-8993 · Tel. USA: +1 (520) 839-2877<br>
       adis.remodelacion@gmail.com
+    </div>
+    <div class="footer-social">
+      <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20vi%20el%20catálogo%20y%20me%20interesa%20obtener%20información%20sobre%20sus%20productos." target="_blank" title="WhatsApp">💬</a>
+      <a href="https://www.facebook.com/p/Adis-Dise%C3%B1o-Remodelaci%C3%B3n-61579849591594/" target="_blank" title="Facebook">📘</a>
     </div>
     <div class="copyright">© 2026 ADIS DISEÑO & REMODELACIÓN. TODOS LOS DERECHOS RESERVADOS.</div>
   </footer>
@@ -411,6 +473,76 @@
   }
   animate();
 })();</script>
+
+  <!-- Lightbox Modal -->
+  <div class="lightbox" id="lightbox" onclick="closeLightbox(event)">
+    <button class="lightbox-close" onclick="closeLightbox(event)">✕</button>
+    <img id="lightboxImg" src="" alt="">
+    <div class="lightbox-caption" id="lightboxCaption"></div>
+  </div>
+
+  <script>
+    // Lightbox
+    function openLightbox(src, caption) {
+      const lb = document.getElementById('lightbox');
+      const img = document.getElementById('lightboxImg');
+      const cap = document.getElementById('lightboxCaption');
+      img.src = src;
+      cap.textContent = caption || '';
+      lb.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeLightbox(e) {
+      if (e && e.target !== e.currentTarget && !e.target.classList.contains('lightbox-close')) return;
+      document.getElementById('lightbox').classList.remove('active');
+      document.body.style.overflow = '';
+    }
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') closeLightbox();
+    });
+
+    // Buscador global
+    let allProducts = [];
+    fetch('products.json')
+      .then(r => r.json())
+      .then(data => { allProducts = data; })
+      .catch(() => {});
+    function performSearch() {
+      const input = document.getElementById('searchInput');
+      const dropdown = document.getElementById('searchDropdown');
+      doSearch(input.value, dropdown);
+    }
+    function performSearchMobile() {
+      const input = document.getElementById('searchInputMobile');
+      const dropdown = document.getElementById('searchDropdownMobile');
+      doSearch(input.value, dropdown);
+    }
+    function doSearch(query, dropdown) {
+      if (!query || query.length < 2) { dropdown.classList.remove('active'); return; }
+      const q = query.toLowerCase();
+      const results = allProducts.filter(p => p.name.toLowerCase().includes(q)).slice(0, 8);
+      if (results.length === 0) {
+        dropdown.innerHTML = '<div class="search-empty">No se encontraron productos</div>';
+      } else {
+        dropdown.innerHTML = results.map(p => `
+          <a href="${p.url}" class="search-item" onclick="document.getElementById('searchDropdown').classList.remove('active');var m=document.getElementById('searchDropdownMobile');if(m)m.classList.remove('active');">
+            <img src="${p.thumb}" alt="${p.name}">
+            <div class="search-item-info">
+              <span class="search-item-name">${p.name}</span>
+              <span class="search-item-cat">${p.category}${p.subcategory ? ' / ' + p.subcategory : ''}</span>
+            </div>
+          </a>
+        `).join('');
+      }
+      dropdown.classList.add('active');
+    }
+    document.addEventListener('click', function(e) {
+      const sdd = document.getElementById('searchDropdown');
+      const sdm = document.getElementById('searchDropdownMobile');
+      if (sdd && !e.target.closest('.search-box')) sdd.classList.remove('active');
+      if (sdm && !e.target.closest('.search-box')) sdm.classList.remove('active');
+    });
+  </script>
 
 </body>
 </html>

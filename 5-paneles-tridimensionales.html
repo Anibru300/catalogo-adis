@@ -5,6 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Paneles tridimensionales | ADIS Catálogo</title>
   <meta name="description" content="Paneles tridimensionales - ADIS Diseño & Remodelación. Explora nuestros productos y solicita tu cotización.">
+  <meta property="og:title" content="Paneles tridimensionales | ADIS Catálogo">
+  <meta property="og:description" content="Paneles tridimensionales - ADIS Diseño & Remodelación. Explora nuestros productos y solicita tu cotización.">
+  <meta property="og:image" content="img/5-paneles-tridimensionales/51-blanco/Austin.jpg">
+  <meta property="og:url" content="https://anibru300.github.io/catalogo-adis/5-paneles-tridimensionales.html">
+  <meta property="og:type" content="website">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
@@ -18,6 +23,11 @@
         <a href="index.html#categorias">Catálogo</a>
         <a href="proyectos.html">Proyectos</a>
         <a href="contacto.html">Contacto</a>
+        <div class="search-box">
+          <input type="text" id="searchInput" placeholder="Buscar producto..." autocomplete="off">
+          <button onclick="performSearch()">🔍</button>
+          <div class="search-dropdown" id="searchDropdown"></div>
+        </div>
       </nav>
       <button class="menu-btn" onclick="toggleMenu()">☰</button>
     </div>
@@ -29,6 +39,11 @@
     <a href="index.html#categorias" onclick="toggleMenu()">Catálogo</a>
     <a href="proyectos.html" onclick="toggleMenu()">Proyectos</a>
     <a href="contacto.html" onclick="toggleMenu()">Contacto</a>
+    <div class="search-box" style="margin-top:1rem;">
+      <input type="text" id="searchInputMobile" placeholder="Buscar producto..." autocomplete="off" style="width:220px;">
+      <button onclick="performSearchMobile()">🔍</button>
+      <div class="search-dropdown" id="searchDropdownMobile"></div>
+    </div>
   </div>
 
 
@@ -40,6 +55,13 @@
     </div>
   </section>
 
+  <div class="subcat-nav">
+    <a href="#51-blanco">Blanco</a>
+    <a href="#52-grises">Grises</a>
+    <a href="#53-madera">Madera</a>
+    <a href="#54-negro">Negro</a>
+    <a href="#55-oro">Oro</a>
+    </div>
   <section class="subcat-section reveal" id="51-blanco">
     <div class="subcat-header">
       <h3>Blanco</h3>
@@ -55,120 +77,159 @@
     </div>
     <div class="products-grid">
       <div class="product-card reveal">
-        <div class="product-gallery">
+        <div class="product-gallery" onclick="openLightbox('img/5-paneles-tridimensionales/51-blanco/Austin.jpg', 'Austin')">
           <img src="img/5-paneles-tridimensionales/51-blanco/Austin.jpg" alt="Austin" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">Austin</div>
-          <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para Austin&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: Austin%0D%0ACategoria: Paneles tridimensionales%0D%0ASubcategoria: Blanco%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+          <div class="product-actions">
+            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para Austin&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: Austin%0D%0ACategoria: Paneles tridimensionales%0D%0ASubcategoria: Blanco%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20Austin%20de%20la%20categoría%20Paneles%20tridimensionales%20/%20subcategoría%20Blanco" class="btn-whatsapp" target="_blank">WhatsApp</a>
+          </div>
         </div>
       </div>
       <div class="product-card reveal">
-        <div class="product-gallery">
+        <div class="product-gallery" onclick="openLightbox('img/5-paneles-tridimensionales/51-blanco/Boston.jpg', 'Boston')">
           <img src="img/5-paneles-tridimensionales/51-blanco/Boston.jpg" alt="Boston" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">Boston</div>
-          <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para Boston&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: Boston%0D%0ACategoria: Paneles tridimensionales%0D%0ASubcategoria: Blanco%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+          <div class="product-actions">
+            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para Boston&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: Boston%0D%0ACategoria: Paneles tridimensionales%0D%0ASubcategoria: Blanco%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20Boston%20de%20la%20categoría%20Paneles%20tridimensionales%20/%20subcategoría%20Blanco" class="btn-whatsapp" target="_blank">WhatsApp</a>
+          </div>
         </div>
       </div>
       <div class="product-card reveal">
-        <div class="product-gallery">
+        <div class="product-gallery" onclick="openLightbox('img/5-paneles-tridimensionales/51-blanco/Charleston.jpg', 'Charleston')">
           <img src="img/5-paneles-tridimensionales/51-blanco/Charleston.jpg" alt="Charleston" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">Charleston</div>
-          <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para Charleston&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: Charleston%0D%0ACategoria: Paneles tridimensionales%0D%0ASubcategoria: Blanco%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+          <div class="product-actions">
+            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para Charleston&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: Charleston%0D%0ACategoria: Paneles tridimensionales%0D%0ASubcategoria: Blanco%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20Charleston%20de%20la%20categoría%20Paneles%20tridimensionales%20/%20subcategoría%20Blanco" class="btn-whatsapp" target="_blank">WhatsApp</a>
+          </div>
         </div>
       </div>
       <div class="product-card reveal">
-        <div class="product-gallery">
+        <div class="product-gallery" onclick="openLightbox('img/5-paneles-tridimensionales/51-blanco/Charlotte.jpg', 'Charlotte')">
           <img src="img/5-paneles-tridimensionales/51-blanco/Charlotte.jpg" alt="Charlotte" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">Charlotte</div>
-          <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para Charlotte&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: Charlotte%0D%0ACategoria: Paneles tridimensionales%0D%0ASubcategoria: Blanco%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+          <div class="product-actions">
+            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para Charlotte&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: Charlotte%0D%0ACategoria: Paneles tridimensionales%0D%0ASubcategoria: Blanco%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20Charlotte%20de%20la%20categoría%20Paneles%20tridimensionales%20/%20subcategoría%20Blanco" class="btn-whatsapp" target="_blank">WhatsApp</a>
+          </div>
         </div>
       </div>
       <div class="product-card reveal">
-        <div class="product-gallery">
+        <div class="product-gallery" onclick="openLightbox('img/5-paneles-tridimensionales/51-blanco/Chicago.jpg', 'Chicago')">
           <img src="img/5-paneles-tridimensionales/51-blanco/Chicago.jpg" alt="Chicago" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">Chicago</div>
-          <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para Chicago&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: Chicago%0D%0ACategoria: Paneles tridimensionales%0D%0ASubcategoria: Blanco%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+          <div class="product-actions">
+            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para Chicago&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: Chicago%0D%0ACategoria: Paneles tridimensionales%0D%0ASubcategoria: Blanco%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20Chicago%20de%20la%20categoría%20Paneles%20tridimensionales%20/%20subcategoría%20Blanco" class="btn-whatsapp" target="_blank">WhatsApp</a>
+          </div>
         </div>
       </div>
       <div class="product-card reveal">
-        <div class="product-gallery">
+        <div class="product-gallery" onclick="openLightbox('img/5-paneles-tridimensionales/51-blanco/Cleveland.jpg', 'Cleveland')">
           <img src="img/5-paneles-tridimensionales/51-blanco/Cleveland.jpg" alt="Cleveland" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">Cleveland</div>
-          <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para Cleveland&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: Cleveland%0D%0ACategoria: Paneles tridimensionales%0D%0ASubcategoria: Blanco%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+          <div class="product-actions">
+            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para Cleveland&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: Cleveland%0D%0ACategoria: Paneles tridimensionales%0D%0ASubcategoria: Blanco%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20Cleveland%20de%20la%20categoría%20Paneles%20tridimensionales%20/%20subcategoría%20Blanco" class="btn-whatsapp" target="_blank">WhatsApp</a>
+          </div>
         </div>
       </div>
       <div class="product-card reveal">
-        <div class="product-gallery">
+        <div class="product-gallery" onclick="openLightbox('img/5-paneles-tridimensionales/51-blanco/Columbus.jpg', 'Columbus')">
           <img src="img/5-paneles-tridimensionales/51-blanco/Columbus.jpg" alt="Columbus" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">Columbus</div>
-          <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para Columbus&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: Columbus%0D%0ACategoria: Paneles tridimensionales%0D%0ASubcategoria: Blanco%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+          <div class="product-actions">
+            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para Columbus&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: Columbus%0D%0ACategoria: Paneles tridimensionales%0D%0ASubcategoria: Blanco%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20Columbus%20de%20la%20categoría%20Paneles%20tridimensionales%20/%20subcategoría%20Blanco" class="btn-whatsapp" target="_blank">WhatsApp</a>
+          </div>
         </div>
       </div>
       <div class="product-card reveal">
-        <div class="product-gallery">
+        <div class="product-gallery" onclick="openLightbox('img/5-paneles-tridimensionales/51-blanco/Dallas.jpg', 'Dallas')">
           <img src="img/5-paneles-tridimensionales/51-blanco/Dallas.jpg" alt="Dallas" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">Dallas</div>
-          <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para Dallas&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: Dallas%0D%0ACategoria: Paneles tridimensionales%0D%0ASubcategoria: Blanco%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+          <div class="product-actions">
+            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para Dallas&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: Dallas%0D%0ACategoria: Paneles tridimensionales%0D%0ASubcategoria: Blanco%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20Dallas%20de%20la%20categoría%20Paneles%20tridimensionales%20/%20subcategoría%20Blanco" class="btn-whatsapp" target="_blank">WhatsApp</a>
+          </div>
         </div>
       </div>
       <div class="product-card reveal">
-        <div class="product-gallery">
+        <div class="product-gallery" onclick="openLightbox('img/5-paneles-tridimensionales/51-blanco/Denver.jpg', 'Denver')">
           <img src="img/5-paneles-tridimensionales/51-blanco/Denver.jpg" alt="Denver" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">Denver</div>
-          <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para Denver&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: Denver%0D%0ACategoria: Paneles tridimensionales%0D%0ASubcategoria: Blanco%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+          <div class="product-actions">
+            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para Denver&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: Denver%0D%0ACategoria: Paneles tridimensionales%0D%0ASubcategoria: Blanco%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20Denver%20de%20la%20categoría%20Paneles%20tridimensionales%20/%20subcategoría%20Blanco" class="btn-whatsapp" target="_blank">WhatsApp</a>
+          </div>
         </div>
       </div>
       <div class="product-card reveal">
-        <div class="product-gallery">
+        <div class="product-gallery" onclick="openLightbox('img/5-paneles-tridimensionales/51-blanco/Detroit.jpg', 'Detroit')">
           <img src="img/5-paneles-tridimensionales/51-blanco/Detroit.jpg" alt="Detroit" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">Detroit</div>
-          <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para Detroit&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: Detroit%0D%0ACategoria: Paneles tridimensionales%0D%0ASubcategoria: Blanco%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+          <div class="product-actions">
+            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para Detroit&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: Detroit%0D%0ACategoria: Paneles tridimensionales%0D%0ASubcategoria: Blanco%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20Detroit%20de%20la%20categoría%20Paneles%20tridimensionales%20/%20subcategoría%20Blanco" class="btn-whatsapp" target="_blank">WhatsApp</a>
+          </div>
         </div>
       </div>
       <div class="product-card reveal">
-        <div class="product-gallery">
+        <div class="product-gallery" onclick="openLightbox('img/5-paneles-tridimensionales/51-blanco/Filadelfia.jpg', 'Filadelfia')">
           <img src="img/5-paneles-tridimensionales/51-blanco/Filadelfia.jpg" alt="Filadelfia" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">Filadelfia</div>
-          <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para Filadelfia&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: Filadelfia%0D%0ACategoria: Paneles tridimensionales%0D%0ASubcategoria: Blanco%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+          <div class="product-actions">
+            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para Filadelfia&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: Filadelfia%0D%0ACategoria: Paneles tridimensionales%0D%0ASubcategoria: Blanco%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20Filadelfia%20de%20la%20categoría%20Paneles%20tridimensionales%20/%20subcategoría%20Blanco" class="btn-whatsapp" target="_blank">WhatsApp</a>
+          </div>
         </div>
       </div>
       <div class="product-card reveal">
-        <div class="product-gallery">
+        <div class="product-gallery" onclick="openLightbox('img/5-paneles-tridimensionales/51-blanco/Frisco.jpg', 'Frisco')">
           <img src="img/5-paneles-tridimensionales/51-blanco/Frisco.jpg" alt="Frisco" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">Frisco</div>
-          <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para Frisco&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: Frisco%0D%0ACategoria: Paneles tridimensionales%0D%0ASubcategoria: Blanco%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+          <div class="product-actions">
+            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para Frisco&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: Frisco%0D%0ACategoria: Paneles tridimensionales%0D%0ASubcategoria: Blanco%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20Frisco%20de%20la%20categoría%20Paneles%20tridimensionales%20/%20subcategoría%20Blanco" class="btn-whatsapp" target="_blank">WhatsApp</a>
+          </div>
         </div>
       </div>
       <div class="product-card reveal">
-        <div class="product-gallery">
+        <div class="product-gallery" onclick="openLightbox('img/5-paneles-tridimensionales/51-blanco/Houston.jpg', 'Houston')">
           <img src="img/5-paneles-tridimensionales/51-blanco/Houston.jpg" alt="Houston" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">Houston</div>
-          <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para Houston&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: Houston%0D%0ACategoria: Paneles tridimensionales%0D%0ASubcategoria: Blanco%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+          <div class="product-actions">
+            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para Houston&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: Houston%0D%0ACategoria: Paneles tridimensionales%0D%0ASubcategoria: Blanco%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20Houston%20de%20la%20categoría%20Paneles%20tridimensionales%20/%20subcategoría%20Blanco" class="btn-whatsapp" target="_blank">WhatsApp</a>
+          </div>
         </div>
       </div>
     </div>
@@ -188,30 +249,39 @@
     </div>
     <div class="products-grid">
       <div class="product-card reveal">
-        <div class="product-gallery">
+        <div class="product-gallery" onclick="openLightbox('img/5-paneles-tridimensionales/52-grises/Minneapolis.jpg', 'Minneapolis')">
           <img src="img/5-paneles-tridimensionales/52-grises/Minneapolis.jpg" alt="Minneapolis" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">Minneapolis</div>
-          <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para Minneapolis&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: Minneapolis%0D%0ACategoria: Paneles tridimensionales%0D%0ASubcategoria: Grises%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+          <div class="product-actions">
+            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para Minneapolis&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: Minneapolis%0D%0ACategoria: Paneles tridimensionales%0D%0ASubcategoria: Grises%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20Minneapolis%20de%20la%20categoría%20Paneles%20tridimensionales%20/%20subcategoría%20Grises" class="btn-whatsapp" target="_blank">WhatsApp</a>
+          </div>
         </div>
       </div>
       <div class="product-card reveal">
-        <div class="product-gallery">
+        <div class="product-gallery" onclick="openLightbox('img/5-paneles-tridimensionales/52-grises/Oklahoma.jpg', 'Oklahoma')">
           <img src="img/5-paneles-tridimensionales/52-grises/Oklahoma.jpg" alt="Oklahoma" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">Oklahoma</div>
-          <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para Oklahoma&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: Oklahoma%0D%0ACategoria: Paneles tridimensionales%0D%0ASubcategoria: Grises%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+          <div class="product-actions">
+            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para Oklahoma&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: Oklahoma%0D%0ACategoria: Paneles tridimensionales%0D%0ASubcategoria: Grises%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20Oklahoma%20de%20la%20categoría%20Paneles%20tridimensionales%20/%20subcategoría%20Grises" class="btn-whatsapp" target="_blank">WhatsApp</a>
+          </div>
         </div>
       </div>
       <div class="product-card reveal">
-        <div class="product-gallery">
+        <div class="product-gallery" onclick="openLightbox('img/5-paneles-tridimensionales/52-grises/Orlando.jpg', 'Orlando')">
           <img src="img/5-paneles-tridimensionales/52-grises/Orlando.jpg" alt="Orlando" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">Orlando</div>
-          <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para Orlando&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: Orlando%0D%0ACategoria: Paneles tridimensionales%0D%0ASubcategoria: Grises%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+          <div class="product-actions">
+            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para Orlando&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: Orlando%0D%0ACategoria: Paneles tridimensionales%0D%0ASubcategoria: Grises%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20Orlando%20de%20la%20categoría%20Paneles%20tridimensionales%20/%20subcategoría%20Grises" class="btn-whatsapp" target="_blank">WhatsApp</a>
+          </div>
         </div>
       </div>
     </div>
@@ -231,39 +301,51 @@
     </div>
     <div class="products-grid">
       <div class="product-card reveal">
-        <div class="product-gallery">
+        <div class="product-gallery" onclick="openLightbox('img/5-paneles-tridimensionales/53-madera/Portland.jpg', 'Portland')">
           <img src="img/5-paneles-tridimensionales/53-madera/Portland.jpg" alt="Portland" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">Portland</div>
-          <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para Portland&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: Portland%0D%0ACategoria: Paneles tridimensionales%0D%0ASubcategoria: Madera%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+          <div class="product-actions">
+            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para Portland&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: Portland%0D%0ACategoria: Paneles tridimensionales%0D%0ASubcategoria: Madera%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20Portland%20de%20la%20categoría%20Paneles%20tridimensionales%20/%20subcategoría%20Madera" class="btn-whatsapp" target="_blank">WhatsApp</a>
+          </div>
         </div>
       </div>
       <div class="product-card reveal">
-        <div class="product-gallery">
+        <div class="product-gallery" onclick="openLightbox('img/5-paneles-tridimensionales/53-madera/Providence.jpg', 'Providence')">
           <img src="img/5-paneles-tridimensionales/53-madera/Providence.jpg" alt="Providence" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">Providence</div>
-          <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para Providence&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: Providence%0D%0ACategoria: Paneles tridimensionales%0D%0ASubcategoria: Madera%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+          <div class="product-actions">
+            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para Providence&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: Providence%0D%0ACategoria: Paneles tridimensionales%0D%0ASubcategoria: Madera%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20Providence%20de%20la%20categoría%20Paneles%20tridimensionales%20/%20subcategoría%20Madera" class="btn-whatsapp" target="_blank">WhatsApp</a>
+          </div>
         </div>
       </div>
       <div class="product-card reveal">
-        <div class="product-gallery">
+        <div class="product-gallery" onclick="openLightbox('img/5-paneles-tridimensionales/53-madera/Raleigh.jpg', 'Raleigh')">
           <img src="img/5-paneles-tridimensionales/53-madera/Raleigh.jpg" alt="Raleigh" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">Raleigh</div>
-          <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para Raleigh&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: Raleigh%0D%0ACategoria: Paneles tridimensionales%0D%0ASubcategoria: Madera%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+          <div class="product-actions">
+            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para Raleigh&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: Raleigh%0D%0ACategoria: Paneles tridimensionales%0D%0ASubcategoria: Madera%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20Raleigh%20de%20la%20categoría%20Paneles%20tridimensionales%20/%20subcategoría%20Madera" class="btn-whatsapp" target="_blank">WhatsApp</a>
+          </div>
         </div>
       </div>
       <div class="product-card reveal">
-        <div class="product-gallery">
+        <div class="product-gallery" onclick="openLightbox('img/5-paneles-tridimensionales/53-madera/Reno.jpg', 'Reno')">
           <img src="img/5-paneles-tridimensionales/53-madera/Reno.jpg" alt="Reno" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">Reno</div>
-          <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para Reno&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: Reno%0D%0ACategoria: Paneles tridimensionales%0D%0ASubcategoria: Madera%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+          <div class="product-actions">
+            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para Reno&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: Reno%0D%0ACategoria: Paneles tridimensionales%0D%0ASubcategoria: Madera%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20Reno%20de%20la%20categoría%20Paneles%20tridimensionales%20/%20subcategoría%20Madera" class="btn-whatsapp" target="_blank">WhatsApp</a>
+          </div>
         </div>
       </div>
     </div>
@@ -283,12 +365,15 @@
     </div>
     <div class="products-grid">
       <div class="product-card reveal">
-        <div class="product-gallery">
+        <div class="product-gallery" onclick="openLightbox('img/5-paneles-tridimensionales/54-negro/seattle.jpg', 'seattle')">
           <img src="img/5-paneles-tridimensionales/54-negro/seattle.jpg" alt="seattle" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">seattle</div>
-          <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para seattle&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: seattle%0D%0ACategoria: Paneles tridimensionales%0D%0ASubcategoria: Negro%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+          <div class="product-actions">
+            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para seattle&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: seattle%0D%0ACategoria: Paneles tridimensionales%0D%0ASubcategoria: Negro%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20seattle%20de%20la%20categoría%20Paneles%20tridimensionales%20/%20subcategoría%20Negro" class="btn-whatsapp" target="_blank">WhatsApp</a>
+          </div>
         </div>
       </div>
     </div>
@@ -308,30 +393,39 @@
     </div>
     <div class="products-grid">
       <div class="product-card reveal">
-        <div class="product-gallery">
+        <div class="product-gallery" onclick="openLightbox('img/5-paneles-tridimensionales/55-oro/Laredo.jpg', 'Laredo')">
           <img src="img/5-paneles-tridimensionales/55-oro/Laredo.jpg" alt="Laredo" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">Laredo</div>
-          <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para Laredo&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: Laredo%0D%0ACategoria: Paneles tridimensionales%0D%0ASubcategoria: Oro%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+          <div class="product-actions">
+            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para Laredo&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: Laredo%0D%0ACategoria: Paneles tridimensionales%0D%0ASubcategoria: Oro%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20Laredo%20de%20la%20categoría%20Paneles%20tridimensionales%20/%20subcategoría%20Oro" class="btn-whatsapp" target="_blank">WhatsApp</a>
+          </div>
         </div>
       </div>
       <div class="product-card reveal">
-        <div class="product-gallery">
+        <div class="product-gallery" onclick="openLightbox('img/5-paneles-tridimensionales/55-oro/Miami.jpg', 'Miami')">
           <img src="img/5-paneles-tridimensionales/55-oro/Miami.jpg" alt="Miami" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">Miami</div>
-          <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para Miami&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: Miami%0D%0ACategoria: Paneles tridimensionales%0D%0ASubcategoria: Oro%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+          <div class="product-actions">
+            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para Miami&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: Miami%0D%0ACategoria: Paneles tridimensionales%0D%0ASubcategoria: Oro%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20Miami%20de%20la%20categoría%20Paneles%20tridimensionales%20/%20subcategoría%20Oro" class="btn-whatsapp" target="_blank">WhatsApp</a>
+          </div>
         </div>
       </div>
       <div class="product-card reveal">
-        <div class="product-gallery">
+        <div class="product-gallery" onclick="openLightbox('img/5-paneles-tridimensionales/55-oro/memphis.jpg', 'memphis')">
           <img src="img/5-paneles-tridimensionales/55-oro/memphis.jpg" alt="memphis" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">memphis</div>
-          <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para memphis&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: memphis%0D%0ACategoria: Paneles tridimensionales%0D%0ASubcategoria: Oro%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+          <div class="product-actions">
+            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para memphis&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: memphis%0D%0ACategoria: Paneles tridimensionales%0D%0ASubcategoria: Oro%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20memphis%20de%20la%20categoría%20Paneles%20tridimensionales%20/%20subcategoría%20Oro" class="btn-whatsapp" target="_blank">WhatsApp</a>
+          </div>
         </div>
       </div>
     </div>
@@ -354,6 +448,10 @@
       Nogales, Sonora · Rio Rico, AZ<br>
       Tel. MX: +52 631-192-8993 · Tel. USA: +1 (520) 839-2877<br>
       adis.remodelacion@gmail.com
+    </div>
+    <div class="footer-social">
+      <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20vi%20el%20catálogo%20y%20me%20interesa%20obtener%20información%20sobre%20sus%20productos." target="_blank" title="WhatsApp">💬</a>
+      <a href="https://www.facebook.com/p/Adis-Dise%C3%B1o-Remodelaci%C3%B3n-61579849591594/" target="_blank" title="Facebook">📘</a>
     </div>
     <div class="copyright">© 2026 ADIS DISEÑO & REMODELACIÓN. TODOS LOS DERECHOS RESERVADOS.</div>
   </footer>
@@ -549,6 +647,76 @@
   }
   animate();
 })();</script>
+
+  <!-- Lightbox Modal -->
+  <div class="lightbox" id="lightbox" onclick="closeLightbox(event)">
+    <button class="lightbox-close" onclick="closeLightbox(event)">✕</button>
+    <img id="lightboxImg" src="" alt="">
+    <div class="lightbox-caption" id="lightboxCaption"></div>
+  </div>
+
+  <script>
+    // Lightbox
+    function openLightbox(src, caption) {
+      const lb = document.getElementById('lightbox');
+      const img = document.getElementById('lightboxImg');
+      const cap = document.getElementById('lightboxCaption');
+      img.src = src;
+      cap.textContent = caption || '';
+      lb.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeLightbox(e) {
+      if (e && e.target !== e.currentTarget && !e.target.classList.contains('lightbox-close')) return;
+      document.getElementById('lightbox').classList.remove('active');
+      document.body.style.overflow = '';
+    }
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') closeLightbox();
+    });
+
+    // Buscador global
+    let allProducts = [];
+    fetch('products.json')
+      .then(r => r.json())
+      .then(data => { allProducts = data; })
+      .catch(() => {});
+    function performSearch() {
+      const input = document.getElementById('searchInput');
+      const dropdown = document.getElementById('searchDropdown');
+      doSearch(input.value, dropdown);
+    }
+    function performSearchMobile() {
+      const input = document.getElementById('searchInputMobile');
+      const dropdown = document.getElementById('searchDropdownMobile');
+      doSearch(input.value, dropdown);
+    }
+    function doSearch(query, dropdown) {
+      if (!query || query.length < 2) { dropdown.classList.remove('active'); return; }
+      const q = query.toLowerCase();
+      const results = allProducts.filter(p => p.name.toLowerCase().includes(q)).slice(0, 8);
+      if (results.length === 0) {
+        dropdown.innerHTML = '<div class="search-empty">No se encontraron productos</div>';
+      } else {
+        dropdown.innerHTML = results.map(p => `
+          <a href="${p.url}" class="search-item" onclick="document.getElementById('searchDropdown').classList.remove('active');var m=document.getElementById('searchDropdownMobile');if(m)m.classList.remove('active');">
+            <img src="${p.thumb}" alt="${p.name}">
+            <div class="search-item-info">
+              <span class="search-item-name">${p.name}</span>
+              <span class="search-item-cat">${p.category}${p.subcategory ? ' / ' + p.subcategory : ''}</span>
+            </div>
+          </a>
+        `).join('');
+      }
+      dropdown.classList.add('active');
+    }
+    document.addEventListener('click', function(e) {
+      const sdd = document.getElementById('searchDropdown');
+      const sdm = document.getElementById('searchDropdownMobile');
+      if (sdd && !e.target.closest('.search-box')) sdd.classList.remove('active');
+      if (sdm && !e.target.closest('.search-box')) sdm.classList.remove('active');
+    });
+  </script>
 
 </body>
 </html>

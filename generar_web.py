@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import os
 import sys
+import json
 import shutil
 from pathlib import Path
 
@@ -18,7 +19,8 @@ CONTACTO = {
     'email': 'adis.remodelacion@gmail.com',
     'tel_mx': '+52 631-192-8993',
     'tel_usa': '+1 (520) 839-2877',
-    'ubicacion': 'Nogales, Sonora · Rio Rico, AZ'
+    'ubicacion': 'Nogales, Sonora · Rio Rico, AZ',
+    'facebook': 'https://www.facebook.com/p/Adis-Dise%C3%B1o-Remodelaci%C3%B3n-61579849591594/'
 }
 
 # Extensiones de imagen válidas
@@ -828,6 +830,127 @@ footer {
   color: rgba(245,245,245,0.8);
 }
 
+/* SUBCATEGORÍA NAV - ÍNDICE RÁPIDO */
+.subcat-nav {
+  display: flex; flex-wrap: wrap; justify-content: center; gap: 0.6rem;
+  max-width: 1000px; margin: 0 auto 2rem; padding: 0 2rem;
+}
+.subcat-nav a {
+  display: inline-block; padding: 0.5rem 1.2rem;
+  background: rgba(197,160,89,0.1); border: 1px solid rgba(197,160,89,0.25);
+  color: var(--gold); text-decoration: none; font-size: 0.75rem;
+  text-transform: uppercase; letter-spacing: 1px; border-radius: 20px;
+  transition: all 0.3s;
+}
+.subcat-nav a:hover {
+  background: var(--gold); color: var(--black); border-color: var(--gold);
+}
+
+/* BUSCADOR GLOBAL */
+.search-box {
+  position: relative; display: flex; align-items: center;
+}
+.search-box input {
+  background: rgba(255,255,255,0.08); border: 1px solid rgba(197,160,89,0.2);
+  border-radius: 25px; padding: 0.5rem 2.5rem 0.5rem 1rem;
+  color: var(--light); font-family: 'Montserrat', sans-serif; font-size: 0.8rem;
+  width: 180px; transition: all 0.3s;
+}
+.search-box input:focus {
+  outline: none; border-color: var(--gold); width: 240px; background: rgba(255,255,255,0.12);
+}
+.search-box input::placeholder { color: rgba(245,245,245,0.4); }
+.search-box button {
+  position: absolute; right: 8px; background: none; border: none;
+  color: var(--gold); cursor: pointer; font-size: 1rem;
+}
+.search-dropdown {
+  position: absolute; top: calc(100% + 8px); right: 0;
+  width: 320px; max-height: 400px; overflow-y: auto;
+  background: var(--dark); border: 1px solid rgba(197,160,89,0.3);
+  border-radius: 12px; box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+  display: none; z-index: 1001;
+}
+.search-dropdown.active { display: block; }
+.search-item {
+  display: flex; align-items: center; gap: 0.8rem;
+  padding: 0.7rem 1rem; text-decoration: none;
+  border-bottom: 1px solid rgba(197,160,89,0.08);
+  transition: background 0.2s;
+}
+.search-item:hover { background: rgba(197,160,89,0.1); }
+.search-item img {
+  width: 45px; height: 45px; object-fit: cover; border-radius: 6px;
+}
+.search-item-info { flex: 1; }
+.search-item-name {
+  color: var(--white); font-size: 0.8rem; font-weight: 600; display: block;
+}
+.search-item-cat {
+  color: rgba(245,245,245,0.5); font-size: 0.7rem; display: block;
+}
+.search-empty {
+  padding: 1.5rem; text-align: center; color: rgba(245,245,245,0.5); font-size: 0.85rem;
+}
+@media (max-width: 768px) {
+  .search-box input { width: 140px; }
+  .search-box input:focus { width: 180px; }
+  .search-dropdown { width: 280px; right: -40px; }
+}
+
+/* WHATSAPP BOTÓN EN PRODUCTO */
+.product-actions {
+  display: flex; gap: 0.5rem; justify-content: center; flex-wrap: wrap; margin-top: 0.5rem;
+}
+.btn-whatsapp {
+  display: inline-flex; align-items: center; gap: 0.3rem;
+  padding: 0.5rem 1rem; background: #25D366; color: white;
+  font-size: 0.7rem; font-weight: 700; letter-spacing: 1px;
+  text-transform: uppercase; text-decoration: none; border-radius: 4px;
+  transition: all 0.3s;
+}
+.btn-whatsapp:hover { background: #1ebe57; transform: scale(1.05); }
+
+/* LIGHTBOX */
+.lightbox {
+  position: fixed; inset: 0; z-index: 10000;
+  background: rgba(0,0,0,0.95);
+  display: none; align-items: center; justify-content: center;
+  backdrop-filter: blur(10px);
+}
+.lightbox.active { display: flex; }
+.lightbox img {
+  max-width: 90vw; max-height: 85vh; object-fit: contain;
+  border-radius: 8px; box-shadow: 0 20px 60px rgba(0,0,0,0.8);
+}
+.lightbox-close {
+  position: absolute; top: 20px; right: 30px;
+  background: none; border: none; color: var(--white);
+  font-size: 2.5rem; cursor: pointer; transition: color 0.3s;
+}
+.lightbox-close:hover { color: var(--gold); }
+.lightbox-caption {
+  position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%);
+  background: rgba(15,15,15,0.8); padding: 0.6rem 1.5rem;
+  border-radius: 20px; color: var(--gold); font-size: 0.9rem;
+  border: 1px solid rgba(197,160,89,0.3);
+}
+.product-gallery { cursor: pointer; }
+
+/* FACEBOOK LINK */
+.footer-social {
+  display: flex; justify-content: center; gap: 1rem; margin: 1rem 0;
+}
+.footer-social a {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 42px; height: 42px; border-radius: 50%;
+  border: 1px solid rgba(197,160,89,0.3); color: var(--gold);
+  text-decoration: none; font-size: 1.2rem; transition: all 0.3s;
+}
+.footer-social a:hover {
+  background: var(--gold); color: var(--black); border-color: var(--gold);
+}
+
 /* HERO CATEGORIA CON IMAGEN DE FONDO */
 .hero-cat-bg {
   position: relative;
@@ -1176,6 +1299,11 @@ def generate_header(current_page='index'):
       <a href="index.html" class="logo"><img src="LOGO ADIS.png" alt="ADIS Logo"></a>
       <nav class="desktop-nav">
         {nav_links}
+        <div class="search-box">
+          <input type="text" id="searchInput" placeholder="Buscar producto..." autocomplete="off">
+          <button onclick="performSearch()">🔍</button>
+          <div class="search-dropdown" id="searchDropdown"></div>
+        </div>
       </nav>
       <button class="menu-btn" onclick="toggleMenu()">☰</button>
     </div>
@@ -1187,6 +1315,11 @@ def generate_header(current_page='index'):
     <a href="index.html#categorias" onclick="toggleMenu()">Catálogo</a>
     <a href="proyectos.html" onclick="toggleMenu()">Proyectos</a>
     <a href="contacto.html" onclick="toggleMenu()">Contacto</a>
+    <div class="search-box" style="margin-top:1rem;">
+      <input type="text" id="searchInputMobile" placeholder="Buscar producto..." autocomplete="off" style="width:220px;">
+      <button onclick="performSearchMobile()">🔍</button>
+      <div class="search-dropdown" id="searchDropdownMobile"></div>
+    </div>
   </div>
 '''
 
@@ -1315,6 +1448,76 @@ def generate_footer():
     })();
   </script>
   <script>''' + PARTICLES_JS + '''</script>
+
+  <!-- Lightbox Modal -->
+  <div class="lightbox" id="lightbox" onclick="closeLightbox(event)">
+    <button class="lightbox-close" onclick="closeLightbox(event)">✕</button>
+    <img id="lightboxImg" src="" alt="">
+    <div class="lightbox-caption" id="lightboxCaption"></div>
+  </div>
+
+  <script>
+    // Lightbox
+    function openLightbox(src, caption) {
+      const lb = document.getElementById('lightbox');
+      const img = document.getElementById('lightboxImg');
+      const cap = document.getElementById('lightboxCaption');
+      img.src = src;
+      cap.textContent = caption || '';
+      lb.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeLightbox(e) {
+      if (e && e.target !== e.currentTarget && !e.target.classList.contains('lightbox-close')) return;
+      document.getElementById('lightbox').classList.remove('active');
+      document.body.style.overflow = '';
+    }
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') closeLightbox();
+    });
+
+    // Buscador global
+    let allProducts = [];
+    fetch('products.json')
+      .then(r => r.json())
+      .then(data => { allProducts = data; })
+      .catch(() => {});
+    function performSearch() {
+      const input = document.getElementById('searchInput');
+      const dropdown = document.getElementById('searchDropdown');
+      doSearch(input.value, dropdown);
+    }
+    function performSearchMobile() {
+      const input = document.getElementById('searchInputMobile');
+      const dropdown = document.getElementById('searchDropdownMobile');
+      doSearch(input.value, dropdown);
+    }
+    function doSearch(query, dropdown) {
+      if (!query || query.length < 2) { dropdown.classList.remove('active'); return; }
+      const q = query.toLowerCase();
+      const results = allProducts.filter(p => p.name.toLowerCase().includes(q)).slice(0, 8);
+      if (results.length === 0) {
+        dropdown.innerHTML = '<div class="search-empty">No se encontraron productos</div>';
+      } else {
+        dropdown.innerHTML = results.map(p => `
+          <a href="${p.url}" class="search-item" onclick="document.getElementById('searchDropdown').classList.remove('active');var m=document.getElementById('searchDropdownMobile');if(m)m.classList.remove('active');">
+            <img src="${p.thumb}" alt="${p.name}">
+            <div class="search-item-info">
+              <span class="search-item-name">${p.name}</span>
+              <span class="search-item-cat">${p.category}${p.subcategory ? ' / ' + p.subcategory : ''}</span>
+            </div>
+          </a>
+        `).join('');
+      }
+      dropdown.classList.add('active');
+    }
+    document.addEventListener('click', function(e) {
+      const sdd = document.getElementById('searchDropdown');
+      const sdm = document.getElementById('searchDropdownMobile');
+      if (sdd && !e.target.closest('.search-box')) sdd.classList.remove('active');
+      if (sdm && !e.target.closest('.search-box')) sdm.classList.remove('active');
+    });
+  </script>
 '''
     return f'''  <footer>
     <div class="footer-logo"><img src="LOGO ADIS.png" alt="ADIS Logo"></div>
@@ -1324,6 +1527,10 @@ def generate_footer():
       {CONTACTO['ubicacion']}<br>
       Tel. MX: {CONTACTO['tel_mx']} · Tel. USA: {CONTACTO['tel_usa']}<br>
       {CONTACTO['email']}
+    </div>
+    <div class="footer-social">
+      <a href="https://wa.me/{CONTACTO['whatsapp']}?text={CONTACTO['whatsapp_msg'].replace(' ', '%20')}" target="_blank" title="WhatsApp">💬</a>
+      <a href="{CONTACTO['facebook']}" target="_blank" title="Facebook">📘</a>
     </div>
     <div class="copyright">© 2026 ADIS DISEÑO & REMODELACIÓN. TODOS LOS DERECHOS RESERVADOS.</div>
   </footer>
@@ -1484,6 +1691,11 @@ def generate_contacto():
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Contacto | ADIS Diseño & Remodelación</title>
   <meta name="description" content="Contacta a ADIS Diseño & Remodelación. WhatsApp, teléfono MX, teléfono USA y correo electrónico.">
+  <meta property="og:title" content="Contacto | ADIS Diseño & Remodelación">
+  <meta property="og:description" content="Contacta a ADIS Diseño & Remodelación. WhatsApp, teléfono MX, teléfono USA y correo electrónico.">
+  <meta property="og:image" content="https://anibru300.github.io/catalogo-adis/LOGO%20ADIS.png">
+  <meta property="og:url" content="https://anibru300.github.io/catalogo-adis/contacto.html">
+  <meta property="og:type" content="website">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
@@ -1522,6 +1734,11 @@ def generate_contacto():
         <h3>Ubicación</h3>
         <p>{CONTACTO['ubicacion']}</p>
       </div>
+      <div class="contact-card">
+        <div class="icon">📘</div>
+        <h3>Facebook</h3>
+        <a href="{CONTACTO['facebook']}" target="_blank">Visitar página</a>
+      </div>
     </div>
     <div style="text-align: center; margin-top: 3rem; max-width: 900px; margin: 3rem auto 0;">
       <div style="border-radius: 8px; overflow: hidden; border: 1px solid rgba(197,160,89,0.2); margin-bottom: 1.5rem;">
@@ -1553,6 +1770,17 @@ def generate_category_page(cat, categories):
     elif cat['direct_products']:
         hero_bg = f"img/{cat['slug']}/{cat['direct_products'][0]}"
 
+    # Índice de subcategorías
+    subcat_nav_links = ''
+    for sub in cat['subcategories']:
+        if sub['products']:
+            sub_slug = sub['slug']
+            sub_name = sub['name']
+            subcat_nav_links += f'<a href="#{sub_slug}">{sub_name}</a>' + '\n    '
+    subcat_nav_html = f'''  <div class="subcat-nav">
+    {subcat_nav_links}</div>
+''' if subcat_nav_links else ''
+
     # Construir secciones de subcategorías
     subcat_sections = ''
     for sub in cat['subcategories']:
@@ -1568,12 +1796,15 @@ def generate_category_page(cat, categories):
             prod_name = os.path.splitext(prod_file)[0]
             mailto = mailto_link(prod_name, cat['name'], sub['name'])
             products_html += f'''      <div class="product-card reveal">
-        <div class="product-gallery">
+        <div class="product-gallery" onclick="openLightbox('img/{cat['slug']}/{sub['slug']}/{prod_file}', '{prod_name}')">
           <img src="img/{cat['slug']}/{sub['slug']}/{prod_file}" alt="{prod_name}" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">{prod_name}</div>
-          <a href="{mailto}" class="btn-cotizar">Solicitar Cotización</a>
+          <div class="product-actions">
+            <a href="{mailto}" class="btn-cotizar">Solicitar Cotización</a>
+            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20{prod_name.replace(' ', '%20')}%20de%20la%20categoría%20{cat['name'].replace(' ', '%20')}%20/%20subcategoría%20{sub['name'].replace(' ', '%20')}" class="btn-whatsapp" target="_blank">WhatsApp</a>
+          </div>
         </div>
       </div>
 '''
@@ -1597,12 +1828,15 @@ def generate_category_page(cat, categories):
             prod_name = os.path.splitext(prod_file)[0]
             mailto = mailto_link(prod_name, cat['name'])
             direct_products_html += f'''      <div class="product-card reveal">
-        <div class="product-gallery">
+        <div class="product-gallery" onclick="openLightbox('img/{cat['slug']}/{prod_file}', '{prod_name}')">
           <img src="img/{cat['slug']}/{prod_file}" alt="{prod_name}" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">{prod_name}</div>
-          <a href="{mailto}" class="btn-cotizar">Solicitar Cotización</a>
+          <div class="product-actions">
+            <a href="{mailto}" class="btn-cotizar">Solicitar Cotización</a>
+            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20{prod_name.replace(' ', '%20')}%20de%20la%20categoría%20{cat['name'].replace(' ', '%20')}" class="btn-whatsapp" target="_blank">WhatsApp</a>
+          </div>
         </div>
       </div>
 '''
@@ -1630,6 +1864,11 @@ def generate_category_page(cat, categories):
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{cat['name']} | ADIS Catálogo</title>
   <meta name="description" content="{cat['name']} - ADIS Diseño & Remodelación. Explora nuestros productos y solicita tu cotización.">
+  <meta property="og:title" content="{cat['name']} | ADIS Catálogo">
+  <meta property="og:description" content="{cat['name']} - ADIS Diseño & Remodelación. Explora nuestros productos y solicita tu cotización.">
+  <meta property="og:image" content="{hero_bg}">
+  <meta property="og:url" content="https://anibru300.github.io/catalogo-adis/{cat['filename']}">
+  <meta property="og:type" content="website">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
@@ -1645,7 +1884,7 @@ def generate_category_page(cat, categories):
     </div>
   </section>
 
-{subcat_sections}
+{subcat_nav_html}{subcat_sections}
 {direct_section}
 
   <section class="section-wrap" style="padding-top: 1rem;">
@@ -1912,6 +2151,11 @@ def generate_proyectos():
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Proyectos Reales | ADIS Diseño & Remodelación</title>
   <meta name="description" content="Galería de proyectos reales de ADIS Diseño & Remodelación. Antes y después, remodelaciones de interiores y exteriores.">
+  <meta property="og:title" content="Proyectos Reales | ADIS Diseño & Remodelación">
+  <meta property="og:description" content="Galería de proyectos reales de ADIS Diseño & Remodelación. Antes y después, remodelaciones de interiores y exteriores.">
+  <meta property="og:image" content="media/despues.jpg">
+  <meta property="og:url" content="https://anibru300.github.io/catalogo-adis/proyectos.html">
+  <meta property="og:type" content="website">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
   <style>
@@ -2066,6 +2310,30 @@ def main():
 
     for cat in categories:
         generate_category_page(cat, categories)
+
+    # Generar products.json para el buscador
+    products_data = []
+    for cat in categories:
+        for sub in cat['subcategories']:
+            for prod in sub['products']:
+                products_data.append({
+                    'name': os.path.splitext(prod)[0],
+                    'category': cat['name'],
+                    'subcategory': sub['name'],
+                    'url': f"{cat['filename']}#{sub['slug']}",
+                    'thumb': f"img/{cat['slug']}/{sub['slug']}/{prod}"
+                })
+        for prod in cat['direct_products']:
+            products_data.append({
+                'name': os.path.splitext(prod)[0],
+                'category': cat['name'],
+                'subcategory': None,
+                'url': cat['filename'],
+                'thumb': f"img/{cat['slug']}/{prod}"
+            })
+    with open(BASE_DIR / 'products.json', 'w', encoding='utf-8') as f:
+        json.dump(products_data, f, ensure_ascii=False, indent=2)
+    print(f"\nproducts.json generado con {len(products_data)} productos")
 
     print("\nSitio web generado exitosamente en:", BASE_DIR)
     print(f"   - {len(categories)} categorias")

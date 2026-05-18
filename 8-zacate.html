@@ -5,6 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Zacate | ADIS Catálogo</title>
   <meta name="description" content="Zacate - ADIS Diseño & Remodelación. Explora nuestros productos y solicita tu cotización.">
+  <meta property="og:title" content="Zacate | ADIS Catálogo">
+  <meta property="og:description" content="Zacate - ADIS Diseño & Remodelación. Explora nuestros productos y solicita tu cotización.">
+  <meta property="og:image" content="img/8-zacate/81-follaje-sintetico/AMAZONAS-A.jpg">
+  <meta property="og:url" content="https://anibru300.github.io/catalogo-adis/8-zacate.html">
+  <meta property="og:type" content="website">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
@@ -18,6 +23,11 @@
         <a href="index.html#categorias">Catálogo</a>
         <a href="proyectos.html">Proyectos</a>
         <a href="contacto.html">Contacto</a>
+        <div class="search-box">
+          <input type="text" id="searchInput" placeholder="Buscar producto..." autocomplete="off">
+          <button onclick="performSearch()">🔍</button>
+          <div class="search-dropdown" id="searchDropdown"></div>
+        </div>
       </nav>
       <button class="menu-btn" onclick="toggleMenu()">☰</button>
     </div>
@@ -29,6 +39,11 @@
     <a href="index.html#categorias" onclick="toggleMenu()">Catálogo</a>
     <a href="proyectos.html" onclick="toggleMenu()">Proyectos</a>
     <a href="contacto.html" onclick="toggleMenu()">Contacto</a>
+    <div class="search-box" style="margin-top:1rem;">
+      <input type="text" id="searchInputMobile" placeholder="Buscar producto..." autocomplete="off" style="width:220px;">
+      <button onclick="performSearchMobile()">🔍</button>
+      <div class="search-dropdown" id="searchDropdownMobile"></div>
+    </div>
   </div>
 
 
@@ -40,6 +55,10 @@
     </div>
   </section>
 
+  <div class="subcat-nav">
+    <a href="#81-follaje-sintetico">Follaje Sintetico</a>
+    <a href="#82-pasto-recreativo">Pasto Recreativo</a>
+    </div>
   <section class="subcat-section reveal" id="81-follaje-sintetico">
     <div class="subcat-header">
       <h3>Follaje Sintetico</h3>
@@ -55,174 +74,231 @@
     </div>
     <div class="products-grid">
       <div class="product-card reveal">
-        <div class="product-gallery">
+        <div class="product-gallery" onclick="openLightbox('img/8-zacate/81-follaje-sintetico/AMAZONAS-A.jpg', 'AMAZONAS-A')">
           <img src="img/8-zacate/81-follaje-sintetico/AMAZONAS-A.jpg" alt="AMAZONAS-A" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">AMAZONAS-A</div>
-          <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para AMAZONAS-A&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: AMAZONAS-A%0D%0ACategoria: Zacate%0D%0ASubcategoria: Follaje Sintetico%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+          <div class="product-actions">
+            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para AMAZONAS-A&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: AMAZONAS-A%0D%0ACategoria: Zacate%0D%0ASubcategoria: Follaje Sintetico%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20AMAZONAS-A%20de%20la%20categoría%20Zacate%20/%20subcategoría%20Follaje%20Sintetico" class="btn-whatsapp" target="_blank">WhatsApp</a>
+          </div>
         </div>
       </div>
       <div class="product-card reveal">
-        <div class="product-gallery">
+        <div class="product-gallery" onclick="openLightbox('img/8-zacate/81-follaje-sintetico/AMAZONAS-B.jpg', 'AMAZONAS-B')">
           <img src="img/8-zacate/81-follaje-sintetico/AMAZONAS-B.jpg" alt="AMAZONAS-B" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">AMAZONAS-B</div>
-          <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para AMAZONAS-B&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: AMAZONAS-B%0D%0ACategoria: Zacate%0D%0ASubcategoria: Follaje Sintetico%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+          <div class="product-actions">
+            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para AMAZONAS-B&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: AMAZONAS-B%0D%0ACategoria: Zacate%0D%0ASubcategoria: Follaje Sintetico%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20AMAZONAS-B%20de%20la%20categoría%20Zacate%20/%20subcategoría%20Follaje%20Sintetico" class="btn-whatsapp" target="_blank">WhatsApp</a>
+          </div>
         </div>
       </div>
       <div class="product-card reveal">
-        <div class="product-gallery">
+        <div class="product-gallery" onclick="openLightbox('img/8-zacate/81-follaje-sintetico/AMAZONAS-C.jpg', 'AMAZONAS-C')">
           <img src="img/8-zacate/81-follaje-sintetico/AMAZONAS-C.jpg" alt="AMAZONAS-C" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">AMAZONAS-C</div>
-          <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para AMAZONAS-C&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: AMAZONAS-C%0D%0ACategoria: Zacate%0D%0ASubcategoria: Follaje Sintetico%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+          <div class="product-actions">
+            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para AMAZONAS-C&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: AMAZONAS-C%0D%0ACategoria: Zacate%0D%0ASubcategoria: Follaje Sintetico%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20AMAZONAS-C%20de%20la%20categoría%20Zacate%20/%20subcategoría%20Follaje%20Sintetico" class="btn-whatsapp" target="_blank">WhatsApp</a>
+          </div>
         </div>
       </div>
       <div class="product-card reveal">
-        <div class="product-gallery">
+        <div class="product-gallery" onclick="openLightbox('img/8-zacate/81-follaje-sintetico/AMSTERDAM.jpg', 'AMSTERDAM')">
           <img src="img/8-zacate/81-follaje-sintetico/AMSTERDAM.jpg" alt="AMSTERDAM" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">AMSTERDAM</div>
-          <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para AMSTERDAM&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: AMSTERDAM%0D%0ACategoria: Zacate%0D%0ASubcategoria: Follaje Sintetico%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+          <div class="product-actions">
+            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para AMSTERDAM&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: AMSTERDAM%0D%0ACategoria: Zacate%0D%0ASubcategoria: Follaje Sintetico%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20AMSTERDAM%20de%20la%20categoría%20Zacate%20/%20subcategoría%20Follaje%20Sintetico" class="btn-whatsapp" target="_blank">WhatsApp</a>
+          </div>
         </div>
       </div>
       <div class="product-card reveal">
-        <div class="product-gallery">
+        <div class="product-gallery" onclick="openLightbox('img/8-zacate/81-follaje-sintetico/ARRAYAN AMARILLO.jpg', 'ARRAYAN AMARILLO')">
           <img src="img/8-zacate/81-follaje-sintetico/ARRAYAN AMARILLO.jpg" alt="ARRAYAN AMARILLO" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">ARRAYAN AMARILLO</div>
-          <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para ARRAYAN AMARILLO&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: ARRAYAN AMARILLO%0D%0ACategoria: Zacate%0D%0ASubcategoria: Follaje Sintetico%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+          <div class="product-actions">
+            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para ARRAYAN AMARILLO&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: ARRAYAN AMARILLO%0D%0ACategoria: Zacate%0D%0ASubcategoria: Follaje Sintetico%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20ARRAYAN%20AMARILLO%20de%20la%20categoría%20Zacate%20/%20subcategoría%20Follaje%20Sintetico" class="btn-whatsapp" target="_blank">WhatsApp</a>
+          </div>
         </div>
       </div>
       <div class="product-card reveal">
-        <div class="product-gallery">
+        <div class="product-gallery" onclick="openLightbox('img/8-zacate/81-follaje-sintetico/ARRAYAN MORADO.jpg', 'ARRAYAN MORADO')">
           <img src="img/8-zacate/81-follaje-sintetico/ARRAYAN MORADO.jpg" alt="ARRAYAN MORADO" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">ARRAYAN MORADO</div>
-          <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para ARRAYAN MORADO&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: ARRAYAN MORADO%0D%0ACategoria: Zacate%0D%0ASubcategoria: Follaje Sintetico%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+          <div class="product-actions">
+            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para ARRAYAN MORADO&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: ARRAYAN MORADO%0D%0ACategoria: Zacate%0D%0ASubcategoria: Follaje Sintetico%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20ARRAYAN%20MORADO%20de%20la%20categoría%20Zacate%20/%20subcategoría%20Follaje%20Sintetico" class="btn-whatsapp" target="_blank">WhatsApp</a>
+          </div>
         </div>
       </div>
       <div class="product-card reveal">
-        <div class="product-gallery">
+        <div class="product-gallery" onclick="openLightbox('img/8-zacate/81-follaje-sintetico/ARRAYAN NATURAL.jpg', 'ARRAYAN NATURAL')">
           <img src="img/8-zacate/81-follaje-sintetico/ARRAYAN NATURAL.jpg" alt="ARRAYAN NATURAL" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">ARRAYAN NATURAL</div>
-          <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para ARRAYAN NATURAL&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: ARRAYAN NATURAL%0D%0ACategoria: Zacate%0D%0ASubcategoria: Follaje Sintetico%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+          <div class="product-actions">
+            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para ARRAYAN NATURAL&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: ARRAYAN NATURAL%0D%0ACategoria: Zacate%0D%0ASubcategoria: Follaje Sintetico%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20ARRAYAN%20NATURAL%20de%20la%20categoría%20Zacate%20/%20subcategoría%20Follaje%20Sintetico" class="btn-whatsapp" target="_blank">WhatsApp</a>
+          </div>
         </div>
       </div>
       <div class="product-card reveal">
-        <div class="product-gallery">
+        <div class="product-gallery" onclick="openLightbox('img/8-zacate/81-follaje-sintetico/ARRAYAN ROJO.jpg', 'ARRAYAN ROJO')">
           <img src="img/8-zacate/81-follaje-sintetico/ARRAYAN ROJO.jpg" alt="ARRAYAN ROJO" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">ARRAYAN ROJO</div>
-          <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para ARRAYAN ROJO&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: ARRAYAN ROJO%0D%0ACategoria: Zacate%0D%0ASubcategoria: Follaje Sintetico%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+          <div class="product-actions">
+            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para ARRAYAN ROJO&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: ARRAYAN ROJO%0D%0ACategoria: Zacate%0D%0ASubcategoria: Follaje Sintetico%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20ARRAYAN%20ROJO%20de%20la%20categoría%20Zacate%20/%20subcategoría%20Follaje%20Sintetico" class="btn-whatsapp" target="_blank">WhatsApp</a>
+          </div>
         </div>
       </div>
       <div class="product-card reveal">
-        <div class="product-gallery">
+        <div class="product-gallery" onclick="openLightbox('img/8-zacate/81-follaje-sintetico/ARRAYAN VERDE.jpg', 'ARRAYAN VERDE')">
           <img src="img/8-zacate/81-follaje-sintetico/ARRAYAN VERDE.jpg" alt="ARRAYAN VERDE" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">ARRAYAN VERDE</div>
-          <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para ARRAYAN VERDE&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: ARRAYAN VERDE%0D%0ACategoria: Zacate%0D%0ASubcategoria: Follaje Sintetico%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+          <div class="product-actions">
+            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para ARRAYAN VERDE&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: ARRAYAN VERDE%0D%0ACategoria: Zacate%0D%0ASubcategoria: Follaje Sintetico%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20ARRAYAN%20VERDE%20de%20la%20categoría%20Zacate%20/%20subcategoría%20Follaje%20Sintetico" class="btn-whatsapp" target="_blank">WhatsApp</a>
+          </div>
         </div>
       </div>
       <div class="product-card reveal">
-        <div class="product-gallery">
+        <div class="product-gallery" onclick="openLightbox('img/8-zacate/81-follaje-sintetico/BRUSELAS.jpg', 'BRUSELAS')">
           <img src="img/8-zacate/81-follaje-sintetico/BRUSELAS.jpg" alt="BRUSELAS" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">BRUSELAS</div>
-          <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para BRUSELAS&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: BRUSELAS%0D%0ACategoria: Zacate%0D%0ASubcategoria: Follaje Sintetico%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+          <div class="product-actions">
+            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para BRUSELAS&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: BRUSELAS%0D%0ACategoria: Zacate%0D%0ASubcategoria: Follaje Sintetico%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20BRUSELAS%20de%20la%20categoría%20Zacate%20/%20subcategoría%20Follaje%20Sintetico" class="btn-whatsapp" target="_blank">WhatsApp</a>
+          </div>
         </div>
       </div>
       <div class="product-card reveal">
-        <div class="product-gallery">
+        <div class="product-gallery" onclick="openLightbox('img/8-zacate/81-follaje-sintetico/GRECIA.jpg', 'GRECIA')">
           <img src="img/8-zacate/81-follaje-sintetico/GRECIA.jpg" alt="GRECIA" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">GRECIA</div>
-          <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para GRECIA&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: GRECIA%0D%0ACategoria: Zacate%0D%0ASubcategoria: Follaje Sintetico%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+          <div class="product-actions">
+            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para GRECIA&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: GRECIA%0D%0ACategoria: Zacate%0D%0ASubcategoria: Follaje Sintetico%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20GRECIA%20de%20la%20categoría%20Zacate%20/%20subcategoría%20Follaje%20Sintetico" class="btn-whatsapp" target="_blank">WhatsApp</a>
+          </div>
         </div>
       </div>
       <div class="product-card reveal">
-        <div class="product-gallery">
+        <div class="product-gallery" onclick="openLightbox('img/8-zacate/81-follaje-sintetico/JAZMIN.jpg', 'JAZMIN')">
           <img src="img/8-zacate/81-follaje-sintetico/JAZMIN.jpg" alt="JAZMIN" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">JAZMIN</div>
-          <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para JAZMIN&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: JAZMIN%0D%0ACategoria: Zacate%0D%0ASubcategoria: Follaje Sintetico%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+          <div class="product-actions">
+            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para JAZMIN&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: JAZMIN%0D%0ACategoria: Zacate%0D%0ASubcategoria: Follaje Sintetico%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20JAZMIN%20de%20la%20categoría%20Zacate%20/%20subcategoría%20Follaje%20Sintetico" class="btn-whatsapp" target="_blank">WhatsApp</a>
+          </div>
         </div>
       </div>
       <div class="product-card reveal">
-        <div class="product-gallery">
+        <div class="product-gallery" onclick="openLightbox('img/8-zacate/81-follaje-sintetico/LAUREL DORADO.jpg', 'LAUREL DORADO')">
           <img src="img/8-zacate/81-follaje-sintetico/LAUREL DORADO.jpg" alt="LAUREL DORADO" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">LAUREL DORADO</div>
-          <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para LAUREL DORADO&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: LAUREL DORADO%0D%0ACategoria: Zacate%0D%0ASubcategoria: Follaje Sintetico%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+          <div class="product-actions">
+            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para LAUREL DORADO&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: LAUREL DORADO%0D%0ACategoria: Zacate%0D%0ASubcategoria: Follaje Sintetico%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20LAUREL%20DORADO%20de%20la%20categoría%20Zacate%20/%20subcategoría%20Follaje%20Sintetico" class="btn-whatsapp" target="_blank">WhatsApp</a>
+          </div>
         </div>
       </div>
       <div class="product-card reveal">
-        <div class="product-gallery">
+        <div class="product-gallery" onclick="openLightbox('img/8-zacate/81-follaje-sintetico/MENTA.jpg', 'MENTA')">
           <img src="img/8-zacate/81-follaje-sintetico/MENTA.jpg" alt="MENTA" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">MENTA</div>
-          <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para MENTA&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: MENTA%0D%0ACategoria: Zacate%0D%0ASubcategoria: Follaje Sintetico%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+          <div class="product-actions">
+            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para MENTA&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: MENTA%0D%0ACategoria: Zacate%0D%0ASubcategoria: Follaje Sintetico%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20MENTA%20de%20la%20categoría%20Zacate%20/%20subcategoría%20Follaje%20Sintetico" class="btn-whatsapp" target="_blank">WhatsApp</a>
+          </div>
         </div>
       </div>
       <div class="product-card reveal">
-        <div class="product-gallery">
+        <div class="product-gallery" onclick="openLightbox('img/8-zacate/81-follaje-sintetico/MILAN.jpg', 'MILAN')">
           <img src="img/8-zacate/81-follaje-sintetico/MILAN.jpg" alt="MILAN" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">MILAN</div>
-          <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para MILAN&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: MILAN%0D%0ACategoria: Zacate%0D%0ASubcategoria: Follaje Sintetico%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+          <div class="product-actions">
+            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para MILAN&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: MILAN%0D%0ACategoria: Zacate%0D%0ASubcategoria: Follaje Sintetico%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20MILAN%20de%20la%20categoría%20Zacate%20/%20subcategoría%20Follaje%20Sintetico" class="btn-whatsapp" target="_blank">WhatsApp</a>
+          </div>
         </div>
       </div>
       <div class="product-card reveal">
-        <div class="product-gallery">
+        <div class="product-gallery" onclick="openLightbox('img/8-zacate/81-follaje-sintetico/PERSIA.jpg', 'PERSIA')">
           <img src="img/8-zacate/81-follaje-sintetico/PERSIA.jpg" alt="PERSIA" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">PERSIA</div>
-          <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para PERSIA&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: PERSIA%0D%0ACategoria: Zacate%0D%0ASubcategoria: Follaje Sintetico%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+          <div class="product-actions">
+            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para PERSIA&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: PERSIA%0D%0ACategoria: Zacate%0D%0ASubcategoria: Follaje Sintetico%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20PERSIA%20de%20la%20categoría%20Zacate%20/%20subcategoría%20Follaje%20Sintetico" class="btn-whatsapp" target="_blank">WhatsApp</a>
+          </div>
         </div>
       </div>
       <div class="product-card reveal">
-        <div class="product-gallery">
+        <div class="product-gallery" onclick="openLightbox('img/8-zacate/81-follaje-sintetico/SEVILLA.jpg', 'SEVILLA')">
           <img src="img/8-zacate/81-follaje-sintetico/SEVILLA.jpg" alt="SEVILLA" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">SEVILLA</div>
-          <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para SEVILLA&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: SEVILLA%0D%0ACategoria: Zacate%0D%0ASubcategoria: Follaje Sintetico%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+          <div class="product-actions">
+            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para SEVILLA&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: SEVILLA%0D%0ACategoria: Zacate%0D%0ASubcategoria: Follaje Sintetico%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20SEVILLA%20de%20la%20categoría%20Zacate%20/%20subcategoría%20Follaje%20Sintetico" class="btn-whatsapp" target="_blank">WhatsApp</a>
+          </div>
         </div>
       </div>
       <div class="product-card reveal">
-        <div class="product-gallery">
+        <div class="product-gallery" onclick="openLightbox('img/8-zacate/81-follaje-sintetico/SIBERIA.jpg', 'SIBERIA')">
           <img src="img/8-zacate/81-follaje-sintetico/SIBERIA.jpg" alt="SIBERIA" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">SIBERIA</div>
-          <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para SIBERIA&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: SIBERIA%0D%0ACategoria: Zacate%0D%0ASubcategoria: Follaje Sintetico%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+          <div class="product-actions">
+            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para SIBERIA&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: SIBERIA%0D%0ACategoria: Zacate%0D%0ASubcategoria: Follaje Sintetico%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20SIBERIA%20de%20la%20categoría%20Zacate%20/%20subcategoría%20Follaje%20Sintetico" class="btn-whatsapp" target="_blank">WhatsApp</a>
+          </div>
         </div>
       </div>
       <div class="product-card reveal">
-        <div class="product-gallery">
+        <div class="product-gallery" onclick="openLightbox('img/8-zacate/81-follaje-sintetico/TREBOL.jpg', 'TREBOL')">
           <img src="img/8-zacate/81-follaje-sintetico/TREBOL.jpg" alt="TREBOL" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">TREBOL</div>
-          <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para TREBOL&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: TREBOL%0D%0ACategoria: Zacate%0D%0ASubcategoria: Follaje Sintetico%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+          <div class="product-actions">
+            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para TREBOL&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: TREBOL%0D%0ACategoria: Zacate%0D%0ASubcategoria: Follaje Sintetico%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20TREBOL%20de%20la%20categoría%20Zacate%20/%20subcategoría%20Follaje%20Sintetico" class="btn-whatsapp" target="_blank">WhatsApp</a>
+          </div>
         </div>
       </div>
     </div>
@@ -242,93 +318,123 @@
     </div>
     <div class="products-grid">
       <div class="product-card reveal">
-        <div class="product-gallery">
+        <div class="product-gallery" onclick="openLightbox('img/8-zacate/82-pasto-recreativo/TG-07-ARUBA.jpg', 'TG-07-ARUBA')">
           <img src="img/8-zacate/82-pasto-recreativo/TG-07-ARUBA.jpg" alt="TG-07-ARUBA" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">TG-07-ARUBA</div>
-          <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para TG-07-ARUBA&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: TG-07-ARUBA%0D%0ACategoria: Zacate%0D%0ASubcategoria: Pasto Recreativo%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+          <div class="product-actions">
+            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para TG-07-ARUBA&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: TG-07-ARUBA%0D%0ACategoria: Zacate%0D%0ASubcategoria: Pasto Recreativo%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20TG-07-ARUBA%20de%20la%20categoría%20Zacate%20/%20subcategoría%20Pasto%20Recreativo" class="btn-whatsapp" target="_blank">WhatsApp</a>
+          </div>
         </div>
       </div>
       <div class="product-card reveal">
-        <div class="product-gallery">
+        <div class="product-gallery" onclick="openLightbox('img/8-zacate/82-pasto-recreativo/TG-10-ACA.jpg', 'TG-10-ACA')">
           <img src="img/8-zacate/82-pasto-recreativo/TG-10-ACA.jpg" alt="TG-10-ACA" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">TG-10-ACA</div>
-          <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para TG-10-ACA&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: TG-10-ACA%0D%0ACategoria: Zacate%0D%0ASubcategoria: Pasto Recreativo%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+          <div class="product-actions">
+            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para TG-10-ACA&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: TG-10-ACA%0D%0ACategoria: Zacate%0D%0ASubcategoria: Pasto Recreativo%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20TG-10-ACA%20de%20la%20categoría%20Zacate%20/%20subcategoría%20Pasto%20Recreativo" class="btn-whatsapp" target="_blank">WhatsApp</a>
+          </div>
         </div>
       </div>
       <div class="product-card reveal">
-        <div class="product-gallery">
+        <div class="product-gallery" onclick="openLightbox('img/8-zacate/82-pasto-recreativo/TG-18-SUMMER.jpg', 'TG-18-SUMMER')">
           <img src="img/8-zacate/82-pasto-recreativo/TG-18-SUMMER.jpg" alt="TG-18-SUMMER" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">TG-18-SUMMER</div>
-          <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para TG-18-SUMMER&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: TG-18-SUMMER%0D%0ACategoria: Zacate%0D%0ASubcategoria: Pasto Recreativo%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+          <div class="product-actions">
+            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para TG-18-SUMMER&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: TG-18-SUMMER%0D%0ACategoria: Zacate%0D%0ASubcategoria: Pasto Recreativo%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20TG-18-SUMMER%20de%20la%20categoría%20Zacate%20/%20subcategoría%20Pasto%20Recreativo" class="btn-whatsapp" target="_blank">WhatsApp</a>
+          </div>
         </div>
       </div>
       <div class="product-card reveal">
-        <div class="product-gallery">
+        <div class="product-gallery" onclick="openLightbox('img/8-zacate/82-pasto-recreativo/TG-20-BERMUDA.jpg', 'TG-20-BERMUDA')">
           <img src="img/8-zacate/82-pasto-recreativo/TG-20-BERMUDA.jpg" alt="TG-20-BERMUDA" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">TG-20-BERMUDA</div>
-          <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para TG-20-BERMUDA&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: TG-20-BERMUDA%0D%0ACategoria: Zacate%0D%0ASubcategoria: Pasto Recreativo%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+          <div class="product-actions">
+            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para TG-20-BERMUDA&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: TG-20-BERMUDA%0D%0ACategoria: Zacate%0D%0ASubcategoria: Pasto Recreativo%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20TG-20-BERMUDA%20de%20la%20categoría%20Zacate%20/%20subcategoría%20Pasto%20Recreativo" class="btn-whatsapp" target="_blank">WhatsApp</a>
+          </div>
         </div>
       </div>
       <div class="product-card reveal">
-        <div class="product-gallery">
+        <div class="product-gallery" onclick="openLightbox('img/8-zacate/82-pasto-recreativo/TG-25-CANCUN.jpg', 'TG-25-CANCUN')">
           <img src="img/8-zacate/82-pasto-recreativo/TG-25-CANCUN.jpg" alt="TG-25-CANCUN" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">TG-25-CANCUN</div>
-          <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para TG-25-CANCUN&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: TG-25-CANCUN%0D%0ACategoria: Zacate%0D%0ASubcategoria: Pasto Recreativo%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+          <div class="product-actions">
+            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para TG-25-CANCUN&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: TG-25-CANCUN%0D%0ACategoria: Zacate%0D%0ASubcategoria: Pasto Recreativo%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20TG-25-CANCUN%20de%20la%20categoría%20Zacate%20/%20subcategoría%20Pasto%20Recreativo" class="btn-whatsapp" target="_blank">WhatsApp</a>
+          </div>
         </div>
       </div>
       <div class="product-card reveal">
-        <div class="product-gallery">
+        <div class="product-gallery" onclick="openLightbox('img/8-zacate/82-pasto-recreativo/TG-30-MAUI.jpg', 'TG-30-MAUI')">
           <img src="img/8-zacate/82-pasto-recreativo/TG-30-MAUI.jpg" alt="TG-30-MAUI" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">TG-30-MAUI</div>
-          <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para TG-30-MAUI&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: TG-30-MAUI%0D%0ACategoria: Zacate%0D%0ASubcategoria: Pasto Recreativo%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+          <div class="product-actions">
+            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para TG-30-MAUI&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: TG-30-MAUI%0D%0ACategoria: Zacate%0D%0ASubcategoria: Pasto Recreativo%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20TG-30-MAUI%20de%20la%20categoría%20Zacate%20/%20subcategoría%20Pasto%20Recreativo" class="btn-whatsapp" target="_blank">WhatsApp</a>
+          </div>
         </div>
       </div>
       <div class="product-card reveal">
-        <div class="product-gallery">
+        <div class="product-gallery" onclick="openLightbox('img/8-zacate/82-pasto-recreativo/TG-35-TULUM.jpg', 'TG-35-TULUM')">
           <img src="img/8-zacate/82-pasto-recreativo/TG-35-TULUM.jpg" alt="TG-35-TULUM" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">TG-35-TULUM</div>
-          <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para TG-35-TULUM&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: TG-35-TULUM%0D%0ACategoria: Zacate%0D%0ASubcategoria: Pasto Recreativo%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+          <div class="product-actions">
+            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para TG-35-TULUM&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: TG-35-TULUM%0D%0ACategoria: Zacate%0D%0ASubcategoria: Pasto Recreativo%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20TG-35-TULUM%20de%20la%20categoría%20Zacate%20/%20subcategoría%20Pasto%20Recreativo" class="btn-whatsapp" target="_blank">WhatsApp</a>
+          </div>
         </div>
       </div>
       <div class="product-card reveal">
-        <div class="product-gallery">
+        <div class="product-gallery" onclick="openLightbox('img/8-zacate/82-pasto-recreativo/TG-40-BALI.jpg', 'TG-40-BALI')">
           <img src="img/8-zacate/82-pasto-recreativo/TG-40-BALI.jpg" alt="TG-40-BALI" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">TG-40-BALI</div>
-          <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para TG-40-BALI&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: TG-40-BALI%0D%0ACategoria: Zacate%0D%0ASubcategoria: Pasto Recreativo%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+          <div class="product-actions">
+            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para TG-40-BALI&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: TG-40-BALI%0D%0ACategoria: Zacate%0D%0ASubcategoria: Pasto Recreativo%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20TG-40-BALI%20de%20la%20categoría%20Zacate%20/%20subcategoría%20Pasto%20Recreativo" class="btn-whatsapp" target="_blank">WhatsApp</a>
+          </div>
         </div>
       </div>
       <div class="product-card reveal">
-        <div class="product-gallery">
+        <div class="product-gallery" onclick="openLightbox('img/8-zacate/82-pasto-recreativo/TG-45-GULHI.jpg', 'TG-45-GULHI')">
           <img src="img/8-zacate/82-pasto-recreativo/TG-45-GULHI.jpg" alt="TG-45-GULHI" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">TG-45-GULHI</div>
-          <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para TG-45-GULHI&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: TG-45-GULHI%0D%0ACategoria: Zacate%0D%0ASubcategoria: Pasto Recreativo%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+          <div class="product-actions">
+            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para TG-45-GULHI&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: TG-45-GULHI%0D%0ACategoria: Zacate%0D%0ASubcategoria: Pasto Recreativo%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20TG-45-GULHI%20de%20la%20categoría%20Zacate%20/%20subcategoría%20Pasto%20Recreativo" class="btn-whatsapp" target="_blank">WhatsApp</a>
+          </div>
         </div>
       </div>
       <div class="product-card reveal">
-        <div class="product-gallery">
+        <div class="product-gallery" onclick="openLightbox('img/8-zacate/82-pasto-recreativo/TG-50-ANAKENA.jpg', 'TG-50-ANAKENA')">
           <img src="img/8-zacate/82-pasto-recreativo/TG-50-ANAKENA.jpg" alt="TG-50-ANAKENA" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">TG-50-ANAKENA</div>
-          <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para TG-50-ANAKENA&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: TG-50-ANAKENA%0D%0ACategoria: Zacate%0D%0ASubcategoria: Pasto Recreativo%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+          <div class="product-actions">
+            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para TG-50-ANAKENA&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: TG-50-ANAKENA%0D%0ACategoria: Zacate%0D%0ASubcategoria: Pasto Recreativo%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20TG-50-ANAKENA%20de%20la%20categoría%20Zacate%20/%20subcategoría%20Pasto%20Recreativo" class="btn-whatsapp" target="_blank">WhatsApp</a>
+          </div>
         </div>
       </div>
     </div>
@@ -351,6 +457,10 @@
       Nogales, Sonora · Rio Rico, AZ<br>
       Tel. MX: +52 631-192-8993 · Tel. USA: +1 (520) 839-2877<br>
       adis.remodelacion@gmail.com
+    </div>
+    <div class="footer-social">
+      <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20vi%20el%20catálogo%20y%20me%20interesa%20obtener%20información%20sobre%20sus%20productos." target="_blank" title="WhatsApp">💬</a>
+      <a href="https://www.facebook.com/p/Adis-Dise%C3%B1o-Remodelaci%C3%B3n-61579849591594/" target="_blank" title="Facebook">📘</a>
     </div>
     <div class="copyright">© 2026 ADIS DISEÑO & REMODELACIÓN. TODOS LOS DERECHOS RESERVADOS.</div>
   </footer>
@@ -546,6 +656,76 @@
   }
   animate();
 })();</script>
+
+  <!-- Lightbox Modal -->
+  <div class="lightbox" id="lightbox" onclick="closeLightbox(event)">
+    <button class="lightbox-close" onclick="closeLightbox(event)">✕</button>
+    <img id="lightboxImg" src="" alt="">
+    <div class="lightbox-caption" id="lightboxCaption"></div>
+  </div>
+
+  <script>
+    // Lightbox
+    function openLightbox(src, caption) {
+      const lb = document.getElementById('lightbox');
+      const img = document.getElementById('lightboxImg');
+      const cap = document.getElementById('lightboxCaption');
+      img.src = src;
+      cap.textContent = caption || '';
+      lb.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeLightbox(e) {
+      if (e && e.target !== e.currentTarget && !e.target.classList.contains('lightbox-close')) return;
+      document.getElementById('lightbox').classList.remove('active');
+      document.body.style.overflow = '';
+    }
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') closeLightbox();
+    });
+
+    // Buscador global
+    let allProducts = [];
+    fetch('products.json')
+      .then(r => r.json())
+      .then(data => { allProducts = data; })
+      .catch(() => {});
+    function performSearch() {
+      const input = document.getElementById('searchInput');
+      const dropdown = document.getElementById('searchDropdown');
+      doSearch(input.value, dropdown);
+    }
+    function performSearchMobile() {
+      const input = document.getElementById('searchInputMobile');
+      const dropdown = document.getElementById('searchDropdownMobile');
+      doSearch(input.value, dropdown);
+    }
+    function doSearch(query, dropdown) {
+      if (!query || query.length < 2) { dropdown.classList.remove('active'); return; }
+      const q = query.toLowerCase();
+      const results = allProducts.filter(p => p.name.toLowerCase().includes(q)).slice(0, 8);
+      if (results.length === 0) {
+        dropdown.innerHTML = '<div class="search-empty">No se encontraron productos</div>';
+      } else {
+        dropdown.innerHTML = results.map(p => `
+          <a href="${p.url}" class="search-item" onclick="document.getElementById('searchDropdown').classList.remove('active');var m=document.getElementById('searchDropdownMobile');if(m)m.classList.remove('active');">
+            <img src="${p.thumb}" alt="${p.name}">
+            <div class="search-item-info">
+              <span class="search-item-name">${p.name}</span>
+              <span class="search-item-cat">${p.category}${p.subcategory ? ' / ' + p.subcategory : ''}</span>
+            </div>
+          </a>
+        `).join('');
+      }
+      dropdown.classList.add('active');
+    }
+    document.addEventListener('click', function(e) {
+      const sdd = document.getElementById('searchDropdown');
+      const sdm = document.getElementById('searchDropdownMobile');
+      if (sdd && !e.target.closest('.search-box')) sdd.classList.remove('active');
+      if (sdm && !e.target.closest('.search-box')) sdm.classList.remove('active');
+    });
+  </script>
 
 </body>
 </html>

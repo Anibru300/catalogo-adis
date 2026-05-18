@@ -5,6 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Lambrin WPC | ADIS Catálogo</title>
   <meta name="description" content="Lambrin WPC - ADIS Diseño & Remodelación. Explora nuestros productos y solicita tu cotización.">
+  <meta property="og:title" content="Lambrin WPC | ADIS Catálogo">
+  <meta property="og:description" content="Lambrin WPC - ADIS Diseño & Remodelación. Explora nuestros productos y solicita tu cotización.">
+  <meta property="og:image" content="img/2-lambrin-wpc/21-lambrin-interior/AMANECHER.jpg">
+  <meta property="og:url" content="https://anibru300.github.io/catalogo-adis/2-lambrin-wpc.html">
+  <meta property="og:type" content="website">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
@@ -18,6 +23,11 @@
         <a href="index.html#categorias">Catálogo</a>
         <a href="proyectos.html">Proyectos</a>
         <a href="contacto.html">Contacto</a>
+        <div class="search-box">
+          <input type="text" id="searchInput" placeholder="Buscar producto..." autocomplete="off">
+          <button onclick="performSearch()">🔍</button>
+          <div class="search-dropdown" id="searchDropdown"></div>
+        </div>
       </nav>
       <button class="menu-btn" onclick="toggleMenu()">☰</button>
     </div>
@@ -29,6 +39,11 @@
     <a href="index.html#categorias" onclick="toggleMenu()">Catálogo</a>
     <a href="proyectos.html" onclick="toggleMenu()">Proyectos</a>
     <a href="contacto.html" onclick="toggleMenu()">Contacto</a>
+    <div class="search-box" style="margin-top:1rem;">
+      <input type="text" id="searchInputMobile" placeholder="Buscar producto..." autocomplete="off" style="width:220px;">
+      <button onclick="performSearchMobile()">🔍</button>
+      <div class="search-dropdown" id="searchDropdownMobile"></div>
+    </div>
   </div>
 
 
@@ -40,6 +55,13 @@
     </div>
   </section>
 
+  <div class="subcat-nav">
+    <a href="#21-lambrin-interior">Lambrin Interior</a>
+    <a href="#22-lambrin-exterior">Lambrin Exterior</a>
+    <a href="#23-desigual">Desigual</a>
+    <a href="#24-media-luna">Media luna</a>
+    <a href="#25-media-luna-ps">Media luna PS</a>
+    </div>
   <section class="subcat-section reveal" id="21-lambrin-interior">
     <div class="subcat-header">
       <h3>Lambrin Interior</h3>
@@ -55,174 +77,231 @@
     </div>
     <div class="products-grid">
       <div class="product-card reveal">
-        <div class="product-gallery">
+        <div class="product-gallery" onclick="openLightbox('img/2-lambrin-wpc/21-lambrin-interior/AMANECHER.jpg', 'AMANECHER')">
           <img src="img/2-lambrin-wpc/21-lambrin-interior/AMANECHER.jpg" alt="AMANECHER" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">AMANECHER</div>
-          <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para AMANECHER&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: AMANECHER%0D%0ACategoria: Lambrin WPC%0D%0ASubcategoria: Lambrin Interior%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+          <div class="product-actions">
+            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para AMANECHER&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: AMANECHER%0D%0ACategoria: Lambrin WPC%0D%0ASubcategoria: Lambrin Interior%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20AMANECHER%20de%20la%20categoría%20Lambrin%20WPC%20/%20subcategoría%20Lambrin%20Interior" class="btn-whatsapp" target="_blank">WhatsApp</a>
+          </div>
         </div>
       </div>
       <div class="product-card reveal">
-        <div class="product-gallery">
+        <div class="product-gallery" onclick="openLightbox('img/2-lambrin-wpc/21-lambrin-interior/ANGULO WPC PARA INTERIOR.jpg', 'ANGULO WPC PARA INTERIOR')">
           <img src="img/2-lambrin-wpc/21-lambrin-interior/ANGULO WPC PARA INTERIOR.jpg" alt="ANGULO WPC PARA INTERIOR" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">ANGULO WPC PARA INTERIOR</div>
-          <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para ANGULO WPC PARA INTERIOR&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: ANGULO WPC PARA INTERIOR%0D%0ACategoria: Lambrin WPC%0D%0ASubcategoria: Lambrin Interior%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+          <div class="product-actions">
+            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para ANGULO WPC PARA INTERIOR&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: ANGULO WPC PARA INTERIOR%0D%0ACategoria: Lambrin WPC%0D%0ASubcategoria: Lambrin Interior%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20ANGULO%20WPC%20PARA%20INTERIOR%20de%20la%20categoría%20Lambrin%20WPC%20/%20subcategoría%20Lambrin%20Interior" class="btn-whatsapp" target="_blank">WhatsApp</a>
+          </div>
         </div>
       </div>
       <div class="product-card reveal">
-        <div class="product-gallery">
+        <div class="product-gallery" onclick="openLightbox('img/2-lambrin-wpc/21-lambrin-interior/Amizade.jpg', 'Amizade')">
           <img src="img/2-lambrin-wpc/21-lambrin-interior/Amizade.jpg" alt="Amizade" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">Amizade</div>
-          <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para Amizade&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: Amizade%0D%0ACategoria: Lambrin WPC%0D%0ASubcategoria: Lambrin Interior%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+          <div class="product-actions">
+            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para Amizade&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: Amizade%0D%0ACategoria: Lambrin WPC%0D%0ASubcategoria: Lambrin Interior%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20Amizade%20de%20la%20categoría%20Lambrin%20WPC%20/%20subcategoría%20Lambrin%20Interior" class="btn-whatsapp" target="_blank">WhatsApp</a>
+          </div>
         </div>
       </div>
       <div class="product-card reveal">
-        <div class="product-gallery">
+        <div class="product-gallery" onclick="openLightbox('img/2-lambrin-wpc/21-lambrin-interior/BAHIA.jpg', 'BAHIA')">
           <img src="img/2-lambrin-wpc/21-lambrin-interior/BAHIA.jpg" alt="BAHIA" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">BAHIA</div>
-          <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para BAHIA&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: BAHIA%0D%0ACategoria: Lambrin WPC%0D%0ASubcategoria: Lambrin Interior%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+          <div class="product-actions">
+            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para BAHIA&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: BAHIA%0D%0ACategoria: Lambrin WPC%0D%0ASubcategoria: Lambrin Interior%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20BAHIA%20de%20la%20categoría%20Lambrin%20WPC%20/%20subcategoría%20Lambrin%20Interior" class="btn-whatsapp" target="_blank">WhatsApp</a>
+          </div>
         </div>
       </div>
       <div class="product-card reveal">
-        <div class="product-gallery">
+        <div class="product-gallery" onclick="openLightbox('img/2-lambrin-wpc/21-lambrin-interior/Brasilia.jpg', 'Brasilia')">
           <img src="img/2-lambrin-wpc/21-lambrin-interior/Brasilia.jpg" alt="Brasilia" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">Brasilia</div>
-          <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para Brasilia&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: Brasilia%0D%0ACategoria: Lambrin WPC%0D%0ASubcategoria: Lambrin Interior%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+          <div class="product-actions">
+            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para Brasilia&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: Brasilia%0D%0ACategoria: Lambrin WPC%0D%0ASubcategoria: Lambrin Interior%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20Brasilia%20de%20la%20categoría%20Lambrin%20WPC%20/%20subcategoría%20Lambrin%20Interior" class="btn-whatsapp" target="_blank">WhatsApp</a>
+          </div>
         </div>
       </div>
       <div class="product-card reveal">
-        <div class="product-gallery">
+        <div class="product-gallery" onclick="openLightbox('img/2-lambrin-wpc/21-lambrin-interior/Cerezo Macapa.jpg', 'Cerezo Macapa')">
           <img src="img/2-lambrin-wpc/21-lambrin-interior/Cerezo Macapa.jpg" alt="Cerezo Macapa" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">Cerezo Macapa</div>
-          <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para Cerezo Macapa&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: Cerezo Macapa%0D%0ACategoria: Lambrin WPC%0D%0ASubcategoria: Lambrin Interior%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+          <div class="product-actions">
+            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para Cerezo Macapa&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: Cerezo Macapa%0D%0ACategoria: Lambrin WPC%0D%0ASubcategoria: Lambrin Interior%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20Cerezo%20Macapa%20de%20la%20categoría%20Lambrin%20WPC%20/%20subcategoría%20Lambrin%20Interior" class="btn-whatsapp" target="_blank">WhatsApp</a>
+          </div>
         </div>
       </div>
       <div class="product-card reveal">
-        <div class="product-gallery">
+        <div class="product-gallery" onclick="openLightbox('img/2-lambrin-wpc/21-lambrin-interior/Estrelado.jpg', 'Estrelado')">
           <img src="img/2-lambrin-wpc/21-lambrin-interior/Estrelado.jpg" alt="Estrelado" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">Estrelado</div>
-          <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para Estrelado&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: Estrelado%0D%0ACategoria: Lambrin WPC%0D%0ASubcategoria: Lambrin Interior%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+          <div class="product-actions">
+            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para Estrelado&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: Estrelado%0D%0ACategoria: Lambrin WPC%0D%0ASubcategoria: Lambrin Interior%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20Estrelado%20de%20la%20categoría%20Lambrin%20WPC%20/%20subcategoría%20Lambrin%20Interior" class="btn-whatsapp" target="_blank">WhatsApp</a>
+          </div>
         </div>
       </div>
       <div class="product-card reveal">
-        <div class="product-gallery">
+        <div class="product-gallery" onclick="openLightbox('img/2-lambrin-wpc/21-lambrin-interior/Fortaleza.jpg', 'Fortaleza')">
           <img src="img/2-lambrin-wpc/21-lambrin-interior/Fortaleza.jpg" alt="Fortaleza" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">Fortaleza</div>
-          <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para Fortaleza&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: Fortaleza%0D%0ACategoria: Lambrin WPC%0D%0ASubcategoria: Lambrin Interior%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+          <div class="product-actions">
+            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para Fortaleza&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: Fortaleza%0D%0ACategoria: Lambrin WPC%0D%0ASubcategoria: Lambrin Interior%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20Fortaleza%20de%20la%20categoría%20Lambrin%20WPC%20/%20subcategoría%20Lambrin%20Interior" class="btn-whatsapp" target="_blank">WhatsApp</a>
+          </div>
         </div>
       </div>
       <div class="product-card reveal">
-        <div class="product-gallery">
+        <div class="product-gallery" onclick="openLightbox('img/2-lambrin-wpc/21-lambrin-interior/Manaos.jpg', 'Manaos')">
           <img src="img/2-lambrin-wpc/21-lambrin-interior/Manaos.jpg" alt="Manaos" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">Manaos</div>
-          <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para Manaos&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: Manaos%0D%0ACategoria: Lambrin WPC%0D%0ASubcategoria: Lambrin Interior%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+          <div class="product-actions">
+            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para Manaos&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: Manaos%0D%0ACategoria: Lambrin WPC%0D%0ASubcategoria: Lambrin Interior%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20Manaos%20de%20la%20categoría%20Lambrin%20WPC%20/%20subcategoría%20Lambrin%20Interior" class="btn-whatsapp" target="_blank">WhatsApp</a>
+          </div>
         </div>
       </div>
       <div class="product-card reveal">
-        <div class="product-gallery">
+        <div class="product-gallery" onclick="openLightbox('img/2-lambrin-wpc/21-lambrin-interior/Nogal Olinda.jpg', 'Nogal Olinda')">
           <img src="img/2-lambrin-wpc/21-lambrin-interior/Nogal Olinda.jpg" alt="Nogal Olinda" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">Nogal Olinda</div>
-          <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para Nogal Olinda&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: Nogal Olinda%0D%0ACategoria: Lambrin WPC%0D%0ASubcategoria: Lambrin Interior%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+          <div class="product-actions">
+            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para Nogal Olinda&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: Nogal Olinda%0D%0ACategoria: Lambrin WPC%0D%0ASubcategoria: Lambrin Interior%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20Nogal%20Olinda%20de%20la%20categoría%20Lambrin%20WPC%20/%20subcategoría%20Lambrin%20Interior" class="btn-whatsapp" target="_blank">WhatsApp</a>
+          </div>
         </div>
       </div>
       <div class="product-card reveal">
-        <div class="product-gallery">
+        <div class="product-gallery" onclick="openLightbox('img/2-lambrin-wpc/21-lambrin-interior/Nuvem.jpg', 'Nuvem')">
           <img src="img/2-lambrin-wpc/21-lambrin-interior/Nuvem.jpg" alt="Nuvem" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">Nuvem</div>
-          <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para Nuvem&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: Nuvem%0D%0ACategoria: Lambrin WPC%0D%0ASubcategoria: Lambrin Interior%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+          <div class="product-actions">
+            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para Nuvem&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: Nuvem%0D%0ACategoria: Lambrin WPC%0D%0ASubcategoria: Lambrin Interior%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20Nuvem%20de%20la%20categoría%20Lambrin%20WPC%20/%20subcategoría%20Lambrin%20Interior" class="btn-whatsapp" target="_blank">WhatsApp</a>
+          </div>
         </div>
       </div>
       <div class="product-card reveal">
-        <div class="product-gallery">
+        <div class="product-gallery" onclick="openLightbox('img/2-lambrin-wpc/21-lambrin-interior/Ouro Preto.jpg', 'Ouro Preto')">
           <img src="img/2-lambrin-wpc/21-lambrin-interior/Ouro Preto.jpg" alt="Ouro Preto" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">Ouro Preto</div>
-          <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para Ouro Preto&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: Ouro Preto%0D%0ACategoria: Lambrin WPC%0D%0ASubcategoria: Lambrin Interior%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+          <div class="product-actions">
+            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para Ouro Preto&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: Ouro Preto%0D%0ACategoria: Lambrin WPC%0D%0ASubcategoria: Lambrin Interior%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20Ouro%20Preto%20de%20la%20categoría%20Lambrin%20WPC%20/%20subcategoría%20Lambrin%20Interior" class="btn-whatsapp" target="_blank">WhatsApp</a>
+          </div>
         </div>
       </div>
       <div class="product-card reveal">
-        <div class="product-gallery">
+        <div class="product-gallery" onclick="openLightbox('img/2-lambrin-wpc/21-lambrin-interior/Ribeira.jpg', 'Ribeira')">
           <img src="img/2-lambrin-wpc/21-lambrin-interior/Ribeira.jpg" alt="Ribeira" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">Ribeira</div>
-          <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para Ribeira&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: Ribeira%0D%0ACategoria: Lambrin WPC%0D%0ASubcategoria: Lambrin Interior%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+          <div class="product-actions">
+            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para Ribeira&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: Ribeira%0D%0ACategoria: Lambrin WPC%0D%0ASubcategoria: Lambrin Interior%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20Ribeira%20de%20la%20categoría%20Lambrin%20WPC%20/%20subcategoría%20Lambrin%20Interior" class="btn-whatsapp" target="_blank">WhatsApp</a>
+          </div>
         </div>
       </div>
       <div class="product-card reveal">
-        <div class="product-gallery">
+        <div class="product-gallery" onclick="openLightbox('img/2-lambrin-wpc/21-lambrin-interior/Rodeiro.jpg', 'Rodeiro')">
           <img src="img/2-lambrin-wpc/21-lambrin-interior/Rodeiro.jpg" alt="Rodeiro" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">Rodeiro</div>
-          <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para Rodeiro&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: Rodeiro%0D%0ACategoria: Lambrin WPC%0D%0ASubcategoria: Lambrin Interior%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+          <div class="product-actions">
+            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para Rodeiro&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: Rodeiro%0D%0ACategoria: Lambrin WPC%0D%0ASubcategoria: Lambrin Interior%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20Rodeiro%20de%20la%20categoría%20Lambrin%20WPC%20/%20subcategoría%20Lambrin%20Interior" class="btn-whatsapp" target="_blank">WhatsApp</a>
+          </div>
         </div>
       </div>
       <div class="product-card reveal">
-        <div class="product-gallery">
+        <div class="product-gallery" onclick="openLightbox('img/2-lambrin-wpc/21-lambrin-interior/Río.jpg', 'Río')">
           <img src="img/2-lambrin-wpc/21-lambrin-interior/Río.jpg" alt="Río" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">Río</div>
-          <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para Río&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: Río%0D%0ACategoria: Lambrin WPC%0D%0ASubcategoria: Lambrin Interior%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+          <div class="product-actions">
+            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para Río&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: Río%0D%0ACategoria: Lambrin WPC%0D%0ASubcategoria: Lambrin Interior%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20Río%20de%20la%20categoría%20Lambrin%20WPC%20/%20subcategoría%20Lambrin%20Interior" class="btn-whatsapp" target="_blank">WhatsApp</a>
+          </div>
         </div>
       </div>
       <div class="product-card reveal">
-        <div class="product-gallery">
+        <div class="product-gallery" onclick="openLightbox('img/2-lambrin-wpc/21-lambrin-interior/Sabeiro.jpg', 'Sabeiro')">
           <img src="img/2-lambrin-wpc/21-lambrin-interior/Sabeiro.jpg" alt="Sabeiro" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">Sabeiro</div>
-          <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para Sabeiro&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: Sabeiro%0D%0ACategoria: Lambrin WPC%0D%0ASubcategoria: Lambrin Interior%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+          <div class="product-actions">
+            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para Sabeiro&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: Sabeiro%0D%0ACategoria: Lambrin WPC%0D%0ASubcategoria: Lambrin Interior%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20Sabeiro%20de%20la%20categoría%20Lambrin%20WPC%20/%20subcategoría%20Lambrin%20Interior" class="btn-whatsapp" target="_blank">WhatsApp</a>
+          </div>
         </div>
       </div>
       <div class="product-card reveal">
-        <div class="product-gallery">
+        <div class="product-gallery" onclick="openLightbox('img/2-lambrin-wpc/21-lambrin-interior/Sao Paulo.jpg', 'Sao Paulo')">
           <img src="img/2-lambrin-wpc/21-lambrin-interior/Sao Paulo.jpg" alt="Sao Paulo" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">Sao Paulo</div>
-          <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para Sao Paulo&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: Sao Paulo%0D%0ACategoria: Lambrin WPC%0D%0ASubcategoria: Lambrin Interior%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+          <div class="product-actions">
+            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para Sao Paulo&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: Sao Paulo%0D%0ACategoria: Lambrin WPC%0D%0ASubcategoria: Lambrin Interior%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20Sao%20Paulo%20de%20la%20categoría%20Lambrin%20WPC%20/%20subcategoría%20Lambrin%20Interior" class="btn-whatsapp" target="_blank">WhatsApp</a>
+          </div>
         </div>
       </div>
       <div class="product-card reveal">
-        <div class="product-gallery">
+        <div class="product-gallery" onclick="openLightbox('img/2-lambrin-wpc/21-lambrin-interior/Sonho.jpg', 'Sonho')">
           <img src="img/2-lambrin-wpc/21-lambrin-interior/Sonho.jpg" alt="Sonho" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">Sonho</div>
-          <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para Sonho&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: Sonho%0D%0ACategoria: Lambrin WPC%0D%0ASubcategoria: Lambrin Interior%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+          <div class="product-actions">
+            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para Sonho&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: Sonho%0D%0ACategoria: Lambrin WPC%0D%0ASubcategoria: Lambrin Interior%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20Sonho%20de%20la%20categoría%20Lambrin%20WPC%20/%20subcategoría%20Lambrin%20Interior" class="btn-whatsapp" target="_blank">WhatsApp</a>
+          </div>
         </div>
       </div>
       <div class="product-card reveal">
-        <div class="product-gallery">
+        <div class="product-gallery" onclick="openLightbox('img/2-lambrin-wpc/21-lambrin-interior/Teak Aracaju.jpg', 'Teak Aracaju')">
           <img src="img/2-lambrin-wpc/21-lambrin-interior/Teak Aracaju.jpg" alt="Teak Aracaju" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">Teak Aracaju</div>
-          <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para Teak Aracaju&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: Teak Aracaju%0D%0ACategoria: Lambrin WPC%0D%0ASubcategoria: Lambrin Interior%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+          <div class="product-actions">
+            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para Teak Aracaju&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: Teak Aracaju%0D%0ACategoria: Lambrin WPC%0D%0ASubcategoria: Lambrin Interior%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20Teak%20Aracaju%20de%20la%20categoría%20Lambrin%20WPC%20/%20subcategoría%20Lambrin%20Interior" class="btn-whatsapp" target="_blank">WhatsApp</a>
+          </div>
         </div>
       </div>
     </div>
@@ -242,57 +321,75 @@
     </div>
     <div class="products-grid">
       <div class="product-card reveal">
-        <div class="product-gallery">
+        <div class="product-gallery" onclick="openLightbox('img/2-lambrin-wpc/22-lambrin-exterior/CHARCOAL.jpg', 'CHARCOAL')">
           <img src="img/2-lambrin-wpc/22-lambrin-exterior/CHARCOAL.jpg" alt="CHARCOAL" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">CHARCOAL</div>
-          <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para CHARCOAL&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: CHARCOAL%0D%0ACategoria: Lambrin WPC%0D%0ASubcategoria: Lambrin Exterior%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+          <div class="product-actions">
+            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para CHARCOAL&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: CHARCOAL%0D%0ACategoria: Lambrin WPC%0D%0ASubcategoria: Lambrin Exterior%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20CHARCOAL%20de%20la%20categoría%20Lambrin%20WPC%20/%20subcategoría%20Lambrin%20Exterior" class="btn-whatsapp" target="_blank">WhatsApp</a>
+          </div>
         </div>
       </div>
       <div class="product-card reveal">
-        <div class="product-gallery">
+        <div class="product-gallery" onclick="openLightbox('img/2-lambrin-wpc/22-lambrin-exterior/DARK BLACK.jpg', 'DARK BLACK')">
           <img src="img/2-lambrin-wpc/22-lambrin-exterior/DARK BLACK.jpg" alt="DARK BLACK" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">DARK BLACK</div>
-          <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para DARK BLACK&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: DARK BLACK%0D%0ACategoria: Lambrin WPC%0D%0ASubcategoria: Lambrin Exterior%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+          <div class="product-actions">
+            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para DARK BLACK&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: DARK BLACK%0D%0ACategoria: Lambrin WPC%0D%0ASubcategoria: Lambrin Exterior%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20DARK%20BLACK%20de%20la%20categoría%20Lambrin%20WPC%20/%20subcategoría%20Lambrin%20Exterior" class="btn-whatsapp" target="_blank">WhatsApp</a>
+          </div>
         </div>
       </div>
       <div class="product-card reveal">
-        <div class="product-gallery">
+        <div class="product-gallery" onclick="openLightbox('img/2-lambrin-wpc/22-lambrin-exterior/Esquinero.jpg', 'Esquinero')">
           <img src="img/2-lambrin-wpc/22-lambrin-exterior/Esquinero.jpg" alt="Esquinero" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">Esquinero</div>
-          <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para Esquinero&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: Esquinero%0D%0ACategoria: Lambrin WPC%0D%0ASubcategoria: Lambrin Exterior%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+          <div class="product-actions">
+            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para Esquinero&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: Esquinero%0D%0ACategoria: Lambrin WPC%0D%0ASubcategoria: Lambrin Exterior%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20Esquinero%20de%20la%20categoría%20Lambrin%20WPC%20/%20subcategoría%20Lambrin%20Exterior" class="btn-whatsapp" target="_blank">WhatsApp</a>
+          </div>
         </div>
       </div>
       <div class="product-card reveal">
-        <div class="product-gallery">
+        <div class="product-gallery" onclick="openLightbox('img/2-lambrin-wpc/22-lambrin-exterior/REDWOOD.jpg', 'REDWOOD')">
           <img src="img/2-lambrin-wpc/22-lambrin-exterior/REDWOOD.jpg" alt="REDWOOD" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">REDWOOD</div>
-          <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para REDWOOD&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: REDWOOD%0D%0ACategoria: Lambrin WPC%0D%0ASubcategoria: Lambrin Exterior%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+          <div class="product-actions">
+            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para REDWOOD&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: REDWOOD%0D%0ACategoria: Lambrin WPC%0D%0ASubcategoria: Lambrin Exterior%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20REDWOOD%20de%20la%20categoría%20Lambrin%20WPC%20/%20subcategoría%20Lambrin%20Exterior" class="btn-whatsapp" target="_blank">WhatsApp</a>
+          </div>
         </div>
       </div>
       <div class="product-card reveal">
-        <div class="product-gallery">
+        <div class="product-gallery" onclick="openLightbox('img/2-lambrin-wpc/22-lambrin-exterior/SLIVER GRAY.jpg', 'SLIVER GRAY')">
           <img src="img/2-lambrin-wpc/22-lambrin-exterior/SLIVER GRAY.jpg" alt="SLIVER GRAY" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">SLIVER GRAY</div>
-          <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para SLIVER GRAY&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: SLIVER GRAY%0D%0ACategoria: Lambrin WPC%0D%0ASubcategoria: Lambrin Exterior%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+          <div class="product-actions">
+            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para SLIVER GRAY&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: SLIVER GRAY%0D%0ACategoria: Lambrin WPC%0D%0ASubcategoria: Lambrin Exterior%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20SLIVER%20GRAY%20de%20la%20categoría%20Lambrin%20WPC%20/%20subcategoría%20Lambrin%20Exterior" class="btn-whatsapp" target="_blank">WhatsApp</a>
+          </div>
         </div>
       </div>
       <div class="product-card reveal">
-        <div class="product-gallery">
+        <div class="product-gallery" onclick="openLightbox('img/2-lambrin-wpc/22-lambrin-exterior/TEAK.jpg', 'TEAK')">
           <img src="img/2-lambrin-wpc/22-lambrin-exterior/TEAK.jpg" alt="TEAK" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">TEAK</div>
-          <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para TEAK&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: TEAK%0D%0ACategoria: Lambrin WPC%0D%0ASubcategoria: Lambrin Exterior%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+          <div class="product-actions">
+            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para TEAK&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: TEAK%0D%0ACategoria: Lambrin WPC%0D%0ASubcategoria: Lambrin Exterior%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20TEAK%20de%20la%20categoría%20Lambrin%20WPC%20/%20subcategoría%20Lambrin%20Exterior" class="btn-whatsapp" target="_blank">WhatsApp</a>
+          </div>
         </div>
       </div>
     </div>
@@ -312,57 +409,75 @@
     </div>
     <div class="products-grid">
       <div class="product-card reveal">
-        <div class="product-gallery">
+        <div class="product-gallery" onclick="openLightbox('img/2-lambrin-wpc/23-desigual/Bahia.jpg', 'Bahia')">
           <img src="img/2-lambrin-wpc/23-desigual/Bahia.jpg" alt="Bahia" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">Bahia</div>
-          <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para Bahia&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: Bahia%0D%0ACategoria: Lambrin WPC%0D%0ASubcategoria: Desigual%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+          <div class="product-actions">
+            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para Bahia&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: Bahia%0D%0ACategoria: Lambrin WPC%0D%0ASubcategoria: Desigual%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20Bahia%20de%20la%20categoría%20Lambrin%20WPC%20/%20subcategoría%20Desigual" class="btn-whatsapp" target="_blank">WhatsApp</a>
+          </div>
         </div>
       </div>
       <div class="product-card reveal">
-        <div class="product-gallery">
+        <div class="product-gallery" onclick="openLightbox('img/2-lambrin-wpc/23-desigual/Brasilia.jpg', 'Brasilia')">
           <img src="img/2-lambrin-wpc/23-desigual/Brasilia.jpg" alt="Brasilia" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">Brasilia</div>
-          <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para Brasilia&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: Brasilia%0D%0ACategoria: Lambrin WPC%0D%0ASubcategoria: Desigual%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+          <div class="product-actions">
+            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para Brasilia&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: Brasilia%0D%0ACategoria: Lambrin WPC%0D%0ASubcategoria: Desigual%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20Brasilia%20de%20la%20categoría%20Lambrin%20WPC%20/%20subcategoría%20Desigual" class="btn-whatsapp" target="_blank">WhatsApp</a>
+          </div>
         </div>
       </div>
       <div class="product-card reveal">
-        <div class="product-gallery">
+        <div class="product-gallery" onclick="openLightbox('img/2-lambrin-wpc/23-desigual/Parota.jpg', 'Parota')">
           <img src="img/2-lambrin-wpc/23-desigual/Parota.jpg" alt="Parota" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">Parota</div>
-          <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para Parota&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: Parota%0D%0ACategoria: Lambrin WPC%0D%0ASubcategoria: Desigual%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+          <div class="product-actions">
+            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para Parota&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: Parota%0D%0ACategoria: Lambrin WPC%0D%0ASubcategoria: Desigual%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20Parota%20de%20la%20categoría%20Lambrin%20WPC%20/%20subcategoría%20Desigual" class="btn-whatsapp" target="_blank">WhatsApp</a>
+          </div>
         </div>
       </div>
       <div class="product-card reveal">
-        <div class="product-gallery">
+        <div class="product-gallery" onclick="openLightbox('img/2-lambrin-wpc/23-desigual/Rio.jpg', 'Rio')">
           <img src="img/2-lambrin-wpc/23-desigual/Rio.jpg" alt="Rio" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">Rio</div>
-          <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para Rio&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: Rio%0D%0ACategoria: Lambrin WPC%0D%0ASubcategoria: Desigual%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+          <div class="product-actions">
+            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para Rio&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: Rio%0D%0ACategoria: Lambrin WPC%0D%0ASubcategoria: Desigual%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20Rio%20de%20la%20categoría%20Lambrin%20WPC%20/%20subcategoría%20Desigual" class="btn-whatsapp" target="_blank">WhatsApp</a>
+          </div>
         </div>
       </div>
       <div class="product-card reveal">
-        <div class="product-gallery">
+        <div class="product-gallery" onclick="openLightbox('img/2-lambrin-wpc/23-desigual/Sao Paulo.jpg', 'Sao Paulo')">
           <img src="img/2-lambrin-wpc/23-desigual/Sao Paulo.jpg" alt="Sao Paulo" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">Sao Paulo</div>
-          <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para Sao Paulo&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: Sao Paulo%0D%0ACategoria: Lambrin WPC%0D%0ASubcategoria: Desigual%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+          <div class="product-actions">
+            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para Sao Paulo&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: Sao Paulo%0D%0ACategoria: Lambrin WPC%0D%0ASubcategoria: Desigual%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20Sao%20Paulo%20de%20la%20categoría%20Lambrin%20WPC%20/%20subcategoría%20Desigual" class="btn-whatsapp" target="_blank">WhatsApp</a>
+          </div>
         </div>
       </div>
       <div class="product-card reveal">
-        <div class="product-gallery">
+        <div class="product-gallery" onclick="openLightbox('img/2-lambrin-wpc/23-desigual/fucha tecnica.jpg', 'fucha tecnica')">
           <img src="img/2-lambrin-wpc/23-desigual/fucha tecnica.jpg" alt="fucha tecnica" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">fucha tecnica</div>
-          <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para fucha tecnica&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: fucha tecnica%0D%0ACategoria: Lambrin WPC%0D%0ASubcategoria: Desigual%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+          <div class="product-actions">
+            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para fucha tecnica&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: fucha tecnica%0D%0ACategoria: Lambrin WPC%0D%0ASubcategoria: Desigual%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20fucha%20tecnica%20de%20la%20categoría%20Lambrin%20WPC%20/%20subcategoría%20Desigual" class="btn-whatsapp" target="_blank">WhatsApp</a>
+          </div>
         </div>
       </div>
     </div>
@@ -382,48 +497,63 @@
     </div>
     <div class="products-grid">
       <div class="product-card reveal">
-        <div class="product-gallery">
+        <div class="product-gallery" onclick="openLightbox('img/2-lambrin-wpc/24-media-luna/Bahia.jpg', 'Bahia')">
           <img src="img/2-lambrin-wpc/24-media-luna/Bahia.jpg" alt="Bahia" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">Bahia</div>
-          <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para Bahia&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: Bahia%0D%0ACategoria: Lambrin WPC%0D%0ASubcategoria: Media luna%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+          <div class="product-actions">
+            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para Bahia&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: Bahia%0D%0ACategoria: Lambrin WPC%0D%0ASubcategoria: Media luna%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20Bahia%20de%20la%20categoría%20Lambrin%20WPC%20/%20subcategoría%20Media%20luna" class="btn-whatsapp" target="_blank">WhatsApp</a>
+          </div>
         </div>
       </div>
       <div class="product-card reveal">
-        <div class="product-gallery">
+        <div class="product-gallery" onclick="openLightbox('img/2-lambrin-wpc/24-media-luna/Sao Paulo.jpg', 'Sao Paulo')">
           <img src="img/2-lambrin-wpc/24-media-luna/Sao Paulo.jpg" alt="Sao Paulo" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">Sao Paulo</div>
-          <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para Sao Paulo&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: Sao Paulo%0D%0ACategoria: Lambrin WPC%0D%0ASubcategoria: Media luna%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+          <div class="product-actions">
+            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para Sao Paulo&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: Sao Paulo%0D%0ACategoria: Lambrin WPC%0D%0ASubcategoria: Media luna%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20Sao%20Paulo%20de%20la%20categoría%20Lambrin%20WPC%20/%20subcategoría%20Media%20luna" class="btn-whatsapp" target="_blank">WhatsApp</a>
+          </div>
         </div>
       </div>
       <div class="product-card reveal">
-        <div class="product-gallery">
+        <div class="product-gallery" onclick="openLightbox('img/2-lambrin-wpc/24-media-luna/azeituna.jpg', 'azeituna')">
           <img src="img/2-lambrin-wpc/24-media-luna/azeituna.jpg" alt="azeituna" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">azeituna</div>
-          <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para azeituna&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: azeituna%0D%0ACategoria: Lambrin WPC%0D%0ASubcategoria: Media luna%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+          <div class="product-actions">
+            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para azeituna&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: azeituna%0D%0ACategoria: Lambrin WPC%0D%0ASubcategoria: Media luna%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20azeituna%20de%20la%20categoría%20Lambrin%20WPC%20/%20subcategoría%20Media%20luna" class="btn-whatsapp" target="_blank">WhatsApp</a>
+          </div>
         </div>
       </div>
       <div class="product-card reveal">
-        <div class="product-gallery">
+        <div class="product-gallery" onclick="openLightbox('img/2-lambrin-wpc/24-media-luna/brasilia.jpg', 'brasilia')">
           <img src="img/2-lambrin-wpc/24-media-luna/brasilia.jpg" alt="brasilia" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">brasilia</div>
-          <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para brasilia&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: brasilia%0D%0ACategoria: Lambrin WPC%0D%0ASubcategoria: Media luna%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+          <div class="product-actions">
+            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para brasilia&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: brasilia%0D%0ACategoria: Lambrin WPC%0D%0ASubcategoria: Media luna%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20brasilia%20de%20la%20categoría%20Lambrin%20WPC%20/%20subcategoría%20Media%20luna" class="btn-whatsapp" target="_blank">WhatsApp</a>
+          </div>
         </div>
       </div>
       <div class="product-card reveal">
-        <div class="product-gallery">
+        <div class="product-gallery" onclick="openLightbox('img/2-lambrin-wpc/24-media-luna/rio.jpg', 'rio')">
           <img src="img/2-lambrin-wpc/24-media-luna/rio.jpg" alt="rio" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">rio</div>
-          <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para rio&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: rio%0D%0ACategoria: Lambrin WPC%0D%0ASubcategoria: Media luna%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+          <div class="product-actions">
+            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para rio&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: rio%0D%0ACategoria: Lambrin WPC%0D%0ASubcategoria: Media luna%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20rio%20de%20la%20categoría%20Lambrin%20WPC%20/%20subcategoría%20Media%20luna" class="btn-whatsapp" target="_blank">WhatsApp</a>
+          </div>
         </div>
       </div>
     </div>
@@ -443,39 +573,51 @@
     </div>
     <div class="products-grid">
       <div class="product-card reveal">
-        <div class="product-gallery">
+        <div class="product-gallery" onclick="openLightbox('img/2-lambrin-wpc/25-media-luna-ps/AURELI.jpg', 'AURELI')">
           <img src="img/2-lambrin-wpc/25-media-luna-ps/AURELI.jpg" alt="AURELI" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">AURELI</div>
-          <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para AURELI&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: AURELI%0D%0ACategoria: Lambrin WPC%0D%0ASubcategoria: Media luna PS%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+          <div class="product-actions">
+            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para AURELI&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: AURELI%0D%0ACategoria: Lambrin WPC%0D%0ASubcategoria: Media luna PS%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20AURELI%20de%20la%20categoría%20Lambrin%20WPC%20/%20subcategoría%20Media%20luna%20PS" class="btn-whatsapp" target="_blank">WhatsApp</a>
+          </div>
         </div>
       </div>
       <div class="product-card reveal">
-        <div class="product-gallery">
+        <div class="product-gallery" onclick="openLightbox('img/2-lambrin-wpc/25-media-luna-ps/CRESSIDA.jpg', 'CRESSIDA')">
           <img src="img/2-lambrin-wpc/25-media-luna-ps/CRESSIDA.jpg" alt="CRESSIDA" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">CRESSIDA</div>
-          <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para CRESSIDA&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: CRESSIDA%0D%0ACategoria: Lambrin WPC%0D%0ASubcategoria: Media luna PS%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+          <div class="product-actions">
+            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para CRESSIDA&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: CRESSIDA%0D%0ACategoria: Lambrin WPC%0D%0ASubcategoria: Media luna PS%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20CRESSIDA%20de%20la%20categoría%20Lambrin%20WPC%20/%20subcategoría%20Media%20luna%20PS" class="btn-whatsapp" target="_blank">WhatsApp</a>
+          </div>
         </div>
       </div>
       <div class="product-card reveal">
-        <div class="product-gallery">
+        <div class="product-gallery" onclick="openLightbox('img/2-lambrin-wpc/25-media-luna-ps/ELARA.jpg', 'ELARA')">
           <img src="img/2-lambrin-wpc/25-media-luna-ps/ELARA.jpg" alt="ELARA" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">ELARA</div>
-          <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para ELARA&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: ELARA%0D%0ACategoria: Lambrin WPC%0D%0ASubcategoria: Media luna PS%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+          <div class="product-actions">
+            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para ELARA&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: ELARA%0D%0ACategoria: Lambrin WPC%0D%0ASubcategoria: Media luna PS%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20ELARA%20de%20la%20categoría%20Lambrin%20WPC%20/%20subcategoría%20Media%20luna%20PS" class="btn-whatsapp" target="_blank">WhatsApp</a>
+          </div>
         </div>
       </div>
       <div class="product-card reveal">
-        <div class="product-gallery">
+        <div class="product-gallery" onclick="openLightbox('img/2-lambrin-wpc/25-media-luna-ps/GILDARA.jpg', 'GILDARA')">
           <img src="img/2-lambrin-wpc/25-media-luna-ps/GILDARA.jpg" alt="GILDARA" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">GILDARA</div>
-          <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para GILDARA&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: GILDARA%0D%0ACategoria: Lambrin WPC%0D%0ASubcategoria: Media luna PS%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+          <div class="product-actions">
+            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para GILDARA&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: GILDARA%0D%0ACategoria: Lambrin WPC%0D%0ASubcategoria: Media luna PS%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20GILDARA%20de%20la%20categoría%20Lambrin%20WPC%20/%20subcategoría%20Media%20luna%20PS" class="btn-whatsapp" target="_blank">WhatsApp</a>
+          </div>
         </div>
       </div>
     </div>
@@ -498,6 +640,10 @@
       Nogales, Sonora · Rio Rico, AZ<br>
       Tel. MX: +52 631-192-8993 · Tel. USA: +1 (520) 839-2877<br>
       adis.remodelacion@gmail.com
+    </div>
+    <div class="footer-social">
+      <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20vi%20el%20catálogo%20y%20me%20interesa%20obtener%20información%20sobre%20sus%20productos." target="_blank" title="WhatsApp">💬</a>
+      <a href="https://www.facebook.com/p/Adis-Dise%C3%B1o-Remodelaci%C3%B3n-61579849591594/" target="_blank" title="Facebook">📘</a>
     </div>
     <div class="copyright">© 2026 ADIS DISEÑO & REMODELACIÓN. TODOS LOS DERECHOS RESERVADOS.</div>
   </footer>
@@ -693,6 +839,76 @@
   }
   animate();
 })();</script>
+
+  <!-- Lightbox Modal -->
+  <div class="lightbox" id="lightbox" onclick="closeLightbox(event)">
+    <button class="lightbox-close" onclick="closeLightbox(event)">✕</button>
+    <img id="lightboxImg" src="" alt="">
+    <div class="lightbox-caption" id="lightboxCaption"></div>
+  </div>
+
+  <script>
+    // Lightbox
+    function openLightbox(src, caption) {
+      const lb = document.getElementById('lightbox');
+      const img = document.getElementById('lightboxImg');
+      const cap = document.getElementById('lightboxCaption');
+      img.src = src;
+      cap.textContent = caption || '';
+      lb.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeLightbox(e) {
+      if (e && e.target !== e.currentTarget && !e.target.classList.contains('lightbox-close')) return;
+      document.getElementById('lightbox').classList.remove('active');
+      document.body.style.overflow = '';
+    }
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') closeLightbox();
+    });
+
+    // Buscador global
+    let allProducts = [];
+    fetch('products.json')
+      .then(r => r.json())
+      .then(data => { allProducts = data; })
+      .catch(() => {});
+    function performSearch() {
+      const input = document.getElementById('searchInput');
+      const dropdown = document.getElementById('searchDropdown');
+      doSearch(input.value, dropdown);
+    }
+    function performSearchMobile() {
+      const input = document.getElementById('searchInputMobile');
+      const dropdown = document.getElementById('searchDropdownMobile');
+      doSearch(input.value, dropdown);
+    }
+    function doSearch(query, dropdown) {
+      if (!query || query.length < 2) { dropdown.classList.remove('active'); return; }
+      const q = query.toLowerCase();
+      const results = allProducts.filter(p => p.name.toLowerCase().includes(q)).slice(0, 8);
+      if (results.length === 0) {
+        dropdown.innerHTML = '<div class="search-empty">No se encontraron productos</div>';
+      } else {
+        dropdown.innerHTML = results.map(p => `
+          <a href="${p.url}" class="search-item" onclick="document.getElementById('searchDropdown').classList.remove('active');var m=document.getElementById('searchDropdownMobile');if(m)m.classList.remove('active');">
+            <img src="${p.thumb}" alt="${p.name}">
+            <div class="search-item-info">
+              <span class="search-item-name">${p.name}</span>
+              <span class="search-item-cat">${p.category}${p.subcategory ? ' / ' + p.subcategory : ''}</span>
+            </div>
+          </a>
+        `).join('');
+      }
+      dropdown.classList.add('active');
+    }
+    document.addEventListener('click', function(e) {
+      const sdd = document.getElementById('searchDropdown');
+      const sdm = document.getElementById('searchDropdownMobile');
+      if (sdd && !e.target.closest('.search-box')) sdd.classList.remove('active');
+      if (sdm && !e.target.closest('.search-box')) sdm.classList.remove('active');
+    });
+  </script>
 
 </body>
 </html>
