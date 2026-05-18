@@ -695,9 +695,9 @@ def generate_style():
 
 def generate_header(current_page='index'):
     """Genera el header HTML."""
-    nav_links = '<a href="index.html">Inicio</a>\n        <a href="index.html#categorias">Catálogo</a>\n        <a href="contacto.html">Contacto</a>'
+    nav_links = '<a href="index.html">Inicio</a>\n        <a href="index.html#categorias">Catálogo</a>\n        <a href="proyectos.html">Proyectos</a>\n        <a href="contacto.html">Contacto</a>'
     if current_page != 'index':
-        nav_links = '<a href="index.html">← Inicio</a>\n        <a href="index.html#categorias">Catálogo</a>\n        <a href="contacto.html">Contacto</a>'
+        nav_links = '<a href="index.html">← Inicio</a>\n        <a href="index.html#categorias">Catálogo</a>\n        <a href="proyectos.html">Proyectos</a>\n        <a href="contacto.html">Contacto</a>'
 
     return f'''  <header>
     <div class="header-inner">
@@ -896,6 +896,12 @@ def generate_contacto():
         <p>{CONTACTO['ubicacion']}</p>
       </div>
     </div>
+    <div style="text-align: center; margin-top: 3rem; max-width: 900px; margin: 3rem auto 0;">
+      <div style="border-radius: 8px; overflow: hidden; border: 1px solid rgba(197,160,89,0.2); margin-bottom: 1.5rem;">
+        <iframe src="https://maps.google.com/maps?q=31.3088527,-110.9308403&z=17&output=embed" width="100%" height="400" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+      </div>
+      <a href="https://maps.app.goo.gl/Q3raWUzhCj2rvhjm8" target="_blank" class="btn-outline">📍 Ver en Google Maps</a>
+    </div>
     <div style="text-align: center; margin-top: 3rem;">
       <a href="index.html" class="btn-back">← Volver al Inicio</a>
     </div>
@@ -1031,18 +1037,175 @@ def generate_category_page(cat, categories):
     print(f"✅ {cat['filename']} generado")
 
 
+def sync_media():
+    """Copia fotos y videos de Material de Facebock a media/"""
+    src_dir = BASE_DIR / 'Material de Facebock'
+    media_dir = BASE_DIR / 'media'
+    if not src_dir.exists():
+        return
+    if media_dir.exists():
+        shutil.rmtree(media_dir)
+    media_dir.mkdir(parents=True)
+    
+    mapping = {
+        'antes.jpg': 'antes.jpg',
+        'despues.jpg': 'despues.jpg',
+        'ejemplo de tapiz.jpg': 'ejemplo-tapiz.jpg',
+        '666284575_122140320836994986_788780118445842656_n.jpg': 'proyecto-recepcion.jpg',
+        '670492075_122140320794994986_7881130192341646317_n.jpg': 'proyecto-recepcion-thumb.jpg',
+        '647152617_122136539756994986_7884244820762960889_n.jpg': 'equipo-adis.jpg',
+        'Remoledacion de habitacion.mp4': 'video-habitacion.mp4',
+        'remoledacion de consultorio.mp4': 'video-consultorio.mp4',
+    }
+    fb_videos = sorted([f for f in os.listdir(src_dir) if f.endswith('.mp4') and f not in mapping])
+    for i, fv in enumerate(fb_videos):
+        mapping[fv] = f'video-proyecto-{i+1}.mp4'
+    
+    copied = 0
+    for src_name, dst_name in mapping.items():
+        src = src_dir / src_name
+        if src.exists():
+            shutil.copy2(src, media_dir / dst_name)
+            copied += 1
+    print(f"Media sincronizada: {copied} archivos")
+
+
+def generate_proyectos():
+    html = f'''<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Proyectos Reales | ADIS Diseño & Remodelación</title>
+  <meta name="description" content="Galería de proyectos reales de ADIS Diseño & Remodelación. Antes y después, remodelaciones de interiores y exteriores.">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .before-after {{ display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; max-width: 1000px; margin: 0 auto; }}
+    .before-after img {{ width: 100%; height: 300px; object-fit: cover; border-radius: 8px; }}
+    .ba-label {{ text-align: center; color: var(--gold); font-family: 'Playfair Display', serif; font-size: 1.2rem; margin-top: 0.5rem; }}
+    .video-grid {{ display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem; max-width: 1200px; margin: 0 auto; }}
+    .video-card video {{ width: 100%; border-radius: 8px; }}
+    @media (max-width: 768px) {{ .before-after {{ grid-template-columns: 1fr; }} }}
+  </style>
+</head>
+<body>
+  <canvas id="bg-canvas"></canvas>
+{generate_header('proyectos')}
+
+  <section class="hero-cat">
+    <h1>Proyectos Reales</h1>
+    <p>Transformaciones que hablan por sí solas. Conoce nuestro trabajo.</p>
+  </section>
+
+  <section class="section-wrap">
+    <div class="section-header">
+      <h2>Antes y Después</h2>
+      <div class="divider"></div>
+      <p>De una sala común a un espacio de lujo con nuestros recubrimientos.</p>
+    </div>
+    <div class="before-after">
+      <div>
+        <img src="media/antes.jpg" alt="Antes" loading="lazy">
+        <div class="ba-label">Antes</div>
+      </div>
+      <div>
+        <img src="media/despues.jpg" alt="Después" loading="lazy">
+        <div class="ba-label">Después</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-wrap-alt">
+    <div class="section-header">
+      <h2>Galería de Proyectos</h2>
+      <div class="divider"></div>
+    </div>
+    <div class="products-grid">
+      <div class="product-card">
+        <div class="product-gallery">
+          <img src="media/ejemplo-tapiz.jpg" alt="Pared con tapiz y lambrín" loading="lazy">
+        </div>
+        <div class="product-info">
+          <div class="product-name">Pared con Tapiz y Lambrín WPC</div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-gallery">
+          <img src="media/proyecto-recepcion.jpg" alt="Recepción con lambrín WPC" loading="lazy">
+        </div>
+        <div class="product-info">
+          <div class="product-name">Recepción con Lambrín WPC</div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-gallery">
+          <img src="media/equipo-adis.jpg" alt="Equipo ADIS en obra" loading="lazy">
+        </div>
+        <div class="product-info">
+          <div class="product-name">Equipo ADIS en Obra</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-wrap">
+    <div class="section-header">
+      <h2>Videos de Remodelaciones</h2>
+      <div class="divider"></div>
+    </div>
+    <div class="video-grid">
+      <div class="video-card">
+        <video controls poster="media/despues.jpg">
+          <source src="media/video-habitacion.mp4" type="video/mp4">
+        </video>
+        <div class="product-info">
+          <div class="product-name">Remodelación de Habitación</div>
+        </div>
+      </div>
+      <div class="video-card">
+        <video controls poster="media/proyecto-recepcion.jpg">
+          <source src="media/video-consultorio.mp4" type="video/mp4">
+        </video>
+        <div class="product-info">
+          <div class="product-name">Remodelación de Consultorio</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-wrap" style="padding-top: 1rem;">
+    <div style="text-align: center;">
+      <a href="index.html" class="btn-back">← Volver al Inicio</a>
+      <a href="contacto.html" class="btn-outline">Contactar</a>
+    </div>
+  </section>
+
+{generate_footer()}
+</body>
+</html>
+'''
+    with open(BASE_DIR / 'proyectos.html', 'w', encoding='utf-8') as f:
+        f.write(html)
+    print("proyectos.html generado")
+
+
 def main():
     print("Escaneando CATALOGO FINAL...")
     categories = scan_catalog()
-    print(f"Encontradas {len(categories)} categorías")
+    print(f"Encontradas {len(categories)} categorias")
 
     print("\nSincronizando imagenes...")
     sync_images(categories)
+
+    print("\nSincronizando media...")
+    sync_media()
 
     print("\nGenerando archivos...")
     generate_style()
     generate_index(categories)
     generate_contacto()
+    generate_proyectos()
 
     for cat in categories:
         generate_category_page(cat, categories)
