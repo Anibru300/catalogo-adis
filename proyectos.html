@@ -103,7 +103,7 @@
     </div>
     <div class="video-grid">
       <div class="video-card">
-        <video controls poster="media/despues.jpg">
+        <video class="auto-video" muted loop playsinline poster="media/despues.jpg">
           <source src="media/video-habitacion.mp4" type="video/mp4">
         </video>
         <div class="product-info">
@@ -111,7 +111,7 @@
         </div>
       </div>
       <div class="video-card">
-        <video controls poster="media/proyecto-recepcion.jpg">
+        <video class="auto-video" muted loop playsinline poster="media/proyecto-recepcion.jpg">
           <source src="media/video-consultorio.mp4" type="video/mp4">
         </video>
         <div class="product-info">
@@ -128,6 +128,22 @@
     </div>
   </section>
 
+  <script>
+    // Autoplay videos when visible
+    (function() {
+      const videos = document.querySelectorAll('.auto-video');
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.play();
+          } else {
+            entry.target.pause();
+          }
+        });
+      }, { threshold: 0.5 });
+      videos.forEach(v => observer.observe(v));
+    })();
+  </script>
   <footer>
     <div class="footer-logo"><img src="LOGO ADIS.png" alt="ADIS Logo"></div>
     <div class="footer-info">

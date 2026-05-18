@@ -791,6 +791,43 @@ footer {
   margin-top: 0.5rem;
 }
 
+/* SPECS BAR - ESPECIFICACIONES TECNICAS */
+.specs-bar {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 1rem;
+  max-width: 1200px;
+  margin: 0 auto 3rem;
+  padding: 0 2rem;
+}
+.spec-item {
+  background: rgba(42,42,42,0.6);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(197,160,89,0.15);
+  border-radius: 10px;
+  padding: 1.2rem 1rem;
+  text-align: center;
+  transition: all 0.3s;
+}
+.spec-item:hover {
+  border-color: var(--gold);
+  transform: translateY(-3px);
+}
+.spec-label {
+  display: block;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--gold);
+  margin-bottom: 0.4rem;
+  font-weight: 600;
+}
+.spec-value {
+  display: block;
+  font-size: 0.85rem;
+  color: rgba(245,245,245,0.8);
+}
+
 /* HERO CATEGORIA CON IMAGEN DE FONDO */
 .hero-cat-bg {
   position: relative;
@@ -1522,13 +1559,8 @@ def generate_category_page(cat, categories):
         if not sub['products']:
             continue
 
-        # Ficha técnica de subcategoría
-        ficha_html = ''
-        if sub['ficha']:
-            ficha_html = f'''    <div class="ficha-section">
-      <a href="img/{cat['slug']}/{sub['slug']}/{sub['ficha']}" target="_blank" class="ficha-btn">📋 Ver Ficha Técnica — {sub['name']}</a>
-    </div>
-'''
+        # Especificaciones técnicas de subcategoría
+        specs_html = generate_specs_table(sub['name'])
 
         # Productos de subcategoría
         products_html = ''
@@ -1552,7 +1584,7 @@ def generate_category_page(cat, categories):
       <span class="subcat-count">{len(sub['products'])} productos</span>
       <div class="subcat-divider"></div>
     </div>
-{ficha_html}    <div class="products-grid">
+{specs_html}    <div class="products-grid">
 {products_html}    </div>
   </section>
 '''
@@ -1586,13 +1618,10 @@ def generate_category_page(cat, categories):
   </section>
 '''
 
-    # Ficha técnica a nivel categoría
-    cat_ficha = ''
-    if cat['ficha']:
-        cat_ficha = f'''  <section class="ficha-section reveal">
-    <a href="img/{cat['slug']}/{cat['ficha']}" target="_blank" class="ficha-btn">📋 Ver Ficha Técnica General — {cat['name']}</a>
-  </section>
-'''
+    # Especificaciones generales de categoría (si tiene productos directos)
+    cat_specs = ''
+    if cat['direct_products']:
+        cat_specs = generate_specs_table(cat['name'])
 
     html = f'''<!DOCTYPE html>
 <html lang="es">
@@ -1616,7 +1645,6 @@ def generate_category_page(cat, categories):
     </div>
   </section>
 
-{cat_ficha}
 {subcat_sections}
 {direct_section}
 
@@ -1668,6 +1696,18 @@ def sync_media():
             shutil.copy2(src, media_dir / dst_name)
             copied += 1
     print(f"Media sincronizada: {copied} archivos")
+
+
+def generate_specs_table(product_name):
+    """Genera tabla de especificaciones técnicas en formato texto."""
+    return f'''    <div class="specs-bar reveal">
+      <div class="spec-item"><span class="spec-label">Material</span><span class="spec-value">Consultar ficha técnica</span></div>
+      <div class="spec-item"><span class="spec-label">Dimensiones</span><span class="spec-value">Consultar ficha técnica</span></div>
+      <div class="spec-item"><span class="spec-label">Presentación</span><span class="spec-value">Consultar ficha técnica</span></div>
+      <div class="spec-item"><span class="spec-label">Garantía</span><span class="spec-value">Consultar ficha técnica</span></div>
+      <div class="spec-item"><span class="spec-label">Uso</span><span class="spec-value">Consultar ficha técnica</span></div>
+    </div>
+'''
 
 
 def generate_proyectos():
@@ -1756,7 +1796,7 @@ def generate_proyectos():
     </div>
     <div class="video-grid">
       <div class="video-card">
-        <video controls poster="media/despues.jpg">
+        <video class="auto-video" muted loop playsinline poster="media/despues.jpg">
           <source src="media/video-habitacion.mp4" type="video/mp4">
         </video>
         <div class="product-info">
@@ -1764,7 +1804,7 @@ def generate_proyectos():
         </div>
       </div>
       <div class="video-card">
-        <video controls poster="media/proyecto-recepcion.jpg">
+        <video class="auto-video" muted loop playsinline poster="media/proyecto-recepcion.jpg">
           <source src="media/video-consultorio.mp4" type="video/mp4">
         </video>
         <div class="product-info">
@@ -1781,6 +1821,22 @@ def generate_proyectos():
     </div>
   </section>
 
+  <script>
+    // Autoplay videos when visible
+    (function() {{
+      const videos = document.querySelectorAll('.auto-video');
+      const observer = new IntersectionObserver((entries) => {{
+        entries.forEach(entry => {{
+          if (entry.isIntersecting) {{
+            entry.target.play();
+          }} else {{
+            entry.target.pause();
+          }}
+        }});
+      }}, {{ threshold: 0.5 }});
+      videos.forEach(v => observer.observe(v));
+    }})();
+  </script>
 {generate_footer()}
 </body>
 </html>

@@ -604,6 +604,43 @@ footer {
   margin-top: 0.5rem;
 }
 
+/* SPECS BAR - ESPECIFICACIONES TECNICAS */
+.specs-bar {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 1rem;
+  max-width: 1200px;
+  margin: 0 auto 3rem;
+  padding: 0 2rem;
+}
+.spec-item {
+  background: rgba(42,42,42,0.6);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(197,160,89,0.15);
+  border-radius: 10px;
+  padding: 1.2rem 1rem;
+  text-align: center;
+  transition: all 0.3s;
+}
+.spec-item:hover {
+  border-color: var(--gold);
+  transform: translateY(-3px);
+}
+.spec-label {
+  display: block;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--gold);
+  margin-bottom: 0.4rem;
+  font-weight: 600;
+}
+.spec-value {
+  display: block;
+  font-size: 0.85rem;
+  color: rgba(245,245,245,0.8);
+}
+
 /* HERO CATEGORIA CON IMAGEN DE FONDO */
 .hero-cat-bg {
   position: relative;
