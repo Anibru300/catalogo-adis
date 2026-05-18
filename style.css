@@ -12,7 +12,7 @@ body {
 ::-webkit-scrollbar-track { background: var(--dark); }
 ::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 4px; }
 
-/* FONDO ANIMADO COBERTURA TOTAL */
+/* FONDO ANIMADO */
 #bg-canvas {
   position: fixed; top: 0; left: 0; width: 100%; height: 100%;
   z-index: 0; pointer-events: none;
@@ -114,7 +114,7 @@ nav.desktop-nav a:hover::after { width: 100%; }
   width: 60px; height: 3px; background: var(--gold); margin: 1rem auto;
 }
 
-/* HERO HOME - CENTRADO VERTICAL */
+/* HERO HOME */
 .hero-home {
   min-height: 100vh;
   display: flex; align-items: center; justify-content: center;
@@ -161,7 +161,7 @@ nav.desktop-nav a:hover::after { width: 100%; }
   background: transparent; color: var(--gold);
 }
 
-/* INFO CARDS - TRANSPARENTES CON BLUR */
+/* INFO CARDS */
 .info-grid {
   display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem;
   max-width: 1200px; margin: 0 auto;
@@ -193,7 +193,7 @@ nav.desktop-nav a:hover::after { width: 100%; }
   font-size: 0.82rem; color: rgba(245,245,245,0.65); line-height: 1.6;
 }
 
-/* CATEGORY GRID HOME - TARJETAS TRANSPARENTES */
+/* CATEGORY GRID HOME */
 .cat-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -251,81 +251,53 @@ nav.desktop-nav a:hover::after { width: 100%; }
   color: rgba(245,245,245,0.6); font-size: 1rem; max-width: 700px; margin: 0 auto;
 }
 
-/* FICHA TÉCNICA */
-.ficha-section {
+/* SUBCATEGORÍA SECCIÓN */
+.subcat-section {
   padding: 3rem 2rem;
   position: relative; z-index: 1;
-  background: rgba(15,15,15,0.6);
-  backdrop-filter: blur(6px);
-  border-top: 1px solid rgba(197,160,89,0.1);
-  border-bottom: 1px solid rgba(197,160,89,0.1);
 }
-.ficha-table {
-  width: 100%; max-width: 800px; margin: 0 auto;
-  border-collapse: collapse; font-size: 0.9rem;
-  background: rgba(42,42,42,0.6);
-  backdrop-filter: blur(8px);
+.subcat-header {
+  text-align: center; margin-bottom: 2.5rem;
 }
-.ficha-table th {
-  background: var(--gold); color: var(--black);
-  padding: 1rem; text-align: left;
-  text-transform: uppercase; letter-spacing: 1px; font-weight: 700;
+.subcat-header h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.6rem; color: var(--gold);
+  margin-bottom: 0.5rem;
 }
-.ficha-table td {
-  padding: 0.9rem 1rem; color: rgba(245,245,245,0.85);
-  border-bottom: 1px solid rgba(197,160,89,0.08);
+.subcat-header .subcat-count {
+  font-size: 0.8rem; color: rgba(245,245,245,0.5);
+  text-transform: uppercase; letter-spacing: 2px;
 }
-.ficha-table tr:nth-child(even) td {
-  background: rgba(255,255,255,0.03);
-}
-.ficha-table td:first-child {
-  font-weight: 600; color: var(--white); width: 35%;
-}
-.ficha-desc {
-  max-width: 800px; margin: 0 auto 2rem;
-  color: rgba(245,245,245,0.75); font-size: 1rem;
-  line-height: 1.7; text-align: center;
+.subcat-divider {
+  width: 40px; height: 2px; background: var(--gold);
+  margin: 1rem auto;
 }
 
-/* CALCULADORA */
-.calc-box {
-  max-width: 500px; margin: 2rem auto 0;
-  background: rgba(42,42,42,0.8);
-  backdrop-filter: blur(8px);
-  border: 1px solid rgba(197,160,89,0.2);
-  padding: 2rem; border-radius: 10px;
+/* FICHA TÉCNICA */
+.ficha-section {
+  padding: 2rem 2rem;
+  position: relative; z-index: 1;
+  text-align: center;
 }
-.calc-box h3 {
-  font-family: 'Playfair Display', serif; color: var(--gold);
-  font-size: 1.2rem; margin-bottom: 1.2rem; text-align: center;
-}
-.calc-row {
-  display: flex; gap: 1rem; margin-bottom: 1rem;
-  align-items: center;
-}
-.calc-row label {
-  font-size: 0.85rem; color: rgba(245,245,245,0.8); white-space: nowrap;
-}
-.calc-row input {
-  flex: 1; padding: 0.6rem; background: rgba(15,15,15,0.6);
-  border: 1px solid rgba(197,160,89,0.3); color: var(--white);
-  font-family: 'Montserrat', sans-serif; font-size: 0.95rem;
+.ficha-btn {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  padding: 0.7rem 1.5rem;
+  background: rgba(197,160,89,0.15);
+  color: var(--gold);
+  border: 1px solid var(--gold);
+  text-decoration: none;
+  font-size: 0.8rem; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 1px;
+  transition: all 0.3s;
   border-radius: 4px;
 }
-.calc-row input:focus {
-  outline: none; border-color: var(--gold);
-}
-.calc-result {
-  text-align: center; padding-top: 0.5rem;
-  font-size: 0.9rem; color: var(--light);
-}
-.calc-result strong {
-  color: var(--gold); font-size: 1.1rem;
+.ficha-btn:hover {
+  background: var(--gold); color: var(--black);
 }
 
 /* PRODUCTOS GRID */
 .products-section {
-  padding: 4rem 2rem;
+  padding: 2rem 2rem 4rem;
   position: relative; z-index: 1;
 }
 .products-grid {
@@ -358,12 +330,28 @@ nav.desktop-nav a:hover::after { width: 100%; }
 .product-card:hover .product-gallery img {
   transform: scale(1.05);
 }
-.product-name {
+.product-info {
   padding: 1.2rem;
   text-align: center;
-  font-family: 'Playfair Display', serif;
-  font-size: 1.2rem; color: var(--gold);
   border-top: 1px solid rgba(197,160,89,0.1);
+}
+.product-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.1rem; color: var(--gold);
+  margin-bottom: 0.8rem;
+}
+.btn-cotizar {
+  display: inline-block;
+  padding: 0.6rem 1.5rem;
+  background: var(--gold); color: var(--black);
+  font-size: 0.75rem; font-weight: 700; letter-spacing: 1px;
+  text-transform: uppercase; text-decoration: none;
+  border-radius: 4px;
+  transition: all 0.3s;
+}
+.btn-cotizar:hover {
+  background: transparent; color: var(--gold);
+  box-shadow: inset 0 0 0 1px var(--gold);
 }
 
 /* FOOTER */
@@ -448,7 +436,5 @@ footer {
   .cat-grid { grid-template-columns: 1fr; }
   .info-grid { grid-template-columns: 1fr; }
   .header-inner { padding: 0.8rem 1rem; }
-  .ficha-table { font-size: 0.8rem; }
-  .calc-row { flex-direction: column; align-items: stretch; }
   .whatsapp-float { width: 50px; height: 50px; font-size: 1.5rem; }
 }

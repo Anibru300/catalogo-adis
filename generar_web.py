@@ -1,220 +1,148 @@
 import os
+import sys
+from pathlib import Path
 
-base_dir = r'G:\Mi unidad\ADIS DISEÑO\Catalogo'
+# Forzar UTF-8 en stdout para evitar errores de codificación
+if hasattr(sys.stdout, 'reconfigure'):
+    sys.stdout.reconfigure(encoding='utf-8')
 
-CATEGORY_CONFIG = {
-    'MURO MARMOL DIGITAL': {
-        'title': 'Muro Mármol Digital',
-        'specs': [
-            ['Material', 'Panel de alto brillo con acabado digital UV'],
-            ['Acabado', 'Mármol digital UV'],
-            ['Resistencia', 'Humedad / Rayos UV'],
-            ['Uso', 'Interiores'],
-            ['Garantía', '15 años']
-        ],
-        'desc': 'Paneles de alto brillo con acabados digitales que imitan mármol, piedra y texturas exclusivas. Ideales para muros interiores de alto impacto visual.',
-        'calc': {'area_pz': 0.84, 'pz_caja': 10, 'label': 'm² / pz'}
-    },
-    'FACHADA Y MURO INTERIOR FLEXIBLE': {
-        'title': 'Fachada y Muro Interior Flexible',
-        'specs': [
-            ['Material', 'Lámina flexible'],
-            ['Acabado', 'Textura natural'],
-            ['Resistencia', 'Flexible / Adherible'],
-            ['Uso', 'Interiores y fachadas'],
-            ['Garantía', 'Consultar']
-        ],
-        'desc': 'Láminas flexibles para fachada y muro interior con textura que imita concreto, granito y madera. Se adaptan a cualquier superficie.',
-        'calc': None
-    },
-    'LAMBIRN WPC INTERIOR': {
-        'title': 'Lambrín WPC Interior',
-        'specs': [
-            ['Material', 'WPC (Wood Plastic Composite)'],
-            ['Medidas', '2900 x 160 x 24 mm'],
-            ['Cobertura', '0.464 m² / pieza'],
-            ['Presentación', '14 pz / caja (6.496 m²)'],
-            ['Peso', '30.5 kg / caja'],
-            ['Garantía', '15 años']
-        ],
-        'desc': 'Listones de WPC para revestimiento interior de paredes. Resistentes a la humedad, fáciles de instalar y con acabados tipo madera naturales.',
-        'calc': {'area_pz': 0.464, 'pz_caja': 14, 'label': 'm² / pz'}
-    },
-    'LAMBRIN WPC EXTERIOR': {
-        'title': 'Lambrín WPC Exterior',
-        'specs': [
-            ['Material', 'WPC Exterior'],
-            ['Medidas', '2850 x 200 x 26 mm'],
-            ['Cobertura', '0.57 m² / pieza'],
-            ['Presentación', '4 pz / caja (2.28 m²)'],
-            ['Peso', '34 kg / caja'],
-            ['Garantía', '10 años ext. / 15 años int.']
-        ],
-        'desc': 'Lambrines de WPC diseñados para resistir condiciones climáticas exteriores. Ideales para fachadas, terrazas y pérgolas.',
-        'calc': {'area_pz': 0.57, 'pz_caja': 4, 'label': 'm² / pz'}
-    },
-    'PANELES PVC INTERIORES': {
-        'title': 'Paneles PVC Interiores',
-        'specs': [
-            ['Material', 'PVC rígido'],
-            ['Medidas', '2800 x 300 x 9 mm'],
-            ['Cobertura', '0.84 m² / pieza'],
-            ['Presentación', '10 pz / caja (8.4 m²)'],
-            ['Peso', '2.8 kg/m²'],
-            ['Garantía', '15 años']
-        ],
-        'desc': 'Paneles de PVC livianos y resistentes para interiores. Fáciles de instalar, limpiar y mantener. Perfectos para cocinas y baños.',
-        'calc': {'area_pz': 0.84, 'pz_caja': 10, 'label': 'm² / pz'}
-    },
-    'PANELES DECORATIVOS 3D': {
-        'title': 'Paneles Decorativos 3D',
-        'specs': [
-            ['Material', 'Panel Decorativo 3D'],
-            ['Medidas', '500 x 500 x 40/10 mm'],
-            ['Cobertura', '0.25 m² / pieza'],
-            ['Presentación', '10 pz / caja (2.5 m²)'],
-            ['Garantía', '1 año'],
-            ['Pintura', 'A base de aceite']
-        ],
-        'desc': 'Paneles tridimensionales con relieve decorativo. Pintables y fáciles de instalar. Ideales para muros de accento en residencias y comercios.',
-        'calc': {'area_pz': 0.25, 'pz_caja': 10, 'label': 'm² / pz'}
-    },
-    'PANELES METALICOS AUTO ADERIBLES': {
-        'title': 'Paneles Metálicos Autoadheribles',
-        'specs': [
-            ['Material', 'Panel metálico autoadherible'],
-            ['Espesor', '3 mm'],
-            ['Presentación', '5 pz / caja'],
-            ['Garantía', '3 años'],
-            ['Instalación', 'Autoadherible'],
-            ['Uso', 'Interiores']
-        ],
-        'desc': 'Mosaicos metálicos con acabado cepillado y reflectivo. Autoadheribles para una instalación rápida y sin complicaciones.',
-        'calc': None
-    },
-    'Paneles XPC 3D autoadheribles': {
-        'title': 'Paneles XPC 3D Autoadheribles',
-        'specs': [
-            ['Material', 'Panel XPC 3D autoadherible'],
-            ['Medidas', '300 x 300 x 4 mm'],
-            ['Cobertura', '0.09 m² / pieza'],
-            ['Presentación', '10 pz / caja (0.9 m²)'],
-            ['Garantía', '1 año'],
-            ['Instalación', 'Autoadherible']
-        ],
-        'desc': 'Paneles XPC con patrón 3D y autoadhesivo. Diseños modernos tipo ladrillo y geométricos para transformar cualquier ambiente.',
-        'calc': {'area_pz': 0.09, 'pz_caja': 10, 'label': 'm² / pz'}
-    },
-    'Muros Reflexions': {
-        'title': 'Muros Reflexions',
-        'specs': [
-            ['Material', 'Placa reflectiva'],
-            ['Medidas', '2440 x 1220 x 5 mm'],
-            ['Cobertura', '2.977 m² / pieza'],
-            ['Presentación', '1 pz / caja'],
-            ['Peso', '10.5 kg / pieza'],
-            ['Garantía', '15 años']
-        ],
-        'desc': 'Placas con acabado altamente reflectivo tipo espejo, dorado o metal cepillado. Un toque de lujo y modernidad para interiores.',
-        'calc': {'area_pz': 2.977, 'pz_caja': 1, 'label': 'm² / pz'}
-    }
+# ========== CONFIGURACIÓN ==========
+BASE_DIR = Path(r'G:\Mi unidad\ADIS DISEÑO\Pagina')
+CATALOG_DIR = Path(r'G:\Mi unidad\ADIS DISEÑO\CATALOGO FINAL')
+
+CONTACTO = {
+    'whatsapp': '526311928993',
+    'whatsapp_msg': 'Hola ADIS, vi el catálogo y me interesa obtener información sobre sus productos.',
+    'email': 'adis.remodelacion@gmail.com',
+    'tel_mx': '+52 631-192-8993',
+    'tel_usa': '+1 (520) 839-2877',
+    'ubicacion': 'Nogales, Sonora · Rio Rico, AZ'
 }
 
-CATEGORY_ORDER = [
-    'MURO MARMOL DIGITAL',
-    'FACHADA Y MURO INTERIOR FLEXIBLE',
-    'LAMBIRN WPC INTERIOR',
-    'LAMBRIN WPC EXTERIOR',
-    'PANELES PVC INTERIORES',
-    'PANELES DECORATIVOS 3D',
-    'PANELES METALICOS AUTO ADERIBLES',
-    'Paneles XPC 3D autoadheribles',
-    'Muros Reflexions'
-]
+# Extensiones de imagen válidas
+IMG_EXTS = ('.jpg', '.jpeg', '.png')
 
-def safe_filename(name):
-    return name.lower().replace(' ', '-').replace('_', '-').replace('ñ','n').replace('ó','o').replace('á','a').replace('é','e').replace('í','i').replace('ú','u').replace('(', '').replace(')', '').replace('.', '')[:40] + '.html'
 
-categories = []
-for folder in CATEGORY_ORDER:
-    folder_path = os.path.join(base_dir, folder)
+def is_image(filename):
+    return filename.lower().endswith(IMG_EXTS)
+
+
+def is_ficha(filename):
+    """Detecta si un archivo es ficha técnica."""
+    return 'ficha' in filename.lower() and is_image(filename)
+
+
+def clean_name(folder_name):
+    """Quita numeración inicial (ej: '1. Placas PVC' -> 'Placas PVC', '1.1 Tipo' -> 'Tipo')."""
+    import re
+    # Quita patrones como "1. ", "1.1 ", "9.1 ", "14. " al inicio
+    cleaned = re.sub(r'^\d+(\.\d+)*\.?\s*', '', folder_name)
+    return cleaned.strip()
+
+
+def slugify(name):
+    """Crea un slug seguro para URLs/archivos."""
+    import unicodedata
+    name = unicodedata.normalize('NFKD', name).encode('ASCII', 'ignore').decode('ASCII')
+    return name.lower().replace(' ', '-').replace('_', '-').replace('.', '').replace('(', '').replace(')', '')[:40]
+
+
+def get_relative_path(from_dir, to_path):
+    """Obtiene ruta relativa desde from_dir hasta to_path."""
+    return os.path.relpath(to_path, from_dir).replace('\\', '/')
+
+
+def get_products(folder_path):
+    """Lista productos (imágenes que NO son fichas técnicas)."""
     if not os.path.isdir(folder_path):
-        continue
-    files = [f for f in os.listdir(folder_path) if f.lower().endswith(('.jpg', '.jpeg', '.png'))]
-    files.sort()
-    config = CATEGORY_CONFIG.get(folder, {'title': folder, 'specs': [], 'desc': '', 'calc': None})
-    categories.append({
-        'folder': folder,
-        'filename': safe_filename(folder),
-        'title': config['title'],
-        'specs': config['specs'],
-        'desc': config['desc'],
-        'calc': config['calc'],
-        'products': files
-    })
+        return []
+    files = []
+    for f in sorted(os.listdir(folder_path)):
+        if is_image(f) and not is_ficha(f):
+            files.append(f)
+    return files
 
-META_DESC = "Catálogo oficial de ADIS Diseño & Remodelación. Recubrimientos de alta gama: mármol digital, WPC, PVC, paneles 3D, metálicos y reflections. Nogales, Sonora."
-META_KEYWORDS = "ADIS, diseño, remodelación, paneles, WPC, PVC, mármol digital, 3D, recubrimientos, Nogales, Sonora"
 
-PARTICLES_JS = '''(function() {
-  const canvas = document.getElementById('bg-canvas');
-  if (!canvas) return;
-  const ctx = canvas.getContext('2d');
-  let w, h, particles = [];
-  const COUNT = 70;
-  const CONNECT_DIST = 140;
-  const COLOR = 'rgba(197, 160, 89, ';
-  function resize() {
-    w = canvas.width = window.innerWidth;
-    h = canvas.height = window.innerHeight;
-  }
-  window.addEventListener('resize', resize);
-  resize();
-  class Particle {
-    constructor() {
-      this.x = Math.random() * w;
-      this.y = Math.random() * h;
-      this.vx = (Math.random() - 0.5) * 0.5;
-      this.vy = (Math.random() - 0.5) * 0.5;
-      this.r = Math.random() * 2.5 + 0.8;
-    }
-    update() {
-      this.x += this.vx;
-      this.y += this.vy;
-      if (this.x < 0 || this.x > w) this.vx *= -1;
-      if (this.y < 0 || this.y > h) this.vy *= -1;
-    }
-    draw() {
-      ctx.beginPath();
-      ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
-      ctx.fillStyle = COLOR + '0.6)';
-      ctx.fill();
-    }
-  }
-  for (let i = 0; i < COUNT; i++) particles.push(new Particle());
-  function animate() {
-    ctx.clearRect(0, 0, w, h);
-    for (let p of particles) { p.update(); p.draw(); }
-    for (let i = 0; i < particles.length; i++) {
-      for (let j = i + 1; j < particles.length; j++) {
-        let dx = particles[i].x - particles[j].x;
-        let dy = particles[i].y - particles[j].y;
-        let dist = Math.sqrt(dx*dx + dy*dy);
-        if (dist < CONNECT_DIST) {
-          ctx.beginPath();
-          ctx.moveTo(particles[i].x, particles[i].y);
-          ctx.lineTo(particles[j].x, particles[j].y);
-          ctx.strokeStyle = COLOR + (0.2 * (1 - dist/CONNECT_DIST)) + ')';
-          ctx.lineWidth = 0.8;
-          ctx.stroke();
-        }
-      }
-    }
-    requestAnimationFrame(animate);
-  }
-  animate();
-})();'''
+def get_ficha(folder_path):
+    """Busca ficha técnica en carpeta."""
+    if not os.path.isdir(folder_path):
+        return None
+    for f in sorted(os.listdir(folder_path)):
+        if is_ficha(f):
+            return f
+    return None
 
+
+def scan_catalog():
+    """Escanea CATALOGO FINAL y devuelve estructura completa."""
+    categories = []
+    for cat_folder in sorted(os.listdir(CATALOG_DIR)):
+        cat_path = CATALOG_DIR / cat_folder
+        if not cat_path.is_dir():
+            continue
+
+        cat_name = clean_name(cat_folder)
+        cat_slug = slugify(cat_folder)
+        cat_filename = f"{cat_slug}.html"
+
+        subcategories = []
+        direct_products = []
+
+        for item in sorted(os.listdir(cat_path)):
+            item_path = cat_path / item
+            if item_path.is_dir():
+                sub_name = clean_name(item)
+                sub_slug = slugify(item)
+                products = get_products(item_path)
+                ficha = get_ficha(item_path)
+                subcategories.append({
+                    'folder': item,
+                    'name': sub_name,
+                    'slug': sub_slug,
+                    'products': products,
+                    'ficha': ficha,
+                    'path': item_path
+                })
+            elif is_image(item) and not is_ficha(item):
+                direct_products.append(item)
+
+        # Imagen representativa = primera imagen disponible
+        thumb = None
+        if subcategories:
+            for sub in subcategories:
+                if sub['products']:
+                    thumb = sub['path'] / sub['products'][0]
+                    break
+        if not thumb and direct_products:
+            thumb = cat_path / direct_products[0]
+
+        categories.append({
+            'folder': cat_folder,
+            'name': cat_name,
+            'slug': cat_slug,
+            'filename': cat_filename,
+            'subcategories': subcategories,
+            'direct_products': sorted(direct_products),
+            'ficha': get_ficha(cat_path),
+            'thumb': thumb,
+            'path': cat_path
+        })
+    return categories
+
+
+def mailto_link(product_name, category_name, subcategory_name=None):
+    """Genera enlace mailto para cotización de producto."""
+    subject = f"Cotizacion para {product_name}"
+    body = f"Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0A"
+    body += f"Producto: {product_name}%0D%0A"
+    body += f"Categoria: {category_name}%0D%0A"
+    if subcategory_name:
+        body += f"Subcategoria: {subcategory_name}%0D%0A"
+    body += f"%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias."
+    return f"mailto:{CONTACTO['email']}?subject={subject}&body={body}"
+
+
+# ========== CSS COMPLETO ==========
 CSS = '''
 :root { --gold: #C5A059; --gold-light: #E8D5A3; --black: #0F0F0F; --dark: #1A1A1A; --gray: #2A2A2A; --light: #F5F5F5; --white: #FFFFFF; }
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -230,7 +158,7 @@ body {
 ::-webkit-scrollbar-track { background: var(--dark); }
 ::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 4px; }
 
-/* FONDO ANIMADO COBERTURA TOTAL */
+/* FONDO ANIMADO */
 #bg-canvas {
   position: fixed; top: 0; left: 0; width: 100%; height: 100%;
   z-index: 0; pointer-events: none;
@@ -332,7 +260,7 @@ nav.desktop-nav a:hover::after { width: 100%; }
   width: 60px; height: 3px; background: var(--gold); margin: 1rem auto;
 }
 
-/* HERO HOME - CENTRADO VERTICAL */
+/* HERO HOME */
 .hero-home {
   min-height: 100vh;
   display: flex; align-items: center; justify-content: center;
@@ -379,7 +307,7 @@ nav.desktop-nav a:hover::after { width: 100%; }
   background: transparent; color: var(--gold);
 }
 
-/* INFO CARDS - TRANSPARENTES CON BLUR */
+/* INFO CARDS */
 .info-grid {
   display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem;
   max-width: 1200px; margin: 0 auto;
@@ -411,7 +339,7 @@ nav.desktop-nav a:hover::after { width: 100%; }
   font-size: 0.82rem; color: rgba(245,245,245,0.65); line-height: 1.6;
 }
 
-/* CATEGORY GRID HOME - TARJETAS TRANSPARENTES */
+/* CATEGORY GRID HOME */
 .cat-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -469,81 +397,53 @@ nav.desktop-nav a:hover::after { width: 100%; }
   color: rgba(245,245,245,0.6); font-size: 1rem; max-width: 700px; margin: 0 auto;
 }
 
-/* FICHA TÉCNICA */
-.ficha-section {
+/* SUBCATEGORÍA SECCIÓN */
+.subcat-section {
   padding: 3rem 2rem;
   position: relative; z-index: 1;
-  background: rgba(15,15,15,0.6);
-  backdrop-filter: blur(6px);
-  border-top: 1px solid rgba(197,160,89,0.1);
-  border-bottom: 1px solid rgba(197,160,89,0.1);
 }
-.ficha-table {
-  width: 100%; max-width: 800px; margin: 0 auto;
-  border-collapse: collapse; font-size: 0.9rem;
-  background: rgba(42,42,42,0.6);
-  backdrop-filter: blur(8px);
+.subcat-header {
+  text-align: center; margin-bottom: 2.5rem;
 }
-.ficha-table th {
-  background: var(--gold); color: var(--black);
-  padding: 1rem; text-align: left;
-  text-transform: uppercase; letter-spacing: 1px; font-weight: 700;
+.subcat-header h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.6rem; color: var(--gold);
+  margin-bottom: 0.5rem;
 }
-.ficha-table td {
-  padding: 0.9rem 1rem; color: rgba(245,245,245,0.85);
-  border-bottom: 1px solid rgba(197,160,89,0.08);
+.subcat-header .subcat-count {
+  font-size: 0.8rem; color: rgba(245,245,245,0.5);
+  text-transform: uppercase; letter-spacing: 2px;
 }
-.ficha-table tr:nth-child(even) td {
-  background: rgba(255,255,255,0.03);
-}
-.ficha-table td:first-child {
-  font-weight: 600; color: var(--white); width: 35%;
-}
-.ficha-desc {
-  max-width: 800px; margin: 0 auto 2rem;
-  color: rgba(245,245,245,0.75); font-size: 1rem;
-  line-height: 1.7; text-align: center;
+.subcat-divider {
+  width: 40px; height: 2px; background: var(--gold);
+  margin: 1rem auto;
 }
 
-/* CALCULADORA */
-.calc-box {
-  max-width: 500px; margin: 2rem auto 0;
-  background: rgba(42,42,42,0.8);
-  backdrop-filter: blur(8px);
-  border: 1px solid rgba(197,160,89,0.2);
-  padding: 2rem; border-radius: 10px;
+/* FICHA TÉCNICA */
+.ficha-section {
+  padding: 2rem 2rem;
+  position: relative; z-index: 1;
+  text-align: center;
 }
-.calc-box h3 {
-  font-family: 'Playfair Display', serif; color: var(--gold);
-  font-size: 1.2rem; margin-bottom: 1.2rem; text-align: center;
-}
-.calc-row {
-  display: flex; gap: 1rem; margin-bottom: 1rem;
-  align-items: center;
-}
-.calc-row label {
-  font-size: 0.85rem; color: rgba(245,245,245,0.8); white-space: nowrap;
-}
-.calc-row input {
-  flex: 1; padding: 0.6rem; background: rgba(15,15,15,0.6);
-  border: 1px solid rgba(197,160,89,0.3); color: var(--white);
-  font-family: 'Montserrat', sans-serif; font-size: 0.95rem;
+.ficha-btn {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  padding: 0.7rem 1.5rem;
+  background: rgba(197,160,89,0.15);
+  color: var(--gold);
+  border: 1px solid var(--gold);
+  text-decoration: none;
+  font-size: 0.8rem; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 1px;
+  transition: all 0.3s;
   border-radius: 4px;
 }
-.calc-row input:focus {
-  outline: none; border-color: var(--gold);
-}
-.calc-result {
-  text-align: center; padding-top: 0.5rem;
-  font-size: 0.9rem; color: var(--light);
-}
-.calc-result strong {
-  color: var(--gold); font-size: 1.1rem;
+.ficha-btn:hover {
+  background: var(--gold); color: var(--black);
 }
 
 /* PRODUCTOS GRID */
 .products-section {
-  padding: 4rem 2rem;
+  padding: 2rem 2rem 4rem;
   position: relative; z-index: 1;
 }
 .products-grid {
@@ -576,12 +476,28 @@ nav.desktop-nav a:hover::after { width: 100%; }
 .product-card:hover .product-gallery img {
   transform: scale(1.05);
 }
-.product-name {
+.product-info {
   padding: 1.2rem;
   text-align: center;
-  font-family: 'Playfair Display', serif;
-  font-size: 1.2rem; color: var(--gold);
   border-top: 1px solid rgba(197,160,89,0.1);
+}
+.product-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.1rem; color: var(--gold);
+  margin-bottom: 0.8rem;
+}
+.btn-cotizar {
+  display: inline-block;
+  padding: 0.6rem 1.5rem;
+  background: var(--gold); color: var(--black);
+  font-size: 0.75rem; font-weight: 700; letter-spacing: 1px;
+  text-transform: uppercase; text-decoration: none;
+  border-radius: 4px;
+  transition: all 0.3s;
+}
+.btn-cotizar:hover {
+  background: transparent; color: var(--gold);
+  box-shadow: inset 0 0 0 1px var(--gold);
 }
 
 /* FOOTER */
@@ -666,26 +582,177 @@ footer {
   .cat-grid { grid-template-columns: 1fr; }
   .info-grid { grid-template-columns: 1fr; }
   .header-inner { padding: 0.8rem 1rem; }
-  .ficha-table { font-size: 0.8rem; }
-  .calc-row { flex-direction: column; align-items: stretch; }
   .whatsapp-float { width: 50px; height: 50px; font-size: 1.5rem; }
 }
 '''
 
-with open(os.path.join(base_dir, 'style.css'), 'w', encoding='utf-8') as f:
-    f.write(CSS.strip())
+# ========== PARTICLES JS ==========
+PARTICLES_JS = '''(function() {
+  const canvas = document.getElementById('bg-canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  let w, h, particles = [];
+  const COUNT = 70;
+  const CONNECT_DIST = 140;
+  const COLOR = 'rgba(197, 160, 89, ';
+  function resize() {
+    w = canvas.width = window.innerWidth;
+    h = canvas.height = window.innerHeight;
+  }
+  window.addEventListener('resize', resize);
+  resize();
+  class Particle {
+    constructor() {
+      this.x = Math.random() * w;
+      this.y = Math.random() * h;
+      this.vx = (Math.random() - 0.5) * 0.5;
+      this.vy = (Math.random() - 0.5) * 0.5;
+      this.r = Math.random() * 2.5 + 0.8;
+    }
+    update() {
+      this.x += this.vx;
+      this.y += this.vy;
+      if (this.x < 0 || this.x > w) this.vx *= -1;
+      if (this.y < 0 || this.y > h) this.vy *= -1;
+    }
+    draw() {
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
+      ctx.fillStyle = COLOR + '0.6)';
+      ctx.fill();
+    }
+  }
+  for (let i = 0; i < COUNT; i++) particles.push(new Particle());
+  function animate() {
+    ctx.clearRect(0, 0, w, h);
+    for (let p of particles) { p.update(); p.draw(); }
+    for (let i = 0; i < particles.length; i++) {
+      for (let j = i + 1; j < particles.length; j++) {
+        let dx = particles[i].x - particles[j].x;
+        let dy = particles[i].y - particles[j].y;
+        let dist = Math.sqrt(dx*dx + dy*dy);
+        if (dist < CONNECT_DIST) {
+          ctx.beginPath();
+          ctx.moveTo(particles[i].x, particles[i].y);
+          ctx.lineTo(particles[j].x, particles[j].y);
+          ctx.strokeStyle = COLOR + (0.2 * (1 - dist/CONNECT_DIST)) + ')';
+          ctx.lineWidth = 0.8;
+          ctx.stroke();
+        }
+      }
+    }
+    requestAnimationFrame(animate);
+  }
+  animate();
+})();'''
 
-# ========== INDEX (HOME) ==========
-home_html = f'''<!DOCTYPE html>
+
+def generate_style():
+    with open(BASE_DIR / 'style.css', 'w', encoding='utf-8') as f:
+        f.write(CSS.strip())
+    print("✅ style.css generado")
+
+
+def generate_header(current_page='index'):
+    """Genera el header HTML."""
+    nav_links = '<a href="index.html">Inicio</a>\n        <a href="index.html#categorias">Catálogo</a>\n        <a href="contacto.html">Contacto</a>'
+    if current_page != 'index':
+        nav_links = '<a href="index.html">← Inicio</a>\n        <a href="index.html#categorias">Catálogo</a>\n        <a href="contacto.html">Contacto</a>'
+
+    return f'''  <header>
+    <div class="header-inner">
+      <a href="index.html" class="logo"><img src="LOGO ADIS.png" alt="ADIS Logo"></a>
+      <nav class="desktop-nav">
+        {nav_links}
+      </nav>
+      <button class="menu-btn" onclick="toggleMenu()">☰</button>
+    </div>
+  </header>
+
+  <div class="mobile-menu" id="mobileMenu">
+    <button class="close-menu" onclick="toggleMenu()">✕</button>
+    <a href="index.html" onclick="toggleMenu()">Inicio</a>
+    <a href="index.html#categorias" onclick="toggleMenu()">Catálogo</a>
+    <a href="contacto.html" onclick="toggleMenu()">Contacto</a>
+  </div>
+'''
+
+
+def generate_footer():
+    return f'''  <footer>
+    <div class="footer-logo"><img src="LOGO ADIS.png" alt="ADIS Logo"></div>
+    <div class="footer-info">
+      <strong>ADI'S DISEÑO & REMODELACIÓN</strong><br>
+      Creando espacios, reinventando hogares.<br>
+      {CONTACTO['ubicacion']}<br>
+      Tel. MX: {CONTACTO['tel_mx']} · Tel. USA: {CONTACTO['tel_usa']}<br>
+      {CONTACTO['email']}
+    </div>
+    <div class="copyright">© 2026 ADIS DISEÑO & REMODELACIÓN. TODOS LOS DERECHOS RESERVADOS.</div>
+  </footer>
+
+  <a href="https://wa.me/{CONTACTO['whatsapp']}?text={CONTACTO['whatsapp_msg'].replace(' ', '%20')}" class="whatsapp-float" target="_blank" title="Contáctanos por WhatsApp">💬</a>
+
+  <script>function toggleMenu(){{document.getElementById('mobileMenu').classList.toggle('active');}}</script>
+  <script>{PARTICLES_JS}</script>
+'''
+
+
+def generate_index(categories):
+    meta_desc = "Catálogo oficial de ADIS Diseño & Remodelación. Recubrimientos de alta gama: Placas PVC, Lambrín WPC, Plafón, Paneles 3D, Vigas, Pisos, Zacate y Cladding. Nogales, Sonora."
+    meta_keywords = "ADIS, diseño, remodelación, paneles, WPC, PVC, recubrimientos, Nogales, Sonora, pisos, zacate, cladding"
+
+    cat_cards = ''
+    for cat in categories:
+        total_prods = len(cat['direct_products'])
+        for sub in cat['subcategories']:
+            total_prods += len(sub['products'])
+
+        thumb_src = ''
+        if cat['thumb']:
+            thumb_src = get_relative_path(BASE_DIR, cat['thumb'])
+
+        cat_cards += f'''      <a href="{cat['filename']}" class="cat-card">
+        <img src="{thumb_src}" alt="{cat['name']}" loading="lazy">
+        <div class="cat-card-overlay">
+          <h3>{cat['name']}</h3>
+          <span>{total_prods} productos</span>
+        </div>
+      </a>
+'''
+
+    info_cards = '''      <div class="info-card">
+        <div class="icon">✦</div>
+        <h3>Placas PVC</h3>
+        <p>Paneles rígidos de alta calidad tipo madera, texturizados y espejo. Ideales para interiores.</p>
+      </div>
+      <div class="info-card">
+        <div class="icon">◈</div>
+        <h3>Lambrín WPC</h3>
+        <p>Wood Plastic Composite para interior y exterior. Resistente a la humedad y rayos UV.</p>
+      </div>
+      <div class="info-card">
+        <div class="icon">◉</div>
+        <h3>Pisos & Zacate</h3>
+        <p>Laminados, WPC, SPC, deck sintético y pasto artificial para todo tipo de espacios.</p>
+      </div>
+      <div class="info-card">
+        <div class="icon">✚</div>
+        <h3>Cladding & 3D</h3>
+        <p>Paneles decorativos tridimensionales y revestimientos de alta gama para fachadas.</p>
+      </div>
+'''
+
+    html = f'''<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ADIS | Diseño & Remodelación</title>
-  <meta name="description" content="{META_DESC}">
-  <meta name="keywords" content="{META_KEYWORDS}">
+  <meta name="description" content="{meta_desc}">
+  <meta name="keywords" content="{meta_keywords}">
   <meta property="og:title" content="ADIS | Diseño & Remodelación">
-  <meta property="og:description" content="{META_DESC}">
+  <meta property="og:description" content="{meta_desc}">
   <meta property="og:image" content="https://anibru300.github.io/catalogo-adis/LOGO%20ADIS.png">
   <meta property="og:url" content="https://anibru300.github.io/catalogo-adis/">
   <meta property="og:type" content="website">
@@ -696,26 +763,7 @@ home_html = f'''<!DOCTYPE html>
 <body>
   <canvas id="bg-canvas"></canvas>
 
-  <header>
-    <div class="header-inner">
-      <a href="index.html" class="logo"><img src="LOGO ADIS.png" alt="ADIS Logo"></a>
-      <nav class="desktop-nav">
-        <a href="index.html">Inicio</a>
-        <a href="#nosotros">Nosotros</a>
-        <a href="#categorias">Catálogo</a>
-        <a href="contacto.html">Contacto</a>
-      </nav>
-      <button class="menu-btn" onclick="toggleMenu()">☰</button>
-    </div>
-  </header>
-
-  <div class="mobile-menu" id="mobileMenu">
-    <button class="close-menu" onclick="toggleMenu()">✕</button>
-    <a href="index.html" onclick="toggleMenu()">Inicio</a>
-    <a href="#nosotros" onclick="toggleMenu()">Nosotros</a>
-    <a href="#categorias" onclick="toggleMenu()">Catálogo</a>
-    <a href="contacto.html" onclick="toggleMenu()">Contacto</a>
-  </div>
+{generate_header('index')}
 
   <!-- INICIO -->
   <section class="hero-home" id="inicio">
@@ -723,7 +771,7 @@ home_html = f'''<!DOCTYPE html>
       <img src="LOGO ADIS.png" alt="ADIS Logo">
       <div class="hero-badge">Catálogo 2025 — 2026</div>
       <h1>Transforma tus espacios con <em>ADIS</em></h1>
-      <p>Recubrimientos de alta gama para interior y exterior. Mármol digital, WPC, PVC, 3D, metálicos y reflections.</p>
+      <p>Recubrimientos de alta gama para interior y exterior. PVC, WPC, paneles 3D, pisos, zacate y cladding.</p>
       <a href="#categorias" class="btn-primary">Explorar Catálogo</a>
     </div>
   </section>
@@ -736,27 +784,7 @@ home_html = f'''<!DOCTYPE html>
       <p>En ADI'S DISEÑO & REMODELACIÓN nos especializamos en ofrecer soluciones funcionales, estéticas y duraderas.</p>
     </div>
     <div class="info-grid">
-      <div class="info-card">
-        <div class="icon">✦</div>
-        <h3>Mármol Digital</h3>
-        <p>Paneles de alto brillo con acabados digitales que imitan mármol, piedra y texturas exclusivas.</p>
-      </div>
-      <div class="info-card">
-        <div class="icon">◈</div>
-        <h3>WPC Interior / Exterior</h3>
-        <p>Lambrines de Wood Plastic Composite resistentes a la humedad, rayos UV y fáciles de instalar.</p>
-      </div>
-      <div class="info-card">
-        <div class="icon">◉</div>
-        <h3>PVC & 3D</h3>
-        <p>Paneles PVC livianos y paneles decorativos 3D autoadheribles para crear ambientes únicos.</p>
-      </div>
-      <div class="info-card">
-        <div class="icon">✚</div>
-        <h3>Metálicos & Reflections</h3>
-        <p>Acabados metálicos autoadheribles y placas tipo espejo para un toque de lujo.</p>
-      </div>
-    </div>
+{info_cards}    </div>
   </section>
 
   <!-- CATÁLOGO -->
@@ -767,44 +795,20 @@ home_html = f'''<!DOCTYPE html>
       <p>Selecciona una categoría para ver los productos con su ficha técnica.</p>
     </div>
     <div class="cat-grid">
-'''
-for cat in categories:
-    thumb = f"{cat['folder']}/{cat['products'][0]}" if cat['products'] else ''
-    home_html += f'''      <a href="{cat['filename']}" class="cat-card">
-        <img src="{thumb}" alt="{cat['title']}">
-        <div class="cat-card-overlay">
-          <h3>{cat['title']}</h3>
-          <span>{len(cat['products'])} productos</span>
-        </div>
-      </a>
-'''
-home_html += '''    </div>
+{cat_cards}    </div>
   </section>
 
-  <footer id="contacto">
-    <div class="footer-logo"><img src="LOGO ADIS.png" alt="ADIS Logo"></div>
-    <div class="footer-info">
-      <strong>ADI'S DISEÑO & REMODELACIÓN</strong><br>
-      Creando espacios, reinventando hogares.<br>
-      Nogales, Sonora · Rio Rico, AZ<br>
-      Tel. MX: +52 631-192-8993 · Tel. USA: +1 (520) 839-2877<br>
-      adis.remodelacion@gmail.com
-    </div>
-    <div class="copyright">© 2026 ADIS DISEÑO & REMODELACIÓN. TODOS LOS DERECHOS RESERVADOS.</div>
-  </footer>
-
-  <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20vi%20el%20catálogo%20y%20me%20interesa..." class="whatsapp-float" target="_blank" title="Contáctanos por WhatsApp">💬</a>
-
-  <script>function toggleMenu(){{document.getElementById('mobileMenu').classList.toggle('active');}}</script>
-  <script>''' + PARTICLES_JS + '''</script>
+{generate_footer()}
 </body>
 </html>
 '''
-with open(os.path.join(base_dir, 'index.html'), 'w', encoding='utf-8') as f:
-    f.write(home_html)
+    with open(BASE_DIR / 'index.html', 'w', encoding='utf-8') as f:
+        f.write(html)
+    print("✅ index.html generado")
 
-# ========== CONTACTO ==========
-contact_html = f'''<!DOCTYPE html>
+
+def generate_contacto():
+    html = f'''<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
@@ -816,23 +820,7 @@ contact_html = f'''<!DOCTYPE html>
 </head>
 <body>
   <canvas id="bg-canvas"></canvas>
-  <header>
-    <div class="header-inner">
-      <a href="index.html" class="logo"><img src="LOGO ADIS.png" alt="ADIS Logo"></a>
-      <nav class="desktop-nav">
-        <a href="index.html">Inicio</a>
-        <a href="index.html#categorias">Catálogo</a>
-        <a href="contacto.html">Contacto</a>
-      </nav>
-      <button class="menu-btn" onclick="toggleMenu()">☰</button>
-    </div>
-  </header>
-  <div class="mobile-menu" id="mobileMenu">
-    <button class="close-menu" onclick="toggleMenu()">✕</button>
-    <a href="index.html" onclick="toggleMenu()">Inicio</a>
-    <a href="index.html#categorias" onclick="toggleMenu()">Catálogo</a>
-    <a href="contacto.html" onclick="toggleMenu()">Contacto</a>
-  </div>
+{generate_header('contacto')}
 
   <section class="hero-cat" style="padding-top: 8rem;">
     <h1>Contacto</h1>
@@ -848,22 +836,22 @@ contact_html = f'''<!DOCTYPE html>
       <div class="contact-card">
         <div class="icon">📱</div>
         <h3>WhatsApp MX</h3>
-        <a href="https://wa.me/526311928993" target="_blank">+52 631-192-8993</a>
+        <a href="https://wa.me/{CONTACTO['whatsapp']}" target="_blank">{CONTACTO['tel_mx']}</a>
       </div>
       <div class="contact-card">
         <div class="icon">📞</div>
         <h3>Teléfono USA</h3>
-        <a href="tel:+15208392877">+1 (520) 839-2877</a>
+        <a href="tel:+15208392877">{CONTACTO['tel_usa']}</a>
       </div>
       <div class="contact-card">
         <div class="icon">✉️</div>
         <h3>Correo</h3>
-        <a href="mailto:adis.remodelacion@gmail.com">adis.remodelacion@gmail.com</a>
+        <a href="mailto:{CONTACTO['email']}">{CONTACTO['email']}</a>
       </div>
       <div class="contact-card">
         <div class="icon">📍</div>
         <h3>Ubicación</h3>
-        <p>Nogales, Sonora<br>Rio Rico, AZ</p>
+        <p>{CONTACTO['ubicacion']}</p>
       </div>
     </div>
     <div style="text-align: center; margin-top: 3rem;">
@@ -871,159 +859,158 @@ contact_html = f'''<!DOCTYPE html>
     </div>
   </section>
 
-  <footer>
-    <div class="footer-logo"><img src="LOGO ADIS.png" alt="ADIS Logo"></div>
-    <div class="footer-info">
-      <strong>ADI'S DISEÑO & REMODELACIÓN</strong><br>
-      Creando espacios, reinventando hogares.<br>
-      Nogales, Sonora · Rio Rico, AZ<br>
-      Tel. MX: +52 631-192-8993 · Tel. USA: +1 (520) 839-2877<br>
-      adis.remodelacion@gmail.com
-    </div>
-    <div class="copyright">© 2026 ADIS DISEÑO & REMODELACIÓN. TODOS LOS DERECHOS RESERVADOS.</div>
-  </footer>
-
-  <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20vi%20el%20catálogo%20y%20me%20interesa..." class="whatsapp-float" target="_blank" title="Contáctanos por WhatsApp">💬</a>
-
-  <script>function toggleMenu(){{document.getElementById('mobileMenu').classList.toggle('active');}}</script>
-  <script>''' + PARTICLES_JS + '''</script>
+{generate_footer()}
 </body>
 </html>
 '''
-with open(os.path.join(base_dir, 'contacto.html'), 'w', encoding='utf-8') as f:
-    f.write(contact_html)
+    with open(BASE_DIR / 'contacto.html', 'w', encoding='utf-8') as f:
+        f.write(html)
+    print("✅ contacto.html generado")
 
-# ========== PÁGINAS DE CATEGORÍAS ==========
-for cat in categories:
-    calc_html = ''
-    if cat['calc']:
-        area = cat['calc']['area_pz']
-        pz_caja = cat['calc']['pz_caja']
-        label = cat['calc']['label']
-        calc_html = f'''
-    <div class="calc-box">
-      <h3>📐 Calculadora de Materiales</h3>
-      <div class="calc-row">
-        <label>Metros cuadrados:</label>
-        <input type="number" id="m2" placeholder="Ej: 10" min="0" step="0.1" oninput="calcular()">
+
+def generate_category_page(cat, categories):
+    """Genera página de una categoría con subcategorías y productos."""
+
+    # Construir secciones de subcategorías
+    subcat_sections = ''
+    for sub in cat['subcategories']:
+        if not sub['products']:
+            continue
+
+        # Ficha técnica de subcategoría
+        ficha_html = ''
+        if sub['ficha']:
+            ficha_path = get_relative_path(BASE_DIR, sub['path'] / sub['ficha'])
+            ficha_html = f'''    <div class="ficha-section">
+      <a href="{ficha_path}" target="_blank" class="ficha-btn">📋 Ver Ficha Técnica — {sub['name']}</a>
+    </div>
+'''
+
+        # Productos de subcategoría
+        products_html = ''
+        for prod_file in sub['products']:
+            prod_name = os.path.splitext(prod_file)[0]
+            img_path = get_relative_path(BASE_DIR, sub['path'] / prod_file)
+            mailto = mailto_link(prod_name, cat['name'], sub['name'])
+            products_html += f'''      <div class="product-card">
+        <div class="product-gallery">
+          <img src="{img_path}" alt="{prod_name}" loading="lazy">
+        </div>
+        <div class="product-info">
+          <div class="product-name">{prod_name}</div>
+          <a href="{mailto}" class="btn-cotizar">Solicitar Cotización</a>
+        </div>
       </div>
-      <div class="calc-result" id="resultado">Ingresa los m² para calcular</div>
-    </div>
-    <script>
-      function calcular(){{
-        var m2 = parseFloat(document.getElementById('m2').value);
-        if (!m2 || m2 <= 0){{ document.getElementById('resultado').innerHTML = 'Ingresa los m² para calcular'; return; }}
-        var pz = Math.ceil(m2 / {area});
-        var cajas = Math.ceil(pz / {pz_caja});
-        document.getElementById('resultado').innerHTML = 'Necesitas <strong>' + pz + ' piezas</strong> (' + cajas + ' caja' + (cajas>1?'s':'') + ')<br><span style="font-size:0.75rem;color:rgba(245,245,245,0.5)">Basado en {label}</span>';
-      }}
-    </script>
-'''
-    else:
-        calc_html = '''
-    <div class="calc-box">
-      <h3>📐 Calculadora de Materiales</h3>
-      <div class="calc-result">Consulta la ficha técnica o contáctanos para calcular los materiales necesarios.</div>
-    </div>
 '''
 
-    cat_html = f'''<!DOCTYPE html>
+        subcat_sections += f'''  <section class="subcat-section" id="{sub['slug']}">
+    <div class="subcat-header">
+      <h3>{sub['name']}</h3>
+      <span class="subcat-count">{len(sub['products'])} productos</span>
+      <div class="subcat-divider"></div>
+    </div>
+{ficha_html}    <div class="products-grid">
+{products_html}    </div>
+  </section>
+'''
+
+    # Productos directos (sin subcategoría)
+    direct_section = ''
+    if cat['direct_products']:
+        direct_products_html = ''
+        for prod_file in cat['direct_products']:
+            prod_name = os.path.splitext(prod_file)[0]
+            img_path = get_relative_path(BASE_DIR, cat['path'] / prod_file)
+            mailto = mailto_link(prod_name, cat['name'])
+            direct_products_html += f'''      <div class="product-card">
+        <div class="product-gallery">
+          <img src="{img_path}" alt="{prod_name}" loading="lazy">
+        </div>
+        <div class="product-info">
+          <div class="product-name">{prod_name}</div>
+          <a href="{mailto}" class="btn-cotizar">Solicitar Cotización</a>
+        </div>
+      </div>
+'''
+
+        direct_section = f'''  <section class="subcat-section">
+    <div class="subcat-header">
+      <h3>Productos {cat['name']}</h3>
+      <span class="subcat-count">{len(cat['direct_products'])} productos</span>
+      <div class="subcat-divider"></div>
+    </div>
+    <div class="products-grid">
+{direct_products_html}    </div>
+  </section>
+'''
+
+    # Ficha técnica a nivel categoría
+    cat_ficha = ''
+    if cat['ficha']:
+        ficha_path = get_relative_path(BASE_DIR, cat['path'] / cat['ficha'])
+        cat_ficha = f'''  <section class="ficha-section">
+    <a href="{ficha_path}" target="_blank" class="ficha-btn">📋 Ver Ficha Técnica General — {cat['name']}</a>
+  </section>
+'''
+
+    html = f'''<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{cat['title']} | ADIS Catálogo</title>
-  <meta name="description" content="{cat['title']} - ADIS Diseño & Remodelación. {cat['desc']}">
+  <title>{cat['name']} | ADIS Catálogo</title>
+  <meta name="description" content="{cat['name']} - ADIS Diseño & Remodelación. Explora nuestros productos y solicita tu cotización.">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <canvas id="bg-canvas"></canvas>
-  <header>
-    <div class="header-inner">
-      <a href="index.html" class="logo"><img src="LOGO ADIS.png" alt="ADIS Logo"></a>
-      <nav class="desktop-nav">
-        <a href="index.html">← Inicio</a>
-        <a href="index.html#categorias">Catálogo</a>
-        <a href="contacto.html">Contacto</a>
-      </nav>
-      <button class="menu-btn" onclick="toggleMenu()">☰</button>
-    </div>
-  </header>
-  <div class="mobile-menu" id="mobileMenu">
-    <button class="close-menu" onclick="toggleMenu()">✕</button>
-    <a href="index.html" onclick="toggleMenu()">← Inicio</a>
-    <a href="index.html#categorias" onclick="toggleMenu()">Catálogo</a>
-    <a href="contacto.html" onclick="toggleMenu()">Contacto</a>
-  </div>
+{generate_header(cat['slug'])}
 
   <section class="hero-cat">
-    <h1>{cat['title']}</h1>
-    <p>{cat['desc']}</p>
+    <h1>{cat['name']}</h1>
+    <p>Explora nuestra línea de {cat['name'].lower()} y solicita tu cotización.</p>
   </section>
 
-  <section class="ficha-section">
-    <div class="section-header">
-      <h2>Ficha Técnica</h2>
-      <div class="divider"></div>
-    </div>
-    <p class="ficha-desc">{cat['desc']}</p>
-    <table class="ficha-table">
-      <thead><tr><th>Especificación</th><th>Detalle</th></tr></thead>
-      <tbody>
-'''
-    for spec in cat['specs']:
-        cat_html += f'''        <tr><td>{spec[0]}</td><td>{spec[1]}</td></tr>
-'''
-    cat_html += f'''      </tbody>
-    </table>
-    {calc_html}
-  </section>
+{cat_ficha}
+{subcat_sections}
+{direct_section}
 
-  <section class="products-section">
-    <div class="section-header">
-      <h2>Productos</h2>
-      <div class="divider"></div>
-    </div>
-    <div class="products-grid">
-'''
-    for prod_file in cat['products']:
-        prod_name = os.path.splitext(prod_file)[0]
-        img_path = f"{cat['folder']}/{prod_file}"
-        cat_html += f'''      <div class="product-card">
-        <div class="product-gallery">
-          <img src="{img_path}" alt="{prod_name}" loading="lazy">
-        </div>
-        <div class="product-name">{prod_name}</div>
-      </div>
-'''
-    cat_html += f'''    </div>
-    <div style="text-align: center; margin-top: 3rem;">
+  <section class="section-wrap" style="padding-top: 1rem;">
+    <div style="text-align: center;">
       <a href="index.html" class="btn-back">← Volver al Inicio</a>
-      <a href="catalogo_adis.pdf" class="btn-outline" target="_blank">📄 Descargar PDF</a>
+      <a href="contacto.html" class="btn-outline">Contactar</a>
     </div>
   </section>
 
-  <footer>
-    <div class="footer-logo"><img src="LOGO ADIS.png" alt="ADIS Logo"></div>
-    <div class="footer-info">
-      <strong>ADI'S DISEÑO & REMODELACIÓN</strong><br>
-      Creando espacios, reinventando hogares.<br>
-      Nogales, Sonora · Rio Rico, AZ<br>
-      Tel. MX: +52 631-192-8993 · Tel. USA: +1 (520) 839-2877<br>
-      adis.remodelacion@gmail.com
-    </div>
-    <div class="copyright">© 2026 ADIS DISEÑO & REMODELACIÓN. TODOS LOS DERECHOS RESERVADOS.</div>
-  </footer>
-
-  <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20vi%20el%20catálogo%20y%20me%20interesa..." class="whatsapp-float" target="_blank" title="Contáctanos por WhatsApp">💬</a>
-
-  <script>function toggleMenu(){{document.getElementById('mobileMenu').classList.toggle('active');}}</script>
-  <script>''' + PARTICLES_JS + '''</script>
+{generate_footer()}
 </body>
 </html>
 '''
-    with open(os.path.join(base_dir, cat['filename']), 'w', encoding='utf-8') as f:
-        f.write(cat_html)
+    filepath = BASE_DIR / cat['filename']
+    with open(filepath, 'w', encoding='utf-8') as f:
+        f.write(html)
+    print(f"✅ {cat['filename']} generado")
 
-print("Sitio completo generado exitosamente.")
+
+def main():
+    print("Escaneando CATALOGO FINAL...")
+    categories = scan_catalog()
+    print(f"Encontradas {len(categories)} categorías")
+
+    print("\nGenerando archivos...")
+    generate_style()
+    generate_index(categories)
+    generate_contacto()
+
+    for cat in categories:
+        generate_category_page(cat, categories)
+
+    print("\n🎉 ¡Sitio web generado exitosamente en:", BASE_DIR)
+    print(f"   - {len(categories)} categorías")
+    total_products = sum(len(c['direct_products']) + sum(len(s['products']) for s in c['subcategories']) for c in categories)
+    print(f"   - {total_products} productos totales")
+
+
+if __name__ == '__main__':
+    main()
