@@ -1698,16 +1698,210 @@ def sync_media():
     print(f"Media sincronizada: {copied} archivos")
 
 
+# Datos extraídos de fichas técnicas
+SPECS_DATA = {
+    # 1. Placas PVC
+    'Placas PVC tipo madera': {
+        'Material': 'PVC',
+        'Dimensiones': '2440 x 1220 x 3 mm',
+        'Presentación': '2.977 m²/pz, 1 pz/Caja, 19 kg/pz',
+        'Garantía': '15 años',
+        'Uso': 'Interior',
+    },
+    'Placas PVC Texturizadas': {
+        'Material': 'PVC',
+        'Dimensiones': '2440 x 1220 x 5 mm',
+        'Presentación': '2.977 m²/pz, 1 pz/Caja, 10.5 kg/pz',
+        'Garantía': '15 años',
+        'Uso': 'Interior',
+    },
+    'Placas PVC Tipo espejo': {
+        'Material': 'PVC',
+        'Dimensiones': '2440 x 1220 x 5 mm',
+        'Presentación': '2.977 m²/pz, 1 pz/Caja, 10.5 kg/pz',
+        'Garantía': '15 años',
+        'Uso': 'Interior',
+    },
+    # 2. Lambrin WPC
+    'Lambrin Interior': {
+        'Material': 'WPC',
+        'Dimensiones': '2900 x 160 x 24 mm',
+        'Presentación': '0.464 m²/pz, 14 pz/Caja, 6.496 m²/caja, 30.5 Kg/caja',
+        'Garantía': '15 años',
+        'Uso': 'Interior',
+    },
+    'Lambrin Exterior': {
+        'Material': 'WPC',
+        'Dimensiones': 'Consultar ficha técnica',
+        'Presentación': 'Consultar ficha técnica',
+        'Garantía': 'Consultar ficha técnica',
+        'Uso': 'Exterior',
+    },
+    'Desigual': {
+        'Material': 'WPC',
+        'Dimensiones': 'Consultar ficha técnica',
+        'Presentación': 'Consultar ficha técnica',
+        'Garantía': 'Consultar ficha técnica',
+        'Uso': 'Interior',
+    },
+    'Media luna': {
+        'Material': 'WPC',
+        'Dimensiones': '2900 x 159 x 15 mm',
+        'Presentación': '4.611 m²/caja, 10 pzas/Caja',
+        'Garantía': '15 años',
+        'Uso': 'Interior',
+    },
+    'Media luna PS': {
+        'Material': 'PS (Poliestireno)',
+        'Dimensiones': '2900 x 152 x 12 mm',
+        'Presentación': '6.171 m²/caja, 14 pzas/Caja',
+        'Garantía': '15 años',
+        'Uso': 'Interior',
+    },
+    # 3. Revestimiento Flexible
+    'Revestimiento Flexible': {
+        'Material': 'Revestimiento flexible',
+        'Dimensiones': '900 x 600 mm / 1200 x 600 mm',
+        'Presentación': '0.54/0.72 m²/pz, 13.5/0.72 m²/Caja, 25/1 pz/Caja',
+        'Garantía': '35 años',
+        'Uso': 'Interior',
+    },
+    # 4. Plafon PVC
+    'Plafon pvc laminado': {
+        'Material': 'PVC',
+        'Dimensiones': '2900 x 250 x 8 mm',
+        'Presentación': '0.725 m²/pz, 10 pz/Caja, 7.25 m²/Caja, 2.92 kg/m²',
+        'Garantía': '15 años',
+        'Uso': 'Interior',
+    },
+    'Plafon Laminado wood': {
+        'Material': 'PVC',
+        'Dimensiones': '2800 x 300 x 9 mm',
+        'Presentación': '0.84 m²/pz, 10 pz/Caja, 8.4 m²/Caja, 2.8 kg/m²',
+        'Garantía': '15 años',
+        'Uso': 'Interior',
+    },
+    # 5. Paneles tridimensionales
+    'Blanco': {
+        'Material': 'PVC / Compuesto',
+        'Dimensiones': '500 x 500 mm, Espesor varias',
+        'Presentación': '0.25 m²/pz, 10/40 pz/caja, 2.5/10 m²/caja',
+        'Garantía': '1 año',
+        'Uso': 'Residencial y comercial',
+    },
+    'Grises': {
+        'Material': 'PVC / Compuesto',
+        'Dimensiones': '500 x 500 mm, Espesor varias',
+        'Presentación': '0.25 m²/pz, 10/40 pz/caja, 2.5/10 m²/caja',
+        'Garantía': '1 año',
+        'Uso': 'Residencial y comercial',
+    },
+    'Madera': {
+        'Material': 'PVC / Compuesto',
+        'Dimensiones': '500 x 500 mm, Espesor varias',
+        'Presentación': '0.25 m²/pz, 10/40 pz/caja, 2.5/10 m²/caja',
+        'Garantía': '1 año',
+        'Uso': 'Residencial y comercial',
+    },
+    'Negro': {
+        'Material': 'PVC / Compuesto',
+        'Dimensiones': '500 x 500 mm, Espesor varias',
+        'Presentación': '0.25 m²/pz, 10/40 pz/caja, 2.5/10 m²/caja',
+        'Garantía': '1 año',
+        'Uso': 'Residencial y comercial',
+    },
+    'Oro': {
+        'Material': 'PVC / Compuesto',
+        'Dimensiones': '500 x 500 mm, Espesor varias',
+        'Presentación': '0.25 m²/pz, 10/40 pz/caja, 2.5/10 m²/caja',
+        'Garantía': '1 año',
+        'Uso': 'Residencial y comercial',
+    },
+    # 6. Vigas PVC
+    'Interior': {
+        'Material': 'WPC',
+        'Dimensiones': '2900 x 100 x 50 mm / 2900 x 50 x 50 mm',
+        'Presentación': '1 pz/Caja',
+        'Garantía': '15 años',
+        'Uso': 'Interior',
+    },
+    'Exterior': {
+        'Material': 'WPC',
+        'Dimensiones': '2850 x 120 x 70 mm',
+        'Presentación': '1 pz/Caja',
+        'Garantía': '15 años sin carga',
+        'Uso': 'Exterior',
+    },
+    # 7. Pisos
+    'Laminado': {
+        'Material': 'Laminado',
+        'Dimensiones': 'Consultar ficha técnica',
+        'Presentación': 'Consultar ficha técnica',
+        'Garantía': 'Consultar ficha técnica',
+        'Uso': 'Residencial',
+    },
+    'WPC': {
+        'Material': 'WPC',
+        'Dimensiones': 'Consultar ficha técnica',
+        'Presentación': 'Consultar ficha técnica',
+        'Garantía': 'Consultar ficha técnica',
+        'Uso': 'Residencial',
+    },
+    'SPC': {
+        'Material': 'SPC',
+        'Dimensiones': '625 x 125 mm, Espesor 5+IXPE 1.5 mm',
+        'Presentación': '1.875 m²/Caja, 20.25 kg/Caja',
+        'Garantía': '12 años (Residencial) / 3 años (Comercial)',
+        'Uso': 'Residencial / Comercial ligero',
+    },
+    'Deck Sintetico': {
+        'Material': 'WPC / Compuesto',
+        'Dimensiones': '2200 x 145 x 22.5 mm',
+        'Presentación': '1.276 m²/Caja, 4 pz/Caja, 20 kg/Caja',
+        'Garantía': '18 años',
+        'Uso': 'Residencial',
+    },
+    # 8. Zacate
+    'Follaje Sintetico': {
+        'Material': 'Polietileno / Sintético',
+        'Dimensiones': '25 x 25 cm',
+        'Presentación': 'Consultar ficha técnica',
+        'Garantía': '5 años',
+        'Uso': 'Exterior / Decorativo',
+    },
+    'Pasto Recreativo': {
+        'Material': 'Polietileno / Sintético',
+        'Dimensiones': '3.75 x 2.5 m / 3.98 x 30 m (rollos)',
+        'Presentación': '93.75 m²/Rollo, 119.4 m²/Rollo',
+        'Garantía': 'Consultar ficha técnica',
+        'Uso': 'Exterior / Recreativo',
+    },
+    # 9. Cladding
+    'Cladding': {
+        'Material': 'WPC / Compuesto',
+        'Dimensiones': '2900 x 99 x 14 mm',
+        'Presentación': '3.445 m²/caja, 12 pz/Caja',
+        'Garantía': '15 años',
+        'Uso': 'Exterior',
+    },
+    'Placa tipo roca': {
+        'Material': 'WPC / Compuesto',
+        'Dimensiones': '1200 x 600 x 35 mm',
+        'Presentación': '4 pza/caja, 0.72 m²/pza, 2.3 kg/pza',
+        'Garantía': '3 años (Interior)',
+        'Uso': 'Interior',
+    },
+}
+
+
 def generate_specs_table(product_name):
     """Genera tabla de especificaciones técnicas en formato texto."""
-    return f'''    <div class="specs-bar reveal">
-      <div class="spec-item"><span class="spec-label">Material</span><span class="spec-value">Consultar ficha técnica</span></div>
-      <div class="spec-item"><span class="spec-label">Dimensiones</span><span class="spec-value">Consultar ficha técnica</span></div>
-      <div class="spec-item"><span class="spec-label">Presentación</span><span class="spec-value">Consultar ficha técnica</span></div>
-      <div class="spec-item"><span class="spec-label">Garantía</span><span class="spec-value">Consultar ficha técnica</span></div>
-      <div class="spec-item"><span class="spec-label">Uso</span><span class="spec-value">Consultar ficha técnica</span></div>
-    </div>
-'''
+    data = SPECS_DATA.get(product_name, {})
+    items = []
+    for label in ('Material', 'Dimensiones', 'Presentación', 'Garantía', 'Uso'):
+        value = data.get(label, 'Consultar ficha técnica')
+        items.append(f'<div class="spec-item"><span class="spec-label">{label}</span><span class="spec-value">{value}</span></div>')
+    return '    <div class="specs-bar reveal">\n      ' + '\n      '.join(items) + '\n    </div>\n'
 
 
 def generate_proyectos():
