@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import os
 import sys
 import shutil
@@ -790,6 +791,257 @@ footer {
   margin-top: 0.5rem;
 }
 
+/* HERO CATEGORIA CON IMAGEN DE FONDO */
+.hero-cat-bg {
+  position: relative;
+  min-height: 55vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 8rem 2rem 4rem;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+.hero-cat-bg::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, rgba(15,15,15,0.5) 0%, rgba(15,15,15,0.85) 70%, var(--black) 100%);
+}
+.hero-cat-bg .hero-cat-content {
+  position: relative;
+  z-index: 1;
+  max-width: 800px;
+}
+.hero-cat-bg h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2.5rem, 5vw, 4.5rem);
+  color: var(--white);
+  margin-bottom: 1rem;
+  text-shadow: 0 2px 20px rgba(0,0,0,0.5);
+}
+.hero-cat-bg p {
+  font-size: 1.1rem;
+  color: rgba(245,245,245,0.85);
+  max-width: 600px;
+  margin: 0 auto;
+  line-height: 1.7;
+}
+.hero-cat-badge {
+  display: inline-block;
+  padding: 0.4rem 1.2rem;
+  border: 1px solid var(--gold);
+  color: var(--gold);
+  font-size: 0.7rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  margin-bottom: 1.5rem;
+  background: rgba(15,15,15,0.5);
+}
+
+/* SUBCATEGORIA MEJORADA */
+.subcat-section {
+  padding: 4rem 2rem;
+  position: relative;
+  z-index: 1;
+}
+.subcat-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+.subcat-header h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.8rem;
+  color: var(--gold);
+  margin-bottom: 0.5rem;
+}
+.subcat-header .subcat-count {
+  font-size: 0.8rem;
+  color: rgba(245,245,245,0.5);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+.subcat-divider {
+  width: 40px;
+  height: 2px;
+  background: var(--gold);
+  margin: 1rem auto;
+}
+
+/* PRODUCTOS MEJORADOS */
+.products-section {
+  padding: 2rem 2rem 5rem;
+  position: relative;
+  z-index: 1;
+}
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 2.5rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+.product-card {
+  background: rgba(42,42,42,0.75);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(197,160,89,0.1);
+  overflow: hidden;
+  transition: all 0.4s ease;
+  border-radius: 12px;
+  position: relative;
+}
+.product-card:hover {
+  border-color: rgba(197,160,89,0.4);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+  transform: translateY(-8px);
+  background: rgba(42,42,42,0.9);
+}
+.product-card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  opacity: 0;
+  transition: opacity 0.4s;
+}
+.product-card:hover::after {
+  opacity: 1;
+}
+.product-gallery {
+  position: relative;
+  height: 380px;
+  background: #111;
+  overflow: hidden;
+}
+.product-gallery img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s ease;
+}
+.product-card:hover .product-gallery img {
+  transform: scale(1.08);
+}
+.product-gallery::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 60%;
+  background: linear-gradient(to top, rgba(15,15,15,0.8), transparent);
+  opacity: 0;
+  transition: opacity 0.4s;
+}
+.product-card:hover .product-gallery::after {
+  opacity: 1;
+}
+.product-info {
+  padding: 1.5rem;
+  text-align: center;
+  border-top: 1px solid rgba(197,160,89,0.1);
+}
+.product-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.25rem;
+  color: var(--gold);
+  margin-bottom: 1rem;
+}
+.btn-cotizar {
+  display: inline-block;
+  padding: 0.7rem 2rem;
+  background: var(--gold);
+  color: var(--black);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  text-decoration: none;
+  border-radius: 30px;
+  transition: all 0.3s;
+}
+.btn-cotizar:hover {
+  background: transparent;
+  color: var(--gold);
+  box-shadow: inset 0 0 0 2px var(--gold);
+}
+
+/* CATEGORIA CARD MEJORADA */
+.cat-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 12px;
+  transition: all 0.4s ease;
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
+  display: block;
+  height: 320px;
+  border: 1px solid rgba(197,160,89,0.15);
+}
+.cat-card:hover {
+  border-color: var(--gold);
+  transform: translateY(-8px);
+  box-shadow: 0 25px 60px rgba(0,0,0,0.6);
+}
+.cat-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.8s ease;
+}
+.cat-card:hover img {
+  transform: scale(1.12);
+}
+.cat-card-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.4) 50%, transparent 100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 2rem;
+}
+.cat-card-overlay h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.6rem;
+  color: var(--white);
+  margin-bottom: 0.4rem;
+}
+.cat-card-overlay span {
+  font-size: 0.8rem;
+  color: var(--gold);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-weight: 600;
+}
+.cat-card-overlay .cat-arrow {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--gold);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--gold);
+  font-size: 1.2rem;
+  opacity: 0;
+  transform: translateX(-10px);
+  transition: all 0.3s;
+}
+.cat-card:hover .cat-arrow {
+  opacity: 1;
+  transform: translateX(0);
+}
+
 /* MOBILE */
 @media (max-width: 768px) {
   .desktop-nav { display: none; }
@@ -804,6 +1056,8 @@ footer {
   .chatbot-float { width: 50px; height: 50px; font-size: 1.5rem; }
   .chatbot-window { width: calc(100vw - 40px); left: 20px; }
   .stat-number { font-size: 2rem; }
+  .hero-cat-bg { min-height: 45vh; }
+  .product-gallery { height: 300px; }
 }
 '''
 
@@ -894,6 +1148,7 @@ def generate_header(current_page='index'):
     <button class="close-menu" onclick="toggleMenu()">✕</button>
     <a href="index.html" onclick="toggleMenu()">Inicio</a>
     <a href="index.html#categorias" onclick="toggleMenu()">Catálogo</a>
+    <a href="proyectos.html" onclick="toggleMenu()">Proyectos</a>
     <a href="contacto.html" onclick="toggleMenu()">Contacto</a>
   </div>
 '''
@@ -1066,9 +1321,10 @@ def generate_index(categories):
         elif cat['direct_products']:
             thumb_src = f"img/{cat['slug']}/{cat['direct_products'][0]}"
 
-        cat_cards += f'''      <a href="{cat['filename']}" class="cat-card">
+        cat_cards += f'''      <a href="{cat['filename']}" class="cat-card reveal">
         <img src="{thumb_src}" alt="{cat['name']}" loading="lazy">
         <div class="cat-card-overlay">
+          <div class="cat-arrow">→</div>
           <h3>{cat['name']}</h3>
           <span>{total_prods} productos</span>
         </div>
@@ -1253,6 +1509,13 @@ def generate_contacto():
 def generate_category_page(cat, categories):
     """Genera página de una categoría con subcategorías y productos."""
 
+    # Seleccionar imagen de fondo representativa para el hero
+    hero_bg = ''
+    if cat['subcategories'] and cat['subcategories'][0]['products']:
+        hero_bg = f"img/{cat['slug']}/{cat['subcategories'][0]['slug']}/{cat['subcategories'][0]['products'][0]}"
+    elif cat['direct_products']:
+        hero_bg = f"img/{cat['slug']}/{cat['direct_products'][0]}"
+
     # Construir secciones de subcategorías
     subcat_sections = ''
     for sub in cat['subcategories']:
@@ -1272,7 +1535,7 @@ def generate_category_page(cat, categories):
         for prod_file in sub['products']:
             prod_name = os.path.splitext(prod_file)[0]
             mailto = mailto_link(prod_name, cat['name'], sub['name'])
-            products_html += f'''      <div class="product-card">
+            products_html += f'''      <div class="product-card reveal">
         <div class="product-gallery">
           <img src="img/{cat['slug']}/{sub['slug']}/{prod_file}" alt="{prod_name}" loading="lazy">
         </div>
@@ -1283,7 +1546,7 @@ def generate_category_page(cat, categories):
       </div>
 '''
 
-        subcat_sections += f'''  <section class="subcat-section" id="{sub['slug']}">
+        subcat_sections += f'''  <section class="subcat-section reveal" id="{sub['slug']}">
     <div class="subcat-header">
       <h3>{sub['name']}</h3>
       <span class="subcat-count">{len(sub['products'])} productos</span>
@@ -1301,7 +1564,7 @@ def generate_category_page(cat, categories):
         for prod_file in cat['direct_products']:
             prod_name = os.path.splitext(prod_file)[0]
             mailto = mailto_link(prod_name, cat['name'])
-            direct_products_html += f'''      <div class="product-card">
+            direct_products_html += f'''      <div class="product-card reveal">
         <div class="product-gallery">
           <img src="img/{cat['slug']}/{prod_file}" alt="{prod_name}" loading="lazy">
         </div>
@@ -1312,7 +1575,7 @@ def generate_category_page(cat, categories):
       </div>
 '''
 
-        direct_section = f'''  <section class="subcat-section">
+        direct_section = f'''  <section class="subcat-section reveal">
     <div class="subcat-header">
       <h3>Productos {cat['name']}</h3>
       <span class="subcat-count">{len(cat['direct_products'])} productos</span>
@@ -1326,7 +1589,7 @@ def generate_category_page(cat, categories):
     # Ficha técnica a nivel categoría
     cat_ficha = ''
     if cat['ficha']:
-        cat_ficha = f'''  <section class="ficha-section">
+        cat_ficha = f'''  <section class="ficha-section reveal">
     <a href="img/{cat['slug']}/{cat['ficha']}" target="_blank" class="ficha-btn">📋 Ver Ficha Técnica General — {cat['name']}</a>
   </section>
 '''
@@ -1345,9 +1608,12 @@ def generate_category_page(cat, categories):
   <canvas id="bg-canvas"></canvas>
 {generate_header(cat['slug'])}
 
-  <section class="hero-cat">
-    <h1>{cat['name']}</h1>
-    <p>Explora nuestra línea de {cat['name'].lower()} y solicita tu cotización.</p>
+  <section class="hero-cat-bg" style="background-image: url('{hero_bg}');">
+    <div class="hero-cat-content">
+      <div class="hero-cat-badge">Categoría</div>
+      <h1>{cat['name']}</h1>
+      <p>Explora nuestra línea de {cat['name'].lower()} con {cat['total_products']} productos disponibles. Solicita tu cotización.</p>
+    </div>
   </section>
 
 {cat_ficha}
@@ -1368,7 +1634,7 @@ def generate_category_page(cat, categories):
     filepath = BASE_DIR / cat['filename']
     with open(filepath, 'w', encoding='utf-8') as f:
         f.write(html)
-    print(f"✅ {cat['filename']} generado")
+    print(f"{cat['filename']} generado")
 
 
 def sync_media():
@@ -1534,6 +1800,13 @@ def main():
 
     print("\nSincronizando media...")
     sync_media()
+
+    # Calcular totales por categoria
+    for cat in categories:
+        total = len(cat['direct_products'])
+        for sub in cat['subcategories']:
+            total += len(sub['products'])
+        cat['total_products'] = total
 
     print("\nGenerando archivos...")
     generate_style()
