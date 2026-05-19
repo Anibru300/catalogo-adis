@@ -1640,6 +1640,42 @@ footer {
 .real-sheets-item:hover::after { opacity: 1; }
 .real-sheets-badge { position: absolute; bottom: 1rem; left: 1rem; background: var(--gold); color: var(--black); padding: 0.3rem 0.8rem; border-radius: 15px; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; z-index: 2; }
 @media (max-width: 768px) { .real-sheets-grid { grid-template-columns: repeat(2, 1fr); } }
+
+/* SABIAS QUE - PAGINA INTERACTIVA */
+.sq-hero { padding: 8rem 2rem 4rem; text-align: center; background: linear-gradient(135deg, rgba(15,15,15,0.95) 0%, rgba(26,26,26,0.9) 100%); position: relative; }
+.sq-hero::before { content: ''; position: absolute; top: -30%; left: 50%; transform: translateX(-50%); width: 600px; height: 600px; background: radial-gradient(circle, rgba(197,160,89,0.06) 0%, transparent 70%); border-radius: 50%; pointer-events: none; }
+.sq-hero h1 { font-family: 'Playfair Display', serif; font-size: 3rem; color: var(--gold-light); margin-bottom: 1rem; }
+.sq-hero p { color: rgba(245,245,245,0.6); font-size: 1.1rem; max-width: 600px; margin: 0 auto; }
+
+.sq-tabs { display: flex; justify-content: center; gap: 0.5rem; padding: 2rem; flex-wrap: wrap; max-width: 1100px; margin: 0 auto; }
+.sq-tab { background: rgba(255,255,255,0.04); border: 1px solid rgba(197,160,89,0.15); color: rgba(245,245,245,0.7); padding: 0.7rem 1.4rem; border-radius: 25px; cursor: pointer; font-family: 'Montserrat', sans-serif; font-size: 0.85rem; font-weight: 500; transition: all 0.3s ease; }
+.sq-tab:hover { border-color: rgba(197,160,89,0.4); color: var(--gold-light); }
+.sq-tab.active { background: var(--gold); color: var(--black); border-color: var(--gold); font-weight: 600; }
+
+.sq-content { max-width: 1100px; margin: 0 auto; padding: 0 2rem 4rem; }
+.sq-panel { display: none; }
+.sq-panel.active { display: block; animation: sqFadeIn 0.5s ease; }
+@keyframes sqFadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+
+.sq-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem; }
+.sq-card { background: rgba(255,255,255,0.03); border: 1px solid rgba(197,160,89,0.12); border-radius: 16px; padding: 1.8rem; position: relative; overflow: hidden; transition: all 0.4s ease; cursor: default; }
+.sq-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--gold), var(--gold-light)); transform: scaleX(0); transition: transform 0.4s ease; }
+.sq-card:hover { border-color: rgba(197,160,89,0.35); transform: translateY(-6px); box-shadow: 0 15px 40px rgba(0,0,0,0.3); }
+.sq-card:hover::before { transform: scaleX(1); }
+.sq-card-icon { font-size: 2.2rem; margin-bottom: 0.8rem; display: block; }
+.sq-card h3 { color: var(--gold-light); font-size: 1.05rem; margin-bottom: 0.7rem; font-family: 'Montserrat', sans-serif; font-weight: 600; }
+.sq-card p { color: rgba(245,245,245,0.75); font-size: 0.88rem; line-height: 1.7; }
+.sq-card-number { position: absolute; top: 1rem; right: 1.2rem; font-size: 2.5rem; font-weight: 800; color: rgba(197,160,89,0.08); font-family: 'Playfair Display', serif; line-height: 1; }
+
+.sq-faq-item { background: rgba(255,255,255,0.03); border: 1px solid rgba(197,160,89,0.1); border-radius: 12px; margin-bottom: 1rem; overflow: hidden; }
+.sq-faq-q { padding: 1.2rem 1.5rem; color: var(--gold-light); font-weight: 600; font-size: 0.95rem; cursor: pointer; display: flex; justify-content: space-between; align-items: center; transition: background 0.3s; }
+.sq-faq-q:hover { background: rgba(197,160,89,0.05); }
+.sq-faq-q::after { content: '+'; font-size: 1.3rem; color: var(--gold); transition: transform 0.3s; }
+.sq-faq-item.open .sq-faq-q::after { transform: rotate(45deg); }
+.sq-faq-a { max-height: 0; overflow: hidden; transition: max-height 0.4s ease, padding 0.4s ease; padding: 0 1.5rem; color: rgba(245,245,245,0.7); font-size: 0.87rem; line-height: 1.7; }
+.sq-faq-item.open .sq-faq-a { max-height: 500px; padding: 0 1.5rem 1.2rem; }
+
+@media (max-width: 768px) { .sq-hero h1 { font-size: 2rem; } .sq-grid { grid-template-columns: 1fr; } .sq-tabs { gap: 0.4rem; } .sq-tab { padding: 0.5rem 1rem; font-size: 0.78rem; } }
 '''
 
 # ========== PARTICLES JS ==========
@@ -1725,9 +1761,9 @@ def generate_header(current_page='index'):
     ]
     mega_html = '\n'.join([f'        <a href="{u}" class="mega-item"><img src="{i}" alt="{t}" loading="lazy"><span>{t}</span></a>' for u, i, t in MEGA_ITEMS])
     
-    nav_links = '<a href="index.html">Inicio</a>\n        <a href="index.html#categorias" class="mega-trigger">Catálogo\n          <div class="mega-menu">\n' + mega_html + '\n          </div>\n        </a>\n        <a href="proyectos.html">Proyectos</a>\n        <a href="contacto.html">Contacto</a>'
+    nav_links = '<a href="index.html">Inicio</a>\n        <a href="index.html#categorias" class="mega-trigger">Catálogo\n          <div class="mega-menu">\n' + mega_html + '\n          </div>\n        </a>\n        <a href="sabias-que.html">¿Sabías que?</a>\n        <a href="proyectos.html">Proyectos</a>\n        <a href="contacto.html">Contacto</a>'
     if current_page != 'index':
-        nav_links = '<a href="index.html">← Inicio</a>\n        <a href="index.html#categorias" class="mega-trigger">Catálogo\n          <div class="mega-menu">\n' + mega_html + '\n          </div>\n        </a>\n        <a href="proyectos.html">Proyectos</a>\n        <a href="contacto.html">Contacto</a>'
+        nav_links = '<a href="index.html">← Inicio</a>\n        <a href="index.html#categorias" class="mega-trigger">Catálogo\n          <div class="mega-menu">\n' + mega_html + '\n          </div>\n        </a>\n        <a href="sabias-que.html">¿Sabías que?</a>\n        <a href="proyectos.html">Proyectos</a>\n        <a href="contacto.html">Contacto</a>'
 
     return f'''  <header>
     <div class="header-inner">
@@ -2914,7 +2950,6 @@ def generate_category_page(cat, categories):
   </section>
 
 {subcat_nav_html}{real_sheets_html}
-{generate_research_html(cat['name'])}
 {sections_html}
 {cat_nav_html}
   <section class="section-wrap" style="padding-top: 1rem;">
@@ -3294,6 +3329,119 @@ def generate_testimonios():
   </script>
 '''
 
+def generate_sabias_que():
+    """Genera pagina interactiva de Sabias Que con datos curiosos y FAQs."""
+    if not RESEARCH_DATA:
+        return
+    
+    # Tabs por categoria
+    tab_names = list(RESEARCH_DATA.keys())
+    tabs_html = ''
+    panels_html = ''
+    
+    for idx, cat_name in enumerate(tab_names):
+        data = RESEARCH_DATA[cat_name]
+        active_tab = ' active' if idx == 0 else ''
+        active_panel = ' active' if idx == 0 else ''
+        
+        tabs_html += f'<button class="sq-tab{active_tab}" onclick="showSqPanel({idx})">{cat_name}</button>'
+        
+        # Datos curiosos como cards
+        curiosos_cards = ''
+        if data.get('curiosos'):
+            import re
+            # Extraer cada dato curioso (bloques separados por **)
+            items = re.split(r'\n\n(?=\*\*)', data['curiosos'])
+            for i, item in enumerate(items):
+                item = item.strip()
+                if not item or len(item) < 20:
+                    continue
+                # Extraer titulo (texto entre **)
+                title_match = re.search(r'\*\*(.+?)\*\*', item)
+                title = title_match.group(1) if title_match else 'Dato Curioso'
+                # Extraer descripcion (resto del texto)
+                desc = re.sub(r'\*\*(.+?)\*\*', r'', item).strip()
+                # Icono basado en numero
+                icons = ['🔬', '🌍', '🔥', '🖨️', '⚖️', '🧪', '🌲', '🌧️', '🏠', '📐', '🪨', '🎨']
+                icon = icons[i % len(icons)]
+                curiosos_cards += f'''      <div class="sq-card">
+        <span class="sq-card-number">{i+1:02d}</span>
+        <span class="sq-card-icon">{icon}</span>
+        <h3>{title}</h3>
+        <p>{desc}</p>
+      </div>
+'''
+        
+        # FAQs como acordeon
+        faqs_html = ''
+        if data.get('faqs'):
+            import re
+            qa_pairs = re.findall(r'\*\*❓\s*(.+?)\*\*\s*\n?>\s*(.+?)(?=\n\n\*\*❓|\Z)', data['faqs'], re.DOTALL)
+            for q, a in qa_pairs:
+                q_clean = q.strip()
+                a_clean = a.strip().replace('\n', ' ')
+                faqs_html += f'''      <div class="sq-faq-item">
+        <div class="sq-faq-q" onclick="this.parentElement.classList.toggle('open')">{q_clean}</div>
+        <div class="sq-faq-a">{a_clean}</div>
+      </div>
+'''
+        
+        panels_html += f'''  <div class="sq-panel{active_panel}" id="sq-panel-{idx}">
+    <div class="section-header" style="margin-bottom:2rem;">
+      <h2>Datos Curiosos: {cat_name}</h2>
+      <div class="divider"></div>
+    </div>
+    <div class="sq-grid">
+{curiosos_cards}    </div>
+{('<div class="section-header" style="margin-top:3rem;margin-bottom:1.5rem;"><h2>Preguntas Frecuentes</h2><div class="divider"></div></div><div class="sq-faqs">' + faqs_html + '</div>') if faqs_html else ''}
+  </div>
+'''
+    
+    html = f'''<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>¿Sabías que? | ADIS Diseño & Remodelación</title>
+  <meta name="description" content="Datos curiosos, FAQs y consejos sobre nuestros productos: PVC, WPC, paneles 3D, pisos, zacate y cladding.">
+  <meta property="og:title" content="¿Sabías que? | ADIS">
+  <meta property="og:description" content="Descubre datos sorprendentes sobre nuestros materiales de construcción.">
+  <meta property="og:image" content="https://anibru300.github.io/catalogo-adis/LOGO%20ADIS.png">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <canvas id="bg-canvas"></canvas>
+{generate_header('sabias-que')}
+
+  <section class="sq-hero">
+    <h1>¿Sabías que?</h1>
+    <p>Descubre datos sorprendentes, respuestas a tus dudas y consejos expertos sobre nuestros materiales de construcción.</p>
+  </section>
+
+  <div class="sq-tabs">
+{tabs_html}
+  </div>
+
+  <div class="sq-content">
+{panels_html}  </div>
+
+{generate_footer()}
+
+  <script>
+    function showSqPanel(idx) {{
+      document.querySelectorAll('.sq-tab').forEach((t, i) => t.classList.toggle('active', i === idx));
+      document.querySelectorAll('.sq-panel').forEach((p, i) => p.classList.toggle('active', i === idx));
+    }}
+  </script>
+</body>
+</html>
+'''
+    with open(BASE_DIR / 'sabias-que.html', 'w', encoding='utf-8') as f:
+        f.write(html)
+    print("✅ sabias-que.html generado")
+
+
 def generate_proyectos():
     """Genera página de proyectos con carruseles de antes/después y galería dinámica."""
     media_dir = BASE_DIR / 'media'
@@ -3526,6 +3674,7 @@ def main():
     generate_index(categories)
     generate_contacto()
     generate_proyectos()
+    generate_sabias_que()
 
     for cat in categories:
         generate_category_page(cat, categories)
