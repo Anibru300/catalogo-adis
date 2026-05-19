@@ -1257,3 +1257,17 @@ footer {
 .featured-product-cta { display: inline-flex; align-items: center; gap: 0.5rem; background: var(--gold); color: var(--black); padding: 0.85rem 2rem; border-radius: 30px; text-decoration: none; font-weight: 600; font-size: 0.9rem; margin-top: 1rem; transition: all 0.3s ease; }
 .featured-product-cta:hover { background: var(--gold-light); transform: translateY(-2px); }
 @media (max-width: 768px) { .featured-product-wrap { grid-template-columns: 1fr; gap: 2rem; } .featured-product-content h3 { font-size: 1.7rem; } }
+
+/* RESEARCH SECTIONS - FAQs y Datos Curiosos */
+.research-section { padding: 4rem 2rem; max-width: 1100px; margin: 0 auto; }
+.research-content { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; }
+.research-item { background: rgba(255,255,255,0.03); border: 1px solid rgba(197,160,89,0.12); border-radius: 12px; padding: 1.5rem; transition: all 0.3s ease; }
+.research-item:hover { border-color: rgba(197,160,89,0.3); transform: translateY(-3px); background: rgba(255,255,255,0.05); }
+.research-item p { color: rgba(245,245,245,0.8); font-size: 0.88rem; line-height: 1.7; margin-bottom: 0.5rem; }
+.research-item p strong { color: var(--gold-light); }
+.research-item h3, .research-item h4 { color: var(--gold); font-size: 1rem; margin-bottom: 0.6rem; font-family: 'Montserrat', sans-serif; }
+.research-faqs { display: flex; flex-direction: column; gap: 1rem; }
+.faq-item { background: rgba(255,255,255,0.03); border: 1px solid rgba(197,160,89,0.12); border-radius: 12px; padding: 1.2rem 1.5rem; }
+.faq-question { color: var(--gold-light); font-weight: 600; font-size: 0.95rem; margin-bottom: 0.5rem; }
+.faq-answer { color: rgba(245,245,245,0.75); font-size: 0.87rem; line-height: 1.7; }
+@media (max-width: 768px) { .research-content { grid-template-columns: 1fr; } }

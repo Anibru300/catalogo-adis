@@ -24,6 +24,111 @@ CONTACTO = {
     'facebook': 'https://www.facebook.com/p/Adis-Dise%C3%B1o-Remodelaci%C3%B3n-61579849591594/'
 }
 
+# ========== RESEARCH DATA (from investigacion/) ==========
+try:
+    with open(BASE_DIR / 'investigacion_data.json', 'r', encoding='utf-8') as f:
+        RESEARCH_DATA = json.load(f)
+except Exception:
+    RESEARCH_DATA = {}
+
+def md_to_html(text):
+    """Convierte Markdown básico a HTML."""
+    if not text:
+        return ''
+    import re
+    # Negritas
+    text = re.sub(r'\*\*(.+?)\*\*', r'<strong>\1</strong>', text)
+    # Cursivas
+    text = re.sub(r'\*(.+?)\*', r'<em>\1</em>', text)
+    # Headers h3
+    text = re.sub(r'^###\s*(.+)$', r'<h3>\1</h3>', text, flags=re.MULTILINE)
+    # Headers h4
+    text = re.sub(r'^####\s*(.+)$', r'<h4>\1</h4>', text, flags=re.MULTILINE)
+    # Listas
+    lines = text.split('\n')
+    result = []
+    in_list = False
+    for line in lines:
+        stripped = line.strip()
+        if stripped.startswith('- ') or stripped.startswith('* '):
+            if not in_list:
+                result.append('<ul>')
+                in_list = True
+            item = stripped[2:]
+            result.append(f'<li>{item}</li>')
+        else:
+            if in_list:
+                result.append('</ul>')
+                in_list = False
+            if stripped:
+                result.append(f'<p>{stripped}</p>')
+    if in_list:
+        result.append('</ul>')
+    return '\n'.join(result)
+
+def generate_research_html(cat_name):
+    """Genera seccion HTML con datos curiosos y FAQs de la investigacion."""
+    if not RESEARCH_DATA:
+        return ''
+    # Buscar categoria por nombre aproximado
+    research_key = None
+    for key in RESEARCH_DATA:
+        if cat_name.upper().replace(' ', '') in key.upper().replace(' ', '') or key.upper().replace(' ', '') in cat_name.upper().replace(' ', ''):
+            research_key = key
+            break
+    if not research_key:
+        return ''
+    
+    data = RESEARCH_DATA[research_key]
+    html_parts = []
+    
+    # Datos curiosos
+    if data.get('curiosos'):
+        html_parts.append('''
+  <section class="research-section reveal">
+    <div class="section-header">
+      <h2>¿Sabías que?</h2>
+      <div class="divider"></div>
+      <p>Datos curiosos sobre este material</p>
+    </div>
+    <div class="research-content">
+''')
+        # Convertir datos curiosos a items
+        curiosos_text = data['curiosos']
+        # Dividir por parrafos que empiezan con **
+        import re
+        items = re.split(r'\n\n(?=\*\*)', curiosos_text)
+        for item in items:
+            item = item.strip()
+            if item:
+                html_parts.append(f'      <div class="research-item">{md_to_html(item)}</div>')
+        html_parts.append('    </div>\n  </section>')
+    
+    # FAQs
+    if data.get('faqs'):
+        html_parts.append('''
+  <section class="research-section reveal">
+    <div class="section-header">
+      <h2>Preguntas Frecuentes</h2>
+      <div class="divider"></div>
+      <p>Respuestas a las dudas más comunes</p>
+    </div>
+    <div class="research-faqs">
+''')
+        faqs_text = data['faqs']
+        # Extraer preguntas y respuestas
+        qa_pairs = re.findall(r'\*\*❓\s*(.+?)\*\*\s*\n?>\s*(.+?)(?=\n\n\*\*❓|\Z)', faqs_text, re.DOTALL)
+        for q, a in qa_pairs:
+            q_clean = q.strip()
+            a_clean = a.strip().replace('\n', ' ')
+            html_parts.append(f'''      <div class="faq-item">
+        <div class="faq-question">{q_clean}</div>
+        <div class="faq-answer">{a_clean}</div>
+      </div>''')
+        html_parts.append('    </div>\n  </section>')
+    
+    return '\n'.join(html_parts)
+
 # ========== CHATBOT KNOWLEDGE BASE ==========
 CHATBOT_KB = {
     'horarios': {
@@ -1510,6 +1615,20 @@ footer {
 .featured-product-cta { display: inline-flex; align-items: center; gap: 0.5rem; background: var(--gold); color: var(--black); padding: 0.85rem 2rem; border-radius: 30px; text-decoration: none; font-weight: 600; font-size: 0.9rem; margin-top: 1rem; transition: all 0.3s ease; }
 .featured-product-cta:hover { background: var(--gold-light); transform: translateY(-2px); }
 @media (max-width: 768px) { .featured-product-wrap { grid-template-columns: 1fr; gap: 2rem; } .featured-product-content h3 { font-size: 1.7rem; } }
+
+/* RESEARCH SECTIONS - FAQs y Datos Curiosos */
+.research-section { padding: 4rem 2rem; max-width: 1100px; margin: 0 auto; }
+.research-content { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; }
+.research-item { background: rgba(255,255,255,0.03); border: 1px solid rgba(197,160,89,0.12); border-radius: 12px; padding: 1.5rem; transition: all 0.3s ease; }
+.research-item:hover { border-color: rgba(197,160,89,0.3); transform: translateY(-3px); background: rgba(255,255,255,0.05); }
+.research-item p { color: rgba(245,245,245,0.8); font-size: 0.88rem; line-height: 1.7; margin-bottom: 0.5rem; }
+.research-item p strong { color: var(--gold-light); }
+.research-item h3, .research-item h4 { color: var(--gold); font-size: 1rem; margin-bottom: 0.6rem; font-family: 'Montserrat', sans-serif; }
+.research-faqs { display: flex; flex-direction: column; gap: 1rem; }
+.faq-item { background: rgba(255,255,255,0.03); border: 1px solid rgba(197,160,89,0.12); border-radius: 12px; padding: 1.2rem 1.5rem; }
+.faq-question { color: var(--gold-light); font-weight: 600; font-size: 0.95rem; margin-bottom: 0.5rem; }
+.faq-answer { color: rgba(245,245,245,0.75); font-size: 0.87rem; line-height: 1.7; }
+@media (max-width: 768px) { .research-content { grid-template-columns: 1fr; } }
 '''
 
 # ========== PARTICLES JS ==========
@@ -2749,6 +2868,7 @@ def generate_category_page(cat, categories):
   </section>
 
 {subcat_nav_html}{sections_html}
+{generate_research_html(cat['name'])}
 {cat_nav_html}
   <section class="section-wrap" style="padding-top: 1rem;">
     <div style="text-align: center;">
