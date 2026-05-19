@@ -1761,10 +1761,10 @@ def generate_header(current_page='index'):
     MEGA_ITEMS = [
         ('1-placas-pvc.html', 'img/1-placas-pvc/11-placas-pvc-tipo-madera/Adler.jpg', 'Placas PVC'),
         ('2-lambrin-wpc.html', 'img/2-lambrin-wpc/21-lambrin-interior/AMANECHER.jpg', 'Lambrín WPC'),
-        ('3-revestimiento-flexible.html', 'img/3-revestimiento-flexible/CONCRETO Aparente.jpg', 'Revestimiento Flexible'),
+        ('3-revestimiento-flexible.html', 'img/3-revestimiento-flexible/CONCRETO%20Aparente.jpg', 'Revestimiento Flexible'),
         ('4-plafon-pvc.html', 'img/4-plafon-pvc/41-plafon-pvc-laminado/SHERWOOD.jpg', 'Plafón PVC'),
         ('5-paneles-tridimensionales.html', 'img/5-paneles-tridimensionales/51-blanco/Austin.jpg', 'Paneles 3D'),
-        ('6-vigas-pvc.html', 'img/6-vigas-pvc/61-interior/BAHIA 1.jpg', 'Vigas PVC'),
+        ('6-vigas-pvc.html', 'img/6-vigas-pvc/61-interior/BAHIA%201.jpg', 'Vigas PVC'),
         ('7-pisos.html', 'img/7-pisos/71-laminado/ACONCAGUA.jpg', 'Pisos'),
         ('8-zacate.html', 'img/8-zacate/81-follaje-sintetico/AMAZONAS-A.jpg', 'Zacate'),
         ('9-cladding.html', 'img/9-cladding/91-placa-tipo-roca/BLACK.jpg', 'Cladding'),
