@@ -1,1171 +1,715 @@
 # -*- coding: utf-8 -*-
 """
-Generador de Catálogo PDF Premium ADIS Diseño & Remodelación
-A4 Vertical · Tema oscuro/dorado · Orientado a ventas
+Catálogo PDF Editorial ADIS — Revista de Arquitectura e Interiorismo
+A4 Vertical · Tema oscuro · Espaciado premium · Jerarquía clara
 """
 
-import os
-import sys
-import re
-import tempfile
+import os, sys, re, tempfile, io
 from pathlib import Path
 from reportlab.lib.pagesizes import A4
-from reportlab.lib.units import cm, mm
-from reportlab.lib.colors import HexColor, white, black, Color
+from reportlab.lib.units import cm
+from reportlab.lib.colors import HexColor, Color
 from reportlab.pdfgen import canvas
 from PIL import Image
 import qrcode
 
-# Forzar UTF-8
 if hasattr(sys.stdout, 'reconfigure'):
     sys.stdout.reconfigure(encoding='utf-8')
 
-# ========== CONFIGURACIÓN ==========
-BASE_DIR = Path(r'G:\Mi unidad\ADIS DISEÑO\Pagina')
-CATALOG_DIR = Path(r'G:\Mi unidad\ADIS DISEÑO\CATALOGO FINAL')
-OUTPUT_PDF = BASE_DIR / 'catalogo_adis.pdf'
-LOGO_PATH = BASE_DIR / 'LOGO ADIS.png'
-MEDIA_DIR = BASE_DIR / 'media'
+# ========== RUTAS ==========
+BASE_DIR   = Path(r'G:\Mi unidad\ADIS DISEÑO\Pagina')
+CATALOG_DIR= Path(r'G:\Mi unidad\ADIS DISEÑO\CATALOGO FINAL')
+OUTPUT_PDF = BASE_DIR / 'catalogo_adis_editorial.pdf'
+LOGO_PATH  = BASE_DIR / 'LOGO ADIS.png'
+MEDIA_DIR  = BASE_DIR / 'media'
 
-# Colores ADIS Premium
-GOLD = HexColor('#C5A059')
-GOLD_LIGHT = HexColor('#E8D5A3')
-DARK = HexColor('#1C1C1E')
-BLACK = HexColor('#0A0A0A')
-GRAY = HexColor('#2C2C2E')
-LIGHT = HexColor('#F5F5F5')
-MUTED = HexColor('#8E8E93')
-WHATSAPP = HexColor('#25D366')
-WHITE = HexColor('#FFFFFF')
+# ========== PALETA EDITORIAL ==========
+BG       = HexColor('#0D0D0D')
+SURFACE  = HexColor('#161616')
+GOLD     = HexColor('#C5A059')
+GOLD_SOFT= HexColor('#D4AF37')
+WHITE    = HexColor('#FFFFFF')
+BODY     = HexColor('#E0E0E0')
+MUTED    = HexColor('#666666')
+LINE     = HexColor('#333333')
 
 IMG_EXTS = ('.jpg', '.jpeg', '.png')
-PRODUCTS_PER_PAGE = 6
-COLS = 2
-ROWS = 3
+
+# ========== MÁRGENES PREMIUM ==========
+MARGIN_L = 2.5*cm
+MARGIN_R = 2.5*cm
+MARGIN_T = 2.5*cm
+MARGIN_B = 2.0*cm
+CONTENT_W = A4[0] - MARGIN_L - MARGIN_R
 
 # WhatsApp
-WHATSAPP_NUM = '526311928993'
-WHATSAPP_MSG = 'Hola ADIS, vi el catálogo y me interesa cotizar sus productos.'
-WHATSAPP_URL = f'https://wa.me/{WHATSAPP_NUM}?text={WHATSAPP_MSG.replace(" ", "%20")}'
+WA_NUM = '526311928993'
+WA_MSG = 'Hola ADIS, vi el catalogo y me interesa cotizar sus productos.'
+WA_URL = f'https://wa.me/{WA_NUM}?text={WA_MSG.replace(" ", "%20")}'
 
 # ========== UTILIDADES ==========
 
-def is_image(filename):
-    return filename.lower().endswith(IMG_EXTS)
+def is_image(f): return f.lower().endswith(IMG_EXTS)
+def is_ficha(f): return 'ficha' in f.lower() and is_image(f)
 
+def clean_folder(name):
+    return re.sub(r'^\d+(\.\d+)*\.?\s*', '', name).strip()
 
-def is_ficha(filename):
-    return 'ficha' in filename.lower() and is_image(filename)
-
-
-def clean_name(folder_name):
-    cleaned = re.sub(r'^\d+(\.\d+)*\.?\s*', '', folder_name)
-    return cleaned.strip()
-
-
-def clean_product_name(filename):
-    """Limpia nombre de producto para mostrar."""
+def clean_product(filename):
     name = os.path.splitext(filename)[0]
-    name = re.sub(r'^[\d\w]+[\.\-_\s]+', '', name)
-    name = re.sub(r'\s*\(?copia\)?\s*$', '', name, flags=re.I)
-    name = re.sub(r'\s*\(?copy\)?\s*$', '', name, flags=re.I)
-    return name.strip()
-
-
-def get_products(folder_path):
-    if not os.path.isdir(folder_path):
-        return []
-    files = []
-    for f in sorted(os.listdir(folder_path)):
-        if is_image(f) and not is_ficha(f):
-            files.append(f)
-    return files
-
-
-def get_ficha(folder_path):
-    if not os.path.isdir(folder_path):
-        return None
-    for f in sorted(os.listdir(folder_path)):
-        if is_ficha(f):
-            return f
-    return None
-
+    name = re.sub(r'^[^a-zA-Z]*', '', name)
+    name = re.sub(r'\s*(copia|copy|img|imagen|new|nuevo)\s*$', '', name, flags=re.I)
+    name = name.strip()
+    # Title case inteligente
+    words = name.split()
+    result = []
+    for w in words:
+        if w.upper() in ('PVC','WPC','SPC','PS','PU','3D','DIY','UV','IXPE'):
+            result.append(w.upper())
+        else:
+            result.append(w.capitalize())
+    name = ' '.join(result)
+    if len(name) > 28:
+        name = name[:26] + '...'
+    return name
 
 def scan_catalog():
-    categories = []
-    for cat_folder in sorted(os.listdir(CATALOG_DIR)):
-        cat_path = CATALOG_DIR / cat_folder
-        if not cat_path.is_dir():
-            continue
-
-        cat_name = clean_name(cat_folder)
-        subcategories = []
-        direct_products = []
-
-        for item in sorted(os.listdir(cat_path)):
-            item_path = cat_path / item
-            if item_path.is_dir():
-                sub_name = clean_name(item)
-                products = get_products(item_path)
-                ficha = get_ficha(item_path)
-                subcategories.append({
-                    'folder': item,
-                    'name': sub_name,
-                    'products': products,
-                    'ficha': ficha,
-                    'path': item_path
-                })
+    cats = []
+    for folder in sorted(os.listdir(CATALOG_DIR)):
+        p = CATALOG_DIR / folder
+        if not p.is_dir(): continue
+        name = clean_folder(folder)
+        subs = []
+        direct = []
+        for item in sorted(os.listdir(p)):
+            ip = p / item
+            if ip.is_dir():
+                prods = [f for f in sorted(os.listdir(ip)) if is_image(f) and not is_ficha(f)]
+                if prods:
+                    subs.append({'name': clean_folder(item), 'products': prods, 'path': ip})
             elif is_image(item) and not is_ficha(item):
-                direct_products.append(item)
+                direct.append(item)
+        if direct:
+            subs.append({'name': name, 'products': sorted(direct), 'path': p})
+        cats.append({'name': name, 'subs': subs})
+    return cats
 
-        categories.append({
-            'folder': cat_folder,
-            'name': cat_name,
-            'subcategories': subcategories,
-            'direct_products': sorted(direct_products),
-            'ficha': get_ficha(cat_path),
-            'path': cat_path
-        })
-    return categories
-
-
-def get_image_size(img_path, max_w, max_h):
+def img_size(img_path, max_w, max_h):
     try:
-        with Image.open(img_path) as img:
-            iw, ih = img.size
-            ratio = min(max_w / iw, max_h / ih)
-            return iw * ratio, ih * ratio
+        with Image.open(img_path) as im:
+            iw, ih = im.size
+            r = min(max_w/iw, max_h/ih)
+            return iw*r, ih*r
     except:
         return max_w, max_h
 
-
-def prepare_logo(output_path, max_size=800):
-    """Convierte logo RGBA a RGB para compatibilidad con ReportLab."""
+def prepare_logo(out_path, max_size=600):
     try:
-        with Image.open(LOGO_PATH) as img:
-            if img.mode in ('RGBA', 'P'):
-                bg = Image.new('RGB', img.size, (10, 10, 10))
-                if img.mode == 'P':
-                    img = img.convert('RGBA')
-                bg.paste(img, mask=img.split()[-1] if img.mode == 'RGBA' else None)
-                img = bg
-            elif img.mode != 'RGB':
-                img = img.convert('RGB')
-            if max(img.size) > max_size:
-                img.thumbnail((max_size, max_size), Image.Resampling.LANCZOS)
-            img.save(output_path, 'PNG')
+        with Image.open(LOGO_PATH) as im:
+            if im.mode in ('RGBA','P'):
+                bg = Image.new('RGB', im.size, (13,13,13))
+                if im.mode == 'P': im = im.convert('RGBA')
+                bg.paste(im, mask=im.split()[-1])
+                im = bg
+            elif im.mode != 'RGB':
+                im = im.convert('RGB')
+            if max(im.size) > max_size:
+                im.thumbnail((max_size, max_size), Image.Resampling.LANCZOS)
+            im.save(out_path, 'PNG')
             return True
     except Exception as e:
-        print(f"Error preparando logo: {e}")
+        print(f"Logo error: {e}")
         return False
 
-
-def generate_qr(path, url, size=200):
-    """Genera QR code con tema oscuro/dorado."""
+def gen_qr(path, url, size=200):
     try:
-        qr = qrcode.QRCode(
-            version=3,
-            error_correction=qrcode.constants.ERROR_CORRECT_H,
-            box_size=10,
-            border=2,
-        )
-        qr.add_data(url)
-        qr.make(fit=True)
-        img = qr.make_image(fill_color="#C5A059", back_color="#0A0A0A")
-        img = img.resize((size, size), Image.Resampling.LANCZOS)
-        img.save(path)
-        return True
-    except Exception as e:
-        print(f"Error generando QR: {e}")
+        qr = qrcode.QRCode(version=3, error_correction=qrcode.constants.ERROR_CORRECT_H, box_size=10, border=2)
+        qr.add_data(url); qr.make(fit=True)
+        img = qr.make_image(fill_color="#C5A059", back_color="#0D0D0D")
+        img = img.resize((size,size), Image.Resampling.LANCZOS)
+        img.save(path); return True
+    except: return False
+
+def optimize_image(src, dst, max_dim=500, quality=80):
+    """Redimensiona y comprime imagen para PDF ligero."""
+    try:
+        with Image.open(src) as im:
+            if max(im.size) > max_dim:
+                im.thumbnail((max_dim, max_dim), Image.Resampling.LANCZOS)
+            if im.mode in ('RGBA','P'):
+                bg = Image.new('RGB', im.size, (22,22,22))
+                if im.mode == 'P': im = im.convert('RGBA')
+                bg.paste(im, mask=im.split()[-1])
+                im = bg
+            elif im.mode != 'RGB':
+                im = im.convert('RGB')
+            im.save(dst, 'JPEG', quality=quality, optimize=True)
+            return True
+    except:
         return False
 
+# ========== DATOS ==========
 
-# ========== DATOS TÉCNICOS ==========
-SPECS_DATA = {
-    'Placas PVC tipo madera': {
-        'Material': 'PVC premium', 'Dimensiones': '2440 x 1220 x 3 mm',
-        'Presentacion': '2.977 m2/pz, 1 pz/caja, 19 kg/pz',
-        'Garantia': '15 anos', 'Uso': 'Interior',
-        'Acabado': 'Tipo madera natural'},
-    'Placas PVC Texturizadas': {
-        'Material': 'PVC premium', 'Dimensiones': '2440 x 1220 x 5 mm',
-        'Presentacion': '2.977 m2/pz, 1 pz/caja, 10.5 kg/pz',
-        'Garantia': '15 anos', 'Uso': 'Interior',
-        'Acabado': 'Textura 3D'},
-    'Placas PVC Tipo espejo': {
-        'Material': 'PVC premium', 'Dimensiones': '2440 x 1220 x 5 mm',
-        'Presentacion': '2.977 m2/pz, 1 pz/caja, 10.5 kg/pz',
-        'Garantia': '15 anos', 'Uso': 'Interior',
-        'Acabado': 'Alto brillo espejo'},
-    'Lambrin Interior': {
-        'Material': 'WPC', 'Dimensiones': '2900 x 160 x 24 mm',
-        'Presentacion': '0.464 m2/pz, 14 pz/caja, 6.496 m2/caja',
-        'Garantia': '15 anos', 'Uso': 'Interior',
-        'Acabado': 'Madera natural'},
-    'Lambrin Exterior': {
-        'Material': 'WPC', 'Dimensiones': 'Consultar',
-        'Presentacion': 'Consultar', 'Garantia': '15 anos', 'Uso': 'Exterior',
-        'Acabado': 'Madera texturizada'},
-    'Desigual': {
-        'Material': 'WPC', 'Dimensiones': 'Consultar',
-        'Presentacion': 'Consultar', 'Garantia': '15 anos', 'Uso': 'Interior',
-        'Acabado': 'Diseno desigual'},
-    'Media luna': {
-        'Material': 'WPC', 'Dimensiones': '2900 x 159 x 15 mm',
-        'Presentacion': '4.611 m2/caja, 10 pzas/caja',
-        'Garantia': '15 anos', 'Uso': 'Interior',
-        'Acabado': 'Media luna'},
-    'Media luna PS': {
-        'Material': 'PS (Poliestireno)', 'Dimensiones': '2900 x 152 x 12 mm',
-        'Presentacion': '6.171 m2/caja, 14 pzas/caja',
-        'Garantia': '15 anos', 'Uso': 'Interior',
-        'Acabado': 'Media luna'},
-    'Revestimiento Flexible': {
-        'Material': 'Revestimiento flexible', 'Dimensiones': '900x600 / 1200x600 mm',
-        'Presentacion': '0.54/0.72 m2/pz, 13.5/0.72 m2/caja',
-        'Garantia': '35 anos', 'Uso': 'Interior/Exterior',
-        'Acabado': 'Textura flexible'},
-    'Plafon pvc laminado': {
-        'Material': 'PVC', 'Dimensiones': '2900 x 250 x 8 mm',
-        'Presentacion': '0.725 m2/pz, 10 pz/caja, 7.25 m2/caja',
-        'Garantia': '15 anos', 'Uso': 'Interior',
-        'Acabado': 'Laminado'},
-    'Plafon Laminado wood': {
-        'Material': 'PVC', 'Dimensiones': '2800 x 300 x 9 mm',
-        'Presentacion': '0.84 m2/pz, 10 pz/caja, 8.4 m2/caja',
-        'Garantia': '15 anos', 'Uso': 'Interior',
-        'Acabado': 'Madera laminada'},
-    'Plafon ranurado': {
-        'Material': 'PVC', 'Dimensiones': '2900 x 250 x 8 mm',
-        'Presentacion': 'Por pieza, 2.90m largo x 0.25m ancho',
-        'Garantia': '15 anos', 'Uso': 'Interior',
-        'Acabado': 'Ranurado decorativo'},
-    'Blanco': {
-        'Material': 'PVC / Compuesto', 'Dimensiones': '500 x 500 mm',
-        'Presentacion': '0.25 m2/pz, 10/40 pz/caja',
-        'Garantia': '1 ano', 'Uso': 'Residencial y comercial',
-        'Acabado': '3D blanco'},
-    'Grises': {
-        'Material': 'PVC / Compuesto', 'Dimensiones': '500 x 500 mm',
-        'Presentacion': '0.25 m2/pz, 10/40 pz/caja',
-        'Garantia': '1 ano', 'Uso': 'Residencial y comercial',
-        'Acabado': '3D gris'},
-    'Madera': {
-        'Material': 'PVC / Compuesto', 'Dimensiones': '500 x 500 mm',
-        'Presentacion': '0.25 m2/pz, 10/40 pz/caja',
-        'Garantia': '1 ano', 'Uso': 'Residencial y comercial',
-        'Acabado': '3D madera'},
-    'Negro': {
-        'Material': 'PVC / Compuesto', 'Dimensiones': '500 x 500 mm',
-        'Presentacion': '0.25 m2/pz, 10/40 pz/caja',
-        'Garantia': '1 ano', 'Uso': 'Residencial y comercial',
-        'Acabado': '3D negro'},
-    'Oro': {
-        'Material': 'PVC / Compuesto', 'Dimensiones': '500 x 500 mm',
-        'Presentacion': '0.25 m2/pz, 10/40 pz/caja',
-        'Garantia': '1 ano', 'Uso': 'Residencial y comercial',
-        'Acabado': '3D dorado'},
-    'Interior': {
-        'Material': 'WPC', 'Dimensiones': '2900 x 100 x 50 mm',
-        'Presentacion': '1 pz/caja',
-        'Garantia': '15 anos', 'Uso': 'Interior',
-        'Acabado': 'Madera natural'},
-    'Exterior': {
-        'Material': 'WPC', 'Dimensiones': '2850 x 120 x 70 mm',
-        'Presentacion': '1 pz/caja',
-        'Garantia': '15 anos sin carga', 'Uso': 'Exterior',
-        'Acabado': 'Madera exterior'},
-    'Laminado': {
-        'Material': 'Laminado', 'Dimensiones': 'Consultar',
-        'Presentacion': 'Consultar', 'Garantia': '10 anos', 'Uso': 'Residencial',
-        'Acabado': 'Madera/Piedra'},
-    'WPC': {
-        'Material': 'WPC', 'Dimensiones': 'Consultar',
-        'Presentacion': 'Consultar', 'Garantia': '15 anos', 'Uso': 'Residencial',
-        'Acabado': 'Madera natural'},
-    'SPC': {
-        'Material': 'SPC', 'Dimensiones': '625 x 125 mm, Espesor 5+1.5 mm',
-        'Presentacion': 'Consultar', 'Garantia': '12 anos', 'Uso': 'Residencial/Comercial',
-        'Acabado': 'Piedra/Madera'},
-    'Deck Sintetico': {
-        'Material': 'WPC Coextruido', 'Dimensiones': 'Consultar',
-        'Presentacion': 'Consultar', 'Garantia': '18-25 anos', 'Uso': 'Exterior',
-        'Acabado': 'Madera exterior'},
-    'Follaje Sintetico': {
-        'Material': 'Polietileno / PVC', 'Dimensiones': 'Consultar',
-        'Presentacion': 'Consultar', 'Garantia': '5-8 anos', 'Uso': 'Int/Ext',
-        'Acabado': 'Natural'},
-    'Pasto Recreativo': {
-        'Material': 'Polietileno', 'Dimensiones': 'Consultar',
-        'Presentacion': 'Consultar', 'Garantia': '8-12 anos', 'Uso': 'Exterior',
-        'Acabado': 'Natural'},
-    'Placa tipo roca': {
-        'Material': 'PU / Poliuretano', 'Dimensiones': 'Consultar',
-        'Presentacion': 'Consultar', 'Garantia': 'Consultar', 'Uso': 'Int/Ext',
-        'Acabado': 'Piedra natural'},
+SPECS = {
+    'Placas PVC tipo madera': {'Material':'PVC','Dimensiones':'2440×1220×3mm','Presentacion':'2.98m²/pz, 1pz/caja','Garantia':'15 años','Uso':'Interior'},
+    'Placas PVC Texturizadas': {'Material':'PVC','Dimensiones':'2440×1220×5mm','Presentacion':'2.98m²/pz, 1pz/caja','Garantia':'15 años','Uso':'Interior'},
+    'Placas PVC Tipo espejo': {'Material':'PVC','Dimensiones':'2440×1220×5mm','Presentacion':'2.98m²/pz, 1pz/caja','Garantia':'15 años','Uso':'Interior'},
+    'Lambrin Interior': {'Material':'WPC','Dimensiones':'2900×160×24mm','Presentacion':'0.464m²/pz, 14pz/caja','Garantia':'15 años','Uso':'Interior'},
+    'Lambrin Exterior': {'Material':'WPC','Dimensiones':'Consultar','Presentacion':'Consultar','Garantia':'15 años','Uso':'Exterior'},
+    'Desigual': {'Material':'WPC','Dimensiones':'Consultar','Presentacion':'Consultar','Garantia':'15 años','Uso':'Interior'},
+    'Media luna': {'Material':'WPC','Dimensiones':'2900×159×15mm','Presentacion':'4.61m²/caja, 10pz','Garantia':'15 años','Uso':'Interior'},
+    'Media luna PS': {'Material':'PS','Dimensiones':'2900×152×12mm','Presentacion':'6.17m²/caja, 14pz','Garantia':'15 años','Uso':'Interior'},
+    'Revestimiento Flexible': {'Material':'Flexible','Dimensiones':'900×600 / 1200×600mm','Presentacion':'0.54/0.72m²/pz','Garantia':'35 años','Uso':'Int/Ext'},
+    'Plafon pvc laminado': {'Material':'PVC','Dimensiones':'2900×250×8mm','Presentacion':'0.725m²/pz, 10pz/caja','Garantia':'15 años','Uso':'Interior'},
+    'Plafon Laminado wood': {'Material':'PVC','Dimensiones':'2800×300×9mm','Presentacion':'0.84m²/pz, 10pz/caja','Garantia':'15 años','Uso':'Interior'},
+    'Plafon ranurado': {'Material':'PVC','Dimensiones':'2900×250×8mm','Presentacion':'Por pieza','Garantia':'15 años','Uso':'Interior'},
+    'Blanco': {'Material':'PVC/Compuesto','Dimensiones':'500×500mm','Presentacion':'0.25m²/pz, 10/40pz/caja','Garantia':'1 año','Uso':'Res/Com'},
+    'Grises': {'Material':'PVC/Compuesto','Dimensiones':'500×500mm','Presentacion':'0.25m²/pz, 10/40pz/caja','Garantia':'1 año','Uso':'Res/Com'},
+    'Madera': {'Material':'PVC/Compuesto','Dimensiones':'500×500mm','Presentacion':'0.25m²/pz, 10/40pz/caja','Garantia':'1 año','Uso':'Res/Com'},
+    'Negro': {'Material':'PVC/Compuesto','Dimensiones':'500×500mm','Presentacion':'0.25m²/pz, 10/40pz/caja','Garantia':'1 año','Uso':'Res/Com'},
+    'Oro': {'Material':'PVC/Compuesto','Dimensiones':'500×500mm','Presentacion':'0.25m²/pz, 10/40pz/caja','Garantia':'1 año','Uso':'Res/Com'},
+    'Interior': {'Material':'WPC','Dimensiones':'2900×100×50mm','Presentacion':'1pz/caja','Garantia':'15 años','Uso':'Interior'},
+    'Exterior': {'Material':'WPC','Dimensiones':'2850×120×70mm','Presentacion':'1pz/caja','Garantia':'15 años','Uso':'Exterior'},
+    'Laminado': {'Material':'Laminado','Dimensiones':'Consultar','Presentacion':'Consultar','Garantia':'10 años','Uso':'Residencial'},
+    'WPC': {'Material':'WPC','Dimensiones':'Consultar','Presentacion':'Consultar','Garantia':'15 años','Uso':'Residencial'},
+    'SPC': {'Material':'SPC','Dimensiones':'625×125mm, Esp. 5+1.5mm','Presentacion':'Consultar','Garantia':'12 años','Uso':'Res/Com'},
+    'Deck Sintetico': {'Material':'WPC Coextruido','Dimensiones':'Consultar','Presentacion':'Consultar','Garantia':'18-25 años','Uso':'Exterior'},
+    'Follaje Sintetico': {'Material':'Polietileno/PVC','Dimensiones':'Consultar','Presentacion':'Consultar','Garantia':'5-8 años','Uso':'Int/Ext'},
+    'Pasto Recreativo': {'Material':'Polietileno','Dimensiones':'Consultar','Presentacion':'Consultar','Garantia':'8-12 años','Uso':'Exterior'},
+    'Placa tipo roca': {'Material':'PU/Poliuretano','Dimensiones':'Consultar','Presentacion':'Consultar','Garantia':'Consultar','Uso':'Int/Ext'},
 }
 
-
-# ========== SISTEMA DE SKU ==========
 SKU_PREFIX = {
-    'Placas PVC tipo madera': 'PVC-MAD',
-    'Placas PVC Texturizadas': 'PVC-TEX',
-    'Placas PVC Tipo espejo': 'PVC-ESP',
-    'Lambrin Interior': 'WPC-INT',
-    'Lambrin Exterior': 'WPC-EXT',
-    'Desigual': 'WPC-DSG',
-    'Media luna': 'WPC-MLU',
-    'Media luna PS': 'WPC-MLP',
-    'Revestimiento Flexible': 'FLEX',
-    'Plafon pvc laminado': 'PLF-LAM',
-    'Plafon Laminado wood': 'PLF-WOD',
-    'Plafon ranurado': 'PLF-RAN',
-    'Blanco': 'PAN3D-BLA',
-    'Grises': 'PAN3D-GRY',
-    'Madera': 'PAN3D-MAD',
-    'Negro': 'PAN3D-BLK',
-    'Oro': 'PAN3D-GLD',
-    'Interior': 'VIGA-INT',
-    'Exterior': 'VIGA-EXT',
-    'Laminado': 'PISO-LAM',
-    'WPC': 'PISO-WPC',
-    'SPC': 'PISO-SPC',
-    'Deck Sintetico': 'DECK',
-    'Follaje Sintetico': 'ZAC-FOL',
-    'Pasto Recreativo': 'ZAC-PST',
-    'Placa tipo roca': 'CLD-ROC',
+    'Placas PVC tipo madera':'PVC-MAD','Placas PVC Texturizadas':'PVC-TEX','Placas PVC Tipo espejo':'PVC-ESP',
+    'Lambrin Interior':'WPC-INT','Lambrin Exterior':'WPC-EXT','Desigual':'WPC-DSG','Media luna':'WPC-MLU','Media luna PS':'WPC-MLP',
+    'Revestimiento Flexible':'FLEX','Plafon pvc laminado':'PLF-LAM','Plafon Laminado wood':'PLF-WOD','Plafon ranurado':'PLF-RAN',
+    'Blanco':'PAN3D-BLA','Grises':'PAN3D-GRY','Madera':'PAN3D-MAD','Negro':'PAN3D-BLK','Oro':'PAN3D-GLD',
+    'Interior':'VIGA-INT','Exterior':'VIGA-EXT','Laminado':'PISO-LAM','WPC':'PISO-WPC','SPC':'PISO-SPC',
+    'Deck Sintetico':'DECK','Follaje Sintetico':'ZAC-FOL','Pasto Recreativo':'ZAC-PST','Placa tipo roca':'CLD-ROC',
 }
 
+def get_sku(sub_name, idx):
+    return f"{SKU_PREFIX.get(sub_name,'PROD')}-{idx:03d}"
 
-def get_sku(sub_name, prod_idx):
-    prefix = SKU_PREFIX.get(sub_name, 'PROD')
-    return f"{prefix}-{prod_idx:03d}"
-
-
-# ========== VENTAJAS POR MATERIAL ==========
-VENTAJAS = {
-    'PVC': [
-        ('100% Impermeable', 'Ideal para cocinas, banos y areas humedas'),
-        ('Antibacteriano', 'Higienico y facil de desinfectar'),
-        ('Resistente a rayaduras', 'Mantiene su apariencia por anos'),
-        ('No se deforma', 'Con la humedad ni cambios de temperatura'),
-        ('Instalacion rapida', 'Sin obra ni polvo, listo en horas'),
-        ('15+ anos de vida util', 'Inversion a largo plazo'),
-    ],
-    'WPC': [
-        ('Apariencia 100% natural', 'Textura y veta real de madera'),
-        ('No se pudre ni deforma', 'Resiste humedad y termitas'),
-        ('Cero mantenimiento', 'Sin barniz, sin lijado, sin pintura'),
-        ('Instalacion con click', 'Sistema facil y rapido'),
-        ('Ecologico', 'Hecho con fibras de madera recicladas'),
-        ('15 anos de garantia', 'Durabilidad comprobada'),
-    ],
-    'SPC': [
-        ('Core rigido de piedra', 'Ultra resistente al impacto'),
-        ('100% impermeable', 'Apto para cocinas y banos'),
-        ('Instalacion DIY', 'Sistema click sin pegamento'),
-        ('Trafico comercial', 'Soporta alto uso intensivo'),
-        ('Compatible con calefaccion', 'Piso radiante bajo demanda'),
-    ],
-    'Deck': [
-        ('No se astilla ni agrieta', 'Mantiene su integridad por anos'),
-        ('Resistente a UV', 'No se decolora con el sol'),
-        ('Sin mantenimiento anual', 'Olvidate de barnizar'),
-        ('Textura antiderrapante', 'Seguro incluso mojado'),
-        ('18-25 anos de garantia', 'La mas larga del mercado'),
-    ],
-    'Revestimiento Flexible': [
-        ('Instalacion en 3D', 'Se adapta a cualquier superficie'),
-        ('35 anos de garantia', 'La mas larga de todas'),
-        ('Int/Ext', 'Para interior y exterior'),
-        ('Ligero', 'No sobrecarga las estructuras'),
-    ],
-    'Panel 3D': [
-        ('Diseno arquitectonico', 'Impacto visual inmediato'),
-        ('Facil instalacion', 'Sistema de pegado o fijacion'),
-        ('Pintable', 'Personalizable a tu gusto'),
-        ('Acustico', 'Mejora la insonorizacion'),
-    ],
-    'Viga': [
-        ('Acabado realista', 'Imita perfectamente la madera'),
-        ('No se pudre', 'Resiste humedad sin problema'),
-        ('Ligero', 'Facil manipulacion e instalacion'),
-        ('Int/Ext', 'Opciones para ambos ambientes'),
-    ],
-    'Zacate': [
-        ('Siempre verde', 'Sin riego, sin poda'),
-        ('Resistente a UV', 'No se decolora'),
-        ('Drenaje integrado', 'No se encharca'),
-        ('Pet friendly', 'Seguro para mascotas'),
-    ],
-    'Cladding': [
-        ('Aspecto piedra real', 'Textura y color naturales'),
-        ('Ligero', 'Facil de instalar en cualquier pared'),
-        ('Int/Ext', 'Versatil para cualquier espacio'),
-        ('Aislante termico', 'Mejora la eficiencia energetica'),
-    ],
+BENEFITS = {
+    'PVC': [('Impermeable','Ideal cocinas y banos'),('Antibacteriano','Higienico, facil limpieza'),('Resistente','No se deforma con humedad'),('Duradero','15+ anos de vida util')],
+    'WPC': [('Natural','Textura real de madera'),('Indestructible','No se pudre ni deforma'),('Sin mantenimiento','Sin barniz ni pintura'),('Ecologico','Fibras de madera recicladas')],
+    'SPC': [('Piedra real','Core rigido ultra resistente'),('Impermeable','Apto para todo ambiente'),('Instalacion DIY','Sistema click facil'),('Comercial','Soporta alto trafico')],
+    'Deck': [('Sin astillas','No se agrieta con el tiempo'),('Anti-UV','No se decolora'),('Antiderrapante','Seguro mojado'),('Larga vida','18-25 anos garantia')],
+    'Revestimiento Flexible': [('Flexible','Se adapta a cualquier superficie'),('35 anos','La garantia mas larga'),('Int/Ext','Interior y exterior'),('Ligero','No sobrecarga')],
+    'Panel 3D': [('Impacto visual','Diseno arquitectonico'),('Facil','Instalacion sencilla'),('Pintable','Personaliza a tu gusto'),('Acustico','Mejora insonorizacion')],
+    'Viga': [('Realista','Imita perfecto la madera'),('Impermeable','Resiste humedad'),('Ligero','Facil instalacion'),('Int/Ext','Ambos ambientes')],
+    'Zacate': [('Siempre verde','Sin riego ni poda'),('Anti-UV','No se decolora'),('Drenaje','No se encharca'),('Pet friendly','Seguro mascotas')],
+    'Cladding': [('Piedra real','Textura y color natural'),('Ligero','Facil de instalar'),('Versatil','Int/Ext'),('Termico','Aislante energetico')],
 }
 
+def get_benefits(sub_name):
+    u = sub_name.upper()
+    if 'PVC' in u and ('PLAC' in u or 'PLAF' in u): return BENEFITS['PVC']
+    if 'WPC' in u or 'LAMBRIN' in u or 'DESIGUAL' in u or 'MEDIA LUNA' in u: return BENEFITS['WPC']
+    if 'SPC' in u: return BENEFITS['SPC']
+    if 'DECK' in u: return BENEFITS['Deck']
+    if 'FLEX' in u or 'REVESTIMIENTO' in u: return BENEFITS['Revestimiento Flexible']
+    if 'PANEL' in u or '3D' in u or sub_name in ('Blanco','Grises','Madera','Negro','Oro'): return BENEFITS['Panel 3D']
+    if 'VIGA' in u or sub_name in ('Interior','Exterior'): return BENEFITS['Viga']
+    if 'ZACATE' in u or 'FOLL' in u or 'PASTO' in u: return BENEFITS['Zacate']
+    if 'CLAD' in u or 'ROCA' in u: return BENEFITS['Cladding']
+    return BENEFITS['PVC']
 
-def get_ventajas(sub_name):
-    sub_upper = sub_name.upper()
-    if 'PVC' in sub_upper and 'PLAC' in sub_upper:
-        return VENTAJAS['PVC']
-    if 'PVC' in sub_upper and 'PLAF' in sub_upper:
-        return VENTAJAS['PVC']
-    if 'WPC' in sub_upper or 'LAMBRIN' in sub_upper or 'DESIGUAL' in sub_upper or 'MEDIA LUNA' in sub_upper:
-        return VENTAJAS['WPC']
-    if 'SPC' in sub_upper:
-        return VENTAJAS['SPC']
-    if 'DECK' in sub_upper:
-        return VENTAJAS['Deck']
-    if 'FLEX' in sub_upper or 'REVESTIMIENTO' in sub_upper:
-        return VENTAJAS['Revestimiento Flexible']
-    if 'PANEL' in sub_upper or '3D' in sub_upper or sub_name in ('Blanco', 'Grises', 'Madera', 'Negro', 'Oro'):
-        return VENTAJAS['Panel 3D']
-    if 'VIGA' in sub_upper or sub_name in ('Interior', 'Exterior'):
-        return VENTAJAS['Viga']
-    if 'ZACATE' in sub_upper or 'FOLL' in sub_upper or 'PASTO' in sub_upper:
-        return VENTAJAS['Zacate']
-    if 'CLAD' in sub_upper or 'ROCA' in sub_upper:
-        return VENTAJAS['Cladding']
-    return VENTAJAS['PVC']
-
-
-# ========== IMAGENES DE AMBIENTE REAL ==========
-AMBIENT_IMAGES = {
-    'Placas PVC tipo madera': MEDIA_DIR / 'pvc-real-01.jpeg',
-    'Placas PVC Texturizadas': MEDIA_DIR / 'pvc-real-02.jpeg',
-    'Placas PVC Tipo espejo': MEDIA_DIR / 'pvc-real-03.jpeg',
-    'Lambrin Interior': MEDIA_DIR / 'proyecto-02.jpeg',
-    'Lambrin Exterior': MEDIA_DIR / 'proyecto-03.jpeg',
-    'Desigual': MEDIA_DIR / 'proyecto-04.jpeg',
-    'Media luna': MEDIA_DIR / 'proyecto-05.jpeg',
-    'Media luna PS': MEDIA_DIR / 'proyecto-06.jpeg',
-    'Revestimiento Flexible': MEDIA_DIR / 'proyecto-07.jpeg',
-    'Plafon pvc laminado': MEDIA_DIR / 'pvc-real-04.jpeg',
-    'Plafon Laminado wood': MEDIA_DIR / 'pvc-real-05.jpeg',
-    'Plafon ranurado': MEDIA_DIR / 'pvc-real-06.jpeg',
-    'Blanco': MEDIA_DIR / 'proyecto-01.jpeg',
-    'Grises': MEDIA_DIR / 'proyecto-02.jpeg',
-    'Madera': MEDIA_DIR / 'proyecto-03.jpeg',
-    'Negro': MEDIA_DIR / 'proyecto-04.jpeg',
-    'Oro': MEDIA_DIR / 'proyecto-05.jpeg',
-    'Interior': MEDIA_DIR / 'proyecto-06.jpeg',
-    'Exterior': MEDIA_DIR / 'proyecto-07.jpeg',
-    'Laminado': MEDIA_DIR / 'pvc-real-01.jpeg',
-    'WPC': MEDIA_DIR / 'pvc-real-02.jpeg',
-    'SPC': MEDIA_DIR / 'pvc-real-03.jpeg',
-    'Deck Sintetico': MEDIA_DIR / 'despues.jpg',
-    'Follaje Sintetico': MEDIA_DIR / 'proyecto-recepcion.jpg',
-    'Pasto Recreativo': MEDIA_DIR / 'proyecto-01.jpeg',
-    'Placa tipo roca': MEDIA_DIR / 'ejemplo-tapiz.jpg',
+AMBIENT = {
+    'Placas PVC tipo madera':MEDIA_DIR/'pvc-real-01.jpeg','Placas PVC Texturizadas':MEDIA_DIR/'pvc-real-02.jpeg','Placas PVC Tipo espejo':MEDIA_DIR/'pvc-real-03.jpeg',
+    'Lambrin Interior':MEDIA_DIR/'proyecto-02.jpeg','Lambrin Exterior':MEDIA_DIR/'proyecto-03.jpeg','Desigual':MEDIA_DIR/'proyecto-04.jpeg',
+    'Media luna':MEDIA_DIR/'proyecto-05.jpeg','Media luna PS':MEDIA_DIR/'proyecto-06.jpeg','Revestimiento Flexible':MEDIA_DIR/'proyecto-07.jpeg',
+    'Plafon pvc laminado':MEDIA_DIR/'pvc-real-04.jpeg','Plafon Laminado wood':MEDIA_DIR/'pvc-real-05.jpeg','Plafon ranurado':MEDIA_DIR/'pvc-real-06.jpeg',
+    'Blanco':MEDIA_DIR/'proyecto-01.jpeg','Grises':MEDIA_DIR/'proyecto-02.jpeg','Madera':MEDIA_DIR/'proyecto-03.jpeg','Negro':MEDIA_DIR/'proyecto-04.jpeg','Oro':MEDIA_DIR/'proyecto-05.jpeg',
+    'Interior':MEDIA_DIR/'proyecto-06.jpeg','Exterior':MEDIA_DIR/'proyecto-07.jpeg','Laminado':MEDIA_DIR/'pvc-real-01.jpeg',
+    'WPC':MEDIA_DIR/'pvc-real-02.jpeg','SPC':MEDIA_DIR/'pvc-real-03.jpeg','Deck Sintetico':MEDIA_DIR/'despues.jpg',
+    'Follaje Sintetico':MEDIA_DIR/'proyecto-recepcion.jpg','Pasto Recreativo':MEDIA_DIR/'proyecto-01.jpeg','Placa tipo roca':MEDIA_DIR/'ejemplo-tapiz.jpg',
 }
 
+CAT_DESC = {
+    'Placas PVC': 'Soluciones decorativas de PVC para paredes interiores. Acabados tipo madera, texturizados y espejo.',
+    'Lambrin WPC': 'Revestimientos de Wood Plastic Composite con apariencia natural de madera. Interior y exterior.',
+    'Revestimiento Flexible': 'Paneles flexibles que se adaptan a cualquier superficie curva o irregular.',
+    'Plafon PVC': 'Cielos rasos decorativos en PVC. Laminados, tipo madera y ranurados.',
+    'Paneles tridimensionales': 'Paneles 3D decorativos para crear paredes con relieve y profundidad.',
+    'Vigas PVC': 'Vigas decorativas tipo madera en PVC y WPC. Resistentes a humedad y termitas.',
+    'Pisos': 'Pisos laminados, WPC, SPC y deck sintetico para interior y exterior.',
+    'Zacate': 'Pasto sintetico y follaje decorativo para jardines, terrazas y muros verdes.',
+    'Cladding': 'Revestimientos exteriores tipo piedra y roca para fachadas y muros.',
+}
 
-def get_ambient_image(sub_name):
-    path = AMBIENT_IMAGES.get(sub_name)
-    if path and os.path.exists(path):
-        return path
-    for ext in IMG_EXTS:
-        for f in sorted(os.listdir(MEDIA_DIR)):
-            if f.lower().endswith(ext):
-                return MEDIA_DIR / f
-    return None
+CAT_MATERIAL = {
+    'Placas PVC': 'PVC','Lambrin WPC': 'WPC','Revestimiento Flexible': 'Flexible',
+    'Plafon PVC': 'PVC','Paneles tridimensionales': 'PVC/Compuesto','Vigas PVC': 'WPC/PVC',
+    'Pisos': 'Varios','Zacate': 'Polietileno','Cladding': 'PU/Poliuretano',
+}
 
-
-
-# ========== INICIAR PDF ==========
+# ========== INICIAR CANVAS ==========
 c = canvas.Canvas(str(OUTPUT_PDF), pagesize=A4)
-page_w, page_h = A4
-margin = 2*cm
+pw, ph = A4
 page_num = 0
-
 
 def next_page():
     global page_num
-    c.showPage()
-    page_num += 1
+    c.showPage(); page_num += 1
 
+# ========== DIBUJO DE PÁGINAS ==========
 
-def draw_page_bg():
-    """Fondo negro con sutil degradado dorado en esquina superior derecha."""
-    c.setFillColor(BLACK)
-    c.rect(0, 0, page_w, page_h, fill=1, stroke=0)
-    for i in range(40):
-        alpha = 0.015 - (i * 0.0003)
-        if alpha > 0:
-            c.setFillColor(Color(197/255, 160/255, 89/255, alpha=alpha))
-            c.circle(page_w, page_h, 14*cm - i*0.3*cm, fill=1, stroke=0)
-
-
-def draw_header(title_text):
-    h = 1.2*cm
-    c.setFillColor(DARK)
-    c.rect(0, page_h - h, page_w, h, fill=1, stroke=0)
-    c.setStrokeColor(GOLD)
-    c.setLineWidth(0.8)
-    c.line(margin, page_h - h, page_w - margin, page_h - h)
-    c.setFillColor(GOLD_LIGHT)
-    c.setFont("Helvetica-Bold", 9)
-    c.drawCentredString(page_w/2, page_h - h + 0.35*cm, title_text.upper())
-    c.setFillColor(MUTED)
-    c.setFont("Helvetica", 6.5)
-    c.drawRightString(page_w - margin, page_h - h + 0.35*cm, "ADIS DISENO & REMODELACION")
-    return h
-
-
-def draw_footer(page_n, total_n, show_cta=True):
-    h = 1.0*cm
-    c.setFillColor(DARK)
-    c.rect(0, 0, page_w, h, fill=1, stroke=0)
-    c.setStrokeColor(GOLD)
-    c.setLineWidth(0.5)
-    c.line(margin, h, page_w - margin, h)
-    c.setFillColor(MUTED)
-    c.setFont("Helvetica", 7)
-    c.drawString(margin, 0.35*cm, "WhatsApp: +52 631-192-8993  |  Showroom: +52 631-120-4943")
-    if show_cta:
-        c.setFillColor(WHATSAPP)
-        c.setFont("Helvetica-Bold", 7)
-        c.drawCentredString(page_w/2, 0.35*cm, "COTIZA POR WHATSAPP")
-    c.setFillColor(GOLD)
-    c.setFont("Helvetica", 7)
-    c.drawRightString(page_w - margin, 0.35*cm, f"PAGINA {page_n} DE {total_n}")
-
-
-def draw_cover(logo_path, qr_path):
-    """Portada de impacto con imagen de fondo real."""
-    bg_img = MEDIA_DIR / 'proyecto-recepcion.jpg'
-    if not os.path.exists(bg_img):
-        bg_img = MEDIA_DIR / 'despues.jpg'
-    
-    if os.path.exists(bg_img):
-        try:
-            iw, ih = get_image_size(bg_img, page_w, page_h)
-            scale = max(page_w/iw, page_h/ih)
-            iw2, ih2 = iw * scale, ih * scale
-            x = (page_w - iw2) / 2
-            y = (page_h - ih2) / 2
-            c.drawImage(str(bg_img), x, y, width=iw2, height=ih2)
-        except:
-            pass
-    
-    c.setFillColor(Color(0, 0, 0, alpha=0.75))
-    c.rect(0, 0, page_w, page_h, fill=1, stroke=0)
+def draw_bg():
+    c.setFillColor(BG); c.rect(0,0,pw,ph,fill=1,stroke=0)
+    # sutil brillo dorado arriba-derecha
     for i in range(30):
-        alpha = 0.4 - (i * 0.012)
-        if alpha > 0:
-            c.setFillColor(Color(0, 0, 0, alpha=alpha))
-            c.rect(0, 0, page_w, 8*cm - i*0.2*cm, fill=1, stroke=0)
+        a = 0.012 - i*0.00035
+        if a > 0:
+            c.setFillColor(Color(197/255,160/255,89/255,alpha=a))
+            c.circle(pw, ph, 12*cm - i*0.35*cm, fill=1, stroke=0)
+
+def draw_header_min(cat_name=""):
+    """Header minimalista: logo pequeno izquierda, categoria centro."""
+    h = 0.9*cm
+    # logo
+    if LOGO_PATH.exists():
+        lw, lh = img_size(LOGO_PATH, 1.0*cm, 0.7*cm)
+        try: c.drawImage(str(LOGO_PATH), MARGIN_L, ph - h - 0.1*cm, width=lw, height=lh, mask='auto')
+        except: pass
+    # categoria
+    if cat_name:
+        c.setFillColor(MUTED); c.setFont("Helvetica", 8)
+        c.drawCentredString(pw/2, ph - h + 0.15*cm, cat_name.upper())
+    # linea sutil
+    c.setStrokeColor(LINE); c.setLineWidth(0.3)
+    c.line(MARGIN_L, ph - h - 0.05*cm, pw - MARGIN_R, ph - h - 0.05*cm)
+    return h + 0.15*cm
+
+def draw_footer_min():
+    """Footer: solo numero de pagina centrado, pequeno."""
+    c.setFillColor(MUTED); c.setFont("Helvetica", 8)
+    c.drawCentredString(pw/2, 0.7*cm, str(page_num))
+
+
+
+def draw_cover(logo_path):
+    """Portada espectacular con foto a pantalla completa."""
+    bg = MEDIA_DIR / 'proyecto-recepcion.jpg'
+    if not bg.exists(): bg = MEDIA_DIR / 'despues.jpg'
     
-    fm = 1.5*cm
-    c.setStrokeColor(GOLD)
-    c.setLineWidth(2.5)
-    c.roundRect(fm, fm, page_w - 2*fm, page_h - 2*fm, 12, fill=0, stroke=1)
-    c.setLineWidth(0.6)
-    c.roundRect(fm + 0.35*cm, fm + 0.35*cm, page_w - 2*fm - 0.7*cm, page_h - 2*fm - 0.7*cm, 10, fill=0, stroke=1)
+    if bg.exists():
+        try:
+            iw, ih = img_size(bg, pw, ph)
+            sc = max(pw/iw, ph/ih)
+            iw2, ih2 = iw*sc, ih*sc
+            c.drawImage(str(bg), (pw-iw2)/2, (ph-ih2)/2, width=iw2, height=ih2)
+        except: pass
     
+    # overlay degradado desde abajo
+    c.setFillColor(Color(0,0,0,alpha=0.82))
+    c.rect(0,0,pw,ph,fill=1,stroke=0)
+    for i in range(25):
+        a = 0.35 - i*0.012
+        if a > 0:
+            c.setFillColor(Color(0,0,0,alpha=a))
+            c.rect(0,0,pw, 7*cm - i*0.25*cm, fill=1,stroke=0)
+    
+    # marco dorado fino
+    fm = 1.8*cm
+    c.setStrokeColor(GOLD); c.setLineWidth(1.5)
+    c.roundRect(fm, fm, pw-2*fm, ph-2*fm, 10, fill=0, stroke=1)
+    c.setLineWidth(0.4)
+    c.roundRect(fm+0.25*cm, fm+0.25*cm, pw-2*fm-0.5*cm, ph-2*fm-0.5*cm, 8, fill=0, stroke=1)
+    
+    # logo grande centrado
     if logo_path and os.path.exists(logo_path):
-        logo_max = 6*cm
-        iw, ih = get_image_size(logo_path, logo_max, logo_max)
-        logo_x = (page_w - iw) / 2
-        logo_y = page_h / 2 + 1.5*cm
-        c.setStrokeColor(GOLD)
-        c.setLineWidth(1.5)
-        r = max(iw, ih) / 2 + 0.4*cm
-        c.circle(page_w/2, logo_y + ih/2, r, fill=0, stroke=1)
-        c.drawImage(str(logo_path), logo_x, logo_y, width=iw, height=ih, mask='auto')
+        lw, lh = img_size(logo_path, 7.5*cm, 7.5*cm)
+        lx = (pw - lw)/2
+        ly = ph/2 + 1.0*cm
+        # circulo dorado sutil
+        c.setStrokeColor(GOLD); c.setLineWidth(0.8)
+        r = max(lw,lh)/2 + 0.5*cm
+        c.circle(pw/2, ly+lh/2, r, fill=0, stroke=1)
+        c.drawImage(str(logo_path), lx, ly, width=lw, height=lh, mask='auto')
     
-    c.setFillColor(GOLD_LIGHT)
-    c.setFont("Helvetica-Bold", 28)
-    c.drawCentredString(page_w/2, page_h/2 - 0.8*cm, "TRANSFORMA TU ESPACIO")
+    # tagline
+    c.setFillColor(WHITE); c.setFont("Helvetica-Bold", 30)
+    c.drawCentredString(pw/2, ph/2 - 1.2*cm, "TRANSFORMAMOS ESPACIOS")
     
-    c.setFillColor(LIGHT)
-    c.setFont("Helvetica-Bold", 18)
-    c.drawCentredString(page_w/2, page_h/2 - 1.8*cm, "MATERIALES PREMIUM PARA INTERIOR Y EXTERIOR")
+    c.setFillColor(BODY); c.setFont("Helvetica", 13)
+    c.drawCentredString(pw/2, ph/2 - 2.0*cm, "Materiales premium para arquitectura e interiorismo")
     
-    c.setFillColor(MUTED)
-    c.setFont("Helvetica", 11)
-    c.drawCentredString(page_w/2, page_h/2 - 2.6*cm, "CATALOGO 2025  |  ADIS DISENO & REMODELACION")
+    # linea dorada
+    c.setStrokeColor(GOLD); c.setLineWidth(1)
+    c.line(pw/2 - 2.5*cm, ph/2 - 2.5*cm, pw/2 + 2.5*cm, ph/2 - 2.5*cm)
     
-    c.setStrokeColor(GOLD)
-    c.setLineWidth(1)
-    c.line(page_w/2 - 3*cm, page_h/2 - 3.1*cm, page_w/2 + 3*cm, page_h/2 - 3.1*cm)
-    
-    if qr_path and os.path.exists(qr_path):
-        qr_size = 2.8*cm
-        qr_x = page_w - margin - qr_size
-        qr_y = margin + 0.5*cm
-        c.setFillColor(DARK)
-        c.roundRect(qr_x - 0.2*cm, qr_y - 0.2*cm, qr_size + 0.4*cm, qr_size + 0.9*cm, 6, fill=1, stroke=0)
-        c.setStrokeColor(GOLD)
-        c.setLineWidth(0.5)
-        c.roundRect(qr_x - 0.2*cm, qr_y - 0.2*cm, qr_size + 0.4*cm, qr_size + 0.9*cm, 6, fill=0, stroke=1)
-        c.drawImage(str(qr_path), qr_x, qr_y, width=qr_size, height=qr_size, mask='auto')
-        c.setFillColor(GOLD)
-        c.setFont("Helvetica-Bold", 7.5)
-        c.drawCentredString(qr_x + qr_size/2, qr_y - 0.5*cm, "ESCANEA PARA COTIZAR")
-    
-    c.setFillColor(LIGHT)
-    c.setFont("Helvetica-Bold", 10)
-    c.drawString(margin, margin + 2.2*cm, "CONTACTANOS")
-    c.setFillColor(MUTED)
-    c.setFont("Helvetica", 9)
-    c.drawString(margin, margin + 1.6*cm, "WhatsApp: +52 631-192-8993")
-    c.drawString(margin, margin + 1.1*cm, "Showroom: +52 631-120-4943")
-    c.drawString(margin, margin + 0.6*cm, "adis.remodelacion@gmail.com")
-    c.drawString(margin, margin + 0.1*cm, "Nogales, Sonora  |  Rio Rico, AZ")
-    
-    c.setFillColor(GOLD)
-    c.setFont("Helvetica-Bold", 9)
-    badge_w = 5.5*cm
-    badge_h = 0.6*cm
-    badge_x = (page_w - badge_w) / 2
-    badge_y = margin + 0.3*cm
-    c.roundRect(badge_x, badge_y, badge_w, badge_h, 4, fill=1, stroke=0)
-    c.setFillColor(BLACK)
-    c.drawCentredString(page_w/2, badge_y + 0.18*cm, "SHOWROOM Y SERVICIO DE INSTALACION")
+    # año + marca abajo
+    c.setFillColor(MUTED); c.setFont("Helvetica", 10)
+    c.drawCentredString(pw/2, 2.2*cm, "2025  |  ADIS DISENO & REMODELACION")
+    c.setFillColor(GOLD); c.setFont("Helvetica", 9)
+    c.drawCentredString(pw/2, 1.6*cm, "Nogales, Sonora  |  Rio Rico, AZ")
 
 
-def draw_content_page(total_sections, categories):
-    """Pagina de contenido / guia de uso."""
-    draw_page_bg()
+def draw_brand_page(qr_path):
+    """Pagina unica de marca con toda la info comercial centralizada."""
+    draw_bg()
     
-    c.setFillColor(GOLD_LIGHT)
-    c.setFont("Helvetica-Bold", 24)
-    c.drawCentredString(page_w/2, page_h - 3*cm, "CONTENIDO")
-    c.setStrokeColor(GOLD)
-    c.setLineWidth(1)
-    c.line(page_w/2 - 2.5*cm, page_h - 3.4*cm, page_w/2 + 2.5*cm, page_h - 3.4*cm)
+    # logo
+    if LOGO_PATH.exists():
+        lw, lh = img_size(LOGO_PATH, 4.5*cm, 4.5*cm)
+        try: c.drawImage(str(LOGO_PATH), (pw-lw)/2, ph-6*cm, width=lw, height=lh, mask='auto')
+        except: pass
     
-    guide_y = page_h - 4.2*cm
-    c.setFillColor(MUTED)
-    c.setFont("Helvetica", 9)
-    c.drawCentredString(page_w/2, guide_y, "Como usar este catalogo:")
+    c.setFillColor(GOLD); c.setFont("Helvetica-Bold", 20)
+    c.drawCentredString(pw/2, ph-7.2*cm, "COMO COTIZAR")
+    c.setStrokeColor(GOLD); c.setLineWidth(0.5)
+    c.line(pw/2-2*cm, ph-7.5*cm, pw/2+2*cm, ph-7.5*cm)
     
-    steps = [
-        "1. Explora las categorias y encuentra el producto ideal para tu proyecto",
-        "2. Anota el codigo SKU del producto que te interesa",
-        "3. Escribenos por WhatsApp con el SKU para una cotizacion inmediata",
-        "4. Pregunta por nuestro servicio de instalacion profesional",
-    ]
-    c.setFillColor(LIGHT)
-    c.setFont("Helvetica", 8.5)
-    for i, step in enumerate(steps):
-        c.drawString(margin + 0.5*cm, guide_y - 0.7*cm - i*0.5*cm, step)
-    
-    gar_y = guide_y - 3.2*cm
-    c.setFillColor(GOLD)
-    c.setFont("Helvetica-Bold", 11)
-    c.drawString(margin, gar_y, "GARANTIAS POR MATERIAL")
-    
-    garantias = [
-        ('PVC', '15 anos'), ('WPC', '15 anos'), ('SPC', '12 anos'),
-        ('Revestimiento Flexible', '35 anos'), ('Deck Sintetico', '18-25 anos'),
-        ('Panel 3D', '1 ano'), ('Vigas', '15 anos'),
-        ('Zacate / Follaje', '5-12 anos'),
-    ]
-    
-    col_w = (page_w - 2*margin) / 2
-    for i, (mat, gar) in enumerate(garantias):
-        col = i % 2
-        row = i // 2
-        x = margin + col * col_w
-        y = gar_y - 0.6*cm - row * 0.55*cm
-        c.setFillColor(GOLD)
-        c.circle(x + 0.15*cm, y + 0.12*cm, 1.5, fill=1, stroke=0)
-        c.setFillColor(LIGHT)
-        c.setFont("Helvetica", 8.5)
-        c.drawString(x + 0.4*cm, y, f"{mat}: {gar}")
-    
-    note_y = gar_y - 3.0*cm
-    c.setFillColor(DARK)
-    c.roundRect(margin, note_y - 0.8*cm, page_w - 2*margin, 1.6*cm, 8, fill=1, stroke=0)
-    c.setStrokeColor(GOLD)
-    c.setLineWidth(0.5)
-    c.roundRect(margin, note_y - 0.8*cm, page_w - 2*margin, 1.6*cm, 8, fill=0, stroke=1)
-    c.setFillColor(GOLD_LIGHT)
-    c.setFont("Helvetica-Bold", 9)
-    c.drawCentredString(page_w/2, note_y + 0.3*cm, "PREGUNTAS? ESCRIBENOS POR WHATSAPP")
-    c.setFillColor(LIGHT)
-    c.setFont("Helvetica", 8.5)
-    c.drawCentredString(page_w/2, note_y - 0.15*cm, "+52 631-192-8993  |  Respuesta en menos de 24 horas")
-
-
-def draw_benefits_page():
-    """Pagina de ventajas competitivas por material."""
-    draw_page_bg()
-    
-    c.setFillColor(GOLD_LIGHT)
-    c.setFont("Helvetica-Bold", 22)
-    c.drawCentredString(page_w/2, page_h - 2.5*cm, "POR QUE ELEGIR NUESTROS MATERIALES?")
-    c.setStrokeColor(GOLD)
-    c.setLineWidth(1)
-    c.line(page_w/2 - 3.5*cm, page_h - 2.9*cm, page_w/2 + 3.5*cm, page_h - 2.9*cm)
-    
-    materials = [
-        ('PVC', VENTAJAS['PVC'][:4]),
-        ('WPC', VENTAJAS['WPC'][:4]),
-        ('SPC', VENTAJAS['SPC'][:4]),
-        ('DECK', VENTAJAS['Deck'][:4]),
-    ]
-    
-    card_w = (page_w - 2*margin - 0.6*cm) / 2
-    card_h = 3.3*cm
-    start_y = page_h - 3.5*cm
-    
-    for i, (mat_name, benefits) in enumerate(materials):
-        col = i % 2
-        row = i // 2
-        x = margin + col * (card_w + 0.6*cm)
-        y = start_y - row * (card_h + 0.5*cm)
-        
-        c.setFillColor(DARK)
-        c.roundRect(x, y - card_h, card_w, card_h, 8, fill=1, stroke=0)
-        c.setStrokeColor(Color(197/255, 160/255, 89/255, alpha=0.4))
-        c.setLineWidth(1)
-        c.roundRect(x, y - card_h, card_w, card_h, 8, fill=0, stroke=1)
-        
-        c.setFillColor(GOLD)
-        c.setFont("Helvetica-Bold", 11)
-        c.drawString(x + 0.3*cm, y - 0.4*cm, mat_name)
-        c.setStrokeColor(GOLD)
-        c.setLineWidth(0.5)
-        c.line(x + 0.3*cm, y - 0.55*cm, x + card_w - 0.3*cm, y - 0.55*cm)
-        
-        c.setFillColor(LIGHT)
-        c.setFont("Helvetica", 8)
-        for j, (title, desc) in enumerate(benefits):
-            by = y - 0.9*cm - j * 0.55*cm
-            c.setFillColor(GOLD)
-            c.drawString(x + 0.3*cm, by, "+")
-            c.setFillColor(LIGHT)
-            c.setFont("Helvetica-Bold", 7.5)
-            c.drawString(x + 0.6*cm, by, title)
-            c.setFillColor(MUTED)
-            c.setFont("Helvetica", 7)
-            c.drawString(x + 0.6*cm, by - 0.22*cm, desc[:50])
-
-
-def draw_process_page():
-    """Pagina de proceso de compra."""
-    draw_page_bg()
-    
-    c.setFillColor(GOLD_LIGHT)
-    c.setFont("Helvetica-Bold", 22)
-    c.drawCentredString(page_w/2, page_h - 2.5*cm, "COMO COMPRAR?")
-    c.setStrokeColor(GOLD)
-    c.setLineWidth(1)
-    c.line(page_w/2 - 2.5*cm, page_h - 2.9*cm, page_w/2 + 2.5*cm, page_h - 2.9*cm)
-    
-    c.setFillColor(MUTED)
-    c.setFont("Helvetica", 9)
-    c.drawCentredString(page_w/2, page_h - 3.4*cm, "4 pasos sencillos para transformar tu espacio")
-    
-    steps = [
-        ('1', 'ELIGE', 'Explora el catalogo y selecciona tus productos. Anota el codigo SKU.'),
-        ('2', 'CONTACTANOS', 'Escribenos por WhatsApp con los SKU de los productos que te interesan.'),
-        ('3', 'RECIBE COTIZACION', 'Te enviamos tu cotizacion detallada en menos de 24 horas.'),
-        ('4', 'INSTALACION', 'Te entregamos el material o lo instalamos con nuestro equipo profesional.'),
-    ]
-    
-    step_h = 2.2*cm
-    start_y = page_h - 4.2*cm
-    
+    # 3 pasos horizontales
+    steps = [('1','Elige','Explora el catalogo y anota el SKU'),('2','Contacta','Escríbenos por WhatsApp'),('3','Recibe','Cotizacion en menos de 24h')]
+    sw = CONTENT_W / 3
     for i, (num, title, desc) in enumerate(steps):
-        y = start_y - i * (step_h + 0.4*cm)
-        
-        c.setFillColor(DARK)
-        c.roundRect(margin, y - step_h, page_w - 2*margin, step_h, 8, fill=1, stroke=0)
-        c.setStrokeColor(Color(197/255, 160/255, 89/255, alpha=0.3))
-        c.roundRect(margin, y - step_h, page_w - 2*margin, step_h, 8, fill=0, stroke=1)
-        
-        c.setFillColor(GOLD)
-        cx = margin + 1.0*cm
-        cy = y - step_h/2
-        c.circle(cx, cy, 0.7*cm, fill=1, stroke=0)
-        c.setFillColor(BLACK)
-        c.setFont("Helvetica-Bold", 14)
-        c.drawCentredString(cx, cy - 0.18*cm, num)
-        
-        c.setFillColor(GOLD_LIGHT)
-        c.setFont("Helvetica-Bold", 11)
-        c.drawString(margin + 2.0*cm, y - 0.7*cm, title)
-        c.setFillColor(LIGHT)
-        c.setFont("Helvetica", 9)
-        c.drawString(margin + 2.0*cm, y - 1.2*cm, desc)
+        x = MARGIN_L + i*sw
+        y = ph - 8.5*cm
+        c.setFillColor(GOLD); c.setFont("Helvetica-Bold", 16)
+        c.drawCentredString(x + sw/2, y, num)
+        c.setFillColor(WHITE); c.setFont("Helvetica-Bold", 10)
+        c.drawCentredString(x + sw/2, y-0.6*cm, title)
+        c.setFillColor(MUTED); c.setFont("Helvetica", 8)
+        c.drawCentredString(x + sw/2, y-1.0*cm, desc)
+        if i < 2:
+            c.setStrokeColor(LINE); c.setLineWidth(0.3)
+            c.line(x+sw, y-0.3*cm, x+sw, y-1.1*cm)
     
-    cta_y = start_y - 4 * (step_h + 0.4*cm) - 0.3*cm
-    c.setFillColor(WHATSAPP)
-    c.roundRect(margin + 1*cm, cta_y - 0.9*cm, page_w - 2*margin - 2*cm, 0.9*cm, 6, fill=1, stroke=0)
-    c.setFillColor(WHITE)
-    c.setFont("Helvetica-Bold", 12)
-    c.drawCentredString(page_w/2, cta_y - 0.55*cm, "COTIZA AHORA POR WHATSAPP: +52 631-192-8993")
-
-
-def draw_section_intro(cat_name, section_name, section_path, section_products, page_n, total_n):
-    """Pagina intro de seccion con specs, ventajas y foto de ambiente."""
-    draw_page_bg()
-    draw_header(f"{cat_name}  |  {section_name}")
+    # caja de contacto
+    box_y = ph - 11*cm
+    bh = 4.2*cm
+    c.setFillColor(SURFACE); c.roundRect(MARGIN_L, box_y-bh, CONTENT_W, bh, 8, fill=1, stroke=0)
+    c.setStrokeColor(LINE); c.setLineWidth(0.5)
+    c.roundRect(MARGIN_L, box_y-bh, CONTENT_W, bh, 8, fill=0, stroke=1)
     
-    content_top = page_h - 1.6*cm
+    c.setFillColor(GOLD); c.setFont("Helvetica-Bold", 11)
+    c.drawCentredString(pw/2, box_y-0.4*cm, "CONTACTO")
     
-    c.setFillColor(GOLD_LIGHT)
-    c.setFont("Helvetica-Bold", 20)
-    c.drawCentredString(page_w/2, content_top - 0.8*cm, section_name.upper())
-    c.setStrokeColor(GOLD)
-    c.setLineWidth(1)
-    c.line(page_w/2 - 2.5*cm, content_top - 1.15*cm, page_w/2 + 2.5*cm, content_top - 1.15*cm)
-    
-    col_w = (page_w - 2*margin - 0.6*cm) / 2
-    left_x = margin
-    right_x = margin + col_w + 0.6*cm
-    
-    specs = SPECS_DATA.get(section_name, {})
-    if specs:
-        table_y = content_top - 1.6*cm
-        row_h = 0.52*cm
-        table_w = col_w
-        
-        c.setFillColor(GOLD)
-        c.setFont("Helvetica-Bold", 9)
-        c.drawString(left_x, table_y + 0.15*cm, "ESPECIFICACIONES TECNICAS")
-        c.setStrokeColor(GOLD)
-        c.setLineWidth(0.5)
-        c.line(left_x, table_y - 0.05*cm, left_x + table_w, table_y - 0.05*cm)
-        
-        for i, (label, value) in enumerate(specs.items()):
-            y = table_y - 0.35*cm - i * row_h
-            bg = GRAY if i % 2 == 0 else DARK
-            c.setFillColor(bg)
-            c.rect(left_x, y - row_h + 0.15*cm, table_w, row_h, fill=1, stroke=0)
-            c.setStrokeColor(Color(197/255, 160/255, 89/255, alpha=0.2))
-            c.setLineWidth(0.3)
-            c.rect(left_x, y - row_h + 0.15*cm, table_w, row_h, fill=0, stroke=1)
-            c.setFillColor(GOLD)
-            c.setFont("Helvetica-Bold", 7.5)
-            c.drawString(left_x + 0.2*cm, y - 0.08*cm, label)
-            c.setFillColor(LIGHT)
-            c.setFont("Helvetica", 7.5)
-            val = str(value)[:45]
-            c.drawString(left_x + 3.2*cm, y - 0.08*cm, val)
-    
-    ventajas = get_ventajas(section_name)
-    vent_y = content_top - 1.6*cm - (len(specs) * 0.52*cm) - 0.8*cm if specs else content_top - 1.8*cm
-    
-    c.setFillColor(GOLD)
-    c.setFont("Helvetica-Bold", 9)
-    c.drawString(left_x, vent_y + 0.15*cm, "VENTAJAS")
-    c.setStrokeColor(GOLD)
-    c.setLineWidth(0.5)
-    c.line(left_x, vent_y - 0.05*cm, left_x + col_w, vent_y - 0.05*cm)
-    
-    for i, (title, desc) in enumerate(ventajas[:4]):
-        y = vent_y - 0.35*cm - i * 0.48*cm
-        c.setFillColor(GOLD)
-        c.setFont("Helvetica-Bold", 8)
-        c.drawString(left_x + 0.2*cm, y, "+")
-        c.setFillColor(LIGHT)
-        c.drawString(left_x + 0.5*cm, y, title)
-        c.setFillColor(MUTED)
-        c.setFont("Helvetica", 7)
-        c.drawString(left_x + 0.5*cm, y - 0.2*cm, desc[:50])
-    
-    amb_img = get_ambient_image(section_name)
-    if amb_img and os.path.exists(amb_img):
-        img_max_w = col_w
-        img_max_h = 6*cm
-        iw, ih = get_image_size(amb_img, img_max_w, img_max_h)
-        img_x = right_x + (col_w - iw) / 2
-        img_y = content_top - 0.5*cm - ih
-        c.setStrokeColor(GOLD)
-        c.setLineWidth(1.5)
-        c.roundRect(img_x - 0.2*cm, img_y - 0.2*cm, iw + 0.4*cm, ih + 0.4*cm, 8, fill=0, stroke=1)
-        c.drawImage(str(amb_img), img_x, img_y, width=iw, height=ih, mask='auto')
-        c.setFillColor(MUTED)
-        c.setFont("Helvetica", 7)
-        c.drawCentredString(right_x + col_w/2, img_y - 0.5*cm, "Aplicacion real del producto")
-    
-    cta_y = margin + 0.8*cm
-    
-    cta_w = 6.5*cm
-    cta_h = 0.65*cm
-    c.setFillColor(WHATSAPP)
-    c.roundRect(margin, cta_y, cta_w, cta_h, 4, fill=1, stroke=0)
-    c.setFillColor(WHITE)
-    c.setFont("Helvetica-Bold", 8.5)
-    c.drawCentredString(margin + cta_w/2, cta_y + 0.2*cm, "COTIZA POR WHATSAPP")
-    
-    c.setFillColor(GOLD)
-    c.roundRect(margin + cta_w + 0.4*cm, cta_y, cta_w, cta_h, 4, fill=1, stroke=0)
-    c.setFillColor(BLACK)
-    c.setFont("Helvetica-Bold", 8.5)
-    c.drawCentredString(margin + cta_w + 0.4*cm + cta_w/2, cta_y + 0.2*cm, "PREGUNTA POR INSTALACION")
-    
-    c.setFillColor(DARK)
-    c.setStrokeColor(GOLD)
-    c.setLineWidth(1)
-    c.roundRect(margin + 2*cta_w + 0.8*cm, cta_y, cta_w, cta_h, 4, fill=1, stroke=1)
-    c.setFillColor(GOLD)
-    c.setFont("Helvetica-Bold", 8.5)
-    c.drawCentredString(margin + 2*cta_w + 0.8*cm + cta_w/2, cta_y + 0.2*cm, "SOLICITA MUESTRAS")
-    
-    draw_footer(page_n, total_n)
-    next_page()
-
-
-def draw_product_pages(cat_name, section_name, section_path, section_products, page_n_start, total_n):
-    """Paginas de productos en grid 2x3 con SKUs."""
-    content_top = page_h - 1.6*cm
-    content_bottom = 1.2*cm
-    content_h = content_top - content_bottom
-    
-    cell_w = (page_w - 2*margin) / COLS
-    cell_h = content_h / ROWS
-    
-    num_pages = (len(section_products) + PRODUCTS_PER_PAGE - 1) // PRODUCTS_PER_PAGE
-    pages_drawn = 0
-    
-    for page_idx in range(num_pages):
-        draw_page_bg()
-        draw_header(f"{cat_name}  |  {section_name}")
-        
-        start_idx = page_idx * PRODUCTS_PER_PAGE
-        end_idx = min(start_idx + PRODUCTS_PER_PAGE, len(section_products))
-        page_prods = section_products[start_idx:end_idx]
-        
-        for i, prod_file in enumerate(page_prods):
-            col = i % COLS
-            row = i // COLS
-            x = margin + col * cell_w
-            y = content_top - (row + 1) * cell_h
-            
-            pad = 0.25*cm
-            cw = cell_w - pad*2
-            ch = cell_h - pad*2
-            
-            c.setFillColor(DARK)
-            c.roundRect(x + pad, y + pad, cw, ch, 8, fill=1, stroke=0)
-            c.setStrokeColor(Color(197/255, 160/255, 89/255, alpha=0.35))
-            c.setLineWidth(1)
-            c.roundRect(x + pad, y + pad, cw, ch, 8, fill=0, stroke=1)
-            
-            prod_idx = start_idx + i + 1
-            sku = get_sku(section_name, prod_idx)
-            c.setFillColor(Color(197/255, 160/255, 89/255, alpha=0.25))
-            c.roundRect(x + pad + cw - 2.2*cm, y + pad + ch - 0.5*cm, 2.0*cm, 0.38*cm, 3, fill=1, stroke=0)
-            c.setFillColor(GOLD)
-            c.setFont("Helvetica-Bold", 7)
-            c.drawCentredString(x + pad + cw - 1.1*cm, y + pad + ch - 0.38*cm, sku)
-            
-            img_path = section_path / prod_file
-            img_max_w = cw - 0.6*cm
-            img_max_h = ch - 1.4*cm
-            
-            if os.path.exists(img_path):
-                iw, ih = get_image_size(img_path, img_max_w, img_max_h)
-                img_x = x + (cell_w - iw) / 2
-                img_y = y + pad + 0.7*cm
-                c.drawImage(str(img_path), img_x, img_y, width=iw, height=ih, mask='auto')
-            
-            prod_name = clean_product_name(prod_file)
-            c.setFillColor(GOLD_LIGHT)
-            c.setFont("Helvetica-Bold", 8.5)
-            if len(prod_name) > 30:
-                prod_name = prod_name[:28] + "..."
-            c.drawCentredString(x + cell_w/2, y + pad + 0.25*cm, prod_name)
-        
-        btn_w = 2.8*cm
-        btn_h = 0.6*cm
-        btn_x = margin
-        btn_y = 0.35*cm
-        c.setFillColor(GOLD)
-        c.roundRect(btn_x, btn_y, btn_w, btn_h, 4, fill=1, stroke=0)
-        c.setFillColor(BLACK)
-        c.setFont("Helvetica-Bold", 8)
-        c.drawCentredString(btn_x + btn_w/2, btn_y + 0.18*cm, "<- INDICE")
-        c.linkAbsolute("", "indice", (btn_x, btn_y, btn_x+btn_w, btn_y+btn_h))
-        
-        draw_footer(page_n_start + pages_drawn, total_n)
-        next_page()
-        pages_drawn += 1
-    
-    return pages_drawn
-
-
-def draw_final_page(qr_path):
-    """Pagina final de contacto y cierre."""
-    draw_page_bg()
-    
-    if LOGO_PATH and os.path.exists(LOGO_PATH):
-        logo_max = 5*cm
-        iw, ih = get_image_size(LOGO_PATH, logo_max, logo_max)
-        logo_x = (page_w - iw) / 2
-        logo_y = page_h - 7*cm
-        c.drawImage(str(LOGO_PATH), logo_x, logo_y, width=iw, height=ih, mask='auto')
-    
-    c.setFillColor(GOLD_LIGHT)
-    c.setFont("Helvetica-Bold", 22)
-    c.drawCentredString(page_w/2, page_h - 8.5*cm, "GRACIAS POR PREFERIRNOS")
-    
-    c.setStrokeColor(GOLD)
-    c.setLineWidth(1)
-    c.line(page_w/2 - 3*cm, page_h - 8.9*cm, page_w/2 + 3*cm, page_h - 8.9*cm)
-    
-    c.setFillColor(LIGHT)
-    c.setFont("Helvetica", 10)
-    c.drawCentredString(page_w/2, page_h - 9.6*cm, "Estamos listos para transformar tu espacio")
-    c.drawCentredString(page_w/2, page_h - 10.0*cm, "con los mejores materiales del mercado.")
-    
-    box_y = page_h - 12*cm
-    c.setFillColor(DARK)
-    c.roundRect(margin + 1*cm, box_y - 3.5*cm, page_w - 2*margin - 2*cm, 3.8*cm, 10, fill=1, stroke=0)
-    c.setStrokeColor(GOLD)
-    c.setLineWidth(1)
-    c.roundRect(margin + 1*cm, box_y - 3.5*cm, page_w - 2*margin - 2*cm, 3.8*cm, 10, fill=0, stroke=1)
-    
-    c.setFillColor(GOLD)
-    c.setFont("Helvetica-Bold", 11)
-    c.drawCentredString(page_w/2, box_y - 0.4*cm, "CONTACTANOS")
-    
-    contact_lines = [
+    contacts = [
         "WhatsApp: +52 631-192-8993",
         "Showroom: +52 631-120-4943",
         "Email: adis.remodelacion@gmail.com",
         "Ubicacion: Nogales, Sonora | Rio Rico, AZ",
-        "Facebook: ADIS Diseno & Remodelacion",
     ]
-    c.setFillColor(LIGHT)
-    c.setFont("Helvetica", 9)
-    for i, line in enumerate(contact_lines):
-        c.drawCentredString(page_w/2, box_y - 1.0*cm - i*0.45*cm, line)
+    c.setFillColor(BODY); c.setFont("Helvetica", 9)
+    for i, line in enumerate(contacts):
+        c.drawCentredString(pw/2, box_y-1.0*cm - i*0.42*cm, line)
+    
+    # QR
+    if qr_path and os.path.exists(qr_path):
+        qs = 2.8*cm
+        qx = (pw-qs)/2
+        qy = box_y - 4.6*cm
+        c.setFillColor(SURFACE); c.roundRect(qx-0.2*cm, qy-0.2*cm, qs+0.4*cm, qs+0.7*cm, 5, fill=1, stroke=0)
+        c.setStrokeColor(GOLD); c.setLineWidth(0.5)
+        c.roundRect(qx-0.2*cm, qy-0.2*cm, qs+0.4*cm, qs+0.7*cm, 5, fill=0, stroke=1)
+        c.drawImage(str(qr_path), qx, qy, width=qs, height=qs, mask='auto')
+        c.setFillColor(GOLD); c.setFont("Helvetica-Bold", 8)
+        c.drawCentredString(pw/2, qy-0.45*cm, "Escanea para cotizar por WhatsApp")
+    
+    # garantias resumidas
+    c.setFillColor(MUTED); c.setFont("Helvetica", 8)
+    c.drawCentredString(pw/2, 1.8*cm, "Garantias: PVC/WPC 15años | SPC 12años | Flexible 35años | Deck 18-25años")
+    c.drawCentredString(pw/2, 1.4*cm, "Todos los precios incluyen IVA | Envios a todo Mexico")
+
+
+def draw_category_intro(cat_name, cat_idx):
+    """Intro de categoria con foto de ambiente, specs compactos, beneficios."""
+    draw_bg()
+    hh = draw_header_min(cat_name)
+    top = ph - MARGIN_T - hh - 0.3*cm
+    
+    # nombre categoria grande
+    c.setFillColor(WHITE); c.setFont("Helvetica-Bold", 26)
+    c.drawString(MARGIN_L, top, cat_name.upper())
+    c.setStrokeColor(GOLD); c.setLineWidth(1)
+    c.line(MARGIN_L, top-0.4*cm, MARGIN_L+4*cm, top-0.4*cm)
+    
+    # descripcion
+    desc = CAT_DESC.get(cat_name, '')
+    c.setFillColor(BODY); c.setFont("Helvetica", 10)
+    # truncar a 2 lineas
+    if len(desc) > 90:
+        desc = desc[:87] + '...'
+    c.drawString(MARGIN_L, top-0.9*cm, desc)
+    
+    # foto de ambiente
+    amb = None
+    for k,v in AMBIENT.items():
+        if k.lower() in cat_name.lower() or cat_name.lower() in k.lower():
+            amb = v; break
+    if not amb or not amb.exists():
+        for ext in IMG_EXTS:
+            for f in sorted(os.listdir(MEDIA_DIR)):
+                if f.lower().endswith(ext):
+                    amb = MEDIA_DIR/f; break
+            if amb: break
+    
+    img_h = 5.5*cm
+    if amb and amb.exists():
+        iw, ih = img_size(amb, CONTENT_W, img_h)
+        iy = top - 1.3*cm - ih
+        c.drawImage(str(amb), MARGIN_L, iy, width=iw, height=ih, mask='auto')
+    
+    # specs compactos en formato horizontal
+    specs_y = top - 1.5*cm - img_h
+    # buscar specs representativos de esta categoria
+    rep_spec = None
+    for k in SPECS:
+        if k.lower() in cat_name.lower() or any(s['name']==k for s in []):
+            rep_spec = SPECS[k]; break
+    if not rep_spec:
+        for k in SPECS:
+            if any(k.lower() in s['name'].lower() for s in []):
+                rep_spec = SPECS[k]; break
+    
+    if rep_spec:
+        # formato horizontal: Material · Dimensiones · Presentacion · Garantia
+        line = " | ".join([f"{v}" for v in rep_spec.values()][:4])
+        c.setFillColor(SURFACE); c.roundRect(MARGIN_L, specs_y-0.5*cm, CONTENT_W, 0.6*cm, 4, fill=1, stroke=0)
+        c.setFillColor(BODY); c.setFont("Helvetica", 8.5)
+        c.drawString(MARGIN_L+0.3*cm, specs_y-0.22*cm, line)
+    
+    # beneficios
+    ben_y = specs_y - 1.0*cm
+    benefits = get_benefits(cat_name)
+    c.setFillColor(GOLD); c.setFont("Helvetica-Bold", 10)
+    c.drawString(MARGIN_L, ben_y, "VENTAJAS")
+    
+    for i, (title, desc) in enumerate(benefits[:3]):
+        y = ben_y - 0.5*cm - i*0.55*cm
+        c.setFillColor(GOLD); c.setFont("Helvetica-Bold", 9)
+        c.drawString(MARGIN_L+0.2*cm, y, "+")
+        c.setFillColor(WHITE); c.setFont("Helvetica-Bold", 9)
+        c.drawString(MARGIN_L+0.5*cm, y, title)
+        c.setFillColor(MUTED); c.setFont("Helvetica", 8)
+        c.drawString(MARGIN_L+0.5*cm, y-0.22*cm, desc[:45])
+    
+    # lista de subcategorias
+    sub_y = ben_y - 2.3*cm
+    c.setFillColor(MUTED); c.setFont("Helvetica", 8)
+    c.drawString(MARGIN_L, sub_y, "Productos en esta categoria:")
+    
+    draw_footer_min()
+
+
+def draw_separator(cat_name):
+    """Pagina separadora elegante entre categorias."""
+    draw_bg()
+    c.setStrokeColor(GOLD); c.setLineWidth(0.8)
+    c.line(pw/2-3*cm, ph/2+0.8*cm, pw/2+3*cm, ph/2+0.8*cm)
+    c.setFillColor(MUTED); c.setFont("Helvetica", 9)
+    c.drawCentredString(pw/2, ph/2+1.1*cm, "CATEGORIA")
+    c.setFillColor(GOLD); c.setFont("Helvetica-Bold", 34)
+    c.drawCentredString(pw/2, ph/2-0.3*cm, cat_name.upper())
+    c.setStrokeColor(GOLD); c.setLineWidth(0.8)
+    c.line(pw/2-3*cm, ph/2-0.7*cm, pw/2+3*cm, ph/2-0.7*cm)
+
+
+def draw_product_page(cat_name, subs_group, tmp_img_dir, global_idx_start):
+    """Pagina de productos: grid 2x2, aireado, minimalista."""
+    draw_bg()
+    hh = draw_header_min(cat_name)
+    top = ph - MARGIN_T - hh - 0.4*cm
+    
+    # titulo de grupo si es combinado
+    if len(subs_group) > 1:
+        names = " + ".join([s['name'] for s in subs_group])
+        c.setFillColor(GOLD); c.setFont("Helvetica-Bold", 11)
+        c.drawString(MARGIN_L, top, names)
+        top -= 0.5*cm
+    elif len(subs_group) == 1:
+        c.setFillColor(MUTED); c.setFont("Helvetica", 9)
+        c.drawString(MARGIN_L, top, subs_group[0]['name'])
+        top -= 0.4*cm
+    
+    # grid 2x2
+    cols, rows = 2, 2
+    gap = 0.5*cm
+    cell_w = (CONTENT_W - gap) / cols
+    cell_h = (top - MARGIN_B - gap) / rows
+    
+    all_prods = []
+    for sub in subs_group:
+        for p in sub['products']:
+            all_prods.append({'file':p, 'path':sub['path'], 'sub':sub['name']})
+    
+    for i, prod in enumerate(all_prods[:4]):
+        col = i % cols
+        row = i // cols
+        x = MARGIN_L + col * (cell_w + gap)
+        y = top - (row+1) * (cell_h + gap) + gap
+        
+        # fondo celda
+        c.setFillColor(SURFACE)
+        c.roundRect(x, y, cell_w, cell_h, 5, fill=1, stroke=0)
+        # linea dorada inferior sutil
+        c.setStrokeColor(GOLD); c.setLineWidth(0.5)
+        c.line(x, y, x+cell_w, y)
+        
+        # imagen optimizada
+        src = prod['path'] / prod['file']
+        dst = tmp_img_dir / f"opt_{global_idx_start+i}_{prod['file']}"
+        if not dst.exists():
+            optimize_image(src, dst, max_dim=450, quality=75)
+        
+        img_max_w = cell_w - 0.8*cm
+        img_max_h = cell_h - 1.6*cm
+        if dst.exists():
+            iw, ih = img_size(dst, img_max_w, img_max_h)
+            ix = x + (cell_w - iw)/2
+            iy = y + 0.9*cm
+            c.drawImage(str(dst), ix, iy, width=iw, height=ih, mask='auto')
+        
+        # nombre
+        name = clean_product(prod['file'])
+        c.setFillColor(WHITE); c.setFont("Helvetica-Bold", 9.5)
+        c.drawCentredString(x + cell_w/2, y + 0.5*cm, name)
+        
+        # SKU
+        sku = get_sku(prod['sub'], global_idx_start+i+1)
+        c.setFillColor(GOLD); c.setFont("Courier-Bold", 7.5)
+        c.drawCentredString(x + cell_w/2, y + 0.2*cm, sku)
+    
+    draw_footer_min()
+
+
+def draw_final_page(qr_path):
+    """Pagina de cierre editorial."""
+    draw_bg()
+    
+    if LOGO_PATH.exists():
+        lw, lh = img_size(LOGO_PATH, 4*cm, 4*cm)
+        try: c.drawImage(str(LOGO_PATH), (pw-lw)/2, ph-6.5*cm, width=lw, height=lh, mask='auto')
+        except: pass
+    
+    c.setFillColor(GOLD); c.setFont("Helvetica-Bold", 20)
+    c.drawCentredString(pw/2, ph-7.5*cm, "Gracias por preferirnos")
+    c.setStrokeColor(GOLD); c.setLineWidth(0.5)
+    c.line(pw/2-2*cm, ph-7.85*cm, pw/2+2*cm, ph-7.85*cm)
+    
+    c.setFillColor(BODY); c.setFont("Helvetica", 10)
+    c.drawCentredString(pw/2, ph-8.5*cm, "Estamos listos para transformar tu espacio")
+    
+    # contacto compacto
+    c.setFillColor(MUTED); c.setFont("Helvetica", 9)
+    c.drawCentredString(pw/2, ph-9.5*cm, "+52 631-192-8993  |  adis.remodelacion@gmail.com")
+    c.drawCentredString(pw/2, ph-9.9*cm, "Nogales, Sonora  |  Rio Rico, AZ")
     
     if qr_path and os.path.exists(qr_path):
-        qr_size = 3.5*cm
-        qr_x = (page_w - qr_size) / 2
-        qr_y = box_y - 5.2*cm
-        c.setFillColor(DARK)
-        c.roundRect(qr_x - 0.3*cm, qr_y - 0.3*cm, qr_size + 0.6*cm, qr_size + 1.0*cm, 8, fill=1, stroke=0)
-        c.setStrokeColor(GOLD)
-        c.setLineWidth(1)
-        c.roundRect(qr_x - 0.3*cm, qr_y - 0.3*cm, qr_size + 0.6*cm, qr_size + 1.0*cm, 8, fill=0, stroke=1)
-        c.drawImage(str(qr_path), qr_x, qr_y, width=qr_size, height=qr_size, mask='auto')
-        c.setFillColor(GOLD)
-        c.setFont("Helvetica-Bold", 9)
-        c.drawCentredString(page_w/2, qr_y - 0.55*cm, "ESCANEA PARA COTIZAR POR WHATSAPP")
-    
-    c.setFillColor(MUTED)
-    c.setFont("Helvetica", 8)
-    c.drawCentredString(page_w/2, margin + 0.3*cm, "Todos los precios incluyen IVA | Envios disponibles a todo Mexico | Garantia de fabricante")
+        qs = 2.2*cm
+        qx = (pw-qs)/2
+        qy = 2.5*cm
+        c.drawImage(str(qr_path), qx, qy, width=qs, height=qs, mask='auto')
+        c.setFillColor(MUTED); c.setFont("Helvetica", 8)
+        c.drawCentredString(pw/2, qy-0.4*cm, "Escanea para cotizar")
 
 
-# ========== GENERACION PRINCIPAL ==========
-print("=" * 50)
-print("GENERANDO CATALOGO PDF PREMIUM ADIS")
-print("=" * 50)
+# ========== GENERACIÓN PRINCIPAL ==========
+print("="*50)
+print("CATALOGO EDITORIAL ADIS")
+print("="*50)
 
 with tempfile.TemporaryDirectory() as tmpdir:
-    tmpdir = Path(tmpdir)
-    logo_prepared = tmpdir / 'logo_prepared.png'
-    qr_path = tmpdir / 'qr_whatsapp.png'
+    tmp = Path(tmpdir)
+    logo_prep = tmp/'logo.png'
+    qr_file = tmp/'qr.png'
+    img_tmp = tmp/'imgs'
+    img_tmp.mkdir()
     
-    print("\n[1/5] Preparando logo...")
-    prepare_logo(logo_prepared)
+    print("\n[1/4] Preparando assets...")
+    prepare_logo(logo_prep)
+    gen_qr(qr_file, WA_URL, size=220)
     
-    print("[2/5] Generando QR de WhatsApp...")
-    generate_qr(qr_path, WHATSAPP_URL, size=250)
+    print("[2/4] Escaneando catalogo...")
+    cats = scan_catalog()
+    total_prods = sum(sum(len(s['products']) for s in c['subs']) for c in cats)
+    print(f"       {len(cats)} categorias | {total_prods} productos")
     
-    print("[3/5] Escaneando catalogo...")
-    categories = scan_catalog()
-    for cat in categories:
-        total = len(cat['direct_products'])
-        for sub in cat['subcategories']:
-            total += len(sub['products'])
-        cat['total_products'] = total
+    # calcular paginas
+    total_pages = 1  # portada
+    total_pages += 1  # marca
+    total_pages += len(cats)  # intros
+    total_pages += len(cats) - 1  # separadores (entre categorias)
     
-    all_sections = []
-    for cat_idx, cat in enumerate(categories):
-        for sub in cat['subcategories']:
-            if sub['products']:
-                all_sections.append({
-                    'cat_idx': cat_idx,
-                    'cat_name': cat['name'],
-                    'sub_name': sub['name'],
-                    'products': sub['products'],
-                    'path': sub['path'],
-                })
-        if cat['direct_products']:
-            all_sections.append({
-                'cat_idx': cat_idx,
-                'cat_name': cat['name'],
-                'sub_name': cat['name'],
-                'products': cat['direct_products'],
-                'path': cat['path'],
-            })
+    for cat in cats:
+        for sub in cat['subs']:
+            total_pages += (len(sub['products']) + 3) // 4  # 4 por pagina
+    total_pages += 1  # cierre
     
-    total_pages = 1
-    total_pages += 1
-    total_pages += 1
-    total_pages += 1
-    for sec in all_sections:
-        total_pages += 1
-        total_pages += (len(sec['products']) + PRODUCTS_PER_PAGE - 1) // PRODUCTS_PER_PAGE
-    total_pages += 1
-    
-    print(f"       Categorias: {len(categories)}")
-    print(f"       Secciones: {len(all_sections)}")
     print(f"       Paginas estimadas: {total_pages}")
     
-    print("\n[4/5] Generando paginas...")
-    print("       -> Portada de impacto")
-    draw_cover(str(logo_prepared) if logo_prepared.exists() else None,
-               str(qr_path) if qr_path.exists() else None)
+    print("\n[3/4] Generando paginas...")
+    
+    # PORTADA
+    print("       -> Portada")
+    draw_cover(str(logo_prep) if logo_prep.exists() else None)
     next_page()
     
-    print("       -> Contenido / Guia")
-    draw_content_page(len(all_sections), categories)
-    c.bookmarkPage('indice')
-    c.addOutlineEntry('INDICE', 'indice', level=0)
+    # MARCA
+    print("       -> Pagina de marca")
+    draw_brand_page(str(qr_file) if qr_file.exists() else None)
+    c.bookmarkPage('indice'); c.addOutlineEntry('INDICE', 'indice', level=0)
     next_page()
     
-    print("       -> Ventajas competitivas")
-    draw_benefits_page()
-    next_page()
-    
-    print("       -> Proceso de compra")
-    draw_process_page()
-    next_page()
-    
-    section_idx = 0
-    for sec in all_sections:
-        dest = f"sec_{section_idx}"
-        print(f"       -> {sec['cat_name']} | {sec['sub_name']} ({len(sec['products'])} productos)")
+    # CATEGORIAS
+    global_idx = 0
+    for ci, cat in enumerate(cats):
+        # separador (excepto primera)
+        if ci > 0:
+            print(f"       -> Separador: {cat['name']}")
+            draw_separator(cat['name'])
+            next_page()
         
-        draw_section_intro(sec['cat_name'], sec['sub_name'], sec['path'],
-                          sec['products'], page_num + 1, total_pages)
-        c.bookmarkPage(dest)
-        c.addOutlineEntry(sec['cat_name'], dest, level=0)
+        # intro
+        print(f"       -> Intro: {cat['name']}")
+        draw_category_intro(cat['name'], ci)
+        dest = f"cat_{ci}"
+        c.bookmarkPage(dest); c.addOutlineEntry(cat['name'], dest, level=0)
+        next_page()
         
-        pages_drawn = draw_product_pages(sec['cat_name'], sec['sub_name'],
-                                         sec['path'], sec['products'],
-                                         page_num + 1, total_pages)
-        
-        section_idx += 1
+        # productos por subcategoria
+        for sub in cat['subs']:
+            n = len(sub['products'])
+            npages = (n + 3) // 4
+            print(f"       -> {cat['name']} | {sub['name']} ({n} productos, {npages} paginas)")
+            for pi in range(npages):
+                start = pi * 4
+                group = [{'name':sub['name'], 'products':sub['products'][start:start+4], 'path':sub['path']}]
+                draw_product_page(cat['name'], group, img_tmp, global_idx + start)
+                next_page()
+            global_idx += n
     
-    print("       -> Pagina de cierre")
-    draw_final_page(str(qr_path) if qr_path.exists() else None)
+    # CIERRE
+    print("       -> Cierre")
+    draw_final_page(str(qr_file) if qr_file.exists() else None)
     next_page()
     
-    print("\n[5/5] Guardando PDF...")
+    print("\n[4/4] Guardando...")
     c.save()
 
 print(f"\n{'='*50}")
-print(f"PDF GENERADO EXITOSAMENTE")
-print(f"{'='*50}")
-print(f"Archivo: {OUTPUT_PDF}")
+print(f"PDF GENERADO: {OUTPUT_PDF}")
+# Copiar a nombre estandar para GitHub Pages
+try:
+    std = BASE_DIR / 'catalogo_adis.pdf'
+    if std.exists():
+        try: os.remove(std)
+        except: pass
+    if not std.exists():
+        import shutil
+        shutil.copy2(OUTPUT_PDF, std)
+        print(f"Copiado tambien a: {std}")
+except Exception as e:
+    print(f"No se pudo copiar a nombre estandar: {e}")
 print(f"Total paginas: {page_num}")
-print(f"\nCategorias incluidas:")
-for cat in categories:
-    print(f"  | {cat['name']}: {cat['total_products']} productos")
-print(f"\nAbre el PDF y verifica que el logo aparezca correctamente.")
+print(f"{'='*50}")
+
+# Mostrar tamano
+try:
+    sz = os.path.getsize(OUTPUT_PDF)
+    print(f"Tamanio: {sz/1024/1024:.1f} MB")
+except: pass
