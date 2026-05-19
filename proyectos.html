@@ -14,7 +14,8 @@
   <link rel="stylesheet" href="style.css">
   <style>
     .before-after { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; max-width: 1000px; margin: 0 auto; }
-    .before-after img { width: 100%; height: 300px; object-fit: cover; border-radius: 8px; }
+    .before-after img { width: 100%; height: 300px; object-fit: cover; border-radius: 8px; cursor: pointer; transition: transform 0.3s; }
+    .before-after img:hover { transform: scale(1.02); }
     .ba-label { text-align: center; color: var(--gold); font-family: 'Playfair Display', serif; font-size: 1.2rem; margin-top: 0.5rem; }
     .video-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem; max-width: 1200px; margin: 0 auto; }
     .video-card video { width: 100%; border-radius: 8px; }
@@ -84,7 +85,7 @@
     <p>Transformaciones que hablan por sí solas. Conoce nuestro trabajo.</p>
   </section>
 
-  <section class="section-wrap">
+  <section class="section-wrap reveal">
     <div class="section-header">
       <h2>Antes y Después</h2>
       <div class="divider"></div>
@@ -92,69 +93,189 @@
     </div>
     <div class="before-after">
       <div>
-        <img src="media/antes.jpg" alt="Antes" loading="lazy">
+        <img src="media/antes.jpg" alt="Antes" loading="lazy" onclick="openLightbox('media/antes.jpg', 'Antes')">
         <div class="ba-label">Antes</div>
       </div>
       <div>
-        <img src="media/despues.jpg" alt="Después" loading="lazy">
+        <img src="media/despues.jpg" alt="Después" loading="lazy" onclick="openLightbox('media/despues.jpg', 'Después')">
         <div class="ba-label">Después</div>
       </div>
     </div>
   </section>
-
-  <section class="section-wrap-alt">
+  <section class="section-wrap-alt reveal">
     <div class="section-header">
       <h2>Galería de Proyectos</h2>
       <div class="divider"></div>
+      <p>Trabajos reales con nuestros materiales de alta gama.</p>
     </div>
     <div class="products-grid">
-      <div class="product-card">
-        <div class="product-gallery">
-          <img src="media/ejemplo-tapiz.jpg" alt="Pared con tapiz y lambrín" loading="lazy">
+      <div class="product-card reveal">
+        <div class="product-gallery" onclick="openLightbox('media/ejemplo-tapiz.jpg', 'Ejemplo Tapiz')">
+          <img src="media/ejemplo-tapiz.jpg" alt="Ejemplo Tapiz" loading="lazy">
         </div>
         <div class="product-info">
-          <div class="product-name">Pared con Tapiz y Lambrín WPC</div>
+          <div class="product-name">Ejemplo Tapiz</div>
         </div>
       </div>
-      <div class="product-card">
-        <div class="product-gallery">
-          <img src="media/proyecto-recepcion.jpg" alt="Recepción con lambrín WPC" loading="lazy">
+      <div class="product-card reveal">
+        <div class="product-gallery" onclick="openLightbox('media/equipo-adis.jpg', 'Equipo Adis')">
+          <img src="media/equipo-adis.jpg" alt="Equipo Adis" loading="lazy">
         </div>
         <div class="product-info">
-          <div class="product-name">Recepción con Lambrín WPC</div>
+          <div class="product-name">Equipo Adis</div>
         </div>
       </div>
-      <div class="product-card">
-        <div class="product-gallery">
-          <img src="media/equipo-adis.jpg" alt="Equipo ADIS en obra" loading="lazy">
+      <div class="product-card reveal">
+        <div class="product-gallery" onclick="openLightbox('media/proyecto-01.jpeg', 'Proyecto 01')">
+          <img src="media/proyecto-01.jpeg" alt="Proyecto 01" loading="lazy">
         </div>
         <div class="product-info">
-          <div class="product-name">Equipo ADIS en Obra</div>
+          <div class="product-name">Proyecto 01</div>
+        </div>
+      </div>
+      <div class="product-card reveal">
+        <div class="product-gallery" onclick="openLightbox('media/proyecto-02.jpeg', 'Proyecto 02')">
+          <img src="media/proyecto-02.jpeg" alt="Proyecto 02" loading="lazy">
+        </div>
+        <div class="product-info">
+          <div class="product-name">Proyecto 02</div>
+        </div>
+      </div>
+      <div class="product-card reveal">
+        <div class="product-gallery" onclick="openLightbox('media/proyecto-03.jpeg', 'Proyecto 03')">
+          <img src="media/proyecto-03.jpeg" alt="Proyecto 03" loading="lazy">
+        </div>
+        <div class="product-info">
+          <div class="product-name">Proyecto 03</div>
+        </div>
+      </div>
+      <div class="product-card reveal">
+        <div class="product-gallery" onclick="openLightbox('media/proyecto-04.jpeg', 'Proyecto 04')">
+          <img src="media/proyecto-04.jpeg" alt="Proyecto 04" loading="lazy">
+        </div>
+        <div class="product-info">
+          <div class="product-name">Proyecto 04</div>
+        </div>
+      </div>
+      <div class="product-card reveal">
+        <div class="product-gallery" onclick="openLightbox('media/proyecto-05.jpeg', 'Proyecto 05')">
+          <img src="media/proyecto-05.jpeg" alt="Proyecto 05" loading="lazy">
+        </div>
+        <div class="product-info">
+          <div class="product-name">Proyecto 05</div>
+        </div>
+      </div>
+      <div class="product-card reveal">
+        <div class="product-gallery" onclick="openLightbox('media/proyecto-06.jpeg', 'Proyecto 06')">
+          <img src="media/proyecto-06.jpeg" alt="Proyecto 06" loading="lazy">
+        </div>
+        <div class="product-info">
+          <div class="product-name">Proyecto 06</div>
+        </div>
+      </div>
+      <div class="product-card reveal">
+        <div class="product-gallery" onclick="openLightbox('media/proyecto-07.jpeg', 'Proyecto 07')">
+          <img src="media/proyecto-07.jpeg" alt="Proyecto 07" loading="lazy">
+        </div>
+        <div class="product-info">
+          <div class="product-name">Proyecto 07</div>
+        </div>
+      </div>
+      <div class="product-card reveal">
+        <div class="product-gallery" onclick="openLightbox('media/proyecto-recepcion-thumb.jpg', 'Proyecto Recepcion Thumb')">
+          <img src="media/proyecto-recepcion-thumb.jpg" alt="Proyecto Recepcion Thumb" loading="lazy">
+        </div>
+        <div class="product-info">
+          <div class="product-name">Proyecto Recepcion Thumb</div>
+        </div>
+      </div>
+      <div class="product-card reveal">
+        <div class="product-gallery" onclick="openLightbox('media/proyecto-recepcion.jpg', 'Proyecto Recepcion')">
+          <img src="media/proyecto-recepcion.jpg" alt="Proyecto Recepcion" loading="lazy">
+        </div>
+        <div class="product-info">
+          <div class="product-name">Proyecto Recepcion</div>
         </div>
       </div>
     </div>
   </section>
-
-  <section class="section-wrap">
+  <section class="section-wrap reveal">
     <div class="section-header">
       <h2>Videos de Remodelaciones</h2>
       <div class="divider"></div>
+      <p>Transformaciones capturadas en video.</p>
     </div>
     <div class="video-grid">
-      <div class="video-card">
-        <video class="auto-video" muted loop playsinline poster="media/despues.jpg">
-          <source src="media/video-habitacion.mp4" type="video/mp4">
+      <div class="video-card reveal">
+        <video class="auto-video" muted loop playsinline poster="media/ejemplo-tapiz.jpg">
+          <source src="media/video-01.mp4" type="video/mp4">
         </video>
         <div class="product-info">
-          <div class="product-name">Remodelación de Habitación</div>
+          <div class="product-name">Video 01</div>
         </div>
       </div>
-      <div class="video-card">
-        <video class="auto-video" muted loop playsinline poster="media/proyecto-recepcion.jpg">
+      <div class="video-card reveal">
+        <video class="auto-video" muted loop playsinline poster="media/ejemplo-tapiz.jpg">
+          <source src="media/video-02.mp4" type="video/mp4">
+        </video>
+        <div class="product-info">
+          <div class="product-name">Video 02</div>
+        </div>
+      </div>
+      <div class="video-card reveal">
+        <video class="auto-video" muted loop playsinline poster="media/ejemplo-tapiz.jpg">
+          <source src="media/video-03.mp4" type="video/mp4">
+        </video>
+        <div class="product-info">
+          <div class="product-name">Video 03</div>
+        </div>
+      </div>
+      <div class="video-card reveal">
+        <video class="auto-video" muted loop playsinline poster="media/ejemplo-tapiz.jpg">
+          <source src="media/video-04.mp4" type="video/mp4">
+        </video>
+        <div class="product-info">
+          <div class="product-name">Video 04</div>
+        </div>
+      </div>
+      <div class="video-card reveal">
+        <video class="auto-video" muted loop playsinline poster="media/ejemplo-tapiz.jpg">
+          <source src="media/video-05.mp4" type="video/mp4">
+        </video>
+        <div class="product-info">
+          <div class="product-name">Video 05</div>
+        </div>
+      </div>
+      <div class="video-card reveal">
+        <video class="auto-video" muted loop playsinline poster="media/ejemplo-tapiz.jpg">
+          <source src="media/video-06.mp4" type="video/mp4">
+        </video>
+        <div class="product-info">
+          <div class="product-name">Video 06</div>
+        </div>
+      </div>
+      <div class="video-card reveal">
+        <video class="auto-video" muted loop playsinline poster="media/ejemplo-tapiz.jpg">
+          <source src="media/video-07.mp4" type="video/mp4">
+        </video>
+        <div class="product-info">
+          <div class="product-name">Video 07</div>
+        </div>
+      </div>
+      <div class="video-card reveal">
+        <video class="auto-video" muted loop playsinline poster="media/ejemplo-tapiz.jpg">
           <source src="media/video-consultorio.mp4" type="video/mp4">
         </video>
         <div class="product-info">
-          <div class="product-name">Remodelación de Consultorio</div>
+          <div class="product-name">Video Consultorio</div>
+        </div>
+      </div>
+      <div class="video-card reveal">
+        <video class="auto-video" muted loop playsinline poster="media/ejemplo-tapiz.jpg">
+          <source src="media/video-habitacion.mp4" type="video/mp4">
+        </video>
+        <div class="product-info">
+          <div class="product-name">Video Habitacion</div>
         </div>
       </div>
     </div>

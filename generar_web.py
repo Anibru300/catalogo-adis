@@ -2442,7 +2442,7 @@ def generate_category_page(cat, categories):
 
 
 def sync_media():
-    """Copia fotos y videos de Material de Facebock a media/"""
+    """Copia TODAS las fotos y videos de Material de Facebock a media/ con nombres limpios."""
     src_dir = BASE_DIR / 'Material de Facebock'
     media_dir = BASE_DIR / 'media'
     if not src_dir.exists():
@@ -2451,7 +2451,11 @@ def sync_media():
         shutil.rmtree(media_dir)
     media_dir.mkdir(parents=True)
     
-    mapping = {
+    img_exts = ('.jpg', '.jpeg', '.png')
+    vid_exts = ('.mp4', '.mov', '.webm')
+    
+    # Mapeo manual para archivos conocidos con nombres limpios
+    known_names = {
         'antes.jpg': 'antes.jpg',
         'despues.jpg': 'despues.jpg',
         'ejemplo de tapiz.jpg': 'ejemplo-tapiz.jpg',
@@ -2461,9 +2465,25 @@ def sync_media():
         'Remoledacion de habitacion.mp4': 'video-habitacion.mp4',
         'remoledacion de consultorio.mp4': 'video-consultorio.mp4',
     }
-    fb_videos = sorted([f for f in os.listdir(src_dir) if f.endswith('.mp4') and f not in mapping])
-    for i, fv in enumerate(fb_videos):
-        mapping[fv] = f'video-proyecto-{i+1}.mp4'
+    
+    all_files = sorted([f for f in os.listdir(src_dir) if f.lower().endswith(img_exts + vid_exts)])
+    
+    # Contadores para nombres automáticos
+    auto_img = 0
+    auto_vid = 0
+    mapping = {}
+    
+    for fname in all_files:
+        if fname in known_names:
+            mapping[fname] = known_names[fname]
+        elif fname.lower().endswith(img_exts):
+            auto_img += 1
+            ext = Path(fname).suffix.lower()
+            mapping[fname] = f'proyecto-{auto_img:02d}{ext}'
+        elif fname.lower().endswith(vid_exts):
+            auto_vid += 1
+            ext = Path(fname).suffix.lower()
+            mapping[fname] = f'video-{auto_vid:02d}{ext}'
     
     copied = 0
     for src_name, dst_name in mapping.items():
@@ -2471,7 +2491,7 @@ def sync_media():
         if src.exists():
             shutil.copy2(src, media_dir / dst_name)
             copied += 1
-    print(f"Media sincronizada: {copied} archivos")
+    print(f"Media sincronizada: {copied} archivos ({auto_img} imgs + {auto_vid} vids nuevos)")
 
 
 # Datos extraídos de fichas técnicas
@@ -2763,6 +2783,98 @@ def generate_testimonios():
 '''
 
 def generate_proyectos():
+    """Genera página de proyectos escaneando media/ dinámicamente."""
+    media_dir = BASE_DIR / 'media'
+    
+    img_exts = ('.jpg', '.jpeg', '.png')
+    vid_exts = ('.mp4', '.mov', '.webm')
+    
+    all_files = sorted([f for f in os.listdir(media_dir) if f.lower().endswith(img_exts + vid_exts)]) if media_dir.exists() else []
+    
+    images = [f for f in all_files if f.lower().endswith(img_exts)]
+    videos = [f for f in all_files if f.lower().endswith(vid_exts)]
+    
+    # Detectar antes/despues
+    antes_file = 'antes.jpg' if 'antes.jpg' in images else None
+    despues_file = 'despues.jpg' if 'despues.jpg' in images else None
+    ba_section = ''
+    if antes_file and despues_file:
+        ba_section = f'''  <section class="section-wrap reveal">
+    <div class="section-header">
+      <h2>Antes y Después</h2>
+      <div class="divider"></div>
+      <p>De una sala común a un espacio de lujo con nuestros recubrimientos.</p>
+    </div>
+    <div class="before-after">
+      <div>
+        <img src="media/{antes_file}" alt="Antes" loading="lazy" onclick="openLightbox('media/{antes_file}', 'Antes')">
+        <div class="ba-label">Antes</div>
+      </div>
+      <div>
+        <img src="media/{despues_file}" alt="Después" loading="lazy" onclick="openLightbox('media/{despues_file}', 'Después')">
+        <div class="ba-label">Después</div>
+      </div>
+    </div>
+  </section>
+'''
+        images = [f for f in images if f not in (antes_file, despues_file)]
+    
+    # Galería de proyectos
+    gallery_html = ''
+    for img in images:
+        name = Path(img).stem.replace('-', ' ').replace('_', ' ').title()
+        gallery_html += f'''      <div class="product-card reveal">
+        <div class="product-gallery" onclick="openLightbox('media/{img}', '{name}')">
+          <img src="media/{img}" alt="{name}" loading="lazy">
+        </div>
+        <div class="product-info">
+          <div class="product-name">{name}</div>
+        </div>
+      </div>
+'''
+    
+    gallery_section = ''
+    if gallery_html:
+        gallery_section = f'''  <section class="section-wrap-alt reveal">
+    <div class="section-header">
+      <h2>Galería de Proyectos</h2>
+      <div class="divider"></div>
+      <p>Trabajos reales con nuestros materiales de alta gama.</p>
+    </div>
+    <div class="products-grid">
+{gallery_html}    </div>
+  </section>
+'''
+    
+    # Videos
+    videos_html = ''
+    for vid in videos:
+        name = Path(vid).stem.replace('-', ' ').replace('_', ' ').title()
+        # Usar la primera imagen como poster si existe
+        poster = images[0] if images else 'media/despues.jpg'
+        videos_html += f'''      <div class="video-card reveal">
+        <video class="auto-video" muted loop playsinline poster="media/{poster}">
+          <source src="media/{vid}" type="video/mp4">
+        </video>
+        <div class="product-info">
+          <div class="product-name">{name}</div>
+        </div>
+      </div>
+'''
+    
+    video_section = ''
+    if videos_html:
+        video_section = f'''  <section class="section-wrap reveal">
+    <div class="section-header">
+      <h2>Videos de Remodelaciones</h2>
+      <div class="divider"></div>
+      <p>Transformaciones capturadas en video.</p>
+    </div>
+    <div class="video-grid">
+{videos_html}    </div>
+  </section>
+'''
+    
     html = f'''<!DOCTYPE html>
 <html lang="es">
 <head>
@@ -2779,7 +2891,8 @@ def generate_proyectos():
   <link rel="stylesheet" href="style.css">
   <style>
     .before-after {{ display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; max-width: 1000px; margin: 0 auto; }}
-    .before-after img {{ width: 100%; height: 300px; object-fit: cover; border-radius: 8px; }}
+    .before-after img {{ width: 100%; height: 300px; object-fit: cover; border-radius: 8px; cursor: pointer; transition: transform 0.3s; }}
+    .before-after img:hover {{ transform: scale(1.02); }}
     .ba-label {{ text-align: center; color: var(--gold); font-family: 'Playfair Display', serif; font-size: 1.2rem; margin-top: 0.5rem; }}
     .video-grid {{ display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem; max-width: 1200px; margin: 0 auto; }}
     .video-card video {{ width: 100%; border-radius: 8px; }}
@@ -2795,82 +2908,7 @@ def generate_proyectos():
     <p>Transformaciones que hablan por sí solas. Conoce nuestro trabajo.</p>
   </section>
 
-  <section class="section-wrap">
-    <div class="section-header">
-      <h2>Antes y Después</h2>
-      <div class="divider"></div>
-      <p>De una sala común a un espacio de lujo con nuestros recubrimientos.</p>
-    </div>
-    <div class="before-after">
-      <div>
-        <img src="media/antes.jpg" alt="Antes" loading="lazy">
-        <div class="ba-label">Antes</div>
-      </div>
-      <div>
-        <img src="media/despues.jpg" alt="Después" loading="lazy">
-        <div class="ba-label">Después</div>
-      </div>
-    </div>
-  </section>
-
-  <section class="section-wrap-alt">
-    <div class="section-header">
-      <h2>Galería de Proyectos</h2>
-      <div class="divider"></div>
-    </div>
-    <div class="products-grid">
-      <div class="product-card">
-        <div class="product-gallery">
-          <img src="media/ejemplo-tapiz.jpg" alt="Pared con tapiz y lambrín" loading="lazy">
-        </div>
-        <div class="product-info">
-          <div class="product-name">Pared con Tapiz y Lambrín WPC</div>
-        </div>
-      </div>
-      <div class="product-card">
-        <div class="product-gallery">
-          <img src="media/proyecto-recepcion.jpg" alt="Recepción con lambrín WPC" loading="lazy">
-        </div>
-        <div class="product-info">
-          <div class="product-name">Recepción con Lambrín WPC</div>
-        </div>
-      </div>
-      <div class="product-card">
-        <div class="product-gallery">
-          <img src="media/equipo-adis.jpg" alt="Equipo ADIS en obra" loading="lazy">
-        </div>
-        <div class="product-info">
-          <div class="product-name">Equipo ADIS en Obra</div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="section-wrap">
-    <div class="section-header">
-      <h2>Videos de Remodelaciones</h2>
-      <div class="divider"></div>
-    </div>
-    <div class="video-grid">
-      <div class="video-card">
-        <video class="auto-video" muted loop playsinline poster="media/despues.jpg">
-          <source src="media/video-habitacion.mp4" type="video/mp4">
-        </video>
-        <div class="product-info">
-          <div class="product-name">Remodelación de Habitación</div>
-        </div>
-      </div>
-      <div class="video-card">
-        <video class="auto-video" muted loop playsinline poster="media/proyecto-recepcion.jpg">
-          <source src="media/video-consultorio.mp4" type="video/mp4">
-        </video>
-        <div class="product-info">
-          <div class="product-name">Remodelación de Consultorio</div>
-        </div>
-      </div>
-    </div>
-  </section>
-
+{ba_section}{gallery_section}{video_section}
   <section class="section-wrap" style="padding-top: 1rem;">
     <div style="text-align: center;">
       <a href="index.html" class="btn-back">← Volver al Inicio</a>
@@ -2898,6 +2936,9 @@ def generate_proyectos():
 </body>
 </html>
 '''
+    with open(BASE_DIR / 'proyectos.html', 'w', encoding='utf-8') as f:
+        f.write(html)
+    print("proyectos.html generado (dinamico)")
     with open(BASE_DIR / 'proyectos.html', 'w', encoding='utf-8') as f:
         f.write(html)
     print("proyectos.html generado")
