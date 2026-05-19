@@ -2904,6 +2904,14 @@ SPECS_DATA = {
         'Garantía': '15 años',
         'Uso': 'Interior',
     },
+    'Plafon ranurado': {
+        'Material': 'PVC',
+        'Dimensiones': '2900 x 250 x 8 mm',
+        'Presentación': 'Por pieza, 2.90 m largo x 0.25 m ancho',
+        'Garantía': '15 años',
+        'Uso': 'Interior',
+        'Acabado': 'Ranurado decorativo',
+    },
     # 5. Paneles tridimensionales
     'Blanco': {
         'Material': 'PVC / Compuesto',
