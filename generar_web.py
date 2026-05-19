@@ -3378,20 +3378,20 @@ def generate_sabias_que():
             import re
             # Limpiar texto de basura
             clean_text = data['curiosos'].replace('---', '').strip()
-            # Extraer items: dividir por doble salto de linea
-            items = re.split(r'\n\n+', clean_text)
+            # Extraer items: dividir por doble salto seguido de nuevo titulo (### o **)
+            items = re.split(r'\n\n+(?=#{2,3} |\*\*)', clean_text)
             item_count = 0
             for item in items:
                 item = item.strip()
                 if not item or len(item) < 20:
                     continue
-                # Extraer titulo: buscar **titulo** o ### titulo
+                # Extraer titulo: buscar ### titulo primero (categorias 4-9), luego **titulo** al inicio (categorias 1-3)
                 title = None
-                title_match = re.search(r'\*\*\s*(.+?)\s*\*\*', item)
+                title_match = re.search(r'#{2,3}\s*(.+?)(?:\n|$)', item)
                 if title_match:
                     title = title_match.group(1)
                 else:
-                    title_match = re.search(r'#{2,3}\s*(.+?)(?:\n|$)', item)
+                    title_match = re.search(r'^\*\*\s*(.+?)\s*\*\*', item)
                     if title_match:
                         title = title_match.group(1)
                 if not title:
@@ -3400,13 +3400,17 @@ def generate_sabias_que():
                 title = re.sub(r'^[\s\U0001F300-\U0001F9FF]+', '', title).strip()
                 if not title:
                     continue
-                # Extraer descripcion: quitar titulo y limpiar
-                desc = re.sub(r'\*\*.+?\*\*', '', item)
-                desc = re.sub(r'#{2,3}\s*.+?(?:\n|$)', '', desc, count=1)
+                # Extraer descripcion: quitar solo el titulo identificado, no todo el texto en negritas
+                if title_match and title_match.group(0).startswith('#'):
+                    desc = re.sub(r'#{2,3}\s*.+?(?:\n|$)', '', item, count=1)
+                else:
+                    desc = re.sub(r'^\*\*\s*' + re.escape(title) + r'\s*\*\*', '', item)
                 desc = desc.strip()
                 desc = re.sub(r'\s+', ' ', desc)
                 if not desc:
                     continue
+                # Convertir negritas markdown a HTML
+                desc = re.sub(r'\*\*(.+?)\*\*', r'<strong>\1</strong>', desc)
                 # Resumir a max 130 caracteres
                 if len(desc) > 130:
                     desc = desc[:127] + '...'
@@ -3427,8 +3431,11 @@ def generate_sabias_que():
         if data.get('faqs'):
             import re
             clean_faqs = data['faqs'].replace('---', '').strip()
-            # Buscar todas las preguntas
+            # Buscar todas las preguntas - intentar formato **❓ primero (cat 1-3), luego ### Pregunta (cat 4-9)
             qa_pairs = re.findall(r'\*\*❓\s*(.+?)\*\*\s*\n?>?\s*(.+?)(?=\n\n\*\*❓|\Z)', clean_faqs, re.DOTALL)
+            # Si no encontramos con formato ❓, intentar formato ### Pregunta\n\n**Respuesta**
+            if not qa_pairs:
+                qa_pairs = re.findall(r'#{2,3}\s*(.+?)(?:\n|$)\s*\n?(.+?)(?=\n#{2,3}|\Z)', clean_faqs, re.DOTALL)
             for q, a in qa_pairs:
                 q_clean = q.strip()
                 a_clean = a.strip().replace('\n', ' ')
