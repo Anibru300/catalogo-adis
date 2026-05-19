@@ -1,7 +1,7 @@
 import os
 import sys
 from pathlib import Path
-from reportlab.lib.pagesizes import landscape, A4
+from reportlab.lib.pagesizes import A4
 from reportlab.lib.units import cm
 from reportlab.lib.colors import HexColor, white, black, Color
 from reportlab.pdfgen import canvas
@@ -24,12 +24,11 @@ DARK = HexColor('#1A1A1A')
 BLACK = HexColor('#0F0F0F')
 GRAY = HexColor('#2A2A2A')
 LIGHT = HexColor('#F5F5F5')
-WHITE = white
 
 IMG_EXTS = ('.jpg', '.jpeg', '.png')
-PRODUCTS_PER_PAGE = 6  # 3 cols x 2 rows para imágenes más grandes
-COLS = 3
-ROWS = 2
+PRODUCTS_PER_PAGE = 6
+COLS = 2
+ROWS = 3
 
 
 def is_image(filename):
@@ -41,14 +40,12 @@ def is_ficha(filename):
 
 
 def clean_name(folder_name):
-    """Quita numeración inicial."""
     import re
     cleaned = re.sub(r'^\d+(\.\d+)*\.?\s*', '', folder_name)
     return cleaned.strip()
 
 
 def get_products(folder_path):
-    """Lista productos (imágenes que NO son fichas técnicas)."""
     if not os.path.isdir(folder_path):
         return []
     files = []
@@ -59,7 +56,6 @@ def get_products(folder_path):
 
 
 def get_ficha(folder_path):
-    """Busca ficha técnica en carpeta."""
     if not os.path.isdir(folder_path):
         return None
     for f in sorted(os.listdir(folder_path)):
@@ -69,7 +65,6 @@ def get_ficha(folder_path):
 
 
 def scan_catalog():
-    """Escanea CATALOGO FINAL y devuelve estructura completa."""
     categories = []
     for cat_folder in sorted(os.listdir(CATALOG_DIR)):
         cat_path = CATALOG_DIR / cat_folder
@@ -77,7 +72,6 @@ def scan_catalog():
             continue
 
         cat_name = clean_name(cat_folder)
-
         subcategories = []
         direct_products = []
 
@@ -116,71 +110,6 @@ def get_image_size(img_path, max_w, max_h):
             return iw * ratio, ih * ratio
     except:
         return max_w, max_h
-
-
-def draw_gradient_bg(c, page_w, page_h):
-    """Dibuja fondo degradado sutil de negro a gris oscuro."""
-    c.setFillColor(BLACK)
-    c.rect(0, 0, page_w, page_h, fill=1, stroke=0)
-    # Degradado sutil en esquina superior derecha
-    for i in range(40):
-        alpha = 0.015 - (i * 0.0003)
-        if alpha > 0:
-            c.setFillColor(Color(197/255, 160/255, 89/255, alpha=alpha))
-            c.circle(page_w, page_h, 15*cm - i*0.3*cm, fill=1, stroke=0)
-
-
-def draw_header(c, page_w, page_h, title, margin=1.2*cm):
-    """Dibuja header en cada página."""
-    header_h = 1.4*cm
-    # Fondo header
-    c.setFillColor(DARK)
-    c.rect(0, page_h - header_h, page_w, header_h, fill=1, stroke=0)
-    # Línea dorada inferior
-    c.setStrokeColor(GOLD)
-    c.setLineWidth(1.5)
-    c.line(margin, page_h - header_h, page_w - margin, page_h - header_h)
-    
-    # Logo mini
-    if os.path.exists(LOGO_PATH):
-        logo_h = 0.9*cm
-        c.drawImage(str(LOGO_PATH), margin, page_h - header_h + 0.25*cm, 
-                   width=logo_h*2.5, height=logo_h, mask='auto', preserveAspectRatio=True)
-    
-    # Título
-    c.setFillColor(GOLD_LIGHT)
-    c.setFont("Helvetica-Bold", 11)
-    c.drawCentredString(page_w/2, page_h - header_h + 0.4*cm, title)
-    
-    # ADIS marca
-    c.setFillColor(GOLD)
-    c.setFont("Helvetica", 8)
-    c.drawRightString(page_w - margin, page_h - header_h + 0.4*cm, "ADIS DISEÑO & REMODELACIÓN")
-    
-    return header_h
-
-
-def draw_footer(c, page_w, margin=1.2*cm, page_num=1, total_pages=1):
-    """Dibuja footer en cada página."""
-    footer_h = 0.8*cm
-    c.setFillColor(DARK)
-    c.rect(0, 0, page_w, footer_h, fill=1, stroke=0)
-    c.setStrokeColor(GOLD)
-    c.setLineWidth(0.5)
-    c.line(margin, footer_h, page_w - margin, footer_h)
-    
-    c.setFillColor(GOLD)
-    c.setFont("Helvetica", 8)
-    c.drawString(margin, 0.3*cm, "www.adis-remodelacion.com  |  +52 631-192-8993")
-    c.drawRightString(page_w - margin, 0.3*cm, f"Página {page_num} de {total_pages}")
-
-
-def draw_rounded_rect(c, x, y, w, h, r, fill, stroke=0, stroke_color=None):
-    c.setFillColor(fill)
-    if stroke_color:
-        c.setStrokeColor(stroke_color)
-        c.setLineWidth(1.5)
-    c.roundRect(x, y, w, h, r, fill=1, stroke=1 if stroke_color else 0)
 
 
 # ========== DATOS TÉCNICOS ==========
@@ -270,47 +199,98 @@ def get_specs_text(sub_name):
     return SPECS_DATA.get(sub_name, {})
 
 
-# ========== INICIAR PDF ==========
-c = canvas.Canvas(str(OUTPUT_PDF), pagesize=landscape(A4))
-page_w, page_h = landscape(A4)
-margin = 1.2*cm
+# ========== INICIAR PDF (A4 VERTICAL) ==========
+c = canvas.Canvas(str(OUTPUT_PDF), pagesize=A4)
+page_w, page_h = A4
+margin = 1.5*cm
 page_num = 0
+
 
 def next_page():
     global page_num
     c.showPage()
     page_num += 1
 
-# ========== PORTADA ==========
-draw_gradient_bg(c, page_w, page_h)
 
-# Marco dorado decorativo
-frame_margin = 1.5*cm
+def draw_page_bg():
+    """Fondo negro con sutil degradado dorado en esquina."""
+    c.setFillColor(BLACK)
+    c.rect(0, 0, page_w, page_h, fill=1, stroke=0)
+    for i in range(30):
+        alpha = 0.012 - (i * 0.00035)
+        if alpha > 0:
+            c.setFillColor(Color(197/255, 160/255, 89/255, alpha=alpha))
+            c.circle(page_w, page_h, 12*cm - i*0.35*cm, fill=1, stroke=0)
+
+
+def draw_header(title_text):
+    h = 1.3*cm
+    c.setFillColor(DARK)
+    c.rect(0, page_h - h, page_w, h, fill=1, stroke=0)
+    c.setStrokeColor(GOLD)
+    c.setLineWidth(1.2)
+    c.line(margin, page_h - h, page_w - margin, page_h - h)
+    c.setFillColor(GOLD_LIGHT)
+    c.setFont("Helvetica-Bold", 10)
+    c.drawCentredString(page_w/2, page_h - h + 0.35*cm, title_text)
+    c.setFillColor(GOLD)
+    c.setFont("Helvetica", 7)
+    c.drawRightString(page_w - margin, page_h - h + 0.35*cm, "ADIS DISEÑO & REMODELACIÓN")
+    return h
+
+
+def draw_footer(page_n, total_n):
+    h = 0.7*cm
+    c.setFillColor(DARK)
+    c.rect(0, 0, page_w, h, fill=1, stroke=0)
+    c.setStrokeColor(GOLD)
+    c.setLineWidth(0.5)
+    c.line(margin, h, page_w - margin, h)
+    c.setFillColor(GOLD)
+    c.setFont("Helvetica", 7)
+    c.drawString(margin, 0.25*cm, "+52 631-192-8993  |  +52 631-120-4943  |  adis.remodelacion@gmail.com")
+    c.drawRightString(page_w - margin, 0.25*cm, f"Página {page_n} de {total_n}")
+
+
+# ========== PORTADA ==========
+draw_page_bg()
+
+# Marco decorativo
+fm = 2*cm
 c.setStrokeColor(GOLD)
 c.setLineWidth(2)
-c.roundRect(frame_margin, frame_margin, page_w - 2*frame_margin, page_h - 2*frame_margin, 20, fill=0, stroke=1)
+c.roundRect(fm, fm, page_w - 2*fm, page_h - 2*fm, 16, fill=0, stroke=1)
 c.setLineWidth(0.5)
-c.roundRect(frame_margin + 0.3*cm, frame_margin + 0.3*cm, page_w - 2*frame_margin - 0.6*cm, page_h - 2*frame_margin - 0.6*cm, 18, fill=0, stroke=1)
+c.roundRect(fm + 0.4*cm, fm + 0.4*cm, page_w - 2*fm - 0.8*cm, page_h - 2*fm - 0.8*cm, 14, fill=0, stroke=1)
 
+# Logo
 if os.path.exists(LOGO_PATH):
-    logo_w, logo_h = get_image_size(LOGO_PATH, 10*cm, 10*cm)
-    c.drawImage(str(LOGO_PATH), (page_w - logo_w)/2, page_h/2 - logo_h/2 + 2.5*cm, width=logo_w, height=logo_h, mask='auto')
+    logo_max = 7*cm
+    iw, ih = get_image_size(LOGO_PATH, logo_max, logo_max)
+    logo_x = (page_w - iw) / 2
+    logo_y = page_h / 2 - ih/2 + 2*cm
+    c.drawImage(str(LOGO_PATH), logo_x, logo_y, width=iw, height=ih, mask='auto')
 
+# Títulos
 c.setFillColor(GOLD)
-c.setFont("Helvetica-Bold", 38)
-c.drawCentredString(page_w/2, page_h/2 - 3*cm, "CATÁLOGO DE PRODUCTOS")
+c.setFont("Helvetica-Bold", 32)
+c.drawCentredString(page_w/2, page_h/2 - 2.5*cm, "CATÁLOGO DE PRODUCTOS")
 
 c.setFillColor(GOLD_LIGHT)
-c.setFont("Helvetica", 16)
-c.drawCentredString(page_w/2, page_h/2 - 4*cm, "ADI'S DISEÑO & REMODELACIÓN")
+c.setFont("Helvetica", 14)
+c.drawCentredString(page_w/2, page_h/2 - 3.5*cm, "ADI'S DISEÑO & REMODELACIÓN")
 
 c.setFillColor(LIGHT)
-c.setFont("Helvetica", 12)
-c.drawCentredString(page_w/2, page_h/2 - 4.7*cm, "Creando espacios, reinventando hogares")
+c.setFont("Helvetica", 11)
+c.drawCentredString(page_w/2, page_h/2 - 4.2*cm, "Creando espacios, reinventando hogares")
 
+# Info contacto
 c.setFillColor(GOLD)
-c.setFont("Helvetica", 10)
-c.drawCentredString(page_w/2, 2.5*cm, "www.adis-remodelacion.com  |  +52 631-192-8993  |  adis.remodelacion@gmail.com")
+c.setFont("Helvetica", 9)
+c.drawCentredString(page_w/2, 3.5*cm, "WhatsApp: +52 631-192-8993")
+c.drawCentredString(page_w/2, 3.0*cm, "Showroom: +52 631-120-4943")
+c.drawCentredString(page_w/2, 2.5*cm, "adis.remodelacion@gmail.com")
+c.drawCentredString(page_w/2, 2.0*cm, "Nogales, Sonora  ·  Rio Rico, AZ")
 
 next_page()
 
@@ -319,100 +299,99 @@ print("Escaneando CATALOGO FINAL...")
 categories = scan_catalog()
 print(f"Encontradas {len(categories)} categorías")
 
-# Contar totales
 for cat in categories:
     total = len(cat['direct_products'])
     for sub in cat['subcategories']:
         total += len(sub['products'])
     cat['total_products'] = total
 
-# Calcular total de páginas aproximadas
+# Calcular total de páginas
 total_pages = 2  # portada + índice
 for cat in categories:
     for sub in cat['subcategories']:
         if sub['products']:
-            total_pages += 2  # página de sección + ficha
+            total_pages += 1  # página intro
             total_pages += (len(sub['products']) + PRODUCTS_PER_PAGE - 1) // PRODUCTS_PER_PAGE
     if cat['direct_products']:
-        total_pages += 2
+        total_pages += 1
         total_pages += (len(cat['direct_products']) + PRODUCTS_PER_PAGE - 1) // PRODUCTS_PER_PAGE
 
 # ========== ÍNDICE ==========
-draw_gradient_bg(c, page_w, page_h)
+draw_page_bg()
 page_num = 2
 
 c.bookmarkPage('indice')
 c.addOutlineEntry('ÍNDICE', 'indice', level=0)
 
 c.setFillColor(GOLD)
-c.setFont("Helvetica-Bold", 30)
-c.drawCentredString(page_w/2, page_h - 2.5*cm, "ÍNDICE DE CATEGORÍAS")
-
+c.setFont("Helvetica-Bold", 26)
+c.drawCentredString(page_w/2, page_h - 2.8*cm, "ÍNDICE DE CATEGORÍAS")
 c.setStrokeColor(GOLD)
 c.setLineWidth(1.5)
-c.line(page_w/2 - 5*cm, page_h - 3.2*cm, page_w/2 + 5*cm, page_h - 3.2*cm)
+c.line(page_w/2 - 4*cm, page_h - 3.3*cm, page_w/2 + 4*cm, page_h - 3.3*cm)
 
-# Tarjetas de categoría en índice
-card_w = 7.5*cm
-card_h = 3.2*cm
-gap_x = 1*cm
-gap_y = 0.9*cm
-cols_idx = 3
-start_y = page_h - 4.5*cm
+# Tarjetas de categoría
+card_w = 7.8*cm
+card_h = 2.6*cm
+gap_x = 0.8*cm
+gap_y = 0.7*cm
+cols_idx = 2
+start_y = page_h - 4.2*cm
 
 for idx, cat in enumerate(categories):
     col = idx % cols_idx
     row = idx // cols_idx
-    x = margin + 0.5*cm + col * (card_w + gap_x)
+    x = margin + col * (card_w + gap_x)
     y = start_y - row * (card_h + gap_y)
     
-    # Fondo tarjeta
-    draw_rounded_rect(c, x, y, card_w, card_h, 12, DARK, stroke_color=GOLD)
+    c.setFillColor(DARK)
+    c.roundRect(x, y, card_w, card_h, 10, fill=1, stroke=0)
+    c.setStrokeColor(GOLD)
+    c.setLineWidth(1)
+    c.roundRect(x, y, card_w, card_h, 10, fill=0, stroke=1)
     
-    # Imagen miniatura de primera subcategoría o producto directo
+    # Imagen mini
     img_drawn = False
     if cat['subcategories']:
         for sub in cat['subcategories']:
             if sub['products']:
                 img_path = sub['path'] / sub['products'][0]
                 if os.path.exists(img_path):
-                    iw, ih = get_image_size(img_path, 2.2*cm, 2.2*cm)
-                    c.drawImage(str(img_path), x + 0.4*cm, y + card_h - 2.6*cm, width=iw, height=ih, mask='auto')
+                    iw, ih = get_image_size(img_path, 1.8*cm, 1.8*cm)
+                    c.drawImage(str(img_path), x + 0.3*cm, y + card_h - 2.2*cm, width=iw, height=ih, mask='auto')
                     img_drawn = True
                     break
     if not img_drawn and cat['direct_products']:
         img_path = cat['path'] / cat['direct_products'][0]
         if os.path.exists(img_path):
-            iw, ih = get_image_size(img_path, 2.2*cm, 2.2*cm)
-            c.drawImage(str(img_path), x + 0.4*cm, y + card_h - 2.6*cm, width=iw, height=ih, mask='auto')
+            iw, ih = get_image_size(img_path, 1.8*cm, 1.8*cm)
+            c.drawImage(str(img_path), x + 0.3*cm, y + card_h - 2.2*cm, width=iw, height=ih, mask='auto')
             img_drawn = True
     
-    # Texto
-    text_x = x + 2.8*cm if img_drawn else x + 0.5*cm
+    tx = x + 2.3*cm if img_drawn else x + 0.4*cm
     c.setFillColor(GOLD_LIGHT)
     c.setFont("Helvetica-Bold", 11)
-    c.drawString(text_x, y + card_h - 0.9*cm, cat['name'])
+    c.drawString(tx, y + card_h - 0.8*cm, cat['name'])
     c.setFillColor(GOLD)
     c.setFont("Helvetica", 9)
-    c.drawString(text_x, y + card_h - 1.5*cm, f"{cat['total_products']} productos")
+    c.drawString(tx, y + card_h - 1.35*cm, f"{cat['total_products']} productos")
     c.setFillColor(LIGHT)
-    c.setFont("Helvetica", 8)
-    subs_text = ", ".join([s['name'] for s in cat['subcategories'][:3]])
-    if len(cat['subcategories']) > 3:
-        subs_text += "..."
-    if subs_text:
-        c.drawString(text_x, y + card_h - 2.1*cm, subs_text[:35])
+    c.setFont("Helvetica", 7.5)
+    subs = ", ".join([s['name'] for s in cat['subcategories'][:2]])
+    if len(cat['subcategories']) > 2:
+        subs += "..."
+    if subs:
+        c.drawString(tx, y + card_h - 1.85*cm, subs[:40])
     
-    # Link
     dest = f"cat_{idx}"
     c.linkAbsolute("", dest, (x, y, x+card_w, y+card_h))
 
-draw_footer(c, page_w, margin, page_num, total_pages)
+draw_footer(page_num, total_pages)
 next_page()
 
 # ========== PÁGINAS DE CATEGORÍAS ==========
-content_top = page_h - 1.6*cm  # debajo del header
-content_bottom = 1.0*cm  # encima del footer
+content_top = page_h - 1.6*cm
+content_bottom = 1.0*cm
 content_h = content_top - content_bottom
 
 cell_w = (page_w - 2*margin) / COLS
@@ -425,20 +404,14 @@ for cat_idx, cat in enumerate(categories):
     for sub in cat['subcategories']:
         if sub['products']:
             all_sections.append({
-                'type': 'sub',
-                'name': sub['name'],
-                'products': sub['products'],
-                'path': sub['path'],
-                'ficha': sub['ficha']
+                'type': 'sub', 'name': sub['name'],
+                'products': sub['products'], 'path': sub['path']
             })
     
     if cat['direct_products']:
         all_sections.append({
-            'type': 'direct',
-            'name': cat['name'],
-            'products': cat['direct_products'],
-            'path': cat['path'],
-            'ficha': cat['ficha']
+            'type': 'direct', 'name': cat['name'],
+            'products': cat['direct_products'], 'path': cat['path']
         })
     
     if not all_sections:
@@ -448,123 +421,89 @@ for cat_idx, cat in enumerate(categories):
         section_products = section['products']
         section_name = section['name']
         section_path = section['path']
-        section_ficha = section.get('ficha')
         
-        # ========== PÁGINA DE SECCIÓN (INTRO) ==========
-        draw_gradient_bg(c, page_w, page_h)
-        header_h = draw_header(c, page_w, page_h, f"{cat['name']}  —  {section_name}")
+        # ========== PÁGINA INTRO ==========
+        draw_page_bg()
+        draw_header(f"{cat['name']}  —  {section_name}")
         
         c.bookmarkPage(dest)
         c.addOutlineEntry(cat['name'], dest, level=0)
         
-        # Título grande
         c.setFillColor(GOLD)
-        c.setFont("Helvetica-Bold", 28)
-        c.drawCentredString(page_w/2, page_h - 4.5*cm, section_name.upper())
-        
+        c.setFont("Helvetica-Bold", 22)
+        c.drawCentredString(page_w/2, page_h - 3.2*cm, section_name.upper())
         c.setStrokeColor(GOLD)
         c.setLineWidth(1)
-        c.line(page_w/2 - 4*cm, page_h - 5*cm, page_w/2 + 4*cm, page_h - 5*cm)
+        c.line(page_w/2 - 3*cm, page_h - 3.6*cm, page_w/2 + 3*cm, page_h - 3.6*cm)
         
-        # Descripción / Datos técnicos como tabla
+        # Tabla de especificaciones
         specs = get_specs_text(section_name)
         if specs:
-            table_y = page_h - 6*cm
-            row_h = 0.7*cm
-            table_w = 12*cm
+            table_y = page_h - 4.3*cm
+            row_h = 0.65*cm
+            table_w = 11*cm
             table_x = (page_w - table_w) / 2
             
             c.setFillColor(GOLD_LIGHT)
-            c.setFont("Helvetica-Bold", 12)
-            c.drawCentredString(page_w/2, table_y + 0.5*cm, "ESPECIFICACIONES TÉCNICAS")
+            c.setFont("Helvetica-Bold", 11)
+            c.drawCentredString(page_w/2, table_y + 0.4*cm, "ESPECIFICACIONES TÉCNICAS")
             
             for i, (label, value) in enumerate(specs.items()):
-                y = table_y - i * row_h
-                # Fondo fila
+                y = table_y - 0.6*cm - i * row_h
                 bg = GRAY if i % 2 == 0 else DARK
                 c.setFillColor(bg)
-                c.rect(table_x, y - row_h + 0.1*cm, table_w, row_h, fill=1, stroke=0)
-                # Borde
+                c.rect(table_x, y, table_w, row_h, fill=1, stroke=0)
                 c.setStrokeColor(GOLD)
                 c.setLineWidth(0.3)
-                c.rect(table_x, y - row_h + 0.1*cm, table_w, row_h, fill=0, stroke=1)
-                # Label
+                c.rect(table_x, y, table_w, row_h, fill=0, stroke=1)
                 c.setFillColor(GOLD)
-                c.setFont("Helvetica-Bold", 9)
-                c.drawString(table_x + 0.3*cm, y - row_h + 0.35*cm, label)
-                # Value
+                c.setFont("Helvetica-Bold", 8.5)
+                c.drawString(table_x + 0.3*cm, y + 0.22*cm, label)
                 c.setFillColor(LIGHT)
-                c.setFont("Helvetica", 9)
-                c.drawString(table_x + 4*cm, y - row_h + 0.35*cm, value)
+                c.setFont("Helvetica", 8.5)
+                # Truncar valor si es muy largo
+                val = value[:55]
+                c.drawString(table_x + 3.8*cm, y + 0.22*cm, val)
         else:
             c.setFillColor(LIGHT)
-            c.setFont("Helvetica", 11)
-            c.drawCentredString(page_w/2, page_h - 6*cm, "Consulte ficha técnica para especificaciones detalladas.")
+            c.setFont("Helvetica", 10)
+            c.drawCentredString(page_w/2, page_h - 5*cm, "Consulte ficha técnica para especificaciones detalladas.")
         
-        # Imagen representativa (primera del producto)
+        # Imagen representativa
         if section_products:
             img_path = section_path / section_products[0]
             if os.path.exists(img_path):
-                img_max_w = 8*cm
-                img_max_h = 6*cm
+                img_max_w = 6*cm
+                img_max_h = 5*cm
                 iw, ih = get_image_size(img_path, img_max_w, img_max_h)
-                img_x = page_w - margin - iw - 1*cm
-                img_y = margin + 2*cm
-                # Marco dorado
+                img_x = (page_w - iw) / 2
+                img_y = margin + 1.5*cm
                 c.setStrokeColor(GOLD)
                 c.setLineWidth(1.5)
-                c.roundRect(img_x - 0.2*cm, img_y - 0.2*cm, iw + 0.4*cm, ih + 0.4*cm, 10, fill=0, stroke=1)
+                c.roundRect(img_x - 0.2*cm, img_y - 0.2*cm, iw + 0.4*cm, ih + 0.4*cm, 8, fill=0, stroke=1)
                 c.drawImage(str(img_path), img_x, img_y, width=iw, height=ih, mask='auto')
         
-        # Botón Volver al Índice
-        btn_w = 3.5*cm
-        btn_h = 0.8*cm
+        # Botón índice
+        btn_w = 3.2*cm
+        btn_h = 0.7*cm
         btn_x = margin
-        btn_y = margin
-        draw_rounded_rect(c, btn_x, btn_y, btn_w, btn_h, 6, GOLD)
+        btn_y = margin * 0.4
+        c.setFillColor(GOLD)
+        c.roundRect(btn_x, btn_y, btn_w, btn_h, 5, fill=1, stroke=0)
         c.setFillColor(BLACK)
-        c.setFont("Helvetica-Bold", 10)
-        c.drawCentredString(btn_x + btn_w/2, btn_y + 0.25*cm, "← ÍNDICE")
+        c.setFont("Helvetica-Bold", 9)
+        c.drawCentredString(btn_x + btn_w/2, btn_y + 0.22*cm, "← ÍNDICE")
         c.linkAbsolute("", "indice", (btn_x, btn_y, btn_x+btn_w, btn_y+btn_h))
         
-        draw_footer(c, page_w, margin, page_num, total_pages)
+        draw_footer(page_num, total_pages)
         next_page()
-        
-        # ========== PÁGINA DE FICHA TÉCNICA (si existe) ==========
-        if section_ficha:
-            draw_gradient_bg(c, page_w, page_h)
-            draw_header(c, page_w, page_h, f"{cat['name']}  —  Ficha Técnica")
-            
-            c.setFillColor(GOLD)
-            c.setFont("Helvetica-Bold", 24)
-            c.drawCentredString(page_w/2, page_h - 3.5*cm, "FICHA TÉCNICA")
-            c.setFillColor(GOLD_LIGHT)
-            c.setFont("Helvetica", 12)
-            c.drawCentredString(page_w/2, page_h - 4.2*cm, section_name)
-            
-            ficha_path = section_path / section_ficha
-            if os.path.exists(ficha_path):
-                # Mostrar ficha técnica centrada y grande
-                max_w = page_w - 4*cm
-                max_h = page_h - 6*cm
-                iw, ih = get_image_size(ficha_path, max_w, max_h)
-                img_x = (page_w - iw) / 2
-                img_y = (page_h - ih) / 2 - 0.5*cm
-                # Marco
-                c.setStrokeColor(GOLD)
-                c.setLineWidth(2)
-                c.roundRect(img_x - 0.3*cm, img_y - 0.3*cm, iw + 0.6*cm, ih + 0.6*cm, 12, fill=0, stroke=1)
-                c.drawImage(str(ficha_path), img_x, img_y, width=iw, height=ih, mask='auto')
-            
-            draw_footer(c, page_w, margin, page_num, total_pages)
-            next_page()
         
         # ========== PÁGINAS DE PRODUCTOS ==========
         num_pages_section = (len(section_products) + PRODUCTS_PER_PAGE - 1) // PRODUCTS_PER_PAGE
         
         for page_idx in range(num_pages_section):
-            draw_gradient_bg(c, page_w, page_h)
-            draw_header(c, page_w, page_h, f"{cat['name']}  —  {section_name}")
+            draw_page_bg()
+            draw_header(f"{cat['name']}  —  {section_name}")
             
             start_idx = page_idx * PRODUCTS_PER_PAGE
             end_idx = min(start_idx + PRODUCTS_PER_PAGE, len(section_products))
@@ -576,42 +515,47 @@ for cat_idx, cat in enumerate(categories):
                 x = margin + col * cell_w
                 y = content_top - (row + 1) * cell_h
                 
-                pad = 0.25*cm
+                pad = 0.2*cm
                 cw = cell_w - pad*2
                 ch = cell_h - pad*2
                 
-                # Fondo celda con borde dorado
-                draw_rounded_rect(c, x + pad, y + pad, cw, ch, 10, DARK, stroke_color=Color(197/255, 160/255, 89/255, alpha=0.4))
+                # Fondo celda
+                c.setFillColor(DARK)
+                c.roundRect(x + pad, y + pad, cw, ch, 8, fill=1, stroke=0)
+                c.setStrokeColor(Color(197/255, 160/255, 89/255, alpha=0.35))
+                c.setLineWidth(1)
+                c.roundRect(x + pad, y + pad, cw, ch, 8, fill=0, stroke=1)
                 
                 # Imagen
                 img_path = section_path / prod_file
-                img_max_w = cw - 0.6*cm
-                img_max_h = ch - 1.2*cm
+                img_max_w = cw - 0.5*cm
+                img_max_h = ch - 1.1*cm
                 
                 if os.path.exists(img_path):
                     iw, ih = get_image_size(img_path, img_max_w, img_max_h)
                     img_x = x + (cell_w - iw) / 2
-                    img_y = y + pad + 0.7*cm
+                    img_y = y + pad + 0.55*cm
                     c.drawImage(str(img_path), img_x, img_y, width=iw, height=ih, mask='auto')
                 
-                # Nombre del producto
+                # Nombre producto
                 prod_name = os.path.splitext(prod_file)[0]
                 c.setFillColor(GOLD_LIGHT)
-                c.setFont("Helvetica-Bold", 10)
-                c.drawCentredString(x + cell_w/2, y + pad + 0.2*cm, prod_name)
+                c.setFont("Helvetica-Bold", 9)
+                c.drawCentredString(x + cell_w/2, y + pad + 0.18*cm, prod_name)
             
-            # Botón Volver al Índice
-            btn_w = 3.5*cm
-            btn_h = 0.8*cm
+            # Botón índice
+            btn_w = 3.2*cm
+            btn_h = 0.7*cm
             btn_x = margin
             btn_y = 0.3*cm
-            draw_rounded_rect(c, btn_x, btn_y, btn_w, btn_h, 6, GOLD)
+            c.setFillColor(GOLD)
+            c.roundRect(btn_x, btn_y, btn_w, btn_h, 5, fill=1, stroke=0)
             c.setFillColor(BLACK)
-            c.setFont("Helvetica-Bold", 10)
-            c.drawCentredString(btn_x + btn_w/2, btn_y + 0.25*cm, "← ÍNDICE")
+            c.setFont("Helvetica-Bold", 9)
+            c.drawCentredString(btn_x + btn_w/2, btn_y + 0.22*cm, "← ÍNDICE")
             c.linkAbsolute("", "indice", (btn_x, btn_y, btn_x+btn_w, btn_y+btn_h))
             
-            draw_footer(c, page_w, margin, page_num, total_pages)
+            draw_footer(page_num, total_pages)
             next_page()
 
 c.save()
