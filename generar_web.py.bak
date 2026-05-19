@@ -19,46 +19,8 @@ CONTACTO = {
     'email': 'adis.remodelacion@gmail.com',
     'tel_mx': '+52 631-192-8993',
     'tel_usa': '+1 (520) 839-2877',
-    'tel_showroom': '+52 631-120-4943',
     'ubicacion': 'Nogales, Sonora · Rio Rico, AZ',
     'facebook': 'https://www.facebook.com/p/Adis-Dise%C3%B1o-Remodelaci%C3%B3n-61579849591594/'
-}
-
-# ========== CHATBOT KNOWLEDGE BASE ==========
-CHATBOT_KB = {
-    'horarios': {
-        'lunes': 'Cerrado 🚪',
-        'martes': '10:00 a 19:00',
-        'miercoles': '9:00 a 19:00',
-        'jueves': '9:00 a 19:00',
-        'viernes': '9:00 a 19:00',
-        'sabado': '9:00 a 19:00',
-        'domingo': '9:00 a 15:00',
-        'whatsapp': 'Atendemos WhatsApp a cualquier hora, excepto madrugada (aprox. 00:00 a 07:00)',
-    },
-    'envios': {
-        'gratis': 'Nogales Sonora, Nogales AZ, Tucson',
-        'nacional': 'Enviamos a todo México. El costo de envío corre por cuenta del cliente.',
-        'tiempo_grandes': '2 a 3 días hábiles para pedidos grandes',
-    },
-    'pagos': {
-        'metodos': 'Tarjeta de crédito, tarjeta de débito, transferencia bancaria y efectivo',
-        'anticipo': 'En pedidos mayores a $10,000 se requiere 50% de anticipo',
-    },
-    'instalacion': {
-        'disponible': True,
-        'costo': 'Los precios del catálogo son solo por el material. La instalación se cotiza aparte.',
-        'proceso': 'Un representante visita tu obra para medir y cotizar la instalación.',
-    },
-    'proyectos': {
-        'tipos': 'Casas, oficinas, negocios, locales comerciales y cualquier espacio que requiera remodelación',
-    },
-    'respuestas': {
-        'saludo': '¡Hola! 👋 Soy el asistente virtual de <strong>ADIS Diseño & Remodelación</strong>. Puedo ayudarte con información sobre nuestros productos, horarios, cotizaciones y más. ¿Qué necesitas?',
-        'despedida': '¡Gracias por contactarnos! 😊 Si tienes más dudas, aquí estaré. También puedes escribirnos por WhatsApp al {tel_mx} o visitarnos en {ubicacion}. ¡Que tengas un excelente día!',
-        'gracias': '¡Con gusto! 🙌 Estamos para servirte. ¿Hay algo más en lo que pueda ayudarte?',
-        'no_entendi': 'Disculpa, no entendí muy bien. 😅 Puedo ayudarte con: productos, precios, cotizaciones, horarios, ubicación, envíos, instalación o garantías. ¿Cuál te interesa?',
-    }
 }
 
 # Extensiones de imagen válidas
@@ -118,6 +80,17 @@ def sync_images(categories):
                 shutil.copy2(src, dst)
                 total += 1
             
+            # Copiar ficha tecnica de subcategoria si existe
+            if sub['ficha']:
+                src = sub['path'] / sub['ficha']
+                dst = sub_img_dir / sub['ficha']
+                shutil.copy2(src, dst)
+        
+        # Copiar ficha tecnica de categoria si existe
+        if cat['ficha']:
+            src = cat['path'] / cat['ficha']
+            dst = cat_img_dir / cat['ficha']
+            shutil.copy2(src, dst)
     
     print(f"Imagenes sincronizadas: {total} en {img_dir}")
 
@@ -1337,109 +1310,8 @@ footer {
   transform: translateX(0);
 }
 
-/* MEGA MENU */
-.mega-trigger { position: relative; }
-.mega-menu {
-  position: absolute; top: calc(100% + 10px); left: 50%; transform: translateX(-50%) translateY(10px);
-  width: 720px; max-width: 90vw; background: rgba(26,26,26,0.98); backdrop-filter: blur(20px);
-  border: 1px solid rgba(197,160,89,0.25); border-radius: 16px; padding: 1.5rem;
-  box-shadow: 0 30px 80px rgba(0,0,0,0.8); opacity: 0; visibility: hidden; transition: all 0.3s ease;
-  z-index: 1002; display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.8rem;
-}
-.mega-trigger:hover .mega-menu { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
-.mega-item {
-  display: flex; align-items: center; gap: 0.8rem; padding: 0.7rem; border-radius: 10px;
-  text-decoration: none; color: var(--light); transition: all 0.3s; border: 1px solid transparent;
-}
-.mega-item:hover { background: rgba(197,160,89,0.1); border-color: rgba(197,160,89,0.3); transform: translateY(-2px); }
-.mega-item img { width: 45px; height: 45px; object-fit: cover; border-radius: 8px; border: 1px solid rgba(197,160,89,0.2); }
-.mega-item span { font-size: 0.8rem; font-weight: 600; letter-spacing: 1px; }
-
-/* SEARCH HERO */
-.search-hero { max-width: 850px; margin: 3rem auto 0; position: relative; z-index: 2; text-align: center; }
-.search-hero-title { font-family: 'Playfair Display', serif; font-size: 1.4rem; color: var(--gold); margin-bottom: 1rem; letter-spacing: 1px; }
-.search-hero-input {
-  width: 100%; padding: 1.3rem 2rem 1.3rem 4rem; background: rgba(15,15,15,0.75);
-  border: 3px solid rgba(197,160,89,0.5); border-radius: 60px; color: var(--white);
-  font-family: 'Montserrat', sans-serif; font-size: 1.15rem; backdrop-filter: blur(12px);
-  transition: all 0.3s; box-shadow: 0 8px 40px rgba(0,0,0,0.4);
-}
-.search-hero-input:focus { outline: none; border-color: var(--gold); box-shadow: 0 0 50px rgba(197,160,89,0.35); background: rgba(15,15,15,0.95); transform: scale(1.02); }
-.search-hero-input::placeholder { color: rgba(245,245,245,0.5); font-weight: 500; }
-.search-hero-icon { position: absolute; left: 1.5rem; top: 50%; transform: translateY(-50%); font-size: 1.5rem; color: var(--gold); pointer-events: none; }
-.search-hero-hint { text-align: center; margin-top: 1rem; font-size: 0.8rem; color: rgba(245,245,245,0.5); letter-spacing: 1px; }
-
-/* SPOTLIGHT OVERLAY */
-.spotlight-overlay {
-  position: fixed; inset: 0; z-index: 10000; background: rgba(0,0,0,0.92); backdrop-filter: blur(10px);
-  display: none; align-items: flex-start; justify-content: center; padding-top: 15vh;
-}
-.spotlight-overlay.active { display: flex; animation: spotIn 0.2s ease; }
-@keyframes spotIn { from { opacity: 0; } to { opacity: 1; } }
-.spotlight-box { width: 100%; max-width: 700px; margin: 0 1rem; }
-.spotlight-input-wrap { position: relative; margin-bottom: 1rem; }
-.spotlight-input {
-  width: 100%; padding: 1.2rem 1.5rem 1.2rem 3.5rem; background: rgba(42,42,42,0.9);
-  border: 2px solid var(--gold); border-radius: 16px; color: var(--white);
-  font-family: 'Montserrat', sans-serif; font-size: 1.2rem; backdrop-filter: blur(10px);
-  box-shadow: 0 10px 60px rgba(197,160,89,0.2);
-}
-.spotlight-input:focus { outline: none; }
-.spotlight-icon { position: absolute; left: 1.2rem; top: 50%; transform: translateY(-50%); font-size: 1.4rem; color: var(--gold); }
-.spotlight-close {
-  position: absolute; top: 2rem; right: 2rem; background: none; border: none; color: var(--gold);
-  font-size: 2rem; cursor: pointer; transition: transform 0.3s;
-}
-.spotlight-close:hover { transform: rotate(90deg); }
-.spotlight-results { max-height: 50vh; overflow-y: auto; background: rgba(26,26,26,0.95); border: 1px solid rgba(197,160,89,0.2); border-radius: 12px; padding: 0.5rem; }
-.spotlight-item { display: flex; align-items: center; gap: 1rem; padding: 0.9rem 1rem; text-decoration: none; border-bottom: 1px solid rgba(197,160,89,0.06); transition: all 0.2s; border-radius: 8px; }
-.spotlight-item:hover { background: rgba(197,160,89,0.12); }
-.spotlight-item img { width: 55px; height: 55px; object-fit: cover; border-radius: 10px; border: 1px solid rgba(197,160,89,0.2); }
-.spotlight-item-info { flex: 1; }
-.spotlight-item-name { color: var(--white); font-weight: 600; font-size: 0.95rem; display: block; }
-.spotlight-item-cat { color: rgba(245,245,245,0.5); font-size: 0.8rem; }
-
-/* BREADCRUMBS */
-.breadcrumbs {
-  display: flex; align-items: center; gap: 0.5rem; justify-content: center;
-  padding: 1rem 2rem; flex-wrap: wrap; font-size: 0.75rem; color: rgba(245,245,245,0.5); text-transform: uppercase; letter-spacing: 1px;
-}
-.breadcrumbs a { color: var(--gold); text-decoration: none; transition: opacity 0.3s; }
-.breadcrumbs a:hover { opacity: 0.7; }
-.breadcrumbs span { color: rgba(245,245,245,0.3); }
-
-/* CAT NAV (prev/next) */
-.cat-nav { display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto; padding: 0 2rem 3rem; gap: 1rem; }
-.cat-nav-btn { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.8rem 1.5rem; background: rgba(42,42,42,0.6); border: 1px solid rgba(197,160,89,0.2); color: var(--gold); text-decoration: none; font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; border-radius: 8px; transition: all 0.3s; }
-.cat-nav-btn:hover { background: var(--gold); color: var(--black); border-color: var(--gold); }
-.cat-nav-btn.next { margin-left: auto; }
-
-/* MOBILE BOTTOM NAV */
-.mobile-bottom-nav {
-  display: none; position: fixed; bottom: 0; left: 0; right: 0; z-index: 9997;
-  background: rgba(15,15,15,0.95); backdrop-filter: blur(12px);
-  border-top: 1px solid rgba(197,160,89,0.15); padding: 0.6rem 0;
-}
-.mobile-bottom-nav a {
-  flex: 1; display: flex; flex-direction: column; align-items: center; gap: 0.2rem;
-  color: rgba(245,245,245,0.5); text-decoration: none; font-size: 0.65rem; font-weight: 600; letter-spacing: 1px; transition: color 0.3s;
-}
-.mobile-bottom-nav a.active, .mobile-bottom-nav a:hover { color: var(--gold); }
-.mobile-bottom-nav a span:first-child { font-size: 1.2rem; }
-
-/* HEADER SEARCH MEJORADO */
-.search-box input { width: 220px; border-width: 2px; font-size: 0.85rem; padding: 0.55rem 2.5rem 0.55rem 1.1rem; }
-.search-box input:focus { width: 320px; border-color: var(--gold); box-shadow: 0 0 20px rgba(197,160,89,0.2); }
-
 /* MOBILE */
 @media (max-width: 768px) {
-  .mega-menu { display: none; }
-  .search-box input { width: 160px; }
-  .search-box input:focus { width: 220px; }
-  .search-dropdown { width: calc(100vw - 40px); right: auto; left: -20px; }
-  .mobile-bottom-nav { display: flex; }
-  .cat-nav { flex-direction: column; }
-  .spotlight-box { padding-top: 10vh; }
   .desktop-nav { display: none; }
   .menu-btn { display: block; }
   .hero-home h1 { font-size: 2.2rem; }
@@ -1525,24 +1397,10 @@ def generate_style():
 
 
 def generate_header(current_page='index'):
-    """Genera el header HTML con mega-menu y search mejorado."""
-    
-    MEGA_ITEMS = [
-        ('1-placas-pvc.html', 'img/1-placas-pvc/11-placas-pvc-tipo-madera/Adler.jpg', 'Placas PVC'),
-        ('2-lambrin-wpc.html', 'img/2-lambrin-wpc/21-lambrin-interior/AMANECHER.jpg', 'Lambrín WPC'),
-        ('3-revestimiento-flexible.html', 'img/3-revestimiento-flexible/CONCRETO Aparente.jpg', 'Revestimiento Flexible'),
-        ('4-plafon-pvc.html', 'img/4-plafon-pvc/41-plafon-pvc-laminado/SHERWOOD.jpg', 'Plafón PVC'),
-        ('5-paneles-tridimensionales.html', 'img/5-paneles-tridimensionales/51-blanco/Austin.jpg', 'Paneles 3D'),
-        ('6-vigas-pvc.html', 'img/6-vigas-pvc/61-interior/BAHIA 1.jpg', 'Vigas PVC'),
-        ('7-pisos.html', 'img/7-pisos/71-laminado/ACONCAGUA.jpg', 'Pisos'),
-        ('8-zacate.html', 'img/8-zacate/81-follaje-sintetico/AMAZONAS-A.jpg', 'Zacate'),
-        ('9-cladding.html', 'img/9-cladding/91-placa-tipo-roca/BLACK.jpg', 'Cladding'),
-    ]
-    mega_html = '\n'.join([f'        <a href="{u}" class="mega-item"><img src="{i}" alt="{t}" loading="lazy"><span>{t}</span></a>' for u, i, t in MEGA_ITEMS])
-    
-    nav_links = '<a href="index.html">Inicio</a>\n        <a href="index.html#categorias" class="mega-trigger">Catálogo\n          <div class="mega-menu">\n' + mega_html + '\n          </div>\n        </a>\n        <a href="proyectos.html">Proyectos</a>\n        <a href="contacto.html">Contacto</a>'
+    """Genera el header HTML."""
+    nav_links = '<a href="index.html">Inicio</a>\n        <a href="index.html#categorias">Catálogo</a>\n        <a href="proyectos.html">Proyectos</a>\n        <a href="contacto.html">Contacto</a>'
     if current_page != 'index':
-        nav_links = '<a href="index.html">← Inicio</a>\n        <a href="index.html#categorias" class="mega-trigger">Catálogo\n          <div class="mega-menu">\n' + mega_html + '\n          </div>\n        </a>\n        <a href="proyectos.html">Proyectos</a>\n        <a href="contacto.html">Contacto</a>'
+        nav_links = '<a href="index.html">← Inicio</a>\n        <a href="index.html#categorias">Catálogo</a>\n        <a href="proyectos.html">Proyectos</a>\n        <a href="contacto.html">Contacto</a>'
 
     return f'''  <header>
     <div class="header-inner">
@@ -1551,7 +1409,7 @@ def generate_header(current_page='index'):
         {nav_links}
         <div class="search-box">
           <input type="text" id="searchInput" placeholder="Buscar producto..." autocomplete="off" title="Presiona / para buscar">
-          <button onclick="openSpotlight()">🔍</button>
+          <button onclick="performSearch()">🔍</button>
           <div class="search-dropdown" id="searchDropdown"></div>
         </div>
       </nav>
@@ -1571,18 +1429,6 @@ def generate_header(current_page='index'):
       <div class="search-dropdown" id="searchDropdownMobile"></div>
     </div>
   </div>
-  
-  <!-- SPOTLIGHT OVERLAY -->
-  <div class="spotlight-overlay" id="spotlightOverlay" onclick="closeSpotlight(event)">
-    <button class="spotlight-close" onclick="closeSpotlight(event)">✕</button>
-    <div class="spotlight-box">
-      <div class="spotlight-input-wrap">
-        <span class="spotlight-icon">🔍</span>
-        <input type="text" class="spotlight-input" id="spotlightInput" placeholder="Buscar productos, categorías..." autocomplete="off">
-      </div>
-      <div class="spotlight-results" id="spotlightResults"></div>
-    </div>
-  </div>
 '''
 
 
@@ -1592,51 +1438,10 @@ def generate_footer():
     // Toggle mobile menu
     function toggleMenu() { document.getElementById('mobileMenu').classList.toggle('active'); }
     
-    // Chatbot Inteligente v2
+    // Chatbot
     (function() {
       const chatWindow = document.getElementById('chatbotWindow');
       const chatBody = document.getElementById('chatbotBody');
-      let allProducts = [];
-      let kb = {
-        horarios: {
-          lunes: 'Cerrado 🚪',
-          martes: '10:00 a 19:00',
-          miercoles: '9:00 a 19:00',
-          jueves: '9:00 a 19:00',
-          viernes: '9:00 a 19:00',
-          sabado: '9:00 a 19:00',
-          domingo: '9:00 a 15:00',
-          whatsapp: 'Atendemos WhatsApp casi 24/7, excepto madrugada (aprox. 00:00 - 07:00)'
-        },
-        contacto: {
-          whatsapp: '+52 631-192-8993',
-          tel_showroom: '+52 631-120-4943',
-          email: 'adis.remodelacion@gmail.com',
-          ubicacion: 'Nogales, Sonora y Rio Rico, AZ'
-        },
-        envios: {
-          gratis: 'Nogales Sonora, Nogales AZ y Tucson',
-          nacional: 'Enviamos a todo México. El costo corre por cuenta del cliente.',
-          tiempo_grandes: '2 a 3 días hábiles para pedidos grandes'
-        },
-        pagos: {
-          metodos: ['Tarjeta de crédito', 'Tarjeta de débito', 'Transferencia bancaria', 'Efectivo'],
-          anticipo: 'Pedidos mayores a $10,000 requieren 50% de anticipo'
-        },
-        instalacion: {
-          disponible: true,
-          costo: 'Los precios son solo por el material. La instalación se cotiza aparte.',
-          proceso: 'Un representante visita tu obra para medir y cotizar la instalación.'
-        },
-        proyectos: {
-          tipos: 'Casas, oficinas, negocios, locales comerciales y cualquier espacio que requiera remodelación'
-        }
-      };
-      
-      fetch('products.json')
-        .then(r => r.json())
-        .then(data => { allProducts = data; })
-        .catch(() => { allProducts = []; });
       
       window.toggleChat = function() {
         chatWindow.classList.toggle('active');
@@ -1653,174 +1458,62 @@ def generate_footer():
         chatBody.scrollTop = chatBody.scrollHeight;
       }
       
-      function removeInputs() {
-        const existing = chatBody.querySelector('.chat-input-wrap');
-        if (existing) existing.remove();
-      }
-      
-      function showQuickReplies(replies) {
+      function showOptions() {
         const existing = chatBody.querySelector('.chat-options');
         if (existing) existing.remove();
+        
         const opts = document.createElement('div');
         opts.className = 'chat-options';
-        opts.innerHTML = replies.map(r => `<button class="chat-option-btn" onclick="chatBotProcess('${r.replace(/'/g, "\'")}')">${r}</button>`).join('');
+        opts.innerHTML = `
+          <button class="chat-option-btn" onclick="chatOption('ubicacion')">📍 Ubicación</button>
+          <button class="chat-option-btn" onclick="chatOption('fichas')">📋 Fichas técnicas</button>
+          <button class="chat-option-btn" onclick="chatOption('venta')">📦 ¿Cómo se venden?</button>
+          <button class="chat-option-btn" onclick="chatOption('precios')">💰 Precios</button>
+          <button class="chat-option-btn" onclick="chatOption('whatsapp')">💬 Hablar con asesor</button>
+        `;
         chatBody.appendChild(opts);
         chatBody.scrollTop = chatBody.scrollHeight;
       }
       
-      function addInputField() {
-        removeInputs();
-        const wrap = document.createElement('div');
-        wrap.className = 'chat-input-wrap';
-        wrap.style.cssText = 'display:flex;gap:0.5rem;margin-top:0.5rem;padding-top:0.5rem;border-top:1px solid rgba(197,160,89,0.15);';
-        wrap.innerHTML = `<input type="text" id="chatTextInput" placeholder="Escribe tu pregunta..." autocomplete="off" style="flex:1;padding:0.6rem 1rem;background:rgba(255,255,255,0.06);border:1px solid rgba(197,160,89,0.25);border-radius:20px;color:var(--light);font-family:'Montserrat',sans-serif;font-size:0.82rem;" onkeydown="if(event.key==='Enter'){chatBotProcess(this.value);this.value='';}"><button onclick="chatBotProcess(document.getElementById('chatTextInput').value);document.getElementById('chatTextInput').value='';" style="background:var(--gold);border:none;border-radius:50%;width:34px;height:34px;cursor:pointer;color:var(--black);font-size:0.9rem;flex-shrink:0;">➤</button>`;
-        chatBody.appendChild(wrap);
-        chatBody.scrollTop = chatBody.scrollHeight;
-        setTimeout(() => { const inp = document.getElementById('chatTextInput'); if (inp) inp.focus(); }, 100);
-      }
-      
-      window.chatBotProcess = function(rawText) {
-        if (!rawText || !rawText.trim()) return;
-        const text = rawText.trim();
-        addMessage(text, true);
-        removeInputs();
+      window.chatOption = function(key) {
+        const existing = chatBody.querySelector('.chat-options');
+        if (existing) existing.remove();
         
-        const q = text.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
-        const response = findResponse(q, text);
+        const responses = {
+          ubicacion: `📍 <strong>Nogales, Sonora</strong> y atendemos también en <strong>Rio Rico, AZ</strong>.<br><br>Puedes ver nuestra ubicación exacta en la página de <a href="contacto.html" style="color:#C5A059">Contacto</a> o en <a href="https://maps.app.goo.gl/Q3raWUzhCj2rvhjm8" target="_blank" style="color:#C5A059">Google Maps →</a>`,
+          fichas: `📋 Cada producto tiene su ficha técnica disponible.<br><br>Ve al <a href="index.html#categorias" style="color:#C5A059">Catálogo</a>, selecciona la categoría y subcategoría que te interesa, y haz clic en <strong>"Ver Ficha Técnica"</strong>.`,
+          venta: `📦 Vendemos por pieza, caja o metro cuadrado según el producto.<br><br>Usa la <strong>calculadora de materiales</strong> en cada categoría para saber cuánto necesitas, o solicita una <strong>cotización</strong> directamente desde cualquier producto.`,
+          precios: `💰 Los precios varían según el producto y la cantidad.<br><br>¿Te gustaría que un asesor te prepare una cotización personalizada?<br><a href="https://wa.me/526311928993?text=Hola%20ADIS,%20quiero%20una%20cotización" target="_blank" class="chat-whatsapp-btn">📱 Solicitar cotización</a>`,
+          whatsapp: `💬 Te conecto con un asesor por WhatsApp...`
+        };
         
-        setTimeout(() => {
-          addMessage(response, false);
-          showQuickReplies(['Ver productos', 'Horarios', 'Cotización', 'Ubicación', 'Hablar con asesor']);
-          addInputField();
-        }, 500);
+        const labels = {
+          ubicacion: '📍 Ubicación',
+          fichas: '📋 Fichas técnicas',
+          venta: '📦 ¿Cómo se venden?',
+          precios: '💰 Precios',
+          whatsapp: '💬 Hablar con asesor'
+        };
+        
+        addMessage(labels[key], true);
+        
+        if (key === 'whatsapp') {
+          setTimeout(() => {
+            window.open('https://wa.me/526311928993?text=Hola%20ADIS,%20tengo%20una%20pregunta', '_blank');
+            addMessage('✅ Se abrió WhatsApp. Un asesor te atenderá pronto.', false);
+            setTimeout(showOptions, 1000);
+          }, 500);
+        } else {
+          setTimeout(() => {
+            addMessage(responses[key], false);
+            setTimeout(showOptions, 500);
+          }, 400);
+        }
       };
       
-      function findResponse(q, original) {
-        // SALUDO
-        if (/^(hola|buenas|buenos|hey|hi|hello|que tal|q tal)/.test(q)) {
-          return '¡Hola! 👋 Bienvenido a <strong>ADIS Diseño & Remodelación</strong>. Soy tu asistente virtual y puedo ayudarte con:<br><br>• Productos y catálogo 📦<br>• Precios y cotizaciones 💰<br>• Horarios de atención 🕐<br>• Ubicación y envíos 📍<br>• Información técnica 📋<br><br>¿Qué necesitas? Escribe tu pregunta o usa los botones de abajo.';
-        }
-        
-        // HORARIOS
-        if (q.includes('horario') || q.includes('hora') || q.includes('abierto') || q.includes('atencion') || q.includes('cierran') || q.includes('abren')) {
-          let r = '🕐 <strong>Horarios de atención (Showroom):</strong><br><br>';
-          r += '• <strong>Lunes:</strong> ' + kb.horarios.lunes + '<br>';
-          r += '• <strong>Martes:</strong> ' + kb.horarios.martes + '<br>';
-          r += '• <strong>Miércoles:</strong> ' + kb.horarios.miercoles + '<br>';
-          r += '• <strong>Jueves:</strong> ' + kb.horarios.jueves + '<br>';
-          r += '• <strong>Viernes:</strong> ' + kb.horarios.viernes + '<br>';
-          r += '• <strong>Sábado:</strong> ' + kb.horarios.sabado + '<br>';
-          r += '• <strong>Domingo:</strong> ' + kb.horarios.domingo + '<br><br>';
-          r += '💬 ' + kb.horarios.whatsapp;
-          return r;
-        }
-        if (q.includes('lunes')) return 'Los <strong>lunes</strong> estamos <strong>cerrados</strong> 🚪 en showroom, pero WhatsApp está disponible. Te atendemos de martes a domingo. ¿Te gustaría saber otro horario?';
-        if (q.includes('domingo')) return 'Los <strong>domingos</strong> abrimos de <strong>9:00 a 15:00</strong> ☀️. Es un buen día para venir a conocer nuestros productos sin prisa.';
-        if (q.includes('sabado')) return 'Los <strong>sábados</strong> atendemos de <strong>9:00 a 19:00</strong> 💪. Es nuestro día con más afluencia, te recomiendo venir temprano.';
-        
-        // CONTACTO / WHATSAPP / TELEFONO
-        if (q.includes('whatsapp') || q.includes('telefono') || q.includes('celular') || q.includes('numero') || q.includes('llamar') || q.includes('contacto') || q.includes('hablar')) {
-          return '📱 <strong>Contactos directos:</strong><br><br>• <strong>WhatsApp:</strong> ' + kb.contacto.whatsapp + '<br>• <strong>Showroom:</strong> ' + kb.contacto.tel_showroom + '<br>• <strong>Email:</strong> ' + kb.contacto.email + '<br><br><a href="https://wa.me/526311928993?text=Hola%20ADIS,%20tengo%20una%20pregunta" target="_blank" class="chat-whatsapp-btn">💬 Abrir WhatsApp</a>';
-        }
-        
-        // UBICACION
-        if (q.includes('ubicacion') || q.includes('donde') || q.includes('direccion') || q.includes('ubicados') || q.includes('local') || q.includes('tienda') || q.includes('showroom') || q.includes('nogales') || q.includes('rio rico')) {
-          return '📍 <strong>Nuestra tienda física está en Nogales, Sonora</strong><br><br>📌 Puedes ver la dirección exacta y el mapa en nuestra página de <a href="contacto.html" style="color:#C5A059">Contacto</a> o en <a href="https://maps.app.goo.gl/Q3raWUzhCj2rvhjm8" target="_blank" style="color:#C5A059">Google Maps →</a><br><br>🏠 ¡Tenemos showroom! Ven a ver y tocar los materiales antes de comprar. También atendemos en <strong>Rio Rico, AZ</strong>.';
-        }
-        
-        // PRECIOS / COTIZACION
-        if (q.includes('precio') || q.includes('cuesta') || q.includes('cuanto') || q.includes('valor') || q.includes('cotizacion') || q.includes('cotizar') || q.includes('presupuesto')) {
-          return '💰 <strong>Precios:</strong><br><br>Los precios del catálogo son <strong>solo por el material</strong> (por pieza, caja o metro cuadrado según categoría).<br><br>✅ La mejor forma de saber el precio exacto es solicitando una <strong>cotización personalizada</strong>. Es gratis y te respondemos el mismo día.<br><br>🔨 ¿Requieres instalación? Un representante visita tu obra para cotizarla aparte.<br><br><a href="https://wa.me/526311928993?text=Hola%20ADIS,%20quiero%20una%20cotización" target="_blank" class="chat-whatsapp-btn">📱 Solicitar cotización gratis</a>';
-        }
-        
-        // ENVIO / ENTREGA
-        if (q.includes('envio') || q.includes('entrega') || q.includes('mandan') || q.includes('envian') || q.includes('domicilio') || q.includes('llevan')) {
-          let r = '🚚 <strong>Envíos y entregas:</strong><br><br>';
-          r += '🎁 <strong>Entrega GRATIS</strong> en: ' + kb.envios.gratis + '<br><br>';
-          r += '📦 ' + kb.envios.nacional + '<br><br>';
-          r += '⏱️ ' + kb.envios.tiempo_grandes + '<br><br>';
-          r += 'Envíanos tu dirección por WhatsApp para cotizar el envío exacto.<br><br>';
-          r += '<a href="https://wa.me/526311928993?text=Hola%20ADIS,%20quiero%20cotizar%20un%20envío" target="_blank" class="chat-whatsapp-btn">📱 Cotizar envío</a>';
-          return r;
-        }
-        
-        // INSTALACION
-        if (q.includes('instalacion') || q.includes('instalan') || q.includes('colocan') || q.includes('ponen') || q.includes('colocacion')) {
-          let r = '🛠️ <strong>Servicio de instalación:</strong><br><br>';
-          r += kb.instalacion.costo + '<br><br>';
-          r += '👷 ' + kb.instalacion.proceso + '<br><br>';
-          r += '✅ También vendemos materiales sueltos si prefieres instalar por tu cuenta.<br><br>';
-          r += '<a href="https://wa.me/526311928993?text=Hola%20ADIS,%20quiero%20cotizar%20instalación" target="_blank" class="chat-whatsapp-btn">📱 Cotizar instalación</a>';
-          return r;
-        }
-        
-        // PAGO / FORMAS DE PAGO
-        if (q.includes('pago') || q.includes('pagos') || q.includes('tarjeta') || q.includes('credito') || q.includes('efectivo') || q.includes('transferencia') || q.includes('meses') || q.includes('debito')) {
-          let r = '💳 <strong>Formas de pago:</strong><br><br>';
-          kb.pagos.metodos.forEach(m => { r += '• ' + m + '<br>'; });
-          r += '<br>⚠️ <strong>' + kb.pagos.anticipo + '</strong><br><br>';
-          r += 'Escríbenos para más detalles.<br><br>';
-          r += '<a href="https://wa.me/526311928993?text=Hola%20ADIS,%20pregunto%20por%20formas%20de%20pago" target="_blank" class="chat-whatsapp-btn">📱 Preguntar por pagos</a>';
-          return r;
-        }
-        
-        // GARANTIA
-        if (q.includes('garantia') || q.includes('garantiza')) {
-          return '✅ <strong>Garantía:</strong><br><br>La mayoría de nuestros productos cuentan con garantía del fabricante:<br><br>• Placas PVC: 15 años<br>• Lambrín WPC: 15 años<br>• Pisos SPC: 12 años (residencial)<br>• Zacate sintético: 5 años<br><br>La garantía cubre defectos de fábrica. Conserva tu ticket de compra para hacerla válida.';
-        }
-        
-        // PRODUCTOS / CATALOGO / MATERIALES / PROYECTOS
-        if (q.includes('producto') || q.includes('catalogo') || q.includes('materiales') || q.includes('que venden') || q.includes('tienen') || q.includes('ofrecen')) {
-          return '📦 <strong>Nuestros productos:</strong><br><br>• Placas PVC (tipo madera, texturizadas, espejo)<br>• Lambrín WPC (interior y exterior)<br>• Paneles 3D decorativos<br>• Pisos (Laminado, WPC, SPC, Deck)<br>• Plafón PVC<br>• Vigas PVC<br>• Zacate sintético y follaje<br>• Cladding y revestimientos<br><br>🏠 Atendemos: ' + kb.proyectos.tipos + '<br><br>👉 <a href="index.html#categorias" style="color:#C5A059">Ver catálogo completo</a>';
-        }
-        
-        // DIFERENCIAS ENTRE MATERIALES
-        if ((q.includes('wpc') && q.includes('pvc')) || q.includes('diferencia wpc') || q.includes('wpc o pvc')) {
-          return '🆚 <strong>WPC vs PVC:</strong><br><br><strong>WPC (Wood Plastic Composite):</strong><br>• Mezcla de madera y plástico<br>• Aspecto más natural tipo madera real<br>• Ideal para exteriores (resistente a UV y lluvia)<br>• Más pesado y robusto<br><br><strong>PVC:</strong><br>• Plástico 100%<br>• Más ligero y fácil de instalar<br>• Ideal para interiores<br>• Mayor variedad de diseños (madera, espejo, textura)<br><br>¿Te ayudo a elegir según tu proyecto? 💬';
-        }
-        if (q.includes('spc') && (q.includes('wpc') || q.includes('diferencia') || q.includes('pvc'))) {
-          return '🆚 <strong>SPC vs WPC vs Laminado:</strong><br><br><strong>SPC (Stone Plastic Composite):</strong><br>• Muy resistente al agua 💧<br>• Ideal para cocinas y baños<br>• Instalación rápida tipo click<br><br><strong>WPC:</strong><br>• Más cálido y confortable al caminar<br>• Buen aislamiento térmico y acústico<br>• Ideal para recámaras y salas<br><br><strong>Laminado:</strong><br>• Más económico<br>• Recomendado para áreas de bajo tráfico<br><br>¿Para qué espacio es? Te recomiendo el mejor.';
-        }
-        
-        // BUSQUEDA DE PRODUCTOS POR NOMBRE
-        if (allProducts.length > 0) {
-          const terms = q.split(/\s+/).filter(t => t.length > 2);
-          const matches = allProducts.filter(p => {
-            const text = (p.name + ' ' + p.category + ' ' + (p.subcategory || '')).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
-            return terms.some(t => text.includes(t));
-          }).slice(0, 3);
-          
-          if (matches.length > 0) {
-            let r = '🔎 <strong>Encontré estos productos:</strong><br><br>';
-            matches.forEach(m => {
-              r += `<div style="display:flex;gap:0.6rem;align-items:center;margin-bottom:0.6rem;padding:0.5rem;background:rgba(197,160,89,0.08);border-radius:8px;"><img src="${m.thumb}" style="width:40px;height:40px;object-fit:cover;border-radius:6px;border:1px solid rgba(197,160,89,0.2);"><div><a href="${m.url}" style="color:#C5A059;font-weight:600;font-size:0.85rem;">${m.name}</a><div style="font-size:0.72rem;color:rgba(245,245,245,0.5);">${m.category}${m.subcategory ? ' / ' + m.subcategory : ''}</div></div></div>`;
-            });
-            r += '<br>¿Quieres que te ayude con algo específico de estos productos?';
-            return r;
-          }
-        }
-        
-        // AGRADECIMIENTO / DESPEDIDA
-        if (q.includes('gracias') || q.includes('thank') || q.includes('perfecto') || q.includes('excelente')) {
-          return '¡Con mucho gusto! 😊🙌 Estoy aquí para lo que necesites. Si tienes más dudas, escríbenos por WhatsApp al <strong>' + kb.contacto.whatsapp + '</strong> o visítanos en el showroom. ¡Que tengas un excelente día!';
-        }
-        if (q.includes('adios') || q.includes('bye') || q.includes('hasta luego') || q.includes('nos vemos')) {
-          return '¡Hasta luego! 👋 Gracias por contactar a ADIS Diseño & Remodelación. Recuerda que puedes volver cuando quieras o escribirnos al WhatsApp. ¡Éxito con tu proyecto! 🏠✨';
-        }
-        
-        // TIPO DE PROYECTO / A QUIEN ATIENDEN
-        if (q.includes('casa') || q.includes('oficina') || q.includes('negocio') || q.includes('local') || q.includes('proyecto')) {
-          return '🏠 <strong>Atendemos todo tipo de proyectos:</strong><br><br>' + kb.proyectos.tipos + '<br><br>Desde una pared de acento en casa hasta remodelaciones completas de locales comerciales. ¿Cuéntanos sobre tu proyecto? 💬<br><br><a href="https://wa.me/526311928993?text=Hola%20ADIS,%20tengo%20un%20proyecto%20de" target="_blank" class="chat-whatsapp-btn">📱 Contar mi proyecto</a>';
-        }
-        
-        // DEFAULT
-        return 'Disculpa, no entendí muy bien. 😅 Puedo ayudarte con:<br><br>• Productos y catálogo 📦<br>• Precios y cotizaciones 💰<br>• Horarios de atención 🕐<br>• Ubicación y envíos 📍<br>• Formas de pago 💳<br>• Instalación 🛠️<br><br>Escribe tu pregunta o usa los botones de abajo.';
-      }
-      
       function showWelcome() {
-        addMessage('¡Hola! 👋 Bienvenido a <strong>ADIS Diseño & Remodelación</strong>.<br><br>Soy tu asistente virtual y puedo ayudarte con información sobre nuestros productos, horarios, precios, cotizaciones y más.<br><br>¿Qué necesitas? Escribe tu pregunta 👇', false);
-        showQuickReplies(['Ver productos', 'Horarios', 'Cotización', 'Ubicación', '¿Tienen envío?']);
-        addInputField();
+        addMessage('¡Hola! 👋 Soy el <strong>asistente virtual de ADIS</strong>.<br>¿En qué puedo ayudarte hoy?', false);
+        setTimeout(showOptions, 300);
       }
     })();
     
@@ -1891,109 +1584,17 @@ def generate_footer():
       if (e.key === 'Escape') closeLightbox();
     });
 
-    // Spotlight overlay
-    window.openSpotlight = function() {
-      document.getElementById('spotlightOverlay').classList.add('active');
-      const inp = document.getElementById('spotlightInput');
-      if (inp) { setTimeout(() => inp.focus(), 100); }
-      if (typeof spotlightSearch === 'function') spotlightSearch(inp ? inp.value : '');
-    };
-    window.closeSpotlight = function(e) {
-      if (e && e.target !== e.currentTarget && !e.target.classList.contains('spotlight-close')) return;
-      document.getElementById('spotlightOverlay').classList.remove('active');
-    };
-    
     // Buscador global mejorado
     (function() {
       let allProducts = [];
       let debounceTimer = null;
       let activeIndex = -1;
       let currentResults = [];
-      let spotlightResults = [];
-      let spotlightIndex = -1;
       
       fetch('products.json')
         .then(r => r.json())
         .then(data => { allProducts = data; })
         .catch(() => { allProducts = []; });
-      
-      // Spotlight search
-      window.spotlightSearch = function(query) {
-        const container = document.getElementById('spotlightResults');
-        if (!query || query.length < 2) {
-          if (container) container.innerHTML = '<div style="padding:2rem;text-align:center;color:rgba(245,245,245,0.5);">Escribe al menos 2 caracteres para buscar...</div>';
-          return;
-        }
-        const q = normalize(query);
-        const terms = q.split(/\s+/).filter(t => t.length > 0);
-        const scored = allProducts.map(p => {
-          const name = normalize(p.name);
-          const cat = normalize(p.category);
-          const sub = normalize(p.subcategory || '');
-          let score = 0;
-          for (const t of terms) {
-            if (name.startsWith(t)) score += 10;
-            else if (name.includes(t)) score += 5;
-            if (sub.startsWith(t)) score += 3;
-            else if (sub.includes(t)) score += 2;
-            if (cat.includes(t)) score += 1;
-          }
-          return { p, score };
-        }).filter(x => x.score > 0).sort((a,b) => b.score - a.score).slice(0, 10);
-        
-        spotlightResults = scored.map(x => x.p);
-        spotlightIndex = -1;
-        
-        if (!container) return;
-        if (scored.length === 0) {
-          container.innerHTML = '<div style="padding:2rem;text-align:center;color:rgba(245,245,245,0.5);">No se encontraron productos</div>';
-        } else {
-          container.innerHTML = scored.map((x, i) => `
-            <a href="${x.p.url}" class="spotlight-item" data-sindex="${i}" onclick="closeSpotlight()">
-              <img src="${x.p.thumb}" alt="${x.p.name}" loading="lazy">
-              <div class="spotlight-item-info">
-                <span class="spotlight-item-name">${highlight(x.p.name, query)}</span>
-                <span class="spotlight-item-cat">${x.p.category}${x.p.subcategory ? ' / ' + x.p.subcategory : ''}</span>
-              </div>
-            </a>
-          `).join('');
-        }
-      };
-      
-      const spotInput = document.getElementById('spotlightInput');
-      if (spotInput) {
-        spotInput.addEventListener('input', e => {
-          clearTimeout(debounceTimer);
-          debounceTimer = setTimeout(() => spotlightSearch(e.target.value), 150);
-        });
-        spotInput.addEventListener('keydown', e => {
-          if (e.key === 'ArrowDown') {
-            e.preventDefault();
-            spotlightIndex = Math.min(spotlightIndex + 1, spotlightResults.length - 1);
-            updateSpotlightActive();
-          } else if (e.key === 'ArrowUp') {
-            e.preventDefault();
-            spotlightIndex = Math.max(spotlightIndex - 1, -1);
-            updateSpotlightActive();
-          } else if (e.key === 'Enter') {
-            e.preventDefault();
-            if (spotlightIndex >= 0 && spotlightResults[spotlightIndex]) {
-              window.location.href = spotlightResults[spotlightIndex].url;
-              closeSpotlight();
-            }
-          } else if (e.key === 'Escape') {
-            closeSpotlight();
-          }
-        });
-      }
-      
-      function updateSpotlightActive() {
-        document.querySelectorAll('.spotlight-item').forEach((el, i) => {
-          el.style.background = i === spotlightIndex ? 'rgba(197,160,89,0.15)' : '';
-        });
-        const active = document.querySelector('.spotlight-item[data-sindex="' + spotlightIndex + '"]');
-        if (active) active.scrollIntoView({ block: 'nearest' });
-      }
       
       function normalize(str) {
         return (str || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
@@ -2143,14 +1744,6 @@ def generate_footer():
     <div class="copyright">© 2026 ADIS DISEÑO & REMODELACIÓN. TODOS LOS DERECHOS RESERVADOS.</div>
   </footer>
 
-  <!-- MOBILE BOTTOM NAV -->
-  <nav class="mobile-bottom-nav">
-    <a href="index.html"><span>🏠</span><span>Inicio</span></a>
-    <a href="index.html#categorias"><span>📂</span><span>Catálogo</span></a>
-    <a href="proyectos.html"><span>🖼️</span><span>Proyectos</span></a>
-    <a href="contacto.html"><span>📞</span><span>Contacto</span></a>
-  </nav>
-
   <a href="https://wa.me/{CONTACTO['whatsapp']}?text={CONTACTO['whatsapp_msg'].replace(' ', '%20')}" class="whatsapp-float" target="_blank" title="Contáctanos por WhatsApp">💬</a>
 
   <button class="chatbot-float" onclick="toggleChat()" title="Asistente Virtual">🤖</button>
@@ -2218,26 +1811,26 @@ def generate_index(categories):
       </a>
 '''
 
-    info_cards = '''      <a href="1-placas-pvc.html" class="info-card">
+    info_cards = '''      <div class="info-card">
         <div class="icon">✦</div>
         <h3>Placas PVC</h3>
         <p>Paneles rígidos de alta calidad tipo madera, texturizados y espejo. Ideales para interiores.</p>
-      </a>
-      <a href="2-lambrin-wpc.html" class="info-card">
+      </div>
+      <div class="info-card">
         <div class="icon">◈</div>
         <h3>Lambrín WPC</h3>
         <p>Wood Plastic Composite para interior y exterior. Resistente a la humedad y rayos UV.</p>
-      </a>
-      <a href="7-pisos.html" class="info-card">
+      </div>
+      <div class="info-card">
         <div class="icon">◉</div>
         <h3>Pisos & Zacate</h3>
         <p>Laminados, WPC, SPC, deck sintético y pasto artificial para todo tipo de espacios.</p>
-      </a>
-      <a href="5-paneles-tridimensionales.html" class="info-card">
+      </div>
+      <div class="info-card">
         <div class="icon">✚</div>
         <h3>Cladding & 3D</h3>
         <p>Paneles decorativos tridimensionales y revestimientos de alta gama para fachadas.</p>
-      </a>
+      </div>
 '''
 
     html = f'''<!DOCTYPE html>
@@ -2270,12 +1863,6 @@ def generate_index(categories):
       <h1>Transforma tus espacios con <em>ADIS</em></h1>
       <p>Recubrimientos de alta gama para interior y exterior. PVC, WPC, paneles 3D, pisos, zacate y cladding.</p>
       <a href="#categorias" class="btn-primary">Explorar Catálogo</a>
-      <div class="search-hero">
-        <div class="search-hero-title">🔎 Busca entre 250 productos</div>
-        <span class="search-hero-icon">🔍</span>
-        <input type="text" class="search-hero-input" id="searchHeroInput" placeholder="Escribe el nombre de un producto, color o material..." autocomplete="off" onfocus="openSpotlight()">
-        <div class="search-hero-hint">Presiona <kbd style="background:rgba(255,255,255,0.1);padding:2px 8px;border-radius:4px;font-family:inherit;">/</kbd> para buscar desde cualquier página</div>
-      </div>
     </div>
   </section>
 
@@ -2334,7 +1921,6 @@ def generate_index(categories):
 {cat_cards}    </div>
   </section>
 
-{generate_testimonios()}
 {generate_footer()}
 </body>
 </html>
@@ -2423,27 +2009,6 @@ def generate_contacto():
 
 def generate_category_page(cat, categories):
     """Genera página de una categoría con subcategorías y productos."""
-    import unicodedata
-
-    # Prev / Next navegación entre categorías
-    cat_index = [i for i, c in enumerate(categories) if c['slug'] == cat['slug']][0]
-    prev_cat = categories[cat_index - 1] if cat_index > 0 else None
-    next_cat = categories[cat_index + 1] if cat_index < len(categories) - 1 else None
-    
-    cat_nav_html = ''
-    if prev_cat or next_cat:
-        nav_parts = []
-        if prev_cat:
-            nav_parts.append(f'<a href="{prev_cat["filename"]}" class="cat-nav-btn">← {prev_cat["name"]}</a>')
-        if next_cat:
-            nav_parts.append(f'<a href="{next_cat["filename"]}" class="cat-nav-btn next">{next_cat["name"]} →</a>')
-        cat_nav_html = '  <div class="cat-nav">\n    ' + '\n    '.join(nav_parts) + '\n  </div>\n'
-
-    # Breadcrumbs
-    breadcrumbs_html = f'''  <div class="breadcrumbs">
-    <a href="index.html">Inicio</a> <span>/</span> <a href="index.html#categorias">Catálogo</a> <span>/</span> <span style="color:var(--gold);">{cat['name']}</span>
-  </div>
-'''
 
     # Seleccionar imagen de fondo representativa para el hero
     hero_bg = ''
@@ -2452,14 +2017,9 @@ def generate_category_page(cat, categories):
     elif cat['direct_products']:
         hero_bg = f"img/{cat['slug']}/{cat['direct_products'][0]}"
 
-    # Reordenar subcategorías: Placas PVC debe tener tipo espejo primero
-    subs = list(cat['subcategories'])
-    if cat['name'] == 'Placas PVC':
-        subs.sort(key=lambda s: 0 if 'espejo' in s['name'].lower() else 1)
-
     # Índice de subcategorías
     subcat_nav_links = ''
-    for sub in subs:
+    for sub in cat['subcategories']:
         if sub['products']:
             sub_slug = sub['slug']
             sub_name = sub['name']
@@ -2468,65 +2028,18 @@ def generate_category_page(cat, categories):
     {subcat_nav_links}</div>
 ''' if subcat_nav_links else ''
 
-    # Set para deduplicación por nombre normalizado
-    seen_products = set()
-    def norm_name(prod_file):
-        name = os.path.splitext(prod_file)[0]
-        return unicodedata.normalize('NFKD', name).encode('ASCII', 'ignore').decode('ASCII').lower().replace(' ', '')
-    def is_dup(prod_file):
-        key = norm_name(prod_file)
-        if key in seen_products:
-            return True
-        seen_products.add(key)
-        return False
-
-    sections_html = ''
-    
-    # Para Placas PVC: productos directos PRIMERO (son los más vendidos - tipo espejo)
-    if cat['name'] == 'Placas PVC' and cat['direct_products']:
-        direct_products_html = ''
-        for prod_file in cat['direct_products']:
-            if is_dup(prod_file):
-                continue
-            prod_name = os.path.splitext(prod_file)[0]
-            mailto = mailto_link(prod_name, cat['name'])
-            direct_products_html += f'''      <div class="product-card reveal">
-        <div class="product-gallery" onclick="openLightbox('img/{cat['slug']}/{prod_file}', '{prod_name}')">
-          <img src="img/{cat['slug']}/{prod_file}" alt="{prod_name}" loading="lazy">
-        </div>
-        <div class="product-info">
-          <div class="product-name">{prod_name}</div>
-          <div class="product-actions">
-            <a href="{mailto}" class="btn-cotizar">Solicitar Cotización</a>
-            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20{prod_name.replace(' ', '%20')}%20de%20la%20categoría%20{cat['name'].replace(' ', '%20')}" class="btn-whatsapp" target="_blank">WhatsApp</a>
-          </div>
-        </div>
-      </div>
-'''
-        
-        cat_specs = generate_specs_table('Placas PVC Tipo espejo')
-        sections_html += f'''  <section class="subcat-section reveal">
-    <div class="subcat-header">
-      <h3>⭐ Más Vendidos — Placas PVC Tipo Espejo</h3>
-      <span class="subcat-count">{len(cat['direct_products'])} productos</span>
-      <div class="subcat-divider"></div>
-    </div>
-{cat_specs}    <div class="products-grid">
-{direct_products_html}    </div>
-  </section>
-'''
-
     # Construir secciones de subcategorías
-    for sub in subs:
+    subcat_sections = ''
+    for sub in cat['subcategories']:
         if not sub['products']:
             continue
 
+        # Especificaciones técnicas de subcategoría
         specs_html = generate_specs_table(sub['name'])
 
+        # Productos de subcategoría
         products_html = ''
         for prod_file in sub['products']:
-            if is_dup(prod_file):
-                continue
             prod_name = os.path.splitext(prod_file)[0]
             mailto = mailto_link(prod_name, cat['name'], sub['name'])
             products_html += f'''      <div class="product-card reveal">
@@ -2543,7 +2056,7 @@ def generate_category_page(cat, categories):
       </div>
 '''
 
-        sections_html += f'''  <section class="subcat-section reveal" id="{sub['slug']}">
+        subcat_sections += f'''  <section class="subcat-section reveal" id="{sub['slug']}">
     <div class="subcat-header">
       <h3>{sub['name']}</h3>
       <span class="subcat-count">{len(sub['products'])} productos</span>
@@ -2554,12 +2067,11 @@ def generate_category_page(cat, categories):
   </section>
 '''
 
-    # Productos directos para otras categorías (no Placas PVC que ya se mostró arriba)
-    if cat['name'] != 'Placas PVC' and cat['direct_products']:
+    # Productos directos (sin subcategoría)
+    direct_section = ''
+    if cat['direct_products']:
         direct_products_html = ''
         for prod_file in cat['direct_products']:
-            if is_dup(prod_file):
-                continue
             prod_name = os.path.splitext(prod_file)[0]
             mailto = mailto_link(prod_name, cat['name'])
             direct_products_html += f'''      <div class="product-card reveal">
@@ -2576,7 +2088,7 @@ def generate_category_page(cat, categories):
       </div>
 '''
 
-        sections_html += f'''  <section class="subcat-section reveal">
+        direct_section = f'''  <section class="subcat-section reveal">
     <div class="subcat-header">
       <h3>Productos {cat['name']}</h3>
       <span class="subcat-count">{len(cat['direct_products'])} productos</span>
@@ -2586,6 +2098,11 @@ def generate_category_page(cat, categories):
 {direct_products_html}    </div>
   </section>
 '''
+
+    # Especificaciones generales de categoría (si tiene productos directos)
+    cat_specs = ''
+    if cat['direct_products']:
+        cat_specs = generate_specs_table(cat['name'])
 
     html = f'''<!DOCTYPE html>
 <html lang="es">
@@ -2605,7 +2122,7 @@ def generate_category_page(cat, categories):
 <body>
   <canvas id="bg-canvas"></canvas>
 {generate_header(cat['slug'])}
-{breadcrumbs_html}
+
   <section class="hero-cat-bg" style="background-image: url('{hero_bg}');">
     <div class="hero-cat-content">
       {'<div class="hero-star-badge">⭐ Producto Estrella</div>' if cat['name'] in ("Lambrin WPC", "Placas PVC") else '<div class="hero-cat-badge">Categoría</div>'}
@@ -2614,8 +2131,9 @@ def generate_category_page(cat, categories):
     </div>
   </section>
 
-{subcat_nav_html}{sections_html}
-{cat_nav_html}
+{subcat_nav_html}{subcat_sections}
+{direct_section}
+
   <section class="section-wrap" style="padding-top: 1rem;">
     <div style="text-align: center;">
       <a href="index.html" class="btn-back">← Volver al Inicio</a>
@@ -2623,7 +2141,6 @@ def generate_category_page(cat, categories):
     </div>
   </section>
 
-{generate_testimonios()}
 {generate_footer()}
 </body>
 </html>
@@ -2635,7 +2152,7 @@ def generate_category_page(cat, categories):
 
 
 def sync_media():
-    """Copia TODAS las fotos y videos de Material de Facebock a media/ con nombres limpios."""
+    """Copia fotos y videos de Material de Facebock a media/"""
     src_dir = BASE_DIR / 'Material de Facebock'
     media_dir = BASE_DIR / 'media'
     if not src_dir.exists():
@@ -2644,11 +2161,7 @@ def sync_media():
         shutil.rmtree(media_dir)
     media_dir.mkdir(parents=True)
     
-    img_exts = ('.jpg', '.jpeg', '.png')
-    vid_exts = ('.mp4', '.mov', '.webm')
-    
-    # Mapeo manual para archivos conocidos con nombres limpios
-    known_names = {
+    mapping = {
         'antes.jpg': 'antes.jpg',
         'despues.jpg': 'despues.jpg',
         'ejemplo de tapiz.jpg': 'ejemplo-tapiz.jpg',
@@ -2658,25 +2171,9 @@ def sync_media():
         'Remoledacion de habitacion.mp4': 'video-habitacion.mp4',
         'remoledacion de consultorio.mp4': 'video-consultorio.mp4',
     }
-    
-    all_files = sorted([f for f in os.listdir(src_dir) if f.lower().endswith(img_exts + vid_exts)])
-    
-    # Contadores para nombres automáticos
-    auto_img = 0
-    auto_vid = 0
-    mapping = {}
-    
-    for fname in all_files:
-        if fname in known_names:
-            mapping[fname] = known_names[fname]
-        elif fname.lower().endswith(img_exts):
-            auto_img += 1
-            ext = Path(fname).suffix.lower()
-            mapping[fname] = f'proyecto-{auto_img:02d}{ext}'
-        elif fname.lower().endswith(vid_exts):
-            auto_vid += 1
-            ext = Path(fname).suffix.lower()
-            mapping[fname] = f'video-{auto_vid:02d}{ext}'
+    fb_videos = sorted([f for f in os.listdir(src_dir) if f.endswith('.mp4') and f not in mapping])
+    for i, fv in enumerate(fb_videos):
+        mapping[fv] = f'video-proyecto-{i+1}.mp4'
     
     copied = 0
     for src_name, dst_name in mapping.items():
@@ -2684,7 +2181,7 @@ def sync_media():
         if src.exists():
             shutil.copy2(src, media_dir / dst_name)
             copied += 1
-    print(f"Media sincronizada: {copied} archivos ({auto_img} imgs + {auto_vid} vids nuevos)")
+    print(f"Media sincronizada: {copied} archivos")
 
 
 # Datos extraídos de fichas técnicas
@@ -2893,205 +2390,7 @@ def generate_specs_table(product_name):
     return '    <div class="specs-bar reveal">\n      ' + '\n      '.join(items) + '\n    </div>\n'
 
 
-def generate_testimonios():
-    """Genera formulario de testimonios que envía a WhatsApp para revisión manual."""
-    return '''
-  <!-- TESTIMONIOS -->
-  <section class="section-wrap reveal" style="padding-top: 2rem;">
-    <div class="section-header">
-      <h2>Testimonios de Clientes</h2>
-      <div class="divider"></div>
-      <p>¿Ya usaste nuestros productos? Comparte tu experiencia y ayuda a otros a decidirse.</p>
-    </div>
-    <div style="max-width: 1100px; margin: 0 auto; padding: 0 2rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin-bottom: 3rem;">
-      <div style="background: rgba(42,42,42,0.7); backdrop-filter: blur(10px); border: 1px solid rgba(197,160,89,0.2); border-radius: 12px; padding: 1.8rem; position: relative;">
-        <div style="font-size: 3rem; color: var(--gold); opacity: 0.3; position: absolute; top: 0.5rem; right: 1rem; font-family: Georgia, serif;">"</div>
-        <p style="font-size: 0.9rem; color: rgba(245,245,245,0.8); line-height: 1.7; margin-bottom: 1rem; font-style: italic;">Excelente calidad en las placas PVC tipo espejo. Transformaron completamente mi sala de estar. La instalación fue súper rápida y el acabado se ve de lujo.</p>
-        <div style="display: flex; align-items: center; gap: 0.8rem;">
-          <div style="width: 40px; height: 40px; border-radius: 50%; background: var(--gold); display: flex; align-items: center; justify-content: center; color: var(--black); font-weight: 700; font-size: 0.9rem;">MG</div>
-          <div>
-            <div style="font-size: 0.85rem; color: var(--white); font-weight: 600;">María G.</div>
-            <div style="font-size: 0.75rem; color: var(--gold);">⭐⭐⭐⭐⭐ — Placas PVC, Nogales</div>
-          </div>
-        </div>
-      </div>
-      <div style="background: rgba(42,42,42,0.7); backdrop-filter: blur(10px); border: 1px solid rgba(197,160,89,0.2); border-radius: 12px; padding: 1.8rem; position: relative;">
-        <div style="font-size: 3rem; color: var(--gold); opacity: 0.3; position: absolute; top: 0.5rem; right: 1rem; font-family: Georgia, serif;">"</div>
-        <p style="font-size: 0.9rem; color: rgba(245,245,245,0.8); line-height: 1.7; margin-bottom: 1rem; font-style: italic;">Compré el lambrín WPC para el exterior de mi consultorio y quedó espectacular. Resiste perfectamente el sol y la lluvia. 100% recomendado.</p>
-        <div style="display: flex; align-items: center; gap: 0.8rem;">
-          <div style="width: 40px; height: 40px; border-radius: 50%; background: var(--gold); display: flex; align-items: center; justify-content: center; color: var(--black); font-weight: 700; font-size: 0.9rem;">CR</div>
-          <div>
-            <div style="font-size: 0.85rem; color: var(--white); font-weight: 600;">Dr. Carlos R.</div>
-            <div style="font-size: 0.75rem; color: var(--gold);">⭐⭐⭐⭐⭐ — Lambrín WPC, Rio Rico</div>
-          </div>
-        </div>
-      </div>
-      <div style="background: rgba(42,42,42,0.7); backdrop-filter: blur(10px); border: 1px solid rgba(197,160,89,0.2); border-radius: 12px; padding: 1.8rem; position: relative;">
-        <div style="font-size: 3rem; color: var(--gold); opacity: 0.3; position: absolute; top: 0.5rem; right: 1rem; font-family: Georgia, serif;">"</div>
-        <p style="font-size: 0.9rem; color: rgba(245,245,245,0.8); line-height: 1.7; margin-bottom: 1rem; font-style: italic;">El equipo de ADIS me ayudó a elegir los pisos SPC para toda mi casa. Me dieron asesoría de primera y el precio fue muy competitivo. Quedé encantada.</p>
-        <div style="display: flex; align-items: center; gap: 0.8rem;">
-          <div style="width: 40px; height: 40px; border-radius: 50%; background: var(--gold); display: flex; align-items: center; justify-content: center; color: var(--black); font-weight: 700; font-size: 0.9rem;">FL</div>
-          <div>
-            <div style="font-size: 0.85rem; color: var(--white); font-weight: 600;">Familia López</div>
-            <div style="font-size: 0.75rem; color: var(--gold);">⭐⭐⭐⭐⭐ — Pisos SPC, Nogales</div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div style="max-width: 600px; margin: 0 auto; padding: 0 1rem;">
-      <form id="testimonioForm" onsubmit="enviarTestimonio(event)" style="display: flex; flex-direction: column; gap: 1rem;">
-        <input type="text" id="tNombre" placeholder="Tu nombre" required
-          style="padding: 0.9rem 1.2rem; background: rgba(42,42,42,0.8); border: 1px solid rgba(197,160,89,0.3); border-radius: 8px; color: var(--white); font-family: 'Montserrat', sans-serif; font-size: 0.9rem; backdrop-filter: blur(8px); transition: all 0.3s;"
-          onfocus="this.style.borderColor='var(--gold)';this.style.boxShadow='0 0 15px rgba(197,160,89,0.15)'" onblur="this.style.borderColor='rgba(197,160,89,0.3)';this.style.boxShadow='none'">
-        <textarea id="tComentario" placeholder="¿Qué te pareció el producto o servicio?" required rows="4"
-          style="padding: 0.9rem 1.2rem; background: rgba(42,42,42,0.8); border: 1px solid rgba(197,160,89,0.3); border-radius: 8px; color: var(--white); font-family: 'Montserrat', sans-serif; font-size: 0.9rem; backdrop-filter: blur(8px); resize: vertical; transition: all 0.3s;"
-          onfocus="this.style.borderColor='var(--gold)';this.style.boxShadow='0 0 15px rgba(197,160,89,0.15)'" onblur="this.style.borderColor='rgba(197,160,89,0.3)';this.style.boxShadow='none'"></textarea>
-        <input type="text" id="tProducto" placeholder="Producto o categoría que compraste (opcional)"
-          style="padding: 0.9rem 1.2rem; background: rgba(42,42,42,0.8); border: 1px solid rgba(197,160,89,0.3); border-radius: 8px; color: var(--white); font-family: 'Montserrat', sans-serif; font-size: 0.9rem; backdrop-filter: blur(8px); transition: all 0.3s;"
-          onfocus="this.style.borderColor='var(--gold)';this.style.boxShadow='0 0 15px rgba(197,160,89,0.15)'" onblur="this.style.borderColor='rgba(197,160,89,0.3)';this.style.boxShadow='none'">
-        <button type="submit" class="btn-primary" style="align-self: center; margin-top: 0.5rem;">📩 Enviar Testimonio</button>
-      </form>
-      <div style="text-align: center; margin-top: 1.2rem; font-size: 0.8rem; color: rgba(245,245,245,0.5); line-height: 1.6;">
-        Los testimonios son revisados antes de publicarse.<br>
-        También puedes enviarlos directamente por 
-        <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20quiero%20dejar%20un%20testimonio" target="_blank" style="color: var(--gold); text-decoration: none; font-weight: 600;">WhatsApp 💬</a>
-      </div>
-    </div>
-  </section>
-  <script>
-    function enviarTestimonio(e) {
-      e.preventDefault();
-      const nombre = document.getElementById('tNombre').value.trim();
-      const comentario = document.getElementById('tComentario').value.trim();
-      const producto = document.getElementById('tProducto').value.trim();
-      let msg = 'Hola ADIS, soy ' + nombre + '. Quiero dejar un testimonio:';
-      msg += '%0A%0A' + comentario;
-      msg += '%0A%0AProducto/Categoría: ' + (producto || 'No especificado');
-      msg += '%0A%0APágina: ' + window.location.href;
-      window.open('https://wa.me/526311928993?text=' + encodeURIComponent(msg.replace(/%0A/g, '\n')), '_blank');
-      alert('¡Gracias ' + nombre + '! Tu testimonio se envió por WhatsApp. Será revisado y publicado pronto.');
-      e.target.reset();
-    }
-  </script>
-'''
-
 def generate_proyectos():
-    """Genera página de proyectos con carruseles de antes/después y galería dinámica."""
-    media_dir = BASE_DIR / 'media'
-    
-    img_exts = ('.jpg', '.jpeg', '.png')
-    vid_exts = ('.mp4', '.mov', '.webm')
-    
-    all_files = sorted([f for f in os.listdir(media_dir) if f.lower().endswith(img_exts + vid_exts)]) if media_dir.exists() else []
-    
-    images = [f for f in all_files if f.lower().endswith(img_exts)]
-    videos = [f for f in all_files if f.lower().endswith(vid_exts)]
-    
-    # Detectar TODAS las parejas antes/despues
-    def stem_no_ext(fname):
-        return Path(fname).stem.lower()
-    
-    # Buscar pares: "antes" + "despues" con mismo sufijo numérico
-    ba_pairs = []
-    used = set()
-    for img in images:
-        s = stem_no_ext(img)
-        if s.startswith('antes'):
-            suffix = s[5:].strip()  # ej: "", "1", "2"
-            despues_name = f'despues {suffix}'.strip() if suffix else 'despues'
-            # Buscar archivo despues correspondiente
-            match = None
-            for d in images:
-                if stem_no_ext(d) == despues_name:
-                    match = d
-                    break
-            if match:
-                ba_pairs.append((img, match))
-                used.add(img)
-                used.add(match)
-    
-    # Secciones de antes/después (carrusel por cada par)
-    ba_sections = ''
-    for i, (antes, despues) in enumerate(ba_pairs, 1):
-        label = f'Remodelación {i}' if len(ba_pairs) > 1 else 'Antes y Después'
-        ba_sections += f'''  <section class="section-wrap reveal">
-    <div class="section-header">
-      <h2>{label}</h2>
-      <div class="divider"></div>
-      <p>Desliza para ver la transformación completa.</p>
-    </div>
-    <div class="carousel-wrap">
-      <div class="carousel" id="carousel-ba-{i}">
-        <div class="carousel-slide">
-          <img src="media/{antes}" alt="Antes" loading="lazy" onclick="openLightbox('media/{antes}', 'Antes - {label}')">
-          <div class="carousel-label" style="background: rgba(197,160,89,0.2);">Antes</div>
-        </div>
-        <div class="carousel-slide">
-          <img src="media/{despues}" alt="Después" loading="lazy" onclick="openLightbox('media/{despues}', 'Después - {label}')">
-          <div class="carousel-label" style="background: var(--gold); color: var(--black);">Después</div>
-        </div>
-      </div>
-      <button class="carousel-btn prev" onclick="moveCarousel('carousel-ba-{i}', -1)">&#10094;</button>
-      <button class="carousel-btn next" onclick="moveCarousel('carousel-ba-{i}', 1)">&#10095;</button>
-    </div>
-  </section>
-'''
-    
-    # Fotos sueltas (no usadas en pares) → carrusel general
-    loose_images = [f for f in images if f not in used]
-    gallery_section = ''
-    if loose_images:
-        slides = ''
-        for img in loose_images:
-            name = Path(img).stem.replace('-', ' ').replace('_', ' ').title()
-            slides += f'''        <div class="carousel-slide">
-          <img src="media/{img}" alt="{name}" loading="lazy" onclick="openLightbox('media/{img}', '{name}')">
-        </div>
-'''
-        gallery_section = f'''  <section class="section-wrap-alt reveal">
-    <div class="section-header">
-      <h2>Galería de Proyectos</h2>
-      <div class="divider"></div>
-      <p>Trabajos reales con nuestros materiales de alta gama.</p>
-    </div>
-    <div class="carousel-wrap">
-      <div class="carousel" id="carousel-gallery">
-{slides}      </div>
-      <button class="carousel-btn prev" onclick="moveCarousel('carousel-gallery', -1)">&#10094;</button>
-      <button class="carousel-btn next" onclick="moveCarousel('carousel-gallery', 1)">&#10095;</button>
-    </div>
-  </section>
-'''
-    
-    # Videos
-    videos_html = ''
-    for vid in videos:
-        name = Path(vid).stem.replace('-', ' ').replace('_', ' ').title()
-        poster = loose_images[0] if loose_images else (images[0] if images else '')
-        poster_attr = f' poster="media/{poster}"' if poster else ''
-        videos_html += f'''      <div class="video-card reveal">
-        <video class="auto-video" muted loop playsinline{poster_attr}>
-          <source src="media/{vid}" type="video/mp4">
-        </video>
-        <div class="product-info">
-          <div class="product-name">{name}</div>
-        </div>
-      </div>
-'''
-    
-    video_section = ''
-    if videos_html:
-        video_section = f'''  <section class="section-wrap reveal">
-    <div class="section-header">
-      <h2>Videos de Remodelaciones</h2>
-      <div class="divider"></div>
-      <p>Transformaciones capturadas en video.</p>
-    </div>
-    <div class="video-grid">
-{videos_html}    </div>
-  </section>
-'''
-    
     html = f'''<!DOCTYPE html>
 <html lang="es">
 <head>
@@ -3107,19 +2406,12 @@ def generate_proyectos():
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
   <style>
-    /* CAROUSEL */
-    .carousel-wrap {{ position: relative; max-width: 900px; margin: 0 auto; overflow: hidden; border-radius: 12px; border: 1px solid rgba(197,160,89,0.2); }}
-    .carousel {{ display: flex; transition: transform 0.5s ease; }}
-    .carousel-slide {{ min-width: 100%; position: relative; }}
-    .carousel-slide img {{ width: 100%; height: 500px; object-fit: cover; display: block; cursor: pointer; }}
-    .carousel-label {{ position: absolute; bottom: 20px; left: 20px; padding: 0.5rem 1.2rem; border-radius: 25px; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; backdrop-filter: blur(8px); }}
-    .carousel-btn {{ position: absolute; top: 50%; transform: translateY(-50%); background: rgba(15,15,15,0.7); border: 1px solid var(--gold); color: var(--gold); width: 45px; height: 45px; border-radius: 50%; cursor: pointer; font-size: 1.2rem; display: flex; align-items: center; justify-content: center; transition: all 0.3s; z-index: 2; }}
-    .carousel-btn:hover {{ background: var(--gold); color: var(--black); }}
-    .carousel-btn.prev {{ left: 15px; }}
-    .carousel-btn.next {{ right: 15px; }}
+    .before-after {{ display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; max-width: 1000px; margin: 0 auto; }}
+    .before-after img {{ width: 100%; height: 300px; object-fit: cover; border-radius: 8px; }}
+    .ba-label {{ text-align: center; color: var(--gold); font-family: 'Playfair Display', serif; font-size: 1.2rem; margin-top: 0.5rem; }}
     .video-grid {{ display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem; max-width: 1200px; margin: 0 auto; }}
     .video-card video {{ width: 100%; border-radius: 8px; }}
-    @media (max-width: 768px) {{ .carousel-slide img {{ height: 280px; }} .carousel-btn {{ width: 36px; height: 36px; font-size: 1rem; }} }}
+    @media (max-width: 768px) {{ .before-after {{ grid-template-columns: 1fr; }} }}
   </style>
 </head>
 <body>
@@ -3131,7 +2423,82 @@ def generate_proyectos():
     <p>Transformaciones que hablan por sí solas. Conoce nuestro trabajo.</p>
   </section>
 
-{ba_sections}{gallery_section}{video_section}
+  <section class="section-wrap">
+    <div class="section-header">
+      <h2>Antes y Después</h2>
+      <div class="divider"></div>
+      <p>De una sala común a un espacio de lujo con nuestros recubrimientos.</p>
+    </div>
+    <div class="before-after">
+      <div>
+        <img src="media/antes.jpg" alt="Antes" loading="lazy">
+        <div class="ba-label">Antes</div>
+      </div>
+      <div>
+        <img src="media/despues.jpg" alt="Después" loading="lazy">
+        <div class="ba-label">Después</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-wrap-alt">
+    <div class="section-header">
+      <h2>Galería de Proyectos</h2>
+      <div class="divider"></div>
+    </div>
+    <div class="products-grid">
+      <div class="product-card">
+        <div class="product-gallery">
+          <img src="media/ejemplo-tapiz.jpg" alt="Pared con tapiz y lambrín" loading="lazy">
+        </div>
+        <div class="product-info">
+          <div class="product-name">Pared con Tapiz y Lambrín WPC</div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-gallery">
+          <img src="media/proyecto-recepcion.jpg" alt="Recepción con lambrín WPC" loading="lazy">
+        </div>
+        <div class="product-info">
+          <div class="product-name">Recepción con Lambrín WPC</div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-gallery">
+          <img src="media/equipo-adis.jpg" alt="Equipo ADIS en obra" loading="lazy">
+        </div>
+        <div class="product-info">
+          <div class="product-name">Equipo ADIS en Obra</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-wrap">
+    <div class="section-header">
+      <h2>Videos de Remodelaciones</h2>
+      <div class="divider"></div>
+    </div>
+    <div class="video-grid">
+      <div class="video-card">
+        <video class="auto-video" muted loop playsinline poster="media/despues.jpg">
+          <source src="media/video-habitacion.mp4" type="video/mp4">
+        </video>
+        <div class="product-info">
+          <div class="product-name">Remodelación de Habitación</div>
+        </div>
+      </div>
+      <div class="video-card">
+        <video class="auto-video" muted loop playsinline poster="media/proyecto-recepcion.jpg">
+          <source src="media/video-consultorio.mp4" type="video/mp4">
+        </video>
+        <div class="product-info">
+          <div class="product-name">Remodelación de Consultorio</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <section class="section-wrap" style="padding-top: 1rem;">
     <div style="text-align: center;">
       <a href="index.html" class="btn-back">← Volver al Inicio</a>
@@ -3140,23 +2507,6 @@ def generate_proyectos():
   </section>
 
   <script>
-    // Carrusel
-    const carouselState = {{}};
-    function moveCarousel(id, dir) {{
-      const el = document.getElementById(id);
-      if (!el) return;
-      const slides = el.children.length;
-      if (!carouselState[id]) carouselState[id] = 0;
-      carouselState[id] = (carouselState[id] + dir + slides) % slides;
-      el.style.transform = 'translateX(-' + (carouselState[id] * 100) + '%)';
-    }}
-    // Auto-play carruseles
-    setInterval(() => {{
-      document.querySelectorAll('.carousel').forEach(car => {{
-        moveCarousel(car.id, 1);
-      }});
-    }}, 5000);
-    
     // Autoplay videos when visible
     (function() {{
       const videos = document.querySelectorAll('.auto-video');
@@ -3176,9 +2526,6 @@ def generate_proyectos():
 </body>
 </html>
 '''
-    with open(BASE_DIR / 'proyectos.html', 'w', encoding='utf-8') as f:
-        f.write(html)
-    print("proyectos.html generado (carruseles)")
     with open(BASE_DIR / 'proyectos.html', 'w', encoding='utf-8') as f:
         f.write(html)
     print("proyectos.html generado")

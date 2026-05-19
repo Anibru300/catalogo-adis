@@ -444,13 +444,31 @@
           jueves: '9:00 a 19:00',
           viernes: '9:00 a 19:00',
           sabado: '9:00 a 19:00',
-          domingo: '9:00 a 15:00'
+          domingo: '9:00 a 15:00',
+          whatsapp: 'Atendemos WhatsApp casi 24/7, excepto madrugada (aprox. 00:00 - 07:00)'
         },
         contacto: {
           whatsapp: '+52 631-192-8993',
           tel_showroom: '+52 631-120-4943',
           email: 'adis.remodelacion@gmail.com',
           ubicacion: 'Nogales, Sonora y Rio Rico, AZ'
+        },
+        envios: {
+          gratis: 'Nogales Sonora, Nogales AZ y Tucson',
+          nacional: 'Enviamos a todo México. El costo corre por cuenta del cliente.',
+          tiempo_grandes: '2 a 3 días hábiles para pedidos grandes'
+        },
+        pagos: {
+          metodos: ['Tarjeta de crédito', 'Tarjeta de débito', 'Transferencia bancaria', 'Efectivo'],
+          anticipo: 'Pedidos mayores a $10,000 requieren 50% de anticipo'
+        },
+        instalacion: {
+          disponible: true,
+          costo: 'Los precios son solo por el material. La instalación se cotiza aparte.',
+          proceso: 'Un representante visita tu obra para medir y cotizar la instalación.'
+        },
+        proyectos: {
+          tipos: 'Casas, oficinas, negocios, locales comerciales y cualquier espacio que requiera remodelación'
         }
       };
       
@@ -524,7 +542,7 @@
         
         // HORARIOS
         if (q.includes('horario') || q.includes('hora') || q.includes('abierto') || q.includes('atencion') || q.includes('cierran') || q.includes('abren')) {
-          let r = '🕐 <strong>Nuestros horarios de atención:</strong><br><br>';
+          let r = '🕐 <strong>Horarios de atención (Showroom):</strong><br><br>';
           r += '• <strong>Lunes:</strong> ' + kb.horarios.lunes + '<br>';
           r += '• <strong>Martes:</strong> ' + kb.horarios.martes + '<br>';
           r += '• <strong>Miércoles:</strong> ' + kb.horarios.miercoles + '<br>';
@@ -532,10 +550,10 @@
           r += '• <strong>Viernes:</strong> ' + kb.horarios.viernes + '<br>';
           r += '• <strong>Sábado:</strong> ' + kb.horarios.sabado + '<br>';
           r += '• <strong>Domingo:</strong> ' + kb.horarios.domingo + '<br><br>';
-          r += '💬 <strong>WhatsApp:</strong> Respondemos de lunes a sábado hasta las 20:00 hrs.';
+          r += '💬 ' + kb.horarios.whatsapp;
           return r;
         }
-        if (q.includes('lunes')) return 'Los <strong>lunes</strong> estamos <strong>cerrados</strong> 🚪. Te atendemos de martes a domingo con horarios variados. ¿Te gustaría saber el horario de algún otro día?';
+        if (q.includes('lunes')) return 'Los <strong>lunes</strong> estamos <strong>cerrados</strong> 🚪 en showroom, pero WhatsApp está disponible. Te atendemos de martes a domingo. ¿Te gustaría saber otro horario?';
         if (q.includes('domingo')) return 'Los <strong>domingos</strong> abrimos de <strong>9:00 a 15:00</strong> ☀️. Es un buen día para venir a conocer nuestros productos sin prisa.';
         if (q.includes('sabado')) return 'Los <strong>sábados</strong> atendemos de <strong>9:00 a 19:00</strong> 💪. Es nuestro día con más afluencia, te recomiendo venir temprano.';
         
@@ -546,41 +564,57 @@
         
         // UBICACION
         if (q.includes('ubicacion') || q.includes('donde') || q.includes('direccion') || q.includes('ubicados') || q.includes('local') || q.includes('tienda') || q.includes('showroom') || q.includes('nogales') || q.includes('rio rico')) {
-          return '📍 <strong>Ubicación:</strong><br><br>Atendemos en <strong>Nogales, Sonora</strong> y <strong>Rio Rico, AZ</strong>.<br><br>📌 Puedes ver la dirección exacta y el mapa en nuestra página de <a href="contacto.html" style="color:#C5A059">Contacto</a> o en <a href="https://maps.app.goo.gl/Q3raWUzhCj2rvhjm8" target="_blank" style="color:#C5A059">Google Maps →</a><br><br>🏠 ¡Tenemos showroom! Puedes venir a ver y tocar los materiales antes de comprar.';
+          return '📍 <strong>Nuestra tienda física está en Nogales, Sonora</strong><br><br>📌 Puedes ver la dirección exacta y el mapa en nuestra página de <a href="contacto.html" style="color:#C5A059">Contacto</a> o en <a href="https://maps.app.goo.gl/Q3raWUzhCj2rvhjm8" target="_blank" style="color:#C5A059">Google Maps →</a><br><br>🏠 ¡Tenemos showroom! Ven a ver y tocar los materiales antes de comprar. También atendemos en <strong>Rio Rico, AZ</strong>.';
         }
         
         // PRECIOS / COTIZACION
         if (q.includes('precio') || q.includes('cuesta') || q.includes('cuanto') || q.includes('valor') || q.includes('cotizacion') || q.includes('cotizar') || q.includes('presupuesto')) {
-          return '💰 <strong>Precios:</strong><br><br>Los precios varían según el producto, cantidad y zona de entrega. Vendemos por pieza, caja o metro cuadrado según la categoría.<br><br>✅ La mejor forma de saber el precio exacto es solicitando una <strong>cotización personalizada</strong>. Es gratis y te respondemos el mismo día.<br><br><a href="https://wa.me/526311928993?text=Hola%20ADIS,%20quiero%20una%20cotización" target="_blank" class="chat-whatsapp-btn">📱 Solicitar cotización gratis</a>';
+          return '💰 <strong>Precios:</strong><br><br>Los precios del catálogo son <strong>solo por el material</strong> (por pieza, caja o metro cuadrado según categoría).<br><br>✅ La mejor forma de saber el precio exacto es solicitando una <strong>cotización personalizada</strong>. Es gratis y te respondemos el mismo día.<br><br>🔨 ¿Requieres instalación? Un representante visita tu obra para cotizarla aparte.<br><br><a href="https://wa.me/526311928993?text=Hola%20ADIS,%20quiero%20una%20cotización" target="_blank" class="chat-whatsapp-btn">📱 Solicitar cotización gratis</a>';
         }
         
         // ENVIO / ENTREGA
         if (q.includes('envio') || q.includes('entrega') || q.includes('mandan') || q.includes('envian') || q.includes('domicilio') || q.includes('llevan')) {
-          return '🚚 <strong>Envíos y entregas:</strong><br><br>Realizamos entregas a domicilio. El costo y tiempo depende de la zona y el volumen del pedido.<br><br>📦 Para cotizar el envío, envíanos tu dirección por WhatsApp con los productos que necesitas.<br><br><a href="https://wa.me/526311928993?text=Hola%20ADIS,%20quiero%20cotizar%20un%20envío" target="_blank" class="chat-whatsapp-btn">📱 Cotizar envío</a>';
+          let r = '🚚 <strong>Envíos y entregas:</strong><br><br>';
+          r += '🎁 <strong>Entrega GRATIS</strong> en: ' + kb.envios.gratis + '<br><br>';
+          r += '📦 ' + kb.envios.nacional + '<br><br>';
+          r += '⏱️ ' + kb.envios.tiempo_grandes + '<br><br>';
+          r += 'Envíanos tu dirección por WhatsApp para cotizar el envío exacto.<br><br>';
+          r += '<a href="https://wa.me/526311928993?text=Hola%20ADIS,%20quiero%20cotizar%20un%20envío" target="_blank" class="chat-whatsapp-btn">📱 Cotizar envío</a>';
+          return r;
         }
         
         // INSTALACION
         if (q.includes('instalacion') || q.includes('instalan') || q.includes('colocan') || q.includes('ponen') || q.includes('colocacion')) {
-          return '🛠️ <strong>Servicio de instalación:</strong><br><br>Sí contamos con equipo de instalación profesional. El costo se cotiza aparte según el tipo de trabajo, metros cuadrados y ubicación.<br><br>✅ También vendemos materiales sueltos si prefieres instalar por tu cuenta.<br><br><a href="https://wa.me/526311928993?text=Hola%20ADIS,%20quiero%20cotizar%20instalación" target="_blank" class="chat-whatsapp-btn">📱 Cotizar instalación</a>';
+          let r = '🛠️ <strong>Servicio de instalación:</strong><br><br>';
+          r += kb.instalacion.costo + '<br><br>';
+          r += '👷 ' + kb.instalacion.proceso + '<br><br>';
+          r += '✅ También vendemos materiales sueltos si prefieres instalar por tu cuenta.<br><br>';
+          r += '<a href="https://wa.me/526311928993?text=Hola%20ADIS,%20quiero%20cotizar%20instalación" target="_blank" class="chat-whatsapp-btn">📱 Cotizar instalación</a>';
+          return r;
         }
         
         // PAGO / FORMAS DE PAGO
-        if (q.includes('pago') || q.includes('pagos') || q.includes('tarjeta') || q.includes('credito') || q.includes('efectivo') || q.includes('transferencia') || q.includes('meses')) {
-          return '💳 <strong>Formas de pago:</strong><br><br>• Efectivo 💵<br>• Transferencia bancaria 🏦<br>• Depósito 📥<br>• Tarjetas de crédito/débito 💳<br><br>Para pedidos grandes podemos manejar pagos a convenir. Escríbenos para más detalles.<br><br><a href="https://wa.me/526311928993?text=Hola%20ADIS,%20pregunto%20por%20formas%20de%20pago" target="_blank" class="chat-whatsapp-btn">📱 Preguntar por pagos</a>';
+        if (q.includes('pago') || q.includes('pagos') || q.includes('tarjeta') || q.includes('credito') || q.includes('efectivo') || q.includes('transferencia') || q.includes('meses') || q.includes('debito')) {
+          let r = '💳 <strong>Formas de pago:</strong><br><br>';
+          kb.pagos.metodos.forEach(m => { r += '• ' + m + '<br>'; });
+          r += '<br>⚠️ <strong>' + kb.pagos.anticipo + '</strong><br><br>';
+          r += 'Escríbenos para más detalles.<br><br>';
+          r += '<a href="https://wa.me/526311928993?text=Hola%20ADIS,%20pregunto%20por%20formas%20de%20pago" target="_blank" class="chat-whatsapp-btn">📱 Preguntar por pagos</a>';
+          return r;
         }
         
         // GARANTIA
         if (q.includes('garantia') || q.includes('garantiza')) {
-          return '✅ <strong>Garantía:</strong><br><br>La mayoría de nuestros productos cuentan con garantía del fabricante. El tiempo varía según el material:<br><br>• Placas PVC: 15 años<br>• Lambrín WPC: 15 años<br>• Pisos SPC: 12 años (residencial)<br>• Zacate sintético: 5 años<br><br>La garantía cubre defectos de fábrica. Para hacerla válida conserva tu ticket de compra.';
+          return '✅ <strong>Garantía:</strong><br><br>La mayoría de nuestros productos cuentan con garantía del fabricante:<br><br>• Placas PVC: 15 años<br>• Lambrín WPC: 15 años<br>• Pisos SPC: 12 años (residencial)<br>• Zacate sintético: 5 años<br><br>La garantía cubre defectos de fábrica. Conserva tu ticket de compra para hacerla válida.';
         }
         
-        // PRODUCTOS / CATALOGO / MATERIALES
+        // PRODUCTOS / CATALOGO / MATERIALES / PROYECTOS
         if (q.includes('producto') || q.includes('catalogo') || q.includes('materiales') || q.includes('que venden') || q.includes('tienen') || q.includes('ofrecen')) {
-          return '📦 <strong>Nuestros productos:</strong><br><br>• Placas PVC (tipo madera, texturizadas, espejo)<br>• Lambrín WPC (interior y exterior)<br>• Paneles 3D decorativos<br>• Pisos (Laminado, WPC, SPC, Deck)<br>• Plafón PVC<br>• Vigas PVC<br>• Zacate sintético y follaje<br>• Cladding y revestimientos<br><br>👉 <a href="index.html#categorias" style="color:#C5A059">Ver catálogo completo</a>';
+          return '📦 <strong>Nuestros productos:</strong><br><br>• Placas PVC (tipo madera, texturizadas, espejo)<br>• Lambrín WPC (interior y exterior)<br>• Paneles 3D decorativos<br>• Pisos (Laminado, WPC, SPC, Deck)<br>• Plafón PVC<br>• Vigas PVC<br>• Zacate sintético y follaje<br>• Cladding y revestimientos<br><br>🏠 Atendemos: ' + kb.proyectos.tipos + '<br><br>👉 <a href="index.html#categorias" style="color:#C5A059">Ver catálogo completo</a>';
         }
         
         // DIFERENCIAS ENTRE MATERIALES
-        if (q.includes('wpc') && (q.includes('pvc') || q.includes('diferencia'))) {
+        if ((q.includes('wpc') && q.includes('pvc')) || q.includes('diferencia wpc') || q.includes('wpc o pvc')) {
           return '🆚 <strong>WPC vs PVC:</strong><br><br><strong>WPC (Wood Plastic Composite):</strong><br>• Mezcla de madera y plástico<br>• Aspecto más natural tipo madera real<br>• Ideal para exteriores (resistente a UV y lluvia)<br>• Más pesado y robusto<br><br><strong>PVC:</strong><br>• Plástico 100%<br>• Más ligero y fácil de instalar<br>• Ideal para interiores<br>• Mayor variedad de diseños (madera, espejo, textura)<br><br>¿Te ayudo a elegir según tu proyecto? 💬';
         }
         if (q.includes('spc') && (q.includes('wpc') || q.includes('diferencia') || q.includes('pvc'))) {
@@ -611,6 +645,11 @@
         }
         if (q.includes('adios') || q.includes('bye') || q.includes('hasta luego') || q.includes('nos vemos')) {
           return '¡Hasta luego! 👋 Gracias por contactar a ADIS Diseño & Remodelación. Recuerda que puedes volver cuando quieras o escribirnos al WhatsApp. ¡Éxito con tu proyecto! 🏠✨';
+        }
+        
+        // TIPO DE PROYECTO / A QUIEN ATIENDEN
+        if (q.includes('casa') || q.includes('oficina') || q.includes('negocio') || q.includes('local') || q.includes('proyecto')) {
+          return '🏠 <strong>Atendemos todo tipo de proyectos:</strong><br><br>' + kb.proyectos.tipos + '<br><br>Desde una pared de acento en casa hasta remodelaciones completas de locales comerciales. ¿Cuéntanos sobre tu proyecto? 💬<br><br><a href="https://wa.me/526311928993?text=Hola%20ADIS,%20tengo%20un%20proyecto%20de" target="_blank" class="chat-whatsapp-btn">📱 Contar mi proyecto</a>';
         }
         
         // DEFAULT
