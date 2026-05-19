@@ -425,6 +425,92 @@ nav.desktop-nav a:hover::after { width: 100%; }
   letter-spacing: 2px; font-weight: 600;
 }
 
+/* CATEGORIAS ESTRELLA */
+.cat-card.featured {
+  border: 2px solid var(--gold);
+  box-shadow: 0 0 30px rgba(197,160,89,0.25);
+  animation: starGlow 3s ease-in-out infinite;
+}
+@keyframes starGlow {
+  0%, 100% { box-shadow: 0 0 30px rgba(197,160,89,0.25); }
+  50% { box-shadow: 0 0 50px rgba(197,160,89,0.5); }
+}
+.star-badge {
+  position: absolute; top: 12px; right: 12px; z-index: 2;
+  background: var(--gold); color: var(--black);
+  padding: 0.3rem 0.8rem; border-radius: 20px;
+  font-size: 0.65rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 1px; box-shadow: 0 4px 15px rgba(197,160,89,0.4);
+}
+
+/* SECCIÓN ESTRELLAS HOME */
+.featured-section {
+  padding: 5rem 2rem;
+  position: relative; z-index: 1;
+}
+.featured-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 2rem;
+  max-width: 1100px; margin: 0 auto;
+}
+.featured-card {
+  position: relative; overflow: hidden;
+  border-radius: 12px;
+  height: 380px;
+  border: 2px solid var(--gold);
+  text-decoration: none; color: inherit; display: block;
+  transition: all 0.4s ease;
+  box-shadow: 0 0 40px rgba(197,160,89,0.2);
+}
+.featured-card:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 30px 60px rgba(197,160,89,0.35);
+}
+.featured-card img {
+  width: 100%; height: 100%; object-fit: cover;
+  transition: transform 0.8s ease;
+}
+.featured-card:hover img {
+  transform: scale(1.1);
+}
+.featured-card-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.4) 40%, transparent 70%);
+  display: flex; flex-direction: column; justify-content: flex-end;
+  padding: 2rem;
+}
+.featured-card-overlay .star-label {
+  display: inline-block; width: fit-content;
+  background: var(--gold); color: var(--black);
+  padding: 0.4rem 1rem; border-radius: 20px;
+  font-size: 0.7rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 2px; margin-bottom: 1rem;
+}
+.featured-card-overlay h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 2rem; color: var(--white); margin-bottom: 0.5rem;
+}
+.featured-card-overlay p {
+  font-size: 0.9rem; color: rgba(245,245,245,0.8); line-height: 1.6;
+  max-width: 400px;
+}
+
+/* HERO CATEGORIA ESTRELLA */
+.hero-star-badge {
+  display: inline-block;
+  background: var(--gold); color: var(--black);
+  padding: 0.5rem 1.5rem; border-radius: 25px;
+  font-size: 0.75rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 2px; margin-bottom: 1rem;
+  box-shadow: 0 4px 20px rgba(197,160,89,0.4);
+  animation: starGlowBadge 2.5s ease-in-out infinite;
+}
+@keyframes starGlowBadge {
+  0%, 100% { box-shadow: 0 4px 20px rgba(197,160,89,0.4); }
+  50% { box-shadow: 0 4px 35px rgba(197,160,89,0.7); }
+}
+
 /* HERO CATEGORÍA */
 .hero-cat {
   padding: 8rem 2rem 3rem;
@@ -1676,7 +1762,12 @@ def generate_index(categories):
     meta_desc = "Catálogo oficial de ADIS Diseño & Remodelación. Recubrimientos de alta gama: Placas PVC, Lambrín WPC, Plafón, Paneles 3D, Vigas, Pisos, Zacate y Cladding. Nogales, Sonora."
     meta_keywords = "ADIS, diseño, remodelación, paneles, WPC, PVC, recubrimientos, Nogales, Sonora, pisos, zacate, cladding"
 
+    STAR_CATEGORIES = {'Lambrin WPC', 'Placas PVC'}
+    
+    # Tarjetas estrella (sección destacada)
+    featured_cards = ''
     cat_cards = ''
+    
     for cat in categories:
         total_prods = len(cat['direct_products'])
         for sub in cat['subcategories']:
@@ -1687,9 +1778,31 @@ def generate_index(categories):
             thumb_src = f"img/{cat['slug']}/{cat['subcategories'][0]['slug']}/{cat['subcategories'][0]['products'][0]}"
         elif cat['direct_products']:
             thumb_src = f"img/{cat['slug']}/{cat['direct_products'][0]}"
-
-        cat_cards += f'''      <a href="{cat['filename']}" class="cat-card reveal">
+        
+        is_star = cat['name'] in STAR_CATEGORIES
+        
+        if is_star:
+            desc = ''
+            if cat['name'] == 'Lambrin WPC':
+                desc = 'Wood Plastic Composite de alta gama. Resistente a la humedad, rayos UV y perfecto para interiores y exteriores. Nuestro producto más solicitado.'
+            elif cat['name'] == 'Placas PVC':
+                desc = 'Paneles rígidos tipo madera, texturizados y espejo. Acabado profesional con instalación rápida y garantía extendida.'
+            
+            featured_cards += f'''      <a href="{cat['filename']}" class="featured-card reveal">
         <img src="{thumb_src}" alt="{cat['name']}" loading="lazy">
+        <div class="featured-card-overlay">
+          <div class="star-label">⭐ Producto Estrella</div>
+          <h3>{cat['name']}</h3>
+          <p>{desc}</p>
+        </div>
+      </a>
+'''
+        
+        star_badge = '<div class="star-badge">⭐ Estrella</div>' if is_star else ''
+        featured_class = ' featured' if is_star else ''
+        
+        cat_cards += f'''      <a href="{cat['filename']}" class="cat-card reveal{featured_class}">
+        {star_badge}<img src="{thumb_src}" alt="{cat['name']}" loading="lazy">
         <div class="cat-card-overlay">
           <div class="cat-arrow">→</div>
           <h3>{cat['name']}</h3>
@@ -1784,6 +1897,17 @@ def generate_index(categories):
         <div class="stat-label">Clientes Satisfechos</div>
       </div>
     </div>
+  </section>
+
+  <!-- PRODUCTOS ESTRELLA -->
+  <section class="featured-section reveal" id="estrellas">
+    <div class="section-header">
+      <h2>⭐ Productos Estrella</h2>
+      <div class="divider"></div>
+      <p>Los favoritos de nuestros clientes. Calidad premium que transforma cualquier espacio.</p>
+    </div>
+    <div class="featured-grid">
+{featured_cards}    </div>
   </section>
 
   <!-- CATÁLOGO -->
@@ -2001,7 +2125,7 @@ def generate_category_page(cat, categories):
 
   <section class="hero-cat-bg" style="background-image: url('{hero_bg}');">
     <div class="hero-cat-content">
-      <div class="hero-cat-badge">Categoría</div>
+      {'<div class="hero-star-badge">⭐ Producto Estrella</div>' if cat['name'] in ("Lambrin WPC", "Placas PVC") else '<div class="hero-cat-badge">Categoría</div>'}
       <h1>{cat['name']}</h1>
       <p>Explora nuestra línea de {cat['name'].lower()} con {cat['total_products']} productos disponibles. Solicita tu cotización.</p>
     </div>
