@@ -13,13 +13,19 @@
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
   <style>
-    .before-after { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; max-width: 1000px; margin: 0 auto; }
-    .before-after img { width: 100%; height: 300px; object-fit: cover; border-radius: 8px; cursor: pointer; transition: transform 0.3s; }
-    .before-after img:hover { transform: scale(1.02); }
-    .ba-label { text-align: center; color: var(--gold); font-family: 'Playfair Display', serif; font-size: 1.2rem; margin-top: 0.5rem; }
+    /* CAROUSEL */
+    .carousel-wrap { position: relative; max-width: 900px; margin: 0 auto; overflow: hidden; border-radius: 12px; border: 1px solid rgba(197,160,89,0.2); }
+    .carousel { display: flex; transition: transform 0.5s ease; }
+    .carousel-slide { min-width: 100%; position: relative; }
+    .carousel-slide img { width: 100%; height: 500px; object-fit: cover; display: block; cursor: pointer; }
+    .carousel-label { position: absolute; bottom: 20px; left: 20px; padding: 0.5rem 1.2rem; border-radius: 25px; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; backdrop-filter: blur(8px); }
+    .carousel-btn { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(15,15,15,0.7); border: 1px solid var(--gold); color: var(--gold); width: 45px; height: 45px; border-radius: 50%; cursor: pointer; font-size: 1.2rem; display: flex; align-items: center; justify-content: center; transition: all 0.3s; z-index: 2; }
+    .carousel-btn:hover { background: var(--gold); color: var(--black); }
+    .carousel-btn.prev { left: 15px; }
+    .carousel-btn.next { right: 15px; }
     .video-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem; max-width: 1200px; margin: 0 auto; }
     .video-card video { width: 100%; border-radius: 8px; }
-    @media (max-width: 768px) { .before-after { grid-template-columns: 1fr; } }
+    @media (max-width: 768px) { .carousel-slide img { height: 280px; } .carousel-btn { width: 36px; height: 36px; font-size: 1rem; } }
   </style>
 </head>
 <body>
@@ -89,17 +95,21 @@
     <div class="section-header">
       <h2>Antes y Después</h2>
       <div class="divider"></div>
-      <p>De una sala común a un espacio de lujo con nuestros recubrimientos.</p>
+      <p>Desliza para ver la transformación completa.</p>
     </div>
-    <div class="before-after">
-      <div>
-        <img src="media/antes.jpg" alt="Antes" loading="lazy" onclick="openLightbox('media/antes.jpg', 'Antes')">
-        <div class="ba-label">Antes</div>
+    <div class="carousel-wrap">
+      <div class="carousel" id="carousel-ba-1">
+        <div class="carousel-slide">
+          <img src="media/antes.jpg" alt="Antes" loading="lazy" onclick="openLightbox('media/antes.jpg', 'Antes - Antes y Después')">
+          <div class="carousel-label" style="background: rgba(197,160,89,0.2);">Antes</div>
+        </div>
+        <div class="carousel-slide">
+          <img src="media/despues.jpg" alt="Después" loading="lazy" onclick="openLightbox('media/despues.jpg', 'Después - Antes y Después')">
+          <div class="carousel-label" style="background: var(--gold); color: var(--black);">Después</div>
+        </div>
       </div>
-      <div>
-        <img src="media/despues.jpg" alt="Después" loading="lazy" onclick="openLightbox('media/despues.jpg', 'Después')">
-        <div class="ba-label">Después</div>
-      </div>
+      <button class="carousel-btn prev" onclick="moveCarousel('carousel-ba-1', -1)">&#10094;</button>
+      <button class="carousel-btn next" onclick="moveCarousel('carousel-ba-1', 1)">&#10095;</button>
     </div>
   </section>
   <section class="section-wrap-alt reveal">
@@ -108,95 +118,41 @@
       <div class="divider"></div>
       <p>Trabajos reales con nuestros materiales de alta gama.</p>
     </div>
-    <div class="products-grid">
-      <div class="product-card reveal">
-        <div class="product-gallery" onclick="openLightbox('media/ejemplo-tapiz.jpg', 'Ejemplo Tapiz')">
-          <img src="media/ejemplo-tapiz.jpg" alt="Ejemplo Tapiz" loading="lazy">
+    <div class="carousel-wrap">
+      <div class="carousel" id="carousel-gallery">
+        <div class="carousel-slide">
+          <img src="media/ejemplo-tapiz.jpg" alt="Ejemplo Tapiz" loading="lazy" onclick="openLightbox('media/ejemplo-tapiz.jpg', 'Ejemplo Tapiz')">
         </div>
-        <div class="product-info">
-          <div class="product-name">Ejemplo Tapiz</div>
+        <div class="carousel-slide">
+          <img src="media/equipo-adis.jpg" alt="Equipo Adis" loading="lazy" onclick="openLightbox('media/equipo-adis.jpg', 'Equipo Adis')">
         </div>
-      </div>
-      <div class="product-card reveal">
-        <div class="product-gallery" onclick="openLightbox('media/equipo-adis.jpg', 'Equipo Adis')">
-          <img src="media/equipo-adis.jpg" alt="Equipo Adis" loading="lazy">
+        <div class="carousel-slide">
+          <img src="media/proyecto-01.jpeg" alt="Proyecto 01" loading="lazy" onclick="openLightbox('media/proyecto-01.jpeg', 'Proyecto 01')">
         </div>
-        <div class="product-info">
-          <div class="product-name">Equipo Adis</div>
+        <div class="carousel-slide">
+          <img src="media/proyecto-02.jpeg" alt="Proyecto 02" loading="lazy" onclick="openLightbox('media/proyecto-02.jpeg', 'Proyecto 02')">
         </div>
-      </div>
-      <div class="product-card reveal">
-        <div class="product-gallery" onclick="openLightbox('media/proyecto-01.jpeg', 'Proyecto 01')">
-          <img src="media/proyecto-01.jpeg" alt="Proyecto 01" loading="lazy">
+        <div class="carousel-slide">
+          <img src="media/proyecto-03.jpeg" alt="Proyecto 03" loading="lazy" onclick="openLightbox('media/proyecto-03.jpeg', 'Proyecto 03')">
         </div>
-        <div class="product-info">
-          <div class="product-name">Proyecto 01</div>
+        <div class="carousel-slide">
+          <img src="media/proyecto-04.jpeg" alt="Proyecto 04" loading="lazy" onclick="openLightbox('media/proyecto-04.jpeg', 'Proyecto 04')">
         </div>
-      </div>
-      <div class="product-card reveal">
-        <div class="product-gallery" onclick="openLightbox('media/proyecto-02.jpeg', 'Proyecto 02')">
-          <img src="media/proyecto-02.jpeg" alt="Proyecto 02" loading="lazy">
+        <div class="carousel-slide">
+          <img src="media/proyecto-05.jpeg" alt="Proyecto 05" loading="lazy" onclick="openLightbox('media/proyecto-05.jpeg', 'Proyecto 05')">
         </div>
-        <div class="product-info">
-          <div class="product-name">Proyecto 02</div>
+        <div class="carousel-slide">
+          <img src="media/proyecto-06.jpeg" alt="Proyecto 06" loading="lazy" onclick="openLightbox('media/proyecto-06.jpeg', 'Proyecto 06')">
         </div>
-      </div>
-      <div class="product-card reveal">
-        <div class="product-gallery" onclick="openLightbox('media/proyecto-03.jpeg', 'Proyecto 03')">
-          <img src="media/proyecto-03.jpeg" alt="Proyecto 03" loading="lazy">
+        <div class="carousel-slide">
+          <img src="media/proyecto-07.jpeg" alt="Proyecto 07" loading="lazy" onclick="openLightbox('media/proyecto-07.jpeg', 'Proyecto 07')">
         </div>
-        <div class="product-info">
-          <div class="product-name">Proyecto 03</div>
+        <div class="carousel-slide">
+          <img src="media/proyecto-recepcion.jpg" alt="Proyecto Recepcion" loading="lazy" onclick="openLightbox('media/proyecto-recepcion.jpg', 'Proyecto Recepcion')">
         </div>
       </div>
-      <div class="product-card reveal">
-        <div class="product-gallery" onclick="openLightbox('media/proyecto-04.jpeg', 'Proyecto 04')">
-          <img src="media/proyecto-04.jpeg" alt="Proyecto 04" loading="lazy">
-        </div>
-        <div class="product-info">
-          <div class="product-name">Proyecto 04</div>
-        </div>
-      </div>
-      <div class="product-card reveal">
-        <div class="product-gallery" onclick="openLightbox('media/proyecto-05.jpeg', 'Proyecto 05')">
-          <img src="media/proyecto-05.jpeg" alt="Proyecto 05" loading="lazy">
-        </div>
-        <div class="product-info">
-          <div class="product-name">Proyecto 05</div>
-        </div>
-      </div>
-      <div class="product-card reveal">
-        <div class="product-gallery" onclick="openLightbox('media/proyecto-06.jpeg', 'Proyecto 06')">
-          <img src="media/proyecto-06.jpeg" alt="Proyecto 06" loading="lazy">
-        </div>
-        <div class="product-info">
-          <div class="product-name">Proyecto 06</div>
-        </div>
-      </div>
-      <div class="product-card reveal">
-        <div class="product-gallery" onclick="openLightbox('media/proyecto-07.jpeg', 'Proyecto 07')">
-          <img src="media/proyecto-07.jpeg" alt="Proyecto 07" loading="lazy">
-        </div>
-        <div class="product-info">
-          <div class="product-name">Proyecto 07</div>
-        </div>
-      </div>
-      <div class="product-card reveal">
-        <div class="product-gallery" onclick="openLightbox('media/proyecto-recepcion-thumb.jpg', 'Proyecto Recepcion Thumb')">
-          <img src="media/proyecto-recepcion-thumb.jpg" alt="Proyecto Recepcion Thumb" loading="lazy">
-        </div>
-        <div class="product-info">
-          <div class="product-name">Proyecto Recepcion Thumb</div>
-        </div>
-      </div>
-      <div class="product-card reveal">
-        <div class="product-gallery" onclick="openLightbox('media/proyecto-recepcion.jpg', 'Proyecto Recepcion')">
-          <img src="media/proyecto-recepcion.jpg" alt="Proyecto Recepcion" loading="lazy">
-        </div>
-        <div class="product-info">
-          <div class="product-name">Proyecto Recepcion</div>
-        </div>
-      </div>
+      <button class="carousel-btn prev" onclick="moveCarousel('carousel-gallery', -1)">&#10094;</button>
+      <button class="carousel-btn next" onclick="moveCarousel('carousel-gallery', 1)">&#10095;</button>
     </div>
   </section>
   <section class="section-wrap reveal">
@@ -289,6 +245,23 @@
   </section>
 
   <script>
+    // Carrusel
+    const carouselState = {};
+    function moveCarousel(id, dir) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      const slides = el.children.length;
+      if (!carouselState[id]) carouselState[id] = 0;
+      carouselState[id] = (carouselState[id] + dir + slides) % slides;
+      el.style.transform = 'translateX(-' + (carouselState[id] * 100) + '%)';
+    }
+    // Auto-play carruseles
+    setInterval(() => {
+      document.querySelectorAll('.carousel').forEach(car => {
+        moveCarousel(car.id, 1);
+      });
+    }, 5000);
+    
     // Autoplay videos when visible
     (function() {
       const videos = document.querySelectorAll('.auto-video');

@@ -2783,7 +2783,7 @@ def generate_testimonios():
 '''
 
 def generate_proyectos():
-    """Genera página de proyectos escaneando media/ dinámicamente."""
+    """Genera página de proyectos con carruseles de antes/después y galería dinámica."""
     media_dir = BASE_DIR / 'media'
     
     img_exts = ('.jpg', '.jpeg', '.png')
@@ -2794,55 +2794,79 @@ def generate_proyectos():
     images = [f for f in all_files if f.lower().endswith(img_exts)]
     videos = [f for f in all_files if f.lower().endswith(vid_exts)]
     
-    # Detectar antes/despues
-    antes_file = 'antes.jpg' if 'antes.jpg' in images else None
-    despues_file = 'despues.jpg' if 'despues.jpg' in images else None
-    ba_section = ''
-    if antes_file and despues_file:
-        ba_section = f'''  <section class="section-wrap reveal">
+    # Detectar TODAS las parejas antes/despues
+    def stem_no_ext(fname):
+        return Path(fname).stem.lower()
+    
+    # Buscar pares: "antes" + "despues" con mismo sufijo numérico
+    ba_pairs = []
+    used = set()
+    for img in images:
+        s = stem_no_ext(img)
+        if s.startswith('antes'):
+            suffix = s[5:].strip()  # ej: "", "1", "2"
+            despues_name = f'despues {suffix}'.strip() if suffix else 'despues'
+            # Buscar archivo despues correspondiente
+            match = None
+            for d in images:
+                if stem_no_ext(d) == despues_name:
+                    match = d
+                    break
+            if match:
+                ba_pairs.append((img, match))
+                used.add(img)
+                used.add(match)
+    
+    # Secciones de antes/después (carrusel por cada par)
+    ba_sections = ''
+    for i, (antes, despues) in enumerate(ba_pairs, 1):
+        label = f'Remodelación {i}' if len(ba_pairs) > 1 else 'Antes y Después'
+        ba_sections += f'''  <section class="section-wrap reveal">
     <div class="section-header">
-      <h2>Antes y Después</h2>
+      <h2>{label}</h2>
       <div class="divider"></div>
-      <p>De una sala común a un espacio de lujo con nuestros recubrimientos.</p>
+      <p>Desliza para ver la transformación completa.</p>
     </div>
-    <div class="before-after">
-      <div>
-        <img src="media/{antes_file}" alt="Antes" loading="lazy" onclick="openLightbox('media/{antes_file}', 'Antes')">
-        <div class="ba-label">Antes</div>
+    <div class="carousel-wrap">
+      <div class="carousel" id="carousel-ba-{i}">
+        <div class="carousel-slide">
+          <img src="media/{antes}" alt="Antes" loading="lazy" onclick="openLightbox('media/{antes}', 'Antes - {label}')">
+          <div class="carousel-label" style="background: rgba(197,160,89,0.2);">Antes</div>
+        </div>
+        <div class="carousel-slide">
+          <img src="media/{despues}" alt="Después" loading="lazy" onclick="openLightbox('media/{despues}', 'Después - {label}')">
+          <div class="carousel-label" style="background: var(--gold); color: var(--black);">Después</div>
+        </div>
       </div>
-      <div>
-        <img src="media/{despues_file}" alt="Después" loading="lazy" onclick="openLightbox('media/{despues_file}', 'Después')">
-        <div class="ba-label">Después</div>
-      </div>
+      <button class="carousel-btn prev" onclick="moveCarousel('carousel-ba-{i}', -1)">&#10094;</button>
+      <button class="carousel-btn next" onclick="moveCarousel('carousel-ba-{i}', 1)">&#10095;</button>
     </div>
   </section>
 '''
-        images = [f for f in images if f not in (antes_file, despues_file)]
     
-    # Galería de proyectos
-    gallery_html = ''
-    for img in images:
-        name = Path(img).stem.replace('-', ' ').replace('_', ' ').title()
-        gallery_html += f'''      <div class="product-card reveal">
-        <div class="product-gallery" onclick="openLightbox('media/{img}', '{name}')">
-          <img src="media/{img}" alt="{name}" loading="lazy">
-        </div>
-        <div class="product-info">
-          <div class="product-name">{name}</div>
-        </div>
-      </div>
-'''
-    
+    # Fotos sueltas (no usadas en pares) → carrusel general
+    loose_images = [f for f in images if f not in used]
     gallery_section = ''
-    if gallery_html:
+    if loose_images:
+        slides = ''
+        for img in loose_images:
+            name = Path(img).stem.replace('-', ' ').replace('_', ' ').title()
+            slides += f'''        <div class="carousel-slide">
+          <img src="media/{img}" alt="{name}" loading="lazy" onclick="openLightbox('media/{img}', '{name}')">
+        </div>
+'''
         gallery_section = f'''  <section class="section-wrap-alt reveal">
     <div class="section-header">
       <h2>Galería de Proyectos</h2>
       <div class="divider"></div>
       <p>Trabajos reales con nuestros materiales de alta gama.</p>
     </div>
-    <div class="products-grid">
-{gallery_html}    </div>
+    <div class="carousel-wrap">
+      <div class="carousel" id="carousel-gallery">
+{slides}      </div>
+      <button class="carousel-btn prev" onclick="moveCarousel('carousel-gallery', -1)">&#10094;</button>
+      <button class="carousel-btn next" onclick="moveCarousel('carousel-gallery', 1)">&#10095;</button>
+    </div>
   </section>
 '''
     
@@ -2850,10 +2874,10 @@ def generate_proyectos():
     videos_html = ''
     for vid in videos:
         name = Path(vid).stem.replace('-', ' ').replace('_', ' ').title()
-        # Usar la primera imagen como poster si existe
-        poster = images[0] if images else 'media/despues.jpg'
+        poster = loose_images[0] if loose_images else (images[0] if images else '')
+        poster_attr = f' poster="media/{poster}"' if poster else ''
         videos_html += f'''      <div class="video-card reveal">
-        <video class="auto-video" muted loop playsinline poster="media/{poster}">
+        <video class="auto-video" muted loop playsinline{poster_attr}>
           <source src="media/{vid}" type="video/mp4">
         </video>
         <div class="product-info">
@@ -2890,13 +2914,19 @@ def generate_proyectos():
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
   <style>
-    .before-after {{ display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; max-width: 1000px; margin: 0 auto; }}
-    .before-after img {{ width: 100%; height: 300px; object-fit: cover; border-radius: 8px; cursor: pointer; transition: transform 0.3s; }}
-    .before-after img:hover {{ transform: scale(1.02); }}
-    .ba-label {{ text-align: center; color: var(--gold); font-family: 'Playfair Display', serif; font-size: 1.2rem; margin-top: 0.5rem; }}
+    /* CAROUSEL */
+    .carousel-wrap {{ position: relative; max-width: 900px; margin: 0 auto; overflow: hidden; border-radius: 12px; border: 1px solid rgba(197,160,89,0.2); }}
+    .carousel {{ display: flex; transition: transform 0.5s ease; }}
+    .carousel-slide {{ min-width: 100%; position: relative; }}
+    .carousel-slide img {{ width: 100%; height: 500px; object-fit: cover; display: block; cursor: pointer; }}
+    .carousel-label {{ position: absolute; bottom: 20px; left: 20px; padding: 0.5rem 1.2rem; border-radius: 25px; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; backdrop-filter: blur(8px); }}
+    .carousel-btn {{ position: absolute; top: 50%; transform: translateY(-50%); background: rgba(15,15,15,0.7); border: 1px solid var(--gold); color: var(--gold); width: 45px; height: 45px; border-radius: 50%; cursor: pointer; font-size: 1.2rem; display: flex; align-items: center; justify-content: center; transition: all 0.3s; z-index: 2; }}
+    .carousel-btn:hover {{ background: var(--gold); color: var(--black); }}
+    .carousel-btn.prev {{ left: 15px; }}
+    .carousel-btn.next {{ right: 15px; }}
     .video-grid {{ display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem; max-width: 1200px; margin: 0 auto; }}
     .video-card video {{ width: 100%; border-radius: 8px; }}
-    @media (max-width: 768px) {{ .before-after {{ grid-template-columns: 1fr; }} }}
+    @media (max-width: 768px) {{ .carousel-slide img {{ height: 280px; }} .carousel-btn {{ width: 36px; height: 36px; font-size: 1rem; }} }}
   </style>
 </head>
 <body>
@@ -2908,7 +2938,7 @@ def generate_proyectos():
     <p>Transformaciones que hablan por sí solas. Conoce nuestro trabajo.</p>
   </section>
 
-{ba_section}{gallery_section}{video_section}
+{ba_sections}{gallery_section}{video_section}
   <section class="section-wrap" style="padding-top: 1rem;">
     <div style="text-align: center;">
       <a href="index.html" class="btn-back">← Volver al Inicio</a>
@@ -2917,6 +2947,23 @@ def generate_proyectos():
   </section>
 
   <script>
+    // Carrusel
+    const carouselState = {{}};
+    function moveCarousel(id, dir) {{
+      const el = document.getElementById(id);
+      if (!el) return;
+      const slides = el.children.length;
+      if (!carouselState[id]) carouselState[id] = 0;
+      carouselState[id] = (carouselState[id] + dir + slides) % slides;
+      el.style.transform = 'translateX(-' + (carouselState[id] * 100) + '%)';
+    }}
+    // Auto-play carruseles
+    setInterval(() => {{
+      document.querySelectorAll('.carousel').forEach(car => {{
+        moveCarousel(car.id, 1);
+      }});
+    }}, 5000);
+    
     // Autoplay videos when visible
     (function() {{
       const videos = document.querySelectorAll('.auto-video');
@@ -2938,7 +2985,7 @@ def generate_proyectos():
 '''
     with open(BASE_DIR / 'proyectos.html', 'w', encoding='utf-8') as f:
         f.write(html)
-    print("proyectos.html generado (dinamico)")
+    print("proyectos.html generado (carruseles)")
     with open(BASE_DIR / 'proyectos.html', 'w', encoding='utf-8') as f:
         f.write(html)
     print("proyectos.html generado")
