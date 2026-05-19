@@ -1479,23 +1479,44 @@ footer {
   transform: translateX(0);
 }
 
-/* MEGA MENU */
+/* MEGA MENU & DROPDOWNS */
 .mega-trigger { position: relative; }
+.mega-trigger::after {
+  content: '▼'; font-size: 0.6rem; margin-left: 0.3rem; color: var(--gold); opacity: 0.7; vertical-align: middle;
+}
 .mega-menu {
-  position: absolute; top: calc(100% + 10px); left: 50%; transform: translateX(-50%) translateY(10px);
-  width: 720px; max-width: 90vw; background: rgba(26,26,26,0.98); backdrop-filter: blur(20px);
-  border: 1px solid rgba(197,160,89,0.25); border-radius: 16px; padding: 1.5rem;
-  box-shadow: 0 30px 80px rgba(0,0,0,0.8); opacity: 0; visibility: hidden; transition: all 0.3s ease;
-  z-index: 1002; display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.8rem;
+  position: absolute; top: calc(100% + 12px); left: 50%; transform: translateX(-50%) translateY(10px);
+  width: 780px; max-width: 92vw; background: rgba(8,8,8,0.98); backdrop-filter: blur(24px);
+  border: 2px solid rgba(197,160,89,0.55); border-radius: 18px; padding: 2rem;
+  box-shadow: 0 40px 100px rgba(0,0,0,0.9), 0 0 0 1px rgba(197,160,89,0.1); opacity: 0; visibility: hidden; transition: all 0.35s ease;
+  z-index: 1002; display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem;
 }
 .mega-trigger:hover .mega-menu { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
 .mega-item {
-  display: flex; align-items: center; gap: 0.8rem; padding: 0.7rem; border-radius: 10px;
+  display: flex; align-items: center; gap: 1rem; padding: 1rem; border-radius: 12px;
   text-decoration: none; color: var(--light); transition: all 0.3s; border: 1px solid transparent;
+  background: rgba(255,255,255,0.02);
 }
-.mega-item:hover { background: rgba(197,160,89,0.1); border-color: rgba(197,160,89,0.3); transform: translateY(-2px); }
-.mega-item img { width: 45px; height: 45px; object-fit: cover; border-radius: 8px; border: 1px solid rgba(197,160,89,0.2); }
-.mega-item span { font-size: 0.8rem; font-weight: 600; letter-spacing: 1px; }
+.mega-item:hover { background: rgba(197,160,89,0.12); border-color: rgba(197,160,89,0.45); transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0,0,0,0.3); }
+.mega-item img { width: 52px; height: 52px; object-fit: cover; border-radius: 10px; border: 1px solid rgba(197,160,89,0.25); }
+.mega-item span { font-size: 0.9rem; font-weight: 600; letter-spacing: 1px; }
+
+/* DROPDOWN ¿SABÍAS QUE? */
+.nav-dropdown {
+  position: absolute; top: calc(100% + 12px); left: 50%; transform: translateX(-50%) translateY(10px);
+  width: 520px; max-width: 92vw; background: rgba(8,8,8,0.98); backdrop-filter: blur(24px);
+  border: 2px solid rgba(197,160,89,0.55); border-radius: 18px; padding: 1.5rem 2rem;
+  box-shadow: 0 40px 100px rgba(0,0,0,0.9), 0 0 0 1px rgba(197,160,89,0.1); opacity: 0; visibility: hidden; transition: all 0.35s ease;
+  z-index: 1002; display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.6rem;
+}
+.mega-trigger:hover .nav-dropdown { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
+.dropdown-item {
+  display: flex; align-items: center; gap: 0.9rem; padding: 0.85rem 1rem; border-radius: 12px;
+  text-decoration: none; color: var(--light); transition: all 0.3s; border: 1px solid transparent;
+  background: rgba(255,255,255,0.02); font-size: 0.9rem; font-weight: 600; letter-spacing: 1px;
+}
+.dropdown-item:hover { background: rgba(197,160,89,0.12); border-color: rgba(197,160,89,0.45); transform: translateX(6px); }
+.dropdown-icon { font-size: 1.4rem; width: 32px; text-align: center; }
 
 /* SEARCH HERO */
 .search-hero { max-width: 850px; margin: 3rem auto 0; position: relative; z-index: 2; text-align: center; }
@@ -1575,7 +1596,7 @@ footer {
 
 /* MOBILE */
 @media (max-width: 768px) {
-  .mega-menu { display: none; }
+  .mega-menu, .nav-dropdown { display: none; }
   .search-box input { width: 160px; }
   .search-box input:focus { width: 220px; }
   .search-dropdown { width: calc(100vw - 40px); right: auto; left: -20px; }
@@ -1782,9 +1803,22 @@ def generate_header(current_page='index'):
     ]
     mega_html = '\n'.join([f'        <a href="{u}" class="mega-item"><img src="{i}" alt="{t}" loading="lazy"><span>{t}</span></a>' for u, i, t in MEGA_ITEMS])
     
-    nav_links = '<a href="index.html">Inicio</a>\n        <a href="index.html#categorias" class="mega-trigger">Catálogo\n          <div class="mega-menu">\n' + mega_html + '\n          </div>\n        </a>\n        <a href="sabias-que.html">¿Sabías que?</a>\n        <a href="proyectos.html">Proyectos</a>\n        <a href="contacto.html">Contacto</a>'
+    SABIAS_ITEMS = [
+        ('sabias-que-pvc.html', '🔬', 'Placas PVC'),
+        ('sabias-que-wpc.html', '🌲', 'Lambrín WPC'),
+        ('sabias-que-revestimiento.html', '🪨', 'Revestimiento Flexible'),
+        ('sabias-que-plafon.html', '🏠', 'Plafón PVC'),
+        ('sabias-que-3d.html', '🎨', 'Paneles 3D'),
+        ('sabias-que-vigas.html', '📐', 'Vigas PVC/WPC/PU'),
+        ('sabias-que-pisos.html', '🏗️', 'Pisos'),
+        ('sabias-que-zacate.html', '🌿', 'Zacate Sintético'),
+        ('sabias-que-cladding.html', '⛰️', 'Cladding'),
+    ]
+    sabias_html = '\n'.join([f'        <a href="{u}" class="dropdown-item"><span class="dropdown-icon">{i}</span><span>{t}</span></a>' for u, i, t in SABIAS_ITEMS])
+    
+    nav_links = '<a href="index.html">Inicio</a>\n        <a href="index.html#categorias" class="mega-trigger">Catálogo\n          <div class="mega-menu">\n' + mega_html + '\n          </div>\n        </a>\n        <a href="sabias-que.html" class="mega-trigger">¿Sabías que?\n          <div class="nav-dropdown">\n' + sabias_html + '\n          </div>\n        </a>\n        <a href="proyectos.html">Proyectos</a>\n        <a href="contacto.html">Contacto</a>'
     if current_page != 'index':
-        nav_links = '<a href="index.html">← Inicio</a>\n        <a href="index.html#categorias" class="mega-trigger">Catálogo\n          <div class="mega-menu">\n' + mega_html + '\n          </div>\n        </a>\n        <a href="sabias-que.html">¿Sabías que?</a>\n        <a href="proyectos.html">Proyectos</a>\n        <a href="contacto.html">Contacto</a>'
+        nav_links = '<a href="index.html">← Inicio</a>\n        <a href="index.html#categorias" class="mega-trigger">Catálogo\n          <div class="mega-menu">\n' + mega_html + '\n          </div>\n        </a>\n        <a href="sabias-que.html" class="mega-trigger">¿Sabías que?\n          <div class="nav-dropdown">\n' + sabias_html + '\n          </div>\n        </a>\n        <a href="proyectos.html">Proyectos</a>\n        <a href="contacto.html">Contacto</a>'
 
     return f'''  <header>
     <div class="header-inner">
