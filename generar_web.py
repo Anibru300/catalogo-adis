@@ -1318,17 +1318,18 @@ footer {
 .mega-item span { font-size: 0.8rem; font-weight: 600; letter-spacing: 1px; }
 
 /* SEARCH HERO */
-.search-hero { max-width: 700px; margin: 2.5rem auto 0; position: relative; z-index: 2; }
+.search-hero { max-width: 850px; margin: 3rem auto 0; position: relative; z-index: 2; text-align: center; }
+.search-hero-title { font-family: 'Playfair Display', serif; font-size: 1.4rem; color: var(--gold); margin-bottom: 1rem; letter-spacing: 1px; }
 .search-hero-input {
-  width: 100%; padding: 1.1rem 1.5rem 1.1rem 3.5rem; background: rgba(15,15,15,0.7);
-  border: 2px solid rgba(197,160,89,0.4); border-radius: 50px; color: var(--white);
-  font-family: 'Montserrat', sans-serif; font-size: 1.05rem; backdrop-filter: blur(10px);
-  transition: all 0.3s; box-shadow: 0 4px 30px rgba(0,0,0,0.3);
+  width: 100%; padding: 1.3rem 2rem 1.3rem 4rem; background: rgba(15,15,15,0.75);
+  border: 3px solid rgba(197,160,89,0.5); border-radius: 60px; color: var(--white);
+  font-family: 'Montserrat', sans-serif; font-size: 1.15rem; backdrop-filter: blur(12px);
+  transition: all 0.3s; box-shadow: 0 8px 40px rgba(0,0,0,0.4);
 }
-.search-hero-input:focus { outline: none; border-color: var(--gold); box-shadow: 0 0 40px rgba(197,160,89,0.25); background: rgba(15,15,15,0.9); }
-.search-hero-input::placeholder { color: rgba(245,245,245,0.45); }
-.search-hero-icon { position: absolute; left: 1.3rem; top: 50%; transform: translateY(-50%); font-size: 1.3rem; color: var(--gold); pointer-events: none; }
-.search-hero-hint { text-align: center; margin-top: 0.8rem; font-size: 0.75rem; color: rgba(245,245,245,0.4); letter-spacing: 1px; }
+.search-hero-input:focus { outline: none; border-color: var(--gold); box-shadow: 0 0 50px rgba(197,160,89,0.35); background: rgba(15,15,15,0.95); transform: scale(1.02); }
+.search-hero-input::placeholder { color: rgba(245,245,245,0.5); font-weight: 500; }
+.search-hero-icon { position: absolute; left: 1.5rem; top: 50%; transform: translateY(-50%); font-size: 1.5rem; color: var(--gold); pointer-events: none; }
+.search-hero-hint { text-align: center; margin-top: 1rem; font-size: 0.8rem; color: rgba(245,245,245,0.5); letter-spacing: 1px; }
 
 /* SPOTLIGHT OVERLAY */
 .spotlight-overlay {
@@ -2079,9 +2080,10 @@ def generate_index(categories):
       <p>Recubrimientos de alta gama para interior y exterior. PVC, WPC, paneles 3D, pisos, zacate y cladding.</p>
       <a href="#categorias" class="btn-primary">Explorar Catálogo</a>
       <div class="search-hero">
+        <div class="search-hero-title">🔎 Busca entre 250 productos</div>
         <span class="search-hero-icon">🔍</span>
-        <input type="text" class="search-hero-input" id="searchHeroInput" placeholder="¿Qué producto estás buscando?" autocomplete="off" onfocus="openSpotlight()">
-        <div class="search-hero-hint">Presiona <kbd style="background:rgba(255,255,255,0.1);padding:2px 6px;border-radius:4px;font-family:inherit;">/</kbd> para buscar rápidamente</div>
+        <input type="text" class="search-hero-input" id="searchHeroInput" placeholder="Escribe el nombre de un producto, color o material..." autocomplete="off" onfocus="openSpotlight()">
+        <div class="search-hero-hint">Presiona <kbd style="background:rgba(255,255,255,0.1);padding:2px 8px;border-radius:4px;font-family:inherit;">/</kbd> para buscar desde cualquier página</div>
       </div>
     </div>
   </section>
