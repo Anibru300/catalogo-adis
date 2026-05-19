@@ -1629,6 +1629,17 @@ footer {
 .faq-question { color: var(--gold-light); font-weight: 600; font-size: 0.95rem; margin-bottom: 0.5rem; }
 .faq-answer { color: rgba(245,245,245,0.75); font-size: 0.87rem; line-height: 1.7; }
 @media (max-width: 768px) { .research-content { grid-template-columns: 1fr; } }
+
+/* REAL SHEETS GALLERY */
+.real-sheets-section { padding: 4rem 2rem; max-width: 1200px; margin: 0 auto; }
+.real-sheets-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem; }
+.real-sheets-item { border-radius: 12px; overflow: hidden; position: relative; aspect-ratio: 3/4; cursor: pointer; }
+.real-sheets-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
+.real-sheets-item:hover img { transform: scale(1.08); }
+.real-sheets-item::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, rgba(15,15,15,0.5) 0%, transparent 40%); opacity: 0; transition: opacity 0.3s ease; }
+.real-sheets-item:hover::after { opacity: 1; }
+.real-sheets-badge { position: absolute; bottom: 1rem; left: 1rem; background: var(--gold); color: var(--black); padding: 0.3rem 0.8rem; border-radius: 15px; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; z-index: 2; }
+@media (max-width: 768px) { .real-sheets-grid { grid-template-columns: repeat(2, 1fr); } }
 '''
 
 # ========== PARTICLES JS ==========
@@ -2840,6 +2851,30 @@ def generate_category_page(cat, categories):
   </section>
 '''
 
+    # Galería de hojas reales (solo para Placas PVC)
+    real_sheets_html = ''
+    if cat['name'] == 'Placas PVC':
+        media_dir = BASE_DIR / 'media'
+        real_imgs = sorted([f for f in os.listdir(media_dir) if f.startswith('pvc-real-') and f.lower().endswith(('.jpg', '.jpeg'))])
+        if real_imgs:
+            gallery_items = ''
+            for img in real_imgs:
+                gallery_items += f'''      <div class="real-sheets-item" onclick="openLightbox('media/{img}', 'Hoja real de PVC')">
+        <img src="media/{img}" alt="Hoja real de PVC" loading="lazy">
+        <span class="real-sheets-badge">Foto Real</span>
+      </div>
+'''
+            real_sheets_html = f'''  <section class="real-sheets-section reveal">
+    <div class="section-header">
+      <h2>Hojas Reales de PVC</h2>
+      <div class="divider"></div>
+      <p>Fotos reales de nuestro showroom. Sin filtros, sin edits.</p>
+    </div>
+    <div class="real-sheets-grid">
+{gallery_items}    </div>
+  </section>
+'''
+
     html = f'''<!DOCTYPE html>
 <html lang="es">
 <head>
@@ -2867,7 +2902,7 @@ def generate_category_page(cat, categories):
     </div>
   </section>
 
-{subcat_nav_html}{sections_html}
+{subcat_nav_html}{real_sheets_html}{sections_html}
 {generate_research_html(cat['name'])}
 {cat_nav_html}
   <section class="section-wrap" style="padding-top: 1rem;">
@@ -2913,32 +2948,42 @@ def sync_media():
         'remoledacion de consultorio.mp4': 'video-consultorio.mp4',
     }
     
-    all_files = sorted([f for f in os.listdir(src_dir) if f.lower().endswith(img_exts + vid_exts)])
+    # Escanear recursivamente todas las subcarpetas
+    all_files = []
+    for root, dirs, files in os.walk(src_dir):
+        for f in files:
+            if f.lower().endswith(img_exts + vid_exts):
+                all_files.append((Path(root) / f, f))
+    all_files.sort(key=lambda x: x[1])
     
     # Contadores para nombres automáticos
     auto_img = 0
     auto_vid = 0
+    auto_pvc = 0
     mapping = {}
     
-    for fname in all_files:
+    for fpath, fname in all_files:
         if fname in known_names:
-            mapping[fname] = known_names[fname]
+            mapping[fpath] = known_names[fname]
+        elif 'pvc' in fpath.parent.name.lower() or 'pvc' in fname.lower():
+            auto_pvc += 1
+            ext = Path(fname).suffix.lower()
+            mapping[fpath] = f'pvc-real-{auto_pvc:02d}{ext}'
         elif fname.lower().endswith(img_exts):
             auto_img += 1
             ext = Path(fname).suffix.lower()
-            mapping[fname] = f'proyecto-{auto_img:02d}{ext}'
+            mapping[fpath] = f'proyecto-{auto_img:02d}{ext}'
         elif fname.lower().endswith(vid_exts):
             auto_vid += 1
             ext = Path(fname).suffix.lower()
-            mapping[fname] = f'video-{auto_vid:02d}{ext}'
+            mapping[fpath] = f'video-{auto_vid:02d}{ext}'
     
     copied = 0
-    for src_name, dst_name in mapping.items():
-        src = src_dir / src_name
-        if src.exists():
-            shutil.copy2(src, media_dir / dst_name)
+    for src_path, dst_name in mapping.items():
+        if src_path.exists():
+            shutil.copy2(src_path, media_dir / dst_name)
             copied += 1
-    print(f"Media sincronizada: {copied} archivos ({auto_img} imgs + {auto_vid} vids nuevos)")
+    print(f"Media sincronizada: {copied} archivos ({auto_img} imgs + {auto_pvc} pvc + {auto_vid} vids nuevos)")
 
 
 # Datos extraídos de fichas técnicas
