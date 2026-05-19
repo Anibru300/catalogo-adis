@@ -27,7 +27,7 @@
         <a href="proyectos.html">Proyectos</a>
         <a href="contacto.html">Contacto</a>
         <div class="search-box">
-          <input type="text" id="searchInput" placeholder="Buscar producto..." autocomplete="off">
+          <input type="text" id="searchInput" placeholder="Buscar producto..." autocomplete="off" title="Presiona / para buscar">
           <button onclick="performSearch()">🔍</button>
           <div class="search-dropdown" id="searchDropdown"></div>
         </div>
@@ -432,47 +432,148 @@
       if (e.key === 'Escape') closeLightbox();
     });
 
-    // Buscador global
-    let allProducts = [];
-    fetch('products.json')
-      .then(r => r.json())
-      .then(data => { allProducts = data; })
-      .catch(() => {});
-    function performSearch() {
-      const input = document.getElementById('searchInput');
-      const dropdown = document.getElementById('searchDropdown');
-      doSearch(input.value, dropdown);
-    }
-    function performSearchMobile() {
-      const input = document.getElementById('searchInputMobile');
-      const dropdown = document.getElementById('searchDropdownMobile');
-      doSearch(input.value, dropdown);
-    }
-    function doSearch(query, dropdown) {
-      if (!query || query.length < 2) { dropdown.classList.remove('active'); return; }
-      const q = query.toLowerCase();
-      const results = allProducts.filter(p => p.name.toLowerCase().includes(q)).slice(0, 8);
-      if (results.length === 0) {
-        dropdown.innerHTML = '<div class="search-empty">No se encontraron productos</div>';
-      } else {
-        dropdown.innerHTML = results.map(p => `
-          <a href="${p.url}" class="search-item" onclick="document.getElementById('searchDropdown').classList.remove('active');var m=document.getElementById('searchDropdownMobile');if(m)m.classList.remove('active');">
-            <img src="${p.thumb}" alt="${p.name}">
-            <div class="search-item-info">
-              <span class="search-item-name">${p.name}</span>
-              <span class="search-item-cat">${p.category}${p.subcategory ? ' / ' + p.subcategory : ''}</span>
-            </div>
-          </a>
-        `).join('');
+    // Buscador global mejorado
+    (function() {
+      let allProducts = [];
+      let debounceTimer = null;
+      let activeIndex = -1;
+      let currentResults = [];
+      
+      fetch('products.json')
+        .then(r => r.json())
+        .then(data => { allProducts = data; })
+        .catch(() => { allProducts = []; });
+      
+      function normalize(str) {
+        return (str || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
       }
-      dropdown.classList.add('active');
-    }
-    document.addEventListener('click', function(e) {
-      const sdd = document.getElementById('searchDropdown');
-      const sdm = document.getElementById('searchDropdownMobile');
-      if (sdd && !e.target.closest('.search-box')) sdd.classList.remove('active');
-      if (sdm && !e.target.closest('.search-box')) sdm.classList.remove('active');
-    });
+      
+      function highlight(text, query) {
+        const nq = normalize(query);
+        const nt = normalize(text);
+        let out = '';
+        let last = 0;
+        let idx = nt.indexOf(nq);
+        while (idx >= 0 && nq.length > 0) {
+          out += text.slice(last, idx);
+          const end = idx + nq.length;
+          out += '<mark>' + text.slice(idx, end) + '</mark>';
+          last = end;
+          idx = nt.indexOf(nq, last);
+        }
+        out += text.slice(last);
+        return out;
+      }
+      
+      function doSearch(query, dropdownId) {
+        const dropdown = document.getElementById(dropdownId);
+        if (!query || query.length < 2) {
+          dropdown.classList.remove('active');
+          currentResults = [];
+          activeIndex = -1;
+          return;
+        }
+        const q = normalize(query);
+        const terms = q.split(/\s+/).filter(t => t.length > 0);
+        
+        const scored = allProducts.map(p => {
+          const name = normalize(p.name);
+          const cat = normalize(p.category);
+          const sub = normalize(p.subcategory || '');
+          let score = 0;
+          for (const t of terms) {
+            if (name.startsWith(t)) score += 10;
+            else if (name.includes(t)) score += 5;
+            if (sub.startsWith(t)) score += 3;
+            else if (sub.includes(t)) score += 2;
+            if (cat.includes(t)) score += 1;
+          }
+          return { p, score };
+        }).filter(x => x.score > 0).sort((a,b) => b.score - a.score).slice(0, 8);
+        
+        currentResults = scored.map(x => x.p);
+        activeIndex = -1;
+        
+        if (scored.length === 0) {
+          dropdown.innerHTML = '<div class="search-empty">No se encontraron productos</div>';
+        } else {
+          dropdown.innerHTML = '<div class="search-dropdown-header">' + scored.length + ' resultado' + (scored.length > 1 ? 's' : '') + ' encontrado' + (scored.length > 1 ? 's' : '') + '</div>' +
+            scored.map((x, i) => `
+              <a href="${x.p.url}" class="search-item" data-index="${i}" onclick="clearSearch()">
+                <img src="${x.p.thumb}" alt="${x.p.name}" loading="lazy">
+                <div class="search-item-info">
+                  <span class="search-item-name">${highlight(x.p.name, query)}</span>
+                  <span class="search-item-cat">${x.p.category}${x.p.subcategory ? ' / ' + x.p.subcategory : ''}</span>
+                </div>
+              </a>
+            `).join('');
+        }
+        dropdown.classList.add('active');
+      }
+      
+      window.clearSearch = function() {
+        const dd = document.getElementById('searchDropdown');
+        const dm = document.getElementById('searchDropdownMobile');
+        if (dd) dd.classList.remove('active');
+        if (dm) dm.classList.remove('active');
+      };
+      
+      function setupInput(inputId, dropdownId) {
+        const input = document.getElementById(inputId);
+        if (!input) return;
+        input.addEventListener('input', e => {
+          clearTimeout(debounceTimer);
+          debounceTimer = setTimeout(() => doSearch(e.target.value, dropdownId), 150);
+        });
+        input.addEventListener('focus', e => doSearch(e.target.value, dropdownId));
+        input.addEventListener('keydown', e => {
+          if (e.key === 'ArrowDown') {
+            e.preventDefault();
+            activeIndex = Math.min(activeIndex + 1, currentResults.length - 1);
+            updateActive(dropdownId);
+          } else if (e.key === 'ArrowUp') {
+            e.preventDefault();
+            activeIndex = Math.max(activeIndex - 1, -1);
+            updateActive(dropdownId);
+          } else if (e.key === 'Enter') {
+            e.preventDefault();
+            if (activeIndex >= 0 && currentResults[activeIndex]) {
+              window.location.href = currentResults[activeIndex].url;
+              clearSearch();
+            }
+          } else if (e.key === 'Escape') {
+            clearSearch();
+            input.blur();
+          }
+        });
+      }
+      
+      function updateActive(dropdownId) {
+        const dropdown = document.getElementById(dropdownId);
+        if (!dropdown) return;
+        dropdown.querySelectorAll('.search-item').forEach((el, i) => {
+          el.classList.toggle('active', i === activeIndex);
+        });
+        const active = dropdown.querySelector('.search-item.active');
+        if (active) active.scrollIntoView({ block: 'nearest' });
+      }
+      
+      setupInput('searchInput', 'searchDropdown');
+      setupInput('searchInputMobile', 'searchDropdownMobile');
+      
+      // Shortcut "/" para enfocar buscador
+      document.addEventListener('keydown', e => {
+        if (e.key === '/' && document.activeElement.tagName !== 'INPUT' && document.activeElement.tagName !== 'TEXTAREA') {
+          e.preventDefault();
+          const inp = document.getElementById('searchInput');
+          if (inp) { inp.focus(); }
+        }
+      });
+      
+      document.addEventListener('click', function(e) {
+        if (!e.target.closest('.search-box')) clearSearch();
+      });
+    })();
   </script>
 
 </body>
