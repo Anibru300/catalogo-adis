@@ -2690,6 +2690,41 @@ def generate_testimonios():
       <div class="divider"></div>
       <p>¿Ya usaste nuestros productos? Comparte tu experiencia y ayuda a otros a decidirse.</p>
     </div>
+    <div style="max-width: 1100px; margin: 0 auto; padding: 0 2rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin-bottom: 3rem;">
+      <div style="background: rgba(42,42,42,0.7); backdrop-filter: blur(10px); border: 1px solid rgba(197,160,89,0.2); border-radius: 12px; padding: 1.8rem; position: relative;">
+        <div style="font-size: 3rem; color: var(--gold); opacity: 0.3; position: absolute; top: 0.5rem; right: 1rem; font-family: Georgia, serif;">"</div>
+        <p style="font-size: 0.9rem; color: rgba(245,245,245,0.8); line-height: 1.7; margin-bottom: 1rem; font-style: italic;">Excelente calidad en las placas PVC tipo espejo. Transformaron completamente mi sala de estar. La instalación fue súper rápida y el acabado se ve de lujo.</p>
+        <div style="display: flex; align-items: center; gap: 0.8rem;">
+          <div style="width: 40px; height: 40px; border-radius: 50%; background: var(--gold); display: flex; align-items: center; justify-content: center; color: var(--black); font-weight: 700; font-size: 0.9rem;">MG</div>
+          <div>
+            <div style="font-size: 0.85rem; color: var(--white); font-weight: 600;">María G.</div>
+            <div style="font-size: 0.75rem; color: var(--gold);">⭐⭐⭐⭐⭐ — Placas PVC, Nogales</div>
+          </div>
+        </div>
+      </div>
+      <div style="background: rgba(42,42,42,0.7); backdrop-filter: blur(10px); border: 1px solid rgba(197,160,89,0.2); border-radius: 12px; padding: 1.8rem; position: relative;">
+        <div style="font-size: 3rem; color: var(--gold); opacity: 0.3; position: absolute; top: 0.5rem; right: 1rem; font-family: Georgia, serif;">"</div>
+        <p style="font-size: 0.9rem; color: rgba(245,245,245,0.8); line-height: 1.7; margin-bottom: 1rem; font-style: italic;">Compré el lambrín WPC para el exterior de mi consultorio y quedó espectacular. Resiste perfectamente el sol y la lluvia. 100% recomendado.</p>
+        <div style="display: flex; align-items: center; gap: 0.8rem;">
+          <div style="width: 40px; height: 40px; border-radius: 50%; background: var(--gold); display: flex; align-items: center; justify-content: center; color: var(--black); font-weight: 700; font-size: 0.9rem;">CR</div>
+          <div>
+            <div style="font-size: 0.85rem; color: var(--white); font-weight: 600;">Dr. Carlos R.</div>
+            <div style="font-size: 0.75rem; color: var(--gold);">⭐⭐⭐⭐⭐ — Lambrín WPC, Rio Rico</div>
+          </div>
+        </div>
+      </div>
+      <div style="background: rgba(42,42,42,0.7); backdrop-filter: blur(10px); border: 1px solid rgba(197,160,89,0.2); border-radius: 12px; padding: 1.8rem; position: relative;">
+        <div style="font-size: 3rem; color: var(--gold); opacity: 0.3; position: absolute; top: 0.5rem; right: 1rem; font-family: Georgia, serif;">"</div>
+        <p style="font-size: 0.9rem; color: rgba(245,245,245,0.8); line-height: 1.7; margin-bottom: 1rem; font-style: italic;">El equipo de ADIS me ayudó a elegir los pisos SPC para toda mi casa. Me dieron asesoría de primera y el precio fue muy competitivo. Quedé encantada.</p>
+        <div style="display: flex; align-items: center; gap: 0.8rem;">
+          <div style="width: 40px; height: 40px; border-radius: 50%; background: var(--gold); display: flex; align-items: center; justify-content: center; color: var(--black); font-weight: 700; font-size: 0.9rem;">FL</div>
+          <div>
+            <div style="font-size: 0.85rem; color: var(--white); font-weight: 600;">Familia López</div>
+            <div style="font-size: 0.75rem; color: var(--gold);">⭐⭐⭐⭐⭐ — Pisos SPC, Nogales</div>
+          </div>
+        </div>
+      </div>
+    </div>
     <div style="max-width: 600px; margin: 0 auto; padding: 0 1rem;">
       <form id="testimonioForm" onsubmit="enviarTestimonio(event)" style="display: flex; flex-direction: column; gap: 1rem;">
         <input type="text" id="tNombre" placeholder="Tu nombre" required
