@@ -2440,7 +2440,7 @@ def generate_index(categories):
     <div class="featured-product-wrap">
       <div class="featured-product-image">
         <span class="featured-product-badge">Producto Destacado</span>
-        <img src="img/1-placas-pvc/12-placas-pvc-texturizadas/Carrara Oscuro.jpg" alt="Hoja de PVC tipo Mármol Carrara Oscuro" loading="lazy">
+        <img src="img/1-placas-pvc/Carrara%20Oscuro.jpg" alt="Hoja de PVC tipo Mármol Carrara Oscuro" loading="lazy">
       </div>
       <div class="featured-product-content">
         <h3>Hoja de PVC tipo Mármol</h3>
