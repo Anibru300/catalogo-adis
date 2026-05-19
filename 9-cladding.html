@@ -626,7 +626,7 @@
         
         // PRODUCTOS / CATALOGO / MATERIALES / PROYECTOS
         if (q.includes('producto') || q.includes('catalogo') || q.includes('materiales') || q.includes('que venden') || q.includes('tienen') || q.includes('ofrecen')) {
-          return '📦 <strong>Nuestros productos:</strong><br><br>• Placas PVC (tipo madera, texturizadas, espejo, mármol)<br>• Lambrín WPC (interior y exterior)<br>• Paneles 3D decorativos<br>• Pisos (Laminado, WPC, SPC, Deck)<br>• Plafón PVC<br>• Vigas PVC<br>• Zacate sintético y follaje<br>• Cladding y revestimientos<br><br>🏠 Atendemos: ' + kb.proyectos.tipos + '<br><br>👉 <a href="index.html#categorias" style="color:#C5A059">Ver catálogo completo</a>';
+          return '📦 <strong>Nuestros productos:</strong><br><br>• <strong>Placas PVC</strong> — Tipo madera, texturizadas, espejo y mármol. 100% impermeables, 15 años de garantía. Ideales para cocinas, baños y muros de alto impacto visual.<br>• <strong>Lambrín WPC</strong> — Madera tecnológica que no se pudre, no le entran termitas y no necesita barniz. 15 años de garantía.<br>• <strong>Paneles 3D</strong> — Decorativos en blanco, grises, madera, negro y oro. Transforman cualquier muro en una obra de arte.<br>• <strong>Pisos</strong> — Laminado, WPC, SPC y deck sintético. Resistentes al agua y de fácil instalación.<br>• <strong>Plafón PVC</strong> — Laminado tipo madera y ranurado. Inmune a la humedad, no se cuartea, no crece moho.<br>• <strong>Vigas PVC/WPC</strong> — Decorativas para interior y exterior. Acabado realista de madera sin mantenimiento.<br>• <strong>Zacate sintético</strong> — Follaje y pasto recreativo. Verde todo el año, sin riego ni poda.<br>• <strong>Cladding</strong> — Placas tipo roca y revestimientos de fachada. Piedra real que pesa 8-12 veces menos.<br><br>🏠 Atendemos: ' + kb.proyectos.tipos + '<br><br>👉 <a href="index.html#categorias" style="color:#C5A059">Ver catálogo completo</a>';
         }
         
         // PVC TIPO MARMOL
@@ -635,8 +635,8 @@
         }
         
         // DIFERENCIAS ENTRE MATERIALES
-        if ((q.includes('wpc') && q.includes('pvc')) || q.includes('diferencia wpc') || q.includes('wpc o pvc')) {
-          return '🆚 <strong>WPC vs PVC:</strong><br><br><strong>WPC (Wood Plastic Composite):</strong><br>• Mezcla de madera y plástico<br>• Aspecto más natural tipo madera real<br>• Ideal para exteriores (resistente a UV y lluvia)<br>• Más pesado y robusto<br><br><strong>PVC:</strong><br>• Plástico 100%<br>• Más ligero y fácil de instalar<br>• Ideal para interiores<br>• Mayor variedad de diseños (madera, espejo, textura)<br><br>¿Te ayudo a elegir según tu proyecto? 💬';
+        if ((q.includes('wpc') && q.includes('pvc')) || q.includes('diferencia wpc') || q.includes('wpc o pvc') || q.includes('cual es mejor')) {
+          return '🆚 <strong>WPC vs PVC:</strong><br><br><strong>WPC (Wood Plastic Composite):</strong><br>• 60-70% fibras de madera + 30-40% plástico HDPE<br>• Aspecto más natural tipo madera real<br>• Absorción de agua menor al 1% — no se hincha ni se deforma<br>• Ideal para exteriores (resistente a UV y lluvia)<br>• Vida útil: 25-30 años | Garantía: 15 años<br><br><strong>PVC:</strong><br>• Plástico 100% con aditivos estabilizadores UV<br>• Más ligero y fácil de instalar<br>• Ideal para interiores<br>• Mayor variedad de diseños (madera, espejo, mármol, textura)<br>• Vida útil: 20-25 años | Garantía: 15 años<br><br>💡 <strong>¿Cuál elegir?</strong><br>• Exteriores / fachadas → <strong>WPC</strong><br>• Interiores / cocinas / baños → <strong>PVC</strong> (más económico)<br>• ¿Buscas madera real sin mantenimiento? → <strong>WPC</strong><br><br>¿Te ayudo a cotizar para tu proyecto? 💬';
         }
         if (q.includes('spc') && (q.includes('wpc') || q.includes('diferencia') || q.includes('pvc'))) {
           return '🆚 <strong>SPC vs WPC vs Laminado:</strong><br><br><strong>SPC (Stone Plastic Composite):</strong><br>• Muy resistente al agua 💧<br>• Ideal para cocinas y baños<br>• Instalación rápida tipo click<br><br><strong>WPC:</strong><br>• Más cálido y confortable al caminar<br>• Buen aislamiento térmico y acústico<br>• Ideal para recámaras y salas<br><br><strong>Laminado:</strong><br>• Más económico<br>• Recomendado para áreas de bajo tráfico<br><br>¿Para qué espacio es? Te recomiendo el mejor.';
@@ -670,7 +670,7 @@
         
         // TIPO DE PROYECTO / A QUIEN ATIENDEN
         if (q.includes('casa') || q.includes('oficina') || q.includes('negocio') || q.includes('local') || q.includes('proyecto')) {
-          return '🏠 <strong>Atendemos todo tipo de proyectos:</strong><br><br>' + kb.proyectos.tipos + '<br><br>Desde una pared de acento en casa hasta remodelaciones completas de locales comerciales. ¿Cuéntanos sobre tu proyecto? 💬<br><br><a href="https://wa.me/526311928993?text=Hola%20ADIS,%20tengo%20un%20proyecto%20de" target="_blank" class="chat-whatsapp-btn">📱 Contar mi proyecto</a>';
+          return '🏠 <strong>Atendemos todo tipo de proyectos:</strong><br><br>' + kb.proyectos.tipos + '<br><br>Desde una pared de acento en casa hasta remodelaciones completas de locales comerciales. Cada proyecto es único y tenemos el material perfecto para ti.<br><br>💡 <strong>Consejo:</strong> Si no estás seguro de qué material elegir, contame:<br>• ¿Es interior o exterior?<br>• ¿Hay humedad o contacto con agua?<br>• ¿Qué estética buscas? (madera, mármol, moderno, rústico)<br><br><a href="https://wa.me/526311928993?text=Hola%20ADIS,%20tengo%20un%20proyecto%20de" target="_blank" class="chat-whatsapp-btn">📱 Contar mi proyecto</a>';
         }
         
         // DEFINICIONES PVC / WPC
