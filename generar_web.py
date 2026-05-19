@@ -1642,40 +1642,50 @@ footer {
 @media (max-width: 768px) { .real-sheets-grid { grid-template-columns: repeat(2, 1fr); } }
 
 /* SABIAS QUE - PAGINA INTERACTIVA */
-.sq-hero { padding: 8rem 2rem 4rem; text-align: center; background: linear-gradient(135deg, rgba(15,15,15,0.95) 0%, rgba(26,26,26,0.9) 100%); position: relative; }
-.sq-hero::before { content: ''; position: absolute; top: -30%; left: 50%; transform: translateX(-50%); width: 600px; height: 600px; background: radial-gradient(circle, rgba(197,160,89,0.06) 0%, transparent 70%); border-radius: 50%; pointer-events: none; }
-.sq-hero h1 { font-family: 'Playfair Display', serif; font-size: 3rem; color: var(--gold-light); margin-bottom: 1rem; }
-.sq-hero p { color: rgba(245,245,245,0.6); font-size: 1.1rem; max-width: 600px; margin: 0 auto; }
+.sq-hero { padding: 8rem 2rem 3rem; text-align: center; background: linear-gradient(135deg, rgba(15,15,15,0.95) 0%, rgba(26,26,26,0.9) 100%); position: relative; }
+.sq-hero h1 { font-family: 'Playfair Display', serif; font-size: 2.8rem; color: var(--gold-light); margin-bottom: 0.6rem; }
+.sq-hero p { color: rgba(245,245,245,0.5); font-size: 1rem; max-width: 500px; margin: 0 auto; }
 
-.sq-tabs { display: flex; justify-content: center; gap: 0.5rem; padding: 2rem; flex-wrap: wrap; max-width: 1100px; margin: 0 auto; }
-.sq-tab { background: rgba(255,255,255,0.04); border: 1px solid rgba(197,160,89,0.15); color: rgba(245,245,245,0.7); padding: 0.7rem 1.4rem; border-radius: 25px; cursor: pointer; font-family: 'Montserrat', sans-serif; font-size: 0.85rem; font-weight: 500; transition: all 0.3s ease; }
-.sq-tab:hover { border-color: rgba(197,160,89,0.4); color: var(--gold-light); }
+.sq-tabs { display: flex; justify-content: center; gap: 0.5rem; padding: 1.5rem 1rem; flex-wrap: wrap; max-width: 1100px; margin: 0 auto; border-bottom: 1px solid rgba(197,160,89,0.1); }
+.sq-tab { background: transparent; border: 1px solid rgba(197,160,89,0.15); color: rgba(245,245,245,0.6); padding: 0.5rem 1.2rem; border-radius: 20px; cursor: pointer; font-family: 'Montserrat', sans-serif; font-size: 0.8rem; font-weight: 500; transition: all 0.3s ease; }
+.sq-tab:hover { border-color: var(--gold); color: var(--gold-light); }
 .sq-tab.active { background: var(--gold); color: var(--black); border-color: var(--gold); font-weight: 600; }
 
-.sq-content { max-width: 1100px; margin: 0 auto; padding: 0 2rem 4rem; }
+.sq-content { max-width: 1100px; margin: 0 auto; padding: 0 1.5rem 3rem; }
 .sq-panel { display: none; }
-.sq-panel.active { display: block; animation: sqFadeIn 0.5s ease; }
-@keyframes sqFadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+.sq-panel.active { display: block; animation: sqFadeIn 0.4s ease; }
+@keyframes sqFadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-.sq-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem; }
-.sq-card { background: rgba(255,255,255,0.03); border: 1px solid rgba(197,160,89,0.12); border-radius: 16px; padding: 1.8rem; position: relative; overflow: hidden; transition: all 0.4s ease; cursor: default; }
-.sq-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--gold), var(--gold-light)); transform: scaleX(0); transition: transform 0.4s ease; }
-.sq-card:hover { border-color: rgba(197,160,89,0.35); transform: translateY(-6px); box-shadow: 0 15px 40px rgba(0,0,0,0.3); }
+/* Hero imagen por categoria */
+.sq-cat-hero { height: 220px; border-radius: 16px; margin: 1.5rem 0; background-size: cover; background-position: center; position: relative; overflow: hidden; }
+.sq-cat-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(15,15,15,0.9) 0%, rgba(15,15,15,0.3) 60%, transparent 100%); display: flex; align-items: flex-end; padding: 1.5rem; }
+.sq-cat-overlay h2 { color: var(--gold-light); font-family: 'Playfair Display', serif; font-size: 1.6rem; margin: 0; }
+
+.sq-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+@media (max-width: 900px) { .sq-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 600px) { .sq-grid { grid-template-columns: 1fr; } }
+
+.sq-card { background: rgba(255,255,255,0.03); border: 1px solid rgba(197,160,89,0.1); border-radius: 14px; padding: 1.4rem; position: relative; overflow: hidden; transition: all 0.35s ease; text-align: center; }
+.sq-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--gold); transform: scaleX(0); transition: transform 0.35s ease; }
+.sq-card:hover { border-color: rgba(197,160,89,0.3); transform: translateY(-5px); box-shadow: 0 12px 30px rgba(0,0,0,0.25); }
 .sq-card:hover::before { transform: scaleX(1); }
-.sq-card-icon { font-size: 2.2rem; margin-bottom: 0.8rem; display: block; }
-.sq-card h3 { color: var(--gold-light); font-size: 1.05rem; margin-bottom: 0.7rem; font-family: 'Montserrat', sans-serif; font-weight: 600; }
-.sq-card p { color: rgba(245,245,245,0.75); font-size: 0.88rem; line-height: 1.7; }
-.sq-card-number { position: absolute; top: 1rem; right: 1.2rem; font-size: 2.5rem; font-weight: 800; color: rgba(197,160,89,0.08); font-family: 'Playfair Display', serif; line-height: 1; }
+.sq-card-icon { font-size: 2rem; margin-bottom: 0.6rem; display: block; }
+.sq-card h3 { color: var(--gold-light); font-size: 0.92rem; margin-bottom: 0.5rem; font-family: 'Montserrat', sans-serif; font-weight: 600; line-height: 1.4; }
+.sq-card p { color: rgba(245,245,245,0.6); font-size: 0.82rem; line-height: 1.6; margin: 0; }
+.sq-card-number { position: absolute; top: 0.8rem; right: 1rem; font-size: 2rem; font-weight: 800; color: rgba(197,160,89,0.06); font-family: 'Playfair Display', serif; line-height: 1; }
 
-.sq-faq-item { background: rgba(255,255,255,0.03); border: 1px solid rgba(197,160,89,0.1); border-radius: 12px; margin-bottom: 1rem; overflow: hidden; }
-.sq-faq-q { padding: 1.2rem 1.5rem; color: var(--gold-light); font-weight: 600; font-size: 0.95rem; cursor: pointer; display: flex; justify-content: space-between; align-items: center; transition: background 0.3s; }
-.sq-faq-q:hover { background: rgba(197,160,89,0.05); }
-.sq-faq-q::after { content: '+'; font-size: 1.3rem; color: var(--gold); transition: transform 0.3s; }
+/* FAQ Acordeon */
+.sq-faqs { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.8rem; }
+@media (max-width: 768px) { .sq-faqs { grid-template-columns: 1fr; } }
+.sq-faq-item { background: rgba(255,255,255,0.03); border: 1px solid rgba(197,160,89,0.08); border-radius: 10px; overflow: hidden; }
+.sq-faq-q { padding: 1rem 1.2rem; color: var(--gold-light); font-weight: 600; font-size: 0.88rem; cursor: pointer; display: flex; justify-content: space-between; align-items: center; transition: background 0.3s; }
+.sq-faq-q:hover { background: rgba(197,160,89,0.04); }
+.sq-faq-q::after { content: '+'; font-size: 1.2rem; color: var(--gold); transition: transform 0.3s; flex-shrink: 0; margin-left: 0.5rem; }
 .sq-faq-item.open .sq-faq-q::after { transform: rotate(45deg); }
-.sq-faq-a { max-height: 0; overflow: hidden; transition: max-height 0.4s ease, padding 0.4s ease; padding: 0 1.5rem; color: rgba(245,245,245,0.7); font-size: 0.87rem; line-height: 1.7; }
-.sq-faq-item.open .sq-faq-a { max-height: 500px; padding: 0 1.5rem 1.2rem; }
+.sq-faq-a { max-height: 0; overflow: hidden; transition: max-height 0.35s ease, padding 0.35s ease; padding: 0 1.2rem; color: rgba(245,245,245,0.65); font-size: 0.82rem; line-height: 1.6; }
+.sq-faq-item.open .sq-faq-a { max-height: 400px; padding: 0 1.2rem 1rem; }
 
-@media (max-width: 768px) { .sq-hero h1 { font-size: 2rem; } .sq-grid { grid-template-columns: 1fr; } .sq-tabs { gap: 0.4rem; } .sq-tab { padding: 0.5rem 1rem; font-size: 0.78rem; } }
+@media (max-width: 768px) { .sq-hero h1 { font-size: 2.2rem; } .sq-cat-hero { height: 160px; } .sq-tab { padding: 0.4rem 0.9rem; font-size: 0.75rem; } }
 '''
 
 # ========== PARTICLES JS ==========
@@ -1784,6 +1794,7 @@ def generate_header(current_page='index'):
     <button class="close-menu" onclick="toggleMenu()">✕</button>
     <a href="index.html" onclick="toggleMenu()">Inicio</a>
     <a href="index.html#categorias" onclick="toggleMenu()">Catálogo</a>
+    <a href="sabias-que.html" onclick="toggleMenu()">¿Sabías que?</a>
     <a href="proyectos.html" onclick="toggleMenu()">Proyectos</a>
     <a href="contacto.html" onclick="toggleMenu()">Contacto</a>
     <div class="search-box" style="margin-top:1rem;">
@@ -3334,7 +3345,19 @@ def generate_sabias_que():
     if not RESEARCH_DATA:
         return
     
-    # Tabs por categoria
+    # Imagenes representativas por categoria
+    cat_images = {
+        'PLACAS PVC': 'img/1-placas-pvc/Carrara%20Oscuro.jpg',
+        'LAMBRIN WPC': 'img/2-lambrin-wpc/21-lambrin-interior/AMANECHER.jpg',
+        'REVESTIMIENTO FLEXIBLE': 'img/3-revestimiento-flexible/CONCRETO%20Aparente.jpg',
+        'PLAFON PVC LAMINADO WOOD STYLE': 'img/4-plafon-pvc/41-plafon-pvc-laminado/SHERWOOD.jpg',
+        'PANELES TRIDIMENSIONALES 3D': 'img/5-paneles-tridimensionales/51-blanco/Austin.jpg',
+        'VIGAS PVCWPCPU': 'img/6-vigas-pvc/61-interior/BAHIA%201.jpg',
+        'PISOS': 'img/7-pisos/71-laminado/ACONCAGUA.jpg',
+        'ZACATE SINTETICO': 'img/8-zacate/81-follaje-sintetico/AMAZONAS-A.jpg',
+        'CLADDING  PLACAS TIPO PIEDRA': 'img/9-cladding/91-placa-tipo-roca/BLACK.jpg',
+    }
+    
     tab_names = list(RESEARCH_DATA.keys())
     tabs_html = ''
     panels_html = ''
@@ -3343,25 +3366,34 @@ def generate_sabias_que():
         data = RESEARCH_DATA[cat_name]
         active_tab = ' active' if idx == 0 else ''
         active_panel = ' active' if idx == 0 else ''
+        cat_img = cat_images.get(cat_name, 'LOGO%20ADIS.png')
         
         tabs_html += f'<button class="sq-tab{active_tab}" onclick="showSqPanel({idx})">{cat_name}</button>'
         
-        # Datos curiosos como cards
+        # Datos curiosos - resumidos y limpios
         curiosos_cards = ''
         if data.get('curiosos'):
             import re
-            # Extraer cada dato curioso (bloques separados por **)
-            items = re.split(r'\n\n(?=\*\*)', data['curiosos'])
+            # Limpiar texto de basura
+            clean_text = data['curiosos'].replace('---', '').replace('###', '').strip()
+            # Extraer items (bloques con **titulo**)
+            items = re.split(r'\n\n(?=\*\*)', clean_text)
             for i, item in enumerate(items):
                 item = item.strip()
-                if not item or len(item) < 20:
+                if not item or len(item) < 15:
                     continue
-                # Extraer titulo (texto entre **)
-                title_match = re.search(r'\*\*(.+?)\*\*', item)
+                # Extraer titulo
+                title_match = re.search(r'\*\*\s*(?:[\🌍\🔥\🖨️\⚖️\🧪\🌲\🌧️\🏠\📐\🪨\🎨\💧\🏔️\🦠\⚡\📅\🔇\🌿\♻️\🔥\🛡️\🎨\🦶\💰\🌡️\⚠️\❓\📘\📗]*)?\s*(.+?)\s*\*\*', item)
                 title = title_match.group(1) if title_match else 'Dato Curioso'
-                # Extraer descripcion (resto del texto)
-                desc = re.sub(r'\*\*(.+?)\*\*', r'', item).strip()
-                # Icono basado en numero
+                # Limpiar titulo de emojis al inicio
+                title = re.sub(r'^[\s\🌍\🔥\🖨️\⚖️\🧪\🌲\🌧️\🏠\📐\🪨\🎨\💧\🏔️\🦠\⚡\📅\🔇\🌿\♻️\🔥\🛡️\🎨\🦶\💰\🌡️\⚠️\❓\📘\📗\✨\🏛️\🌿\💎\🔬\⭐]+\s*', '', title).strip()
+                # Extraer descripcion y resumir
+                desc = re.sub(r'\*\*.+?\*\*', '', item).strip()
+                desc = re.sub(r'\s+', ' ', desc)  # Quitar saltos de linea
+                # Resumir a max 140 caracteres
+                if len(desc) > 140:
+                    desc = desc[:137] + '...'
+                # Icono
                 icons = ['🔬', '🌍', '🔥', '🖨️', '⚖️', '🧪', '🌲', '🌧️', '🏠', '📐', '🪨', '🎨']
                 icon = icons[i % len(icons)]
                 curiosos_cards += f'''      <div class="sq-card">
@@ -3372,14 +3404,21 @@ def generate_sabias_que():
       </div>
 '''
         
-        # FAQs como acordeon
+        # FAQs - extraer mas
         faqs_html = ''
         if data.get('faqs'):
             import re
-            qa_pairs = re.findall(r'\*\*❓\s*(.+?)\*\*\s*\n?>\s*(.+?)(?=\n\n\*\*❓|\Z)', data['faqs'], re.DOTALL)
+            clean_faqs = data['faqs'].replace('---', '').strip()
+            # Buscar todas las preguntas
+            qa_pairs = re.findall(r'\*\*❓\s*(.+?)\*\*\s*\n?>?\s*(.+?)(?=\n\n\*\*❓|\Z)', clean_faqs, re.DOTALL)
             for q, a in qa_pairs:
                 q_clean = q.strip()
                 a_clean = a.strip().replace('\n', ' ')
+                # Limpiar markdown ** en respuesta
+                a_clean = re.sub(r'\*\*(.+?)\*\*', r'<strong>\1</strong>', a_clean)
+                # Resumir respuesta larga
+                if len(a_clean) > 200:
+                    a_clean = a_clean[:197] + '...'
                 faqs_html += f'''      <div class="sq-faq-item">
         <div class="sq-faq-q" onclick="this.parentElement.classList.toggle('open')">{q_clean}</div>
         <div class="sq-faq-a">{a_clean}</div>
@@ -3387,13 +3426,18 @@ def generate_sabias_que():
 '''
         
         panels_html += f'''  <div class="sq-panel{active_panel}" id="sq-panel-{idx}">
-    <div class="section-header" style="margin-bottom:2rem;">
-      <h2>Datos Curiosos: {cat_name}</h2>
+    <div class="sq-cat-hero" style="background-image: url('{cat_img}');">
+      <div class="sq-cat-overlay">
+        <h2>{cat_name}</h2>
+      </div>
+    </div>
+    <div class="section-header" style="margin:2rem 0 1.5rem;">
+      <h2 style="font-size:1.4rem;">Datos Curiosos</h2>
       <div class="divider"></div>
     </div>
     <div class="sq-grid">
 {curiosos_cards}    </div>
-{('<div class="section-header" style="margin-top:3rem;margin-bottom:1.5rem;"><h2>Preguntas Frecuentes</h2><div class="divider"></div></div><div class="sq-faqs">' + faqs_html + '</div>') if faqs_html else ''}
+{('<div class="section-header" style="margin:2.5rem 0 1.5rem;"><h2 style="font-size:1.4rem;">Preguntas Frecuentes</h2><div class="divider"></div></div><div class="sq-faqs">' + faqs_html + '</div>') if faqs_html else ''}
   </div>
 '''
     
@@ -3416,7 +3460,7 @@ def generate_sabias_que():
 
   <section class="sq-hero">
     <h1>¿Sabías que?</h1>
-    <p>Descubre datos sorprendentes, respuestas a tus dudas y consejos expertos sobre nuestros materiales de construcción.</p>
+    <p>Datos sorprendentes y respuestas a tus dudas sobre nuestros materiales.</p>
   </section>
 
   <div class="sq-tabs">
@@ -3432,6 +3476,7 @@ def generate_sabias_que():
     function showSqPanel(idx) {{
       document.querySelectorAll('.sq-tab').forEach((t, i) => t.classList.toggle('active', i === idx));
       document.querySelectorAll('.sq-panel').forEach((p, i) => p.classList.toggle('active', i === idx));
+      window.scrollTo({{ top: document.querySelector('.sq-tabs').offsetTop - 80, behavior: 'smooth' }});
     }}
   </script>
 </body>

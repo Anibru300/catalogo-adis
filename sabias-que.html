@@ -48,6 +48,7 @@
     <button class="close-menu" onclick="toggleMenu()">✕</button>
     <a href="index.html" onclick="toggleMenu()">Inicio</a>
     <a href="index.html#categorias" onclick="toggleMenu()">Catálogo</a>
+    <a href="sabias-que.html" onclick="toggleMenu()">¿Sabías que?</a>
     <a href="proyectos.html" onclick="toggleMenu()">Proyectos</a>
     <a href="contacto.html" onclick="toggleMenu()">Contacto</a>
     <div class="search-box" style="margin-top:1rem;">
@@ -72,7 +73,7 @@
 
   <section class="sq-hero">
     <h1>¿Sabías que?</h1>
-    <p>Descubre datos sorprendentes, respuestas a tus dudas y consejos expertos sobre nuestros materiales de construcción.</p>
+    <p>Datos sorprendentes y respuestas a tus dudas sobre nuestros materiales.</p>
   </section>
 
   <div class="sq-tabs">
@@ -81,8 +82,13 @@
 
   <div class="sq-content">
   <div class="sq-panel active" id="sq-panel-0">
-    <div class="section-header" style="margin-bottom:2rem;">
-      <h2>Datos Curiosos: PLACAS PVC</h2>
+    <div class="sq-cat-hero" style="background-image: url('img/1-placas-pvc/Carrara%20Oscuro.jpg');">
+      <div class="sq-cat-overlay">
+        <h2>PLACAS PVC</h2>
+      </div>
+    </div>
+    <div class="section-header" style="margin:2rem 0 1.5rem;">
+      <h2 style="font-size:1.4rem;">Datos Curiosos</h2>
       <div class="divider"></div>
     </div>
     <div class="sq-grid">
@@ -90,182 +96,191 @@
         <span class="sq-card-number">01</span>
         <span class="sq-card-icon">🔬</span>
         <h3>¿Sabías que el PVC fue descubierto por accidente?</h3>
-        <p>El cloruro de polivinilo (PVC) se sintetizó por primera vez en 1872, cuando el químico alemán Eugen Baumann lo obtuvo de forma accidental al dejar expuesto el cloruro de vinilo a la luz solar. Sin embargo, no fue hasta 1926 cuando el químico de la B.F. Goodrich, Waldo Semon, desarrolló un método para plastificar el PVC, convirtiéndolo en un material flexible y comercialmente viable. Hoy en día, el PVC es el segundo plástico más producido en el mundo, solo superado por el polietileno.</p>
+        <p>El cloruro de polivinilo (PVC) se sintetizó por primera vez en 1872, cuando el químico alemán Eugen Baumann lo obtuvo de forma accidental...</p>
       </div>
       <div class="sq-card">
         <span class="sq-card-number">02</span>
         <span class="sq-card-icon">🌍</span>
-        <h3>🌍 El PVC reciclado tiene una segunda vida impresionante</h3>
-        <p>El PVC es 100% reciclable y puede reutilizarse hasta 7 veces sin perder sus propiedades mecánicas. En la industria de la construcción, los perfiles y placas de PVC reciclado se emplean en pisos, tuberías y nuevos recubrimientos, contribuyendo a la economía circular.</p>
+        <h3>El PVC reciclado tiene una segunda vida impresionante</h3>
+        <p>El PVC es 100% reciclable y puede reutilizarse hasta 7 veces sin perder sus propiedades mecánicas. En la industria de la construcción, lo...</p>
       </div>
       <div class="sq-card">
         <span class="sq-card-number">03</span>
         <span class="sq-card-icon">🔥</span>
-        <h3>🔥 El PVC es inherentemente retardante al fuego</h3>
-        <p>A diferencia de la madera natural u otros plásticos, el PVC contuye cloro en su estructura molecular, lo que le confiere una resistencia natural al fuego. No propaga la llama y se autoextingue al retirar la fuente de ignición, una propiedad que salva vidas en aplicaciones arquitectónicas.</p>
+        <h3>El PVC es inherentemente retardante al fuego</h3>
+        <p>A diferencia de la madera natural u otros plásticos, el PVC contuye cloro en su estructura molecular, lo que le confiere una resistencia ...</p>
       </div>
       <div class="sq-card">
         <span class="sq-card-number">04</span>
         <span class="sq-card-icon">🖨️</span>
-        <h3>🖨️ La impresión digital hot stamping revolucionó el PVC decorativo</h3>
-        <p>La tecnología de hot stamping aplicada a las placas tipo mármol permite transferir películas metálicas y pigmenhos al sustrato de PVC con una precisión milimétrica. El resultado es una reproducción visual del mármol que incluso los expertos confunden a simple vista, a una fracción del costo y peso de la piedra natural.</p>
+        <h3>La impresión digital hot stamping revolucionó el PVC decorativo</h3>
+        <p>La tecnología de hot stamping aplicada a las placas tipo mármol permite transferir películas metálicas y pigmenhos al sustrato de PVC con...</p>
       </div>
       <div class="sq-card">
         <span class="sq-card-number">05</span>
         <span class="sq-card-icon">⚖️</span>
-        <h3>⚖️ Una placa de PVC tipo mármol pesa 85% menos que el mármol real</h3>
-        <p>Una placa de PVC MARMOLIZZI de 1220×2440 mm pesa solo 19 kg, mientras que una losa de mármol natural de las mismas dimensiones superaría los 120 kg. Esta diferencia transforma la logística, la instalación y la estructura necesaria.
-
----</p>
+        <h3>Una placa de PVC tipo mármol pesa 85% menos que el mármol real</h3>
+        <p>Una placa de PVC MARMOLIZZI de 1220×2440 mm pesa solo 19 kg, mientras que una losa de mármol natural de las mismas dimensiones superaría ...</p>
       </div>
     </div>
-<div class="section-header" style="margin-top:3rem;margin-bottom:1.5rem;"><h2>Preguntas Frecuentes</h2><div class="divider"></div></div><div class="sq-faqs">      <div class="sq-faq-item">
+<div class="section-header" style="margin:2.5rem 0 1.5rem;"><h2 style="font-size:1.4rem;">Preguntas Frecuentes</h2><div class="divider"></div></div><div class="sq-faqs">      <div class="sq-faq-item">
         <div class="sq-faq-q" onclick="this.parentElement.classList.toggle('open')">¿Las placas PVC se pueden instalar en la regadera?</div>
-        <div class="sq-faq-a">Sí, las placas PVC son 100% impermeables y pueden instalarse en el área de regadera siempre que las juntas entre placas se sellen adecuadamente con silicona neutra y se asegure una instalación sin huecos donde pueda acumularse agua. Recomendamos los modelos tipo mármol MARMOLIZZI o texturizados para este uso.</div>
+        <div class="sq-faq-a">Sí, las placas PVC son 100% impermeables y pueden instalarse en el área de regadera siempre que las juntas entre placas se sellen adecuadamente con silicona neutra y se asegure una instalación sin ...</div>
       </div>
       <div class="sq-faq-item">
         <div class="sq-faq-q" onclick="this.parentElement.classList.toggle('open')">¿Se pueden usar en exteriores bajo el sol de Sonora?</div>
-        <div class="sq-faq-a">Sí, pero **únicamente en tonos claros**. Los colores oscuros absorben demasiado calor y pueden deformarse. Para exteriores en nuestra región desértica, recomendamos los modelos **ALPINA**, **SOLARIA** o **ARENA** de la línea digital o mármol. Siempre instalar con juntas de dilatación amplias (3-4 mm).</div>
+        <div class="sq-faq-a">Sí, pero <strong>únicamente en tonos claros</strong>. Los colores oscuros absorben demasiado calor y pueden deformarse. Para exteriores en nuestra región desértica, recomendamos los modelos <strong...</div>
       </div>
       <div class="sq-faq-item">
         <div class="sq-faq-q" onclick="this.parentElement.classList.toggle('open')">¿Cómo se cortan las placas?</div>
-        <div class="sq-faq-a">Con sierra circular y disco de carburo de tungsteno, o con caladora. El corte siempre del lado decorativo hacia atrás para evitar astillas en la cara visible. Para cortes precisos y en ángulo, recomendamos usar una mesa de corte o contratar a un instalador experimentado.</div>
+        <div class="sq-faq-a">Con sierra circular y disco de carburo de tungsteno, o con caladora. El corte siempre del lado decorativo hacia atrás para evitar astillas en la cara visible. Para cortes precisos y en ángulo, reco...</div>
       </div>
       <div class="sq-faq-item">
         <div class="sq-faq-q" onclick="this.parentElement.classList.toggle('open')">¿Cuánto dura realmente una placa PVC?</div>
-        <div class="sq-faq-a">Tekno-Step otorga 15 años de garantía, pero con mantenimiento básico (limpieza ocasional), la vida útil real supera los 20-25 años. El PVC no se descompone ni se degrada con la humedad, lo que lo hace extraordinariamente duradero.</div>
+        <div class="sq-faq-a">Tekno-Step otorga 15 años de garantía, pero con mantenimiento básico (limpieza ocasional), la vida útil real supera los 20-25 años. El PVC no se descompone ni se degrada con la humedad, lo que lo h...</div>
       </div>
       <div class="sq-faq-item">
         <div class="sq-faq-q" onclick="this.parentElement.classList.toggle('open')">¿Se nota que "no es madera real"?</div>
-        <div class="sq-faq-a">Las líneas texturizadas (CEDAR, IPE, NOGAL) tienen un relieve tridimensional que reproduce fielmente la textura de la madera. A 1 metro de distancia, incluso expertos tienen dificultad para distinguirlas. Las líneas digitales ofrecen una apariencia visual impecable aunque con superficie lisa. La decisión depende del presupuesto y de si el cliente busca la experiencia táctil completa.  ---</div>
+        <div class="sq-faq-a">Las líneas texturizadas (CEDAR, IPE, NOGAL) tienen un relieve tridimensional que reproduce fielmente la textura de la madera. A 1 metro de distancia, incluso expertos tienen dificultad para disting...</div>
       </div>
 </div>
   </div>
   <div class="sq-panel" id="sq-panel-1">
-    <div class="section-header" style="margin-bottom:2rem;">
-      <h2>Datos Curiosos: LAMBRIN WPC</h2>
+    <div class="sq-cat-hero" style="background-image: url('img/2-lambrin-wpc/21-lambrin-interior/AMANECHER.jpg');">
+      <div class="sq-cat-overlay">
+        <h2>LAMBRIN WPC</h2>
+      </div>
+    </div>
+    <div class="section-header" style="margin:2rem 0 1.5rem;">
+      <h2 style="font-size:1.4rem;">Datos Curiosos</h2>
       <div class="divider"></div>
     </div>
     <div class="sq-grid">
       <div class="sq-card">
         <span class="sq-card-number">01</span>
         <span class="sq-card-icon">🔬</span>
-        <h3>🧪 El WPC nació de la necesidad de reciclar</h3>
-        <p>El composite de madera-plástico se desarrolló a finales de los años 80 en Europa como una solución para aprovechar residuos de madera y plásticos reciclados. Lo que comenzó como un material de vanguardia ecológica se convirtió en la opción premium para exteriores, decking y revestimientos. Hoy, el WPC es un mercado multimillonario con aplicaciones que van desde la construcción hasta la automoción.</p>
+        <h3>El WPC nació de la necesidad de reciclar</h3>
+        <p>El composite de madera-plástico se desarrolló a finales de los años 80 en Europa como una solución para aprovechar residuos de madera y p...</p>
       </div>
       <div class="sq-card">
         <span class="sq-card-number">02</span>
         <span class="sq-card-icon">🌍</span>
-        <h3>🌲 No es madera. No es plástico. Es algo mejor.</h3>
-        <p>El WPC conserva aproximadamente un 60-70% de fibras de madera en su composición (generalmente polvo de madera de aserradero) mezcladas con un 30-40% de polietileno de alta densidad (HDPE) y aditivos estabilizadores. Esta combinación molecular es lo que le permite "respirar" como la madera pero sin absorber agua como ella.</p>
+        <h3>No es madera. No es plástico. Es algo mejor.</h3>
+        <p>El WPC conserva aproximadamente un 60-70% de fibras de madera en su composición (generalmente polvo de madera de aserradero) mezcladas co...</p>
       </div>
       <div class="sq-card">
         <span class="sq-card-number">03</span>
         <span class="sq-card-icon">🔥</span>
-        <h3>🌧️ El WPC flota... literalmente</h3>
-        <p>A diferencia de la madera maciza que se hunde en el agua, el WPC tiene una densidad cercana a 1.1-1.3 g/cm³, lo que significa que algunas formulaciones flotan. Esto no es curiosidad menor: demuestra su baja absorción de agua (menos del 1% en muchas formulaciones), la propiedad que lo hace revolucionario para exteriores.</p>
+        <h3>El WPC flota... literalmente</h3>
+        <p>A diferencia de la madera maciza que se hunde en el agua, el WPC tiene una densidad cercana a 1.1-1.3 g/cm³, lo que significa que algunas...</p>
       </div>
       <div class="sq-card">
         <span class="sq-card-number">04</span>
         <span class="sq-card-icon">🖨️</span>
-        <h3>🏠 Un lambrín WPC puede durar más que la casa donde se instala</h3>
-        <p>Con una garantía de 15 años y una vida útil estimada de 25-30 años, los lambrines WPC superan ampliamente a la madera natural en durabilidad. La madera tratada tradicionalmente dura 10-15 años en exteriores con mantenimiento constante; el WPC duplica eso sin necesidad de barniz ni sellador.</p>
+        <h3>Un lambrín WPC puede durar más que la casa donde se instala</h3>
+        <p>Con una garantía de 15 años y una vida útil estimada de 25-30 años, los lambrines WPC superan ampliamente a la madera natural en durabili...</p>
       </div>
       <div class="sq-card">
         <span class="sq-card-number">05</span>
         <span class="sq-card-icon">⚖️</span>
-        <h3>📐 El sistema machimbrado con clips ocultos fue inspirado en la carpintería japonesa</h3>
-        <p>La técnica de ensamblaje sin tornillos visibles tiene sus raíces en la tradición de la carpintería japonesa *sashimono*, donde las uniones se realizan mediante encajes precisos. El sistema de clips del lambrín WPC permite una instalación limpia donde no se ve ningún fijador, logrando un acabado premium digno de los mejores proyectos arquitectónicos.
-
----</p>
+        <h3>El sistema machimbrado con clips ocultos fue inspirado en la carpintería japonesa</h3>
+        <p>La técnica de ensamblaje sin tornillos visibles tiene sus raíces en la tradición de la carpintería japonesa *sashimono*, donde las unione...</p>
       </div>
     </div>
-<div class="section-header" style="margin-top:3rem;margin-bottom:1.5rem;"><h2>Preguntas Frecuentes</h2><div class="divider"></div></div><div class="sq-faqs">      <div class="sq-faq-item">
+<div class="section-header" style="margin:2.5rem 0 1.5rem;"><h2 style="font-size:1.4rem;">Preguntas Frecuentes</h2><div class="divider"></div></div><div class="sq-faqs">      <div class="sq-faq-item">
         <div class="sq-faq-q" onclick="this.parentElement.classList.toggle('open')">¿El lambrín WPC realmente no se levanta con la lluvia?</div>
-        <div class="sq-faq-a">Correcto. El WPC tiene una absorción de agua menor al 1%, lo que significa que prácticamente no absorbe agua. A diferencia de la madera natural que se hincha y se contrae con la humedad, el WPC mantiene sus dimensiones estables. En Nogales, donde las lluvias de verano pueden ser intensas, el lambrín exterior WPC se comporta de manera impecable.</div>
+        <div class="sq-faq-a">Correcto. El WPC tiene una absorción de agua menor al 1%, lo que significa que prácticamente no absorbe agua. A diferencia de la madera natural que se hincha y se contrae con la humedad, el WPC man...</div>
       </div>
       <div class="sq-faq-item">
         <div class="sq-faq-q" onclick="this.parentElement.classList.toggle('open')">¿Se puede instalar el lambrín WPC sin ayuda de un profesional?</div>
-        <div class="sq-faq-a">Un instalador con experiencia básica en acabados puede instalarlo siguiendo las instrucciones. Sin embargo, recomendamos contratar a un profesionista para proyectos grandes o fachadas exteriores, ya que el sistema de clips requiere precisión en la estructura base. La instalación mal hecha puede resultar en piezas sueltas o alineación irregular.</div>
+        <div class="sq-faq-a">Un instalador con experiencia básica en acabados puede instalarlo siguiendo las instrucciones. Sin embargo, recomendamos contratar a un profesionista para proyectos grandes o fachadas exteriores, y...</div>
       </div>
       <div class="sq-faq-item">
         <div class="sq-faq-q" onclick="this.parentElement.classList.toggle('open')">¿Cuántos metros cuadrados necesito y cómo calculo?</div>
-        <div class="sq-faq-a">Mide el alto y ancho de cada muro en metros, multiplica ambas dimensiones para obtener m² por muro, y suma todos los muros. Te recomendamos sumar un **10% de desperdicio** para cortes y esquinas. Por ejemplo, si tienes 20 m² de muro, pide material para 22 m². Nuestro equipo de ADIS puede hacer el cálculo preciso si nos envías las medidas o planos.</div>
+        <div class="sq-faq-a">Mide el alto y ancho de cada muro en metros, multiplica ambas dimensiones para obtener m² por muro, y suma todos los muros. Te recomendamos sumar un <strong>10% de desperdicio</strong> para cortes ...</div>
       </div>
       <div class="sq-faq-item">
         <div class="sq-faq-q" onclick="this.parentElement.classList.toggle('open')">¿El WPC se decolora con el sol?</div>
-        <div class="sq-faq-a">Los lambrines WPC de Tekno-Step cuentan con aditivos estabilizadores UV en su formulación que previenen el decoloramiento. La garantía de 15 años cubre precisamente este aspecto. En nuestra experiencia en Nogales y Tucson, donde la radiación solar es extrema, el WPC mantiene su color notablemente mejor que la madera natural o que otros materiales sin tratamiento UV.</div>
+        <div class="sq-faq-a">Los lambrines WPC de Tekno-Step cuentan con aditivos estabilizadores UV en su formulación que previenen el decoloramiento. La garantía de 15 años cubre precisamente este aspecto. En nuestra experie...</div>
       </div>
       <div class="sq-faq-item">
         <div class="sq-faq-q" onclick="this.parentElement.classList.toggle('open')">¿Puedo poner el lambrín interior en el exterior o viceversa?</div>
-        <div class="sq-faq-a">No recomendamos intercambiar las líneas. El lambrín **interior** tiene una formulación optimizada para condiciones controladas y puede degradarse más rápido si se expone a lluvia y sol directo intenso. El lambrín **exterior** tiene mayor densidad de aditivos UV y una formulación más robusta. Usa cada uno en su ambiente para maximizar la vida útil y la garantía.  ---</div>
+        <div class="sq-faq-a">No recomendamos intercambiar las líneas. El lambrín <strong>interior</strong> tiene una formulación optimizada para condiciones controladas y puede degradarse más rápido si se expone a lluvia y sol...</div>
       </div>
 </div>
   </div>
   <div class="sq-panel" id="sq-panel-2">
-    <div class="section-header" style="margin-bottom:2rem;">
-      <h2>Datos Curiosos: REVESTIMIENTO FLEXIBLE</h2>
+    <div class="sq-cat-hero" style="background-image: url('img/3-revestimiento-flexible/CONCRETO%20Aparente.jpg');">
+      <div class="sq-cat-overlay">
+        <h2>REVESTIMIENTO FLEXIBLE</h2>
+      </div>
+    </div>
+    <div class="section-header" style="margin:2rem 0 1.5rem;">
+      <h2 style="font-size:1.4rem;">Datos Curiosos</h2>
       <div class="divider"></div>
     </div>
     <div class="sq-grid">
       <div class="sq-card">
         <span class="sq-card-number">01</span>
         <span class="sq-card-icon">🔬</span>
-        <h3>🪨 Es piedra real. Literalmente.</h3>
-        <p>A diferencia de los paneles de PVC o cerámica que *imitan* piedra, el revestimiento flexible está hecho de verdaderas láminas de piedra natural. El proceso de fabricación consiste en deslajar (dividir en láminas ultrafinas) bloques de piedra natural hasta obtener espesores de 1 a 3 mm, que luego se refuerzan con fibra de vidrio para darles flexibilidad y resistencia. Cada pieza es única, con las vetas, inclusiones y variaciones de color que solo la naturaleza puede crear.</p>
+        <h3>Es piedra real. Literalmente.</h3>
+        <p>A diferencia de los paneles de PVC o cerámica que *imitan* piedra, el revestimiento flexible está hecho de verdaderas láminas de piedra n...</p>
       </div>
       <div class="sq-card">
         <span class="sq-card-number">02</span>
         <span class="sq-card-icon">🌍</span>
-        <h3>🌍 La técnica nació en la India hace más de 20 años</h3>
-        <p>El revestimiento flexible de piedra fue desarrollado originalmente en la India a principios de los años 2000 como una forma de aprovechar vetas de piedra que de otro modo serían descartadas por ser demasiado delgadas o irregulares para la construcción tradicional. La innovación fue el refuerzo con fibra de vidrio, que transformó una limitación en una ventaja extraordinaria.</p>
+        <h3>La técnica nació en la India hace más de 20 años</h3>
+        <p>El revestimiento flexible de piedra fue desarrollado originalmente en la India a principios de los años 2000 como una forma de aprovechar...</p>
       </div>
       <div class="sq-card">
         <span class="sq-card-number">03</span>
         <span class="sq-card-icon">🔥</span>
-        <h3>📐 Se puede instalar sobre casi cualquier superficie</h3>
-        <p>Gracias a su bajo peso (4 kg/m²), el revestimiento flexible puede adherirse directamente sobre drywall, madera, concreto, metal, cerámica existente e incluso sobre otros recubrimientos. No requiere estructura de soporte ni refuerzo especial. Esto lo convierte en la opción ideal para remodelaciones donde no se quiere demoler.</p>
+        <h3>Se puede instalar sobre casi cualquier superficie</h3>
+        <p>Gracias a su bajo peso (4 kg/m²), el revestimiento flexible puede adherirse directamente sobre drywall, madera, concreto, metal, cerámica...</p>
       </div>
       <div class="sq-card">
         <span class="sq-card-number">04</span>
         <span class="sq-card-icon">🖨️</span>
-        <h3>🎨 No hay dos piezas iguales</h3>
-        <p>Al ser piedra natural, cada panel tiene un patrón de vetas, tonos y texturas único e irrepetible. Cuando instalas revestimiento flexible, estás creando una obra de arte geológica en tu muro. Esta variabilidad natural es precisamente lo que los diseñadores de interiores más valoran: autenticidad absoluta.</p>
+        <h3>No hay dos piezas iguales</h3>
+        <p>Al ser piedra natural, cada panel tiene un patrón de vetas, tonos y texturas único e irrepetible. Cuando instalas revestimiento flexible,...</p>
       </div>
       <div class="sq-card">
         <span class="sq-card-number">05</span>
         <span class="sq-card-icon">⚖️</span>
-        <h3>🏛️ Se usa en museos y edificios patrimoniales</h3>
-        <p>El revestimiento flexible se ha convertido en el material preferido para restauraciones de edificios históricos en Europa. Su bajo peso permite revestir estructuras antiguas sin comprometer su integridad estructural, y su flexibilidad permite adaptarlo a muros irregulares que han sufrido asentamientos a lo largo de siglos.
-
----</p>
+        <h3>Se usa en museos y edificios patrimoniales</h3>
+        <p>El revestimiento flexible se ha convertido en el material preferido para restauraciones de edificios históricos en Europa. Su bajo peso p...</p>
       </div>
     </div>
-<div class="section-header" style="margin-top:3rem;margin-bottom:1.5rem;"><h2>Preguntas Frecuentes</h2><div class="divider"></div></div><div class="sq-faqs">      <div class="sq-faq-item">
+<div class="section-header" style="margin:2.5rem 0 1.5rem;"><h2 style="font-size:1.4rem;">Preguntas Frecuentes</h2><div class="divider"></div></div><div class="sq-faqs">      <div class="sq-faq-item">
         <div class="sq-faq-q" onclick="this.parentElement.classList.toggle('open')">¿Es realmente piedra o es una imitación?</div>
-        <div class="sq-faq-a">Es **piedra natural 100% real**. No es PVC, no es cerámica, no es resina. Es una lámina auténtica de piedra natural (pizarra, cuarcita o arenisca) que se extrae de cantera y se procesa hasta alcanzar un espesor de 1-3 mm. El refuerzo de fibra de vidrio por la parte posterior es lo que le da flexibilidad. Puedes ver y sentir las vetas, inclusiones e irregularidades naturales de la piedra. Cada pieza es única, exactamente como la naturaleza la creó.</div>
+        <div class="sq-faq-a">Es <strong>piedra natural 100% real</strong>. No es PVC, no es cerámica, no es resina. Es una lámina auténtica de piedra natural (pizarra, cuarcita o arenisca) que se extrae de cantera y se procesa...</div>
       </div>
       <div class="sq-faq-item">
         <div class="sq-faq-q" onclick="this.parentElement.classList.toggle('open')">¿Cuánto pesa y mi muro lo aguanta?</div>
-        <div class="sq-faq-a">Solo **4 kg por metro cuadrado**. Para que te des una idea: una losa de cantera tradicional pesa entre 30 y 50 kg/m². Esto significa que el revestimiento flexible es **8 a 12 veces más ligero** que la piedra tradicional. Cualquier muro de drywall, block, concreto o madera lo soporta sin problema. De hecho, puedes instalarlo directamente sobre drywall sin refuerzo alguno. Esa es precisamente su magia.</div>
+        <div class="sq-faq-a">Solo <strong>4 kg por metro cuadrado</strong>. Para que te des una idea: una losa de cantera tradicional pesa entre 30 y 50 kg/m². Esto significa que el revestimiento flexible es <strong>8 a 12 vec...</div>
       </div>
       <div class="sq-faq-item">
         <div class="sq-faq-q" onclick="this.parentElement.classList.toggle('open')">¿Se puede usar en mi fachada exterior aquí en Nogales/Tucson?</div>
-        <div class="sq-faq-a">Absolutamente. El revestimiento flexible está especialmente diseñado para uso en fachadas exteriores. Resiste la radiación UV intensa del desierto, las lluvias de verano, los vientos y los cambios térmicos de nuestra región fronteriza. Su garantía de 35 años aplica tanto para interiores como para exteriores. En proyectos anteriores en Nogales y Tucson, se ha comportado de manera excepcional incluso en fachadas de oriente y poniente con exposición solar directa.</div>
+        <div class="sq-faq-a">Absolutamente. El revestimiento flexible está especialmente diseñado para uso en fachadas exteriores. Resiste la radiación UV intensa del desierto, las lluvias de verano, los vientos y los cambios ...</div>
       </div>
       <div class="sq-faq-item">
         <div class="sq-faq-q" onclick="this.parentElement.classList.toggle('open')">¿Y si mi casa tiene columnas redondas?</div>
-        <div class="sq-faq-a">¡Las columnas redondas son el escenario perfecto para el revestimiento flexible! Es uno de los pocos materiales de piedra que puede adaptarse a superficies curvas. Puedes calentar ligeramente el panel con una pistola de calor y doblarlo alrededor de columnas cilíndricas de 10 cm de diámetro en adelante. El resultado es una columna revestida de piedra natural que parece costó miles de dólares en mano de obra especializada.</div>
+        <div class="sq-faq-a">¡Las columnas redondas son el escenario perfecto para el revestimiento flexible! Es uno de los pocos materiales de piedra que puede adaptarse a superficies curvas. Puedes calentar ligeramente el pa...</div>
       </div>
       <div class="sq-faq-item">
         <div class="sq-faq-q" onclick="this.parentElement.classList.toggle('open')">¿Cuál es la diferencia entre los modelos MUNICH, COLONIA, HAMBURGO, etc.?</div>
-        <div class="sq-faq-a">Cada modelo corresponde a un acabado específico: MUNICH y COLONIA son **Concreto Aparente/Gris** (look industrial moderno), HAMBURGO y BREMEN son **Granito Blanco e Imperial Blanco** (elegancia clásica), DRESDE y NUREMBERG incluyen **Madera Roble** (calidez natural), y FRANKFURT y DUSSELDORF ofrecen **Granito Oro** (lujo impactante). Todos comparten las mismas propiedades técnicas (flexible, 4 kg/m², 35 años de garantía). La diferencia es puramente estética: tipo de piedra, color y vetado. Te invitamos a visitar nuestro showroom en Nogales para ver y tocar cada modelo en persona.  ---</div>
+        <div class="sq-faq-a">Cada modelo corresponde a un acabado específico: MUNICH y COLONIA son <strong>Concreto Aparente/Gris</strong> (look industrial moderno), HAMBURGO y BREMEN son <strong>Granito Blanco e Imperial Blan...</div>
       </div>
 </div>
   </div>
   <div class="sq-panel" id="sq-panel-3">
-    <div class="section-header" style="margin-bottom:2rem;">
-      <h2>Datos Curiosos: PLAFÓN PVC LAMINADO WOOD STYLE</h2>
+    <div class="sq-cat-hero" style="background-image: url('LOGO%20ADIS.png');">
+      <div class="sq-cat-overlay">
+        <h2>PLAFÓN PVC LAMINADO WOOD STYLE</h2>
+      </div>
+    </div>
+    <div class="section-header" style="margin:2rem 0 1.5rem;">
+      <h2 style="font-size:1.4rem;">Datos Curiosos</h2>
       <div class="divider"></div>
     </div>
     <div class="sq-grid">
@@ -273,36 +288,19 @@
         <span class="sq-card-number">01</span>
         <span class="sq-card-icon">🔬</span>
         <h3>uno de los primeros usos masivos del PVC fue para recubrimientos de pared en hospitales alemanes</h3>
-        <p>🧐
-
-### El PVC cumple casi 100 años siendo el "material silencioso" de la construcción
-
-El polímero de cloruro de polivinilo (PVC) se desarrolló comercialmente en la década de 1930, pero su explosión en el sector de la construcción no ocurrió hasta los años 60. Curiosamente, , precisamente por su resistencia bacteriana y facilidad de desinfección. Hoy, el plafón PVC laminado tipo madera hereda esa misma filosofía: .
-
-### El "efecto catedral" de las láminas largas
-
-Las láminas Vistawood miden . Esta proporción alargada no es casualidad: los arquitectos descubrieron que las líneas horizontales largas , creando lo que en diseño de interiores se conoce como "efecto catedral" — la sensación de amplitud y altura que se obtiene al dirigir la vista en sentido horizontal.
-
-### Los 7 tonos de madera y la psicología del color
-
-Cada uno de los 7 modelos de la línea Vistawood (Cocoa Ash, Ash Nomad, Birch Ember, Walnut Ellipse, Ivory Elm, Maple Dusk y Wild Teak) fue seleccionado tras estudios de tendencias de interiorismo en Europa. : el Cocoa Ash, por ejemplo, se diseñó específicamente para espacios con iluminación cálida de tarde, mientras que el Ivory Elm maximiza la reflexión de luz en espacios oscuros.
-
-### El secreto del laminado: 7 capas en 9 milímetros
-
-Aunque solo mide , cada lámina Vistawood contiene : capa de protección UV superior, capa decorativa de impresión fotográfica de alta resolución, capa de estabilización dimensional, núcleo de PVC espumado de densidad controlada, capa de refuerzo estructural, capa de balance y capa inferior de contacto. El resultado es un panel que  pero soporta décadas de uso.
-
-### La garantía de 15 años tiene truco (bueno)
-
-Tekno-Step ofrece  en la línea Vistawood. En términos de la industria de recubrimientos, esto es excepcional: la mayoría de los plafones tradicionales de gypsum ofrecen garantías de 5 a 10 años. La clave está en que el PVC , eliminando la causa principal de degradación en plafones.
-
----</p>
+        <p>🧐 El PVC cumple casi 100 años siendo el "material silencioso" de la construcción El polímero de cloruro de polivinilo (PVC) se desarrolló...</p>
       </div>
     </div>
 
   </div>
   <div class="sq-panel" id="sq-panel-4">
-    <div class="section-header" style="margin-bottom:2rem;">
-      <h2>Datos Curiosos: PANELES TRIDIMENSIONALES 3D</h2>
+    <div class="sq-cat-hero" style="background-image: url('img/5-paneles-tridimensionales/51-blanco/Austin.jpg');">
+      <div class="sq-cat-overlay">
+        <h2>PANELES TRIDIMENSIONALES 3D</h2>
+      </div>
+    </div>
+    <div class="section-header" style="margin:2rem 0 1.5rem;">
+      <h2 style="font-size:1.4rem;">Datos Curiosos</h2>
       <div class="divider"></div>
     </div>
     <div class="sq-grid">
@@ -310,42 +308,19 @@ Tekno-Step ofrece  en la línea Vistawood. En términos de la industria de recub
         <span class="sq-card-number">01</span>
         <span class="sq-card-icon">🔬</span>
         <h3>arquitectura paramétrica</h3>
-        <p>🧐
-
-### El origen: del museo a tu sala
-
-Los paneles decorativos 3D tienen sus raíces en la  de los años 90, cuando firmas como Zaha Hadid comenzaron a experimentar con superficies onduladas y patrones geométricos complejos. Lo que empezó como un lujo exclusivo de museos y edificios emblemáticos, la tecnología de moldeo por inyección en PVC lo convirtió en un producto accesible para cualquier hogar. 
-
-### El patrón geométrico que engaña al cerebro
-
-Los patrones 3D no son solo decorativos: . Los patrones verticales alargan visualmente las paredes; los patrones de ondas suavizan ángulos rígidos; los patrones hexagonales aportan sensación de orden y tecnología. En ADIS hemos visto salas transformarse completamente solo con un muro de acento 3D.
-
-### De 330 gramos de plástico a una obra de arte
-
-Cada lámina de panel 3D de 50x50 cm pesa solo . Eso significa que un muro completo de 8 m² (32 láminas) pesa apenas . Es tan ligero que puedes instalarlo en paredes de tablaroca o incluso drywall sin problemas estructurales.
-
-### El "efecto galería" en tu negocio
-
-Los paneles 3D blancos con iluminación direccional crean lo que los diseñadores llaman el : sombras suaves que cambian a lo largo del día según la luz natural, convirtiendo una pared plana y aburrida en una superficie viva. Restaurantes, boutiques y recepciones de hoteles en Tucson y Nogales usan este efecto para crear espacios Instagram-worthy que sus clientes fotografían y comparten orgánicamente.
-
-### Los 5 colores y su psicología
-
-| Color | Sensación que transmite | Ideal para |
-|-------|------------------------|------------|
-|  | Amplitud, pureza, modernidad | Espacios pequeños, minimalismo |
-|  | Sofisticación, neutralidad, calma | Oficinas, dormitorios, recepciones |
-|  | Calidez, naturaleza, acogimiento | Salas, restaurantes, hoteles |
-|  | Lujo dramático, elegancia extrema | Bares, lounges, feature walls |
-|  | Opulencia, celebración, distinción | Eventos, boutiques, espacios VIP |
-
----</p>
+        <p>🧐 El origen: del museo a tu sala Los paneles decorativos 3D tienen sus raíces en la de los años 90, cuando firmas como Zaha Hadid comenza...</p>
       </div>
     </div>
 
   </div>
   <div class="sq-panel" id="sq-panel-5">
-    <div class="section-header" style="margin-bottom:2rem;">
-      <h2>Datos Curiosos: VIGAS PVCWPCPU</h2>
+    <div class="sq-cat-hero" style="background-image: url('img/6-vigas-pvc/61-interior/BAHIA%201.jpg');">
+      <div class="sq-cat-overlay">
+        <h2>VIGAS PVCWPCPU</h2>
+      </div>
+    </div>
+    <div class="section-header" style="margin:2rem 0 1.5rem;">
+      <h2 style="font-size:1.4rem;">Datos Curiosos</h2>
       <div class="divider"></div>
     </div>
     <div class="sq-grid">
@@ -353,22 +328,19 @@ Los paneles 3D blancos con iluminación direccional crean lo que los diseñadore
         <span class="sq-card-number">01</span>
         <span class="sq-card-icon">🔬</span>
         <h3>las vigas de madera natural son bellas pero exigen un tributo constante</h3>
-        <p>🧐
-
-### De la madera de verdad a la "madera eterna"
-
-Las vigas decorativas de PVC, WPC y PU surgieron como respuesta a un problema milenario: . Termitas, humedad, deformación, pudrición, pintura descascarada — cada año, millones de dólares se invierten en mantener vigas de madera que, tarde o temprano, sucumben. En la década de 2000, la tecnología de compuestos de polímero alcanzó la madurez suficiente para replicar no solo la apariencia, sino la  de la madera real. Hoy, una viga WPC o PU puede confundir incluso a un carpintero experimentado... hasta que le dicen que lleva 10 años instalada sin una sola gota de barniz.
-
-### La viga de 2.81 kg que soporta el peso de la tradición
-
-La . Para ponerlo en perspectiva: una viga de madera real de las mismas dimensiones pesaría aproximadamente 12-15 kg. Eso significa que puedes levantar una viga PU con un solo dedo, mientras que la de madera requiere dos personas.  revolucionó la decoración de techos, permitiendo instalar vigas decorativas en estructuras que nunca podrían soportar el peso de la madera natural.</p>
+        <p>🧐 De la madera de verdad a la "madera eterna" Las vigas decorativas de PVC, WPC y PU surgieron como respuesta a un problema milenario: . ...</p>
       </div>
     </div>
 
   </div>
   <div class="sq-panel" id="sq-panel-6">
-    <div class="section-header" style="margin-bottom:2rem;">
-      <h2>Datos Curiosos: PISOS</h2>
+    <div class="sq-cat-hero" style="background-image: url('img/7-pisos/71-laminado/ACONCAGUA.jpg');">
+      <div class="sq-cat-overlay">
+        <h2>PISOS</h2>
+      </div>
+    </div>
+    <div class="section-header" style="margin:2rem 0 1.5rem;">
+      <h2 style="font-size:1.4rem;">Datos Curiosos</h2>
       <div class="divider"></div>
     </div>
     <div class="sq-grid">
@@ -376,31 +348,19 @@ La . Para ponerlo en perspectiva: una viga de madera real de las mismas dimensio
         <span class="sq-card-number">01</span>
         <span class="sq-card-icon">🔬</span>
         <h3>Dato Curioso</h3>
-        <p>🧠
-
-### El piso laminado nació... ¡por accidente!
-En 1977, la empresa sueca Perstorp intentaba crear encimeras de cocina más resistentes. Uno de sus ingenieros, al combinar capas de fibra de madera de alta densidad (HDF) con resinas melamínicas, descubrió que el resultado podía usarse también como piso. Así nació el laminado moderno. Hoy, casi 50 años después, el laminado ha evolucionado hasta alcanzar clases de uso AC5 capaces de soportar el tráfico de aeropuertos.
-
-### El SPC es literalmente "piso de piedra aplastada"
-El núcleo de los pisos SPC (Stone Plastic Composite) está compuesto por un 60-70% de polvo de piedra caliza (carbonato de calcio) mezclado con resinas de PVC. Eso significa que, en esencia, caminas sobre una superficie de piedra comprimida con acabado decorativo. Es el mismo material que se usa en algunas tuberías de alta presión, lo que explica su resistencia extrema al agua.
-
-### El WPC se usaba primero en decks... ¡y ahora conquista interiores!
-El Wood Plastic Composite (WPC) fue desarrollado originalmente en la década de 1990 para reemplazar madera tratada con químicos en decks exteriores. La tecnología demostró ser tan versátil que hoy se fabrican pisos interiores con el mismo compuesto madera-plástico. Es uno de los pocos materiales que logró "migrar" del exterior al interior sin perder prestaciones.
-
-### Los decks sintéticos se inventaron para salvar bosques
-El deck sintético WPC nació como respuesta a la preocupación ambiental por la tala de ipe, caoba y otras maderas tropicales para exteriores. Un deck de WPC con acabado "Teak" evita que se talen aproximadamente 12 árboles de teca por cada 100 m² instalados. La coextrusión (capa protectora UV integrada) es una tecnología que la NASA exploró inicialmente para proteger satélites.
-
-### La clasificación AC (Abrasion Class) se prueba con una máquina de "zancadas robot"
-Para clasificar un piso laminado en AC3, AC4 o AC5, los laboratorios utilizan una máquina TABER que simula miles de pisadas con abrasivo. Un piso AC4 como el SPLASH! resiste más de 4,000 revoluciones de esta máquina sin desgaste visible. Imagina caminar 10 km diarios sobre el mismo punto durante años.
-
----</p>
+        <p>🧠 El piso laminado nació... ¡por accidente! En 1977, la empresa sueca Perstorp intentaba crear encimeras de cocina más resistentes. Uno d...</p>
       </div>
     </div>
 
   </div>
   <div class="sq-panel" id="sq-panel-7">
-    <div class="section-header" style="margin-bottom:2rem;">
-      <h2>Datos Curiosos: ZACATE SINTÉTICO</h2>
+    <div class="sq-cat-hero" style="background-image: url('LOGO%20ADIS.png');">
+      <div class="sq-cat-overlay">
+        <h2>ZACATE SINTÉTICO</h2>
+      </div>
+    </div>
+    <div class="section-header" style="margin:2rem 0 1.5rem;">
+      <h2 style="font-size:1.4rem;">Datos Curiosos</h2>
       <div class="divider"></div>
     </div>
     <div class="sq-grid">
@@ -408,31 +368,19 @@ Para clasificar un piso laminado en AC3, AC4 o AC5, los laboratorios utilizan un
         <span class="sq-card-number">01</span>
         <span class="sq-card-icon">🔬</span>
         <h3>Dato Curioso</h3>
-        <p>🧠
-
-### El primer pasto sintético se creó para... ¡un mini golf en los años 60!
-La historia del pasto artificial comenzó en 1965 cuando Monsanto desarrolló ChemGrass para el recinto deportivo de la ciudad de Houston. Sin embargo, la verdadera revolución llegó en 1966 cuando se instaló en el estadio Astrodome de los Houston Astros (por eso se le llamó inicialmente "AstroTurf"). Curiosamente, la primera aplicación exitosa no fue para fútbol americano, sino porque la cúpula del estadio no permitía crecer pasto natural bajo techo. Hoy, casi 60 años después, la tecnología ha evolucionado hasta crear fibras que parecen y se sienten como pasto real.
-
-### Un campo de pasto sintético ahorra 2.3 millones de litros de agua al año
-Un campo de fútbol de pasto natural consume aproximadamente 2.3 millones de litros de agua anuales solo en riego. En Nogales, Sonora, donde el agua es un recurso preciado y escaso, esta cifra cobra relevancia extraordinaria. Instalar pasto sintético en un patio promedio de 50 m² equivale a ahorrar los litros de agua que una familia de 4 personas consumiría en 8 años.
-
-### Las fibras de polietileno del pasto sintético son las mismas que las bolsas de supermercado... ¡pero mucho más sofisticadas!
-El polietileno (PE) usado en pasto sintético es técnicamente el mismo polímero de las bolsas plásticas, pero de grado UHMW (Ultra High Molecular Weight). Esto significa que sus moléculas son 100-1,000 veces más largas, lo que le da resistencia UV, flexibilidad y durabilidad. Una fibra de pasto sintético de alta gama puede doblarse 50,000 veces sin romperse.
-
-### El follaje artificial data del... ¡Imperio Egipcio!
-Los egipcios usaban hojas de seda y flores artificiales para decorar tumbas hace más de 3,000 años. En la época victoriana, el follaje artificial de tela y cera se volvió moda entre la alta sociedad europea. El follaje moderno de poliuretano y poliéster con protección UV es prácticamente indistinguible del natural a simple vista, y puede durar 5-8 años en exteriores sin decolorarse.
-
-### Los perros prefieren el pasto sintético (y sus dueños también)
-Un estudio de la Universidad de California descubrió que el 78% de los perros mostró preferencia por hacer sus necesidades sobre pasto sintético vs. concreto o grava. Esto se debe a que las fibras sintéticas retienen menos calor que el concreto bajo el sol y ofrecen una superficie "natural" que los canes reconocen. Además, el pasto sintético es aislante de bacterias e insectos, lo que reduce el riesgo de parásitos en mascotas.
-
----</p>
+        <p>🧠 El primer pasto sintético se creó para... ¡un mini golf en los años 60! La historia del pasto artificial comenzó en 1965 cuando Monsant...</p>
       </div>
     </div>
 
   </div>
   <div class="sq-panel" id="sq-panel-8">
-    <div class="section-header" style="margin-bottom:2rem;">
-      <h2>Datos Curiosos: CLADDING  PLACAS TIPO PIEDRA</h2>
+    <div class="sq-cat-hero" style="background-image: url('img/9-cladding/91-placa-tipo-roca/BLACK.jpg');">
+      <div class="sq-cat-overlay">
+        <h2>CLADDING  PLACAS TIPO PIEDRA</h2>
+      </div>
+    </div>
+    <div class="section-header" style="margin:2rem 0 1.5rem;">
+      <h2 style="font-size:1.4rem;">Datos Curiosos</h2>
       <div class="divider"></div>
     </div>
     <div class="sq-grid">
@@ -440,24 +388,7 @@ Un estudio de la Universidad de California descubrió que el 78% de los perros m
         <span class="sq-card-number">01</span>
         <span class="sq-card-icon">🔬</span>
         <h3>Dato Curioso</h3>
-        <p>🧠
-
-### Las placas de PU tipo piedra pesan 95% menos que la roca real... ¡pero lucen idénticas!
-Una placa de poliuretano (PU) tipo piedra pesa aproximadamente 1.8 kg por pieza (60.5 × 121 cm). La piedra natural equivalente pesa entre 30 y 50 kg por m². Eso significa que una placa de PU pesa ~2.5 kg/m² vs. 40 kg/m² de piedra real. La diferencia es tan abismal que una persona puede instalar 20 m² de placas PU en una tarde, mientras que la misma área en piedra natural requiere albañiles, estructura de soporte reforzada y días de trabajo. La tecnología de moldeo por inyección permite capturar hasta las imperfecciones naturales de la roca: grietas, vetas, desgaste — todo en un material que puedes levantar con una mano.
-
-### El revestimiento flexible de piedra real es la única tecnología que combina piedra auténtica con flexibilidad
-Suena como una contradicción: ¿cómo puede ser flexible algo hecho de piedra? El secreto está en el espesor: se toman láminas de piedra natural de solo 1-2 mm de grosor, se unen a una base de fibra de vidrio, y el resultado es un panel de 4 kg/m² que se puede doblar, cortar con tijera y adherir a superficies curvas. Es una tecnología desarrollada originalmente en Alemania para restauración de monumentos históricos donde el peso de la piedra original amenazaba la estructura.
-
-### El Wall Cladding WPC está revolucionando las fachadas en Europa
-En países como Alemania, Países Bajos y Reino Unido, el cladding de WPC ya representa más del 30% de las nuevas fachadas residenciales. La razón es simple: ofrece la estética de la madera sin su mantenimiento (no se astilla, no se agrieta, no requiere barnizado cada 2 años). En Nogales, Sonora, donde el sol intenso degrada la madera exterior en 2-3 años, el cladding WPC es prácticamente la única opción viable para lograr el look de madera en exteriores.
-
-### Las placas PU se usaron por primera vez en sets de Hollywood
-El poliuretano expansivo de alta densidad se popularizó originalmente en la industria del cine para crear escenografías que parecían piedra, ladrillo o madera pero que eran lo suficientemente ligeras para moverlas entre tomas. Cuando la tecnología maduró, alguien pensó: "¿Por qué no usarlas en casas reales?" Hoy, las placas PU tipo piedra son una de las categorías de recubrimiento de más rápido crecimiento en construcción residencial y comercial.
-
-### Una fachada con cladding puede reducir la temperatura interior hasta 8°C
-tanto el Wall Cladding WPC como las placas tipo piedra crean una cámara de aire entre el recubrimiento y la pared original. Esta barrera térmica reduce la transferencia de calor hacia el interior. En Tucson, AZ y Nogales, Sonora, donde las temperaturas exteriores pueden superar los 45°C en verano, una fachada con cladding puede representar un ahorro de 20-30% en consumo de aire acondicionado. La inversión en cladding se amortiza en 3-5 años solo por el ahorro energético.
-
----</p>
+        <p>🧠 Las placas de PU tipo piedra pesan 95% menos que la roca real... ¡pero lucen idénticas! Una placa de poliuretano (PU) tipo piedra pesa ...</p>
       </div>
     </div>
 
@@ -1169,6 +1100,7 @@ tanto el Wall Cladding WPC como las placas tipo piedra crean una cámara de aire
     function showSqPanel(idx) {
       document.querySelectorAll('.sq-tab').forEach((t, i) => t.classList.toggle('active', i === idx));
       document.querySelectorAll('.sq-panel').forEach((p, i) => p.classList.toggle('active', i === idx));
+      window.scrollTo({ top: document.querySelector('.sq-tabs').offsetTop - 80, behavior: 'smooth' });
     }
   </script>
 </body>
