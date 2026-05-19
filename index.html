@@ -171,6 +171,28 @@
     </div>
   </section>
 
+  <!-- PRODUCTO DESTACADO: PVC MARMOL -->
+  <section class="featured-product-section reveal" id="pvc-marmol">
+    <div class="featured-product-wrap">
+      <div class="featured-product-image">
+        <span class="featured-product-badge">Producto Destacado</span>
+        <img src="img/1-placas-pvc/12-placas-pvc-texturizadas/Carrara Oscuro.jpg" alt="Hoja de PVC tipo Mármol Carrara Oscuro" loading="lazy">
+      </div>
+      <div class="featured-product-content">
+        <h3>Hoja de PVC tipo Mármol</h3>
+        <div class="subtitle">Elegancia y durabilidad para cualquier espacio interior</div>
+        <p>La lámina de <strong>PVC tipo mármol</strong> es la solución decorativa perfecta si buscas añadir un toque de elegancia a tu hogar, oficina o espacio comercial. Fabricada con materiales de alta calidad, es a la vez <strong>duradera y ligera</strong>, por lo que es fácil de instalar y mantener.</p>
+        <ul class="featured-product-features">
+          <li>Resistente al <strong>agua, manchas y arañazos</strong></li>
+          <li>Inversión que <strong>dura muchos años</strong></li>
+          <li>Ideal para <strong>cocinas, baños, salas de estar</strong> y más</li>
+          <li>Acabado profesional con <strong>garantía extendida</strong></li>
+        </ul>
+        <a href="1-placas-pvc.html" class="featured-product-cta">Ver en catálogo →</a>
+      </div>
+    </div>
+  </section>
+
   <!-- CATÁLOGO -->
   <section class="section-wrap reveal" id="categorias">
     <div class="section-header">
@@ -592,7 +614,12 @@
         
         // PRODUCTOS / CATALOGO / MATERIALES / PROYECTOS
         if (q.includes('producto') || q.includes('catalogo') || q.includes('materiales') || q.includes('que venden') || q.includes('tienen') || q.includes('ofrecen')) {
-          return '📦 <strong>Nuestros productos:</strong><br><br>• Placas PVC (tipo madera, texturizadas, espejo)<br>• Lambrín WPC (interior y exterior)<br>• Paneles 3D decorativos<br>• Pisos (Laminado, WPC, SPC, Deck)<br>• Plafón PVC<br>• Vigas PVC<br>• Zacate sintético y follaje<br>• Cladding y revestimientos<br><br>🏠 Atendemos: ' + kb.proyectos.tipos + '<br><br>👉 <a href="index.html#categorias" style="color:#C5A059">Ver catálogo completo</a>';
+          return '📦 <strong>Nuestros productos:</strong><br><br>• Placas PVC (tipo madera, texturizadas, espejo, mármol)<br>• Lambrín WPC (interior y exterior)<br>• Paneles 3D decorativos<br>• Pisos (Laminado, WPC, SPC, Deck)<br>• Plafón PVC<br>• Vigas PVC<br>• Zacate sintético y follaje<br>• Cladding y revestimientos<br><br>🏠 Atendemos: ' + kb.proyectos.tipos + '<br><br>👉 <a href="index.html#categorias" style="color:#C5A059">Ver catálogo completo</a>';
+        }
+        
+        // PVC TIPO MARMOL
+        if (q.includes('marmol') || q.includes('marble') || (q.includes('pvc') && q.includes('marmol'))) {
+          return '🏛️ <strong>Hoja de PVC tipo Mármol</strong><br><br>Es una solución decorativa perfecta para cualquier espacio interior. Añade un toque de elegancia a tu hogar, oficina o espacio comercial.<br><br>✨ <strong>Características:</strong><br>• Fabricada con materiales de alta calidad<br>• Duradera y ligera, fácil de instalar y mantener<br>• Resistente al agua, manchas y arañazos<br>• Inversión que dura muchos años<br><br>🏠 <strong>Aplicaciones:</strong> Cocinas, baños, salas de estar y más<br><br>👉 <a href="1-placas-pvc.html" style="color:#C5A059">Ver en catálogo →</a>';
         }
         
         // DIFERENCIAS ENTRE MATERIALES

@@ -76,6 +76,20 @@ CHATBOT_KB = {
     'venta': {
         'unidad': 'El tipo de unidad y cómo se vende viene en las fichas técnicas de cada categoría: por pieza, por hoja, tamaño de la hoja, etc.',
     },
+    'productos_destacados': {
+        'pvc_marmol': {
+            'nombre': 'Hoja de PVC tipo Mármol',
+            'descripcion': 'Solución decorativa perfecta para cualquier espacio interior. Añade elegancia a tu hogar, oficina o espacio comercial.',
+            'caracteristicas': [
+                'Fabricada con materiales de alta calidad',
+                'Duradera y ligera, fácil de instalar y mantener',
+                'Resistente al agua, las manchas y los arañazos',
+                'Inversión que dura muchos años',
+            ],
+            'aplicaciones': 'Cocinas, baños, salas de estar y mucho más',
+            'categoria_url': '1-placas-pvc.html',
+        }
+    },
     'respuestas': {
         'saludo': '¡Hola! 👋 Soy el asistente virtual de <strong>ADIS Diseño & Remodelación</strong>. Puedo ayudarte con información sobre nuestros productos, horarios, cotizaciones y más. ¿Qué necesitas?',
         'despedida': '¡Gracias por contactarnos! 😊 Si tienes más dudas, aquí estaré. También puedes escribirnos por WhatsApp al {tel_mx} o visitarnos en {ubicacion}. ¡Que tengas un excelente día!',
@@ -1478,6 +1492,24 @@ footer {
   .hero-cat-bg { min-height: 45vh; }
   .product-gallery { height: 300px; }
 }
+
+/* PRODUCTO DESTACADO - PVC MARMOL */
+.featured-product-section { padding: 5rem 2rem; background: linear-gradient(135deg, rgba(15,15,15,0.97) 0%, rgba(26,26,26,0.95) 100%); position: relative; overflow: hidden; }
+.featured-product-section::before { content: ''; position: absolute; top: -50%; right: -20%; width: 600px; height: 600px; background: radial-gradient(circle, rgba(197,160,89,0.08) 0%, transparent 70%); border-radius: 50%; pointer-events: none; }
+.featured-product-wrap { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center; }
+.featured-product-image { position: relative; border-radius: 16px; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,0.5); }
+.featured-product-image img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.featured-product-image::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, rgba(15,15,15,0.6) 0%, transparent 50%); }
+.featured-product-badge { position: absolute; top: 1rem; left: 1rem; background: var(--gold); color: var(--black); padding: 0.4rem 1rem; border-radius: 20px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; z-index: 2; }
+.featured-product-content h3 { font-family: 'Playfair Display', serif; font-size: 2.2rem; color: var(--gold-light); margin-bottom: 0.5rem; }
+.featured-product-content .subtitle { color: rgba(245,245,245,0.6); font-size: 0.95rem; margin-bottom: 1.5rem; font-weight: 300; }
+.featured-product-content p { color: rgba(245,245,245,0.85); line-height: 1.8; margin-bottom: 1.2rem; font-size: 0.92rem; }
+.featured-product-features { list-style: none; margin: 1.5rem 0; }
+.featured-product-features li { display: flex; align-items: flex-start; gap: 0.7rem; margin-bottom: 0.8rem; color: rgba(245,245,245,0.8); font-size: 0.9rem; }
+.featured-product-features li::before { content: '✓'; color: var(--gold); font-weight: 700; flex-shrink: 0; }
+.featured-product-cta { display: inline-flex; align-items: center; gap: 0.5rem; background: var(--gold); color: var(--black); padding: 0.85rem 2rem; border-radius: 30px; text-decoration: none; font-weight: 600; font-size: 0.9rem; margin-top: 1rem; transition: all 0.3s ease; }
+.featured-product-cta:hover { background: var(--gold-light); transform: translateY(-2px); }
+@media (max-width: 768px) { .featured-product-wrap { grid-template-columns: 1fr; gap: 2rem; } .featured-product-content h3 { font-size: 1.7rem; } }
 '''
 
 # ========== PARTICLES JS ==========
@@ -1833,7 +1865,12 @@ def generate_footer():
         
         // PRODUCTOS / CATALOGO / MATERIALES / PROYECTOS
         if (q.includes('producto') || q.includes('catalogo') || q.includes('materiales') || q.includes('que venden') || q.includes('tienen') || q.includes('ofrecen')) {
-          return '📦 <strong>Nuestros productos:</strong><br><br>• Placas PVC (tipo madera, texturizadas, espejo)<br>• Lambrín WPC (interior y exterior)<br>• Paneles 3D decorativos<br>• Pisos (Laminado, WPC, SPC, Deck)<br>• Plafón PVC<br>• Vigas PVC<br>• Zacate sintético y follaje<br>• Cladding y revestimientos<br><br>🏠 Atendemos: ' + kb.proyectos.tipos + '<br><br>👉 <a href="index.html#categorias" style="color:#C5A059">Ver catálogo completo</a>';
+          return '📦 <strong>Nuestros productos:</strong><br><br>• Placas PVC (tipo madera, texturizadas, espejo, mármol)<br>• Lambrín WPC (interior y exterior)<br>• Paneles 3D decorativos<br>• Pisos (Laminado, WPC, SPC, Deck)<br>• Plafón PVC<br>• Vigas PVC<br>• Zacate sintético y follaje<br>• Cladding y revestimientos<br><br>🏠 Atendemos: ' + kb.proyectos.tipos + '<br><br>👉 <a href="index.html#categorias" style="color:#C5A059">Ver catálogo completo</a>';
+        }
+        
+        // PVC TIPO MARMOL
+        if (q.includes('marmol') || q.includes('marble') || (q.includes('pvc') && q.includes('marmol'))) {
+          return '🏛️ <strong>Hoja de PVC tipo Mármol</strong><br><br>Es una solución decorativa perfecta para cualquier espacio interior. Añade un toque de elegancia a tu hogar, oficina o espacio comercial.<br><br>✨ <strong>Características:</strong><br>• Fabricada con materiales de alta calidad<br>• Duradera y ligera, fácil de instalar y mantener<br>• Resistente al agua, manchas y arañazos<br>• Inversión que dura muchos años<br><br>🏠 <strong>Aplicaciones:</strong> Cocinas, baños, salas de estar y más<br><br>👉 <a href="1-placas-pvc.html" style="color:#C5A059">Ver en catálogo →</a>';
         }
         
         // DIFERENCIAS ENTRE MATERIALES
@@ -2396,6 +2433,28 @@ def generate_index(categories):
     </div>
     <div class="featured-grid">
 {featured_cards}    </div>
+  </section>
+
+  <!-- PRODUCTO DESTACADO: PVC MARMOL -->
+  <section class="featured-product-section reveal" id="pvc-marmol">
+    <div class="featured-product-wrap">
+      <div class="featured-product-image">
+        <span class="featured-product-badge">Producto Destacado</span>
+        <img src="img/1-placas-pvc/12-placas-pvc-texturizadas/Carrara Oscuro.jpg" alt="Hoja de PVC tipo Mármol Carrara Oscuro" loading="lazy">
+      </div>
+      <div class="featured-product-content">
+        <h3>Hoja de PVC tipo Mármol</h3>
+        <div class="subtitle">Elegancia y durabilidad para cualquier espacio interior</div>
+        <p>La lámina de <strong>PVC tipo mármol</strong> es la solución decorativa perfecta si buscas añadir un toque de elegancia a tu hogar, oficina o espacio comercial. Fabricada con materiales de alta calidad, es a la vez <strong>duradera y ligera</strong>, por lo que es fácil de instalar y mantener.</p>
+        <ul class="featured-product-features">
+          <li>Resistente al <strong>agua, manchas y arañazos</strong></li>
+          <li>Inversión que <strong>dura muchos años</strong></li>
+          <li>Ideal para <strong>cocinas, baños, salas de estar</strong> y más</li>
+          <li>Acabado profesional con <strong>garantía extendida</strong></li>
+        </ul>
+        <a href="1-placas-pvc.html" class="featured-product-cta">Ver en catálogo →</a>
+      </div>
+    </div>
   </section>
 
   <!-- CATÁLOGO -->
