@@ -1444,6 +1444,12 @@
           let r = '🛠️ <strong>Servicio de instalación:</strong><br><br>';
           r += kb.instalacion.costo + '<br><br>';
           r += '👷 ' + kb.instalacion.proceso + '<br><br>';
+          r += '💡 <strong>Consejos para instalación:</strong><br>';
+          r += '• Superficie limpia, seca y nivelada<br>';
+          r += '• Temperatura ideal: 15°C a 30°C<br>';
+          r += '• Dejar junta de dilatación de 2-3 mm<br>';
+          r += '• Corte con sierra circular / disco de carburo de tungsteno<br>';
+          r += '• Para espejos: usar perfiles de aluminio obligatoriamente<br><br>';
           r += '✅ También vendemos materiales sueltos si prefieres instalar por tu cuenta.<br><br>';
           r += '<a href="https://wa.me/526311928993?text=Hola%20ADIS,%20quiero%20cotizar%20instalación" target="_blank" class="chat-whatsapp-btn">📱 Cotizar instalación</a>';
           return r;
@@ -1513,6 +1519,11 @@
         }
         if (q.includes('adios') || q.includes('bye') || q.includes('hasta luego') || q.includes('nos vemos')) {
           return '¡Hasta luego! 👋 Gracias por contactar a ADIS Diseño & Remodelación. Recuerda que puedes volver cuando quieras o escribirnos al WhatsApp. ¡Éxito con tu proyecto! 🏠✨';
+        }
+        
+        // MANTENIMIENTO / LIMPIEZA
+        if (q.includes('mantenimiento') || q.includes('limpiar') || q.includes('limpieza') || q.includes('cuidado')) {
+          return '🧼 <strong>Mantenimiento y limpieza:</strong><br><br>• <strong>Limpieza regular:</strong> Paño suave humedecido con agua tibia y jabón neutro (pH 7)<br>• <strong>Manchas difíciles:</strong> Alcohol isopropílico al 70% o limpiador multiusos suave<br>• <strong>Evitar:</strong> Acetona, thinner, solventes fuertes, estropajos metálicos y amoníaco concentrado<br>• <strong>Frecuencia:</strong> Residencial = mensual | Comercial = semanal<br>• <strong>Inspección anual:</strong> Revisar juntas de dilatación y selladores<br><br>💡 Los productos PVC y WPC no requieren barnizado ni sellado. Solo limpieza básica.<br><br><a href="https://wa.me/526311928993?text=Hola%20ADIS,%20pregunto%20por%20mantenimiento" target="_blank" class="chat-whatsapp-btn">📱 Preguntar por mantenimiento</a>';
         }
         
         // TIPO DE PROYECTO / A QUIEN ATIENDEN
