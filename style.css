@@ -1328,3 +1328,14 @@ footer {
 .sq-faq-item.open .sq-faq-a { max-height: 400px; padding: 0 1.2rem 1rem; }
 
 @media (max-width: 768px) { .sq-hero h1 { font-size: 2.2rem; } .sq-cat-hero { height: 160px; } .sq-tab { padding: 0.4rem 0.9rem; font-size: 0.75rem; } }
+
+/* Index de Sabias Que */
+.sq-index-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.2rem; padding: 1.5rem 0 3rem; }
+@media (max-width: 900px) { .sq-index-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 600px) { .sq-index-grid { grid-template-columns: 1fr; } }
+.sq-index-card { display: block; background: rgba(255,255,255,0.03); border: 1px solid rgba(197,160,89,0.1); border-radius: 16px; overflow: hidden; text-decoration: none; transition: all 0.35s ease; }
+.sq-index-card:hover { border-color: rgba(197,160,89,0.35); transform: translateY(-6px); box-shadow: 0 16px 40px rgba(0,0,0,0.3); }
+.sq-index-img { height: 160px; background-size: cover; background-position: center; }
+.sq-index-info { padding: 1.2rem; }
+.sq-index-info h3 { color: var(--gold-light); font-size: 1rem; font-family: 'Montserrat', sans-serif; font-weight: 600; margin-bottom: 0.4rem; }
+.sq-index-info span { color: var(--gold); font-size: 0.8rem; }

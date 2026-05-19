@@ -1686,6 +1686,17 @@ footer {
 .sq-faq-item.open .sq-faq-a { max-height: 400px; padding: 0 1.2rem 1rem; }
 
 @media (max-width: 768px) { .sq-hero h1 { font-size: 2.2rem; } .sq-cat-hero { height: 160px; } .sq-tab { padding: 0.4rem 0.9rem; font-size: 0.75rem; } }
+
+/* Index de Sabias Que */
+.sq-index-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.2rem; padding: 1.5rem 0 3rem; }
+@media (max-width: 900px) { .sq-index-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 600px) { .sq-index-grid { grid-template-columns: 1fr; } }
+.sq-index-card { display: block; background: rgba(255,255,255,0.03); border: 1px solid rgba(197,160,89,0.1); border-radius: 16px; overflow: hidden; text-decoration: none; transition: all 0.35s ease; }
+.sq-index-card:hover { border-color: rgba(197,160,89,0.35); transform: translateY(-6px); box-shadow: 0 16px 40px rgba(0,0,0,0.3); }
+.sq-index-img { height: 160px; background-size: cover; background-position: center; }
+.sq-index-info { padding: 1.2rem; }
+.sq-index-info h3 { color: var(--gold-light); font-size: 1rem; font-family: 'Montserrat', sans-serif; font-weight: 600; margin-bottom: 0.4rem; }
+.sq-index-info span { color: var(--gold); font-size: 0.8rem; }
 '''
 
 # ========== PARTICLES JS ==========
@@ -3340,12 +3351,81 @@ def generate_testimonios():
   </script>
 '''
 
+def _extract_curiosos_cards(text):
+    """Extrae tarjetas de datos curiosos del texto markdown."""
+    import re
+    clean_text = text.replace('---', '').strip()
+    items = re.split(r'\n\n+(?=#{2,3} |\*\*)', clean_text)
+    cards = ''
+    item_count = 0
+    for item in items:
+        item = item.strip()
+        if not item or len(item) < 20:
+            continue
+        title = None
+        title_match = re.search(r'#{2,3}\s*(.+?)(?:\n|$)', item)
+        if title_match:
+            title = title_match.group(1)
+        else:
+            title_match = re.search(r'^\*\*\s*(.+?)\s*\*\*', item)
+            if title_match:
+                title = title_match.group(1)
+        if not title:
+            continue
+        title = re.sub(r'^[\s\U0001F300-\U0001F9FF]+', '', title).strip()
+        if not title:
+            continue
+        if title_match and title_match.group(0).startswith('#'):
+            desc = re.sub(r'#{2,3}\s*.+?(?:\n|$)', '', item, count=1)
+        else:
+            desc = re.sub(r'^\*\*\s*' + re.escape(title) + r'\s*\*\*', '', item)
+        desc = desc.strip()
+        desc = re.sub(r'\s+', ' ', desc)
+        if not desc:
+            continue
+        desc = re.sub(r'\*\*(.+?)\*\*', r'<strong>\1</strong>', desc)
+        if len(desc) > 130:
+            desc = desc[:127] + '...'
+        item_count += 1
+        icons = ['🔬', '🌍', '🔥', '🖨️', '⚖️', '🧪', '🌲', '🌧️', '🏠', '📐', '🪨', '🎨']
+        icon = icons[(item_count-1) % len(icons)]
+        cards += f'''      <div class="sq-card">
+        <span class="sq-card-number">{item_count:02d}</span>
+        <span class="sq-card-icon">{icon}</span>
+        <h3>{title}</h3>
+        <p>{desc}</p>
+      </div>
+'''
+    return cards
+
+
+def _extract_faqs_html(text):
+    """Extrae FAQs del texto markdown."""
+    import re
+    clean_faqs = text.replace('---', '').strip()
+    qa_pairs = re.findall(r'\*\*❓\s*(.+?)\*\*\s*\n?>?\s*(.+?)(?=\n\n\*\*❓|\Z)', clean_faqs, re.DOTALL)
+    if not qa_pairs:
+        qa_pairs = re.findall(r'#{2,3}\s*(.+?)(?:\n|$)\s*\n?(.+?)(?=\n#{2,3}|\Z)', clean_faqs, re.DOTALL)
+    faqs = ''
+    for q, a in qa_pairs:
+        q_clean = q.strip()
+        a_clean = a.strip().replace('\n', ' ')
+        a_clean = re.sub(r'\*\*(.+?)\*\*', r'<strong>\1</strong>', a_clean)
+        if len(a_clean) > 200:
+            a_clean = a_clean[:197] + '...'
+        faqs += f'''      <div class="sq-faq-item">
+        <div class="sq-faq-q" onclick="this.parentElement.classList.toggle('open')">{q_clean}</div>
+        <div class="sq-faq-a">{a_clean}</div>
+      </div>
+'''
+    return faqs
+
+
 def generate_sabias_que():
-    """Genera pagina interactiva de Sabias Que con datos curiosos y FAQs."""
+    """Genera pagina indice de Sabias Que y 9 paginas individuales por categoria."""
     if not RESEARCH_DATA:
         return
     
-    # Imagenes representativas por categoria
     cat_images = {
         'PLACAS PVC': 'img/1-placas-pvc/Carrara%20Oscuro.jpg',
         'LAMBRIN WPC': 'img/2-lambrin-wpc/21-lambrin-interior/AMANECHER.jpg',
@@ -3360,97 +3440,52 @@ def generate_sabias_que():
         'CLADDING  PLACAS TIPO PIEDRA': 'img/9-cladding/91-placa-tipo-roca/BLACK.jpg',
     }
     
-    tab_names = list(RESEARCH_DATA.keys())
-    tabs_html = ''
-    panels_html = ''
+    cat_slugs = {
+        'PLACAS PVC': 'pvc',
+        'LAMBRIN WPC': 'wpc',
+        'REVESTIMIENTO FLEXIBLE': 'revestimiento',
+        'PLAFON PVC LAMINADO WOOD STYLE': 'plafon',
+        'PLAFÓN PVC LAMINADO WOOD STYLE': 'plafon',
+        'PANELES TRIDIMENSIONALES 3D': '3d',
+        'VIGAS PVCWPCPU': 'vigas',
+        'PISOS': 'pisos',
+        'ZACATE SINTETICO': 'zacate',
+        'ZACATE SINTÉTICO': 'zacate',
+        'CLADDING  PLACAS TIPO PIEDRA': 'cladding',
+    }
     
-    for idx, cat_name in enumerate(tab_names):
-        data = RESEARCH_DATA[cat_name]
-        active_tab = ' active' if idx == 0 else ''
-        active_panel = ' active' if idx == 0 else ''
+    # Generar paginas individuales
+    for cat_name, data in RESEARCH_DATA.items():
+        slug = cat_slugs.get(cat_name, 'otros')
         cat_img = cat_images.get(cat_name, 'LOGO%20ADIS.png')
         
-        tabs_html += f'<button class="sq-tab{active_tab}" onclick="showSqPanel({idx})">{cat_name}</button>'
+        curiosos_cards = _extract_curiosos_cards(data['curiosos']) if data.get('curiosos') else ''
+        faqs_html = _extract_faqs_html(data['faqs']) if data.get('faqs') else ''
         
-        # Datos curiosos - resumidos y limpios
-        curiosos_cards = ''
-        if data.get('curiosos'):
-            import re
-            # Limpiar texto de basura
-            clean_text = data['curiosos'].replace('---', '').strip()
-            # Extraer items: dividir por doble salto seguido de nuevo titulo (### o **)
-            items = re.split(r'\n\n+(?=#{2,3} |\*\*)', clean_text)
-            item_count = 0
-            for item in items:
-                item = item.strip()
-                if not item or len(item) < 20:
-                    continue
-                # Extraer titulo: buscar ### titulo primero (categorias 4-9), luego **titulo** al inicio (categorias 1-3)
-                title = None
-                title_match = re.search(r'#{2,3}\s*(.+?)(?:\n|$)', item)
-                if title_match:
-                    title = title_match.group(1)
-                else:
-                    title_match = re.search(r'^\*\*\s*(.+?)\s*\*\*', item)
-                    if title_match:
-                        title = title_match.group(1)
-                if not title:
-                    continue
-                # Limpiar titulo de emojis al inicio
-                title = re.sub(r'^[\s\U0001F300-\U0001F9FF]+', '', title).strip()
-                if not title:
-                    continue
-                # Extraer descripcion: quitar solo el titulo identificado, no todo el texto en negritas
-                if title_match and title_match.group(0).startswith('#'):
-                    desc = re.sub(r'#{2,3}\s*.+?(?:\n|$)', '', item, count=1)
-                else:
-                    desc = re.sub(r'^\*\*\s*' + re.escape(title) + r'\s*\*\*', '', item)
-                desc = desc.strip()
-                desc = re.sub(r'\s+', ' ', desc)
-                if not desc:
-                    continue
-                # Convertir negritas markdown a HTML
-                desc = re.sub(r'\*\*(.+?)\*\*', r'<strong>\1</strong>', desc)
-                # Resumir a max 130 caracteres
-                if len(desc) > 130:
-                    desc = desc[:127] + '...'
-                item_count += 1
-                # Icono
-                icons = ['🔬', '🌍', '🔥', '🖨️', '⚖️', '🧪', '🌲', '🌧️', '🏠', '📐', '🪨', '🎨']
-                icon = icons[(item_count-1) % len(icons)]
-                curiosos_cards += f'''      <div class="sq-card">
-        <span class="sq-card-number">{item_count:02d}</span>
-        <span class="sq-card-icon">{icon}</span>
-        <h3>{title}</h3>
-        <p>{desc}</p>
-      </div>
-'''
-        
-        # FAQs - extraer mas
-        faqs_html = ''
-        if data.get('faqs'):
-            import re
-            clean_faqs = data['faqs'].replace('---', '').strip()
-            # Buscar todas las preguntas - intentar formato **❓ primero (cat 1-3), luego ### Pregunta (cat 4-9)
-            qa_pairs = re.findall(r'\*\*❓\s*(.+?)\*\*\s*\n?>?\s*(.+?)(?=\n\n\*\*❓|\Z)', clean_faqs, re.DOTALL)
-            # Si no encontramos con formato ❓, intentar formato ### Pregunta\n\n**Respuesta**
-            if not qa_pairs:
-                qa_pairs = re.findall(r'#{2,3}\s*(.+?)(?:\n|$)\s*\n?(.+?)(?=\n#{2,3}|\Z)', clean_faqs, re.DOTALL)
-            for q, a in qa_pairs:
-                q_clean = q.strip()
-                a_clean = a.strip().replace('\n', ' ')
-                # Limpiar markdown ** en respuesta
-                a_clean = re.sub(r'\*\*(.+?)\*\*', r'<strong>\1</strong>', a_clean)
-                # Resumir respuesta larga
-                if len(a_clean) > 200:
-                    a_clean = a_clean[:197] + '...'
-                faqs_html += f'''      <div class="sq-faq-item">
-        <div class="sq-faq-q" onclick="this.parentElement.classList.toggle('open')">{q_clean}</div>
-        <div class="sq-faq-a">{a_clean}</div>
-      </div>
-'''
-        
-        panels_html += f'''  <div class="sq-panel{active_panel}" id="sq-panel-{idx}">
+        page_html = f'''<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{cat_name} — ¿Sabías que? | ADIS Diseño & Remodelación</title>
+  <meta name="description" content="Datos curiosos y preguntas frecuentes sobre {cat_name}.">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <canvas id="bg-canvas"></canvas>
+{generate_header('sabias-que')}
+
+  <section class="sq-hero">
+    <h1>¿Sabías que?</h1>
+    <p>Conoce todo sobre <strong>{cat_name}</strong></p>
+  </section>
+
+  <div style="max-width:1100px;margin:0 auto;padding:0 1.5rem;">
+    <a href="sabias-que.html" style="display:inline-flex;align-items:center;gap:0.4rem;color:var(--gold);text-decoration:none;font-size:0.85rem;margin-bottom:1rem;">← Volver al índice</a>
+  </div>
+
+  <div class="sq-content" style="padding-top:0;">
     <div class="sq-cat-hero" style="background-image: url('{cat_img}');">
       <div class="sq-cat-overlay">
         <h2>{cat_name}</h2>
@@ -3464,9 +3499,30 @@ def generate_sabias_que():
 {curiosos_cards}    </div>
 {('<div class="section-header" style="margin:2.5rem 0 1.5rem;"><h2 style="font-size:1.4rem;">Preguntas Frecuentes</h2><div class="divider"></div></div><div class="sq-faqs">' + faqs_html + '</div>') if faqs_html else ''}
   </div>
+
+{generate_footer()}
+</body>
+</html>
+'''
+        with open(BASE_DIR / f'sabias-que-{slug}.html', 'w', encoding='utf-8') as f:
+            f.write(page_html)
+        print(f"✅ sabias-que-{slug}.html generado ({cat_name})")
+    
+    # Generar pagina indice
+    index_cards = ''
+    for cat_name in RESEARCH_DATA.keys():
+        slug = cat_slugs.get(cat_name, 'otros')
+        cat_img = cat_images.get(cat_name, 'LOGO%20ADIS.png')
+        index_cards += f'''    <a href="sabias-que-{slug}.html" class="sq-index-card">
+      <div class="sq-index-img" style="background-image:url('{cat_img}');"></div>
+      <div class="sq-index-info">
+        <h3>{cat_name}</h3>
+        <span>Ver datos curiosos y FAQs →</span>
+      </div>
+    </a>
 '''
     
-    html = f'''<!DOCTYPE html>
+    index_html = f'''<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
@@ -3488,28 +3544,18 @@ def generate_sabias_que():
     <p>Datos sorprendentes y respuestas a tus dudas sobre nuestros materiales.</p>
   </section>
 
-  <div class="sq-tabs">
-{tabs_html}
+  <div class="sq-content">
+    <div class="sq-index-grid">
+{index_cards}    </div>
   </div>
 
-  <div class="sq-content">
-{panels_html}  </div>
-
 {generate_footer()}
-
-  <script>
-    function showSqPanel(idx) {{
-      document.querySelectorAll('.sq-tab').forEach((t, i) => t.classList.toggle('active', i === idx));
-      document.querySelectorAll('.sq-panel').forEach((p, i) => p.classList.toggle('active', i === idx));
-      window.scrollTo({{ top: document.querySelector('.sq-tabs').offsetTop - 80, behavior: 'smooth' }});
-    }}
-  </script>
 </body>
 </html>
 '''
     with open(BASE_DIR / 'sabias-que.html', 'w', encoding='utf-8') as f:
-        f.write(html)
-    print("✅ sabias-que.html generado")
+        f.write(index_html)
+    print("✅ sabias-que.html (indice) generado")
 
 
 def generate_proyectos():
