@@ -20,12 +20,24 @@
       <a href="index.html" class="logo"><img src="LOGO ADIS.png" alt="ADIS Logo"></a>
       <nav class="desktop-nav">
         <a href="index.html">← Inicio</a>
-        <a href="index.html#categorias">Catálogo</a>
+        <a href="index.html#categorias" class="mega-trigger">Catálogo
+          <div class="mega-menu">
+        <a href="1-placas-pvc.html" class="mega-item"><img src="img/1-placas-pvc/11-placas-pvc-tipo-madera/Adler.jpg" alt="Placas PVC" loading="lazy"><span>Placas PVC</span></a>
+        <a href="2-lambrin-wpc.html" class="mega-item"><img src="img/2-lambrin-wpc/21-lambrin-interior/AMANECHER.jpg" alt="Lambrín WPC" loading="lazy"><span>Lambrín WPC</span></a>
+        <a href="3-revestimiento-flexible.html" class="mega-item"><img src="img/3-revestimiento-flexible/CONCRETO Aparente.jpg" alt="Revestimiento Flexible" loading="lazy"><span>Revestimiento Flexible</span></a>
+        <a href="4-plafon-pvc.html" class="mega-item"><img src="img/4-plafon-pvc/41-plafon-pvc-laminado/SHERWOOD.jpg" alt="Plafón PVC" loading="lazy"><span>Plafón PVC</span></a>
+        <a href="5-paneles-tridimensionales.html" class="mega-item"><img src="img/5-paneles-tridimensionales/51-blanco/Austin.jpg" alt="Paneles 3D" loading="lazy"><span>Paneles 3D</span></a>
+        <a href="6-vigas-pvc.html" class="mega-item"><img src="img/6-vigas-pvc/61-interior/BAHIA 1.jpg" alt="Vigas PVC" loading="lazy"><span>Vigas PVC</span></a>
+        <a href="7-pisos.html" class="mega-item"><img src="img/7-pisos/71-laminado/ACONCAGUA.jpg" alt="Pisos" loading="lazy"><span>Pisos</span></a>
+        <a href="8-zacate.html" class="mega-item"><img src="img/8-zacate/81-follaje-sintetico/AMAZONAS-A.jpg" alt="Zacate" loading="lazy"><span>Zacate</span></a>
+        <a href="9-cladding.html" class="mega-item"><img src="img/9-cladding/91-placa-tipo-roca/BLACK.jpg" alt="Cladding" loading="lazy"><span>Cladding</span></a>
+          </div>
+        </a>
         <a href="proyectos.html">Proyectos</a>
         <a href="contacto.html">Contacto</a>
         <div class="search-box">
           <input type="text" id="searchInput" placeholder="Buscar producto..." autocomplete="off" title="Presiona / para buscar">
-          <button onclick="performSearch()">🔍</button>
+          <button onclick="openSpotlight()">🔍</button>
           <div class="search-dropdown" id="searchDropdown"></div>
         </div>
       </nav>
@@ -45,7 +57,22 @@
       <div class="search-dropdown" id="searchDropdownMobile"></div>
     </div>
   </div>
+  
+  <!-- SPOTLIGHT OVERLAY -->
+  <div class="spotlight-overlay" id="spotlightOverlay" onclick="closeSpotlight(event)">
+    <button class="spotlight-close" onclick="closeSpotlight(event)">✕</button>
+    <div class="spotlight-box">
+      <div class="spotlight-input-wrap">
+        <span class="spotlight-icon">🔍</span>
+        <input type="text" class="spotlight-input" id="spotlightInput" placeholder="Buscar productos, categorías..." autocomplete="off">
+      </div>
+      <div class="spotlight-results" id="spotlightResults"></div>
+    </div>
+  </div>
 
+  <div class="breadcrumbs">
+    <a href="index.html">Inicio</a> <span>/</span> <a href="index.html#categorias">Catálogo</a> <span>/</span> <span style="color:var(--gold);">Placas PVC</span>
+  </div>
 
   <section class="hero-cat-bg" style="background-image: url('img/1-placas-pvc/11-placas-pvc-tipo-madera/Adler.jpg');">
     <div class="hero-cat-content">
@@ -56,292 +83,22 @@
   </section>
 
   <div class="subcat-nav">
+    <a href="#13-placas-pvc-tipo-espejo">Placas PVC Tipo espejo</a>
     <a href="#11-placas-pvc-tipo-madera">Placas PVC tipo madera</a>
     <a href="#12-placas-pvc-texturizadas">Placas PVC Texturizadas</a>
-    <a href="#13-placas-pvc-tipo-espejo">Placas PVC Tipo espejo</a>
     </div>
-  <section class="subcat-section reveal" id="11-placas-pvc-tipo-madera">
-    <div class="subcat-header">
-      <h3>Placas PVC tipo madera</h3>
-      <span class="subcat-count">7 productos</span>
-      <div class="subcat-divider"></div>
-    </div>
-    <div class="specs-bar reveal">
-      <div class="spec-item"><span class="spec-label">Material</span><span class="spec-value">PVC</span></div>
-      <div class="spec-item"><span class="spec-label">Dimensiones</span><span class="spec-value">2440 x 1220 x 3 mm</span></div>
-      <div class="spec-item"><span class="spec-label">Presentación</span><span class="spec-value">2.977 m²/pz, 1 pz/Caja, 19 kg/pz</span></div>
-      <div class="spec-item"><span class="spec-label">Garantía</span><span class="spec-value">15 años</span></div>
-      <div class="spec-item"><span class="spec-label">Uso</span><span class="spec-value">Interior</span></div>
-    </div>
-    <div class="products-grid">
-      <div class="product-card reveal">
-        <div class="product-gallery" onclick="openLightbox('img/1-placas-pvc/11-placas-pvc-tipo-madera/Adler.jpg', 'Adler')">
-          <img src="img/1-placas-pvc/11-placas-pvc-tipo-madera/Adler.jpg" alt="Adler" loading="lazy">
-        </div>
-        <div class="product-info">
-          <div class="product-name">Adler</div>
-          <div class="product-actions">
-            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para Adler&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: Adler%0D%0ACategoria: Placas PVC%0D%0ASubcategoria: Placas PVC tipo madera%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
-            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20Adler%20de%20la%20categoría%20Placas%20PVC%20/%20subcategoría%20Placas%20PVC%20tipo%20madera" class="btn-whatsapp" target="_blank">WhatsApp</a>
-          </div>
-        </div>
-      </div>
-      <div class="product-card reveal">
-        <div class="product-gallery" onclick="openLightbox('img/1-placas-pvc/11-placas-pvc-tipo-madera/Alpina.jpg', 'Alpina')">
-          <img src="img/1-placas-pvc/11-placas-pvc-tipo-madera/Alpina.jpg" alt="Alpina" loading="lazy">
-        </div>
-        <div class="product-info">
-          <div class="product-name">Alpina</div>
-          <div class="product-actions">
-            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para Alpina&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: Alpina%0D%0ACategoria: Placas PVC%0D%0ASubcategoria: Placas PVC tipo madera%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
-            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20Alpina%20de%20la%20categoría%20Placas%20PVC%20/%20subcategoría%20Placas%20PVC%20tipo%20madera" class="btn-whatsapp" target="_blank">WhatsApp</a>
-          </div>
-        </div>
-      </div>
-      <div class="product-card reveal">
-        <div class="product-gallery" onclick="openLightbox('img/1-placas-pvc/11-placas-pvc-tipo-madera/Angulo 8x8x2440mm.jpg', 'Angulo 8x8x2440mm')">
-          <img src="img/1-placas-pvc/11-placas-pvc-tipo-madera/Angulo 8x8x2440mm.jpg" alt="Angulo 8x8x2440mm" loading="lazy">
-        </div>
-        <div class="product-info">
-          <div class="product-name">Angulo 8x8x2440mm</div>
-          <div class="product-actions">
-            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para Angulo 8x8x2440mm&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: Angulo 8x8x2440mm%0D%0ACategoria: Placas PVC%0D%0ASubcategoria: Placas PVC tipo madera%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
-            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20Angulo%208x8x2440mm%20de%20la%20categoría%20Placas%20PVC%20/%20subcategoría%20Placas%20PVC%20tipo%20madera" class="btn-whatsapp" target="_blank">WhatsApp</a>
-          </div>
-        </div>
-      </div>
-      <div class="product-card reveal">
-        <div class="product-gallery" onclick="openLightbox('img/1-placas-pvc/11-placas-pvc-tipo-madera/Solaria.jpg', 'Solaria')">
-          <img src="img/1-placas-pvc/11-placas-pvc-tipo-madera/Solaria.jpg" alt="Solaria" loading="lazy">
-        </div>
-        <div class="product-info">
-          <div class="product-name">Solaria</div>
-          <div class="product-actions">
-            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para Solaria&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: Solaria%0D%0ACategoria: Placas PVC%0D%0ASubcategoria: Placas PVC tipo madera%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
-            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20Solaria%20de%20la%20categoría%20Placas%20PVC%20/%20subcategoría%20Placas%20PVC%20tipo%20madera" class="btn-whatsapp" target="_blank">WhatsApp</a>
-          </div>
-        </div>
-      </div>
-      <div class="product-card reveal">
-        <div class="product-gallery" onclick="openLightbox('img/1-placas-pvc/11-placas-pvc-tipo-madera/Solden.jpg', 'Solden')">
-          <img src="img/1-placas-pvc/11-placas-pvc-tipo-madera/Solden.jpg" alt="Solden" loading="lazy">
-        </div>
-        <div class="product-info">
-          <div class="product-name">Solden</div>
-          <div class="product-actions">
-            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para Solden&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: Solden%0D%0ACategoria: Placas PVC%0D%0ASubcategoria: Placas PVC tipo madera%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
-            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20Solden%20de%20la%20categoría%20Placas%20PVC%20/%20subcategoría%20Placas%20PVC%20tipo%20madera" class="btn-whatsapp" target="_blank">WhatsApp</a>
-          </div>
-        </div>
-      </div>
-      <div class="product-card reveal">
-        <div class="product-gallery" onclick="openLightbox('img/1-placas-pvc/11-placas-pvc-tipo-madera/anton.jpg', 'anton')">
-          <img src="img/1-placas-pvc/11-placas-pvc-tipo-madera/anton.jpg" alt="anton" loading="lazy">
-        </div>
-        <div class="product-info">
-          <div class="product-name">anton</div>
-          <div class="product-actions">
-            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para anton&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: anton%0D%0ACategoria: Placas PVC%0D%0ASubcategoria: Placas PVC tipo madera%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
-            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20anton%20de%20la%20categoría%20Placas%20PVC%20/%20subcategoría%20Placas%20PVC%20tipo%20madera" class="btn-whatsapp" target="_blank">WhatsApp</a>
-          </div>
-        </div>
-      </div>
-      <div class="product-card reveal">
-        <div class="product-gallery" onclick="openLightbox('img/1-placas-pvc/11-placas-pvc-tipo-madera/perfil T 7x3x2440mm.jpg', 'perfil T 7x3x2440mm')">
-          <img src="img/1-placas-pvc/11-placas-pvc-tipo-madera/perfil T 7x3x2440mm.jpg" alt="perfil T 7x3x2440mm" loading="lazy">
-        </div>
-        <div class="product-info">
-          <div class="product-name">perfil T 7x3x2440mm</div>
-          <div class="product-actions">
-            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para perfil T 7x3x2440mm&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: perfil T 7x3x2440mm%0D%0ACategoria: Placas PVC%0D%0ASubcategoria: Placas PVC tipo madera%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
-            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20perfil%20T%207x3x2440mm%20de%20la%20categoría%20Placas%20PVC%20/%20subcategoría%20Placas%20PVC%20tipo%20madera" class="btn-whatsapp" target="_blank">WhatsApp</a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-  <section class="subcat-section reveal" id="12-placas-pvc-texturizadas">
-    <div class="subcat-header">
-      <h3>Placas PVC Texturizadas</h3>
-      <span class="subcat-count">9 productos</span>
-      <div class="subcat-divider"></div>
-    </div>
-    <div class="specs-bar reveal">
-      <div class="spec-item"><span class="spec-label">Material</span><span class="spec-value">PVC</span></div>
-      <div class="spec-item"><span class="spec-label">Dimensiones</span><span class="spec-value">2440 x 1220 x 5 mm</span></div>
-      <div class="spec-item"><span class="spec-label">Presentación</span><span class="spec-value">2.977 m²/pz, 1 pz/Caja, 10.5 kg/pz</span></div>
-      <div class="spec-item"><span class="spec-label">Garantía</span><span class="spec-value">15 años</span></div>
-      <div class="spec-item"><span class="spec-label">Uso</span><span class="spec-value">Interior</span></div>
-    </div>
-    <div class="products-grid">
-      <div class="product-card reveal">
-        <div class="product-gallery" onclick="openLightbox('img/1-placas-pvc/12-placas-pvc-texturizadas/ANGULO 8x8x2440mm.jpg', 'ANGULO 8x8x2440mm')">
-          <img src="img/1-placas-pvc/12-placas-pvc-texturizadas/ANGULO 8x8x2440mm.jpg" alt="ANGULO 8x8x2440mm" loading="lazy">
-        </div>
-        <div class="product-info">
-          <div class="product-name">ANGULO 8x8x2440mm</div>
-          <div class="product-actions">
-            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para ANGULO 8x8x2440mm&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: ANGULO 8x8x2440mm%0D%0ACategoria: Placas PVC%0D%0ASubcategoria: Placas PVC Texturizadas%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
-            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20ANGULO%208x8x2440mm%20de%20la%20categoría%20Placas%20PVC%20/%20subcategoría%20Placas%20PVC%20Texturizadas" class="btn-whatsapp" target="_blank">WhatsApp</a>
-          </div>
-        </div>
-      </div>
-      <div class="product-card reveal">
-        <div class="product-gallery" onclick="openLightbox('img/1-placas-pvc/12-placas-pvc-texturizadas/ASH.png', 'ASH')">
-          <img src="img/1-placas-pvc/12-placas-pvc-texturizadas/ASH.png" alt="ASH" loading="lazy">
-        </div>
-        <div class="product-info">
-          <div class="product-name">ASH</div>
-          <div class="product-actions">
-            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para ASH&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: ASH%0D%0ACategoria: Placas PVC%0D%0ASubcategoria: Placas PVC Texturizadas%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
-            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20ASH%20de%20la%20categoría%20Placas%20PVC%20/%20subcategoría%20Placas%20PVC%20Texturizadas" class="btn-whatsapp" target="_blank">WhatsApp</a>
-          </div>
-        </div>
-      </div>
-      <div class="product-card reveal">
-        <div class="product-gallery" onclick="openLightbox('img/1-placas-pvc/12-placas-pvc-texturizadas/CEDAR.png', 'CEDAR')">
-          <img src="img/1-placas-pvc/12-placas-pvc-texturizadas/CEDAR.png" alt="CEDAR" loading="lazy">
-        </div>
-        <div class="product-info">
-          <div class="product-name">CEDAR</div>
-          <div class="product-actions">
-            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para CEDAR&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: CEDAR%0D%0ACategoria: Placas PVC%0D%0ASubcategoria: Placas PVC Texturizadas%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
-            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20CEDAR%20de%20la%20categoría%20Placas%20PVC%20/%20subcategoría%20Placas%20PVC%20Texturizadas" class="btn-whatsapp" target="_blank">WhatsApp</a>
-          </div>
-        </div>
-      </div>
-      <div class="product-card reveal">
-        <div class="product-gallery" onclick="openLightbox('img/1-placas-pvc/12-placas-pvc-texturizadas/ENCINO.png', 'ENCINO')">
-          <img src="img/1-placas-pvc/12-placas-pvc-texturizadas/ENCINO.png" alt="ENCINO" loading="lazy">
-        </div>
-        <div class="product-info">
-          <div class="product-name">ENCINO</div>
-          <div class="product-actions">
-            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para ENCINO&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: ENCINO%0D%0ACategoria: Placas PVC%0D%0ASubcategoria: Placas PVC Texturizadas%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
-            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20ENCINO%20de%20la%20categoría%20Placas%20PVC%20/%20subcategoría%20Placas%20PVC%20Texturizadas" class="btn-whatsapp" target="_blank">WhatsApp</a>
-          </div>
-        </div>
-      </div>
-      <div class="product-card reveal">
-        <div class="product-gallery" onclick="openLightbox('img/1-placas-pvc/12-placas-pvc-texturizadas/IPE.png', 'IPE')">
-          <img src="img/1-placas-pvc/12-placas-pvc-texturizadas/IPE.png" alt="IPE" loading="lazy">
-        </div>
-        <div class="product-info">
-          <div class="product-name">IPE</div>
-          <div class="product-actions">
-            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para IPE&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: IPE%0D%0ACategoria: Placas PVC%0D%0ASubcategoria: Placas PVC Texturizadas%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
-            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20IPE%20de%20la%20categoría%20Placas%20PVC%20/%20subcategoría%20Placas%20PVC%20Texturizadas" class="btn-whatsapp" target="_blank">WhatsApp</a>
-          </div>
-        </div>
-      </div>
-      <div class="product-card reveal">
-        <div class="product-gallery" onclick="openLightbox('img/1-placas-pvc/12-placas-pvc-texturizadas/JATOBA.png', 'JATOBA')">
-          <img src="img/1-placas-pvc/12-placas-pvc-texturizadas/JATOBA.png" alt="JATOBA" loading="lazy">
-        </div>
-        <div class="product-info">
-          <div class="product-name">JATOBA</div>
-          <div class="product-actions">
-            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para JATOBA&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: JATOBA%0D%0ACategoria: Placas PVC%0D%0ASubcategoria: Placas PVC Texturizadas%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
-            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20JATOBA%20de%20la%20categoría%20Placas%20PVC%20/%20subcategoría%20Placas%20PVC%20Texturizadas" class="btn-whatsapp" target="_blank">WhatsApp</a>
-          </div>
-        </div>
-      </div>
-      <div class="product-card reveal">
-        <div class="product-gallery" onclick="openLightbox('img/1-placas-pvc/12-placas-pvc-texturizadas/NOGAL.png', 'NOGAL')">
-          <img src="img/1-placas-pvc/12-placas-pvc-texturizadas/NOGAL.png" alt="NOGAL" loading="lazy">
-        </div>
-        <div class="product-info">
-          <div class="product-name">NOGAL</div>
-          <div class="product-actions">
-            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para NOGAL&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: NOGAL%0D%0ACategoria: Placas PVC%0D%0ASubcategoria: Placas PVC Texturizadas%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
-            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20NOGAL%20de%20la%20categoría%20Placas%20PVC%20/%20subcategoría%20Placas%20PVC%20Texturizadas" class="btn-whatsapp" target="_blank">WhatsApp</a>
-          </div>
-        </div>
-      </div>
-      <div class="product-card reveal">
-        <div class="product-gallery" onclick="openLightbox('img/1-placas-pvc/12-placas-pvc-texturizadas/PERFIL T 7x3x2440mm.jpg', 'PERFIL T 7x3x2440mm')">
-          <img src="img/1-placas-pvc/12-placas-pvc-texturizadas/PERFIL T 7x3x2440mm.jpg" alt="PERFIL T 7x3x2440mm" loading="lazy">
-        </div>
-        <div class="product-info">
-          <div class="product-name">PERFIL T 7x3x2440mm</div>
-          <div class="product-actions">
-            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para PERFIL T 7x3x2440mm&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: PERFIL T 7x3x2440mm%0D%0ACategoria: Placas PVC%0D%0ASubcategoria: Placas PVC Texturizadas%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
-            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20PERFIL%20T%207x3x2440mm%20de%20la%20categoría%20Placas%20PVC%20/%20subcategoría%20Placas%20PVC%20Texturizadas" class="btn-whatsapp" target="_blank">WhatsApp</a>
-          </div>
-        </div>
-      </div>
-      <div class="product-card reveal">
-        <div class="product-gallery" onclick="openLightbox('img/1-placas-pvc/12-placas-pvc-texturizadas/WENGE.png', 'WENGE')">
-          <img src="img/1-placas-pvc/12-placas-pvc-texturizadas/WENGE.png" alt="WENGE" loading="lazy">
-        </div>
-        <div class="product-info">
-          <div class="product-name">WENGE</div>
-          <div class="product-actions">
-            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para WENGE&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: WENGE%0D%0ACategoria: Placas PVC%0D%0ASubcategoria: Placas PVC Texturizadas%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
-            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20WENGE%20de%20la%20categoría%20Placas%20PVC%20/%20subcategoría%20Placas%20PVC%20Texturizadas" class="btn-whatsapp" target="_blank">WhatsApp</a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-  <section class="subcat-section reveal" id="13-placas-pvc-tipo-espejo">
-    <div class="subcat-header">
-      <h3>Placas PVC Tipo espejo</h3>
-      <span class="subcat-count">3 productos</span>
-      <div class="subcat-divider"></div>
-    </div>
-    <div class="specs-bar reveal">
-      <div class="spec-item"><span class="spec-label">Material</span><span class="spec-value">PVC</span></div>
-      <div class="spec-item"><span class="spec-label">Dimensiones</span><span class="spec-value">2440 x 1220 x 5 mm</span></div>
-      <div class="spec-item"><span class="spec-label">Presentación</span><span class="spec-value">2.977 m²/pz, 1 pz/Caja, 10.5 kg/pz</span></div>
-      <div class="spec-item"><span class="spec-label">Garantía</span><span class="spec-value">15 años</span></div>
-      <div class="spec-item"><span class="spec-label">Uso</span><span class="spec-value">Interior</span></div>
-    </div>
-    <div class="products-grid">
-      <div class="product-card reveal">
-        <div class="product-gallery" onclick="openLightbox('img/1-placas-pvc/13-placas-pvc-tipo-espejo/PLACA TIPO ESPEJO DORADO.jpg', 'PLACA TIPO ESPEJO DORADO')">
-          <img src="img/1-placas-pvc/13-placas-pvc-tipo-espejo/PLACA TIPO ESPEJO DORADO.jpg" alt="PLACA TIPO ESPEJO DORADO" loading="lazy">
-        </div>
-        <div class="product-info">
-          <div class="product-name">PLACA TIPO ESPEJO DORADO</div>
-          <div class="product-actions">
-            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para PLACA TIPO ESPEJO DORADO&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: PLACA TIPO ESPEJO DORADO%0D%0ACategoria: Placas PVC%0D%0ASubcategoria: Placas PVC Tipo espejo%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
-            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20PLACA%20TIPO%20ESPEJO%20DORADO%20de%20la%20categoría%20Placas%20PVC%20/%20subcategoría%20Placas%20PVC%20Tipo%20espejo" class="btn-whatsapp" target="_blank">WhatsApp</a>
-          </div>
-        </div>
-      </div>
-      <div class="product-card reveal">
-        <div class="product-gallery" onclick="openLightbox('img/1-placas-pvc/13-placas-pvc-tipo-espejo/PLACA TIPO ESPEJO.jpg', 'PLACA TIPO ESPEJO')">
-          <img src="img/1-placas-pvc/13-placas-pvc-tipo-espejo/PLACA TIPO ESPEJO.jpg" alt="PLACA TIPO ESPEJO" loading="lazy">
-        </div>
-        <div class="product-info">
-          <div class="product-name">PLACA TIPO ESPEJO</div>
-          <div class="product-actions">
-            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para PLACA TIPO ESPEJO&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: PLACA TIPO ESPEJO%0D%0ACategoria: Placas PVC%0D%0ASubcategoria: Placas PVC Tipo espejo%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
-            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20PLACA%20TIPO%20ESPEJO%20de%20la%20categoría%20Placas%20PVC%20/%20subcategoría%20Placas%20PVC%20Tipo%20espejo" class="btn-whatsapp" target="_blank">WhatsApp</a>
-          </div>
-        </div>
-      </div>
-      <div class="product-card reveal">
-        <div class="product-gallery" onclick="openLightbox('img/1-placas-pvc/13-placas-pvc-tipo-espejo/PLACA TIPO METAL.jpg', 'PLACA TIPO METAL')">
-          <img src="img/1-placas-pvc/13-placas-pvc-tipo-espejo/PLACA TIPO METAL.jpg" alt="PLACA TIPO METAL" loading="lazy">
-        </div>
-        <div class="product-info">
-          <div class="product-name">PLACA TIPO METAL</div>
-          <div class="product-actions">
-            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para PLACA TIPO METAL&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: PLACA TIPO METAL%0D%0ACategoria: Placas PVC%0D%0ASubcategoria: Placas PVC Tipo espejo%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
-            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20PLACA%20TIPO%20METAL%20de%20la%20categoría%20Placas%20PVC%20/%20subcategoría%20Placas%20PVC%20Tipo%20espejo" class="btn-whatsapp" target="_blank">WhatsApp</a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
   <section class="subcat-section reveal">
     <div class="subcat-header">
-      <h3>Productos Placas PVC</h3>
+      <h3>⭐ Más Vendidos — Placas PVC Tipo Espejo</h3>
       <span class="subcat-count">15 productos</span>
       <div class="subcat-divider"></div>
+    </div>
+    <div class="specs-bar reveal">
+      <div class="spec-item"><span class="spec-label">Material</span><span class="spec-value">PVC</span></div>
+      <div class="spec-item"><span class="spec-label">Dimensiones</span><span class="spec-value">2440 x 1220 x 5 mm</span></div>
+      <div class="spec-item"><span class="spec-label">Presentación</span><span class="spec-value">2.977 m²/pz, 1 pz/Caja, 10.5 kg/pz</span></div>
+      <div class="spec-item"><span class="spec-label">Garantía</span><span class="spec-value">15 años</span></div>
+      <div class="spec-item"><span class="spec-label">Uso</span><span class="spec-value">Interior</span></div>
     </div>
     <div class="products-grid">
       <div class="product-card reveal">
@@ -526,7 +283,238 @@
       </div>
     </div>
   </section>
+  <section class="subcat-section reveal" id="13-placas-pvc-tipo-espejo">
+    <div class="subcat-header">
+      <h3>Placas PVC Tipo espejo</h3>
+      <span class="subcat-count">3 productos</span>
+      <div class="subcat-divider"></div>
+    </div>
+    <div class="specs-bar reveal">
+      <div class="spec-item"><span class="spec-label">Material</span><span class="spec-value">PVC</span></div>
+      <div class="spec-item"><span class="spec-label">Dimensiones</span><span class="spec-value">2440 x 1220 x 5 mm</span></div>
+      <div class="spec-item"><span class="spec-label">Presentación</span><span class="spec-value">2.977 m²/pz, 1 pz/Caja, 10.5 kg/pz</span></div>
+      <div class="spec-item"><span class="spec-label">Garantía</span><span class="spec-value">15 años</span></div>
+      <div class="spec-item"><span class="spec-label">Uso</span><span class="spec-value">Interior</span></div>
+    </div>
+    <div class="products-grid">
+      <div class="product-card reveal">
+        <div class="product-gallery" onclick="openLightbox('img/1-placas-pvc/13-placas-pvc-tipo-espejo/PLACA TIPO ESPEJO DORADO.jpg', 'PLACA TIPO ESPEJO DORADO')">
+          <img src="img/1-placas-pvc/13-placas-pvc-tipo-espejo/PLACA TIPO ESPEJO DORADO.jpg" alt="PLACA TIPO ESPEJO DORADO" loading="lazy">
+        </div>
+        <div class="product-info">
+          <div class="product-name">PLACA TIPO ESPEJO DORADO</div>
+          <div class="product-actions">
+            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para PLACA TIPO ESPEJO DORADO&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: PLACA TIPO ESPEJO DORADO%0D%0ACategoria: Placas PVC%0D%0ASubcategoria: Placas PVC Tipo espejo%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20PLACA%20TIPO%20ESPEJO%20DORADO%20de%20la%20categoría%20Placas%20PVC%20/%20subcategoría%20Placas%20PVC%20Tipo%20espejo" class="btn-whatsapp" target="_blank">WhatsApp</a>
+          </div>
+        </div>
+      </div>
+      <div class="product-card reveal">
+        <div class="product-gallery" onclick="openLightbox('img/1-placas-pvc/13-placas-pvc-tipo-espejo/PLACA TIPO ESPEJO.jpg', 'PLACA TIPO ESPEJO')">
+          <img src="img/1-placas-pvc/13-placas-pvc-tipo-espejo/PLACA TIPO ESPEJO.jpg" alt="PLACA TIPO ESPEJO" loading="lazy">
+        </div>
+        <div class="product-info">
+          <div class="product-name">PLACA TIPO ESPEJO</div>
+          <div class="product-actions">
+            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para PLACA TIPO ESPEJO&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: PLACA TIPO ESPEJO%0D%0ACategoria: Placas PVC%0D%0ASubcategoria: Placas PVC Tipo espejo%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20PLACA%20TIPO%20ESPEJO%20de%20la%20categoría%20Placas%20PVC%20/%20subcategoría%20Placas%20PVC%20Tipo%20espejo" class="btn-whatsapp" target="_blank">WhatsApp</a>
+          </div>
+        </div>
+      </div>
+      <div class="product-card reveal">
+        <div class="product-gallery" onclick="openLightbox('img/1-placas-pvc/13-placas-pvc-tipo-espejo/PLACA TIPO METAL.jpg', 'PLACA TIPO METAL')">
+          <img src="img/1-placas-pvc/13-placas-pvc-tipo-espejo/PLACA TIPO METAL.jpg" alt="PLACA TIPO METAL" loading="lazy">
+        </div>
+        <div class="product-info">
+          <div class="product-name">PLACA TIPO METAL</div>
+          <div class="product-actions">
+            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para PLACA TIPO METAL&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: PLACA TIPO METAL%0D%0ACategoria: Placas PVC%0D%0ASubcategoria: Placas PVC Tipo espejo%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20PLACA%20TIPO%20METAL%20de%20la%20categoría%20Placas%20PVC%20/%20subcategoría%20Placas%20PVC%20Tipo%20espejo" class="btn-whatsapp" target="_blank">WhatsApp</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="subcat-section reveal" id="11-placas-pvc-tipo-madera">
+    <div class="subcat-header">
+      <h3>Placas PVC tipo madera</h3>
+      <span class="subcat-count">7 productos</span>
+      <div class="subcat-divider"></div>
+    </div>
+    <div class="specs-bar reveal">
+      <div class="spec-item"><span class="spec-label">Material</span><span class="spec-value">PVC</span></div>
+      <div class="spec-item"><span class="spec-label">Dimensiones</span><span class="spec-value">2440 x 1220 x 3 mm</span></div>
+      <div class="spec-item"><span class="spec-label">Presentación</span><span class="spec-value">2.977 m²/pz, 1 pz/Caja, 19 kg/pz</span></div>
+      <div class="spec-item"><span class="spec-label">Garantía</span><span class="spec-value">15 años</span></div>
+      <div class="spec-item"><span class="spec-label">Uso</span><span class="spec-value">Interior</span></div>
+    </div>
+    <div class="products-grid">
+      <div class="product-card reveal">
+        <div class="product-gallery" onclick="openLightbox('img/1-placas-pvc/11-placas-pvc-tipo-madera/Adler.jpg', 'Adler')">
+          <img src="img/1-placas-pvc/11-placas-pvc-tipo-madera/Adler.jpg" alt="Adler" loading="lazy">
+        </div>
+        <div class="product-info">
+          <div class="product-name">Adler</div>
+          <div class="product-actions">
+            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para Adler&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: Adler%0D%0ACategoria: Placas PVC%0D%0ASubcategoria: Placas PVC tipo madera%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20Adler%20de%20la%20categoría%20Placas%20PVC%20/%20subcategoría%20Placas%20PVC%20tipo%20madera" class="btn-whatsapp" target="_blank">WhatsApp</a>
+          </div>
+        </div>
+      </div>
+      <div class="product-card reveal">
+        <div class="product-gallery" onclick="openLightbox('img/1-placas-pvc/11-placas-pvc-tipo-madera/Alpina.jpg', 'Alpina')">
+          <img src="img/1-placas-pvc/11-placas-pvc-tipo-madera/Alpina.jpg" alt="Alpina" loading="lazy">
+        </div>
+        <div class="product-info">
+          <div class="product-name">Alpina</div>
+          <div class="product-actions">
+            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para Alpina&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: Alpina%0D%0ACategoria: Placas PVC%0D%0ASubcategoria: Placas PVC tipo madera%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20Alpina%20de%20la%20categoría%20Placas%20PVC%20/%20subcategoría%20Placas%20PVC%20tipo%20madera" class="btn-whatsapp" target="_blank">WhatsApp</a>
+          </div>
+        </div>
+      </div>
+      <div class="product-card reveal">
+        <div class="product-gallery" onclick="openLightbox('img/1-placas-pvc/11-placas-pvc-tipo-madera/Solaria.jpg', 'Solaria')">
+          <img src="img/1-placas-pvc/11-placas-pvc-tipo-madera/Solaria.jpg" alt="Solaria" loading="lazy">
+        </div>
+        <div class="product-info">
+          <div class="product-name">Solaria</div>
+          <div class="product-actions">
+            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para Solaria&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: Solaria%0D%0ACategoria: Placas PVC%0D%0ASubcategoria: Placas PVC tipo madera%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20Solaria%20de%20la%20categoría%20Placas%20PVC%20/%20subcategoría%20Placas%20PVC%20tipo%20madera" class="btn-whatsapp" target="_blank">WhatsApp</a>
+          </div>
+        </div>
+      </div>
+      <div class="product-card reveal">
+        <div class="product-gallery" onclick="openLightbox('img/1-placas-pvc/11-placas-pvc-tipo-madera/Solden.jpg', 'Solden')">
+          <img src="img/1-placas-pvc/11-placas-pvc-tipo-madera/Solden.jpg" alt="Solden" loading="lazy">
+        </div>
+        <div class="product-info">
+          <div class="product-name">Solden</div>
+          <div class="product-actions">
+            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para Solden&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: Solden%0D%0ACategoria: Placas PVC%0D%0ASubcategoria: Placas PVC tipo madera%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20Solden%20de%20la%20categoría%20Placas%20PVC%20/%20subcategoría%20Placas%20PVC%20tipo%20madera" class="btn-whatsapp" target="_blank">WhatsApp</a>
+          </div>
+        </div>
+      </div>
+      <div class="product-card reveal">
+        <div class="product-gallery" onclick="openLightbox('img/1-placas-pvc/11-placas-pvc-tipo-madera/anton.jpg', 'anton')">
+          <img src="img/1-placas-pvc/11-placas-pvc-tipo-madera/anton.jpg" alt="anton" loading="lazy">
+        </div>
+        <div class="product-info">
+          <div class="product-name">anton</div>
+          <div class="product-actions">
+            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para anton&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: anton%0D%0ACategoria: Placas PVC%0D%0ASubcategoria: Placas PVC tipo madera%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20anton%20de%20la%20categoría%20Placas%20PVC%20/%20subcategoría%20Placas%20PVC%20tipo%20madera" class="btn-whatsapp" target="_blank">WhatsApp</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="subcat-section reveal" id="12-placas-pvc-texturizadas">
+    <div class="subcat-header">
+      <h3>Placas PVC Texturizadas</h3>
+      <span class="subcat-count">9 productos</span>
+      <div class="subcat-divider"></div>
+    </div>
+    <div class="specs-bar reveal">
+      <div class="spec-item"><span class="spec-label">Material</span><span class="spec-value">PVC</span></div>
+      <div class="spec-item"><span class="spec-label">Dimensiones</span><span class="spec-value">2440 x 1220 x 5 mm</span></div>
+      <div class="spec-item"><span class="spec-label">Presentación</span><span class="spec-value">2.977 m²/pz, 1 pz/Caja, 10.5 kg/pz</span></div>
+      <div class="spec-item"><span class="spec-label">Garantía</span><span class="spec-value">15 años</span></div>
+      <div class="spec-item"><span class="spec-label">Uso</span><span class="spec-value">Interior</span></div>
+    </div>
+    <div class="products-grid">
+      <div class="product-card reveal">
+        <div class="product-gallery" onclick="openLightbox('img/1-placas-pvc/12-placas-pvc-texturizadas/ASH.png', 'ASH')">
+          <img src="img/1-placas-pvc/12-placas-pvc-texturizadas/ASH.png" alt="ASH" loading="lazy">
+        </div>
+        <div class="product-info">
+          <div class="product-name">ASH</div>
+          <div class="product-actions">
+            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para ASH&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: ASH%0D%0ACategoria: Placas PVC%0D%0ASubcategoria: Placas PVC Texturizadas%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20ASH%20de%20la%20categoría%20Placas%20PVC%20/%20subcategoría%20Placas%20PVC%20Texturizadas" class="btn-whatsapp" target="_blank">WhatsApp</a>
+          </div>
+        </div>
+      </div>
+      <div class="product-card reveal">
+        <div class="product-gallery" onclick="openLightbox('img/1-placas-pvc/12-placas-pvc-texturizadas/CEDAR.png', 'CEDAR')">
+          <img src="img/1-placas-pvc/12-placas-pvc-texturizadas/CEDAR.png" alt="CEDAR" loading="lazy">
+        </div>
+        <div class="product-info">
+          <div class="product-name">CEDAR</div>
+          <div class="product-actions">
+            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para CEDAR&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: CEDAR%0D%0ACategoria: Placas PVC%0D%0ASubcategoria: Placas PVC Texturizadas%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20CEDAR%20de%20la%20categoría%20Placas%20PVC%20/%20subcategoría%20Placas%20PVC%20Texturizadas" class="btn-whatsapp" target="_blank">WhatsApp</a>
+          </div>
+        </div>
+      </div>
+      <div class="product-card reveal">
+        <div class="product-gallery" onclick="openLightbox('img/1-placas-pvc/12-placas-pvc-texturizadas/ENCINO.png', 'ENCINO')">
+          <img src="img/1-placas-pvc/12-placas-pvc-texturizadas/ENCINO.png" alt="ENCINO" loading="lazy">
+        </div>
+        <div class="product-info">
+          <div class="product-name">ENCINO</div>
+          <div class="product-actions">
+            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para ENCINO&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: ENCINO%0D%0ACategoria: Placas PVC%0D%0ASubcategoria: Placas PVC Texturizadas%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20ENCINO%20de%20la%20categoría%20Placas%20PVC%20/%20subcategoría%20Placas%20PVC%20Texturizadas" class="btn-whatsapp" target="_blank">WhatsApp</a>
+          </div>
+        </div>
+      </div>
+      <div class="product-card reveal">
+        <div class="product-gallery" onclick="openLightbox('img/1-placas-pvc/12-placas-pvc-texturizadas/IPE.png', 'IPE')">
+          <img src="img/1-placas-pvc/12-placas-pvc-texturizadas/IPE.png" alt="IPE" loading="lazy">
+        </div>
+        <div class="product-info">
+          <div class="product-name">IPE</div>
+          <div class="product-actions">
+            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para IPE&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: IPE%0D%0ACategoria: Placas PVC%0D%0ASubcategoria: Placas PVC Texturizadas%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20IPE%20de%20la%20categoría%20Placas%20PVC%20/%20subcategoría%20Placas%20PVC%20Texturizadas" class="btn-whatsapp" target="_blank">WhatsApp</a>
+          </div>
+        </div>
+      </div>
+      <div class="product-card reveal">
+        <div class="product-gallery" onclick="openLightbox('img/1-placas-pvc/12-placas-pvc-texturizadas/JATOBA.png', 'JATOBA')">
+          <img src="img/1-placas-pvc/12-placas-pvc-texturizadas/JATOBA.png" alt="JATOBA" loading="lazy">
+        </div>
+        <div class="product-info">
+          <div class="product-name">JATOBA</div>
+          <div class="product-actions">
+            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para JATOBA&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: JATOBA%0D%0ACategoria: Placas PVC%0D%0ASubcategoria: Placas PVC Texturizadas%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20JATOBA%20de%20la%20categoría%20Placas%20PVC%20/%20subcategoría%20Placas%20PVC%20Texturizadas" class="btn-whatsapp" target="_blank">WhatsApp</a>
+          </div>
+        </div>
+      </div>
+      <div class="product-card reveal">
+        <div class="product-gallery" onclick="openLightbox('img/1-placas-pvc/12-placas-pvc-texturizadas/NOGAL.png', 'NOGAL')">
+          <img src="img/1-placas-pvc/12-placas-pvc-texturizadas/NOGAL.png" alt="NOGAL" loading="lazy">
+        </div>
+        <div class="product-info">
+          <div class="product-name">NOGAL</div>
+          <div class="product-actions">
+            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para NOGAL&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: NOGAL%0D%0ACategoria: Placas PVC%0D%0ASubcategoria: Placas PVC Texturizadas%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20NOGAL%20de%20la%20categoría%20Placas%20PVC%20/%20subcategoría%20Placas%20PVC%20Texturizadas" class="btn-whatsapp" target="_blank">WhatsApp</a>
+          </div>
+        </div>
+      </div>
+      <div class="product-card reveal">
+        <div class="product-gallery" onclick="openLightbox('img/1-placas-pvc/12-placas-pvc-texturizadas/WENGE.png', 'WENGE')">
+          <img src="img/1-placas-pvc/12-placas-pvc-texturizadas/WENGE.png" alt="WENGE" loading="lazy">
+        </div>
+        <div class="product-info">
+          <div class="product-name">WENGE</div>
+          <div class="product-actions">
+            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para WENGE&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: WENGE%0D%0ACategoria: Placas PVC%0D%0ASubcategoria: Placas PVC Texturizadas%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
+            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20WENGE%20de%20la%20categoría%20Placas%20PVC%20/%20subcategoría%20Placas%20PVC%20Texturizadas" class="btn-whatsapp" target="_blank">WhatsApp</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
+  <div class="cat-nav">
+    <a href="2-lambrin-wpc.html" class="cat-nav-btn next">Lambrin WPC →</a>
+  </div>
 
   <section class="section-wrap" style="padding-top: 1rem;">
     <div style="text-align: center;">
@@ -534,6 +522,51 @@
       <a href="contacto.html" class="btn-outline">Contactar</a>
     </div>
   </section>
+
+
+  <!-- TESTIMONIOS -->
+  <section class="section-wrap reveal" style="padding-top: 2rem;">
+    <div class="section-header">
+      <h2>Testimonios de Clientes</h2>
+      <div class="divider"></div>
+      <p>¿Ya usaste nuestros productos? Comparte tu experiencia y ayuda a otros a decidirse.</p>
+    </div>
+    <div style="max-width: 600px; margin: 0 auto; padding: 0 1rem;">
+      <form id="testimonioForm" onsubmit="enviarTestimonio(event)" style="display: flex; flex-direction: column; gap: 1rem;">
+        <input type="text" id="tNombre" placeholder="Tu nombre" required
+          style="padding: 0.9rem 1.2rem; background: rgba(42,42,42,0.8); border: 1px solid rgba(197,160,89,0.3); border-radius: 8px; color: var(--white); font-family: 'Montserrat', sans-serif; font-size: 0.9rem; backdrop-filter: blur(8px); transition: all 0.3s;"
+          onfocus="this.style.borderColor='var(--gold)';this.style.boxShadow='0 0 15px rgba(197,160,89,0.15)'" onblur="this.style.borderColor='rgba(197,160,89,0.3)';this.style.boxShadow='none'">
+        <textarea id="tComentario" placeholder="¿Qué te pareció el producto o servicio?" required rows="4"
+          style="padding: 0.9rem 1.2rem; background: rgba(42,42,42,0.8); border: 1px solid rgba(197,160,89,0.3); border-radius: 8px; color: var(--white); font-family: 'Montserrat', sans-serif; font-size: 0.9rem; backdrop-filter: blur(8px); resize: vertical; transition: all 0.3s;"
+          onfocus="this.style.borderColor='var(--gold)';this.style.boxShadow='0 0 15px rgba(197,160,89,0.15)'" onblur="this.style.borderColor='rgba(197,160,89,0.3)';this.style.boxShadow='none'"></textarea>
+        <input type="text" id="tProducto" placeholder="Producto o categoría que compraste (opcional)"
+          style="padding: 0.9rem 1.2rem; background: rgba(42,42,42,0.8); border: 1px solid rgba(197,160,89,0.3); border-radius: 8px; color: var(--white); font-family: 'Montserrat', sans-serif; font-size: 0.9rem; backdrop-filter: blur(8px); transition: all 0.3s;"
+          onfocus="this.style.borderColor='var(--gold)';this.style.boxShadow='0 0 15px rgba(197,160,89,0.15)'" onblur="this.style.borderColor='rgba(197,160,89,0.3)';this.style.boxShadow='none'">
+        <button type="submit" class="btn-primary" style="align-self: center; margin-top: 0.5rem;">📩 Enviar Testimonio</button>
+      </form>
+      <div style="text-align: center; margin-top: 1.2rem; font-size: 0.8rem; color: rgba(245,245,245,0.5); line-height: 1.6;">
+        Los testimonios son revisados antes de publicarse.<br>
+        También puedes enviarlos directamente por 
+        <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20quiero%20dejar%20un%20testimonio" target="_blank" style="color: var(--gold); text-decoration: none; font-weight: 600;">WhatsApp 💬</a>
+      </div>
+    </div>
+  </section>
+  <script>
+    function enviarTestimonio(e) {
+      e.preventDefault();
+      const nombre = document.getElementById('tNombre').value.trim();
+      const comentario = document.getElementById('tComentario').value.trim();
+      const producto = document.getElementById('tProducto').value.trim();
+      let msg = 'Hola ADIS, soy ' + nombre + '. Quiero dejar un testimonio:';
+      msg += '%0A%0A' + comentario;
+      msg += '%0A%0AProducto/Categoría: ' + (producto || 'No especificado');
+      msg += '%0A%0APágina: ' + window.location.href;
+      window.open('https://wa.me/526311928993?text=' + encodeURIComponent(msg.replace(/%0A/g, '
+')), '_blank');
+      alert('¡Gracias ' + nombre + '! Tu testimonio se envió por WhatsApp. Será revisado y publicado pronto.');
+      e.target.reset();
+    }
+  </script>
 
   <footer>
     <div class="footer-logo"><img src="LOGO ADIS.png" alt="ADIS Logo"></div>
@@ -550,6 +583,14 @@
     </div>
     <div class="copyright">© 2026 ADIS DISEÑO & REMODELACIÓN. TODOS LOS DERECHOS RESERVADOS.</div>
   </footer>
+
+  <!-- MOBILE BOTTOM NAV -->
+  <nav class="mobile-bottom-nav">
+    <a href="index.html"><span>🏠</span><span>Inicio</span></a>
+    <a href="index.html#categorias"><span>📂</span><span>Catálogo</span></a>
+    <a href="proyectos.html"><span>🖼️</span><span>Proyectos</span></a>
+    <a href="contacto.html"><span>📞</span><span>Contacto</span></a>
+  </nav>
 
   <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20vi%20el%20catálogo%20y%20me%20interesa%20obtener%20información%20sobre%20sus%20productos." class="whatsapp-float" target="_blank" title="Contáctanos por WhatsApp">💬</a>
 
@@ -770,17 +811,109 @@
       if (e.key === 'Escape') closeLightbox();
     });
 
+    // Spotlight overlay
+    window.openSpotlight = function() {
+      document.getElementById('spotlightOverlay').classList.add('active');
+      const inp = document.getElementById('spotlightInput');
+      if (inp) { setTimeout(() => inp.focus(), 100); }
+      if (typeof spotlightSearch === 'function') spotlightSearch(inp ? inp.value : '');
+    };
+    window.closeSpotlight = function(e) {
+      if (e && e.target !== e.currentTarget && !e.target.classList.contains('spotlight-close')) return;
+      document.getElementById('spotlightOverlay').classList.remove('active');
+    };
+    
     // Buscador global mejorado
     (function() {
       let allProducts = [];
       let debounceTimer = null;
       let activeIndex = -1;
       let currentResults = [];
+      let spotlightResults = [];
+      let spotlightIndex = -1;
       
       fetch('products.json')
         .then(r => r.json())
         .then(data => { allProducts = data; })
         .catch(() => { allProducts = []; });
+      
+      // Spotlight search
+      window.spotlightSearch = function(query) {
+        const container = document.getElementById('spotlightResults');
+        if (!query || query.length < 2) {
+          if (container) container.innerHTML = '<div style="padding:2rem;text-align:center;color:rgba(245,245,245,0.5);">Escribe al menos 2 caracteres para buscar...</div>';
+          return;
+        }
+        const q = normalize(query);
+        const terms = q.split(/\s+/).filter(t => t.length > 0);
+        const scored = allProducts.map(p => {
+          const name = normalize(p.name);
+          const cat = normalize(p.category);
+          const sub = normalize(p.subcategory || '');
+          let score = 0;
+          for (const t of terms) {
+            if (name.startsWith(t)) score += 10;
+            else if (name.includes(t)) score += 5;
+            if (sub.startsWith(t)) score += 3;
+            else if (sub.includes(t)) score += 2;
+            if (cat.includes(t)) score += 1;
+          }
+          return { p, score };
+        }).filter(x => x.score > 0).sort((a,b) => b.score - a.score).slice(0, 10);
+        
+        spotlightResults = scored.map(x => x.p);
+        spotlightIndex = -1;
+        
+        if (!container) return;
+        if (scored.length === 0) {
+          container.innerHTML = '<div style="padding:2rem;text-align:center;color:rgba(245,245,245,0.5);">No se encontraron productos</div>';
+        } else {
+          container.innerHTML = scored.map((x, i) => `
+            <a href="${x.p.url}" class="spotlight-item" data-sindex="${i}" onclick="closeSpotlight()">
+              <img src="${x.p.thumb}" alt="${x.p.name}" loading="lazy">
+              <div class="spotlight-item-info">
+                <span class="spotlight-item-name">${highlight(x.p.name, query)}</span>
+                <span class="spotlight-item-cat">${x.p.category}${x.p.subcategory ? ' / ' + x.p.subcategory : ''}</span>
+              </div>
+            </a>
+          `).join('');
+        }
+      };
+      
+      const spotInput = document.getElementById('spotlightInput');
+      if (spotInput) {
+        spotInput.addEventListener('input', e => {
+          clearTimeout(debounceTimer);
+          debounceTimer = setTimeout(() => spotlightSearch(e.target.value), 150);
+        });
+        spotInput.addEventListener('keydown', e => {
+          if (e.key === 'ArrowDown') {
+            e.preventDefault();
+            spotlightIndex = Math.min(spotlightIndex + 1, spotlightResults.length - 1);
+            updateSpotlightActive();
+          } else if (e.key === 'ArrowUp') {
+            e.preventDefault();
+            spotlightIndex = Math.max(spotlightIndex - 1, -1);
+            updateSpotlightActive();
+          } else if (e.key === 'Enter') {
+            e.preventDefault();
+            if (spotlightIndex >= 0 && spotlightResults[spotlightIndex]) {
+              window.location.href = spotlightResults[spotlightIndex].url;
+              closeSpotlight();
+            }
+          } else if (e.key === 'Escape') {
+            closeSpotlight();
+          }
+        });
+      }
+      
+      function updateSpotlightActive() {
+        document.querySelectorAll('.spotlight-item').forEach((el, i) => {
+          el.style.background = i === spotlightIndex ? 'rgba(197,160,89,0.15)' : '';
+        });
+        const active = document.querySelector('.spotlight-item[data-sindex="' + spotlightIndex + '"]');
+        if (active) active.scrollIntoView({ block: 'nearest' });
+      }
       
       function normalize(str) {
         return (str || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');

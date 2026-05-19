@@ -20,12 +20,24 @@
       <a href="index.html" class="logo"><img src="LOGO ADIS.png" alt="ADIS Logo"></a>
       <nav class="desktop-nav">
         <a href="index.html">← Inicio</a>
-        <a href="index.html#categorias">Catálogo</a>
+        <a href="index.html#categorias" class="mega-trigger">Catálogo
+          <div class="mega-menu">
+        <a href="1-placas-pvc.html" class="mega-item"><img src="img/1-placas-pvc/11-placas-pvc-tipo-madera/Adler.jpg" alt="Placas PVC" loading="lazy"><span>Placas PVC</span></a>
+        <a href="2-lambrin-wpc.html" class="mega-item"><img src="img/2-lambrin-wpc/21-lambrin-interior/AMANECHER.jpg" alt="Lambrín WPC" loading="lazy"><span>Lambrín WPC</span></a>
+        <a href="3-revestimiento-flexible.html" class="mega-item"><img src="img/3-revestimiento-flexible/CONCRETO Aparente.jpg" alt="Revestimiento Flexible" loading="lazy"><span>Revestimiento Flexible</span></a>
+        <a href="4-plafon-pvc.html" class="mega-item"><img src="img/4-plafon-pvc/41-plafon-pvc-laminado/SHERWOOD.jpg" alt="Plafón PVC" loading="lazy"><span>Plafón PVC</span></a>
+        <a href="5-paneles-tridimensionales.html" class="mega-item"><img src="img/5-paneles-tridimensionales/51-blanco/Austin.jpg" alt="Paneles 3D" loading="lazy"><span>Paneles 3D</span></a>
+        <a href="6-vigas-pvc.html" class="mega-item"><img src="img/6-vigas-pvc/61-interior/BAHIA 1.jpg" alt="Vigas PVC" loading="lazy"><span>Vigas PVC</span></a>
+        <a href="7-pisos.html" class="mega-item"><img src="img/7-pisos/71-laminado/ACONCAGUA.jpg" alt="Pisos" loading="lazy"><span>Pisos</span></a>
+        <a href="8-zacate.html" class="mega-item"><img src="img/8-zacate/81-follaje-sintetico/AMAZONAS-A.jpg" alt="Zacate" loading="lazy"><span>Zacate</span></a>
+        <a href="9-cladding.html" class="mega-item"><img src="img/9-cladding/91-placa-tipo-roca/BLACK.jpg" alt="Cladding" loading="lazy"><span>Cladding</span></a>
+          </div>
+        </a>
         <a href="proyectos.html">Proyectos</a>
         <a href="contacto.html">Contacto</a>
         <div class="search-box">
           <input type="text" id="searchInput" placeholder="Buscar producto..." autocomplete="off" title="Presiona / para buscar">
-          <button onclick="performSearch()">🔍</button>
+          <button onclick="openSpotlight()">🔍</button>
           <div class="search-dropdown" id="searchDropdown"></div>
         </div>
       </nav>
@@ -45,7 +57,22 @@
       <div class="search-dropdown" id="searchDropdownMobile"></div>
     </div>
   </div>
+  
+  <!-- SPOTLIGHT OVERLAY -->
+  <div class="spotlight-overlay" id="spotlightOverlay" onclick="closeSpotlight(event)">
+    <button class="spotlight-close" onclick="closeSpotlight(event)">✕</button>
+    <div class="spotlight-box">
+      <div class="spotlight-input-wrap">
+        <span class="spotlight-icon">🔍</span>
+        <input type="text" class="spotlight-input" id="spotlightInput" placeholder="Buscar productos, categorías..." autocomplete="off">
+      </div>
+      <div class="spotlight-results" id="spotlightResults"></div>
+    </div>
+  </div>
 
+  <div class="breadcrumbs">
+    <a href="index.html">Inicio</a> <span>/</span> <a href="index.html#categorias">Catálogo</a> <span>/</span> <span style="color:var(--gold);">Pisos</span>
+  </div>
 
   <section class="hero-cat-bg" style="background-image: url('img/7-pisos/71-laminado/ACONCAGUA.jpg');">
     <div class="hero-cat-content">
@@ -1062,7 +1089,10 @@
     </div>
   </section>
 
-
+  <div class="cat-nav">
+    <a href="6-vigas-pvc.html" class="cat-nav-btn">← Vigas PVC</a>
+    <a href="8-zacate.html" class="cat-nav-btn next">Zacate →</a>
+  </div>
 
   <section class="section-wrap" style="padding-top: 1rem;">
     <div style="text-align: center;">
@@ -1070,6 +1100,51 @@
       <a href="contacto.html" class="btn-outline">Contactar</a>
     </div>
   </section>
+
+
+  <!-- TESTIMONIOS -->
+  <section class="section-wrap reveal" style="padding-top: 2rem;">
+    <div class="section-header">
+      <h2>Testimonios de Clientes</h2>
+      <div class="divider"></div>
+      <p>¿Ya usaste nuestros productos? Comparte tu experiencia y ayuda a otros a decidirse.</p>
+    </div>
+    <div style="max-width: 600px; margin: 0 auto; padding: 0 1rem;">
+      <form id="testimonioForm" onsubmit="enviarTestimonio(event)" style="display: flex; flex-direction: column; gap: 1rem;">
+        <input type="text" id="tNombre" placeholder="Tu nombre" required
+          style="padding: 0.9rem 1.2rem; background: rgba(42,42,42,0.8); border: 1px solid rgba(197,160,89,0.3); border-radius: 8px; color: var(--white); font-family: 'Montserrat', sans-serif; font-size: 0.9rem; backdrop-filter: blur(8px); transition: all 0.3s;"
+          onfocus="this.style.borderColor='var(--gold)';this.style.boxShadow='0 0 15px rgba(197,160,89,0.15)'" onblur="this.style.borderColor='rgba(197,160,89,0.3)';this.style.boxShadow='none'">
+        <textarea id="tComentario" placeholder="¿Qué te pareció el producto o servicio?" required rows="4"
+          style="padding: 0.9rem 1.2rem; background: rgba(42,42,42,0.8); border: 1px solid rgba(197,160,89,0.3); border-radius: 8px; color: var(--white); font-family: 'Montserrat', sans-serif; font-size: 0.9rem; backdrop-filter: blur(8px); resize: vertical; transition: all 0.3s;"
+          onfocus="this.style.borderColor='var(--gold)';this.style.boxShadow='0 0 15px rgba(197,160,89,0.15)'" onblur="this.style.borderColor='rgba(197,160,89,0.3)';this.style.boxShadow='none'"></textarea>
+        <input type="text" id="tProducto" placeholder="Producto o categoría que compraste (opcional)"
+          style="padding: 0.9rem 1.2rem; background: rgba(42,42,42,0.8); border: 1px solid rgba(197,160,89,0.3); border-radius: 8px; color: var(--white); font-family: 'Montserrat', sans-serif; font-size: 0.9rem; backdrop-filter: blur(8px); transition: all 0.3s;"
+          onfocus="this.style.borderColor='var(--gold)';this.style.boxShadow='0 0 15px rgba(197,160,89,0.15)'" onblur="this.style.borderColor='rgba(197,160,89,0.3)';this.style.boxShadow='none'">
+        <button type="submit" class="btn-primary" style="align-self: center; margin-top: 0.5rem;">📩 Enviar Testimonio</button>
+      </form>
+      <div style="text-align: center; margin-top: 1.2rem; font-size: 0.8rem; color: rgba(245,245,245,0.5); line-height: 1.6;">
+        Los testimonios son revisados antes de publicarse.<br>
+        También puedes enviarlos directamente por 
+        <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20quiero%20dejar%20un%20testimonio" target="_blank" style="color: var(--gold); text-decoration: none; font-weight: 600;">WhatsApp 💬</a>
+      </div>
+    </div>
+  </section>
+  <script>
+    function enviarTestimonio(e) {
+      e.preventDefault();
+      const nombre = document.getElementById('tNombre').value.trim();
+      const comentario = document.getElementById('tComentario').value.trim();
+      const producto = document.getElementById('tProducto').value.trim();
+      let msg = 'Hola ADIS, soy ' + nombre + '. Quiero dejar un testimonio:';
+      msg += '%0A%0A' + comentario;
+      msg += '%0A%0AProducto/Categoría: ' + (producto || 'No especificado');
+      msg += '%0A%0APágina: ' + window.location.href;
+      window.open('https://wa.me/526311928993?text=' + encodeURIComponent(msg.replace(/%0A/g, '
+')), '_blank');
+      alert('¡Gracias ' + nombre + '! Tu testimonio se envió por WhatsApp. Será revisado y publicado pronto.');
+      e.target.reset();
+    }
+  </script>
 
   <footer>
     <div class="footer-logo"><img src="LOGO ADIS.png" alt="ADIS Logo"></div>
@@ -1086,6 +1161,14 @@
     </div>
     <div class="copyright">© 2026 ADIS DISEÑO & REMODELACIÓN. TODOS LOS DERECHOS RESERVADOS.</div>
   </footer>
+
+  <!-- MOBILE BOTTOM NAV -->
+  <nav class="mobile-bottom-nav">
+    <a href="index.html"><span>🏠</span><span>Inicio</span></a>
+    <a href="index.html#categorias"><span>📂</span><span>Catálogo</span></a>
+    <a href="proyectos.html"><span>🖼️</span><span>Proyectos</span></a>
+    <a href="contacto.html"><span>📞</span><span>Contacto</span></a>
+  </nav>
 
   <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20vi%20el%20catálogo%20y%20me%20interesa%20obtener%20información%20sobre%20sus%20productos." class="whatsapp-float" target="_blank" title="Contáctanos por WhatsApp">💬</a>
 
@@ -1306,17 +1389,109 @@
       if (e.key === 'Escape') closeLightbox();
     });
 
+    // Spotlight overlay
+    window.openSpotlight = function() {
+      document.getElementById('spotlightOverlay').classList.add('active');
+      const inp = document.getElementById('spotlightInput');
+      if (inp) { setTimeout(() => inp.focus(), 100); }
+      if (typeof spotlightSearch === 'function') spotlightSearch(inp ? inp.value : '');
+    };
+    window.closeSpotlight = function(e) {
+      if (e && e.target !== e.currentTarget && !e.target.classList.contains('spotlight-close')) return;
+      document.getElementById('spotlightOverlay').classList.remove('active');
+    };
+    
     // Buscador global mejorado
     (function() {
       let allProducts = [];
       let debounceTimer = null;
       let activeIndex = -1;
       let currentResults = [];
+      let spotlightResults = [];
+      let spotlightIndex = -1;
       
       fetch('products.json')
         .then(r => r.json())
         .then(data => { allProducts = data; })
         .catch(() => { allProducts = []; });
+      
+      // Spotlight search
+      window.spotlightSearch = function(query) {
+        const container = document.getElementById('spotlightResults');
+        if (!query || query.length < 2) {
+          if (container) container.innerHTML = '<div style="padding:2rem;text-align:center;color:rgba(245,245,245,0.5);">Escribe al menos 2 caracteres para buscar...</div>';
+          return;
+        }
+        const q = normalize(query);
+        const terms = q.split(/\s+/).filter(t => t.length > 0);
+        const scored = allProducts.map(p => {
+          const name = normalize(p.name);
+          const cat = normalize(p.category);
+          const sub = normalize(p.subcategory || '');
+          let score = 0;
+          for (const t of terms) {
+            if (name.startsWith(t)) score += 10;
+            else if (name.includes(t)) score += 5;
+            if (sub.startsWith(t)) score += 3;
+            else if (sub.includes(t)) score += 2;
+            if (cat.includes(t)) score += 1;
+          }
+          return { p, score };
+        }).filter(x => x.score > 0).sort((a,b) => b.score - a.score).slice(0, 10);
+        
+        spotlightResults = scored.map(x => x.p);
+        spotlightIndex = -1;
+        
+        if (!container) return;
+        if (scored.length === 0) {
+          container.innerHTML = '<div style="padding:2rem;text-align:center;color:rgba(245,245,245,0.5);">No se encontraron productos</div>';
+        } else {
+          container.innerHTML = scored.map((x, i) => `
+            <a href="${x.p.url}" class="spotlight-item" data-sindex="${i}" onclick="closeSpotlight()">
+              <img src="${x.p.thumb}" alt="${x.p.name}" loading="lazy">
+              <div class="spotlight-item-info">
+                <span class="spotlight-item-name">${highlight(x.p.name, query)}</span>
+                <span class="spotlight-item-cat">${x.p.category}${x.p.subcategory ? ' / ' + x.p.subcategory : ''}</span>
+              </div>
+            </a>
+          `).join('');
+        }
+      };
+      
+      const spotInput = document.getElementById('spotlightInput');
+      if (spotInput) {
+        spotInput.addEventListener('input', e => {
+          clearTimeout(debounceTimer);
+          debounceTimer = setTimeout(() => spotlightSearch(e.target.value), 150);
+        });
+        spotInput.addEventListener('keydown', e => {
+          if (e.key === 'ArrowDown') {
+            e.preventDefault();
+            spotlightIndex = Math.min(spotlightIndex + 1, spotlightResults.length - 1);
+            updateSpotlightActive();
+          } else if (e.key === 'ArrowUp') {
+            e.preventDefault();
+            spotlightIndex = Math.max(spotlightIndex - 1, -1);
+            updateSpotlightActive();
+          } else if (e.key === 'Enter') {
+            e.preventDefault();
+            if (spotlightIndex >= 0 && spotlightResults[spotlightIndex]) {
+              window.location.href = spotlightResults[spotlightIndex].url;
+              closeSpotlight();
+            }
+          } else if (e.key === 'Escape') {
+            closeSpotlight();
+          }
+        });
+      }
+      
+      function updateSpotlightActive() {
+        document.querySelectorAll('.spotlight-item').forEach((el, i) => {
+          el.style.background = i === spotlightIndex ? 'rgba(197,160,89,0.15)' : '';
+        });
+        const active = document.querySelector('.spotlight-item[data-sindex="' + spotlightIndex + '"]');
+        if (active) active.scrollIntoView({ block: 'nearest' });
+      }
       
       function normalize(str) {
         return (str || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');

@@ -80,17 +80,6 @@ def sync_images(categories):
                 shutil.copy2(src, dst)
                 total += 1
             
-            # Copiar ficha tecnica de subcategoria si existe
-            if sub['ficha']:
-                src = sub['path'] / sub['ficha']
-                dst = sub_img_dir / sub['ficha']
-                shutil.copy2(src, dst)
-        
-        # Copiar ficha tecnica de categoria si existe
-        if cat['ficha']:
-            src = cat['path'] / cat['ficha']
-            dst = cat_img_dir / cat['ficha']
-            shutil.copy2(src, dst)
     
     print(f"Imagenes sincronizadas: {total} en {img_dir}")
 
@@ -1310,8 +1299,108 @@ footer {
   transform: translateX(0);
 }
 
+/* MEGA MENU */
+.mega-trigger { position: relative; }
+.mega-menu {
+  position: absolute; top: calc(100% + 10px); left: 50%; transform: translateX(-50%) translateY(10px);
+  width: 720px; max-width: 90vw; background: rgba(26,26,26,0.98); backdrop-filter: blur(20px);
+  border: 1px solid rgba(197,160,89,0.25); border-radius: 16px; padding: 1.5rem;
+  box-shadow: 0 30px 80px rgba(0,0,0,0.8); opacity: 0; visibility: hidden; transition: all 0.3s ease;
+  z-index: 1002; display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.8rem;
+}
+.mega-trigger:hover .mega-menu { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
+.mega-item {
+  display: flex; align-items: center; gap: 0.8rem; padding: 0.7rem; border-radius: 10px;
+  text-decoration: none; color: var(--light); transition: all 0.3s; border: 1px solid transparent;
+}
+.mega-item:hover { background: rgba(197,160,89,0.1); border-color: rgba(197,160,89,0.3); transform: translateY(-2px); }
+.mega-item img { width: 45px; height: 45px; object-fit: cover; border-radius: 8px; border: 1px solid rgba(197,160,89,0.2); }
+.mega-item span { font-size: 0.8rem; font-weight: 600; letter-spacing: 1px; }
+
+/* SEARCH HERO */
+.search-hero { max-width: 700px; margin: 2.5rem auto 0; position: relative; z-index: 2; }
+.search-hero-input {
+  width: 100%; padding: 1.1rem 1.5rem 1.1rem 3.5rem; background: rgba(15,15,15,0.7);
+  border: 2px solid rgba(197,160,89,0.4); border-radius: 50px; color: var(--white);
+  font-family: 'Montserrat', sans-serif; font-size: 1.05rem; backdrop-filter: blur(10px);
+  transition: all 0.3s; box-shadow: 0 4px 30px rgba(0,0,0,0.3);
+}
+.search-hero-input:focus { outline: none; border-color: var(--gold); box-shadow: 0 0 40px rgba(197,160,89,0.25); background: rgba(15,15,15,0.9); }
+.search-hero-input::placeholder { color: rgba(245,245,245,0.45); }
+.search-hero-icon { position: absolute; left: 1.3rem; top: 50%; transform: translateY(-50%); font-size: 1.3rem; color: var(--gold); pointer-events: none; }
+.search-hero-hint { text-align: center; margin-top: 0.8rem; font-size: 0.75rem; color: rgba(245,245,245,0.4); letter-spacing: 1px; }
+
+/* SPOTLIGHT OVERLAY */
+.spotlight-overlay {
+  position: fixed; inset: 0; z-index: 10000; background: rgba(0,0,0,0.92); backdrop-filter: blur(10px);
+  display: none; align-items: flex-start; justify-content: center; padding-top: 15vh;
+}
+.spotlight-overlay.active { display: flex; animation: spotIn 0.2s ease; }
+@keyframes spotIn { from { opacity: 0; } to { opacity: 1; } }
+.spotlight-box { width: 100%; max-width: 700px; margin: 0 1rem; }
+.spotlight-input-wrap { position: relative; margin-bottom: 1rem; }
+.spotlight-input {
+  width: 100%; padding: 1.2rem 1.5rem 1.2rem 3.5rem; background: rgba(42,42,42,0.9);
+  border: 2px solid var(--gold); border-radius: 16px; color: var(--white);
+  font-family: 'Montserrat', sans-serif; font-size: 1.2rem; backdrop-filter: blur(10px);
+  box-shadow: 0 10px 60px rgba(197,160,89,0.2);
+}
+.spotlight-input:focus { outline: none; }
+.spotlight-icon { position: absolute; left: 1.2rem; top: 50%; transform: translateY(-50%); font-size: 1.4rem; color: var(--gold); }
+.spotlight-close {
+  position: absolute; top: 2rem; right: 2rem; background: none; border: none; color: var(--gold);
+  font-size: 2rem; cursor: pointer; transition: transform 0.3s;
+}
+.spotlight-close:hover { transform: rotate(90deg); }
+.spotlight-results { max-height: 50vh; overflow-y: auto; background: rgba(26,26,26,0.95); border: 1px solid rgba(197,160,89,0.2); border-radius: 12px; padding: 0.5rem; }
+.spotlight-item { display: flex; align-items: center; gap: 1rem; padding: 0.9rem 1rem; text-decoration: none; border-bottom: 1px solid rgba(197,160,89,0.06); transition: all 0.2s; border-radius: 8px; }
+.spotlight-item:hover { background: rgba(197,160,89,0.12); }
+.spotlight-item img { width: 55px; height: 55px; object-fit: cover; border-radius: 10px; border: 1px solid rgba(197,160,89,0.2); }
+.spotlight-item-info { flex: 1; }
+.spotlight-item-name { color: var(--white); font-weight: 600; font-size: 0.95rem; display: block; }
+.spotlight-item-cat { color: rgba(245,245,245,0.5); font-size: 0.8rem; }
+
+/* BREADCRUMBS */
+.breadcrumbs {
+  display: flex; align-items: center; gap: 0.5rem; justify-content: center;
+  padding: 1rem 2rem; flex-wrap: wrap; font-size: 0.75rem; color: rgba(245,245,245,0.5); text-transform: uppercase; letter-spacing: 1px;
+}
+.breadcrumbs a { color: var(--gold); text-decoration: none; transition: opacity 0.3s; }
+.breadcrumbs a:hover { opacity: 0.7; }
+.breadcrumbs span { color: rgba(245,245,245,0.3); }
+
+/* CAT NAV (prev/next) */
+.cat-nav { display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto; padding: 0 2rem 3rem; gap: 1rem; }
+.cat-nav-btn { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.8rem 1.5rem; background: rgba(42,42,42,0.6); border: 1px solid rgba(197,160,89,0.2); color: var(--gold); text-decoration: none; font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; border-radius: 8px; transition: all 0.3s; }
+.cat-nav-btn:hover { background: var(--gold); color: var(--black); border-color: var(--gold); }
+.cat-nav-btn.next { margin-left: auto; }
+
+/* MOBILE BOTTOM NAV */
+.mobile-bottom-nav {
+  display: none; position: fixed; bottom: 0; left: 0; right: 0; z-index: 9997;
+  background: rgba(15,15,15,0.95); backdrop-filter: blur(12px);
+  border-top: 1px solid rgba(197,160,89,0.15); padding: 0.6rem 0;
+}
+.mobile-bottom-nav a {
+  flex: 1; display: flex; flex-direction: column; align-items: center; gap: 0.2rem;
+  color: rgba(245,245,245,0.5); text-decoration: none; font-size: 0.65rem; font-weight: 600; letter-spacing: 1px; transition: color 0.3s;
+}
+.mobile-bottom-nav a.active, .mobile-bottom-nav a:hover { color: var(--gold); }
+.mobile-bottom-nav a span:first-child { font-size: 1.2rem; }
+
+/* HEADER SEARCH MEJORADO */
+.search-box input { width: 220px; border-width: 2px; font-size: 0.85rem; padding: 0.55rem 2.5rem 0.55rem 1.1rem; }
+.search-box input:focus { width: 320px; border-color: var(--gold); box-shadow: 0 0 20px rgba(197,160,89,0.2); }
+
 /* MOBILE */
 @media (max-width: 768px) {
+  .mega-menu { display: none; }
+  .search-box input { width: 160px; }
+  .search-box input:focus { width: 220px; }
+  .search-dropdown { width: calc(100vw - 40px); right: auto; left: -20px; }
+  .mobile-bottom-nav { display: flex; }
+  .cat-nav { flex-direction: column; }
+  .spotlight-box { padding-top: 10vh; }
   .desktop-nav { display: none; }
   .menu-btn { display: block; }
   .hero-home h1 { font-size: 2.2rem; }
@@ -1397,10 +1486,24 @@ def generate_style():
 
 
 def generate_header(current_page='index'):
-    """Genera el header HTML."""
-    nav_links = '<a href="index.html">Inicio</a>\n        <a href="index.html#categorias">Catálogo</a>\n        <a href="proyectos.html">Proyectos</a>\n        <a href="contacto.html">Contacto</a>'
+    """Genera el header HTML con mega-menu y search mejorado."""
+    
+    MEGA_ITEMS = [
+        ('1-placas-pvc.html', 'img/1-placas-pvc/11-placas-pvc-tipo-madera/Adler.jpg', 'Placas PVC'),
+        ('2-lambrin-wpc.html', 'img/2-lambrin-wpc/21-lambrin-interior/AMANECHER.jpg', 'Lambrín WPC'),
+        ('3-revestimiento-flexible.html', 'img/3-revestimiento-flexible/CONCRETO Aparente.jpg', 'Revestimiento Flexible'),
+        ('4-plafon-pvc.html', 'img/4-plafon-pvc/41-plafon-pvc-laminado/SHERWOOD.jpg', 'Plafón PVC'),
+        ('5-paneles-tridimensionales.html', 'img/5-paneles-tridimensionales/51-blanco/Austin.jpg', 'Paneles 3D'),
+        ('6-vigas-pvc.html', 'img/6-vigas-pvc/61-interior/BAHIA 1.jpg', 'Vigas PVC'),
+        ('7-pisos.html', 'img/7-pisos/71-laminado/ACONCAGUA.jpg', 'Pisos'),
+        ('8-zacate.html', 'img/8-zacate/81-follaje-sintetico/AMAZONAS-A.jpg', 'Zacate'),
+        ('9-cladding.html', 'img/9-cladding/91-placa-tipo-roca/BLACK.jpg', 'Cladding'),
+    ]
+    mega_html = '\n'.join([f'        <a href="{u}" class="mega-item"><img src="{i}" alt="{t}" loading="lazy"><span>{t}</span></a>' for u, i, t in MEGA_ITEMS])
+    
+    nav_links = '<a href="index.html">Inicio</a>\n        <a href="index.html#categorias" class="mega-trigger">Catálogo\n          <div class="mega-menu">\n' + mega_html + '\n          </div>\n        </a>\n        <a href="proyectos.html">Proyectos</a>\n        <a href="contacto.html">Contacto</a>'
     if current_page != 'index':
-        nav_links = '<a href="index.html">← Inicio</a>\n        <a href="index.html#categorias">Catálogo</a>\n        <a href="proyectos.html">Proyectos</a>\n        <a href="contacto.html">Contacto</a>'
+        nav_links = '<a href="index.html">← Inicio</a>\n        <a href="index.html#categorias" class="mega-trigger">Catálogo\n          <div class="mega-menu">\n' + mega_html + '\n          </div>\n        </a>\n        <a href="proyectos.html">Proyectos</a>\n        <a href="contacto.html">Contacto</a>'
 
     return f'''  <header>
     <div class="header-inner">
@@ -1409,7 +1512,7 @@ def generate_header(current_page='index'):
         {nav_links}
         <div class="search-box">
           <input type="text" id="searchInput" placeholder="Buscar producto..." autocomplete="off" title="Presiona / para buscar">
-          <button onclick="performSearch()">🔍</button>
+          <button onclick="openSpotlight()">🔍</button>
           <div class="search-dropdown" id="searchDropdown"></div>
         </div>
       </nav>
@@ -1427,6 +1530,18 @@ def generate_header(current_page='index'):
       <input type="text" id="searchInputMobile" placeholder="Buscar producto..." autocomplete="off" style="width:220px;">
       <button onclick="performSearchMobile()">🔍</button>
       <div class="search-dropdown" id="searchDropdownMobile"></div>
+    </div>
+  </div>
+  
+  <!-- SPOTLIGHT OVERLAY -->
+  <div class="spotlight-overlay" id="spotlightOverlay" onclick="closeSpotlight(event)">
+    <button class="spotlight-close" onclick="closeSpotlight(event)">✕</button>
+    <div class="spotlight-box">
+      <div class="spotlight-input-wrap">
+        <span class="spotlight-icon">🔍</span>
+        <input type="text" class="spotlight-input" id="spotlightInput" placeholder="Buscar productos, categorías..." autocomplete="off">
+      </div>
+      <div class="spotlight-results" id="spotlightResults"></div>
     </div>
   </div>
 '''
@@ -1584,17 +1699,109 @@ def generate_footer():
       if (e.key === 'Escape') closeLightbox();
     });
 
+    // Spotlight overlay
+    window.openSpotlight = function() {
+      document.getElementById('spotlightOverlay').classList.add('active');
+      const inp = document.getElementById('spotlightInput');
+      if (inp) { setTimeout(() => inp.focus(), 100); }
+      if (typeof spotlightSearch === 'function') spotlightSearch(inp ? inp.value : '');
+    };
+    window.closeSpotlight = function(e) {
+      if (e && e.target !== e.currentTarget && !e.target.classList.contains('spotlight-close')) return;
+      document.getElementById('spotlightOverlay').classList.remove('active');
+    };
+    
     // Buscador global mejorado
     (function() {
       let allProducts = [];
       let debounceTimer = null;
       let activeIndex = -1;
       let currentResults = [];
+      let spotlightResults = [];
+      let spotlightIndex = -1;
       
       fetch('products.json')
         .then(r => r.json())
         .then(data => { allProducts = data; })
         .catch(() => { allProducts = []; });
+      
+      // Spotlight search
+      window.spotlightSearch = function(query) {
+        const container = document.getElementById('spotlightResults');
+        if (!query || query.length < 2) {
+          if (container) container.innerHTML = '<div style="padding:2rem;text-align:center;color:rgba(245,245,245,0.5);">Escribe al menos 2 caracteres para buscar...</div>';
+          return;
+        }
+        const q = normalize(query);
+        const terms = q.split(/\s+/).filter(t => t.length > 0);
+        const scored = allProducts.map(p => {
+          const name = normalize(p.name);
+          const cat = normalize(p.category);
+          const sub = normalize(p.subcategory || '');
+          let score = 0;
+          for (const t of terms) {
+            if (name.startsWith(t)) score += 10;
+            else if (name.includes(t)) score += 5;
+            if (sub.startsWith(t)) score += 3;
+            else if (sub.includes(t)) score += 2;
+            if (cat.includes(t)) score += 1;
+          }
+          return { p, score };
+        }).filter(x => x.score > 0).sort((a,b) => b.score - a.score).slice(0, 10);
+        
+        spotlightResults = scored.map(x => x.p);
+        spotlightIndex = -1;
+        
+        if (!container) return;
+        if (scored.length === 0) {
+          container.innerHTML = '<div style="padding:2rem;text-align:center;color:rgba(245,245,245,0.5);">No se encontraron productos</div>';
+        } else {
+          container.innerHTML = scored.map((x, i) => `
+            <a href="${x.p.url}" class="spotlight-item" data-sindex="${i}" onclick="closeSpotlight()">
+              <img src="${x.p.thumb}" alt="${x.p.name}" loading="lazy">
+              <div class="spotlight-item-info">
+                <span class="spotlight-item-name">${highlight(x.p.name, query)}</span>
+                <span class="spotlight-item-cat">${x.p.category}${x.p.subcategory ? ' / ' + x.p.subcategory : ''}</span>
+              </div>
+            </a>
+          `).join('');
+        }
+      };
+      
+      const spotInput = document.getElementById('spotlightInput');
+      if (spotInput) {
+        spotInput.addEventListener('input', e => {
+          clearTimeout(debounceTimer);
+          debounceTimer = setTimeout(() => spotlightSearch(e.target.value), 150);
+        });
+        spotInput.addEventListener('keydown', e => {
+          if (e.key === 'ArrowDown') {
+            e.preventDefault();
+            spotlightIndex = Math.min(spotlightIndex + 1, spotlightResults.length - 1);
+            updateSpotlightActive();
+          } else if (e.key === 'ArrowUp') {
+            e.preventDefault();
+            spotlightIndex = Math.max(spotlightIndex - 1, -1);
+            updateSpotlightActive();
+          } else if (e.key === 'Enter') {
+            e.preventDefault();
+            if (spotlightIndex >= 0 && spotlightResults[spotlightIndex]) {
+              window.location.href = spotlightResults[spotlightIndex].url;
+              closeSpotlight();
+            }
+          } else if (e.key === 'Escape') {
+            closeSpotlight();
+          }
+        });
+      }
+      
+      function updateSpotlightActive() {
+        document.querySelectorAll('.spotlight-item').forEach((el, i) => {
+          el.style.background = i === spotlightIndex ? 'rgba(197,160,89,0.15)' : '';
+        });
+        const active = document.querySelector('.spotlight-item[data-sindex="' + spotlightIndex + '"]');
+        if (active) active.scrollIntoView({ block: 'nearest' });
+      }
       
       function normalize(str) {
         return (str || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
@@ -1744,6 +1951,14 @@ def generate_footer():
     <div class="copyright">© 2026 ADIS DISEÑO & REMODELACIÓN. TODOS LOS DERECHOS RESERVADOS.</div>
   </footer>
 
+  <!-- MOBILE BOTTOM NAV -->
+  <nav class="mobile-bottom-nav">
+    <a href="index.html"><span>🏠</span><span>Inicio</span></a>
+    <a href="index.html#categorias"><span>📂</span><span>Catálogo</span></a>
+    <a href="proyectos.html"><span>🖼️</span><span>Proyectos</span></a>
+    <a href="contacto.html"><span>📞</span><span>Contacto</span></a>
+  </nav>
+
   <a href="https://wa.me/{CONTACTO['whatsapp']}?text={CONTACTO['whatsapp_msg'].replace(' ', '%20')}" class="whatsapp-float" target="_blank" title="Contáctanos por WhatsApp">💬</a>
 
   <button class="chatbot-float" onclick="toggleChat()" title="Asistente Virtual">🤖</button>
@@ -1811,26 +2026,26 @@ def generate_index(categories):
       </a>
 '''
 
-    info_cards = '''      <div class="info-card">
+    info_cards = '''      <a href="1-placas-pvc.html" class="info-card">
         <div class="icon">✦</div>
         <h3>Placas PVC</h3>
         <p>Paneles rígidos de alta calidad tipo madera, texturizados y espejo. Ideales para interiores.</p>
-      </div>
-      <div class="info-card">
+      </a>
+      <a href="2-lambrin-wpc.html" class="info-card">
         <div class="icon">◈</div>
         <h3>Lambrín WPC</h3>
         <p>Wood Plastic Composite para interior y exterior. Resistente a la humedad y rayos UV.</p>
-      </div>
-      <div class="info-card">
+      </a>
+      <a href="7-pisos.html" class="info-card">
         <div class="icon">◉</div>
         <h3>Pisos & Zacate</h3>
         <p>Laminados, WPC, SPC, deck sintético y pasto artificial para todo tipo de espacios.</p>
-      </div>
-      <div class="info-card">
+      </a>
+      <a href="5-paneles-tridimensionales.html" class="info-card">
         <div class="icon">✚</div>
         <h3>Cladding & 3D</h3>
         <p>Paneles decorativos tridimensionales y revestimientos de alta gama para fachadas.</p>
-      </div>
+      </a>
 '''
 
     html = f'''<!DOCTYPE html>
@@ -1863,6 +2078,11 @@ def generate_index(categories):
       <h1>Transforma tus espacios con <em>ADIS</em></h1>
       <p>Recubrimientos de alta gama para interior y exterior. PVC, WPC, paneles 3D, pisos, zacate y cladding.</p>
       <a href="#categorias" class="btn-primary">Explorar Catálogo</a>
+      <div class="search-hero">
+        <span class="search-hero-icon">🔍</span>
+        <input type="text" class="search-hero-input" id="searchHeroInput" placeholder="¿Qué producto estás buscando?" autocomplete="off" onfocus="openSpotlight()">
+        <div class="search-hero-hint">Presiona <kbd style="background:rgba(255,255,255,0.1);padding:2px 6px;border-radius:4px;font-family:inherit;">/</kbd> para buscar rápidamente</div>
+      </div>
     </div>
   </section>
 
@@ -1921,6 +2141,7 @@ def generate_index(categories):
 {cat_cards}    </div>
   </section>
 
+{generate_testimonios()}
 {generate_footer()}
 </body>
 </html>
@@ -2009,6 +2230,27 @@ def generate_contacto():
 
 def generate_category_page(cat, categories):
     """Genera página de una categoría con subcategorías y productos."""
+    import unicodedata
+
+    # Prev / Next navegación entre categorías
+    cat_index = [i for i, c in enumerate(categories) if c['slug'] == cat['slug']][0]
+    prev_cat = categories[cat_index - 1] if cat_index > 0 else None
+    next_cat = categories[cat_index + 1] if cat_index < len(categories) - 1 else None
+    
+    cat_nav_html = ''
+    if prev_cat or next_cat:
+        nav_parts = []
+        if prev_cat:
+            nav_parts.append(f'<a href="{prev_cat["filename"]}" class="cat-nav-btn">← {prev_cat["name"]}</a>')
+        if next_cat:
+            nav_parts.append(f'<a href="{next_cat["filename"]}" class="cat-nav-btn next">{next_cat["name"]} →</a>')
+        cat_nav_html = '  <div class="cat-nav">\n    ' + '\n    '.join(nav_parts) + '\n  </div>\n'
+
+    # Breadcrumbs
+    breadcrumbs_html = f'''  <div class="breadcrumbs">
+    <a href="index.html">Inicio</a> <span>/</span> <a href="index.html#categorias">Catálogo</a> <span>/</span> <span style="color:var(--gold);">{cat['name']}</span>
+  </div>
+'''
 
     # Seleccionar imagen de fondo representativa para el hero
     hero_bg = ''
@@ -2017,9 +2259,14 @@ def generate_category_page(cat, categories):
     elif cat['direct_products']:
         hero_bg = f"img/{cat['slug']}/{cat['direct_products'][0]}"
 
+    # Reordenar subcategorías: Placas PVC debe tener tipo espejo primero
+    subs = list(cat['subcategories'])
+    if cat['name'] == 'Placas PVC':
+        subs.sort(key=lambda s: 0 if 'espejo' in s['name'].lower() else 1)
+
     # Índice de subcategorías
     subcat_nav_links = ''
-    for sub in cat['subcategories']:
+    for sub in subs:
         if sub['products']:
             sub_slug = sub['slug']
             sub_name = sub['name']
@@ -2028,18 +2275,65 @@ def generate_category_page(cat, categories):
     {subcat_nav_links}</div>
 ''' if subcat_nav_links else ''
 
+    # Set para deduplicación por nombre normalizado
+    seen_products = set()
+    def norm_name(prod_file):
+        name = os.path.splitext(prod_file)[0]
+        return unicodedata.normalize('NFKD', name).encode('ASCII', 'ignore').decode('ASCII').lower().replace(' ', '')
+    def is_dup(prod_file):
+        key = norm_name(prod_file)
+        if key in seen_products:
+            return True
+        seen_products.add(key)
+        return False
+
+    sections_html = ''
+    
+    # Para Placas PVC: productos directos PRIMERO (son los más vendidos - tipo espejo)
+    if cat['name'] == 'Placas PVC' and cat['direct_products']:
+        direct_products_html = ''
+        for prod_file in cat['direct_products']:
+            if is_dup(prod_file):
+                continue
+            prod_name = os.path.splitext(prod_file)[0]
+            mailto = mailto_link(prod_name, cat['name'])
+            direct_products_html += f'''      <div class="product-card reveal">
+        <div class="product-gallery" onclick="openLightbox('img/{cat['slug']}/{prod_file}', '{prod_name}')">
+          <img src="img/{cat['slug']}/{prod_file}" alt="{prod_name}" loading="lazy">
+        </div>
+        <div class="product-info">
+          <div class="product-name">{prod_name}</div>
+          <div class="product-actions">
+            <a href="{mailto}" class="btn-cotizar">Solicitar Cotización</a>
+            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20{prod_name.replace(' ', '%20')}%20de%20la%20categoría%20{cat['name'].replace(' ', '%20')}" class="btn-whatsapp" target="_blank">WhatsApp</a>
+          </div>
+        </div>
+      </div>
+'''
+        
+        cat_specs = generate_specs_table('Placas PVC Tipo espejo')
+        sections_html += f'''  <section class="subcat-section reveal">
+    <div class="subcat-header">
+      <h3>⭐ Más Vendidos — Placas PVC Tipo Espejo</h3>
+      <span class="subcat-count">{len(cat['direct_products'])} productos</span>
+      <div class="subcat-divider"></div>
+    </div>
+{cat_specs}    <div class="products-grid">
+{direct_products_html}    </div>
+  </section>
+'''
+
     # Construir secciones de subcategorías
-    subcat_sections = ''
-    for sub in cat['subcategories']:
+    for sub in subs:
         if not sub['products']:
             continue
 
-        # Especificaciones técnicas de subcategoría
         specs_html = generate_specs_table(sub['name'])
 
-        # Productos de subcategoría
         products_html = ''
         for prod_file in sub['products']:
+            if is_dup(prod_file):
+                continue
             prod_name = os.path.splitext(prod_file)[0]
             mailto = mailto_link(prod_name, cat['name'], sub['name'])
             products_html += f'''      <div class="product-card reveal">
@@ -2056,7 +2350,7 @@ def generate_category_page(cat, categories):
       </div>
 '''
 
-        subcat_sections += f'''  <section class="subcat-section reveal" id="{sub['slug']}">
+        sections_html += f'''  <section class="subcat-section reveal" id="{sub['slug']}">
     <div class="subcat-header">
       <h3>{sub['name']}</h3>
       <span class="subcat-count">{len(sub['products'])} productos</span>
@@ -2067,11 +2361,12 @@ def generate_category_page(cat, categories):
   </section>
 '''
 
-    # Productos directos (sin subcategoría)
-    direct_section = ''
-    if cat['direct_products']:
+    # Productos directos para otras categorías (no Placas PVC que ya se mostró arriba)
+    if cat['name'] != 'Placas PVC' and cat['direct_products']:
         direct_products_html = ''
         for prod_file in cat['direct_products']:
+            if is_dup(prod_file):
+                continue
             prod_name = os.path.splitext(prod_file)[0]
             mailto = mailto_link(prod_name, cat['name'])
             direct_products_html += f'''      <div class="product-card reveal">
@@ -2088,7 +2383,7 @@ def generate_category_page(cat, categories):
       </div>
 '''
 
-        direct_section = f'''  <section class="subcat-section reveal">
+        sections_html += f'''  <section class="subcat-section reveal">
     <div class="subcat-header">
       <h3>Productos {cat['name']}</h3>
       <span class="subcat-count">{len(cat['direct_products'])} productos</span>
@@ -2098,11 +2393,6 @@ def generate_category_page(cat, categories):
 {direct_products_html}    </div>
   </section>
 '''
-
-    # Especificaciones generales de categoría (si tiene productos directos)
-    cat_specs = ''
-    if cat['direct_products']:
-        cat_specs = generate_specs_table(cat['name'])
 
     html = f'''<!DOCTYPE html>
 <html lang="es">
@@ -2122,7 +2412,7 @@ def generate_category_page(cat, categories):
 <body>
   <canvas id="bg-canvas"></canvas>
 {generate_header(cat['slug'])}
-
+{breadcrumbs_html}
   <section class="hero-cat-bg" style="background-image: url('{hero_bg}');">
     <div class="hero-cat-content">
       {'<div class="hero-star-badge">⭐ Producto Estrella</div>' if cat['name'] in ("Lambrin WPC", "Placas PVC") else '<div class="hero-cat-badge">Categoría</div>'}
@@ -2131,9 +2421,8 @@ def generate_category_page(cat, categories):
     </div>
   </section>
 
-{subcat_nav_html}{subcat_sections}
-{direct_section}
-
+{subcat_nav_html}{sections_html}
+{cat_nav_html}
   <section class="section-wrap" style="padding-top: 1rem;">
     <div style="text-align: center;">
       <a href="index.html" class="btn-back">← Volver al Inicio</a>
@@ -2141,6 +2430,7 @@ def generate_category_page(cat, categories):
     </div>
   </section>
 
+{generate_testimonios()}
 {generate_footer()}
 </body>
 </html>
@@ -2389,6 +2679,53 @@ def generate_specs_table(product_name):
         items.append(f'<div class="spec-item"><span class="spec-label">{label}</span><span class="spec-value">{value}</span></div>')
     return '    <div class="specs-bar reveal">\n      ' + '\n      '.join(items) + '\n    </div>\n'
 
+
+def generate_testimonios():
+    """Genera formulario de testimonios que envía a WhatsApp para revisión manual."""
+    return '''
+  <!-- TESTIMONIOS -->
+  <section class="section-wrap reveal" style="padding-top: 2rem;">
+    <div class="section-header">
+      <h2>Testimonios de Clientes</h2>
+      <div class="divider"></div>
+      <p>¿Ya usaste nuestros productos? Comparte tu experiencia y ayuda a otros a decidirse.</p>
+    </div>
+    <div style="max-width: 600px; margin: 0 auto; padding: 0 1rem;">
+      <form id="testimonioForm" onsubmit="enviarTestimonio(event)" style="display: flex; flex-direction: column; gap: 1rem;">
+        <input type="text" id="tNombre" placeholder="Tu nombre" required
+          style="padding: 0.9rem 1.2rem; background: rgba(42,42,42,0.8); border: 1px solid rgba(197,160,89,0.3); border-radius: 8px; color: var(--white); font-family: 'Montserrat', sans-serif; font-size: 0.9rem; backdrop-filter: blur(8px); transition: all 0.3s;"
+          onfocus="this.style.borderColor='var(--gold)';this.style.boxShadow='0 0 15px rgba(197,160,89,0.15)'" onblur="this.style.borderColor='rgba(197,160,89,0.3)';this.style.boxShadow='none'">
+        <textarea id="tComentario" placeholder="¿Qué te pareció el producto o servicio?" required rows="4"
+          style="padding: 0.9rem 1.2rem; background: rgba(42,42,42,0.8); border: 1px solid rgba(197,160,89,0.3); border-radius: 8px; color: var(--white); font-family: 'Montserrat', sans-serif; font-size: 0.9rem; backdrop-filter: blur(8px); resize: vertical; transition: all 0.3s;"
+          onfocus="this.style.borderColor='var(--gold)';this.style.boxShadow='0 0 15px rgba(197,160,89,0.15)'" onblur="this.style.borderColor='rgba(197,160,89,0.3)';this.style.boxShadow='none'"></textarea>
+        <input type="text" id="tProducto" placeholder="Producto o categoría que compraste (opcional)"
+          style="padding: 0.9rem 1.2rem; background: rgba(42,42,42,0.8); border: 1px solid rgba(197,160,89,0.3); border-radius: 8px; color: var(--white); font-family: 'Montserrat', sans-serif; font-size: 0.9rem; backdrop-filter: blur(8px); transition: all 0.3s;"
+          onfocus="this.style.borderColor='var(--gold)';this.style.boxShadow='0 0 15px rgba(197,160,89,0.15)'" onblur="this.style.borderColor='rgba(197,160,89,0.3)';this.style.boxShadow='none'">
+        <button type="submit" class="btn-primary" style="align-self: center; margin-top: 0.5rem;">📩 Enviar Testimonio</button>
+      </form>
+      <div style="text-align: center; margin-top: 1.2rem; font-size: 0.8rem; color: rgba(245,245,245,0.5); line-height: 1.6;">
+        Los testimonios son revisados antes de publicarse.<br>
+        También puedes enviarlos directamente por 
+        <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20quiero%20dejar%20un%20testimonio" target="_blank" style="color: var(--gold); text-decoration: none; font-weight: 600;">WhatsApp 💬</a>
+      </div>
+    </div>
+  </section>
+  <script>
+    function enviarTestimonio(e) {
+      e.preventDefault();
+      const nombre = document.getElementById('tNombre').value.trim();
+      const comentario = document.getElementById('tComentario').value.trim();
+      const producto = document.getElementById('tProducto').value.trim();
+      let msg = 'Hola ADIS, soy ' + nombre + '. Quiero dejar un testimonio:';
+      msg += '%0A%0A' + comentario;
+      msg += '%0A%0AProducto/Categoría: ' + (producto || 'No especificado');
+      msg += '%0A%0APágina: ' + window.location.href;
+      window.open('https://wa.me/526311928993?text=' + encodeURIComponent(msg.replace(/%0A/g, '\n')), '_blank');
+      alert('¡Gracias ' + nombre + '! Tu testimonio se envió por WhatsApp. Será revisado y publicado pronto.');
+      e.target.reset();
+    }
+  </script>
+'''
 
 def generate_proyectos():
     html = f'''<!DOCTYPE html>
