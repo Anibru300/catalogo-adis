@@ -85,7 +85,7 @@ def generate_research_html(cat_name):
     # Datos curiosos
     if data.get('curiosos'):
         html_parts.append('''
-  <section class="research-section reveal">
+  <section class="research-section">
     <div class="section-header">
       <h2>¿Sabías que?</h2>
       <div class="divider"></div>
@@ -107,7 +107,7 @@ def generate_research_html(cat_name):
     # FAQs
     if data.get('faqs'):
         html_parts.append('''
-  <section class="research-section reveal">
+  <section class="research-section">
     <div class="section-header">
       <h2>Preguntas Frecuentes</h2>
       <div class="divider"></div>
@@ -2875,7 +2875,7 @@ def generate_category_page(cat, categories):
         <span class="real-sheets-badge">Foto Real</span>
       </div>
 '''
-            real_sheets_html = f'''  <section class="real-sheets-section reveal">
+            real_sheets_html = f'''  <section class="real-sheets-section">
     <div class="section-header">
       <h2>Hojas Reales de PVC</h2>
       <div class="divider"></div>
@@ -2913,8 +2913,9 @@ def generate_category_page(cat, categories):
     </div>
   </section>
 
-{subcat_nav_html}{real_sheets_html}{sections_html}
+{subcat_nav_html}{real_sheets_html}
 {generate_research_html(cat['name'])}
+{sections_html}
 {cat_nav_html}
   <section class="section-wrap" style="padding-top: 1rem;">
     <div style="text-align: center;">
