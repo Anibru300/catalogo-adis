@@ -637,6 +637,29 @@
         },
         proyectos: {
           tipos: 'Casas, oficinas, negocios, locales comerciales y cualquier espacio que requiera remodelación'
+        },
+        cotizacion: {
+          tiempo: 'Menos de 24 horas',
+          incluye: 'Costos detallados y stock disponible',
+          sin_stock: 'Si no tenemos stock, estará disponible en 2 a 3 días'
+        },
+        precios: {
+          iva: 'Todos los precios incluyen IVA',
+          mayorista: 'Ofrecemos descuento a mayorista'
+        },
+        garantia: {
+          validacion: 'ADIS Diseño hace válida la garantía del fabricante',
+          pvc: '15 años',
+          wpc: '15 años',
+          spc: '12 años (residencial)',
+          zacate: '5 años'
+        },
+        definiciones: {
+          pvc: 'Policloruro de Vinilo. Es un tipo de plástico muy usado en letreros, hojas rígidas, tuberías, anuncios y materiales de impresión porque es resistente, ligero y económico.',
+          wpc: 'Wood Plastic Composite (Compuesto de Madera y Plástico). Es un material hecho de fibras de madera mezcladas con plástico, muy usado en paneles, revestimientos, muebles y decoración porque parece madera pero resiste mejor la humedad y el desgaste.'
+        },
+        venta: {
+          unidad: 'El tipo de unidad y cómo se vende viene en las fichas técnicas de cada categoría: por pieza, por hoja, tamaño de la hoja, etc.'
         }
       };
       
@@ -737,7 +760,16 @@
         
         // PRECIOS / COTIZACION
         if (q.includes('precio') || q.includes('cuesta') || q.includes('cuanto') || q.includes('valor') || q.includes('cotizacion') || q.includes('cotizar') || q.includes('presupuesto')) {
-          return '💰 <strong>Precios:</strong><br><br>Los precios del catálogo son <strong>solo por el material</strong> (por pieza, caja o metro cuadrado según categoría).<br><br>✅ La mejor forma de saber el precio exacto es solicitando una <strong>cotización personalizada</strong>. Es gratis y te respondemos el mismo día.<br><br>🔨 ¿Requieres instalación? Un representante visita tu obra para cotizarla aparte.<br><br><a href="https://wa.me/526311928993?text=Hola%20ADIS,%20quiero%20una%20cotización" target="_blank" class="chat-whatsapp-btn">📱 Solicitar cotización gratis</a>';
+          let r = '💰 <strong>Precios y cotizaciones:</strong><br><br>';
+          r += '• ' + kb.precios.iva + '<br>';
+          r += '• ' + kb.precios.mayorista + '<br>';
+          r += '• Los precios son <strong>solo por el material</strong> (por pieza, caja o metro cuadrado según categoría)<br><br>';
+          r += '📋 <strong>Cotización detallada:</strong> ' + kb.cotizacion.tiempo + '<br>';
+          r += '📦 <strong>Incluye:</strong> ' + kb.cotizacion.incluye + '<br>';
+          r += '⏱️ <strong>Sin stock:</strong> ' + kb.cotizacion.sin_stock + '<br><br>';
+          r += '🔨 ¿Requieres instalación? Un representante visita tu obra para cotizarla aparte.<br><br>';
+          r += '<a href="https://wa.me/526311928993?text=Hola%20ADIS,%20quiero%20una%20cotización" target="_blank" class="chat-whatsapp-btn">📱 Solicitar cotización gratis</a>';
+          return r;
         }
         
         // ENVIO / ENTREGA
@@ -773,7 +805,14 @@
         
         // GARANTIA
         if (q.includes('garantia') || q.includes('garantiza')) {
-          return '✅ <strong>Garantía:</strong><br><br>La mayoría de nuestros productos cuentan con garantía del fabricante:<br><br>• Placas PVC: 15 años<br>• Lambrín WPC: 15 años<br>• Pisos SPC: 12 años (residencial)<br>• Zacate sintético: 5 años<br><br>La garantía cubre defectos de fábrica. Conserva tu ticket de compra para hacerla válida.';
+          let r = '✅ <strong>Garantía:</strong><br><br>';
+          r += '🛡️ ' + kb.garantia.validacion + '<br><br>';
+          r += '• Placas PVC: ' + kb.garantia.pvc + '<br>';
+          r += '• Lambrín WPC: ' + kb.garantia.wpc + '<br>';
+          r += '• Pisos SPC: ' + kb.garantia.spc + '<br>';
+          r += '• Zacate sintético: ' + kb.garantia.zacate + '<br><br>';
+          r += 'La garantía cubre defectos de fábrica. Conserva tu ticket de compra.';
+          return r;
         }
         
         // PRODUCTOS / CATALOGO / MATERIALES / PROYECTOS
@@ -818,6 +857,19 @@
         // TIPO DE PROYECTO / A QUIEN ATIENDEN
         if (q.includes('casa') || q.includes('oficina') || q.includes('negocio') || q.includes('local') || q.includes('proyecto')) {
           return '🏠 <strong>Atendemos todo tipo de proyectos:</strong><br><br>' + kb.proyectos.tipos + '<br><br>Desde una pared de acento en casa hasta remodelaciones completas de locales comerciales. ¿Cuéntanos sobre tu proyecto? 💬<br><br><a href="https://wa.me/526311928993?text=Hola%20ADIS,%20tengo%20un%20proyecto%20de" target="_blank" class="chat-whatsapp-btn">📱 Contar mi proyecto</a>';
+        }
+        
+        // DEFINICIONES PVC / WPC
+        if (q.includes('que es pvc') || q.includes('significa pvc') || q.includes('pvc significa') || q.includes('definicion pvc')) {
+          return '📘 <strong>¿Qué es PVC?</strong><br><br>' + kb.definiciones.pvc + '<br><br>En ADIS lo usamos para placas decorativas, plafones y vigas con acabados que imitan madera, espejo y texturas.';
+        }
+        if (q.includes('que es wpc') || q.includes('significa wpc') || q.includes('wpc significa') || q.includes('definicion wpc')) {
+          return '📗 <strong>¿Qué es WPC?</strong><br><br>' + kb.definiciones.wpc + '<br><br>En ADIS lo usamos para lambrín de interior y exterior, pisos y revestimientos que lucen como madera real pero duran más.';
+        }
+        
+        // UNIDAD DE VENTA / FICHAS TECNICAS
+        if (q.includes('unidad') || q.includes('como se vende') || q.includes('ficha tecnica') || q.includes('hoja tecnica') || q.includes('pieza') || q.includes('hoja') || q.includes('tamano') || q.includes('medida')) {
+          return '📐 <strong>Unidad de venta y especificaciones:</strong><br><br>' + kb.venta.unidad + '<br><br>👉 Revisa las fichas técnicas en cada categoría del catálogo para ver: medidas, contenido por caja, peso, espesor y recomendaciones de instalación.<br><br><a href="index.html#categorias" style="color:#C5A059">Ir al catálogo →</a>';
         }
         
         // DEFAULT
