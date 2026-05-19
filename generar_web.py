@@ -1672,7 +1672,7 @@ footer {
 .sq-card-icon { font-size: 2rem; margin-bottom: 0.6rem; display: block; }
 .sq-card h3 { color: var(--gold-light); font-size: 0.92rem; margin-bottom: 0.5rem; font-family: 'Montserrat', sans-serif; font-weight: 600; line-height: 1.4; }
 .sq-card p { color: rgba(245,245,245,0.6); font-size: 0.82rem; line-height: 1.6; margin: 0; }
-.sq-card-number { position: absolute; top: 0.8rem; right: 1rem; font-size: 2rem; font-weight: 800; color: rgba(197,160,89,0.06); font-family: 'Playfair Display', serif; line-height: 1; }
+.sq-card-number { position: absolute; top: 0.8rem; right: 1rem; font-size: 2rem; font-weight: 800; color: rgba(255,255,255,0.25); font-family: 'Playfair Display', serif; line-height: 1; }
 
 /* FAQ Acordeon */
 .sq-faqs { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.8rem; }
@@ -3351,10 +3351,12 @@ def generate_sabias_que():
         'LAMBRIN WPC': 'img/2-lambrin-wpc/21-lambrin-interior/AMANECHER.jpg',
         'REVESTIMIENTO FLEXIBLE': 'img/3-revestimiento-flexible/CONCRETO%20Aparente.jpg',
         'PLAFON PVC LAMINADO WOOD STYLE': 'img/4-plafon-pvc/41-plafon-pvc-laminado/SHERWOOD.jpg',
+        'PLAFÓN PVC LAMINADO WOOD STYLE': 'img/4-plafon-pvc/41-plafon-pvc-laminado/SHERWOOD.jpg',
         'PANELES TRIDIMENSIONALES 3D': 'img/5-paneles-tridimensionales/51-blanco/Austin.jpg',
         'VIGAS PVCWPCPU': 'img/6-vigas-pvc/61-interior/BAHIA%201.jpg',
         'PISOS': 'img/7-pisos/71-laminado/ACONCAGUA.jpg',
         'ZACATE SINTETICO': 'img/8-zacate/81-follaje-sintetico/AMAZONAS-A.jpg',
+        'ZACATE SINTÉTICO': 'img/8-zacate/81-follaje-sintetico/AMAZONAS-A.jpg',
         'CLADDING  PLACAS TIPO PIEDRA': 'img/9-cladding/91-placa-tipo-roca/BLACK.jpg',
     }
     
@@ -3375,29 +3377,45 @@ def generate_sabias_que():
         if data.get('curiosos'):
             import re
             # Limpiar texto de basura
-            clean_text = data['curiosos'].replace('---', '').replace('###', '').strip()
-            # Extraer items (bloques con **titulo**)
-            items = re.split(r'\n\n(?=\*\*)', clean_text)
-            for i, item in enumerate(items):
+            clean_text = data['curiosos'].replace('---', '').strip()
+            # Extraer items: dividir por doble salto de linea
+            items = re.split(r'\n\n+', clean_text)
+            item_count = 0
+            for item in items:
                 item = item.strip()
-                if not item or len(item) < 15:
+                if not item or len(item) < 20:
                     continue
-                # Extraer titulo
-                title_match = re.search(r'\*\*\s*(?:[\🌍\🔥\🖨️\⚖️\🧪\🌲\🌧️\🏠\📐\🪨\🎨\💧\🏔️\🦠\⚡\📅\🔇\🌿\♻️\🔥\🛡️\🎨\🦶\💰\🌡️\⚠️\❓\📘\📗]*)?\s*(.+?)\s*\*\*', item)
-                title = title_match.group(1) if title_match else 'Dato Curioso'
+                # Extraer titulo: buscar **titulo** o ### titulo
+                title = None
+                title_match = re.search(r'\*\*\s*(.+?)\s*\*\*', item)
+                if title_match:
+                    title = title_match.group(1)
+                else:
+                    title_match = re.search(r'#{2,3}\s*(.+?)(?:\n|$)', item)
+                    if title_match:
+                        title = title_match.group(1)
+                if not title:
+                    continue
                 # Limpiar titulo de emojis al inicio
-                title = re.sub(r'^[\s\🌍\🔥\🖨️\⚖️\🧪\🌲\🌧️\🏠\📐\🪨\🎨\💧\🏔️\🦠\⚡\📅\🔇\🌿\♻️\🔥\🛡️\🎨\🦶\💰\🌡️\⚠️\❓\📘\📗\✨\🏛️\🌿\💎\🔬\⭐]+\s*', '', title).strip()
-                # Extraer descripcion y resumir
-                desc = re.sub(r'\*\*.+?\*\*', '', item).strip()
-                desc = re.sub(r'\s+', ' ', desc)  # Quitar saltos de linea
-                # Resumir a max 140 caracteres
-                if len(desc) > 140:
-                    desc = desc[:137] + '...'
+                title = re.sub(r'^[\s\U0001F300-\U0001F9FF]+', '', title).strip()
+                if not title:
+                    continue
+                # Extraer descripcion: quitar titulo y limpiar
+                desc = re.sub(r'\*\*.+?\*\*', '', item)
+                desc = re.sub(r'#{2,3}\s*.+?(?:\n|$)', '', desc, count=1)
+                desc = desc.strip()
+                desc = re.sub(r'\s+', ' ', desc)
+                if not desc:
+                    continue
+                # Resumir a max 130 caracteres
+                if len(desc) > 130:
+                    desc = desc[:127] + '...'
+                item_count += 1
                 # Icono
                 icons = ['🔬', '🌍', '🔥', '🖨️', '⚖️', '🧪', '🌲', '🌧️', '🏠', '📐', '🪨', '🎨']
-                icon = icons[i % len(icons)]
+                icon = icons[(item_count-1) % len(icons)]
                 curiosos_cards += f'''      <div class="sq-card">
-        <span class="sq-card-number">{i+1:02d}</span>
+        <span class="sq-card-number">{item_count:02d}</span>
         <span class="sq-card-icon">{icon}</span>
         <h3>{title}</h3>
         <p>{desc}</p>

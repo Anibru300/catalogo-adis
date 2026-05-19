@@ -1314,7 +1314,7 @@ footer {
 .sq-card-icon { font-size: 2rem; margin-bottom: 0.6rem; display: block; }
 .sq-card h3 { color: var(--gold-light); font-size: 0.92rem; margin-bottom: 0.5rem; font-family: 'Montserrat', sans-serif; font-weight: 600; line-height: 1.4; }
 .sq-card p { color: rgba(245,245,245,0.6); font-size: 0.82rem; line-height: 1.6; margin: 0; }
-.sq-card-number { position: absolute; top: 0.8rem; right: 1rem; font-size: 2rem; font-weight: 800; color: rgba(197,160,89,0.06); font-family: 'Playfair Display', serif; line-height: 1; }
+.sq-card-number { position: absolute; top: 0.8rem; right: 1rem; font-size: 2rem; font-weight: 800; color: rgba(255,255,255,0.25); font-family: 'Playfair Display', serif; line-height: 1; }
 
 /* FAQ Acordeon */
 .sq-faqs { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.8rem; }
