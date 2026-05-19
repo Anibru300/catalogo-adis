@@ -19,7 +19,7 @@ if hasattr(sys.stdout, 'reconfigure'):
 # ========== RUTAS ==========
 BASE_DIR   = Path(r'G:\Mi unidad\ADIS DISEÑO\Pagina')
 CATALOG_DIR= Path(r'G:\Mi unidad\ADIS DISEÑO\CATALOGO FINAL')
-OUTPUT_PDF = BASE_DIR / 'catalogo_adis_editorial.pdf'
+OUTPUT_PDF = BASE_DIR / 'catalogo.pdf'
 LOGO_PATH  = BASE_DIR / 'LOGO ADIS.png'
 MEDIA_DIR  = BASE_DIR / 'media'
 
@@ -693,18 +693,6 @@ with tempfile.TemporaryDirectory() as tmpdir:
 
 print(f"\n{'='*50}")
 print(f"PDF GENERADO: {OUTPUT_PDF}")
-# Copiar a nombre estandar para GitHub Pages
-try:
-    std = BASE_DIR / 'catalogo_adis.pdf'
-    if std.exists():
-        try: os.remove(std)
-        except: pass
-    if not std.exists():
-        import shutil
-        shutil.copy2(OUTPUT_PDF, std)
-        print(f"Copiado tambien a: {std}")
-except Exception as e:
-    print(f"No se pudo copiar a nombre estandar: {e}")
 print(f"Total paginas: {page_num}")
 print(f"{'='*50}")
 
