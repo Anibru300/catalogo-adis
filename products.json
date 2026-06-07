@@ -1,1759 +1,2183 @@
-[
-  {
-    "name": "Adler",
-    "category": "Placas PVC",
-    "subcategory": "Placas PVC tipo madera",
-    "url": "1-placas-pvc.html#11-placas-pvc-tipo-madera",
-    "thumb": "img/1-placas-pvc/11-placas-pvc-tipo-madera/Adler.jpg"
-  },
-  {
-    "name": "Alpina",
-    "category": "Placas PVC",
-    "subcategory": "Placas PVC tipo madera",
-    "url": "1-placas-pvc.html#11-placas-pvc-tipo-madera",
-    "thumb": "img/1-placas-pvc/11-placas-pvc-tipo-madera/Alpina.jpg"
-  },
-  {
-    "name": "Angulo 8x8x2440mm",
-    "category": "Placas PVC",
-    "subcategory": "Placas PVC tipo madera",
-    "url": "1-placas-pvc.html#11-placas-pvc-tipo-madera",
-    "thumb": "img/1-placas-pvc/11-placas-pvc-tipo-madera/Angulo 8x8x2440mm.jpg"
-  },
-  {
-    "name": "Solaria",
-    "category": "Placas PVC",
-    "subcategory": "Placas PVC tipo madera",
-    "url": "1-placas-pvc.html#11-placas-pvc-tipo-madera",
-    "thumb": "img/1-placas-pvc/11-placas-pvc-tipo-madera/Solaria.jpg"
-  },
-  {
-    "name": "Solden",
-    "category": "Placas PVC",
-    "subcategory": "Placas PVC tipo madera",
-    "url": "1-placas-pvc.html#11-placas-pvc-tipo-madera",
-    "thumb": "img/1-placas-pvc/11-placas-pvc-tipo-madera/Solden.jpg"
-  },
-  {
-    "name": "anton",
-    "category": "Placas PVC",
-    "subcategory": "Placas PVC tipo madera",
-    "url": "1-placas-pvc.html#11-placas-pvc-tipo-madera",
-    "thumb": "img/1-placas-pvc/11-placas-pvc-tipo-madera/anton.jpg"
-  },
-  {
-    "name": "perfil T 7x3x2440mm",
-    "category": "Placas PVC",
-    "subcategory": "Placas PVC tipo madera",
-    "url": "1-placas-pvc.html#11-placas-pvc-tipo-madera",
-    "thumb": "img/1-placas-pvc/11-placas-pvc-tipo-madera/perfil T 7x3x2440mm.jpg"
-  },
-  {
-    "name": "ANGULO 8x8x2440mm",
-    "category": "Placas PVC",
-    "subcategory": "Placas PVC Texturizadas",
-    "url": "1-placas-pvc.html#12-placas-pvc-texturizadas",
-    "thumb": "img/1-placas-pvc/12-placas-pvc-texturizadas/ANGULO 8x8x2440mm.jpg"
-  },
-  {
-    "name": "ASH",
-    "category": "Placas PVC",
-    "subcategory": "Placas PVC Texturizadas",
-    "url": "1-placas-pvc.html#12-placas-pvc-texturizadas",
-    "thumb": "img/1-placas-pvc/12-placas-pvc-texturizadas/ASH.png"
-  },
-  {
-    "name": "CEDAR",
-    "category": "Placas PVC",
-    "subcategory": "Placas PVC Texturizadas",
-    "url": "1-placas-pvc.html#12-placas-pvc-texturizadas",
-    "thumb": "img/1-placas-pvc/12-placas-pvc-texturizadas/CEDAR.png"
-  },
-  {
-    "name": "ENCINO",
-    "category": "Placas PVC",
-    "subcategory": "Placas PVC Texturizadas",
-    "url": "1-placas-pvc.html#12-placas-pvc-texturizadas",
-    "thumb": "img/1-placas-pvc/12-placas-pvc-texturizadas/ENCINO.png"
-  },
-  {
-    "name": "IPE",
-    "category": "Placas PVC",
-    "subcategory": "Placas PVC Texturizadas",
-    "url": "1-placas-pvc.html#12-placas-pvc-texturizadas",
-    "thumb": "img/1-placas-pvc/12-placas-pvc-texturizadas/IPE.png"
-  },
-  {
-    "name": "JATOBA",
-    "category": "Placas PVC",
-    "subcategory": "Placas PVC Texturizadas",
-    "url": "1-placas-pvc.html#12-placas-pvc-texturizadas",
-    "thumb": "img/1-placas-pvc/12-placas-pvc-texturizadas/JATOBA.png"
-  },
-  {
-    "name": "NOGAL",
-    "category": "Placas PVC",
-    "subcategory": "Placas PVC Texturizadas",
-    "url": "1-placas-pvc.html#12-placas-pvc-texturizadas",
-    "thumb": "img/1-placas-pvc/12-placas-pvc-texturizadas/NOGAL.png"
-  },
-  {
-    "name": "PERFIL T 7x3x2440mm",
-    "category": "Placas PVC",
-    "subcategory": "Placas PVC Texturizadas",
-    "url": "1-placas-pvc.html#12-placas-pvc-texturizadas",
-    "thumb": "img/1-placas-pvc/12-placas-pvc-texturizadas/PERFIL T 7x3x2440mm.jpg"
-  },
-  {
-    "name": "WENGE",
-    "category": "Placas PVC",
-    "subcategory": "Placas PVC Texturizadas",
-    "url": "1-placas-pvc.html#12-placas-pvc-texturizadas",
-    "thumb": "img/1-placas-pvc/12-placas-pvc-texturizadas/WENGE.png"
-  },
-  {
-    "name": "PLACA TIPO ESPEJO DORADO",
-    "category": "Placas PVC",
-    "subcategory": "Placas PVC Tipo espejo",
-    "url": "1-placas-pvc.html#13-placas-pvc-tipo-espejo",
-    "thumb": "img/1-placas-pvc/13-placas-pvc-tipo-espejo/PLACA TIPO ESPEJO DORADO.jpg"
-  },
-  {
-    "name": "PLACA TIPO ESPEJO",
-    "category": "Placas PVC",
-    "subcategory": "Placas PVC Tipo espejo",
-    "url": "1-placas-pvc.html#13-placas-pvc-tipo-espejo",
-    "thumb": "img/1-placas-pvc/13-placas-pvc-tipo-espejo/PLACA TIPO ESPEJO.jpg"
-  },
-  {
-    "name": "PLACA TIPO METAL",
-    "category": "Placas PVC",
-    "subcategory": "Placas PVC Tipo espejo",
-    "url": "1-placas-pvc.html#13-placas-pvc-tipo-espejo",
-    "thumb": "img/1-placas-pvc/13-placas-pvc-tipo-espejo/PLACA TIPO METAL.jpg"
-  },
-  {
-    "name": "AGATA",
-    "category": "Placas PVC",
-    "subcategory": null,
-    "url": "1-placas-pvc.html",
-    "thumb": "img/1-placas-pvc/AGATA.jpg"
-  },
-  {
-    "name": "ARENA",
-    "category": "Placas PVC",
-    "subcategory": null,
-    "url": "1-placas-pvc.html",
-    "thumb": "img/1-placas-pvc/ARENA.jpg"
-  },
-  {
-    "name": "Aurora Dorada",
-    "category": "Placas PVC",
-    "subcategory": null,
-    "url": "1-placas-pvc.html",
-    "thumb": "img/1-placas-pvc/Aurora Dorada.jpg"
-  },
-  {
-    "name": "Carrara Oscuro",
-    "category": "Placas PVC",
-    "subcategory": null,
-    "url": "1-placas-pvc.html",
-    "thumb": "img/1-placas-pvc/Carrara Oscuro.jpg"
-  },
-  {
-    "name": "Cuarzo",
-    "category": "Placas PVC",
-    "subcategory": null,
-    "url": "1-placas-pvc.html",
-    "thumb": "img/1-placas-pvc/Cuarzo.jpg"
-  },
-  {
-    "name": "Grafito",
-    "category": "Placas PVC",
-    "subcategory": null,
-    "url": "1-placas-pvc.html",
-    "thumb": "img/1-placas-pvc/Grafito.jpg"
-  },
-  {
-    "name": "Jaspe",
-    "category": "Placas PVC",
-    "subcategory": null,
-    "url": "1-placas-pvc.html",
-    "thumb": "img/1-placas-pvc/Jaspe.jpg"
-  },
-  {
-    "name": "OBSIDIANA",
-    "category": "Placas PVC",
-    "subcategory": null,
-    "url": "1-placas-pvc.html",
-    "thumb": "img/1-placas-pvc/OBSIDIANA.jpg"
-  },
-  {
-    "name": "Onix",
-    "category": "Placas PVC",
-    "subcategory": null,
-    "url": "1-placas-pvc.html",
-    "thumb": "img/1-placas-pvc/Onix.jpg"
-  },
-  {
-    "name": "Opalo",
-    "category": "Placas PVC",
-    "subcategory": null,
-    "url": "1-placas-pvc.html",
-    "thumb": "img/1-placas-pvc/Opalo.jpg"
-  },
-  {
-    "name": "Perfil t 7x3x2440mm",
-    "category": "Placas PVC",
-    "subcategory": null,
-    "url": "1-placas-pvc.html",
-    "thumb": "img/1-placas-pvc/Perfil t 7x3x2440mm.jpg"
-  },
-  {
-    "name": "Perla",
-    "category": "Placas PVC",
-    "subcategory": null,
-    "url": "1-placas-pvc.html",
-    "thumb": "img/1-placas-pvc/Perla.jpg"
-  },
-  {
-    "name": "Topacio",
-    "category": "Placas PVC",
-    "subcategory": null,
-    "url": "1-placas-pvc.html",
-    "thumb": "img/1-placas-pvc/Topacio.jpg"
-  },
-  {
-    "name": "ZAFIRO",
-    "category": "Placas PVC",
-    "subcategory": null,
-    "url": "1-placas-pvc.html",
-    "thumb": "img/1-placas-pvc/ZAFIRO.jpg"
-  },
-  {
-    "name": "angulo 8x8x2440mm",
-    "category": "Placas PVC",
-    "subcategory": null,
-    "url": "1-placas-pvc.html",
-    "thumb": "img/1-placas-pvc/angulo 8x8x2440mm.jpg"
-  },
-  {
-    "name": "AMANECHER",
-    "category": "Lambrin WPC",
-    "subcategory": "Lambrin Interior",
-    "url": "2-lambrin-wpc.html#21-lambrin-interior",
-    "thumb": "img/2-lambrin-wpc/21-lambrin-interior/AMANECHER.jpg"
-  },
-  {
-    "name": "ANGULO WPC PARA INTERIOR",
-    "category": "Lambrin WPC",
-    "subcategory": "Lambrin Interior",
-    "url": "2-lambrin-wpc.html#21-lambrin-interior",
-    "thumb": "img/2-lambrin-wpc/21-lambrin-interior/ANGULO WPC PARA INTERIOR.jpg"
-  },
-  {
-    "name": "Amizade",
-    "category": "Lambrin WPC",
-    "subcategory": "Lambrin Interior",
-    "url": "2-lambrin-wpc.html#21-lambrin-interior",
-    "thumb": "img/2-lambrin-wpc/21-lambrin-interior/Amizade.jpg"
-  },
-  {
-    "name": "BAHIA",
-    "category": "Lambrin WPC",
-    "subcategory": "Lambrin Interior",
-    "url": "2-lambrin-wpc.html#21-lambrin-interior",
-    "thumb": "img/2-lambrin-wpc/21-lambrin-interior/BAHIA.jpg"
-  },
-  {
-    "name": "Brasilia",
-    "category": "Lambrin WPC",
-    "subcategory": "Lambrin Interior",
-    "url": "2-lambrin-wpc.html#21-lambrin-interior",
-    "thumb": "img/2-lambrin-wpc/21-lambrin-interior/Brasilia.jpg"
-  },
-  {
-    "name": "Cerezo Macapa",
-    "category": "Lambrin WPC",
-    "subcategory": "Lambrin Interior",
-    "url": "2-lambrin-wpc.html#21-lambrin-interior",
-    "thumb": "img/2-lambrin-wpc/21-lambrin-interior/Cerezo Macapa.jpg"
-  },
-  {
-    "name": "Estrelado",
-    "category": "Lambrin WPC",
-    "subcategory": "Lambrin Interior",
-    "url": "2-lambrin-wpc.html#21-lambrin-interior",
-    "thumb": "img/2-lambrin-wpc/21-lambrin-interior/Estrelado.jpg"
-  },
-  {
-    "name": "Fortaleza",
-    "category": "Lambrin WPC",
-    "subcategory": "Lambrin Interior",
-    "url": "2-lambrin-wpc.html#21-lambrin-interior",
-    "thumb": "img/2-lambrin-wpc/21-lambrin-interior/Fortaleza.jpg"
-  },
-  {
-    "name": "Manaos",
-    "category": "Lambrin WPC",
-    "subcategory": "Lambrin Interior",
-    "url": "2-lambrin-wpc.html#21-lambrin-interior",
-    "thumb": "img/2-lambrin-wpc/21-lambrin-interior/Manaos.jpg"
-  },
-  {
-    "name": "Nogal Olinda",
-    "category": "Lambrin WPC",
-    "subcategory": "Lambrin Interior",
-    "url": "2-lambrin-wpc.html#21-lambrin-interior",
-    "thumb": "img/2-lambrin-wpc/21-lambrin-interior/Nogal Olinda.jpg"
-  },
-  {
-    "name": "Nuvem",
-    "category": "Lambrin WPC",
-    "subcategory": "Lambrin Interior",
-    "url": "2-lambrin-wpc.html#21-lambrin-interior",
-    "thumb": "img/2-lambrin-wpc/21-lambrin-interior/Nuvem.jpg"
-  },
-  {
-    "name": "Ouro Preto",
-    "category": "Lambrin WPC",
-    "subcategory": "Lambrin Interior",
-    "url": "2-lambrin-wpc.html#21-lambrin-interior",
-    "thumb": "img/2-lambrin-wpc/21-lambrin-interior/Ouro Preto.jpg"
-  },
-  {
-    "name": "Ribeira",
-    "category": "Lambrin WPC",
-    "subcategory": "Lambrin Interior",
-    "url": "2-lambrin-wpc.html#21-lambrin-interior",
-    "thumb": "img/2-lambrin-wpc/21-lambrin-interior/Ribeira.jpg"
-  },
-  {
-    "name": "Rodeiro",
-    "category": "Lambrin WPC",
-    "subcategory": "Lambrin Interior",
-    "url": "2-lambrin-wpc.html#21-lambrin-interior",
-    "thumb": "img/2-lambrin-wpc/21-lambrin-interior/Rodeiro.jpg"
-  },
-  {
-    "name": "Río",
-    "category": "Lambrin WPC",
-    "subcategory": "Lambrin Interior",
-    "url": "2-lambrin-wpc.html#21-lambrin-interior",
-    "thumb": "img/2-lambrin-wpc/21-lambrin-interior/Río.jpg"
-  },
-  {
-    "name": "Sabeiro",
-    "category": "Lambrin WPC",
-    "subcategory": "Lambrin Interior",
-    "url": "2-lambrin-wpc.html#21-lambrin-interior",
-    "thumb": "img/2-lambrin-wpc/21-lambrin-interior/Sabeiro.jpg"
-  },
-  {
-    "name": "Sao Paulo",
-    "category": "Lambrin WPC",
-    "subcategory": "Lambrin Interior",
-    "url": "2-lambrin-wpc.html#21-lambrin-interior",
-    "thumb": "img/2-lambrin-wpc/21-lambrin-interior/Sao Paulo.jpg"
-  },
-  {
-    "name": "Sonho",
-    "category": "Lambrin WPC",
-    "subcategory": "Lambrin Interior",
-    "url": "2-lambrin-wpc.html#21-lambrin-interior",
-    "thumb": "img/2-lambrin-wpc/21-lambrin-interior/Sonho.jpg"
-  },
-  {
-    "name": "Teak Aracaju",
-    "category": "Lambrin WPC",
-    "subcategory": "Lambrin Interior",
-    "url": "2-lambrin-wpc.html#21-lambrin-interior",
-    "thumb": "img/2-lambrin-wpc/21-lambrin-interior/Teak Aracaju.jpg"
-  },
-  {
-    "name": "CHARCOAL",
-    "category": "Lambrin WPC",
-    "subcategory": "Lambrin Exterior",
-    "url": "2-lambrin-wpc.html#22-lambrin-exterior",
-    "thumb": "img/2-lambrin-wpc/22-lambrin-exterior/CHARCOAL.jpg"
-  },
-  {
-    "name": "DARK BLACK",
-    "category": "Lambrin WPC",
-    "subcategory": "Lambrin Exterior",
-    "url": "2-lambrin-wpc.html#22-lambrin-exterior",
-    "thumb": "img/2-lambrin-wpc/22-lambrin-exterior/DARK BLACK.jpg"
-  },
-  {
-    "name": "Esquinero",
-    "category": "Lambrin WPC",
-    "subcategory": "Lambrin Exterior",
-    "url": "2-lambrin-wpc.html#22-lambrin-exterior",
-    "thumb": "img/2-lambrin-wpc/22-lambrin-exterior/Esquinero.jpg"
-  },
-  {
-    "name": "REDWOOD",
-    "category": "Lambrin WPC",
-    "subcategory": "Lambrin Exterior",
-    "url": "2-lambrin-wpc.html#22-lambrin-exterior",
-    "thumb": "img/2-lambrin-wpc/22-lambrin-exterior/REDWOOD.jpg"
-  },
-  {
-    "name": "SLIVER GRAY",
-    "category": "Lambrin WPC",
-    "subcategory": "Lambrin Exterior",
-    "url": "2-lambrin-wpc.html#22-lambrin-exterior",
-    "thumb": "img/2-lambrin-wpc/22-lambrin-exterior/SLIVER GRAY.jpg"
-  },
-  {
-    "name": "TEAK",
-    "category": "Lambrin WPC",
-    "subcategory": "Lambrin Exterior",
-    "url": "2-lambrin-wpc.html#22-lambrin-exterior",
-    "thumb": "img/2-lambrin-wpc/22-lambrin-exterior/TEAK.jpg"
-  },
-  {
-    "name": "Bahia",
-    "category": "Lambrin WPC",
-    "subcategory": "Desigual",
-    "url": "2-lambrin-wpc.html#23-desigual",
-    "thumb": "img/2-lambrin-wpc/23-desigual/Bahia.jpg"
-  },
-  {
-    "name": "Brasilia",
-    "category": "Lambrin WPC",
-    "subcategory": "Desigual",
-    "url": "2-lambrin-wpc.html#23-desigual",
-    "thumb": "img/2-lambrin-wpc/23-desigual/Brasilia.jpg"
-  },
-  {
-    "name": "Parota",
-    "category": "Lambrin WPC",
-    "subcategory": "Desigual",
-    "url": "2-lambrin-wpc.html#23-desigual",
-    "thumb": "img/2-lambrin-wpc/23-desigual/Parota.jpg"
-  },
-  {
-    "name": "Rio",
-    "category": "Lambrin WPC",
-    "subcategory": "Desigual",
-    "url": "2-lambrin-wpc.html#23-desigual",
-    "thumb": "img/2-lambrin-wpc/23-desigual/Rio.jpg"
-  },
-  {
-    "name": "Sao Paulo",
-    "category": "Lambrin WPC",
-    "subcategory": "Desigual",
-    "url": "2-lambrin-wpc.html#23-desigual",
-    "thumb": "img/2-lambrin-wpc/23-desigual/Sao Paulo.jpg"
-  },
-  {
-    "name": "Bahia",
-    "category": "Lambrin WPC",
-    "subcategory": "Media luna",
-    "url": "2-lambrin-wpc.html#24-media-luna",
-    "thumb": "img/2-lambrin-wpc/24-media-luna/Bahia.jpg"
-  },
-  {
-    "name": "Sao Paulo",
-    "category": "Lambrin WPC",
-    "subcategory": "Media luna",
-    "url": "2-lambrin-wpc.html#24-media-luna",
-    "thumb": "img/2-lambrin-wpc/24-media-luna/Sao Paulo.jpg"
-  },
-  {
-    "name": "azeituna",
-    "category": "Lambrin WPC",
-    "subcategory": "Media luna",
-    "url": "2-lambrin-wpc.html#24-media-luna",
-    "thumb": "img/2-lambrin-wpc/24-media-luna/azeituna.jpg"
-  },
-  {
-    "name": "brasilia",
-    "category": "Lambrin WPC",
-    "subcategory": "Media luna",
-    "url": "2-lambrin-wpc.html#24-media-luna",
-    "thumb": "img/2-lambrin-wpc/24-media-luna/brasilia.jpg"
-  },
-  {
-    "name": "rio",
-    "category": "Lambrin WPC",
-    "subcategory": "Media luna",
-    "url": "2-lambrin-wpc.html#24-media-luna",
-    "thumb": "img/2-lambrin-wpc/24-media-luna/rio.jpg"
-  },
-  {
-    "name": "AURELI",
-    "category": "Lambrin WPC",
-    "subcategory": "Media luna PS",
-    "url": "2-lambrin-wpc.html#25-media-luna-ps",
-    "thumb": "img/2-lambrin-wpc/25-media-luna-ps/AURELI.jpg"
-  },
-  {
-    "name": "CRESSIDA",
-    "category": "Lambrin WPC",
-    "subcategory": "Media luna PS",
-    "url": "2-lambrin-wpc.html#25-media-luna-ps",
-    "thumb": "img/2-lambrin-wpc/25-media-luna-ps/CRESSIDA.jpg"
-  },
-  {
-    "name": "ELARA",
-    "category": "Lambrin WPC",
-    "subcategory": "Media luna PS",
-    "url": "2-lambrin-wpc.html#25-media-luna-ps",
-    "thumb": "img/2-lambrin-wpc/25-media-luna-ps/ELARA.jpg"
-  },
-  {
-    "name": "GILDARA",
-    "category": "Lambrin WPC",
-    "subcategory": "Media luna PS",
-    "url": "2-lambrin-wpc.html#25-media-luna-ps",
-    "thumb": "img/2-lambrin-wpc/25-media-luna-ps/GILDARA.jpg"
-  },
-  {
-    "name": "CONCRETO Aparente",
-    "category": "Revestimiento Flexible",
-    "subcategory": null,
-    "url": "3-revestimiento-flexible.html",
-    "thumb": "img/3-revestimiento-flexible/CONCRETO Aparente.jpg"
-  },
-  {
-    "name": "Concreto Gris",
-    "category": "Revestimiento Flexible",
-    "subcategory": null,
-    "url": "3-revestimiento-flexible.html",
-    "thumb": "img/3-revestimiento-flexible/Concreto Gris.jpg"
-  },
-  {
-    "name": "Granito Blanco",
-    "category": "Revestimiento Flexible",
-    "subcategory": null,
-    "url": "3-revestimiento-flexible.html",
-    "thumb": "img/3-revestimiento-flexible/Granito Blanco.jpg"
-  },
-  {
-    "name": "Granito Imperial Blanco",
-    "category": "Revestimiento Flexible",
-    "subcategory": null,
-    "url": "3-revestimiento-flexible.html",
-    "thumb": "img/3-revestimiento-flexible/Granito Imperial Blanco.jpg"
-  },
-  {
-    "name": "Granito Oro",
-    "category": "Revestimiento Flexible",
-    "subcategory": null,
-    "url": "3-revestimiento-flexible.html",
-    "thumb": "img/3-revestimiento-flexible/Granito Oro.jpg"
-  },
-  {
-    "name": "Madera Roble",
-    "category": "Revestimiento Flexible",
-    "subcategory": null,
-    "url": "3-revestimiento-flexible.html",
-    "thumb": "img/3-revestimiento-flexible/Madera Roble.jpeg"
-  },
-  {
-    "name": "SHERWOOD",
-    "category": "Plafon PVC",
-    "subcategory": "Plafon pvc laminado",
-    "url": "4-plafon-pvc.html#41-plafon-pvc-laminado",
-    "thumb": "img/4-plafon-pvc/41-plafon-pvc-laminado/SHERWOOD.jpg"
-  },
-  {
-    "name": "Teesdale",
-    "category": "Plafon PVC",
-    "subcategory": "Plafon pvc laminado",
-    "url": "4-plafon-pvc.html#41-plafon-pvc-laminado",
-    "thumb": "img/4-plafon-pvc/41-plafon-pvc-laminado/Teesdale.jpg"
-  },
-  {
-    "name": "Ash Nomad",
-    "category": "Plafon PVC",
-    "subcategory": "Plafon Laminado wood",
-    "url": "4-plafon-pvc.html#42-plafon-laminado-wood",
-    "thumb": "img/4-plafon-pvc/42-plafon-laminado-wood/Ash Nomad.jpg"
-  },
-  {
-    "name": "Birch Ember",
-    "category": "Plafon PVC",
-    "subcategory": "Plafon Laminado wood",
-    "url": "4-plafon-pvc.html#42-plafon-laminado-wood",
-    "thumb": "img/4-plafon-pvc/42-plafon-laminado-wood/Birch Ember.jpg"
-  },
-  {
-    "name": "Cocoa Ash",
-    "category": "Plafon PVC",
-    "subcategory": "Plafon Laminado wood",
-    "url": "4-plafon-pvc.html#42-plafon-laminado-wood",
-    "thumb": "img/4-plafon-pvc/42-plafon-laminado-wood/Cocoa Ash.jpg"
-  },
-  {
-    "name": "Ivory Elm",
-    "category": "Plafon PVC",
-    "subcategory": "Plafon Laminado wood",
-    "url": "4-plafon-pvc.html#42-plafon-laminado-wood",
-    "thumb": "img/4-plafon-pvc/42-plafon-laminado-wood/Ivory Elm.jpg"
-  },
-  {
-    "name": "Maple Dusk",
-    "category": "Plafon PVC",
-    "subcategory": "Plafon Laminado wood",
-    "url": "4-plafon-pvc.html#42-plafon-laminado-wood",
-    "thumb": "img/4-plafon-pvc/42-plafon-laminado-wood/Maple Dusk.jpg"
-  },
-  {
-    "name": "Walnut Elipse",
-    "category": "Plafon PVC",
-    "subcategory": "Plafon Laminado wood",
-    "url": "4-plafon-pvc.html#42-plafon-laminado-wood",
-    "thumb": "img/4-plafon-pvc/42-plafon-laminado-wood/Walnut Elipse.jpg"
-  },
-  {
-    "name": "Wild Teak",
-    "category": "Plafon PVC",
-    "subcategory": "Plafon Laminado wood",
-    "url": "4-plafon-pvc.html#42-plafon-laminado-wood",
-    "thumb": "img/4-plafon-pvc/42-plafon-laminado-wood/Wild Teak.jpg"
-  },
-  {
-    "name": "Ranurado vista 2",
-    "category": "Plafon PVC",
-    "subcategory": "Plafon Ranurado",
-    "url": "4-plafon-pvc.html#plafon-ranurado",
-    "thumb": "img/4-plafon-pvc/plafon-ranurado/Ranurado vista 2.jpg"
-  },
-  {
-    "name": "Ranurado",
-    "category": "Plafon PVC",
-    "subcategory": "Plafon Ranurado",
-    "url": "4-plafon-pvc.html#plafon-ranurado",
-    "thumb": "img/4-plafon-pvc/plafon-ranurado/Ranurado.jpg"
-  },
-  {
-    "name": "Cambridge",
-    "category": "Plafon PVC",
-    "subcategory": null,
-    "url": "4-plafon-pvc.html",
-    "thumb": "img/4-plafon-pvc/Cambridge.jpg"
-  },
-  {
-    "name": "Liverpool",
-    "category": "Plafon PVC",
-    "subcategory": null,
-    "url": "4-plafon-pvc.html",
-    "thumb": "img/4-plafon-pvc/Liverpool.jpg"
-  },
-  {
-    "name": "York",
-    "category": "Plafon PVC",
-    "subcategory": null,
-    "url": "4-plafon-pvc.html",
-    "thumb": "img/4-plafon-pvc/York.jpg"
-  },
-  {
-    "name": "bristol",
-    "category": "Plafon PVC",
-    "subcategory": null,
-    "url": "4-plafon-pvc.html",
-    "thumb": "img/4-plafon-pvc/bristol.jpg"
-  },
-  {
-    "name": "Austin",
-    "category": "Paneles tridimensionales",
-    "subcategory": "Blanco",
-    "url": "5-paneles-tridimensionales.html#51-blanco",
-    "thumb": "img/5-paneles-tridimensionales/51-blanco/Austin.jpg"
-  },
-  {
-    "name": "Boston",
-    "category": "Paneles tridimensionales",
-    "subcategory": "Blanco",
-    "url": "5-paneles-tridimensionales.html#51-blanco",
-    "thumb": "img/5-paneles-tridimensionales/51-blanco/Boston.jpg"
-  },
-  {
-    "name": "Charleston",
-    "category": "Paneles tridimensionales",
-    "subcategory": "Blanco",
-    "url": "5-paneles-tridimensionales.html#51-blanco",
-    "thumb": "img/5-paneles-tridimensionales/51-blanco/Charleston.jpg"
-  },
-  {
-    "name": "Charlotte",
-    "category": "Paneles tridimensionales",
-    "subcategory": "Blanco",
-    "url": "5-paneles-tridimensionales.html#51-blanco",
-    "thumb": "img/5-paneles-tridimensionales/51-blanco/Charlotte.jpg"
-  },
-  {
-    "name": "Chicago",
-    "category": "Paneles tridimensionales",
-    "subcategory": "Blanco",
-    "url": "5-paneles-tridimensionales.html#51-blanco",
-    "thumb": "img/5-paneles-tridimensionales/51-blanco/Chicago.jpg"
-  },
-  {
-    "name": "Cleveland",
-    "category": "Paneles tridimensionales",
-    "subcategory": "Blanco",
-    "url": "5-paneles-tridimensionales.html#51-blanco",
-    "thumb": "img/5-paneles-tridimensionales/51-blanco/Cleveland.jpg"
-  },
-  {
-    "name": "Columbus",
-    "category": "Paneles tridimensionales",
-    "subcategory": "Blanco",
-    "url": "5-paneles-tridimensionales.html#51-blanco",
-    "thumb": "img/5-paneles-tridimensionales/51-blanco/Columbus.jpg"
-  },
-  {
-    "name": "Dallas",
-    "category": "Paneles tridimensionales",
-    "subcategory": "Blanco",
-    "url": "5-paneles-tridimensionales.html#51-blanco",
-    "thumb": "img/5-paneles-tridimensionales/51-blanco/Dallas.jpg"
-  },
-  {
-    "name": "Denver",
-    "category": "Paneles tridimensionales",
-    "subcategory": "Blanco",
-    "url": "5-paneles-tridimensionales.html#51-blanco",
-    "thumb": "img/5-paneles-tridimensionales/51-blanco/Denver.jpg"
-  },
-  {
-    "name": "Detroit",
-    "category": "Paneles tridimensionales",
-    "subcategory": "Blanco",
-    "url": "5-paneles-tridimensionales.html#51-blanco",
-    "thumb": "img/5-paneles-tridimensionales/51-blanco/Detroit.jpg"
-  },
-  {
-    "name": "Filadelfia",
-    "category": "Paneles tridimensionales",
-    "subcategory": "Blanco",
-    "url": "5-paneles-tridimensionales.html#51-blanco",
-    "thumb": "img/5-paneles-tridimensionales/51-blanco/Filadelfia.jpg"
-  },
-  {
-    "name": "Frisco",
-    "category": "Paneles tridimensionales",
-    "subcategory": "Blanco",
-    "url": "5-paneles-tridimensionales.html#51-blanco",
-    "thumb": "img/5-paneles-tridimensionales/51-blanco/Frisco.jpg"
-  },
-  {
-    "name": "Houston",
-    "category": "Paneles tridimensionales",
-    "subcategory": "Blanco",
-    "url": "5-paneles-tridimensionales.html#51-blanco",
-    "thumb": "img/5-paneles-tridimensionales/51-blanco/Houston.jpg"
-  },
-  {
-    "name": "Minneapolis",
-    "category": "Paneles tridimensionales",
-    "subcategory": "Grises",
-    "url": "5-paneles-tridimensionales.html#52-grises",
-    "thumb": "img/5-paneles-tridimensionales/52-grises/Minneapolis.jpg"
-  },
-  {
-    "name": "Oklahoma",
-    "category": "Paneles tridimensionales",
-    "subcategory": "Grises",
-    "url": "5-paneles-tridimensionales.html#52-grises",
-    "thumb": "img/5-paneles-tridimensionales/52-grises/Oklahoma.jpg"
-  },
-  {
-    "name": "Orlando",
-    "category": "Paneles tridimensionales",
-    "subcategory": "Grises",
-    "url": "5-paneles-tridimensionales.html#52-grises",
-    "thumb": "img/5-paneles-tridimensionales/52-grises/Orlando.jpg"
-  },
-  {
-    "name": "Portland",
-    "category": "Paneles tridimensionales",
-    "subcategory": "Madera",
-    "url": "5-paneles-tridimensionales.html#53-madera",
-    "thumb": "img/5-paneles-tridimensionales/53-madera/Portland.jpg"
-  },
-  {
-    "name": "Providence",
-    "category": "Paneles tridimensionales",
-    "subcategory": "Madera",
-    "url": "5-paneles-tridimensionales.html#53-madera",
-    "thumb": "img/5-paneles-tridimensionales/53-madera/Providence.jpg"
-  },
-  {
-    "name": "Raleigh",
-    "category": "Paneles tridimensionales",
-    "subcategory": "Madera",
-    "url": "5-paneles-tridimensionales.html#53-madera",
-    "thumb": "img/5-paneles-tridimensionales/53-madera/Raleigh.jpg"
-  },
-  {
-    "name": "Reno",
-    "category": "Paneles tridimensionales",
-    "subcategory": "Madera",
-    "url": "5-paneles-tridimensionales.html#53-madera",
-    "thumb": "img/5-paneles-tridimensionales/53-madera/Reno.jpg"
-  },
-  {
-    "name": "seattle",
-    "category": "Paneles tridimensionales",
-    "subcategory": "Negro",
-    "url": "5-paneles-tridimensionales.html#54-negro",
-    "thumb": "img/5-paneles-tridimensionales/54-negro/seattle.jpg"
-  },
-  {
-    "name": "Laredo",
-    "category": "Paneles tridimensionales",
-    "subcategory": "Oro",
-    "url": "5-paneles-tridimensionales.html#55-oro",
-    "thumb": "img/5-paneles-tridimensionales/55-oro/Laredo.jpg"
-  },
-  {
-    "name": "Miami",
-    "category": "Paneles tridimensionales",
-    "subcategory": "Oro",
-    "url": "5-paneles-tridimensionales.html#55-oro",
-    "thumb": "img/5-paneles-tridimensionales/55-oro/Miami.jpg"
-  },
-  {
-    "name": "memphis",
-    "category": "Paneles tridimensionales",
-    "subcategory": "Oro",
-    "url": "5-paneles-tridimensionales.html#55-oro",
-    "thumb": "img/5-paneles-tridimensionales/55-oro/memphis.jpg"
-  },
-  {
-    "name": "BAHIA 1",
-    "category": "Vigas PVC",
-    "subcategory": "Interior",
-    "url": "6-vigas-pvc.html#61-interior",
-    "thumb": "img/6-vigas-pvc/61-interior/BAHIA 1.jpg"
-  },
-  {
-    "name": "BAHIA",
-    "category": "Vigas PVC",
-    "subcategory": "Interior",
-    "url": "6-vigas-pvc.html#61-interior",
-    "thumb": "img/6-vigas-pvc/61-interior/BAHIA.jpg"
-  },
-  {
-    "name": "BRASILIA 1",
-    "category": "Vigas PVC",
-    "subcategory": "Interior",
-    "url": "6-vigas-pvc.html#61-interior",
-    "thumb": "img/6-vigas-pvc/61-interior/BRASILIA 1.jpg"
-  },
-  {
-    "name": "BRASILIA",
-    "category": "Vigas PVC",
-    "subcategory": "Interior",
-    "url": "6-vigas-pvc.html#61-interior",
-    "thumb": "img/6-vigas-pvc/61-interior/BRASILIA.jpg"
-  },
-  {
-    "name": "COPLE PARA VIGA 2",
-    "category": "Vigas PVC",
-    "subcategory": "Interior",
-    "url": "6-vigas-pvc.html#61-interior",
-    "thumb": "img/6-vigas-pvc/61-interior/COPLE PARA VIGA 2.jpg"
-  },
-  {
-    "name": "COPLE PARA VIGA",
-    "category": "Vigas PVC",
-    "subcategory": "Interior",
-    "url": "6-vigas-pvc.html#61-interior",
-    "thumb": "img/6-vigas-pvc/61-interior/COPLE PARA VIGA.jpg"
-  },
-  {
-    "name": "RIO 1",
-    "category": "Vigas PVC",
-    "subcategory": "Interior",
-    "url": "6-vigas-pvc.html#61-interior",
-    "thumb": "img/6-vigas-pvc/61-interior/RIO 1.jpg"
-  },
-  {
-    "name": "RIO",
-    "category": "Vigas PVC",
-    "subcategory": "Interior",
-    "url": "6-vigas-pvc.html#61-interior",
-    "thumb": "img/6-vigas-pvc/61-interior/RIO.jpg"
-  },
-  {
-    "name": "SAO PAULO 1",
-    "category": "Vigas PVC",
-    "subcategory": "Interior",
-    "url": "6-vigas-pvc.html#61-interior",
-    "thumb": "img/6-vigas-pvc/61-interior/SAO PAULO 1.jpg"
-  },
-  {
-    "name": "SAO PAULO",
-    "category": "Vigas PVC",
-    "subcategory": "Interior",
-    "url": "6-vigas-pvc.html#61-interior",
-    "thumb": "img/6-vigas-pvc/61-interior/SAO PAULO.jpg"
-  },
-  {
-    "name": "SOPORTE PARA VIGA INTERIOR 100X50MM",
-    "category": "Vigas PVC",
-    "subcategory": "Interior",
-    "url": "6-vigas-pvc.html#61-interior",
-    "thumb": "img/6-vigas-pvc/61-interior/SOPORTE PARA VIGA INTERIOR 100X50MM.jpg"
-  },
-  {
-    "name": "DARK BLACK",
-    "category": "Vigas PVC",
-    "subcategory": "Exterior",
-    "url": "6-vigas-pvc.html#62-exterior",
-    "thumb": "img/6-vigas-pvc/62-exterior/DARK BLACK.jpg"
-  },
-  {
-    "name": "REDWOOD",
-    "category": "Vigas PVC",
-    "subcategory": "Exterior",
-    "url": "6-vigas-pvc.html#62-exterior",
-    "thumb": "img/6-vigas-pvc/62-exterior/REDWOOD.jpg"
-  },
-  {
-    "name": "SOPORTE GIRATORIO PARA VIGA EXTERIOR",
-    "category": "Vigas PVC",
-    "subcategory": "Exterior",
-    "url": "6-vigas-pvc.html#62-exterior",
-    "thumb": "img/6-vigas-pvc/62-exterior/SOPORTE GIRATORIO PARA VIGA EXTERIOR.jpg"
-  },
-  {
-    "name": "TEAK",
-    "category": "Vigas PVC",
-    "subcategory": "Exterior",
-    "url": "6-vigas-pvc.html#62-exterior",
-    "thumb": "img/6-vigas-pvc/62-exterior/TEAK.jpg"
-  },
-  {
-    "name": "ACONCAGUA",
-    "category": "Pisos",
-    "subcategory": "Laminado",
-    "url": "7-pisos.html#71-laminado",
-    "thumb": "img/7-pisos/71-laminado/ACONCAGUA.jpg"
-  },
-  {
-    "name": "ALCAÑIZ",
-    "category": "Pisos",
-    "subcategory": "Laminado",
-    "url": "7-pisos.html#71-laminado",
-    "thumb": "img/7-pisos/71-laminado/ALCAÑIZ.jpeg"
-  },
-  {
-    "name": "ARCTIC OAK SPLASH",
-    "category": "Pisos",
-    "subcategory": "Laminado",
-    "url": "7-pisos.html#71-laminado",
-    "thumb": "img/7-pisos/71-laminado/ARCTIC OAK SPLASH.jpg"
-  },
-  {
-    "name": "AUSTRALIAN WALNUT SPLASH",
-    "category": "Pisos",
-    "subcategory": "Laminado",
-    "url": "7-pisos.html#71-laminado",
-    "thumb": "img/7-pisos/71-laminado/AUSTRALIAN WALNUT SPLASH.jpg"
-  },
-  {
-    "name": "BOULDER",
-    "category": "Pisos",
-    "subcategory": "Laminado",
-    "url": "7-pisos.html#71-laminado",
-    "thumb": "img/7-pisos/71-laminado/BOULDER.jpg"
-  },
-  {
-    "name": "CALANDA",
-    "category": "Pisos",
-    "subcategory": "Laminado",
-    "url": "7-pisos.html#71-laminado",
-    "thumb": "img/7-pisos/71-laminado/CALANDA.jpeg"
-  },
-  {
-    "name": "CEREZO TABLA",
-    "category": "Pisos",
-    "subcategory": "Laminado",
-    "url": "7-pisos.html#71-laminado",
-    "thumb": "img/7-pisos/71-laminado/CEREZO TABLA.jpg"
-  },
-  {
-    "name": "COLONIAL OAK",
-    "category": "Pisos",
-    "subcategory": "Laminado",
-    "url": "7-pisos.html#71-laminado",
-    "thumb": "img/7-pisos/71-laminado/COLONIAL OAK.jpg"
-  },
-  {
-    "name": "COPPER OAK",
-    "category": "Pisos",
-    "subcategory": "Laminado",
-    "url": "7-pisos.html#71-laminado",
-    "thumb": "img/7-pisos/71-laminado/COPPER OAK.jpg"
-  },
-  {
-    "name": "DEMOCRACY OAK",
-    "category": "Pisos",
-    "subcategory": "Laminado",
-    "url": "7-pisos.html#71-laminado",
-    "thumb": "img/7-pisos/71-laminado/DEMOCRACY OAK.jpg"
-  },
-  {
-    "name": "DENALI",
-    "category": "Pisos",
-    "subcategory": "Laminado",
-    "url": "7-pisos.html#71-laminado",
-    "thumb": "img/7-pisos/71-laminado/DENALI.jpg"
-  },
-  {
-    "name": "ELBRUS",
-    "category": "Pisos",
-    "subcategory": "Laminado",
-    "url": "7-pisos.html#71-laminado",
-    "thumb": "img/7-pisos/71-laminado/ELBRUS.jpg"
-  },
-  {
-    "name": "EVEREST",
-    "category": "Pisos",
-    "subcategory": "Laminado",
-    "url": "7-pisos.html#71-laminado",
-    "thumb": "img/7-pisos/71-laminado/EVEREST.jpg"
-  },
-  {
-    "name": "GOLDEN OAK",
-    "category": "Pisos",
-    "subcategory": "Laminado",
-    "url": "7-pisos.html#71-laminado",
-    "thumb": "img/7-pisos/71-laminado/GOLDEN OAK.jpg"
-  },
-  {
-    "name": "GUDAR",
-    "category": "Pisos",
-    "subcategory": "Laminado",
-    "url": "7-pisos.html#71-laminado",
-    "thumb": "img/7-pisos/71-laminado/GUDAR.jpeg"
-  },
-  {
-    "name": "HICKORY CAROLINA",
-    "category": "Pisos",
-    "subcategory": "Laminado",
-    "url": "7-pisos.html#71-laminado",
-    "thumb": "img/7-pisos/71-laminado/HICKORY CAROLINA.jpg"
-  },
-  {
-    "name": "INDEPENDENCE OAK",
-    "category": "Pisos",
-    "subcategory": "Laminado",
-    "url": "7-pisos.html#71-laminado",
-    "thumb": "img/7-pisos/71-laminado/INDEPENDENCE OAK.jpg"
-  },
-  {
-    "name": "IVORY WHITE",
-    "category": "Pisos",
-    "subcategory": "Laminado",
-    "url": "7-pisos.html#71-laminado",
-    "thumb": "img/7-pisos/71-laminado/IVORY WHITE.jpg"
-  },
-  {
-    "name": "KIEFER STORM",
-    "category": "Pisos",
-    "subcategory": "Laminado",
-    "url": "7-pisos.html#71-laminado",
-    "thumb": "img/7-pisos/71-laminado/KIEFER STORM.jpg"
-  },
-  {
-    "name": "KILIMANJARO",
-    "category": "Pisos",
-    "subcategory": "Laminado",
-    "url": "7-pisos.html#71-laminado",
-    "thumb": "img/7-pisos/71-laminado/KILIMANJARO.jpg"
-  },
-  {
-    "name": "MOUNTAIN BEECH SPLASH",
-    "category": "Pisos",
-    "subcategory": "Laminado",
-    "url": "7-pisos.html#71-laminado",
-    "thumb": "img/7-pisos/71-laminado/MOUNTAIN BEECH SPLASH.jpg"
-  },
-  {
-    "name": "MOUNTAIN BEECH",
-    "category": "Pisos",
-    "subcategory": "Laminado",
-    "url": "7-pisos.html#71-laminado",
-    "thumb": "img/7-pisos/71-laminado/MOUNTAIN BEECH.jpg"
-  },
-  {
-    "name": "NOGAL AMERICANO",
-    "category": "Pisos",
-    "subcategory": "Laminado",
-    "url": "7-pisos.html#71-laminado",
-    "thumb": "img/7-pisos/71-laminado/NOGAL AMERICANO.jpg"
-  },
-  {
-    "name": "OAK BREEZE",
-    "category": "Pisos",
-    "subcategory": "Laminado",
-    "url": "7-pisos.html#71-laminado",
-    "thumb": "img/7-pisos/71-laminado/OAK BREEZE.jpg"
-  },
-  {
-    "name": "OAK CABANA LAGOS",
-    "category": "Pisos",
-    "subcategory": "Laminado",
-    "url": "7-pisos.html#71-laminado",
-    "thumb": "img/7-pisos/71-laminado/OAK CABANA LAGOS.jpg"
-  },
-  {
-    "name": "OAK DESIGN",
-    "category": "Pisos",
-    "subcategory": "Laminado",
-    "url": "7-pisos.html#71-laminado",
-    "thumb": "img/7-pisos/71-laminado/OAK DESIGN.jpg"
-  },
-  {
-    "name": "OAK EPIC APULIEN",
-    "category": "Pisos",
-    "subcategory": "Laminado",
-    "url": "7-pisos.html#71-laminado",
-    "thumb": "img/7-pisos/71-laminado/OAK EPIC APULIEN.jpg"
-  },
-  {
-    "name": "OAK EVOKE CRYSTAL",
-    "category": "Pisos",
-    "subcategory": "Laminado",
-    "url": "7-pisos.html#71-laminado",
-    "thumb": "img/7-pisos/71-laminado/OAK EVOKE CRYSTAL.jpg"
-  },
-  {
-    "name": "OAK FRESCO",
-    "category": "Pisos",
-    "subcategory": "Laminado",
-    "url": "7-pisos.html#71-laminado",
-    "thumb": "img/7-pisos/71-laminado/OAK FRESCO.jpg"
-  },
-  {
-    "name": "OAK NATURAL",
-    "category": "Pisos",
-    "subcategory": "Laminado",
-    "url": "7-pisos.html#71-laminado",
-    "thumb": "img/7-pisos/71-laminado/OAK NATURAL.jpg"
-  },
-  {
-    "name": "OAK SILEA",
-    "category": "Pisos",
-    "subcategory": "Laminado",
-    "url": "7-pisos.html#71-laminado",
-    "thumb": "img/7-pisos/71-laminado/OAK SILEA.jpg"
-  },
-  {
-    "name": "OAK SOLANO",
-    "category": "Pisos",
-    "subcategory": "Laminado",
-    "url": "7-pisos.html#71-laminado",
-    "thumb": "img/7-pisos/71-laminado/OAK SOLANO.png"
-  },
-  {
-    "name": "OAK SOUL",
-    "category": "Pisos",
-    "subcategory": "Laminado",
-    "url": "7-pisos.html#71-laminado",
-    "thumb": "img/7-pisos/71-laminado/OAK SOUL.jpg"
-  },
-  {
-    "name": "OAK SUNSET",
-    "category": "Pisos",
-    "subcategory": "Laminado",
-    "url": "7-pisos.html#71-laminado",
-    "thumb": "img/7-pisos/71-laminado/OAK SUNSET.png"
-  },
-  {
-    "name": "OAK THUNDER",
-    "category": "Pisos",
-    "subcategory": "Laminado",
-    "url": "7-pisos.html#71-laminado",
-    "thumb": "img/7-pisos/71-laminado/OAK THUNDER.jpg"
-  },
-  {
-    "name": "OAK TREND",
-    "category": "Pisos",
-    "subcategory": "Laminado",
-    "url": "7-pisos.html#71-laminado",
-    "thumb": "img/7-pisos/71-laminado/OAK TREND.jpg"
-  },
-  {
-    "name": "OAK VIENNA",
-    "category": "Pisos",
-    "subcategory": "Laminado",
-    "url": "7-pisos.html#71-laminado",
-    "thumb": "img/7-pisos/71-laminado/OAK VIENNA.jpg"
-  },
-  {
-    "name": "OAK VOUGE",
-    "category": "Pisos",
-    "subcategory": "Laminado",
-    "url": "7-pisos.html#71-laminado",
-    "thumb": "img/7-pisos/71-laminado/OAK VOUGE.png"
-  },
-  {
-    "name": "PLANTATION OAK",
-    "category": "Pisos",
-    "subcategory": "Laminado",
-    "url": "7-pisos.html#71-laminado",
-    "thumb": "img/7-pisos/71-laminado/PLANTATION OAK.jpg"
-  },
-  {
-    "name": "REVOLUTION OAK",
-    "category": "Pisos",
-    "subcategory": "Laminado",
-    "url": "7-pisos.html#71-laminado",
-    "thumb": "img/7-pisos/71-laminado/REVOLUTION OAK.jpg"
-  },
-  {
-    "name": "SPRUCE ANTIQUE",
-    "category": "Pisos",
-    "subcategory": "Laminado",
-    "url": "7-pisos.html#71-laminado",
-    "thumb": "img/7-pisos/71-laminado/SPRUCE ANTIQUE.jpg"
-  },
-  {
-    "name": "TAHOE",
-    "category": "Pisos",
-    "subcategory": "Laminado",
-    "url": "7-pisos.html#71-laminado",
-    "thumb": "img/7-pisos/71-laminado/TAHOE.jpg"
-  },
-  {
-    "name": "TERNASCO",
-    "category": "Pisos",
-    "subcategory": "Laminado",
-    "url": "7-pisos.html#71-laminado",
-    "thumb": "img/7-pisos/71-laminado/TERNASCO.jpeg"
-  },
-  {
-    "name": "TITANIUM OAK",
-    "category": "Pisos",
-    "subcategory": "Laminado",
-    "url": "7-pisos.html#71-laminado",
-    "thumb": "img/7-pisos/71-laminado/TITANIUM OAK.jpg"
-  },
-  {
-    "name": "UTRILLAS",
-    "category": "Pisos",
-    "subcategory": "Laminado",
-    "url": "7-pisos.html#71-laminado",
-    "thumb": "img/7-pisos/71-laminado/UTRILLAS.jpeg"
-  },
-  {
-    "name": "WALNUT SABO",
-    "category": "Pisos",
-    "subcategory": "Laminado",
-    "url": "7-pisos.html#71-laminado",
-    "thumb": "img/7-pisos/71-laminado/WALNUT SABO.jpg"
-  },
-  {
-    "name": "WALNUT",
-    "category": "Pisos",
-    "subcategory": "Laminado",
-    "url": "7-pisos.html#71-laminado",
-    "thumb": "img/7-pisos/71-laminado/WALNUT.jpg"
-  },
-  {
-    "name": "ALBANY CREEK",
-    "category": "Pisos",
-    "subcategory": "WPC",
-    "url": "7-pisos.html#72-wpc",
-    "thumb": "img/7-pisos/72-wpc/ALBANY CREEK.jpg"
-  },
-  {
-    "name": "CANBERRA",
-    "category": "Pisos",
-    "subcategory": "WPC",
-    "url": "7-pisos.html#72-wpc",
-    "thumb": "img/7-pisos/72-wpc/CANBERRA.jpg"
-  },
-  {
-    "name": "HAMPTON",
-    "category": "Pisos",
-    "subcategory": "WPC",
-    "url": "7-pisos.html#72-wpc",
-    "thumb": "img/7-pisos/72-wpc/HAMPTON.jpg"
-  },
-  {
-    "name": "NORWELL",
-    "category": "Pisos",
-    "subcategory": "WPC",
-    "url": "7-pisos.html#72-wpc",
-    "thumb": "img/7-pisos/72-wpc/NORWELL.jpg"
-  },
-  {
-    "name": "VERMONT",
-    "category": "Pisos",
-    "subcategory": "WPC",
-    "url": "7-pisos.html#72-wpc",
-    "thumb": "img/7-pisos/72-wpc/VERMONT.jpg"
-  },
-  {
-    "name": "ALBERTA",
-    "category": "Pisos",
-    "subcategory": "SPC",
-    "url": "7-pisos.html#73-spc",
-    "thumb": "img/7-pisos/73-spc/ALBERTA.jpg"
-  },
-  {
-    "name": "AMAZON",
-    "category": "Pisos",
-    "subcategory": "SPC",
-    "url": "7-pisos.html#73-spc",
-    "thumb": "img/7-pisos/73-spc/AMAZON.jpg"
-  },
-  {
-    "name": "ASHLAR GRAY",
-    "category": "Pisos",
-    "subcategory": "SPC",
-    "url": "7-pisos.html#73-spc",
-    "thumb": "img/7-pisos/73-spc/ASHLAR GRAY.jpg"
-  },
-  {
-    "name": "ASHLAR",
-    "category": "Pisos",
-    "subcategory": "SPC",
-    "url": "7-pisos.html#73-spc",
-    "thumb": "img/7-pisos/73-spc/ASHLAR.jpg"
-  },
-  {
-    "name": "BANFF",
-    "category": "Pisos",
-    "subcategory": "SPC",
-    "url": "7-pisos.html#73-spc",
-    "thumb": "img/7-pisos/73-spc/BANFF.jpg"
-  },
-  {
-    "name": "CARAMEL",
-    "category": "Pisos",
-    "subcategory": "SPC",
-    "url": "7-pisos.html#73-spc",
-    "thumb": "img/7-pisos/73-spc/CARAMEL.jpg"
-  },
-  {
-    "name": "COLORADO RUSH",
-    "category": "Pisos",
-    "subcategory": "SPC",
-    "url": "7-pisos.html#73-spc",
-    "thumb": "img/7-pisos/73-spc/COLORADO RUSH.jpg"
-  },
-  {
-    "name": "CONCRETE LITE",
-    "category": "Pisos",
-    "subcategory": "SPC",
-    "url": "7-pisos.html#73-spc",
-    "thumb": "img/7-pisos/73-spc/CONCRETE LITE.jpg"
-  },
-  {
-    "name": "CONCRETE",
-    "category": "Pisos",
-    "subcategory": "SPC",
-    "url": "7-pisos.html#73-spc",
-    "thumb": "img/7-pisos/73-spc/CONCRETE.jpg"
-  },
-  {
-    "name": "DALBY",
-    "category": "Pisos",
-    "subcategory": "SPC",
-    "url": "7-pisos.html#73-spc",
-    "thumb": "img/7-pisos/73-spc/DALBY.jpg"
-  },
-  {
-    "name": "DELAMERE",
-    "category": "Pisos",
-    "subcategory": "SPC",
-    "url": "7-pisos.html#73-spc",
-    "thumb": "img/7-pisos/73-spc/DELAMERE.jpg"
-  },
-  {
-    "name": "EXPRESSO",
-    "category": "Pisos",
-    "subcategory": "SPC",
-    "url": "7-pisos.html#73-spc",
-    "thumb": "img/7-pisos/73-spc/EXPRESSO.jpg"
-  },
-  {
-    "name": "JASPER",
-    "category": "Pisos",
-    "subcategory": "SPC",
-    "url": "7-pisos.html#73-spc",
-    "thumb": "img/7-pisos/73-spc/JASPER.jpg"
-  },
-  {
-    "name": "MINERAL GRAY",
-    "category": "Pisos",
-    "subcategory": "SPC",
-    "url": "7-pisos.html#73-spc",
-    "thumb": "img/7-pisos/73-spc/MINERAL GRAY.jpg"
-  },
-  {
-    "name": "MOKA",
-    "category": "Pisos",
-    "subcategory": "SPC",
-    "url": "7-pisos.html#73-spc",
-    "thumb": "img/7-pisos/73-spc/MOKA.jpg"
-  },
-  {
-    "name": "NOMADIC",
-    "category": "Pisos",
-    "subcategory": "SPC",
-    "url": "7-pisos.html#73-spc",
-    "thumb": "img/7-pisos/73-spc/NOMADIC.jpg"
-  },
-  {
-    "name": "PARKLAND",
-    "category": "Pisos",
-    "subcategory": "SPC",
-    "url": "7-pisos.html#73-spc",
-    "thumb": "img/7-pisos/73-spc/PARKLAND.jpg"
-  },
-  {
-    "name": "SILVERSTONE",
-    "category": "Pisos",
-    "subcategory": "SPC",
-    "url": "7-pisos.html#73-spc",
-    "thumb": "img/7-pisos/73-spc/SILVERSTONE.jpg"
-  },
-  {
-    "name": "SILVESTER",
-    "category": "Pisos",
-    "subcategory": "SPC",
-    "url": "7-pisos.html#73-spc",
-    "thumb": "img/7-pisos/73-spc/SILVESTER.jpg"
-  },
-  {
-    "name": "STERLING OAK",
-    "category": "Pisos",
-    "subcategory": "SPC",
-    "url": "7-pisos.html#73-spc",
-    "thumb": "img/7-pisos/73-spc/STERLING OAK.jpg"
-  },
-  {
-    "name": "TONGASS",
-    "category": "Pisos",
-    "subcategory": "SPC",
-    "url": "7-pisos.html#73-spc",
-    "thumb": "img/7-pisos/73-spc/TONGASS.jpg"
-  },
-  {
-    "name": "YOSEMITE",
-    "category": "Pisos",
-    "subcategory": "SPC",
-    "url": "7-pisos.html#73-spc",
-    "thumb": "img/7-pisos/73-spc/YOSEMITE.jpg"
-  },
-  {
-    "name": "LIGHT GRAY",
-    "category": "Pisos",
-    "subcategory": "Deck Sintetico",
-    "url": "7-pisos.html#74-deck-sintetico",
-    "thumb": "img/7-pisos/74-deck-sintetico/LIGHT GRAY.jpg"
-  },
-  {
-    "name": "MAPLE",
-    "category": "Pisos",
-    "subcategory": "Deck Sintetico",
-    "url": "7-pisos.html#74-deck-sintetico",
-    "thumb": "img/7-pisos/74-deck-sintetico/MAPLE.jpg"
-  },
-  {
-    "name": "TEAK",
-    "category": "Pisos",
-    "subcategory": "Deck Sintetico",
-    "url": "7-pisos.html#74-deck-sintetico",
-    "thumb": "img/7-pisos/74-deck-sintetico/TEAK.jpg"
-  },
-  {
-    "name": "WENGE",
-    "category": "Pisos",
-    "subcategory": "Deck Sintetico",
-    "url": "7-pisos.html#74-deck-sintetico",
-    "thumb": "img/7-pisos/74-deck-sintetico/WENGE.jpg"
-  },
-  {
-    "name": "AMAZONAS-A",
-    "category": "Zacate",
-    "subcategory": "Follaje Sintetico",
-    "url": "8-zacate.html#81-follaje-sintetico",
-    "thumb": "img/8-zacate/81-follaje-sintetico/AMAZONAS-A.jpg"
-  },
-  {
-    "name": "AMAZONAS-B",
-    "category": "Zacate",
-    "subcategory": "Follaje Sintetico",
-    "url": "8-zacate.html#81-follaje-sintetico",
-    "thumb": "img/8-zacate/81-follaje-sintetico/AMAZONAS-B.jpg"
-  },
-  {
-    "name": "AMAZONAS-C",
-    "category": "Zacate",
-    "subcategory": "Follaje Sintetico",
-    "url": "8-zacate.html#81-follaje-sintetico",
-    "thumb": "img/8-zacate/81-follaje-sintetico/AMAZONAS-C.jpg"
-  },
-  {
-    "name": "AMSTERDAM",
-    "category": "Zacate",
-    "subcategory": "Follaje Sintetico",
-    "url": "8-zacate.html#81-follaje-sintetico",
-    "thumb": "img/8-zacate/81-follaje-sintetico/AMSTERDAM.jpg"
-  },
-  {
-    "name": "ARRAYAN AMARILLO",
-    "category": "Zacate",
-    "subcategory": "Follaje Sintetico",
-    "url": "8-zacate.html#81-follaje-sintetico",
-    "thumb": "img/8-zacate/81-follaje-sintetico/ARRAYAN AMARILLO.jpg"
-  },
-  {
-    "name": "ARRAYAN MORADO",
-    "category": "Zacate",
-    "subcategory": "Follaje Sintetico",
-    "url": "8-zacate.html#81-follaje-sintetico",
-    "thumb": "img/8-zacate/81-follaje-sintetico/ARRAYAN MORADO.jpg"
-  },
-  {
-    "name": "ARRAYAN NATURAL",
-    "category": "Zacate",
-    "subcategory": "Follaje Sintetico",
-    "url": "8-zacate.html#81-follaje-sintetico",
-    "thumb": "img/8-zacate/81-follaje-sintetico/ARRAYAN NATURAL.jpg"
-  },
-  {
-    "name": "ARRAYAN ROJO",
-    "category": "Zacate",
-    "subcategory": "Follaje Sintetico",
-    "url": "8-zacate.html#81-follaje-sintetico",
-    "thumb": "img/8-zacate/81-follaje-sintetico/ARRAYAN ROJO.jpg"
-  },
-  {
-    "name": "ARRAYAN VERDE",
-    "category": "Zacate",
-    "subcategory": "Follaje Sintetico",
-    "url": "8-zacate.html#81-follaje-sintetico",
-    "thumb": "img/8-zacate/81-follaje-sintetico/ARRAYAN VERDE.jpg"
-  },
-  {
-    "name": "BRUSELAS",
-    "category": "Zacate",
-    "subcategory": "Follaje Sintetico",
-    "url": "8-zacate.html#81-follaje-sintetico",
-    "thumb": "img/8-zacate/81-follaje-sintetico/BRUSELAS.jpg"
-  },
-  {
-    "name": "GRECIA",
-    "category": "Zacate",
-    "subcategory": "Follaje Sintetico",
-    "url": "8-zacate.html#81-follaje-sintetico",
-    "thumb": "img/8-zacate/81-follaje-sintetico/GRECIA.jpg"
-  },
-  {
-    "name": "JAZMIN",
-    "category": "Zacate",
-    "subcategory": "Follaje Sintetico",
-    "url": "8-zacate.html#81-follaje-sintetico",
-    "thumb": "img/8-zacate/81-follaje-sintetico/JAZMIN.jpg"
-  },
-  {
-    "name": "LAUREL DORADO",
-    "category": "Zacate",
-    "subcategory": "Follaje Sintetico",
-    "url": "8-zacate.html#81-follaje-sintetico",
-    "thumb": "img/8-zacate/81-follaje-sintetico/LAUREL DORADO.jpg"
-  },
-  {
-    "name": "MENTA",
-    "category": "Zacate",
-    "subcategory": "Follaje Sintetico",
-    "url": "8-zacate.html#81-follaje-sintetico",
-    "thumb": "img/8-zacate/81-follaje-sintetico/MENTA.jpg"
-  },
-  {
-    "name": "MILAN",
-    "category": "Zacate",
-    "subcategory": "Follaje Sintetico",
-    "url": "8-zacate.html#81-follaje-sintetico",
-    "thumb": "img/8-zacate/81-follaje-sintetico/MILAN.jpg"
-  },
-  {
-    "name": "PERSIA",
-    "category": "Zacate",
-    "subcategory": "Follaje Sintetico",
-    "url": "8-zacate.html#81-follaje-sintetico",
-    "thumb": "img/8-zacate/81-follaje-sintetico/PERSIA.jpg"
-  },
-  {
-    "name": "SEVILLA",
-    "category": "Zacate",
-    "subcategory": "Follaje Sintetico",
-    "url": "8-zacate.html#81-follaje-sintetico",
-    "thumb": "img/8-zacate/81-follaje-sintetico/SEVILLA.jpg"
-  },
-  {
-    "name": "SIBERIA",
-    "category": "Zacate",
-    "subcategory": "Follaje Sintetico",
-    "url": "8-zacate.html#81-follaje-sintetico",
-    "thumb": "img/8-zacate/81-follaje-sintetico/SIBERIA.jpg"
-  },
-  {
-    "name": "TREBOL",
-    "category": "Zacate",
-    "subcategory": "Follaje Sintetico",
-    "url": "8-zacate.html#81-follaje-sintetico",
-    "thumb": "img/8-zacate/81-follaje-sintetico/TREBOL.jpg"
-  },
-  {
-    "name": "TG-07-ARUBA",
-    "category": "Zacate",
-    "subcategory": "Pasto Recreativo",
-    "url": "8-zacate.html#82-pasto-recreativo",
-    "thumb": "img/8-zacate/82-pasto-recreativo/TG-07-ARUBA.jpg"
-  },
-  {
-    "name": "TG-10-ACA",
-    "category": "Zacate",
-    "subcategory": "Pasto Recreativo",
-    "url": "8-zacate.html#82-pasto-recreativo",
-    "thumb": "img/8-zacate/82-pasto-recreativo/TG-10-ACA.jpg"
-  },
-  {
-    "name": "TG-18-SUMMER",
-    "category": "Zacate",
-    "subcategory": "Pasto Recreativo",
-    "url": "8-zacate.html#82-pasto-recreativo",
-    "thumb": "img/8-zacate/82-pasto-recreativo/TG-18-SUMMER.jpg"
-  },
-  {
-    "name": "TG-20-BERMUDA",
-    "category": "Zacate",
-    "subcategory": "Pasto Recreativo",
-    "url": "8-zacate.html#82-pasto-recreativo",
-    "thumb": "img/8-zacate/82-pasto-recreativo/TG-20-BERMUDA.jpg"
-  },
-  {
-    "name": "TG-25-CANCUN",
-    "category": "Zacate",
-    "subcategory": "Pasto Recreativo",
-    "url": "8-zacate.html#82-pasto-recreativo",
-    "thumb": "img/8-zacate/82-pasto-recreativo/TG-25-CANCUN.jpg"
-  },
-  {
-    "name": "TG-30-MAUI",
-    "category": "Zacate",
-    "subcategory": "Pasto Recreativo",
-    "url": "8-zacate.html#82-pasto-recreativo",
-    "thumb": "img/8-zacate/82-pasto-recreativo/TG-30-MAUI.jpg"
-  },
-  {
-    "name": "TG-35-TULUM",
-    "category": "Zacate",
-    "subcategory": "Pasto Recreativo",
-    "url": "8-zacate.html#82-pasto-recreativo",
-    "thumb": "img/8-zacate/82-pasto-recreativo/TG-35-TULUM.jpg"
-  },
-  {
-    "name": "TG-40-BALI",
-    "category": "Zacate",
-    "subcategory": "Pasto Recreativo",
-    "url": "8-zacate.html#82-pasto-recreativo",
-    "thumb": "img/8-zacate/82-pasto-recreativo/TG-40-BALI.jpg"
-  },
-  {
-    "name": "TG-45-GULHI",
-    "category": "Zacate",
-    "subcategory": "Pasto Recreativo",
-    "url": "8-zacate.html#82-pasto-recreativo",
-    "thumb": "img/8-zacate/82-pasto-recreativo/TG-45-GULHI.jpg"
-  },
-  {
-    "name": "TG-50-ANAKENA",
-    "category": "Zacate",
-    "subcategory": "Pasto Recreativo",
-    "url": "8-zacate.html#82-pasto-recreativo",
-    "thumb": "img/8-zacate/82-pasto-recreativo/TG-50-ANAKENA.jpg"
-  },
-  {
-    "name": "BLACK",
-    "category": "Cladding",
-    "subcategory": "Placa tipo roca",
-    "url": "9-cladding.html#91-placa-tipo-roca",
-    "thumb": "img/9-cladding/91-placa-tipo-roca/BLACK.jpg"
-  },
-  {
-    "name": "GRAY",
-    "category": "Cladding",
-    "subcategory": "Placa tipo roca",
-    "url": "9-cladding.html#91-placa-tipo-roca",
-    "thumb": "img/9-cladding/91-placa-tipo-roca/GRAY.jpg"
-  },
-  {
-    "name": "Esquiner 35X45X2900MM",
-    "category": "Cladding",
-    "subcategory": null,
-    "url": "9-cladding.html",
-    "thumb": "img/9-cladding/Esquiner 35X45X2900MM.jpg"
-  },
-  {
-    "name": "HICKORY",
-    "category": "Cladding",
-    "subcategory": null,
-    "url": "9-cladding.html",
-    "thumb": "img/9-cladding/HICKORY.jpg"
-  },
-  {
-    "name": "MAPLE",
-    "category": "Cladding",
-    "subcategory": null,
-    "url": "9-cladding.html",
-    "thumb": "img/9-cladding/MAPLE.jpg"
-  },
-  {
-    "name": "MERBAU",
-    "category": "Cladding",
-    "subcategory": null,
-    "url": "9-cladding.html",
-    "thumb": "img/9-cladding/MERBAU.jpg"
-  },
-  {
-    "name": "REDWOOD",
-    "category": "Cladding",
-    "subcategory": null,
-    "url": "9-cladding.html",
-    "thumb": "img/9-cladding/REDWOOD.jpg"
-  },
-  {
-    "name": "TASMANIA",
-    "category": "Cladding",
-    "subcategory": null,
-    "url": "9-cladding.html",
-    "thumb": "img/9-cladding/TASMANIA.jpg"
-  },
-  {
-    "name": "TEAK",
-    "category": "Cladding",
-    "subcategory": null,
-    "url": "9-cladding.html",
-    "thumb": "img/9-cladding/TEAK.jpg"
-  },
-  {
-    "name": "WENGE",
-    "category": "Cladding",
-    "subcategory": null,
-    "url": "9-cladding.html",
-    "thumb": "img/9-cladding/WENGE.jpg"
-  },
-  {
-    "name": "perfil plano25X3X2900MM",
-    "category": "Cladding",
-    "subcategory": null,
-    "url": "9-cladding.html",
-    "thumb": "img/9-cladding/perfil plano25X3X2900MM.jpg"
+{
+  "products": [
+    {
+      "name": "Adler",
+      "category": "Placas PVC",
+      "subcategory": "Placas PVC tipo madera",
+      "url": "1-placas-pvc.html#11-placas-pvc-tipo-madera",
+      "thumb": "img/1-placas-pvc/11-placas-pvc-tipo-madera/Adler.jpg"
+    },
+    {
+      "name": "Alpina",
+      "category": "Placas PVC",
+      "subcategory": "Placas PVC tipo madera",
+      "url": "1-placas-pvc.html#11-placas-pvc-tipo-madera",
+      "thumb": "img/1-placas-pvc/11-placas-pvc-tipo-madera/Alpina.jpg"
+    },
+    {
+      "name": "Angulo 8x8x2440mm",
+      "category": "Placas PVC",
+      "subcategory": "Placas PVC tipo madera",
+      "url": "1-placas-pvc.html#11-placas-pvc-tipo-madera",
+      "thumb": "img/1-placas-pvc/11-placas-pvc-tipo-madera/Angulo 8x8x2440mm.jpg"
+    },
+    {
+      "name": "Solaria",
+      "category": "Placas PVC",
+      "subcategory": "Placas PVC tipo madera",
+      "url": "1-placas-pvc.html#11-placas-pvc-tipo-madera",
+      "thumb": "img/1-placas-pvc/11-placas-pvc-tipo-madera/Solaria.jpg"
+    },
+    {
+      "name": "Solden",
+      "category": "Placas PVC",
+      "subcategory": "Placas PVC tipo madera",
+      "url": "1-placas-pvc.html#11-placas-pvc-tipo-madera",
+      "thumb": "img/1-placas-pvc/11-placas-pvc-tipo-madera/Solden.jpg"
+    },
+    {
+      "name": "anton",
+      "category": "Placas PVC",
+      "subcategory": "Placas PVC tipo madera",
+      "url": "1-placas-pvc.html#11-placas-pvc-tipo-madera",
+      "thumb": "img/1-placas-pvc/11-placas-pvc-tipo-madera/anton.jpg"
+    },
+    {
+      "name": "perfil T 7x3x2440mm",
+      "category": "Placas PVC",
+      "subcategory": "Placas PVC tipo madera",
+      "url": "1-placas-pvc.html#11-placas-pvc-tipo-madera",
+      "thumb": "img/1-placas-pvc/11-placas-pvc-tipo-madera/perfil T 7x3x2440mm.jpg"
+    },
+    {
+      "name": "ANGULO 8x8x2440mm",
+      "category": "Placas PVC",
+      "subcategory": "Placas PVC Texturizadas",
+      "url": "1-placas-pvc.html#12-placas-pvc-texturizadas",
+      "thumb": "img/1-placas-pvc/12-placas-pvc-texturizadas/ANGULO 8x8x2440mm.jpg"
+    },
+    {
+      "name": "ASH",
+      "category": "Placas PVC",
+      "subcategory": "Placas PVC Texturizadas",
+      "url": "1-placas-pvc.html#12-placas-pvc-texturizadas",
+      "thumb": "img/1-placas-pvc/12-placas-pvc-texturizadas/ASH.png"
+    },
+    {
+      "name": "CEDAR",
+      "category": "Placas PVC",
+      "subcategory": "Placas PVC Texturizadas",
+      "url": "1-placas-pvc.html#12-placas-pvc-texturizadas",
+      "thumb": "img/1-placas-pvc/12-placas-pvc-texturizadas/CEDAR.png"
+    },
+    {
+      "name": "ENCINO",
+      "category": "Placas PVC",
+      "subcategory": "Placas PVC Texturizadas",
+      "url": "1-placas-pvc.html#12-placas-pvc-texturizadas",
+      "thumb": "img/1-placas-pvc/12-placas-pvc-texturizadas/ENCINO.png"
+    },
+    {
+      "name": "IPE",
+      "category": "Placas PVC",
+      "subcategory": "Placas PVC Texturizadas",
+      "url": "1-placas-pvc.html#12-placas-pvc-texturizadas",
+      "thumb": "img/1-placas-pvc/12-placas-pvc-texturizadas/IPE.png"
+    },
+    {
+      "name": "JATOBA",
+      "category": "Placas PVC",
+      "subcategory": "Placas PVC Texturizadas",
+      "url": "1-placas-pvc.html#12-placas-pvc-texturizadas",
+      "thumb": "img/1-placas-pvc/12-placas-pvc-texturizadas/JATOBA.png"
+    },
+    {
+      "name": "NOGAL",
+      "category": "Placas PVC",
+      "subcategory": "Placas PVC Texturizadas",
+      "url": "1-placas-pvc.html#12-placas-pvc-texturizadas",
+      "thumb": "img/1-placas-pvc/12-placas-pvc-texturizadas/NOGAL.png"
+    },
+    {
+      "name": "PERFIL T 7x3x2440mm",
+      "category": "Placas PVC",
+      "subcategory": "Placas PVC Texturizadas",
+      "url": "1-placas-pvc.html#12-placas-pvc-texturizadas",
+      "thumb": "img/1-placas-pvc/12-placas-pvc-texturizadas/PERFIL T 7x3x2440mm.jpg"
+    },
+    {
+      "name": "WENGE",
+      "category": "Placas PVC",
+      "subcategory": "Placas PVC Texturizadas",
+      "url": "1-placas-pvc.html#12-placas-pvc-texturizadas",
+      "thumb": "img/1-placas-pvc/12-placas-pvc-texturizadas/WENGE.png"
+    },
+    {
+      "name": "PLACA TIPO ESPEJO DORADO",
+      "category": "Placas PVC",
+      "subcategory": "Placas PVC Tipo espejo",
+      "url": "1-placas-pvc.html#13-placas-pvc-tipo-espejo",
+      "thumb": "img/1-placas-pvc/13-placas-pvc-tipo-espejo/PLACA TIPO ESPEJO DORADO.jpg"
+    },
+    {
+      "name": "PLACA TIPO ESPEJO",
+      "category": "Placas PVC",
+      "subcategory": "Placas PVC Tipo espejo",
+      "url": "1-placas-pvc.html#13-placas-pvc-tipo-espejo",
+      "thumb": "img/1-placas-pvc/13-placas-pvc-tipo-espejo/PLACA TIPO ESPEJO.jpg"
+    },
+    {
+      "name": "PLACA TIPO METAL",
+      "category": "Placas PVC",
+      "subcategory": "Placas PVC Tipo espejo",
+      "url": "1-placas-pvc.html#13-placas-pvc-tipo-espejo",
+      "thumb": "img/1-placas-pvc/13-placas-pvc-tipo-espejo/PLACA TIPO METAL.jpg"
+    },
+    {
+      "name": "AGATA",
+      "category": "Placas PVC",
+      "subcategory": null,
+      "url": "1-placas-pvc.html",
+      "thumb": "img/1-placas-pvc/AGATA.jpg"
+    },
+    {
+      "name": "ARENA",
+      "category": "Placas PVC",
+      "subcategory": null,
+      "url": "1-placas-pvc.html",
+      "thumb": "img/1-placas-pvc/ARENA.jpg"
+    },
+    {
+      "name": "Aurora Dorada",
+      "category": "Placas PVC",
+      "subcategory": null,
+      "url": "1-placas-pvc.html",
+      "thumb": "img/1-placas-pvc/Aurora Dorada.jpg"
+    },
+    {
+      "name": "Carrara Oscuro",
+      "category": "Placas PVC",
+      "subcategory": null,
+      "url": "1-placas-pvc.html",
+      "thumb": "img/1-placas-pvc/Carrara Oscuro.jpg"
+    },
+    {
+      "name": "Cuarzo",
+      "category": "Placas PVC",
+      "subcategory": null,
+      "url": "1-placas-pvc.html",
+      "thumb": "img/1-placas-pvc/Cuarzo.jpg"
+    },
+    {
+      "name": "Grafito",
+      "category": "Placas PVC",
+      "subcategory": null,
+      "url": "1-placas-pvc.html",
+      "thumb": "img/1-placas-pvc/Grafito.jpg"
+    },
+    {
+      "name": "Jaspe",
+      "category": "Placas PVC",
+      "subcategory": null,
+      "url": "1-placas-pvc.html",
+      "thumb": "img/1-placas-pvc/Jaspe.jpg"
+    },
+    {
+      "name": "OBSIDIANA",
+      "category": "Placas PVC",
+      "subcategory": null,
+      "url": "1-placas-pvc.html",
+      "thumb": "img/1-placas-pvc/OBSIDIANA.jpg"
+    },
+    {
+      "name": "Onix",
+      "category": "Placas PVC",
+      "subcategory": null,
+      "url": "1-placas-pvc.html",
+      "thumb": "img/1-placas-pvc/Onix.jpg"
+    },
+    {
+      "name": "Opalo",
+      "category": "Placas PVC",
+      "subcategory": null,
+      "url": "1-placas-pvc.html",
+      "thumb": "img/1-placas-pvc/Opalo.jpg"
+    },
+    {
+      "name": "Perfil t 7x3x2440mm",
+      "category": "Placas PVC",
+      "subcategory": null,
+      "url": "1-placas-pvc.html",
+      "thumb": "img/1-placas-pvc/Perfil t 7x3x2440mm.jpg"
+    },
+    {
+      "name": "Perla",
+      "category": "Placas PVC",
+      "subcategory": null,
+      "url": "1-placas-pvc.html",
+      "thumb": "img/1-placas-pvc/Perla.jpg"
+    },
+    {
+      "name": "Topacio",
+      "category": "Placas PVC",
+      "subcategory": null,
+      "url": "1-placas-pvc.html",
+      "thumb": "img/1-placas-pvc/Topacio.jpg"
+    },
+    {
+      "name": "ZAFIRO",
+      "category": "Placas PVC",
+      "subcategory": null,
+      "url": "1-placas-pvc.html",
+      "thumb": "img/1-placas-pvc/ZAFIRO.jpg"
+    },
+    {
+      "name": "angulo 8x8x2440mm",
+      "category": "Placas PVC",
+      "subcategory": null,
+      "url": "1-placas-pvc.html",
+      "thumb": "img/1-placas-pvc/angulo 8x8x2440mm.jpg"
+    },
+    {
+      "name": "AMANECHER",
+      "category": "Lambrin WPC",
+      "subcategory": "Lambrin Interior",
+      "url": "2-lambrin-wpc.html#21-lambrin-interior",
+      "thumb": "img/2-lambrin-wpc/21-lambrin-interior/AMANECHER.jpg"
+    },
+    {
+      "name": "ANGULO WPC PARA INTERIOR",
+      "category": "Lambrin WPC",
+      "subcategory": "Lambrin Interior",
+      "url": "2-lambrin-wpc.html#21-lambrin-interior",
+      "thumb": "img/2-lambrin-wpc/21-lambrin-interior/ANGULO WPC PARA INTERIOR.jpg"
+    },
+    {
+      "name": "Amizade",
+      "category": "Lambrin WPC",
+      "subcategory": "Lambrin Interior",
+      "url": "2-lambrin-wpc.html#21-lambrin-interior",
+      "thumb": "img/2-lambrin-wpc/21-lambrin-interior/Amizade.jpg"
+    },
+    {
+      "name": "BAHIA",
+      "category": "Lambrin WPC",
+      "subcategory": "Lambrin Interior",
+      "url": "2-lambrin-wpc.html#21-lambrin-interior",
+      "thumb": "img/2-lambrin-wpc/21-lambrin-interior/BAHIA.jpg"
+    },
+    {
+      "name": "Brasilia",
+      "category": "Lambrin WPC",
+      "subcategory": "Lambrin Interior",
+      "url": "2-lambrin-wpc.html#21-lambrin-interior",
+      "thumb": "img/2-lambrin-wpc/21-lambrin-interior/Brasilia.jpg"
+    },
+    {
+      "name": "Cerezo Macapa",
+      "category": "Lambrin WPC",
+      "subcategory": "Lambrin Interior",
+      "url": "2-lambrin-wpc.html#21-lambrin-interior",
+      "thumb": "img/2-lambrin-wpc/21-lambrin-interior/Cerezo Macapa.jpg"
+    },
+    {
+      "name": "Estrelado",
+      "category": "Lambrin WPC",
+      "subcategory": "Lambrin Interior",
+      "url": "2-lambrin-wpc.html#21-lambrin-interior",
+      "thumb": "img/2-lambrin-wpc/21-lambrin-interior/Estrelado.jpg"
+    },
+    {
+      "name": "Fortaleza",
+      "category": "Lambrin WPC",
+      "subcategory": "Lambrin Interior",
+      "url": "2-lambrin-wpc.html#21-lambrin-interior",
+      "thumb": "img/2-lambrin-wpc/21-lambrin-interior/Fortaleza.jpg"
+    },
+    {
+      "name": "Manaos",
+      "category": "Lambrin WPC",
+      "subcategory": "Lambrin Interior",
+      "url": "2-lambrin-wpc.html#21-lambrin-interior",
+      "thumb": "img/2-lambrin-wpc/21-lambrin-interior/Manaos.jpg"
+    },
+    {
+      "name": "Nogal Olinda",
+      "category": "Lambrin WPC",
+      "subcategory": "Lambrin Interior",
+      "url": "2-lambrin-wpc.html#21-lambrin-interior",
+      "thumb": "img/2-lambrin-wpc/21-lambrin-interior/Nogal Olinda.jpg"
+    },
+    {
+      "name": "Nuvem",
+      "category": "Lambrin WPC",
+      "subcategory": "Lambrin Interior",
+      "url": "2-lambrin-wpc.html#21-lambrin-interior",
+      "thumb": "img/2-lambrin-wpc/21-lambrin-interior/Nuvem.jpg"
+    },
+    {
+      "name": "Ouro Preto",
+      "category": "Lambrin WPC",
+      "subcategory": "Lambrin Interior",
+      "url": "2-lambrin-wpc.html#21-lambrin-interior",
+      "thumb": "img/2-lambrin-wpc/21-lambrin-interior/Ouro Preto.jpg"
+    },
+    {
+      "name": "Ribeira",
+      "category": "Lambrin WPC",
+      "subcategory": "Lambrin Interior",
+      "url": "2-lambrin-wpc.html#21-lambrin-interior",
+      "thumb": "img/2-lambrin-wpc/21-lambrin-interior/Ribeira.jpg"
+    },
+    {
+      "name": "Rodeiro",
+      "category": "Lambrin WPC",
+      "subcategory": "Lambrin Interior",
+      "url": "2-lambrin-wpc.html#21-lambrin-interior",
+      "thumb": "img/2-lambrin-wpc/21-lambrin-interior/Rodeiro.jpg"
+    },
+    {
+      "name": "Río",
+      "category": "Lambrin WPC",
+      "subcategory": "Lambrin Interior",
+      "url": "2-lambrin-wpc.html#21-lambrin-interior",
+      "thumb": "img/2-lambrin-wpc/21-lambrin-interior/Río.jpg"
+    },
+    {
+      "name": "Sabeiro",
+      "category": "Lambrin WPC",
+      "subcategory": "Lambrin Interior",
+      "url": "2-lambrin-wpc.html#21-lambrin-interior",
+      "thumb": "img/2-lambrin-wpc/21-lambrin-interior/Sabeiro.jpg"
+    },
+    {
+      "name": "Sao Paulo",
+      "category": "Lambrin WPC",
+      "subcategory": "Lambrin Interior",
+      "url": "2-lambrin-wpc.html#21-lambrin-interior",
+      "thumb": "img/2-lambrin-wpc/21-lambrin-interior/Sao Paulo.jpg"
+    },
+    {
+      "name": "Sonho",
+      "category": "Lambrin WPC",
+      "subcategory": "Lambrin Interior",
+      "url": "2-lambrin-wpc.html#21-lambrin-interior",
+      "thumb": "img/2-lambrin-wpc/21-lambrin-interior/Sonho.jpg"
+    },
+    {
+      "name": "Teak Aracaju",
+      "category": "Lambrin WPC",
+      "subcategory": "Lambrin Interior",
+      "url": "2-lambrin-wpc.html#21-lambrin-interior",
+      "thumb": "img/2-lambrin-wpc/21-lambrin-interior/Teak Aracaju.jpg"
+    },
+    {
+      "name": "CHARCOAL",
+      "category": "Lambrin WPC",
+      "subcategory": "Lambrin Exterior",
+      "url": "2-lambrin-wpc.html#22-lambrin-exterior",
+      "thumb": "img/2-lambrin-wpc/22-lambrin-exterior/CHARCOAL.jpg"
+    },
+    {
+      "name": "DARK BLACK",
+      "category": "Lambrin WPC",
+      "subcategory": "Lambrin Exterior",
+      "url": "2-lambrin-wpc.html#22-lambrin-exterior",
+      "thumb": "img/2-lambrin-wpc/22-lambrin-exterior/DARK BLACK.jpg"
+    },
+    {
+      "name": "Esquinero",
+      "category": "Lambrin WPC",
+      "subcategory": "Lambrin Exterior",
+      "url": "2-lambrin-wpc.html#22-lambrin-exterior",
+      "thumb": "img/2-lambrin-wpc/22-lambrin-exterior/Esquinero.jpg"
+    },
+    {
+      "name": "REDWOOD",
+      "category": "Lambrin WPC",
+      "subcategory": "Lambrin Exterior",
+      "url": "2-lambrin-wpc.html#22-lambrin-exterior",
+      "thumb": "img/2-lambrin-wpc/22-lambrin-exterior/REDWOOD.jpg"
+    },
+    {
+      "name": "SLIVER GRAY",
+      "category": "Lambrin WPC",
+      "subcategory": "Lambrin Exterior",
+      "url": "2-lambrin-wpc.html#22-lambrin-exterior",
+      "thumb": "img/2-lambrin-wpc/22-lambrin-exterior/SLIVER GRAY.jpg"
+    },
+    {
+      "name": "TEAK",
+      "category": "Lambrin WPC",
+      "subcategory": "Lambrin Exterior",
+      "url": "2-lambrin-wpc.html#22-lambrin-exterior",
+      "thumb": "img/2-lambrin-wpc/22-lambrin-exterior/TEAK.jpg"
+    },
+    {
+      "name": "Bahia",
+      "category": "Lambrin WPC",
+      "subcategory": "Desigual",
+      "url": "2-lambrin-wpc.html#23-desigual",
+      "thumb": "img/2-lambrin-wpc/23-desigual/Bahia.jpg"
+    },
+    {
+      "name": "Brasilia",
+      "category": "Lambrin WPC",
+      "subcategory": "Desigual",
+      "url": "2-lambrin-wpc.html#23-desigual",
+      "thumb": "img/2-lambrin-wpc/23-desigual/Brasilia.jpg"
+    },
+    {
+      "name": "Parota",
+      "category": "Lambrin WPC",
+      "subcategory": "Desigual",
+      "url": "2-lambrin-wpc.html#23-desigual",
+      "thumb": "img/2-lambrin-wpc/23-desigual/Parota.jpg"
+    },
+    {
+      "name": "Rio",
+      "category": "Lambrin WPC",
+      "subcategory": "Desigual",
+      "url": "2-lambrin-wpc.html#23-desigual",
+      "thumb": "img/2-lambrin-wpc/23-desigual/Rio.jpg"
+    },
+    {
+      "name": "Sao Paulo",
+      "category": "Lambrin WPC",
+      "subcategory": "Desigual",
+      "url": "2-lambrin-wpc.html#23-desigual",
+      "thumb": "img/2-lambrin-wpc/23-desigual/Sao Paulo.jpg"
+    },
+    {
+      "name": "Bahia",
+      "category": "Lambrin WPC",
+      "subcategory": "Media luna",
+      "url": "2-lambrin-wpc.html#24-media-luna",
+      "thumb": "img/2-lambrin-wpc/24-media-luna/Bahia.jpg"
+    },
+    {
+      "name": "Sao Paulo",
+      "category": "Lambrin WPC",
+      "subcategory": "Media luna",
+      "url": "2-lambrin-wpc.html#24-media-luna",
+      "thumb": "img/2-lambrin-wpc/24-media-luna/Sao Paulo.jpg"
+    },
+    {
+      "name": "azeituna",
+      "category": "Lambrin WPC",
+      "subcategory": "Media luna",
+      "url": "2-lambrin-wpc.html#24-media-luna",
+      "thumb": "img/2-lambrin-wpc/24-media-luna/azeituna.jpg"
+    },
+    {
+      "name": "brasilia",
+      "category": "Lambrin WPC",
+      "subcategory": "Media luna",
+      "url": "2-lambrin-wpc.html#24-media-luna",
+      "thumb": "img/2-lambrin-wpc/24-media-luna/brasilia.jpg"
+    },
+    {
+      "name": "rio",
+      "category": "Lambrin WPC",
+      "subcategory": "Media luna",
+      "url": "2-lambrin-wpc.html#24-media-luna",
+      "thumb": "img/2-lambrin-wpc/24-media-luna/rio.jpg"
+    },
+    {
+      "name": "AURELI",
+      "category": "Lambrin WPC",
+      "subcategory": "Media luna PS",
+      "url": "2-lambrin-wpc.html#25-media-luna-ps",
+      "thumb": "img/2-lambrin-wpc/25-media-luna-ps/AURELI.jpg"
+    },
+    {
+      "name": "CRESSIDA",
+      "category": "Lambrin WPC",
+      "subcategory": "Media luna PS",
+      "url": "2-lambrin-wpc.html#25-media-luna-ps",
+      "thumb": "img/2-lambrin-wpc/25-media-luna-ps/CRESSIDA.jpg"
+    },
+    {
+      "name": "ELARA",
+      "category": "Lambrin WPC",
+      "subcategory": "Media luna PS",
+      "url": "2-lambrin-wpc.html#25-media-luna-ps",
+      "thumb": "img/2-lambrin-wpc/25-media-luna-ps/ELARA.jpg"
+    },
+    {
+      "name": "GILDARA",
+      "category": "Lambrin WPC",
+      "subcategory": "Media luna PS",
+      "url": "2-lambrin-wpc.html#25-media-luna-ps",
+      "thumb": "img/2-lambrin-wpc/25-media-luna-ps/GILDARA.jpg"
+    },
+    {
+      "name": "CONCRETO Aparente",
+      "category": "Revestimiento Flexible",
+      "subcategory": null,
+      "url": "3-revestimiento-flexible.html",
+      "thumb": "img/3-revestimiento-flexible/CONCRETO Aparente.jpg"
+    },
+    {
+      "name": "Concreto Gris",
+      "category": "Revestimiento Flexible",
+      "subcategory": null,
+      "url": "3-revestimiento-flexible.html",
+      "thumb": "img/3-revestimiento-flexible/Concreto Gris.jpg"
+    },
+    {
+      "name": "Granito Blanco",
+      "category": "Revestimiento Flexible",
+      "subcategory": null,
+      "url": "3-revestimiento-flexible.html",
+      "thumb": "img/3-revestimiento-flexible/Granito Blanco.jpg"
+    },
+    {
+      "name": "Granito Imperial Blanco",
+      "category": "Revestimiento Flexible",
+      "subcategory": null,
+      "url": "3-revestimiento-flexible.html",
+      "thumb": "img/3-revestimiento-flexible/Granito Imperial Blanco.jpg"
+    },
+    {
+      "name": "Granito Oro",
+      "category": "Revestimiento Flexible",
+      "subcategory": null,
+      "url": "3-revestimiento-flexible.html",
+      "thumb": "img/3-revestimiento-flexible/Granito Oro.jpg"
+    },
+    {
+      "name": "Madera Roble",
+      "category": "Revestimiento Flexible",
+      "subcategory": null,
+      "url": "3-revestimiento-flexible.html",
+      "thumb": "img/3-revestimiento-flexible/Madera Roble.jpeg"
+    },
+    {
+      "name": "SHERWOOD",
+      "category": "Plafon PVC",
+      "subcategory": "Plafon pvc laminado",
+      "url": "4-plafon-pvc.html#41-plafon-pvc-laminado",
+      "thumb": "img/4-plafon-pvc/41-plafon-pvc-laminado/SHERWOOD.jpg"
+    },
+    {
+      "name": "Teesdale",
+      "category": "Plafon PVC",
+      "subcategory": "Plafon pvc laminado",
+      "url": "4-plafon-pvc.html#41-plafon-pvc-laminado",
+      "thumb": "img/4-plafon-pvc/41-plafon-pvc-laminado/Teesdale.jpg"
+    },
+    {
+      "name": "Ash Nomad",
+      "category": "Plafon PVC",
+      "subcategory": "Plafon Laminado wood",
+      "url": "4-plafon-pvc.html#42-plafon-laminado-wood",
+      "thumb": "img/4-plafon-pvc/42-plafon-laminado-wood/Ash Nomad.jpg"
+    },
+    {
+      "name": "Birch Ember",
+      "category": "Plafon PVC",
+      "subcategory": "Plafon Laminado wood",
+      "url": "4-plafon-pvc.html#42-plafon-laminado-wood",
+      "thumb": "img/4-plafon-pvc/42-plafon-laminado-wood/Birch Ember.jpg"
+    },
+    {
+      "name": "Cocoa Ash",
+      "category": "Plafon PVC",
+      "subcategory": "Plafon Laminado wood",
+      "url": "4-plafon-pvc.html#42-plafon-laminado-wood",
+      "thumb": "img/4-plafon-pvc/42-plafon-laminado-wood/Cocoa Ash.jpg"
+    },
+    {
+      "name": "Ivory Elm",
+      "category": "Plafon PVC",
+      "subcategory": "Plafon Laminado wood",
+      "url": "4-plafon-pvc.html#42-plafon-laminado-wood",
+      "thumb": "img/4-plafon-pvc/42-plafon-laminado-wood/Ivory Elm.jpg"
+    },
+    {
+      "name": "Maple Dusk",
+      "category": "Plafon PVC",
+      "subcategory": "Plafon Laminado wood",
+      "url": "4-plafon-pvc.html#42-plafon-laminado-wood",
+      "thumb": "img/4-plafon-pvc/42-plafon-laminado-wood/Maple Dusk.jpg"
+    },
+    {
+      "name": "Walnut Elipse",
+      "category": "Plafon PVC",
+      "subcategory": "Plafon Laminado wood",
+      "url": "4-plafon-pvc.html#42-plafon-laminado-wood",
+      "thumb": "img/4-plafon-pvc/42-plafon-laminado-wood/Walnut Elipse.jpg"
+    },
+    {
+      "name": "Wild Teak",
+      "category": "Plafon PVC",
+      "subcategory": "Plafon Laminado wood",
+      "url": "4-plafon-pvc.html#42-plafon-laminado-wood",
+      "thumb": "img/4-plafon-pvc/42-plafon-laminado-wood/Wild Teak.jpg"
+    },
+    {
+      "name": "Ranurado vista 2",
+      "category": "Plafon PVC",
+      "subcategory": "Plafon Ranurado",
+      "url": "4-plafon-pvc.html#plafon-ranurado",
+      "thumb": "img/4-plafon-pvc/plafon-ranurado/Ranurado vista 2.jpg"
+    },
+    {
+      "name": "Ranurado",
+      "category": "Plafon PVC",
+      "subcategory": "Plafon Ranurado",
+      "url": "4-plafon-pvc.html#plafon-ranurado",
+      "thumb": "img/4-plafon-pvc/plafon-ranurado/Ranurado.jpg"
+    },
+    {
+      "name": "Cambridge",
+      "category": "Plafon PVC",
+      "subcategory": null,
+      "url": "4-plafon-pvc.html",
+      "thumb": "img/4-plafon-pvc/Cambridge.jpg"
+    },
+    {
+      "name": "Liverpool",
+      "category": "Plafon PVC",
+      "subcategory": null,
+      "url": "4-plafon-pvc.html",
+      "thumb": "img/4-plafon-pvc/Liverpool.jpg"
+    },
+    {
+      "name": "York",
+      "category": "Plafon PVC",
+      "subcategory": null,
+      "url": "4-plafon-pvc.html",
+      "thumb": "img/4-plafon-pvc/York.jpg"
+    },
+    {
+      "name": "bristol",
+      "category": "Plafon PVC",
+      "subcategory": null,
+      "url": "4-plafon-pvc.html",
+      "thumb": "img/4-plafon-pvc/bristol.jpg"
+    },
+    {
+      "name": "Austin",
+      "category": "Paneles tridimensionales",
+      "subcategory": "Blanco",
+      "url": "5-paneles-tridimensionales.html#51-blanco",
+      "thumb": "img/5-paneles-tridimensionales/51-blanco/Austin.jpg"
+    },
+    {
+      "name": "Boston",
+      "category": "Paneles tridimensionales",
+      "subcategory": "Blanco",
+      "url": "5-paneles-tridimensionales.html#51-blanco",
+      "thumb": "img/5-paneles-tridimensionales/51-blanco/Boston.jpg"
+    },
+    {
+      "name": "Charleston",
+      "category": "Paneles tridimensionales",
+      "subcategory": "Blanco",
+      "url": "5-paneles-tridimensionales.html#51-blanco",
+      "thumb": "img/5-paneles-tridimensionales/51-blanco/Charleston.jpg"
+    },
+    {
+      "name": "Charlotte",
+      "category": "Paneles tridimensionales",
+      "subcategory": "Blanco",
+      "url": "5-paneles-tridimensionales.html#51-blanco",
+      "thumb": "img/5-paneles-tridimensionales/51-blanco/Charlotte.jpg"
+    },
+    {
+      "name": "Chicago",
+      "category": "Paneles tridimensionales",
+      "subcategory": "Blanco",
+      "url": "5-paneles-tridimensionales.html#51-blanco",
+      "thumb": "img/5-paneles-tridimensionales/51-blanco/Chicago.jpg"
+    },
+    {
+      "name": "Cleveland",
+      "category": "Paneles tridimensionales",
+      "subcategory": "Blanco",
+      "url": "5-paneles-tridimensionales.html#51-blanco",
+      "thumb": "img/5-paneles-tridimensionales/51-blanco/Cleveland.jpg"
+    },
+    {
+      "name": "Columbus",
+      "category": "Paneles tridimensionales",
+      "subcategory": "Blanco",
+      "url": "5-paneles-tridimensionales.html#51-blanco",
+      "thumb": "img/5-paneles-tridimensionales/51-blanco/Columbus.jpg"
+    },
+    {
+      "name": "Dallas",
+      "category": "Paneles tridimensionales",
+      "subcategory": "Blanco",
+      "url": "5-paneles-tridimensionales.html#51-blanco",
+      "thumb": "img/5-paneles-tridimensionales/51-blanco/Dallas.jpg"
+    },
+    {
+      "name": "Denver",
+      "category": "Paneles tridimensionales",
+      "subcategory": "Blanco",
+      "url": "5-paneles-tridimensionales.html#51-blanco",
+      "thumb": "img/5-paneles-tridimensionales/51-blanco/Denver.jpg"
+    },
+    {
+      "name": "Detroit",
+      "category": "Paneles tridimensionales",
+      "subcategory": "Blanco",
+      "url": "5-paneles-tridimensionales.html#51-blanco",
+      "thumb": "img/5-paneles-tridimensionales/51-blanco/Detroit.jpg"
+    },
+    {
+      "name": "Filadelfia",
+      "category": "Paneles tridimensionales",
+      "subcategory": "Blanco",
+      "url": "5-paneles-tridimensionales.html#51-blanco",
+      "thumb": "img/5-paneles-tridimensionales/51-blanco/Filadelfia.jpg"
+    },
+    {
+      "name": "Frisco",
+      "category": "Paneles tridimensionales",
+      "subcategory": "Blanco",
+      "url": "5-paneles-tridimensionales.html#51-blanco",
+      "thumb": "img/5-paneles-tridimensionales/51-blanco/Frisco.jpg"
+    },
+    {
+      "name": "Houston",
+      "category": "Paneles tridimensionales",
+      "subcategory": "Blanco",
+      "url": "5-paneles-tridimensionales.html#51-blanco",
+      "thumb": "img/5-paneles-tridimensionales/51-blanco/Houston.jpg"
+    },
+    {
+      "name": "Minneapolis",
+      "category": "Paneles tridimensionales",
+      "subcategory": "Grises",
+      "url": "5-paneles-tridimensionales.html#52-grises",
+      "thumb": "img/5-paneles-tridimensionales/52-grises/Minneapolis.jpg"
+    },
+    {
+      "name": "Oklahoma",
+      "category": "Paneles tridimensionales",
+      "subcategory": "Grises",
+      "url": "5-paneles-tridimensionales.html#52-grises",
+      "thumb": "img/5-paneles-tridimensionales/52-grises/Oklahoma.jpg"
+    },
+    {
+      "name": "Orlando",
+      "category": "Paneles tridimensionales",
+      "subcategory": "Grises",
+      "url": "5-paneles-tridimensionales.html#52-grises",
+      "thumb": "img/5-paneles-tridimensionales/52-grises/Orlando.jpg"
+    },
+    {
+      "name": "Portland",
+      "category": "Paneles tridimensionales",
+      "subcategory": "Madera",
+      "url": "5-paneles-tridimensionales.html#53-madera",
+      "thumb": "img/5-paneles-tridimensionales/53-madera/Portland.jpg"
+    },
+    {
+      "name": "Providence",
+      "category": "Paneles tridimensionales",
+      "subcategory": "Madera",
+      "url": "5-paneles-tridimensionales.html#53-madera",
+      "thumb": "img/5-paneles-tridimensionales/53-madera/Providence.jpg"
+    },
+    {
+      "name": "Raleigh",
+      "category": "Paneles tridimensionales",
+      "subcategory": "Madera",
+      "url": "5-paneles-tridimensionales.html#53-madera",
+      "thumb": "img/5-paneles-tridimensionales/53-madera/Raleigh.jpg"
+    },
+    {
+      "name": "Reno",
+      "category": "Paneles tridimensionales",
+      "subcategory": "Madera",
+      "url": "5-paneles-tridimensionales.html#53-madera",
+      "thumb": "img/5-paneles-tridimensionales/53-madera/Reno.jpg"
+    },
+    {
+      "name": "seattle",
+      "category": "Paneles tridimensionales",
+      "subcategory": "Negro",
+      "url": "5-paneles-tridimensionales.html#54-negro",
+      "thumb": "img/5-paneles-tridimensionales/54-negro/seattle.jpg"
+    },
+    {
+      "name": "Laredo",
+      "category": "Paneles tridimensionales",
+      "subcategory": "Oro",
+      "url": "5-paneles-tridimensionales.html#55-oro",
+      "thumb": "img/5-paneles-tridimensionales/55-oro/Laredo.jpg"
+    },
+    {
+      "name": "Miami",
+      "category": "Paneles tridimensionales",
+      "subcategory": "Oro",
+      "url": "5-paneles-tridimensionales.html#55-oro",
+      "thumb": "img/5-paneles-tridimensionales/55-oro/Miami.jpg"
+    },
+    {
+      "name": "memphis",
+      "category": "Paneles tridimensionales",
+      "subcategory": "Oro",
+      "url": "5-paneles-tridimensionales.html#55-oro",
+      "thumb": "img/5-paneles-tridimensionales/55-oro/memphis.jpg"
+    },
+    {
+      "name": "BAHIA 1",
+      "category": "Vigas PVC",
+      "subcategory": "Interior",
+      "url": "6-vigas-pvc.html#61-interior",
+      "thumb": "img/6-vigas-pvc/61-interior/BAHIA 1.jpg"
+    },
+    {
+      "name": "BAHIA",
+      "category": "Vigas PVC",
+      "subcategory": "Interior",
+      "url": "6-vigas-pvc.html#61-interior",
+      "thumb": "img/6-vigas-pvc/61-interior/BAHIA.jpg"
+    },
+    {
+      "name": "BRASILIA 1",
+      "category": "Vigas PVC",
+      "subcategory": "Interior",
+      "url": "6-vigas-pvc.html#61-interior",
+      "thumb": "img/6-vigas-pvc/61-interior/BRASILIA 1.jpg"
+    },
+    {
+      "name": "BRASILIA",
+      "category": "Vigas PVC",
+      "subcategory": "Interior",
+      "url": "6-vigas-pvc.html#61-interior",
+      "thumb": "img/6-vigas-pvc/61-interior/BRASILIA.jpg"
+    },
+    {
+      "name": "COPLE PARA VIGA 2",
+      "category": "Vigas PVC",
+      "subcategory": "Interior",
+      "url": "6-vigas-pvc.html#61-interior",
+      "thumb": "img/6-vigas-pvc/61-interior/COPLE PARA VIGA 2.jpg"
+    },
+    {
+      "name": "COPLE PARA VIGA",
+      "category": "Vigas PVC",
+      "subcategory": "Interior",
+      "url": "6-vigas-pvc.html#61-interior",
+      "thumb": "img/6-vigas-pvc/61-interior/COPLE PARA VIGA.jpg"
+    },
+    {
+      "name": "RIO 1",
+      "category": "Vigas PVC",
+      "subcategory": "Interior",
+      "url": "6-vigas-pvc.html#61-interior",
+      "thumb": "img/6-vigas-pvc/61-interior/RIO 1.jpg"
+    },
+    {
+      "name": "RIO",
+      "category": "Vigas PVC",
+      "subcategory": "Interior",
+      "url": "6-vigas-pvc.html#61-interior",
+      "thumb": "img/6-vigas-pvc/61-interior/RIO.jpg"
+    },
+    {
+      "name": "SAO PAULO 1",
+      "category": "Vigas PVC",
+      "subcategory": "Interior",
+      "url": "6-vigas-pvc.html#61-interior",
+      "thumb": "img/6-vigas-pvc/61-interior/SAO PAULO 1.jpg"
+    },
+    {
+      "name": "SAO PAULO",
+      "category": "Vigas PVC",
+      "subcategory": "Interior",
+      "url": "6-vigas-pvc.html#61-interior",
+      "thumb": "img/6-vigas-pvc/61-interior/SAO PAULO.jpg"
+    },
+    {
+      "name": "SOPORTE PARA VIGA INTERIOR 100X50MM",
+      "category": "Vigas PVC",
+      "subcategory": "Interior",
+      "url": "6-vigas-pvc.html#61-interior",
+      "thumb": "img/6-vigas-pvc/61-interior/SOPORTE PARA VIGA INTERIOR 100X50MM.jpg"
+    },
+    {
+      "name": "DARK BLACK",
+      "category": "Vigas PVC",
+      "subcategory": "Exterior",
+      "url": "6-vigas-pvc.html#62-exterior",
+      "thumb": "img/6-vigas-pvc/62-exterior/DARK BLACK.jpg"
+    },
+    {
+      "name": "REDWOOD",
+      "category": "Vigas PVC",
+      "subcategory": "Exterior",
+      "url": "6-vigas-pvc.html#62-exterior",
+      "thumb": "img/6-vigas-pvc/62-exterior/REDWOOD.jpg"
+    },
+    {
+      "name": "SOPORTE GIRATORIO PARA VIGA EXTERIOR",
+      "category": "Vigas PVC",
+      "subcategory": "Exterior",
+      "url": "6-vigas-pvc.html#62-exterior",
+      "thumb": "img/6-vigas-pvc/62-exterior/SOPORTE GIRATORIO PARA VIGA EXTERIOR.jpg"
+    },
+    {
+      "name": "TEAK",
+      "category": "Vigas PVC",
+      "subcategory": "Exterior",
+      "url": "6-vigas-pvc.html#62-exterior",
+      "thumb": "img/6-vigas-pvc/62-exterior/TEAK.jpg"
+    },
+    {
+      "name": "ACONCAGUA",
+      "category": "Pisos",
+      "subcategory": "Laminado",
+      "url": "7-pisos.html#71-laminado",
+      "thumb": "img/7-pisos/71-laminado/ACONCAGUA.jpg"
+    },
+    {
+      "name": "ALCAÑIZ",
+      "category": "Pisos",
+      "subcategory": "Laminado",
+      "url": "7-pisos.html#71-laminado",
+      "thumb": "img/7-pisos/71-laminado/ALCAÑIZ.jpeg"
+    },
+    {
+      "name": "ARCTIC OAK SPLASH",
+      "category": "Pisos",
+      "subcategory": "Laminado",
+      "url": "7-pisos.html#71-laminado",
+      "thumb": "img/7-pisos/71-laminado/ARCTIC OAK SPLASH.jpg"
+    },
+    {
+      "name": "AUSTRALIAN WALNUT SPLASH",
+      "category": "Pisos",
+      "subcategory": "Laminado",
+      "url": "7-pisos.html#71-laminado",
+      "thumb": "img/7-pisos/71-laminado/AUSTRALIAN WALNUT SPLASH.jpg"
+    },
+    {
+      "name": "BOULDER",
+      "category": "Pisos",
+      "subcategory": "Laminado",
+      "url": "7-pisos.html#71-laminado",
+      "thumb": "img/7-pisos/71-laminado/BOULDER.jpg"
+    },
+    {
+      "name": "CALANDA",
+      "category": "Pisos",
+      "subcategory": "Laminado",
+      "url": "7-pisos.html#71-laminado",
+      "thumb": "img/7-pisos/71-laminado/CALANDA.jpeg"
+    },
+    {
+      "name": "CEREZO TABLA",
+      "category": "Pisos",
+      "subcategory": "Laminado",
+      "url": "7-pisos.html#71-laminado",
+      "thumb": "img/7-pisos/71-laminado/CEREZO TABLA.jpg"
+    },
+    {
+      "name": "COLONIAL OAK",
+      "category": "Pisos",
+      "subcategory": "Laminado",
+      "url": "7-pisos.html#71-laminado",
+      "thumb": "img/7-pisos/71-laminado/COLONIAL OAK.jpg"
+    },
+    {
+      "name": "COPPER OAK",
+      "category": "Pisos",
+      "subcategory": "Laminado",
+      "url": "7-pisos.html#71-laminado",
+      "thumb": "img/7-pisos/71-laminado/COPPER OAK.jpg"
+    },
+    {
+      "name": "DEMOCRACY OAK",
+      "category": "Pisos",
+      "subcategory": "Laminado",
+      "url": "7-pisos.html#71-laminado",
+      "thumb": "img/7-pisos/71-laminado/DEMOCRACY OAK.jpg"
+    },
+    {
+      "name": "DENALI",
+      "category": "Pisos",
+      "subcategory": "Laminado",
+      "url": "7-pisos.html#71-laminado",
+      "thumb": "img/7-pisos/71-laminado/DENALI.jpg"
+    },
+    {
+      "name": "ELBRUS",
+      "category": "Pisos",
+      "subcategory": "Laminado",
+      "url": "7-pisos.html#71-laminado",
+      "thumb": "img/7-pisos/71-laminado/ELBRUS.jpg"
+    },
+    {
+      "name": "EVEREST",
+      "category": "Pisos",
+      "subcategory": "Laminado",
+      "url": "7-pisos.html#71-laminado",
+      "thumb": "img/7-pisos/71-laminado/EVEREST.jpg"
+    },
+    {
+      "name": "GOLDEN OAK",
+      "category": "Pisos",
+      "subcategory": "Laminado",
+      "url": "7-pisos.html#71-laminado",
+      "thumb": "img/7-pisos/71-laminado/GOLDEN OAK.jpg"
+    },
+    {
+      "name": "GUDAR",
+      "category": "Pisos",
+      "subcategory": "Laminado",
+      "url": "7-pisos.html#71-laminado",
+      "thumb": "img/7-pisos/71-laminado/GUDAR.jpeg"
+    },
+    {
+      "name": "HICKORY CAROLINA",
+      "category": "Pisos",
+      "subcategory": "Laminado",
+      "url": "7-pisos.html#71-laminado",
+      "thumb": "img/7-pisos/71-laminado/HICKORY CAROLINA.jpg"
+    },
+    {
+      "name": "INDEPENDENCE OAK",
+      "category": "Pisos",
+      "subcategory": "Laminado",
+      "url": "7-pisos.html#71-laminado",
+      "thumb": "img/7-pisos/71-laminado/INDEPENDENCE OAK.jpg"
+    },
+    {
+      "name": "IVORY WHITE",
+      "category": "Pisos",
+      "subcategory": "Laminado",
+      "url": "7-pisos.html#71-laminado",
+      "thumb": "img/7-pisos/71-laminado/IVORY WHITE.jpg"
+    },
+    {
+      "name": "KIEFER STORM",
+      "category": "Pisos",
+      "subcategory": "Laminado",
+      "url": "7-pisos.html#71-laminado",
+      "thumb": "img/7-pisos/71-laminado/KIEFER STORM.jpg"
+    },
+    {
+      "name": "KILIMANJARO",
+      "category": "Pisos",
+      "subcategory": "Laminado",
+      "url": "7-pisos.html#71-laminado",
+      "thumb": "img/7-pisos/71-laminado/KILIMANJARO.jpg"
+    },
+    {
+      "name": "MOUNTAIN BEECH SPLASH",
+      "category": "Pisos",
+      "subcategory": "Laminado",
+      "url": "7-pisos.html#71-laminado",
+      "thumb": "img/7-pisos/71-laminado/MOUNTAIN BEECH SPLASH.jpg"
+    },
+    {
+      "name": "MOUNTAIN BEECH",
+      "category": "Pisos",
+      "subcategory": "Laminado",
+      "url": "7-pisos.html#71-laminado",
+      "thumb": "img/7-pisos/71-laminado/MOUNTAIN BEECH.jpg"
+    },
+    {
+      "name": "NOGAL AMERICANO",
+      "category": "Pisos",
+      "subcategory": "Laminado",
+      "url": "7-pisos.html#71-laminado",
+      "thumb": "img/7-pisos/71-laminado/NOGAL AMERICANO.jpg"
+    },
+    {
+      "name": "OAK BREEZE",
+      "category": "Pisos",
+      "subcategory": "Laminado",
+      "url": "7-pisos.html#71-laminado",
+      "thumb": "img/7-pisos/71-laminado/OAK BREEZE.jpg"
+    },
+    {
+      "name": "OAK CABANA LAGOS",
+      "category": "Pisos",
+      "subcategory": "Laminado",
+      "url": "7-pisos.html#71-laminado",
+      "thumb": "img/7-pisos/71-laminado/OAK CABANA LAGOS.jpg"
+    },
+    {
+      "name": "OAK DESIGN",
+      "category": "Pisos",
+      "subcategory": "Laminado",
+      "url": "7-pisos.html#71-laminado",
+      "thumb": "img/7-pisos/71-laminado/OAK DESIGN.jpg"
+    },
+    {
+      "name": "OAK EPIC APULIEN",
+      "category": "Pisos",
+      "subcategory": "Laminado",
+      "url": "7-pisos.html#71-laminado",
+      "thumb": "img/7-pisos/71-laminado/OAK EPIC APULIEN.jpg"
+    },
+    {
+      "name": "OAK EVOKE CRYSTAL",
+      "category": "Pisos",
+      "subcategory": "Laminado",
+      "url": "7-pisos.html#71-laminado",
+      "thumb": "img/7-pisos/71-laminado/OAK EVOKE CRYSTAL.jpg"
+    },
+    {
+      "name": "OAK FRESCO",
+      "category": "Pisos",
+      "subcategory": "Laminado",
+      "url": "7-pisos.html#71-laminado",
+      "thumb": "img/7-pisos/71-laminado/OAK FRESCO.jpg"
+    },
+    {
+      "name": "OAK NATURAL",
+      "category": "Pisos",
+      "subcategory": "Laminado",
+      "url": "7-pisos.html#71-laminado",
+      "thumb": "img/7-pisos/71-laminado/OAK NATURAL.jpg"
+    },
+    {
+      "name": "OAK SILEA",
+      "category": "Pisos",
+      "subcategory": "Laminado",
+      "url": "7-pisos.html#71-laminado",
+      "thumb": "img/7-pisos/71-laminado/OAK SILEA.jpg"
+    },
+    {
+      "name": "OAK SOLANO",
+      "category": "Pisos",
+      "subcategory": "Laminado",
+      "url": "7-pisos.html#71-laminado",
+      "thumb": "img/7-pisos/71-laminado/OAK SOLANO.png"
+    },
+    {
+      "name": "OAK SOUL",
+      "category": "Pisos",
+      "subcategory": "Laminado",
+      "url": "7-pisos.html#71-laminado",
+      "thumb": "img/7-pisos/71-laminado/OAK SOUL.jpg"
+    },
+    {
+      "name": "OAK SUNSET",
+      "category": "Pisos",
+      "subcategory": "Laminado",
+      "url": "7-pisos.html#71-laminado",
+      "thumb": "img/7-pisos/71-laminado/OAK SUNSET.png"
+    },
+    {
+      "name": "OAK THUNDER",
+      "category": "Pisos",
+      "subcategory": "Laminado",
+      "url": "7-pisos.html#71-laminado",
+      "thumb": "img/7-pisos/71-laminado/OAK THUNDER.jpg"
+    },
+    {
+      "name": "OAK TREND",
+      "category": "Pisos",
+      "subcategory": "Laminado",
+      "url": "7-pisos.html#71-laminado",
+      "thumb": "img/7-pisos/71-laminado/OAK TREND.jpg"
+    },
+    {
+      "name": "OAK VIENNA",
+      "category": "Pisos",
+      "subcategory": "Laminado",
+      "url": "7-pisos.html#71-laminado",
+      "thumb": "img/7-pisos/71-laminado/OAK VIENNA.jpg"
+    },
+    {
+      "name": "OAK VOUGE",
+      "category": "Pisos",
+      "subcategory": "Laminado",
+      "url": "7-pisos.html#71-laminado",
+      "thumb": "img/7-pisos/71-laminado/OAK VOUGE.png"
+    },
+    {
+      "name": "PLANTATION OAK",
+      "category": "Pisos",
+      "subcategory": "Laminado",
+      "url": "7-pisos.html#71-laminado",
+      "thumb": "img/7-pisos/71-laminado/PLANTATION OAK.jpg"
+    },
+    {
+      "name": "REVOLUTION OAK",
+      "category": "Pisos",
+      "subcategory": "Laminado",
+      "url": "7-pisos.html#71-laminado",
+      "thumb": "img/7-pisos/71-laminado/REVOLUTION OAK.jpg"
+    },
+    {
+      "name": "SPRUCE ANTIQUE",
+      "category": "Pisos",
+      "subcategory": "Laminado",
+      "url": "7-pisos.html#71-laminado",
+      "thumb": "img/7-pisos/71-laminado/SPRUCE ANTIQUE.jpg"
+    },
+    {
+      "name": "TAHOE",
+      "category": "Pisos",
+      "subcategory": "Laminado",
+      "url": "7-pisos.html#71-laminado",
+      "thumb": "img/7-pisos/71-laminado/TAHOE.jpg"
+    },
+    {
+      "name": "TERNASCO",
+      "category": "Pisos",
+      "subcategory": "Laminado",
+      "url": "7-pisos.html#71-laminado",
+      "thumb": "img/7-pisos/71-laminado/TERNASCO.jpeg"
+    },
+    {
+      "name": "TITANIUM OAK",
+      "category": "Pisos",
+      "subcategory": "Laminado",
+      "url": "7-pisos.html#71-laminado",
+      "thumb": "img/7-pisos/71-laminado/TITANIUM OAK.jpg"
+    },
+    {
+      "name": "UTRILLAS",
+      "category": "Pisos",
+      "subcategory": "Laminado",
+      "url": "7-pisos.html#71-laminado",
+      "thumb": "img/7-pisos/71-laminado/UTRILLAS.jpeg"
+    },
+    {
+      "name": "WALNUT SABO",
+      "category": "Pisos",
+      "subcategory": "Laminado",
+      "url": "7-pisos.html#71-laminado",
+      "thumb": "img/7-pisos/71-laminado/WALNUT SABO.jpg"
+    },
+    {
+      "name": "WALNUT",
+      "category": "Pisos",
+      "subcategory": "Laminado",
+      "url": "7-pisos.html#71-laminado",
+      "thumb": "img/7-pisos/71-laminado/WALNUT.jpg"
+    },
+    {
+      "name": "ALBANY CREEK",
+      "category": "Pisos",
+      "subcategory": "WPC",
+      "url": "7-pisos.html#72-wpc",
+      "thumb": "img/7-pisos/72-wpc/ALBANY CREEK.jpg"
+    },
+    {
+      "name": "CANBERRA",
+      "category": "Pisos",
+      "subcategory": "WPC",
+      "url": "7-pisos.html#72-wpc",
+      "thumb": "img/7-pisos/72-wpc/CANBERRA.jpg"
+    },
+    {
+      "name": "HAMPTON",
+      "category": "Pisos",
+      "subcategory": "WPC",
+      "url": "7-pisos.html#72-wpc",
+      "thumb": "img/7-pisos/72-wpc/HAMPTON.jpg"
+    },
+    {
+      "name": "NORWELL",
+      "category": "Pisos",
+      "subcategory": "WPC",
+      "url": "7-pisos.html#72-wpc",
+      "thumb": "img/7-pisos/72-wpc/NORWELL.jpg"
+    },
+    {
+      "name": "VERMONT",
+      "category": "Pisos",
+      "subcategory": "WPC",
+      "url": "7-pisos.html#72-wpc",
+      "thumb": "img/7-pisos/72-wpc/VERMONT.jpg"
+    },
+    {
+      "name": "ALBERTA",
+      "category": "Pisos",
+      "subcategory": "SPC",
+      "url": "7-pisos.html#73-spc",
+      "thumb": "img/7-pisos/73-spc/ALBERTA.jpg"
+    },
+    {
+      "name": "AMAZON",
+      "category": "Pisos",
+      "subcategory": "SPC",
+      "url": "7-pisos.html#73-spc",
+      "thumb": "img/7-pisos/73-spc/AMAZON.jpg"
+    },
+    {
+      "name": "ASHLAR GRAY",
+      "category": "Pisos",
+      "subcategory": "SPC",
+      "url": "7-pisos.html#73-spc",
+      "thumb": "img/7-pisos/73-spc/ASHLAR GRAY.jpg"
+    },
+    {
+      "name": "ASHLAR",
+      "category": "Pisos",
+      "subcategory": "SPC",
+      "url": "7-pisos.html#73-spc",
+      "thumb": "img/7-pisos/73-spc/ASHLAR.jpg"
+    },
+    {
+      "name": "BANFF",
+      "category": "Pisos",
+      "subcategory": "SPC",
+      "url": "7-pisos.html#73-spc",
+      "thumb": "img/7-pisos/73-spc/BANFF.jpg"
+    },
+    {
+      "name": "CARAMEL",
+      "category": "Pisos",
+      "subcategory": "SPC",
+      "url": "7-pisos.html#73-spc",
+      "thumb": "img/7-pisos/73-spc/CARAMEL.jpg"
+    },
+    {
+      "name": "COLORADO RUSH",
+      "category": "Pisos",
+      "subcategory": "SPC",
+      "url": "7-pisos.html#73-spc",
+      "thumb": "img/7-pisos/73-spc/COLORADO RUSH.jpg"
+    },
+    {
+      "name": "CONCRETE LITE",
+      "category": "Pisos",
+      "subcategory": "SPC",
+      "url": "7-pisos.html#73-spc",
+      "thumb": "img/7-pisos/73-spc/CONCRETE LITE.jpg"
+    },
+    {
+      "name": "CONCRETE",
+      "category": "Pisos",
+      "subcategory": "SPC",
+      "url": "7-pisos.html#73-spc",
+      "thumb": "img/7-pisos/73-spc/CONCRETE.jpg"
+    },
+    {
+      "name": "DALBY",
+      "category": "Pisos",
+      "subcategory": "SPC",
+      "url": "7-pisos.html#73-spc",
+      "thumb": "img/7-pisos/73-spc/DALBY.jpg"
+    },
+    {
+      "name": "DELAMERE",
+      "category": "Pisos",
+      "subcategory": "SPC",
+      "url": "7-pisos.html#73-spc",
+      "thumb": "img/7-pisos/73-spc/DELAMERE.jpg"
+    },
+    {
+      "name": "EXPRESSO",
+      "category": "Pisos",
+      "subcategory": "SPC",
+      "url": "7-pisos.html#73-spc",
+      "thumb": "img/7-pisos/73-spc/EXPRESSO.jpg"
+    },
+    {
+      "name": "JASPER",
+      "category": "Pisos",
+      "subcategory": "SPC",
+      "url": "7-pisos.html#73-spc",
+      "thumb": "img/7-pisos/73-spc/JASPER.jpg"
+    },
+    {
+      "name": "MINERAL GRAY",
+      "category": "Pisos",
+      "subcategory": "SPC",
+      "url": "7-pisos.html#73-spc",
+      "thumb": "img/7-pisos/73-spc/MINERAL GRAY.jpg"
+    },
+    {
+      "name": "MOKA",
+      "category": "Pisos",
+      "subcategory": "SPC",
+      "url": "7-pisos.html#73-spc",
+      "thumb": "img/7-pisos/73-spc/MOKA.jpg"
+    },
+    {
+      "name": "NOMADIC",
+      "category": "Pisos",
+      "subcategory": "SPC",
+      "url": "7-pisos.html#73-spc",
+      "thumb": "img/7-pisos/73-spc/NOMADIC.jpg"
+    },
+    {
+      "name": "PARKLAND",
+      "category": "Pisos",
+      "subcategory": "SPC",
+      "url": "7-pisos.html#73-spc",
+      "thumb": "img/7-pisos/73-spc/PARKLAND.jpg"
+    },
+    {
+      "name": "SILVERSTONE",
+      "category": "Pisos",
+      "subcategory": "SPC",
+      "url": "7-pisos.html#73-spc",
+      "thumb": "img/7-pisos/73-spc/SILVERSTONE.jpg"
+    },
+    {
+      "name": "SILVESTER",
+      "category": "Pisos",
+      "subcategory": "SPC",
+      "url": "7-pisos.html#73-spc",
+      "thumb": "img/7-pisos/73-spc/SILVESTER.jpg"
+    },
+    {
+      "name": "STERLING OAK",
+      "category": "Pisos",
+      "subcategory": "SPC",
+      "url": "7-pisos.html#73-spc",
+      "thumb": "img/7-pisos/73-spc/STERLING OAK.jpg"
+    },
+    {
+      "name": "TONGASS",
+      "category": "Pisos",
+      "subcategory": "SPC",
+      "url": "7-pisos.html#73-spc",
+      "thumb": "img/7-pisos/73-spc/TONGASS.jpg"
+    },
+    {
+      "name": "YOSEMITE",
+      "category": "Pisos",
+      "subcategory": "SPC",
+      "url": "7-pisos.html#73-spc",
+      "thumb": "img/7-pisos/73-spc/YOSEMITE.jpg"
+    },
+    {
+      "name": "LIGHT GRAY",
+      "category": "Pisos",
+      "subcategory": "Deck Sintetico",
+      "url": "7-pisos.html#74-deck-sintetico",
+      "thumb": "img/7-pisos/74-deck-sintetico/LIGHT GRAY.jpg"
+    },
+    {
+      "name": "MAPLE",
+      "category": "Pisos",
+      "subcategory": "Deck Sintetico",
+      "url": "7-pisos.html#74-deck-sintetico",
+      "thumb": "img/7-pisos/74-deck-sintetico/MAPLE.jpg"
+    },
+    {
+      "name": "TEAK",
+      "category": "Pisos",
+      "subcategory": "Deck Sintetico",
+      "url": "7-pisos.html#74-deck-sintetico",
+      "thumb": "img/7-pisos/74-deck-sintetico/TEAK.jpg"
+    },
+    {
+      "name": "WENGE",
+      "category": "Pisos",
+      "subcategory": "Deck Sintetico",
+      "url": "7-pisos.html#74-deck-sintetico",
+      "thumb": "img/7-pisos/74-deck-sintetico/WENGE.jpg"
+    },
+    {
+      "name": "AMAZONAS-A",
+      "category": "Zacate",
+      "subcategory": "Follaje Sintetico",
+      "url": "8-zacate.html#81-follaje-sintetico",
+      "thumb": "img/8-zacate/81-follaje-sintetico/AMAZONAS-A.jpg"
+    },
+    {
+      "name": "AMAZONAS-B",
+      "category": "Zacate",
+      "subcategory": "Follaje Sintetico",
+      "url": "8-zacate.html#81-follaje-sintetico",
+      "thumb": "img/8-zacate/81-follaje-sintetico/AMAZONAS-B.jpg"
+    },
+    {
+      "name": "AMAZONAS-C",
+      "category": "Zacate",
+      "subcategory": "Follaje Sintetico",
+      "url": "8-zacate.html#81-follaje-sintetico",
+      "thumb": "img/8-zacate/81-follaje-sintetico/AMAZONAS-C.jpg"
+    },
+    {
+      "name": "AMSTERDAM",
+      "category": "Zacate",
+      "subcategory": "Follaje Sintetico",
+      "url": "8-zacate.html#81-follaje-sintetico",
+      "thumb": "img/8-zacate/81-follaje-sintetico/AMSTERDAM.jpg"
+    },
+    {
+      "name": "ARRAYAN AMARILLO",
+      "category": "Zacate",
+      "subcategory": "Follaje Sintetico",
+      "url": "8-zacate.html#81-follaje-sintetico",
+      "thumb": "img/8-zacate/81-follaje-sintetico/ARRAYAN AMARILLO.jpg"
+    },
+    {
+      "name": "ARRAYAN MORADO",
+      "category": "Zacate",
+      "subcategory": "Follaje Sintetico",
+      "url": "8-zacate.html#81-follaje-sintetico",
+      "thumb": "img/8-zacate/81-follaje-sintetico/ARRAYAN MORADO.jpg"
+    },
+    {
+      "name": "ARRAYAN NATURAL",
+      "category": "Zacate",
+      "subcategory": "Follaje Sintetico",
+      "url": "8-zacate.html#81-follaje-sintetico",
+      "thumb": "img/8-zacate/81-follaje-sintetico/ARRAYAN NATURAL.jpg"
+    },
+    {
+      "name": "ARRAYAN ROJO",
+      "category": "Zacate",
+      "subcategory": "Follaje Sintetico",
+      "url": "8-zacate.html#81-follaje-sintetico",
+      "thumb": "img/8-zacate/81-follaje-sintetico/ARRAYAN ROJO.jpg"
+    },
+    {
+      "name": "ARRAYAN VERDE",
+      "category": "Zacate",
+      "subcategory": "Follaje Sintetico",
+      "url": "8-zacate.html#81-follaje-sintetico",
+      "thumb": "img/8-zacate/81-follaje-sintetico/ARRAYAN VERDE.jpg"
+    },
+    {
+      "name": "BRUSELAS",
+      "category": "Zacate",
+      "subcategory": "Follaje Sintetico",
+      "url": "8-zacate.html#81-follaje-sintetico",
+      "thumb": "img/8-zacate/81-follaje-sintetico/BRUSELAS.jpg"
+    },
+    {
+      "name": "GRECIA",
+      "category": "Zacate",
+      "subcategory": "Follaje Sintetico",
+      "url": "8-zacate.html#81-follaje-sintetico",
+      "thumb": "img/8-zacate/81-follaje-sintetico/GRECIA.jpg"
+    },
+    {
+      "name": "JAZMIN",
+      "category": "Zacate",
+      "subcategory": "Follaje Sintetico",
+      "url": "8-zacate.html#81-follaje-sintetico",
+      "thumb": "img/8-zacate/81-follaje-sintetico/JAZMIN.jpg"
+    },
+    {
+      "name": "LAUREL DORADO",
+      "category": "Zacate",
+      "subcategory": "Follaje Sintetico",
+      "url": "8-zacate.html#81-follaje-sintetico",
+      "thumb": "img/8-zacate/81-follaje-sintetico/LAUREL DORADO.jpg"
+    },
+    {
+      "name": "MENTA",
+      "category": "Zacate",
+      "subcategory": "Follaje Sintetico",
+      "url": "8-zacate.html#81-follaje-sintetico",
+      "thumb": "img/8-zacate/81-follaje-sintetico/MENTA.jpg"
+    },
+    {
+      "name": "MILAN",
+      "category": "Zacate",
+      "subcategory": "Follaje Sintetico",
+      "url": "8-zacate.html#81-follaje-sintetico",
+      "thumb": "img/8-zacate/81-follaje-sintetico/MILAN.jpg"
+    },
+    {
+      "name": "PERSIA",
+      "category": "Zacate",
+      "subcategory": "Follaje Sintetico",
+      "url": "8-zacate.html#81-follaje-sintetico",
+      "thumb": "img/8-zacate/81-follaje-sintetico/PERSIA.jpg"
+    },
+    {
+      "name": "SEVILLA",
+      "category": "Zacate",
+      "subcategory": "Follaje Sintetico",
+      "url": "8-zacate.html#81-follaje-sintetico",
+      "thumb": "img/8-zacate/81-follaje-sintetico/SEVILLA.jpg"
+    },
+    {
+      "name": "SIBERIA",
+      "category": "Zacate",
+      "subcategory": "Follaje Sintetico",
+      "url": "8-zacate.html#81-follaje-sintetico",
+      "thumb": "img/8-zacate/81-follaje-sintetico/SIBERIA.jpg"
+    },
+    {
+      "name": "TREBOL",
+      "category": "Zacate",
+      "subcategory": "Follaje Sintetico",
+      "url": "8-zacate.html#81-follaje-sintetico",
+      "thumb": "img/8-zacate/81-follaje-sintetico/TREBOL.jpg"
+    },
+    {
+      "name": "TG-07-ARUBA",
+      "category": "Zacate",
+      "subcategory": "Pasto Recreativo",
+      "url": "8-zacate.html#82-pasto-recreativo",
+      "thumb": "img/8-zacate/82-pasto-recreativo/TG-07-ARUBA.jpg"
+    },
+    {
+      "name": "TG-10-ACA",
+      "category": "Zacate",
+      "subcategory": "Pasto Recreativo",
+      "url": "8-zacate.html#82-pasto-recreativo",
+      "thumb": "img/8-zacate/82-pasto-recreativo/TG-10-ACA.jpg"
+    },
+    {
+      "name": "TG-18-SUMMER",
+      "category": "Zacate",
+      "subcategory": "Pasto Recreativo",
+      "url": "8-zacate.html#82-pasto-recreativo",
+      "thumb": "img/8-zacate/82-pasto-recreativo/TG-18-SUMMER.jpg"
+    },
+    {
+      "name": "TG-20-BERMUDA",
+      "category": "Zacate",
+      "subcategory": "Pasto Recreativo",
+      "url": "8-zacate.html#82-pasto-recreativo",
+      "thumb": "img/8-zacate/82-pasto-recreativo/TG-20-BERMUDA.jpg"
+    },
+    {
+      "name": "TG-25-CANCUN",
+      "category": "Zacate",
+      "subcategory": "Pasto Recreativo",
+      "url": "8-zacate.html#82-pasto-recreativo",
+      "thumb": "img/8-zacate/82-pasto-recreativo/TG-25-CANCUN.jpg"
+    },
+    {
+      "name": "TG-30-MAUI",
+      "category": "Zacate",
+      "subcategory": "Pasto Recreativo",
+      "url": "8-zacate.html#82-pasto-recreativo",
+      "thumb": "img/8-zacate/82-pasto-recreativo/TG-30-MAUI.jpg"
+    },
+    {
+      "name": "TG-35-TULUM",
+      "category": "Zacate",
+      "subcategory": "Pasto Recreativo",
+      "url": "8-zacate.html#82-pasto-recreativo",
+      "thumb": "img/8-zacate/82-pasto-recreativo/TG-35-TULUM.jpg"
+    },
+    {
+      "name": "TG-40-BALI",
+      "category": "Zacate",
+      "subcategory": "Pasto Recreativo",
+      "url": "8-zacate.html#82-pasto-recreativo",
+      "thumb": "img/8-zacate/82-pasto-recreativo/TG-40-BALI.jpg"
+    },
+    {
+      "name": "TG-45-GULHI",
+      "category": "Zacate",
+      "subcategory": "Pasto Recreativo",
+      "url": "8-zacate.html#82-pasto-recreativo",
+      "thumb": "img/8-zacate/82-pasto-recreativo/TG-45-GULHI.jpg"
+    },
+    {
+      "name": "TG-50-ANAKENA",
+      "category": "Zacate",
+      "subcategory": "Pasto Recreativo",
+      "url": "8-zacate.html#82-pasto-recreativo",
+      "thumb": "img/8-zacate/82-pasto-recreativo/TG-50-ANAKENA.jpg"
+    },
+    {
+      "name": "BLACK",
+      "category": "Cladding",
+      "subcategory": "Placa tipo roca",
+      "url": "9-cladding.html#91-placa-tipo-roca",
+      "thumb": "img/9-cladding/91-placa-tipo-roca/BLACK.jpg"
+    },
+    {
+      "name": "GRAY",
+      "category": "Cladding",
+      "subcategory": "Placa tipo roca",
+      "url": "9-cladding.html#91-placa-tipo-roca",
+      "thumb": "img/9-cladding/91-placa-tipo-roca/GRAY.jpg"
+    },
+    {
+      "name": "Esquiner 35X45X2900MM",
+      "category": "Cladding",
+      "subcategory": null,
+      "url": "9-cladding.html",
+      "thumb": "img/9-cladding/Esquiner 35X45X2900MM.jpg"
+    },
+    {
+      "name": "HICKORY",
+      "category": "Cladding",
+      "subcategory": null,
+      "url": "9-cladding.html",
+      "thumb": "img/9-cladding/HICKORY.jpg"
+    },
+    {
+      "name": "MAPLE",
+      "category": "Cladding",
+      "subcategory": null,
+      "url": "9-cladding.html",
+      "thumb": "img/9-cladding/MAPLE.jpg"
+    },
+    {
+      "name": "MERBAU",
+      "category": "Cladding",
+      "subcategory": null,
+      "url": "9-cladding.html",
+      "thumb": "img/9-cladding/MERBAU.jpg"
+    },
+    {
+      "name": "REDWOOD",
+      "category": "Cladding",
+      "subcategory": null,
+      "url": "9-cladding.html",
+      "thumb": "img/9-cladding/REDWOOD.jpg"
+    },
+    {
+      "name": "TASMANIA",
+      "category": "Cladding",
+      "subcategory": null,
+      "url": "9-cladding.html",
+      "thumb": "img/9-cladding/TASMANIA.jpg"
+    },
+    {
+      "name": "TEAK",
+      "category": "Cladding",
+      "subcategory": null,
+      "url": "9-cladding.html",
+      "thumb": "img/9-cladding/TEAK.jpg"
+    },
+    {
+      "name": "WENGE",
+      "category": "Cladding",
+      "subcategory": null,
+      "url": "9-cladding.html",
+      "thumb": "img/9-cladding/WENGE.jpg"
+    },
+    {
+      "name": "perfil plano25X3X2900MM",
+      "category": "Cladding",
+      "subcategory": null,
+      "url": "9-cladding.html",
+      "thumb": "img/9-cladding/perfil plano25X3X2900MM.jpg"
+    }
+  ],
+  "research": {
+    "placas_pvc": {
+      "name": "PLACAS PVC",
+      "slug": "placas_pvc",
+      "curiosos": [
+        {
+          "title": "¿Sabías que el PVC fue descubierto por accidente?",
+          "content": "El cloruro de polivinilo (PVC) se sintetizó por primera vez en 1872, cuando el químico alemán Eugen Baumann lo obtuvo de forma accidental al dejar expuesto el cloruro de vinilo a la luz solar. Sin embargo, no fue hasta 1926 cuando el químico de la B.F. Goodrich, Waldo Semon, desarrolló un método para plastificar el PVC, convirtiéndolo en un material flexible y comercialmente viable. Hoy en día, el PVC es el segundo plástico más producido en el mundo, solo superado por el polietileno."
+        },
+        {
+          "title": "El PVC reciclado tiene una segunda vida impresionante",
+          "content": "🌍 El PVC reciclado tiene una segunda vida impresionante El PVC es 100% reciclable y puede reutilizarse hasta 7 veces sin perder sus propiedades mecánicas. En la industria de la construcción, los perfiles y placas de PVC reciclado se emplean en pisos, tuberías y nuevos recubrimientos, contribuyendo a la economía circular."
+        },
+        {
+          "title": "El PVC es inherentemente retardante al fuego",
+          "content": "🔥 El PVC es inherentemente retardante al fuego A diferencia de la madera natural u otros plásticos, el PVC contuye cloro en su estructura molecular, lo que le confiere una resistencia natural al fuego. No propaga la llama y se autoextingue al retirar la fuente de ignición, una propiedad que salva vidas en aplicaciones arquitectónicas."
+        },
+        {
+          "title": "️ La impresión digital hot stamping revolucionó el PVC decorativo",
+          "content": "🖨️ La impresión digital hot stamping revolucionó el PVC decorativo La tecnología de hot stamping aplicada a las placas tipo mármol permite transferir películas metálicas y pigmenhos al sustrato de PVC con una precisión milimétrica. El resultado es una reproducción visual del mármol que incluso los expertos confunden a simple vista, a una fracción del costo y peso de la piedra natural."
+        },
+        {
+          "title": "⚖️ Una placa de PVC tipo mármol pesa 85% menos que el mármol real",
+          "content": "Una placa de PVC MARMOLIZZI de 1220×2440 mm pesa solo 19 kg, mientras que una losa de mármol natural de las mismas dimensiones superaría los 120 kg. Esta diferencia transforma la logística, la instalación y la estructura necesaria."
+        }
+      ],
+      "faqs": [
+        {
+          "q": "¿Las placas PVC se pueden instalar en la regadera?",
+          "a": "Sí, las placas PVC son 100% impermeables y pueden instalarse en el área de regadera siempre que las juntas entre placas se sellen adecuadamente con silicona neutra y se asegure una instalación sin huecos donde pueda acumularse agua. Recomendamos los modelos tipo mármol MARMOLIZZI o texturizados para este uso."
+        },
+        {
+          "q": "¿Se pueden usar en exteriores bajo el sol de Sonora?",
+          "a": "Sí, pero únicamente en tonos claros. Los colores oscuros absorben demasiado calor y pueden deformarse. Para exteriores en nuestra región desértica, recomendamos los modelos ALPINA, SOLARIA o ARENA de la línea digital o mármol. Siempre instalar con juntas de dilatación amplias (3-4 mm)."
+        },
+        {
+          "q": "¿Cómo se cortan las placas?",
+          "a": "Con sierra circular y disco de carburo de tungsteno, o con caladora. El corte siempre del lado decorativo hacia atrás para evitar astillas en la cara visible. Para cortes precisos y en ángulo, recomendamos usar una mesa de corte o contratar a un instalador experimentado."
+        },
+        {
+          "q": "¿Cuánto dura realmente una placa PVC?",
+          "a": "Tekno-Step otorga 15 años de garantía, pero con mantenimiento básico (limpieza ocasional), la vida útil real supera los 20-25 años. El PVC no se descompone ni se degrada con la humedad, lo que lo hace extraordinariamente duradero."
+        },
+        {
+          "q": "¿Se nota que \"no es madera real\"?",
+          "a": "Las líneas texturizadas (CEDAR, IPE, NOGAL) tienen un relieve tridimensional que reproduce fielmente la textura de la madera. A 1 metro de distancia, incluso expertos tienen dificultad para distinguirlas. Las líneas digitales ofrecen una apariencia visual impecable aunque con superficie lisa. La decisión depende del presupuesto y de si el cliente busca la experiencia táctil completa."
+        }
+      ]
+    },
+    "lambrin_wpc": {
+      "name": "LAMBRIN WPC",
+      "slug": "lambrin_wpc",
+      "curiosos": [
+        {
+          "title": "El WPC nació de la necesidad de reciclar",
+          "content": "🧪 El WPC nació de la necesidad de reciclar El composite de madera-plástico se desarrolló a finales de los años 80 en Europa como una solución para aprovechar residuos de madera y plásticos reciclados. Lo que comenzó como un material de vanguardia ecológica se convirtió en la opción premium para exteriores, decking y revestimientos. Hoy, el WPC es un mercado multimillonario con aplicaciones que van desde la construcción hasta la automoción."
+        },
+        {
+          "title": "No es madera. No es plástico. Es algo mejor.",
+          "content": "🌲 No es madera. No es plástico. Es algo mejor. El WPC conserva aproximadamente un 60-70% de fibras de madera en su composición (generalmente polvo de madera de aserradero) mezcladas con un 30-40% de polietileno de alta densidad (HDPE) y aditivos estabilizadores. Esta combinación molecular es lo que le permite \"respirar\" como la madera pero sin absorber agua como ella."
+        },
+        {
+          "title": "️ El WPC flota... literalmente",
+          "content": "🌧️ El WPC flota... literalmente A diferencia de la madera maciza que se hunde en el agua, el WPC tiene una densidad cercana a 1.1-1.3 g/cm³, lo que significa que algunas formulaciones flotan. Esto no es curiosidad menor: demuestra su baja absorción de agua (menos del 1% en muchas formulaciones), la propiedad que lo hace revolucionario para exteriores."
+        },
+        {
+          "title": "Un lambrín WPC puede durar más que la casa donde se instala",
+          "content": "🏠 Un lambrín WPC puede durar más que la casa donde se instala Con una garantía de 15 años y una vida útil estimada de 25-30 años, los lambrines WPC superan ampliamente a la madera natural en durabilidad. La madera tratada tradicionalmente dura 10-15 años en exteriores con mantenimiento constante; el WPC duplica eso sin necesidad de barniz ni sellador."
+        },
+        {
+          "title": "El sistema machimbrado con clips ocultos fue inspirado en la carpintería japonesa",
+          "content": "📐 El sistema machimbrado con clips ocultos fue inspirado en la carpintería japonesa La técnica de ensamblaje sin tornillos visibles tiene sus raíces en la tradición de la carpintería japonesa *sashimono*, donde las uniones se realizan mediante encajes precisos. El sistema de clips del lambrín WPC permite una instalación limpia donde no se ve ningún fijador, logrando un acabado premium digno de los mejores proyectos arquitectónicos."
+        }
+      ],
+      "faqs": [
+        {
+          "q": "¿El lambrín WPC realmente no se levanta con la lluvia?",
+          "a": "Correcto. El WPC tiene una absorción de agua menor al 1%, lo que significa que prácticamente no absorbe agua. A diferencia de la madera natural que se hincha y se contrae con la humedad, el WPC mantiene sus dimensiones estables. En Nogales, donde las lluvias de verano pueden ser intensas, el lambrín exterior WPC se comporta de manera impecable."
+        },
+        {
+          "q": "¿Se puede instalar el lambrín WPC sin ayuda de un profesional?",
+          "a": "Un instalador con experiencia básica en acabados puede instalarlo siguiendo las instrucciones. Sin embargo, recomendamos contratar a un profesionista para proyectos grandes o fachadas exteriores, ya que el sistema de clips requiere precisión en la estructura base. La instalación mal hecha puede resultar en piezas sueltas o alineación irregular."
+        },
+        {
+          "q": "¿Cuántos metros cuadrados necesito y cómo calculo?",
+          "a": "Mide el alto y ancho de cada muro en metros, multiplica ambas dimensiones para obtener m² por muro, y suma todos los muros. Te recomendamos sumar un 10% de desperdicio para cortes y esquinas. Por ejemplo, si tienes 20 m² de muro, pide material para 22 m². Nuestro equipo de ADIS puede hacer el cálculo preciso si nos envías las medidas o planos."
+        },
+        {
+          "q": "¿El WPC se decolora con el sol?",
+          "a": "Los lambrines WPC de Tekno-Step cuentan con aditivos estabilizadores UV en su formulación que previenen el decoloramiento. La garantía de 15 años cubre precisamente este aspecto. En nuestra experiencia en Nogales y Tucson, donde la radiación solar es extrema, el WPC mantiene su color notablemente mejor que la madera natural o que otros materiales sin tratamiento UV."
+        },
+        {
+          "q": "¿Puedo poner el lambrín interior en el exterior o viceversa?",
+          "a": "No recomendamos intercambiar las líneas. El lambrín interior tiene una formulación optimizada para condiciones controladas y puede degradarse más rápido si se expone a lluvia y sol directo intenso. El lambrín exterior tiene mayor densidad de aditivos UV y una formulación más robusta. Usa cada uno en su ambiente para maximizar la vida útil y la garantía."
+        }
+      ]
+    },
+    "revestimiento": {
+      "name": "REVESTIMIENTO FLEXIBLE",
+      "slug": "revestimiento",
+      "curiosos": [
+        {
+          "title": "🪨 Es piedra real. Literalmente.",
+          "content": "A diferencia de los paneles de PVC o cerámica que *imitan* piedra, el revestimiento flexible está hecho de verdaderas láminas de piedra natural. El proceso de fabricación consiste en deslajar (dividir en láminas ultrafinas) bloques de piedra natural hasta obtener espesores de 1 a 3 mm, que luego se refuerzan con fibra de vidrio para darles flexibilidad y resistencia. Cada pieza es única, con las vetas, inclusiones y variaciones de color que solo la naturaleza puede crear."
+        },
+        {
+          "title": "La técnica nació en la India hace más de 20 años",
+          "content": "🌍 La técnica nació en la India hace más de 20 años El revestimiento flexible de piedra fue desarrollado originalmente en la India a principios de los años 2000 como una forma de aprovechar vetas de piedra que de otro modo serían descartadas por ser demasiado delgadas o irregulares para la construcción tradicional. La innovación fue el refuerzo con fibra de vidrio, que transformó una limitación en una ventaja extraordinaria."
+        },
+        {
+          "title": "Se puede instalar sobre casi cualquier superficie",
+          "content": "📐 Se puede instalar sobre casi cualquier superficie Gracias a su bajo peso (4 kg/m²), el revestimiento flexible puede adherirse directamente sobre drywall, madera, concreto, metal, cerámica existente e incluso sobre otros recubrimientos. No requiere estructura de soporte ni refuerzo especial. Esto lo convierte en la opción ideal para remodelaciones donde no se quiere demoler."
+        },
+        {
+          "title": "No hay dos piezas iguales",
+          "content": "🎨 No hay dos piezas iguales Al ser piedra natural, cada panel tiene un patrón de vetas, tonos y texturas único e irrepetible. Cuando instalas revestimiento flexible, estás creando una obra de arte geológica en tu muro. Esta variabilidad natural es precisamente lo que los diseñadores de interiores más valoran: autenticidad absoluta."
+        },
+        {
+          "title": "️ Se usa en museos y edificios patrimoniales",
+          "content": "🏛️ Se usa en museos y edificios patrimoniales El revestimiento flexible se ha convertido en el material preferido para restauraciones de edificios históricos en Europa. Su bajo peso permite revestir estructuras antiguas sin comprometer su integridad estructural, y su flexibilidad permite adaptarlo a muros irregulares que han sufrido asentamientos a lo largo de siglos."
+        }
+      ],
+      "faqs": [
+        {
+          "q": "¿Es realmente piedra o es una imitación?",
+          "a": "Es piedra natural 100% real. No es PVC, no es cerámica, no es resina. Es una lámina auténtica de piedra natural (pizarra, cuarcita o arenisca) que se extrae de cantera y se procesa hasta alcanzar un espesor de 1-3 mm. El refuerzo de fibra de vidrio por la parte posterior es lo que le da flexibilidad. Puedes ver y sentir las vetas, inclusiones e irregularidades naturales de la piedra. Cada pieza es única, exactamente como la naturaleza la creó."
+        },
+        {
+          "q": "¿Cuánto pesa y mi muro lo aguanta?",
+          "a": "Solo 4 kg por metro cuadrado. Para que te des una idea: una losa de cantera tradicional pesa entre 30 y 50 kg/m². Esto significa que el revestimiento flexible es 8 a 12 veces más ligero que la piedra tradicional. Cualquier muro de drywall, block, concreto o madera lo soporta sin problema. De hecho, puedes instalarlo directamente sobre drywall sin refuerzo alguno. Esa es precisamente su magia."
+        },
+        {
+          "q": "¿Se puede usar en mi fachada exterior aquí en Nogales/Tucson?",
+          "a": "Absolutamente. El revestimiento flexible está especialmente diseñado para uso en fachadas exteriores. Resiste la radiación UV intensa del desierto, las lluvias de verano, los vientos y los cambios térmicos de nuestra región fronteriza. Su garantía de 35 años aplica tanto para interiores como para exteriores. En proyectos anteriores en Nogales y Tucson, se ha comportado de manera excepcional incluso en fachadas de oriente y poniente con exposición solar directa."
+        },
+        {
+          "q": "¿Y si mi casa tiene columnas redondas?",
+          "a": "¡Las columnas redondas son el escenario perfecto para el revestimiento flexible! Es uno de los pocos materiales de piedra que puede adaptarse a superficies curvas. Puedes calentar ligeramente el panel con una pistola de calor y doblarlo alrededor de columnas cilíndricas de 10 cm de diámetro en adelante. El resultado es una columna revestida de piedra natural que parece costó miles de dólares en mano de obra especializada."
+        },
+        {
+          "q": "¿Cuál es la diferencia entre los modelos MUNICH, COLONIA, HAMBURGO, etc.?",
+          "a": "Cada modelo corresponde a un acabado específico: MUNICH y COLONIA son Concreto Aparente/Gris (look industrial moderno), HAMBURGO y BREMEN son Granito Blanco e Imperial Blanco (elegancia clásica), DRESDE y NUREMBERG incluyen Madera Roble (calidez natural), y FRANKFURT y DUSSELDORF ofrecen Granito Oro (lujo impactante). Todos comparten las mismas propiedades técnicas (flexible, 4 kg/m², 35 años de garantía). La diferencia es puramente estética: tipo de piedra, color y vetado. Te invitamos a visitar nuestro showroom en Nogales para ver y tocar cada modelo en persona."
+        }
+      ]
+    },
+    "plafon": {
+      "name": "PLAFÓN PVC LAMINADO WOOD STYLE",
+      "slug": "plafon",
+      "curiosos": [
+        {
+          "title": "El PVC cumple casi 100 años siendo el \"material silencioso\" de la construcción",
+          "content": "El polímero de cloruro de polivinilo (PVC) se desarrolló comercialmente en la década de 1930, pero su explosión en el sector de la construcción no ocurrió hasta los años 60. Curiosamente, uno de los primeros usos masivos del PVC fue para recubrimientos de pared en hospitales alemanes, precisamente por su resistencia bacteriana y facilidad de desinfección. Hoy, el plafón PVC laminado tipo madera hereda esa misma filosofía: estética premium + funcionalidad extrema."
+        },
+        {
+          "title": "El \"efecto catedral\" de las láminas largas",
+          "content": "Las láminas Vistawood miden 2.80 metros de largo x 30 cm de ancho. Esta proporción alargada no es casualidad: los arquitectos descubrieron que las líneas horizontales largas visualmente expanden el espacio, creando lo que en diseño de interiores se conoce como \"efecto catedral\" — la sensación de amplitud y altura que se obtiene al dirigir la vista en sentido horizontal."
+        },
+        {
+          "title": "Los 7 tonos de madera y la psicología del color",
+          "content": "Cada uno de los 7 modelos de la línea Vistawood (Cocoa Ash, Ash Nomad, Birch Ember, Walnut Ellipse, Ivory Elm, Maple Dusk y Wild Teak) fue seleccionado tras estudios de tendencias de interiorismo en Europa. No son colores al azar: el Cocoa Ash, por ejemplo, se diseñó específicamente para espacios con iluminación cálida de tarde, mientras que el Ivory Elm maximiza la reflexión de luz en espacios oscuros."
+        },
+        {
+          "title": "El secreto del laminado: 7 capas en 9 milímetros",
+          "content": "Aunque solo mide 9 mm de espesor, cada lámina Vistawood contiene 7 capas funcionales: capa de protección UV superior, capa decorativa de impresión fotográfica de alta resolución, capa de estabilización dimensional, núcleo de PVC espumado de densidad controlada, capa de refuerzo estructural, capa de balance y capa inferior de contacto. El resultado es un panel que pesa solo 23.55 kg por caja pero soporta décadas de uso."
+        },
+        {
+          "title": "La garantía de 15 años tiene truco (bueno)",
+          "content": "Tekno-Step ofrece 15 años de garantía en la línea Vistawood. En términos de la industria de recubrimientos, esto es excepcional: la mayoría de los plafones tradicionales de gypsum ofrecen garantías de 5 a 10 años. La clave está en que el PVC no absorbe humedad, eliminando la causa principal de degradación en plafones."
+        }
+      ],
+      "faqs": [
+        {
+          "q": "¿Se puede instalar en baños y cocinas?",
+          "a": "Sí, y es de las mejores decisiones. El plafón PVC Vistawood es completamente resistente al agua y al vapor. En cocinas resiste grasas y vapores de cocción; en baños no se ve afectado por la condensación ni el vapor de la regadera. Simplemente límpialo con un paño húmedo y jabón neutro."
+        },
+        {
+          "q": "¿Cuánto dura la instalación en una casa promedio?",
+          "a": "Para una casa de 100 m² de techos, la instalación del plafón PVC toma 2 a 4 días laborales, incluyendo la estructura. El plafón de tablaroca equivalente tomaría 7-10 días. El panel XPC 3D autoadherible puede reducir esto aún más: un cuarto de 12 m² se puede hacer en 3-4 horas."
+        },
+        {
+          "q": "¿Realmente se ve como madera o se nota que es plástico?",
+          "a": "El laminado decorativo de la línea Vistawood utiliza impresión fotográfica de alta resolución con textura en relieve que imita la veta real de la madera. A una distancia de uso normal (1.5-3 metros), la mayoría de las personas no distinguen la diferencia. A menos de 30 cm sí se percibe la naturaleza sintética, pero el efecto visual general es de alta calidad y elegancia."
+        },
+        {
+          "q": "¿Puedo instalarlo yo mismo o necesito profesional?",
+          "a": "El panel XPC 3D autoadherible está diseñado para instalación DIY (hazlo tú mismo): solo despegas y pegas. El Vistawood laminado requiere experiencia básica en construcción para armar la estructura y fijar las láminas correctamente. Si tienes experiencia con herramientas básicas, puedes intentarlo; si no, contrata un instalador certificado. ADIS te puede recomendar instaladores capacitados en Nogales y Tucson."
+        },
+        {
+          "q": "¿Qué pasa si una lámina se daña?",
+          "a": "El PVC no se repara como la madera. Si una lámina se perfora o agrieta, debes reemplazarla completa. Por eso recomendamos comprar 1-2 láminas de repuesto al momento de la instalación. Las láminas individuales miden 2.80m x 30cm, así que guárdalas en un lugar seco y plano."
+        }
+      ]
+    },
+    "paneles_3d": {
+      "name": "PANELES TRIDIMENSIONALES 3D",
+      "slug": "paneles_3d",
+      "curiosos": [
+        {
+          "title": "El origen: del museo a tu sala",
+          "content": "Los paneles decorativos 3D tienen sus raíces en la arquitectura paramétrica de los años 90, cuando firmas como Zaha Hadid comenzaron a experimentar con superficies onduladas y patrones geométricos complejos. Lo que empezó como un lujo exclusivo de museos y edificios emblemáticos, la tecnología de moldeo por inyección en PVC lo convirtió en un producto accesible para cualquier hogar. Hoy, por menos de lo que cuesta una pintura profesional, puedes tener una pared con la misma sofisticación visual de un museo de arte contemporáneo."
+        },
+        {
+          "title": "El patrón geométrico que engaña al cerebro",
+          "content": "Los patrones 3D no son solo decorativos: crean ilusiones ópticas que modifican la percepción del espacio. Los patrones verticales alargan visualmente las paredes; los patrones de ondas suavizan ángulos rígidos; los patrones hexagonales aportan sensación de orden y tecnología. En ADIS hemos visto salas transformarse completamente solo con un muro de acento 3D."
+        },
+        {
+          "title": "De 330 gramos de plástico a una obra de arte",
+          "content": "Cada lámina de panel 3D de 50x50 cm pesa solo ~330 gramos. Eso significa que un muro completo de 8 m² (32 láminas) pesa apenas 10.5 kilogramos. Es tan ligero que puedes instalarlo en paredes de tablaroca o incluso drywall sin problemas estructurales."
+        },
+        {
+          "title": "El \"efecto galería\" en tu negocio",
+          "content": "Los paneles 3D blancos con iluminación direccional crean lo que los diseñadores llaman el \"efecto galería\": sombras suaves que cambian a lo largo del día según la luz natural, convirtiendo una pared plana y aburrida en una superficie viva. Restaurantes, boutiques y recepciones de hoteles en Tucson y Nogales usan este efecto para crear espacios Instagram-worthy que sus clientes fotografían y comparten orgánicamente."
+        },
+        {
+          "title": "Los 5 colores y su psicología",
+          "content": "| Color | Sensación que transmite | Ideal para | |-||| | Blanco | Amplitud, pureza, modernidad | Espacios pequeños, minimalismo | | Gris | Sofisticación, neutralidad, calma | Oficinas, dormitorios, recepciones | | Madera | Calidez, naturaleza, acogimiento | Salas, restaurantes, hoteles | | Negro | Lujo dramático, elegancia extrema | Bares, lounges, feature walls | | Oro | Opulencia, celebración, distinción | Eventos, boutiques, espacios VIP |"
+        }
+      ],
+      "faqs": [
+        {
+          "q": "¿Se puede instalar en una pared con pintura existente?",
+          "a": "Sí, siempre que la pintura esté en buen estado. La pared debe estar limpia, seca, estable y sin desconchados. Si la pintura actual está en mal estado (desconchándose, burbujas, manchas de humedad), debes repararla primero. En algunos casos es recomendable lijar ligeramente superficies muy brillantes o aplicar una imprimación para mejorar la adhesión."
+        },
+        {
+          "q": "¿Cuánto tarda la instalación de un muro de acento?",
+          "a": "Un muro de acento de aproximadamente 7-10 m² (equivalente a un muro de 3m x 2.5m a 3m x 3.5m) se instala en 4 a 8 horas con el método de adhesivo. Con tornillos puede tomar un poco más (6-10 horas) pero ofrece mayor seguridad a largo plazo. La preparación de la superficie puede agregar 2-4 horas adicionales si la pared requiere reparaciones."
+        },
+        {
+          "q": "¿Realmente se ven como los de las fotos de Instagram y Pinterest?",
+          "a": "Sí, e incluso mejor en persona. Las fotos no capturan completamente la dimensión física de la textura: la forma en que la luz crea sombras suaves a lo largo del día, la sensación táctil al pasar la mano, y el cambio de apariencia según el ángulo de visión. Lo que sí es importante: la iluminación marca la diferencia. Un panel 3D blanco con luz direccional (spotlights o lámparas de muro) se ve espectacular. Sin iluminación adecuada, pierde gran parte del impacto."
+        },
+        {
+          "q": "¿Qué pasa si me aburro del color? ¿Puedo pintarlo?",
+          "a": "Sí, y es una de las grandes ventajas. Puedes pintar los paneles 3D con pintura a base de aceite después de instalados. Esto te da libertad total: empiezas con blanco y si dentro de dos años quieres gris perla, solo pintas. Nota importante: No uses pintura acrílica o de látex, ya que no adherirá bien al PVC y se desconchará. Consulta en ADIS y te recomendamos las pinturas adecuadas."
+        },
+        {
+          "q": "¿Son resistentes al agua? ¿Puedo usarlos en mi baño?",
+          "a": "Los paneles 3D PVC son resistentes al agua en el sentido de que no se degradan con la humedad ambiental ni con salpicaduras ocasionales. Puedes usarlos en áreas secas de baños: detrás del lavamanos, en el área del tocador, en paredes opuestas a la regadera. No los instales dentro de la regadera ni en paredes que reciban agua directa constantemente. Tampoco los uses en exteriores expuestos a lluvia."
+        }
+      ]
+    },
+    "vigas": {
+      "name": "VIGAS PVCWPCPU",
+      "slug": "vigas",
+      "curiosos": [
+        {
+          "title": "De la madera de verdad a la \"madera eterna\"",
+          "content": "Las vigas decorativas de PVC, WPC y PU surgieron como respuesta a un problema milenario: las vigas de madera natural son bellas pero exigen un tributo constante. Termitas, humedad, deformación, pudrición, pintura descascarada — cada año, millones de dólares se invierten en mantener vigas de madera que, tarde o temprano, sucumben. En la década de 2000, la tecnología de compuestos de polímero alcanzó la madurez suficiente para replicar no solo la apariencia, sino la textura táctil de la madera real. Hoy, una viga WPC o PU puede confundir incluso a un carpintero experimentado... hasta que le dicen que lleva 10 años instalada sin una sola gota de barniz."
+        },
+        {
+          "title": "La viga de 2.81 kg que soporta el peso de la tradición",
+          "content": "La viga PU de 2,900 x 152 x 75 mm pesa solo 2.81 kilogramos. Para ponerlo en perspectiva: una viga de madera real de las mismas dimensiones pesaría aproximadamente 12-15 kg. Eso significa que puedes levantar una viga PU con un solo dedo, mientras que la de madera requiere dos personas. Este 80% de reducción de peso revolucionó la decoración de techos, permitiendo instalar vigas decorativas en estructuras que nunca podrían soportar el peso de la madera natural."
+        }
+      ],
+      "faqs": [
+        {
+          "q": "¿Las vigas son estructurales? ¿Pueden sostener mi techo?",
+          "a": "No. Las vigas WPC, PU y PVC son estrictamente decorativas. No están diseñadas para soportar cargas estructurales, peso de techos, ni para usarse como elemento de construcción portante. Se fijan al techo existente (los, tablaroco, plafón) con tornillos o adhesivo, pero su función es puramente estética. Si necesitas vigas estructurales, debes consultar con un ingeniero civil."
+        },
+        {
+          "q": "¿Cuál es la diferencia entre WPC, PU y PVC?",
+          "a": "| Material | Qué es | Mejor para | |-|--|| | WPC | Wood Plastic Composite. Mezcla de polímero con fibra de madera. | Perfil más realista, garantía más larga (15 años) | | PU | Poliuretano. Material espumado de ultra bajo peso. | Techos frágiles donde el peso es crítico | | PVC | Policloruro de vinilo. Polímero rígido. | Mejor precio, buena durabilidad, resistente al fuego |  En resumen: WPC = máximo realismo y garantía. PU = peso mínimo. PVC = mejor relación precio-beneficio."
+        },
+        {
+          "q": "¿Puedo instalarlas yo solo o necesito profesional?",
+          "a": "Las vigas WPC y PVC Perfil pueden instalarse por una persona con experiencia básica en bricolaje, aunque se recomienda ser dos personas por seguridad al trabajar en alturas. Las vigas PU son tan ligeras que una sola persona puede manejarlas fácilmente. Lo más importante es: 1. Localizar los travesaños del techo para anclar correctamente 2. Usar nivel láser para alineación perfecta 3. Usar escalera o andamio seguro  Si no te sientes cómodo trabajando en techos, ADIS te puede recomendar instaladores certificados en Nogales y Tucson."
+        },
+        {
+          "q": "¿Se ven como madera real o se nota que son plástico?",
+          "a": "Las vigas WPC tienen el realismo más convincente gracias al composite de fibra de madera real en su composición. A una distancia de uso normal (1.5-3 metros), la mayoría de las personas no distingue la diferencia. Las vigas PU tienen un acabado ligeramente más \"uniforme\" que puede delatar su naturaleza sintética a distancia muy cercana, pero el efecto general es de alta calidad. La clave está en la instalación: una viga bien instalada, alineada y con tapa decorativa se ve profesional y elegante."
+        },
+        {
+          "q": "¿Cuántas vigas necesito para mi techo?",
+          "a": "Depende del efecto deseado:  - Efecto sutil: 3-4 vigas transversales en una sala de 4x5 metros. - Efecto cabaña completo: Vigas cada 60-80 cm, cubriendo todo el techo. - Acento focal: 1-3 vigas sobre un área específica (comedor, TV, barra).  Regla práctica: Vigas transversales cada 80-100 cm crean un ritmo agradable sin abrumar. Para un cálculo exacto, acércate a ADIS con las dimensiones de tu espacio y te hacemos un diseño sin costo."
+        }
+      ]
+    },
+    "pisos": {
+      "name": "PISOS",
+      "slug": "pisos",
+      "curiosos": [
+        {
+          "title": "El piso laminado nació... ¡por accidente!",
+          "content": "En 1977, la empresa sueca Perstorp intentaba crear encimeras de cocina más resistentes. Uno de sus ingenieros, al combinar capas de fibra de madera de alta densidad (HDF) con resinas melamínicas, descubrió que el resultado podía usarse también como piso. Así nació el laminado moderno. Hoy, casi 50 años después, el laminado ha evolucionado hasta alcanzar clases de uso AC5 capaces de soportar el tráfico de aeropuertos."
+        },
+        {
+          "title": "El SPC es literalmente \"piso de piedra aplastada\"",
+          "content": "El núcleo de los pisos SPC (Stone Plastic Composite) está compuesto por un 60-70% de polvo de piedra caliza (carbonato de calcio) mezclado con resinas de PVC. Eso significa que, en esencia, caminas sobre una superficie de piedra comprimida con acabado decorativo. Es el mismo material que se usa en algunas tuberías de alta presión, lo que explica su resistencia extrema al agua."
+        },
+        {
+          "title": "El WPC se usaba primero en decks... ¡y ahora conquista interiores!",
+          "content": "El Wood Plastic Composite (WPC) fue desarrollado originalmente en la década de 1990 para reemplazar madera tratada con químicos en decks exteriores. La tecnología demostró ser tan versátil que hoy se fabrican pisos interiores con el mismo compuesto madera-plástico. Es uno de los pocos materiales que logró \"migrar\" del exterior al interior sin perder prestaciones."
+        },
+        {
+          "title": "Los decks sintéticos se inventaron para salvar bosques",
+          "content": "El deck sintético WPC nació como respuesta a la preocupación ambiental por la tala de ipe, caoba y otras maderas tropicales para exteriores. Un deck de WPC con acabado \"Teak\" evita que se talen aproximadamente 12 árboles de teca por cada 100 m² instalados. La coextrusión (capa protectora UV integrada) es una tecnología que la NASA exploró inicialmente para proteger satélites."
+        },
+        {
+          "title": "La clasificación AC (Abrasion Class) se prueba con una máquina de \"zancadas robot\"",
+          "content": "Para clasificar un piso laminado en AC3, AC4 o AC5, los laboratorios utilizan una máquina TABER que simula miles de pisadas con abrasivo. Un piso AC4 como el SPLASH! resiste más de 4,000 revoluciones de esta máquina sin desgaste visible. Imagina caminar 10 km diarios sobre el mismo punto durante años."
+        }
+      ],
+      "faqs": [
+        {
+          "q": "¿Puedo instalar laminado en la cocina?",
+          "a": "Respuesta corta: Sí, con precauciones. El laminado MAGNUS y SPLASH! son \"water resistant\", lo que significa que resisten derrames ocasionales si se limpian rápido. Sin embargo, NO son impermeables: si se deja agua estancada o hay una fuga prolongada, el núcleo HDF se hinchará irreversiblemente. Si tu cocina tiene riesgo alto de inundación (debajo de un fregadero con tubería vieja, por ejemplo), recomendamos SPC. Si la cocina es normal y eres cuidadoso con los derrames, el laminado funcionará perfectamente."
+        },
+        {
+          "q": "¿Cuál es la diferencia real entre SPC y WPC para un cliente normal?",
+          "a": "Respuesta: La principal diferencia que NOTARÁS es la sensación al caminar. El SPC es más duro y frío (porque su núcleo es piedra+PVC). El WPC es más cálido y cómodo (porque contiene fibras de madera). En rendimiento: el SPC es 100% impermeable y soporta mejor el tráfico pesado. El WPC absorbe mejor el ruido y es más agradable para caminar descalzo. Si vas a instalar en un baño, cocina o área comercial de alto tráfico → SPC. Si es para tu sala o recámara y valoras el confort → WPC."
+        },
+        {
+          "q": "¿El deck sintético realmente no se decolora bajo el sol de Sonora?",
+          "a": "Respuesta: El deck WPC coextruido de Tekno-Step tiene una capa protectora UV integrada (coextrusión) que garantiza la estabilidad del color durante toda su vida útil (18-25 años según modelo). En Nogales, Sonora y Tucson, AZ, donde la radiación UV es intensa la mayor parte del año, esto es crucial. A diferencia de la madera natural que requiere re-sellado cada 1-2 años, el deck coextruido mantiene su color sin mantenimiento. La garantía de Tekno-Step cubre específicamente la estabilidad UV."
+        },
+        {
+          "q": "¿Cuánto mide exactamente una caja de laminado MAGNUS y cuántas necesito para mi sala?",
+          "a": "Respuesta: Cada caja de MAGNUS contiene 6 piezas de 2200 × 239 mm, lo que equivale a 3.155 m² por caja. Para calcular cuántas necesitas: mide el área de tu sala (largo × ancho), suma un 10% de merma por cortes y desperdicio, y divide entre 3.155. Ejemplo: una sala de 4 m × 5 m = 20 m². Con el 10% de merma = 22 m². 22 ÷ 3.155 = 6.97 → Necesitas 7 cajas."
+        },
+        {
+          "q": "¿Puedo instalar el piso yo mismo o necesito un instalador profesional?",
+          "a": "Respuesta: Los pisos con sistema clic (laminado, SPC y WPC) están diseñados para instalación DIY (hazlo tú mismo). Si eres algo habilidoso, tienes las herramientas básicas (sierra caladora, martillo, spacers) y sigues las instrucciones de acondicionamiento y separación perimetral, puedes lograr un buen resultado. Sin embargo, recomendamos instalador profesional cuando: el área es mayor a 50 m², el subpiso requiere nivelación, hay formas irregulares (escalones, columnas), o se instala en áreas húmedas donde el sellado de juntas es crítico. El costo de instalación profesional en Nogales, Sonora ronda los $80-120 pesos/m² y asegura que no habrá problemas de garantía por mala instalación."
+        }
+      ]
+    },
+    "zacate": {
+      "name": "ZACATE SINTÉTICO",
+      "slug": "zacate",
+      "curiosos": [
+        {
+          "title": "El primer pasto sintético se creó para... ¡un mini golf en los años 60!",
+          "content": "La historia del pasto artificial comenzó en 1965 cuando Monsanto desarrolló ChemGrass para el recinto deportivo de la ciudad de Houston. Sin embargo, la verdadera revolución llegó en 1966 cuando se instaló en el estadio Astrodome de los Houston Astros (por eso se le llamó inicialmente \"AstroTurf\"). Curiosamente, la primera aplicación exitosa no fue para fútbol americano, sino porque la cúpula del estadio no permitía crecer pasto natural bajo techo. Hoy, casi 60 años después, la tecnología ha evolucionado hasta crear fibras que parecen y se sienten como pasto real."
+        },
+        {
+          "title": "Un campo de pasto sintético ahorra 2.3 millones de litros de agua al año",
+          "content": "Un campo de fútbol de pasto natural consume aproximadamente 2.3 millones de litros de agua anuales solo en riego. En Nogales, Sonora, donde el agua es un recurso preciado y escaso, esta cifra cobra relevancia extraordinaria. Instalar pasto sintético en un patio promedio de 50 m² equivale a ahorrar los litros de agua que una familia de 4 personas consumiría en 8 años."
+        },
+        {
+          "title": "Las fibras de polietileno del pasto sintético son las mismas que las bolsas de supermercado... ¡pero mucho más sofisticadas!",
+          "content": "El polietileno (PE) usado en pasto sintético es técnicamente el mismo polímero de las bolsas plásticas, pero de grado UHMW (Ultra High Molecular Weight). Esto significa que sus moléculas son 100-1,000 veces más largas, lo que le da resistencia UV, flexibilidad y durabilidad. Una fibra de pasto sintético de alta gama puede doblarse 50,000 veces sin romperse."
+        },
+        {
+          "title": "El follaje artificial data del... ¡Imperio Egipcio!",
+          "content": "Los egipcios usaban hojas de seda y flores artificiales para decorar tumbas hace más de 3,000 años. En la época victoriana, el follaje artificial de tela y cera se volvió moda entre la alta sociedad europea. El follaje moderno de poliuretano y poliéster con protección UV es prácticamente indistinguible del natural a simple vista, y puede durar 5-8 años en exteriores sin decolorarse."
+        },
+        {
+          "title": "Los perros prefieren el pasto sintético (y sus dueños también)",
+          "content": "Un estudio de la Universidad de California descubrió que el 78% de los perros mostró preferencia por hacer sus necesidades sobre pasto sintético vs. concreto o grava. Esto se debe a que las fibras sintéticas retienen menos calor que el concreto bajo el sol y ofrecen una superficie \"natural\" que los canes reconocen. Además, el pasto sintético es aislante de bacterias e insectos, lo que reduce el riesgo de parásitos en mascotas."
+        }
+      ],
+      "faqs": [
+        {
+          "q": "¿El pasto sintético no se siente \"plástico\" falso bajo los pies?",
+          "a": "Respuesta: La tecnología ha evolucionado enormemente. Los pastos sintéticos de alta gama que distribuye ADIS utilizan fibras de polietileno de alto peso molecular con forma de \"C\" o \"W\" que se doblan y recuperan como pasto natural. La clave está en tres factores: (1) la altura de las fibras (30-40 mm es ideal para sensación natural), (2) la densidad de puntadas (más fibras = más suave), y (3) el relleno con arena de sílice que mantiene las fibras verticales y da peso. Al caminar descalzo, la sensación es sorprendentemente similar al pasto natural bien cuidado. Te invitamos a visitar nuestro showroom en Nogales para que lo compruebes personalmente."
+        },
+        {
+          "q": "¿Cuánto dura realmente el pasto sintético bajo el sol de Sonora?",
+          "a": "Respuesta: En Nogales, Sonora y Tucson, AZ, donde la radiación UV es intensa gran parte del año, el pasto sintético decorativo de calidad tiene una vida útil de 5 a 8 años. Los factores que más influyen son: (1) calidad del tratamiento UV (nuestros productos tienen protección integrada), (2) color del pasto (los verdes más claros resisten mejor el calor que los oscuros), y (3) nivel de tráfico y mantenimiento. Un pasto bien mantenido (cepillado y limpio) puede durar hasta 10 años. Para aplicaciones deportivas de alto tráfico, la expectativa es de 8-10 años."
+        },
+        {
+          "q": "¿Puedo instalar pasto sintético yo mismo o necesito profesional?",
+          "a": "Respuesta: Para áreas pequeñas (menos de 20 m²) con superficie plana, la instalación es un proyecto DIY accesible: nivelas, colocas geotextil, extiendes el pasto, cortas con cúter y fijas con anclajes. Sin embargo, recomendamos instalador profesional cuando: (a) el área supera 30 m², (b) el terreno tiene desniveles que requieren preparación, (c) se necesita drenaje estructurado, (d) hay formas irregulares (alrededor de albercas, árboles), o (e) se requiere unión de múltiples rollos. Una mala instalación se nota: uniones visibles, ondulaciones, acumulación de agua. En ADIS ofrecemos instalación profesional con garantía."
+        },
+        {
+          "q": "¿Es seguro para mis hijos y mascotas? ¿No libera químicos tóxicos?",
+          "a": "Respuesta: Los pastos sintéticos que distribuye ADIS están fabricados con polietileno de grado alimenticio (el mismo material de las botellas de agua) y cumplen con normativas de seguridad para contacto humano. Son libres de plomo, metales pesados y ftalatos. Para niños, ofrecen una superficie amortiguadora que reduce lesiones por caídas comparada con concreto. Para mascotas, es aislante de insectos, bacterias y parásitos (no hay tierra donde anidar). Los orines no dañan el material y se limpian fácilmente. Si tienes preocupaciones específicas, podemos proporcionarte las hojas de seguridad del material (MSDS) y certificaciones de laboratorio."
+        },
+        {
+          "q": "¿Cuánto me ahorro realmente en agua y mantenimiento comparado con pasto natural?",
+          "a": "Respuesta: En Nogales, Sonora, el costo del agua es significativo y la frecuencia de riego en verano es casi diaria. Hagamos la cuenta para un jardín típico de 50 m²: Pasto natural: Riego diario en verano (~45 min) = ~450 litros/día = ~13,500 litros/mes. Durante 6 meses de calor = 81,000 litros. A precios actuales en Nogales, eso son aproximadamente $8,000-$12,000 MXN anuales solo en agua. Sumando poda (mensual $400), fertilizantes ($1,500/año) y pesticidas ($800/año), el mantenimiento anual supera los $12,000-$15,000 MXN. Pasto sintético: Cero riego, cero poda, cero fertilizantes. Solo limpieza ocasional con agua. En 5 años, el ahorro es de $60,000-$75,000 MXN — más que suficiente para amortizar la inversión inicial y empezar a ganar."
+        }
+      ]
+    },
+    "cladding": {
+      "name": "CLADDING  PLACAS TIPO PIEDRA",
+      "slug": "cladding",
+      "curiosos": [
+        {
+          "title": "Las placas de PU tipo piedra pesan 95% menos que la roca real... ¡pero lucen idénticas!",
+          "content": "Una placa de poliuretano (PU) tipo piedra pesa aproximadamente 1.8 kg por pieza (60.5 × 121 cm). La piedra natural equivalente pesa entre 30 y 50 kg por m². Eso significa que una placa de PU pesa ~2.5 kg/m² vs. 40 kg/m² de piedra real. La diferencia es tan abismal que una persona puede instalar 20 m² de placas PU en una tarde, mientras que la misma área en piedra natural requiere albañiles, estructura de soporte reforzada y días de trabajo. La tecnología de moldeo por inyección permite capturar hasta las imperfecciones naturales de la roca: grietas, vetas, desgaste — todo en un material que puedes levantar con una mano."
+        },
+        {
+          "title": "El revestimiento flexible de piedra real es la única tecnología que combina piedra auténtica con flexibilidad",
+          "content": "Suena como una contradicción: ¿cómo puede ser flexible algo hecho de piedra? El secreto está en el espesor: se toman láminas de piedra natural de solo 1-2 mm de grosor, se unen a una base de fibra de vidrio, y el resultado es un panel de 4 kg/m² que se puede doblar, cortar con tijera y adherir a superficies curvas. Es una tecnología desarrollada originalmente en Alemania para restauración de monumentos históricos donde el peso de la piedra original amenazaba la estructura."
+        },
+        {
+          "title": "El Wall Cladding WPC está revolucionando las fachadas en Europa",
+          "content": "En países como Alemania, Países Bajos y Reino Unido, el cladding de WPC ya representa más del 30% de las nuevas fachadas residenciales. La razón es simple: ofrece la estética de la madera sin su mantenimiento (no se astilla, no se agrieta, no requiere barnizado cada 2 años). En Nogales, Sonora, donde el sol intenso degrada la madera exterior en 2-3 años, el cladding WPC es prácticamente la única opción viable para lograr el look de madera en exteriores."
+        },
+        {
+          "title": "Las placas PU se usaron por primera vez en sets de Hollywood",
+          "content": "El poliuretano expansivo de alta densidad se popularizó originalmente en la industria del cine para crear escenografías que parecían piedra, ladrillo o madera pero que eran lo suficientemente ligeras para moverlas entre tomas. Cuando la tecnología maduró, alguien pensó: \"¿Por qué no usarlas en casas reales?\" Hoy, las placas PU tipo piedra son una de las categorías de recubrimiento de más rápido crecimiento en construcción residencial y comercial."
+        },
+        {
+          "title": "Una fachada con cladding puede reducir la temperatura interior hasta 8°C",
+          "content": "tanto el Wall Cladding WPC como las placas tipo piedra crean una cámara de aire entre el recubrimiento y la pared original. Esta barrera térmica reduce la transferencia de calor hacia el interior. En Tucson, AZ y Nogales, Sonora, donde las temperaturas exteriores pueden superar los 45°C en verano, una fachada con cladding puede representar un ahorro de 20-30% en consumo de aire acondicionado. La inversión en cladding se amortiza en 3-5 años solo por el ahorro energético."
+        }
+      ],
+      "faqs": [
+        {
+          "q": "¿Las placas PU tipo piedra se ven \"falsas\" o de plástico?",
+          "a": "Respuesta: Las placas PU de alta calidad que distribuye ADIS utilizan moldes tomados de roca real, con relieves que replican grietas, vetas, desgaste natural e incluso inclusiones minerales. A 1-2 metros de distancia, son prácticamente indistinguibles de la piedra natural. La clave está en la instalación: un buen instalador varía el patrón de colocación, alterna orientaciones y usa masilla decorativa en juntas para simular una instalación de piedra real. En interiores con iluminación ambiental, el efecto es impactante. La diferencia se nota al tacto (más ligera y ligeramente más cálida) y al golpear (suena hueco vs. sólido). Para aplicaciones donde el contacto directo es mínimo (muros de acento, fachadas de entrada), las placas PU ofrecen el 95% del impacto visual al 20% del costo y peso."
+        },
+        {
+          "q": "¿Necesito refuerzar mi muro para instalar placas PU o revestimiento flexible?",
+          "a": "Respuesta: Generalmente NO. Las placas PU pesan aproximadamente 2.5 kg/m² y el revestimiento flexible unos 4 kg/m². Para ponerlo en perspectiva: una pintura de latex de alta calidad pesa ~1.5 kg/m² por capa. Estos recubrimientos pesan menos que dos capas de pintura. Cualquier muro que soporte pintura puede soportar estos recubrimientos sin problema. La única consideración es que la superficie debe estar sólida: no instalar sobre tablaroca dañada, muros con humedad estructural o superficies con pintura desprendida. Si tu muro está en buenas condiciones, puedes instalar directamente sobre el acabado existente (yeso, concreto, block, ladrillo) con adhesivo apropiado."
+        },
+        {
+          "q": "¿Cuánto tiempo toma instalar un muro de placas PU tipo piedra?",
+          "a": "Respuesta: Un instalador profesional puede colocar 20-30 m² de placas PU en una jornada de 8 horas. Para un muro de acento típico de una sala (ej. 4 m de ancho × 2.5 m de alto = 10 m²), la instalación toma medio día incluyendo preparación. Comparado con piedra natural que requiere: estructura de soporte (+1 día), colocación de malla (+0.5 días), instalación de piedra (+2-3 días), y juntas (+1 día) — las placas PU representan un ahorro de 80-90% en tiempo de obra. Además, no generan polvo de corte de piedra ni requieren herramientas especializadas pesadas."
+        },
+        {
+          "q": "¿El Wall Cladding WPC realmente no requiere mantenimiento en el clima de Sonora?",
+          "a": "Respuesta: Correcto. El Wall Cladding WPC está diseñado para soportar los climas más extremos sin mantenimiento. Específicamente: (1) Sol intenso: El compuesto WPC incluye estabilizadores UV que previenen la decoloración. (2) Lluvias monzónicas: Es 100% impermeable, no absorbe agua, no se hincha ni se pudre. (3) Cambios de temperatura: Soporta expansiones y contracciones sin agrietarse (a diferencia de la madera). El único \"mantenimiento\" recomendado es una lavada con agua y jabón cada 6-12 meses para remover polvo acumulado. No necesitas barnizar, sellar, lijar ni repintar — jamás. En pruebas aceleradas de envejecimiento, el cladding WPC mantiene sus propiedades estéticas y estructurales después de simular 25 años de exposición exterior."
+        },
+        {
+          "q": "¿Puedo combinar diferentes tipos de cladding en la misma fachada?",
+          "a": "Respuesta: ¡Absolutamente! De hecho, es una de las tendencias de diseño más impactantes. Algunas combinaciones que hemos ejecutado en proyectos de Nogales y Tucson con excelentes resultados: (1) Cladding WPC Teak en la parte inferior de la fachada + Placas PU tipo piedra en la parte superior = look moderno y cálido. (2) Placas PU laja volcánica en el muro de entrada + Cladding WPC Stone Gray en laterales = contraste textural espectacular. (3) Revestimiento flexible en la fachada principal + Placas PU en muros de acento interiores = coherencia exterior-interior. En ADIS ofrecemos asesoría de diseño gratuita para ayudarte a combinar texturas y colores. Podemos crear renders 3D de tu fachada con las diferentes opciones antes de que tomes una decisión."
+        }
+      ]
+    }
   }
-]
+}

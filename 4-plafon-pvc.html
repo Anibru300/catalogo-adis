@@ -458,7 +458,7 @@
 
   <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20vi%20el%20catálogo%20y%20me%20interesa%20obtener%20información%20sobre%20sus%20productos." class="whatsapp-float" target="_blank" title="Contáctanos por WhatsApp"><svg viewBox="0 0 24 24" width="32" height="32" fill="white" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.008-.57-.008-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg></a>
 
-  <button class="chatbot-float" onclick="toggleChat()" title="Asistente Virtual">🤖</button>
+  <button class="chatbot-float" onclick="toggleChat()" title="Asistente Virtual">🤖<span class="chatbot-badge" id="chatBadge">0</span></button>
   <div class="chatbot-window" id="chatbotWindow">
     <div class="chatbot-header">
       <h4>🤖 Asistente ADIS</h4>
@@ -479,7 +479,11 @@
       const chatWindow = document.getElementById('chatbotWindow');
       const chatBody = document.getElementById('chatbotBody');
       let allProducts = [];
+      let researchData = {};
       let chatContext = loadContext();
+      if (!chatContext.quoteState) chatContext.quoteState = null;
+      if (!chatContext.quoteData) chatContext.quoteData = {};
+      let unreadCount = 0;
       const HISTORY_KEY = 'adis_chat_v3';
       const CONTEXT_KEY = 'adis_chat_ctx_v3';
       const MAX_HISTORY = 40;
@@ -611,6 +615,7 @@
           { name: 'agradecimiento', words: ['gracias','thank','perfecto','excelente'], score: 3 },
           { name: 'despedida', words: ['adios','bye','hasta luego','nos vemos'], score: 3 },
           { name: 'negacion', words: ['no es','otra cosa','cambio de tema','no gracias','nada'], score: 2 },
+          { name: 'cotizar', words: ['cotizar','cotizacion','cotizacion guiada','quiero cotizar','me interesa','comprar','pedir','ordenar','cotiza'], score: 4 },
           { name: 'ayuda', words: ['ayuda','help','auxilio','soporte'], score: 2 }
         ];
         
@@ -779,6 +784,56 @@
         }).filter(x => x.score > 0).sort((a,b) => b.score - a.score).slice(0, 3);
       }
       
+      // === BÚSQUEDA EN "SABÍAS QUE" ===
+      function searchResearch(q, category) {
+        if (!researchData || Object.keys(researchData).length === 0) return null;
+        const terms = q.split(/\s+/).filter(t => t.length > 2);
+        if (terms.length === 0) return null;
+        
+        let best = null, bestScore = 0;
+        const cats = category ? [category.name] : Object.keys(researchData);
+        
+        for (let catKey of Object.keys(researchData)) {
+          if (category && catKey !== category.name) continue;
+          const cat = researchData[catKey];
+          if (!cat) continue;
+          
+          for (let c of cat.curiosos || []) {
+            const text = normalizeQuery(c.title + ' ' + c.content);
+            let score = 0;
+            for (let t of terms) {
+              if (text.includes(t)) score += 1;
+              if (normalizeQuery(c.title).includes(t)) score += 2;
+            }
+            if (score > bestScore) {
+              bestScore = score;
+              best = { type: 'curioso', category: cat.name, title: c.title, content: c.content };
+            }
+          }
+          
+          for (let f of cat.faqs || []) {
+            const text = normalizeQuery(f.q + ' ' + f.a);
+            let score = 0;
+            for (let t of terms) {
+              if (text.includes(t)) score += 1;
+              if (normalizeQuery(f.q).includes(t)) score += 2;
+            }
+            if (score > bestScore) {
+              bestScore = score;
+              best = { type: 'faq', category: cat.name, title: f.q, content: f.a };
+            }
+          }
+        }
+        
+        return bestScore >= 2 ? best : null;
+      }
+      
+      function formatResearchAnswer(item) {
+        const icon = item.type === 'faq' ? '❓' : '💡';
+        const label = item.type === 'faq' ? 'Pregunta frecuente' : 'Dato curioso';
+        return icon + ' <strong>' + label + ' — ' + item.category + '</strong><br><br><strong>' + item.title + '</strong><br><br>' + item.content;
+      }
+      
       // === SUGERENCIAS CONTEXTUALES ===
       function getSuggestions(intent, category, products) {
         if (products && products.length > 0) {
@@ -939,6 +994,20 @@
         let intent = scoreIntent(normalized);
         let category = detectCategory(normalized);
         
+        // Cotización guiada
+        if (intent.name === 'cotizar') {
+          return startQuoteFlow();
+        }
+        
+        // Recomendador inteligente
+        const recommendation = getRecommendation(normalized);
+        if (recommendation) {
+          return {
+            text: recommendation.text,
+            suggestions: recommendation.suggestions
+          };
+        }
+        
         // Mármol específico
         if (normalized.includes('marmol') || normalized.includes('marble')) {
           return { 
@@ -955,7 +1024,163 @@
           };
         }
         
+        // Búsqueda en "Sabías que"
+        const researchMatch = searchResearch(normalized, category ? { name: category.name } : null);
+        if (researchMatch) {
+          chatContext.lastTopic = category || chatContext.lastTopic;
+          chatContext.lastIntent = 'research';
+          saveContext();
+          return {
+            text: formatResearchAnswer(researchMatch) + '<br><br>📚 Sacado de <a href="sabias-que.html" style="color:#C5A059">¿Sabías que?</a>',
+            suggestions: category ? ['Ver ' + category.labels.short, 'Cotizar ' + category.labels.short, 'Más datos curiosos', 'Hablar con asesor'] : ['Ver datos curiosos', 'Ver productos', 'Cotización', 'Hablar con asesor']
+          };
+        }
+        
         return respond(intent.name, category, normalized, original);
+      }
+      
+      // === FORMULARIO DE COTIZACIÓN GUIADA ===
+      function startQuoteFlow() {
+        chatContext.quoteState = 'category';
+        chatContext.quoteData = {};
+        saveContext();
+        return {
+          text: '📝 <strong>Cotización guiada</strong><br><br>Te voy a hacer unas preguntas para armar tu cotización. Al final podrás enviarla por WhatsApp con todos los detalles.<br><br><strong>Paso 1 de 6:</strong> ¿Qué producto o categoría te interesa?',
+          suggestions: ['Placas PVC', 'Lambrín WPC', 'Pisos SPC', 'Paneles 3D', 'Plafón PVC', 'Cladding', 'Zacate']
+        };
+      }
+      
+      function handleQuoteStep(text, q) {
+        const data = chatContext.quoteData;
+        const state = chatContext.quoteState;
+        
+        if (state === 'category') {
+          data.category = text;
+          chatContext.quoteState = 'space';
+          saveContext();
+          return {
+            text: '✅ Producto: <strong>' + text + '</strong><br><br><strong>Paso 2 de 6:</strong> ¿Para qué espacio lo necesitas?',
+            suggestions: ['Baño', 'Cocina', 'Sala', 'Recámara', 'Fachada', 'Jardín', 'Oficina']
+          };
+        }
+        if (state === 'space') {
+          data.space = text;
+          chatContext.quoteState = 'm2';
+          saveContext();
+          return {
+            text: '✅ Espacio: <strong>' + text + '</strong><br><br><strong>Paso 3 de 6:</strong> ¿Aproximadamente cuántos metros cuadrados necesitas?',
+            suggestions: ['5 m²', '10 m²', '20 m²', '30 m²', '50 m²', 'No sé, ayúdame']
+          };
+        }
+        if (state === 'm2') {
+          data.m2 = text;
+          chatContext.quoteState = 'install';
+          saveContext();
+          return {
+            text: '✅ Metraje: <strong>' + text + '</strong><br><br><strong>Paso 4 de 6:</strong> ¿Necesitas instalación?',
+            suggestions: ['Sí, con instalación', 'No, solo material', 'Quiero que me asesoren']
+          };
+        }
+        if (state === 'install') {
+          data.install = text;
+          chatContext.quoteState = 'location';
+          saveContext();
+          return {
+            text: '✅ Instalación: <strong>' + text + '</strong><br><br><strong>Paso 5 de 6:</strong> ¿En qué ciudad/colonia será la obra?',
+            suggestions: ['Nogales, Sonora', 'Nogales, AZ', 'Tucson, AZ', 'Otra ciudad']
+          };
+        }
+        if (state === 'location') {
+          data.location = text;
+          chatContext.quoteState = 'contact';
+          saveContext();
+          return {
+            text: '✅ Ubicación: <strong>' + text + '</strong><br><br><strong>Paso 6 de 6:</strong> ¿Cuál es tu nombre y teléfono? (opcional)',
+            suggestions: ['Prefiero no decir', 'Solo enviar por WhatsApp']
+          };
+        }
+        if (state === 'contact') {
+          data.contact = text;
+          chatContext.quoteState = 'summary';
+          saveContext();
+          return renderQuoteSummary();
+        }
+        return renderQuoteSummary();
+      }
+      
+      function renderQuoteSummary() {
+        const data = chatContext.quoteData;
+        chatContext.quoteState = null;
+        saveContext();
+        return {
+          text: '📋 <strong>Resumen de tu cotización:</strong><br><br>• <strong>Producto:</strong> ' + data.category + '<br>• <strong>Espacio:</strong> ' + data.space + '<br>• <strong>Metraje:</strong> ' + data.m2 + '<br>• <strong>Instalación:</strong> ' + data.install + '<br>• <strong>Ubicación:</strong> ' + data.location + '<br>' + (data.contact && data.contact !== 'Prefiero no decir' && data.contact !== 'Solo enviar por WhatsApp' ? '• <strong>Contacto:</strong> ' + data.contact + '<br>' : '') + '<br>✅ Revisa que todo esté correcto y envía la cotización por WhatsApp. Un asesor te responderá en menos de 24 horas.',
+          suggestions: ['Enviar cotización por WhatsApp', 'Hacer otra cotización', 'Hablar con asesor']
+        };
+      }
+      
+      function sendQuoteToWhatsApp() {
+        const data = chatContext.quoteData;
+        if (!data || !data.category) return;
+        const msg = 'Hola ADIS, solicito cotización guiada desde el catálogo:
+
+• Producto: ' + data.category + '
+• Espacio: ' + data.space + '
+• Metraje: ' + data.m2 + '
+• Instalación: ' + data.install + '
+• Ubicación: ' + data.location + '
+' + (data.contact && data.contact !== 'Prefiero no decir' && data.contact !== 'Solo enviar por WhatsApp' ? '• Contacto: ' + data.contact + '
+' : '') + '
+Quedo atento a su respuesta. Gracias.';
+        window.open('https://wa.me/526311928993?text=' + encodeURIComponent(msg), '_blank');
+      }
+      
+      // === RECOMENDADOR INTELIGENTE ===
+      function getRecommendation(q) {
+        const recoMap = [
+          {
+            words: ['bano','regadera','ducha','humedad','moho','cocina','salpicaduras'],
+            text: '🚿 <strong>Para baños y cocinas te recomendamos:</strong><br><br>• <strong>Placas PVC</strong> — 100% impermeables, ideales para muros. Acabados tipo mármol, espejo o madera.<br>• <strong>Pisos SPC</strong> — Resistentes al agua, instalación tipo click.<br>• <strong>Lambrín WPC</strong> — También resiste humedad, aspecto natural de madera.<br><br>💡 Todas tienen garantía de 12-15 años.',
+            suggestions: ['Ver Placas PVC', 'Ver Pisos SPC', 'Cotizar para baño/cocina', 'Hablar con asesor']
+          },
+          {
+            words: ['fachada','exterior','sol','lluvia','uv','exterior casa','pared exterior'],
+            text: '🏠 <strong>Para exteriores y fachadas te recomendamos:</strong><br><br>• <strong>Lambrín WPC exterior</strong> — No se deforma con la humedad ni el sol.<br>• <strong>Cladding</strong> — Imitación de piedra real, pesa 8-12 veces menos.<br>• <strong>Zacate sintético</strong> — Para jardines, verde todo el año sin mantenimiento.<br><br>💡 Estos materiales están diseñados para resistir intemperie.',
+            suggestions: ['Ver Lambrín WPC exterior', 'Ver Cladding', 'Ver Zacate', 'Cotizar fachada']
+          },
+          {
+            words: ['piso','pisos','suelo','piso para','baldosa'],
+            text: '🏗️ <strong>Para pisos te recomendamos:</strong><br><br>• <strong>SPC</strong> — Muy resistente al agua, ideal cocinas y baños.<br>• <strong>WPC</strong> — Más cálido y confortable, ideal recámaras.<br>• <strong>Laminado</strong> — Más económico, para interiores de bajo tráfico.<br>• <strong>Deck sintético</strong> — Para exteriores y terrazas.',
+            suggestions: ['Ver Pisos SPC', 'Ver Pisos WPC', 'Ver Laminado', 'Cotizar pisos']
+          },
+          {
+            words: ['techo','cielo','plafon','plafond','cielo falso'],
+            text: '🏢 <strong>Para plafones y cielos falsos te recomendamos:</strong><br><br>• <strong>Plafón PVC laminado</strong> — Imitación madera, inmune a humedad y moho.<br>• <strong>Plafón PVC ranurado</strong> — Diseño moderno, fácil instalación.<br><br>💡 No se cuartea, no absorbe humedad y no requiere mantenimiento.',
+            suggestions: ['Ver Plafón PVC', 'Cotizar plafón', 'Hablar con asesor']
+          },
+          {
+            words: ['muro 3d','panel decorativo','pared decorativa','relieve','textura pared'],
+            text: '🎨 <strong>Para muros decorativos te recomendamos:</strong><br><br>• <strong>Paneles 3D</strong> — Transforman cualquier muro en una obra de arte. Disponibles en blanco, grises, madera, negro y dorado.<br><br>💡 Ideales para recámaras, salas, recepciones y fondos de TV.',
+            suggestions: ['Ver Paneles 3D', 'Cotizar paneles 3D', 'Hablar con asesor']
+          },
+          {
+            words: ['jardin','pasto','cesped','follaje','terraza verde','jardinera'],
+            text: '🌿 <strong>Para jardines y exteriores verdes te recomendamos:</strong><br><br>• <strong>Zacate sintético</strong> — Verde todo el año sin riego ni poda.<br>• <strong>Follaje sintético</strong> — Para muros verdes y jardineras.<br><br>💡 Resistente a rayos UV, con garantía de 5 años.',
+            suggestions: ['Ver Zacate', 'Cotizar zacate', 'Hablar con asesor']
+          },
+          {
+            words: ['viga','vigas','viga decorativa','trabe','cubierta madera'],
+            text: '🪵 <strong>Para vigas decorativas te recomendamos:</strong><br><br>• <strong>Vigas PVC</strong> — Más ligeras, fáciles de instalar, gran variedad de diseños.<br>• <strong>Vigas WPC</strong> — Aspecto de madera real sin mantenimiento.<br><br>💡 Ideales para interior y exterior.',
+            suggestions: ['Ver Vigas', 'Cotizar vigas', 'Hablar con asesor']
+          }
+        ];
+        
+        let best = null, bestScore = 0;
+        for (let reco of recoMap) {
+          let score = 0;
+          for (let w of reco.words) if (q.includes(w)) score += 1;
+          if (score > bestScore) { bestScore = score; best = reco; }
+        }
+        return bestScore >= 2 ? best : null;
       }
       
       // === EVENTOS ===
@@ -963,6 +1188,7 @@
         const wasActive = chatWindow.classList.contains('active');
         chatWindow.classList.toggle('active');
         if (!wasActive && chatWindow.classList.contains('active')) {
+          clearBadge();
           if (chatBody.children.length === 0) {
             if (!renderHistory()) {
               showWelcome();
@@ -981,14 +1207,46 @@
         removeInputs();
         
         const q = text.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-        const result = findResponse(q, text);
         
+        // Manejar acciones especiales de botones
+        if (text === 'Enviar cotización por WhatsApp') {
+          sendQuoteToWhatsApp();
+          setTimeout(() => {
+            addMessage('✅ Se abrió WhatsApp con tu cotización. Envía el mensaje y un asesor te atenderá pronto. ¡Gracias por contactarnos! 🙌', false);
+            saveHistory('✅ Se abrió WhatsApp con tu cotización. Envía el mensaje y un asesor te atenderá pronto. ¡Gracias por contactarnos! 🙌', false);
+            showQuickReplies(['Ver productos', 'Hacer otra cotización', 'Hablar con asesor']);
+            addInputField();
+          }, 600);
+          return;
+        }
+        if (text === 'Hacer otra cotización') {
+          const result = startQuoteFlow();
+          showTyping();
+          setTimeout(() => {
+            hideTyping();
+            addMessage(result.text, false);
+            saveHistory(result.text, false);
+            showQuickReplies(result.suggestions);
+            addInputField();
+          }, 700);
+          return;
+        }
+        
+        let result;
+        if (chatContext.quoteState) {
+          result = handleQuoteStep(text, q);
+        } else {
+          result = findResponse(q, text);
+        }
+        
+        showTyping();
         setTimeout(() => {
+          hideTyping();
           addMessage(result.text, false);
           saveHistory(result.text, false);
           showQuickReplies(result.suggestions);
           addInputField();
-        }, 500);
+        }, 700);
       };
       
       function showWelcome() {
@@ -999,11 +1257,57 @@
         addInputField();
       }
       
-      // Cargar productos
+      // === UI PROFESIONAL: TYPING, BADGE, ETC. ===
+      function showTyping() {
+        hideTyping();
+        const typing = document.createElement('div');
+        typing.className = 'chat-message bot typing-indicator';
+        typing.id = 'typingIndicator';
+        typing.innerHTML = '<span></span><span></span><span></span>';
+        chatBody.appendChild(typing);
+        chatBody.scrollTop = chatBody.scrollHeight;
+      }
+      
+      function hideTyping() {
+        const t = document.getElementById('typingIndicator');
+        if (t) t.remove();
+      }
+      
+      function incrementBadge() {
+        if (!chatWindow.classList.contains('active')) {
+          unreadCount++;
+          const badge = document.getElementById('chatBadge');
+          if (badge) {
+            badge.textContent = unreadCount > 9 ? '9+' : unreadCount;
+            badge.style.display = 'flex';
+          }
+        }
+      }
+      
+      function clearBadge() {
+        unreadCount = 0;
+        const badge = document.getElementById('chatBadge');
+        if (badge) badge.style.display = 'none';
+      }
+      
+      // Sobrescribir addMessage para incluir badge en mensajes del bot
+      const originalAddMessage = addMessage;
+      addMessage = function(text, isUser) {
+        originalAddMessage(text, isUser);
+        if (!isUser) incrementBadge();
+      };
+      
+      // Cargar productos y datos de investigación
       fetch('products.json')
         .then(r => r.json())
-        .then(data => { allProducts = data; })
-        .catch(() => { allProducts = []; });
+        .then(data => { 
+          allProducts = data.products || [];
+          researchData = data.research || {};
+        })
+        .catch(() => { 
+          allProducts = [];
+          researchData = {};
+        });
     })();
   </script>
 
