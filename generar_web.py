@@ -541,11 +541,24 @@ nav.desktop-nav a:hover::after { width: 100%; }
   border: 1px solid rgba(197,160,89,0.15);
   transition: all 0.3s ease; text-align: center;
   border-radius: 8px;
+  text-decoration: none;
+  color: inherit;
+  display: block;
 }
-.info-card:hover {
+.info-card:hover,
+.info-card:visited,
+.info-card:active,
+.info-card:focus {
   border-color: var(--gold); transform: translateY(-6px);
   box-shadow: 0 15px 40px rgba(0,0,0,0.3);
   background: rgba(42,42,42,0.9);
+  color: var(--white);
+  text-decoration: none;
+}
+.info-card h3,
+.info-card p {
+  color: var(--white);
+  text-decoration: none;
 }
 .info-card .icon {
   width: 55px; height: 55px; margin: 0 auto 1.2rem;
