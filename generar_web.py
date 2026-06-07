@@ -1717,6 +1717,9 @@ footer {
 .sq-card h3 { color: var(--gold-light); font-size: 0.92rem; margin-bottom: 0.5rem; font-family: 'Montserrat', sans-serif; font-weight: 600; line-height: 1.4; }
 .sq-card p { color: rgba(245,245,245,0.6); font-size: 0.82rem; line-height: 1.6; margin: 0; }
 .sq-card-number { position: absolute; top: 0.8rem; right: 1rem; font-size: 2rem; font-weight: 800; color: rgba(255,255,255,0.25); font-family: 'Playfair Display', serif; line-height: 1; }
+.sq-card-readmore { color: var(--gold); font-size: 0.75rem; cursor: pointer; margin-top: 0.4rem; display: inline-block; font-weight: 600; transition: color 0.2s; border-bottom: 1px dotted rgba(197,160,89,0.4); }
+.sq-card-readmore:hover { color: var(--gold-light); border-bottom-color: var(--gold); }
+.sq-short, .sq-full { display: inline; }
 
 /* FAQ Acordeon */
 .sq-faqs { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.8rem; }
@@ -2148,7 +2151,7 @@ def generate_footer():
         
         // BUSQUEDA DE PRODUCTOS POR NOMBRE
         if (allProducts.length > 0) {
-          const terms = q.split(/\s+/).filter(t => t.length > 2);
+          const terms = q.split(/\\s+/).filter(t => t.length > 2);
           const matches = allProducts.filter(p => {
             const text = (p.name + ' ' + p.category + ' ' + (p.subcategory || '')).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
             return terms.some(t => text.includes(t));
@@ -2188,6 +2191,37 @@ def generate_footer():
         }
         if (q.includes('que es wpc') || q.includes('significa wpc') || q.includes('wpc significa') || q.includes('definicion wpc')) {
           return '📗 <strong>¿Qué es WPC?</strong><br><br>' + kb.definiciones.wpc + '<br><br>En ADIS lo usamos para lambrín de interior y exterior, pisos y revestimientos que lucen como madera real pero duran más.';
+        }
+        
+        // MEDIDAS / ESPECIFICACIONES POR CATEGORIA ESPECIFICA
+        if (q.includes('medida') || q.includes('especificacion') || q.includes('dimension') || q.includes('tamano') || q.includes('ficha') || q.includes('hoja tecnica')) {
+          if (q.includes('placa') || q.includes('lamina') || (q.includes('hoja') && q.includes('pvc'))) {
+            return '📐 <strong>Especificaciones técnicas — Placas PVC:</strong><br><br>' + kb.especificaciones.placas_pvc + '<br><br>💡 Las placas PVC miden <strong>2440 x 1220 x 5 mm</strong> (2.977 m² por pieza). Se venden por pieza individual. Peso: 10.5 kg/pz. Garantía: 15 años.';
+          }
+          if (q.includes('lambrin') || (q.includes('wpc') && !q.includes('pvc'))) {
+            return '📐 <strong>Especificaciones técnicas — Lambrín WPC:</strong><br><br>' + kb.especificaciones.lambrin_wpc + '<br><br>💡 Disponible en interior (219 x 26 x 3 mm) y exterior. Varía según modelo.';
+          }
+          if (q.includes('panel') && q.includes('3d')) {
+            return '📐 <strong>Especificaciones técnicas — Paneles 3D:</strong><br><br>' + kb.especificaciones.paneles_3d;
+          }
+          if (q.includes('piso') || q.includes('spc') || q.includes('laminado')) {
+            return '📐 <strong>Especificaciones técnicas — Pisos:</strong><br><br>' + kb.especificaciones.pisos_spc + '<br><br>💡 Tenemos laminado, WPC, SPC y deck sintético. Las medidas varían según el tipo.';
+          }
+          if (q.includes('plafon') || q.includes('cielo')) {
+            return '📐 <strong>Especificaciones técnicas — Plafón PVC:</strong><br><br>' + kb.especificaciones.plafon_pvc;
+          }
+          if (q.includes('viga')) {
+            return '📐 <strong>Especificaciones técnicas — Vigas PVC/WPC:</strong><br><br>' + kb.especificaciones.vigas_pvc;
+          }
+          if (q.includes('zacate') || q.includes('pasto') || q.includes('cesped')) {
+            return '📐 <strong>Especificaciones técnicas — Zacate Sintético:</strong><br><br>' + kb.especificaciones.zacate;
+          }
+          if (q.includes('cladding') || q.includes('fachada')) {
+            return '📐 <strong>Especificaciones técnicas — Cladding:</strong><br><br>' + kb.especificaciones.cladding;
+          }
+          if (q.includes('revestimiento') || q.includes('flexible') || q.includes('concreto')) {
+            return '📐 <strong>Especificaciones técnicas — Revestimiento Flexible:</strong><br><br>Material: Polímero flexible | Dimensiones: varían según modelo | Aplicación: Muros interiores y exteriores | Resistente al agua y UV.';
+          }
         }
         
         // UNIDAD DE VENTA / FICHAS TECNICAS
@@ -2317,7 +2351,7 @@ def generate_footer():
           return;
         }
         const q = normalize(query);
-        const terms = q.split(/\s+/).filter(t => t.length > 0);
+        const terms = q.split(/\\s+/).filter(t => t.length > 0);
         const scored = allProducts.map(p => {
           const name = normalize(p.name);
           const cat = normalize(p.category);
@@ -2417,7 +2451,7 @@ def generate_footer():
           return;
         }
         const q = normalize(query);
-        const terms = q.split(/\s+/).filter(t => t.length > 0);
+        const terms = q.split(/\\s+/).filter(t => t.length > 0);
         
         const scored = allProducts.map(p => {
           const name = normalize(p.name);
@@ -2543,7 +2577,7 @@ def generate_footer():
     <a href="contacto.html"><span>📞</span><span>Contacto</span></a>
   </nav>
 
-  <a href="https://wa.me/{CONTACTO['whatsapp']}?text={CONTACTO['whatsapp_msg'].replace(' ', '%20')}" class="whatsapp-float" target="_blank" title="Contáctanos por WhatsApp">💬</a>
+  <a href="https://wa.me/{CONTACTO['whatsapp']}?text={CONTACTO['whatsapp_msg'].replace(' ', '%20')}" class="whatsapp-float" target="_blank" title="Contáctanos por WhatsApp"><svg viewBox="0 0 24 24" width="32" height="32" fill="white" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.008-.57-.008-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg></a>
 
   <button class="chatbot-float" onclick="toggleChat()" title="Asistente Virtual">🤖</button>
   <div class="chatbot-window" id="chatbotWindow">
@@ -3049,7 +3083,10 @@ def generate_category_page(cat, categories):
     real_sheets_html = ''
     if cat['name'] == 'Placas PVC':
         media_dir = BASE_DIR / 'media'
-        real_imgs = sorted([f for f in os.listdir(media_dir) if f.startswith('pvc-real-') and f.lower().endswith(('.jpg', '.jpeg'))])
+        try:
+            real_imgs = sorted([f for f in os.listdir(media_dir) if f.startswith('pvc-real-') and f.lower().endswith(('.jpg', '.jpeg'))])
+        except (OSError, PermissionError):
+            real_imgs = []
         if real_imgs:
             gallery_items = ''
             for img in real_imgs:
@@ -3519,16 +3556,23 @@ def _extract_curiosos_cards(text):
         if not desc:
             continue
         desc = re.sub(r'\*\*(.+?)\*\*', r'<strong>\1</strong>', desc)
-        if len(desc) > 130:
-            desc = desc[:127] + '...'
         item_count += 1
         icons = ['🔬', '🌍', '🔥', '🖨️', '⚖️', '🧪', '🌲', '🌧️', '🏠', '📐', '🪨', '🎨']
         icon = icons[(item_count-1) % len(icons)]
+        if len(desc) > 130:
+            desc_trunc = desc[:127] + '...'
+            card_p = f'''<p class="sq-card-text">
+      <span class="sq-short">{desc_trunc}</span>
+      <span class="sq-full" style="display:none">{desc}</span>
+      <span class="sq-card-readmore" onclick="sqToggle(this)">Leer más</span>
+    </p>'''
+        else:
+            card_p = f'<p class="sq-card-text">{desc}</p>'
         cards += f'''      <div class="sq-card">
         <span class="sq-card-number">{item_count:02d}</span>
         <span class="sq-card-icon">{icon}</span>
         <h3>{title}</h3>
-        <p>{desc}</p>
+        {card_p}
       </div>
 '''
     return cards
@@ -3636,6 +3680,23 @@ def generate_sabias_que():
   </div>
 
 {generate_footer()}
+<script>
+function sqToggle(el) {{
+  var card = el.closest('.sq-card');
+  var shortEl = card.querySelector('.sq-short');
+  var fullEl = card.querySelector('.sq-full');
+  if (!shortEl || !fullEl) return;
+  if (fullEl.style.display === 'none') {{
+    shortEl.style.display = 'none';
+    fullEl.style.display = 'inline';
+    el.textContent = 'Leer menos';
+  }} else {{
+    shortEl.style.display = 'inline';
+    fullEl.style.display = 'none';
+    el.textContent = 'Leer más';
+  }}
+}}
+</script>
 </body>
 </html>
 '''
@@ -3700,7 +3761,10 @@ def generate_proyectos():
     img_exts = ('.jpg', '.jpeg', '.png')
     vid_exts = ('.mp4', '.mov', '.webm')
     
-    all_files = sorted([f for f in os.listdir(media_dir) if f.lower().endswith(img_exts + vid_exts)]) if media_dir.exists() else []
+    try:
+        all_files = sorted([f for f in os.listdir(media_dir) if f.lower().endswith(img_exts + vid_exts)]) if media_dir.exists() else []
+    except (OSError, PermissionError):
+        all_files = []
     
     images = [f for f in all_files if f.lower().endswith(img_exts)]
     videos = [f for f in all_files if f.lower().endswith(vid_exts)]
