@@ -448,6 +448,25 @@
   <script>
     function toggleMenu() { document.getElementById('mobileMenu').classList.toggle('active'); }
     
+    // Scroll reveal
+    (function() {
+      const reveals = document.querySelectorAll('.reveal');
+      if (!reveals.length) return;
+      if ('IntersectionObserver' in window) {
+        const io = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('active');
+              io.unobserve(entry.target);
+            }
+          });
+        }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+        reveals.forEach(el => io.observe(el));
+      } else {
+        reveals.forEach(el => el.classList.add('active'));
+      }
+    })();
+    
     // Chatbot Inteligente v3 - contexto, scoring, historial y tarjetas
     (function() {
       const chatWindow = document.getElementById('chatbotWindow');
