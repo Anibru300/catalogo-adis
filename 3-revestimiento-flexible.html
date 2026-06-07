@@ -301,21 +301,33 @@
   <div class="chatbot-window" id="chatbotWindow">
     <div class="chatbot-header">
       <h4>🤖 Asistente ADIS</h4>
-      <button class="chatbot-close" onclick="toggleChat()">✕</button>
+      <div class="chat-header-actions">
+        <button class="chat-clear" onclick="clearAllChat()" title="Nueva conversación">🗑️</button>
+        <button class="chatbot-close" onclick="toggleChat()">✕</button>
+      </div>
     </div>
     <div class="chatbot-body" id="chatbotBody"></div>
   </div>
 
 
   <script>
-    // Toggle mobile menu
     function toggleMenu() { document.getElementById('mobileMenu').classList.toggle('active'); }
     
-    // Chatbot Inteligente v2
+    // Chatbot Inteligente v3 - contexto, scoring, historial y tarjetas
     (function() {
       const chatWindow = document.getElementById('chatbotWindow');
       const chatBody = document.getElementById('chatbotBody');
       let allProducts = [];
+      let chatContext = loadContext();
+      const HISTORY_KEY = 'adis_chat_v3';
+      const CONTEXT_KEY = 'adis_chat_ctx_v3';
+      const MAX_HISTORY = 40;
+      
+      const WELCOME_VARIANTS = [
+        '¡Hola! 👋 Bienvenido a <strong>ADIS Diseño & Remodelación</strong>.<br><br>Soy tu asistente virtual y puedo ayudarte con información sobre nuestros productos, horarios, precios, cotizaciones y más.<br><br>¿Qué necesitas? Escribe tu pregunta 👇',
+        '¡Qué tal! 👋 Soy el asistente virtual de <strong>ADIS</strong>. Estoy aquí para ayudarte con:<br>• Productos y catálogo 📦<br>• Precios y cotizaciones 💰<br>• Horarios y ubicación 🕐📍<br><br>¿En qué puedo ayudarte?'
+      ];
+      
       let kb = {
         horarios: {
           lunes: 'Cerrado 🚪',
@@ -389,24 +401,159 @@
         }
       };
       
-      fetch('products.json')
-        .then(r => r.json())
-        .then(data => { allProducts = data; })
-        .catch(() => { allProducts = []; });
+      // === NORMALIZACIÓN Y CORRECCIÓN ===
+      const SYNONYMS = [
+        {from: /\b(meddia|medidas|medicion|mediciones|medir)\b/g, to: 'medida'},
+        {from: /\b(especif|caciones|especificasiones|espeficaciones|caracteristicas)\b/g, to: 'especificacion'},
+        {from: /\b(dimensiones|tamano|tamaño|tamanos|largo|ancho|grueso|espesor)\b/g, to: 'dimension'},
+        {from: /\b(hojas|laminas|láminas|planchas)\b/g, to: 'placa'},
+        {from: /\b(precio|precios|cuanto cuesta|cuanto valen|valor|costo|costos)\b/g, to: 'precio'},
+        {from: /\b(cotizar|cotizacion|cotización|presupuesto|presupuestar)\b/g, to: 'cotizacion'},
+        {from: /\b(envio|envíos|entrega|mandan|envian|domicilio|llevan|paqueteria)\b/g, to: 'envio'},
+        {from: /\b(instalacion|instalan|colocan|ponen|colocacion|instalador)\b/g, to: 'instalacion'},
+        {from: /\b(horario|horarios|hora|abierto|atencion|cierran|abren)\b/g, to: 'horario'},
+        {from: /\b(ubicacion|direccion|donde|ubicados|showroom|tienda|local|direccion)\b/g, to: 'ubicacion'},
+        {from: /\b(whatsapp|telefono|celular|numero|contacto|llamar|hablar|correo|email)\b/g, to: 'contacto'},
+        {from: /\b(garantia|garantiza|garantias)\b/g, to: 'garantia'},
+        {from: /\b(pago|pagos|tarjeta|credito|efectivo|transferencia|meses|debito|deposito)\b/g, to: 'pago'},
+        {from: /\b(producto|catalogo|materiales|venden|tienen|ofrecen|disponen)\b/g, to: 'producto'},
+        {from: /\b(mantenimiento|limpiar|limpieza|cuidado|conservar)\b/g, to: 'mantenimiento'},
+        {from: /\b(gracias|thank|perfecto|excelente|muy amable)\b/g, to: 'agradecimiento'},
+        {from: /\b(adios|bye|hasta luego|nos vemos|chao)\b/g, to: 'despedida'},
+        {from: /\b(no|no es|otra cosa|cambio de tema|no gracias|nada mas|eso es todo)\b/g, to: 'negacion'},
+        {from: /\b(ayuda|help|auxilio|soporte|asistencia)\b/g, to: 'ayuda'}
+      ];
       
-      window.toggleChat = function() {
-        chatWindow.classList.toggle('active');
-        if (chatWindow.classList.contains('active') && chatBody.children.length === 0) {
-          showWelcome();
+      function normalizeQuery(raw) {
+        let q = raw.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+        SYNONYMS.forEach(s => { q = q.replace(s.from, s.to); });
+        return q.replace(/[^\w\s]/g, ' ').replace(/\s+/g, ' ').trim();
+      }
+      
+      // === SCORING DE INTENCIONES ===
+      function scoreIntent(q) {
+        const intents = [
+          { name: 'saludo', words: ['hola','buenas','buenos','hey','hello','que tal','q tal'], score: 5 },
+          { name: 'horario', words: ['horario','hora','abierto','atencion','cierran','abren'], score: 3 },
+          { name: 'contacto', words: ['contacto','whatsapp','telefono','celular','numero','llamar','hablar','email','correo'], score: 3 },
+          { name: 'ubicacion', words: ['ubicacion','donde','direccion','ubicados','local','tienda','showroom','nogales','rio rico'], score: 3 },
+          { name: 'precio', words: ['precio','cuesta','cuanto','valor','cotizacion','cotizar','presupuesto'], score: 3 },
+          { name: 'envio', words: ['envio','entrega','mandan','envian','domicilio','llevan','paqueteria'], score: 3 },
+          { name: 'instalacion', words: ['instalacion','instalan','colocan','ponen','colocacion'], score: 3 },
+          { name: 'pago', words: ['pago','pagos','tarjeta','credito','efectivo','transferencia','meses','debito'], score: 3 },
+          { name: 'garantia', words: ['garantia','garantiza'], score: 3 },
+          { name: 'producto', words: ['producto','catalogo','materiales','venden','tienen','ofrecen'], score: 2 },
+          { name: 'mantenimiento', words: ['mantenimiento','limpiar','limpieza','cuidado'], score: 3 },
+          { name: 'proyecto', words: ['casa','oficina','negocio','local','proyecto'], score: 2 },
+          { name: 'medidas', words: ['medida','especificacion','dimension','ficha','hoja tecnica','tamano'], score: 4 },
+          { name: 'definicion', words: ['que es','significa','definicion'], score: 2 },
+          { name: 'agradecimiento', words: ['gracias','thank','perfecto','excelente'], score: 3 },
+          { name: 'despedida', words: ['adios','bye','hasta luego','nos vemos'], score: 3 },
+          { name: 'negacion', words: ['no es','otra cosa','cambio de tema','no gracias','nada'], score: 2 },
+          { name: 'ayuda', words: ['ayuda','help','auxilio','soporte'], score: 2 }
+        ];
+        
+        let best = { name: 'default', score: 0 };
+        for (let intent of intents) {
+          let s = 0;
+          for (let w of intent.words) {
+            if (q.includes(w)) s += intent.score;
+          }
+          if (s > best.score) best = { name: intent.name, score: s };
         }
+        return best;
+      }
+      
+      function detectCategory(q) {
+        const cats = [
+          { name: 'placas_pvc', words: ['placa pvc','placas pvc','hoja pvc','lamina pvc','pvc rigido','pvc tipo madera','pvc espejo','pvc marmol'], labels: {short:'Placas PVC', url:'1-placas-pvc.html'} },
+          { name: 'lambrin_wpc', words: ['lambrin wpc','lambrin','wpc'], labels: {short:'Lambrín WPC', url:'2-lambrin-wpc.html'} },
+          { name: 'paneles_3d', words: ['panel 3d','paneles 3d','3d','tridimensional'], labels: {short:'Paneles 3D', url:'5-paneles-tridimensionales.html'} },
+          { name: 'pisos', words: ['piso','pisos','spc','laminado','deck'], labels: {short:'Pisos', url:'7-pisos.html'} },
+          { name: 'plafon', words: ['plafon','plafon pvc','cielo falso'], labels: {short:'Plafón PVC', url:'4-plafon-pvc.html'} },
+          { name: 'vigas', words: ['viga','vigas','viga pvc','viga wpc'], labels: {short:'Vigas', url:'6-vigas-pvc.html'} },
+          { name: 'zacate', words: ['zacate','pasto','cesped'], labels: {short:'Zacate', url:'8-zacate.html'} },
+          { name: 'cladding', words: ['cladding','fachada','piedra'], labels: {short:'Cladding', url:'9-cladding.html'} },
+          { name: 'revestimiento', words: ['revestimiento','concreto','flexible'], labels: {short:'Revestimiento', url:'3-revestimiento-flexible.html'} }
+        ];
+        
+        let best = null, max = 0;
+        for (let cat of cats) {
+          let s = 0;
+          for (let w of cat.words) if (q.includes(w)) s += 2;
+          if (s > max) { max = s; best = cat; }
+        }
+        return best;
+      }
+      
+      function isContextualQuestion(q, original) {
+        return /^(y|y las|y los|y el|y la|tambien|también|cuéntame|cuentame|más|mas|info|informacion|información|detalles|el primero|el segundo|el tercero|ese|esa|aquel|esa de|el de)\b/.test(q) || q.length < 18 || original.length < 25;
+      }
+      
+      function applyContext(q) {
+        if (!chatContext.lastTopic && !chatContext.lastIntent) return q;
+        if (/^y\b/.test(q) || q.includes('tambien') || q.includes('también') || q.includes('cuentame') || q.includes('cuéntame')) {
+          let prefix = '';
+          if (chatContext.lastTopic) prefix += chatContext.lastTopic.name.replace(/_/g,' ') + ' ';
+          return (prefix + q).trim();
+        }
+        return q;
+      }
+      
+      // === HISTORIAL Y CONTEXTO ===
+      function loadContext() {
+        try {
+          const saved = localStorage.getItem(CONTEXT_KEY);
+          return saved ? JSON.parse(saved) : { lastTopic: null, lastIntent: null, lastProducts: [], lastResponseType: null };
+        } catch(e) { return { lastTopic: null, lastIntent: null, lastProducts: [], lastResponseType: null }; }
+      }
+      function saveContext() {
+        try { localStorage.setItem(CONTEXT_KEY, JSON.stringify(chatContext)); } catch(e) {}
+      }
+      function saveHistory(text, isUser) {
+        try {
+          let h = JSON.parse(localStorage.getItem(HISTORY_KEY) || '[]');
+          h.push({ text, isUser, time: Date.now() });
+          if (h.length > MAX_HISTORY) h = h.slice(-MAX_HISTORY);
+          localStorage.setItem(HISTORY_KEY, JSON.stringify(h));
+        } catch(e) {}
+      }
+      function getHistory() {
+        try { return JSON.parse(localStorage.getItem(HISTORY_KEY) || '[]'); } catch(e) { return []; }
+      }
+      window.clearAllChat = function() {
+        localStorage.removeItem(HISTORY_KEY);
+        localStorage.removeItem(CONTEXT_KEY);
+        chatBody.innerHTML = '';
+        chatContext = { lastTopic: null, lastIntent: null, lastProducts: [], lastResponseType: null };
+        showWelcome();
       };
+      
+      // === UI ===
+      function formatTime(ts) {
+        if (!ts) return '';
+        const d = new Date(ts);
+        return d.toLocaleTimeString('es-MX', {hour:'2-digit', minute:'2-digit'});
+      }
       
       function addMessage(text, isUser) {
         const msg = document.createElement('div');
         msg.className = 'chat-message ' + (isUser ? 'user' : 'bot');
-        msg.innerHTML = text;
+        msg.innerHTML = text + '<div class="chat-time">' + formatTime(Date.now()) + '</div>';
         chatBody.appendChild(msg);
         chatBody.scrollTop = chatBody.scrollHeight;
+      }
+      
+      function renderHistory() {
+        const h = getHistory();
+        if (h.length === 0) return false;
+        h.forEach(item => {
+          const msg = document.createElement('div');
+          msg.className = 'chat-message ' + (item.isUser ? 'user' : 'bot');
+          msg.innerHTML = item.text + '<div class="chat-time">' + formatTime(item.time) + '</div>';
+          chatBody.appendChild(msg);
+        });
+        return true;
       }
       
       function removeInputs() {
@@ -417,9 +564,10 @@
       function showQuickReplies(replies) {
         const existing = chatBody.querySelector('.chat-options');
         if (existing) existing.remove();
+        if (!replies || replies.length === 0) replies = ['Ver productos', 'Horarios', 'Cotización', 'Ubicación'];
         const opts = document.createElement('div');
         opts.className = 'chat-options';
-        opts.innerHTML = replies.map(r => `<button class="chat-option-btn" onclick="chatBotProcess('${r.replace(/'/g, "'")}')">${r}</button>`).join('');
+        opts.innerHTML = replies.map(r => `<button class="chat-option-btn" onclick="chatBotProcess('${r.replace(/'/g, "\'")}')">${r}</button>`).join('');
         chatBody.appendChild(opts);
         chatBody.scrollTop = chatBody.scrollHeight;
       }
@@ -435,594 +583,266 @@
         setTimeout(() => { const inp = document.getElementById('chatTextInput'); if (inp) inp.focus(); }, 100);
       }
       
+      // === TARJETAS DE PRODUCTO ===
+      function formatProductCard(m) {
+        const waText = encodeURIComponent('Hola ADIS, vi el ' + m.name + ' en el catálogo y me interesa cotizar');
+        return `<div class="chat-product-card">
+          <img src="${m.thumb}" alt="${m.name}" loading="lazy">
+          <div class="chat-product-info">
+            <a href="${m.url}" target="_blank">${m.name}</a>
+            <div class="chat-product-cat">${m.category}${m.subcategory ? ' / ' + m.subcategory : ''}</div>
+            <div class="chat-product-actions">
+              <a href="${m.url}" class="primary" target="_blank">Ver producto</a>
+              <a href="https://wa.me/526311928993?text=${waText}" class="secondary" target="_blank">Cotizar</a>
+            </div>
+          </div>
+        </div>`;
+      }
+      
+      function findProductMatches(q) {
+        if (!allProducts.length) return [];
+        const terms = q.split(/\s+/).filter(t => t.length > 2);
+        if (terms.length === 0) return [];
+        return allProducts.map(p => {
+          const text = normalizeQuery(p.name + ' ' + p.category + ' ' + (p.subcategory || ''));
+          let score = 0;
+          for (let t of terms) {
+            if (text.includes(t)) score += 1;
+          }
+          const nameNorm = normalizeQuery(p.name);
+          for (let t of terms) {
+            if (nameNorm === t) score += 5;
+            else if (nameNorm.startsWith(t)) score += 3;
+          }
+          return { p, score };
+        }).filter(x => x.score > 0).sort((a,b) => b.score - a.score).slice(0, 3);
+      }
+      
+      // === SUGERENCIAS CONTEXTUALES ===
+      function getSuggestions(intent, category, products) {
+        if (products && products.length > 0) {
+          return ['Ver ficha técnica', 'Cotizar este producto', 'Ver más productos', 'Hablar con asesor'];
+        }
+        if (category) {
+          const catName = category.labels.short;
+          if (intent === 'medidas') return ['Ver ' + catName, 'Precios de ' + catName, 'Cotizar ' + catName, 'Hablar con asesor'];
+          if (intent === 'precio') return ['Ver ' + catName, 'Medidas de ' + catName, 'Cotizar ' + catName, 'Hablar con asesor'];
+          return ['Ver ' + catName, 'Medidas de ' + catName, 'Precios de ' + catName, 'Hablar con asesor'];
+        }
+        if (intent === 'precio') return ['Solicitar cotización', 'Ver productos', 'Horarios', 'Hablar con asesor'];
+        if (intent === 'medidas') return ['Ver productos', 'Cotización', 'Horarios', 'Hablar con asesor'];
+        if (intent === 'horario') return ['Ubicación', 'Ver productos', 'Cotización', 'Hablar con asesor'];
+        if (intent === 'ubicacion') return ['Horarios', 'Ver productos', 'Cotización', 'Hablar con asesor'];
+        if (intent === 'envio') return ['Cotizar envío', 'Ver productos', 'Ubicación', 'Hablar con asesor'];
+        if (intent === 'instalacion') return ['Cotizar instalación', 'Ver productos', 'Precios', 'Hablar con asesor'];
+        return ['Ver productos', 'Horarios', 'Cotización', 'Ubicación', 'Hablar con asesor'];
+      }
+      
+      // === RESPUESTAS POR INTENCIÓN ===
+      function handleSpecs(category, q) {
+        const specsMap = {
+          placas_pvc: { text: kb.especificaciones.placas_pvc + '<br><br>💡 Las placas PVC miden <strong>2440 x 1220 x 5 mm</strong> (2.977 m² por pieza). Se venden por pieza individual. Peso: 10.5 kg/pz. Garantía: 15 años.', label: 'Placas PVC', url: '1-placas-pvc.html' },
+          lambrin_wpc: { text: kb.especificaciones.lambrin_wpc + '<br><br>💡 Disponible en interior (219 x 26 x 3 mm) y exterior. Varía según modelo.', label: 'Lambrín WPC', url: '2-lambrin-wpc.html' },
+          paneles_3d: { text: kb.especificaciones.paneles_3d, label: 'Paneles 3D', url: '5-paneles-tridimensionales.html' },
+          pisos: { text: kb.especificaciones.pisos_spc + '<br><br>💡 Tenemos laminado, WPC, SPC y deck sintético. Las medidas varían según el tipo.', label: 'Pisos', url: '7-pisos.html' },
+          plafon: { text: kb.especificaciones.plafon_pvc, label: 'Plafón PVC', url: '4-plafon-pvc.html' },
+          vigas: { text: kb.especificaciones.vigas_pvc, label: 'Vigas', url: '6-vigas-pvc.html' },
+          zacate: { text: kb.especificaciones.zacate, label: 'Zacate Sintético', url: '8-zacate.html' },
+          cladding: { text: kb.especificaciones.cladding, label: 'Cladding', url: '9-cladding.html' },
+          revestimiento: { text: 'Material: Polímero flexible | Dimensiones: varían según modelo | Aplicación: Muros interiores y exteriores | Resistente al agua y UV.', label: 'Revestimiento Flexible', url: '3-revestimiento-flexible.html' }
+        };
+        
+        if (category && specsMap[category.name]) {
+          const s = specsMap[category.name];
+          return '📐 <strong>Especificaciones técnicas — ' + s.label + ':</strong><br><br>' + s.text;
+        }
+        let r = '📐 <strong>Especificaciones técnicas por categoría:</strong><br><br>';
+        for (let key in specsMap) {
+          const s = specsMap[key];
+          r += '📋 <strong>' + s.label + ':</strong><br>' + s.text + '<br><br>';
+        }
+        r += '💡 Cada categoría en el catálogo tiene su ficha técnica completa con medidas exactas, contenido por caja y recomendaciones de instalación.';
+        return r;
+      }
+      
+      function respond(intent, category, q, original) {
+        let r = '', suggestions = [];
+        
+        switch(intent) {
+          case 'saludo':
+            r = WELCOME_VARIANTS[Math.floor(Math.random() * WELCOME_VARIANTS.length)];
+            suggestions = ['Ver productos', 'Horarios', 'Cotización', 'Ubicación', '¿Tienen envío?'];
+            break;
+          case 'horario':
+            r = '🕐 <strong>Horarios de atención (Showroom):</strong><br><br>• <strong>Lunes:</strong> ' + kb.horarios.lunes + '<br>• <strong>Martes:</strong> ' + kb.horarios.martes + '<br>• <strong>Miércoles:</strong> ' + kb.horarios.miercoles + '<br>• <strong>Jueves:</strong> ' + kb.horarios.jueves + '<br>• <strong>Viernes:</strong> ' + kb.horarios.viernes + '<br>• <strong>Sábado:</strong> ' + kb.horarios.sabado + '<br>• <strong>Domingo:</strong> ' + kb.horarios.domingo + '<br><br>💬 ' + kb.horarios.whatsapp;
+            break;
+          case 'contacto':
+            r = '📱 <strong>Contactos directos:</strong><br><br>• <strong>WhatsApp:</strong> ' + kb.contacto.whatsapp + '<br>• <strong>Showroom:</strong> ' + kb.contacto.tel_showroom + '<br>• <strong>Email:</strong> ' + kb.contacto.email + '<br><br><a href="https://wa.me/526311928993?text=Hola%20ADIS,%20tengo%20una%20pregunta" target="_blank" class="chat-whatsapp-btn">💬 Abrir WhatsApp</a>';
+            break;
+          case 'ubicacion':
+            r = '📍 <strong>ADIS Diseño & Remodelación</strong><br><br>🏠 <strong>Dirección:</strong><br>' + kb.contacto.direccion + '<br><br>📱 <strong>WhatsApp:</strong> ' + kb.contacto.whatsapp + '<br>☎️ <strong>Showroom:</strong> ' + kb.contacto.tel_showroom + '<br>✉️ <strong>Email:</strong> ' + kb.contacto.email + '<br><br>🕐 Horario showroom: Martes a domingo (lunes cerrado)<br>📍 También atendemos en <strong>Rio Rico, AZ</strong><br><br><a href="https://maps.app.goo.gl/Q3raWUzhCj2rvhjm8" target="_blank" style="color:#C5A059">🗺️ Ver en Google Maps →</a>';
+            break;
+          case 'precio':
+            r = '💰 <strong>Precios y cotizaciones:</strong><br><br>• ' + kb.precios.iva + '<br>• ' + kb.precios.mayorista + '<br>• Los precios son <strong>solo por el material</strong> (por pieza, caja o metro cuadrado según categoría)<br><br>📋 <strong>Cotización detallada:</strong> ' + kb.cotizacion.tiempo + '<br>📦 <strong>Incluye:</strong> ' + kb.cotizacion.incluye + '<br>⏱️ <strong>Sin stock:</strong> ' + kb.cotizacion.sin_stock + '<br><br>🔨 ¿Requieres instalación? Un representante visita tu obra para cotizarla aparte.<br><br><a href="https://wa.me/526311928993?text=Hola%20ADIS,%20quiero%20una%20cotización" target="_blank" class="chat-whatsapp-btn">📱 Solicitar cotización gratis</a>';
+            break;
+          case 'envio':
+            r = '🚚 <strong>Envíos y entregas:</strong><br><br>🎁 <strong>Entrega GRATIS</strong> en: ' + kb.envios.gratis + '<br><br>📦 ' + kb.envios.nacional + '<br><br>⏱️ ' + kb.envios.tiempo_grandes + '<br><br>Envíanos tu dirección por WhatsApp para cotizar el envío exacto.<br><br><a href="https://wa.me/526311928993?text=Hola%20ADIS,%20quiero%20cotizar%20un%20envío" target="_blank" class="chat-whatsapp-btn">📱 Cotizar envío</a>';
+            break;
+          case 'instalacion':
+            r = '🛠️ <strong>Servicio de instalación:</strong><br><br>' + kb.instalacion.costo + '<br><br>👷 ' + kb.instalacion.proceso + '<br><br>💡 <strong>Consejos para instalación:</strong><br>• Superficie limpia, seca y nivelada<br>• Temperatura ideal: 15°C a 30°C<br>• Dejar junta de dilatación de 2-3 mm<br>• Corte con sierra circular / disco de carburo de tungsteno<br>• Para espejos: usar perfiles de aluminio obligatoriamente<br><br>✅ También vendemos materiales sueltos si prefieres instalar por tu cuenta.<br><br><a href="https://wa.me/526311928993?text=Hola%20ADIS,%20quiero%20cotizar%20instalación" target="_blank" class="chat-whatsapp-btn">📱 Cotizar instalación</a>';
+            break;
+          case 'pago':
+            r = '💳 <strong>Formas de pago:</strong><br><br>';
+            kb.pagos.metodos.forEach(m => { r += '• ' + m + '<br>'; });
+            r += '<br>⚠️ <strong>' + kb.pagos.anticipo + '</strong><br><br>Escríbenos para más detalles.<br><br><a href="https://wa.me/526311928993?text=Hola%20ADIS,%20pregunto%20por%20formas%20de%20pago" target="_blank" class="chat-whatsapp-btn">📱 Preguntar por pagos</a>';
+            break;
+          case 'garantia':
+            r = '✅ <strong>Garantía:</strong><br><br>🛡️ ' + kb.garantia.validacion + '<br><br>• Placas PVC: ' + kb.garantia.pvc + '<br>• Lambrín WPC: ' + kb.garantia.wpc + '<br>• Pisos SPC: ' + kb.garantia.spc + '<br>• Zacate sintético: ' + kb.garantia.zacate + '<br><br>La garantía cubre defectos de fábrica. Conserva tu ticket de compra.';
+            break;
+          case 'producto':
+            r = '📦 <strong>Nuestros productos (250 productos en 9 categorías):</strong><br><br>• <strong>Placas PVC</strong> — 34 productos<br>• <strong>Lambrín WPC</strong> — 40 productos<br>• <strong>Paneles 3D</strong> — 24 productos<br>• <strong>Pisos</strong> — 78 productos<br>• <strong>Plafón PVC</strong> — 15 productos<br>• <strong>Vigas PVC/WPC</strong> — 15 productos<br>• <strong>Zacate sintético</strong> — 29 productos<br>• <strong>Cladding</strong> — 11 productos<br>• <strong>Revestimiento Flexible</strong> — 6 productos<br><br>🏠 Atendemos: ' + kb.proyectos.tipos + '<br><br>💡 Escribe el nombre de un producto o categoría para saber más.';
+            break;
+          case 'mantenimiento':
+            r = '🧼 <strong>Mantenimiento y limpieza:</strong><br><br>• <strong>Limpieza regular:</strong> Paño suave humedecido con agua tibia y jabón neutro (pH 7)<br>• <strong>Manchas difíciles:</strong> Alcohol isopropílico al 70% o limpiador multiusos suave<br>• <strong>Evitar:</strong> Acetona, thinner, solventes fuertes, estropajos metálicos y amoníaco concentrado<br>• <strong>Frecuencia:</strong> Residencial = mensual | Comercial = semanal<br>• <strong>Inspección anual:</strong> Revisar juntas de dilatación y selladores<br><br>💡 Los productos PVC y WPC no requieren barnizado ni sellado. Solo limpieza básica.<br><br><a href="https://wa.me/526311928993?text=Hola%20ADIS,%20pregunto%20por%20mantenimiento" target="_blank" class="chat-whatsapp-btn">📱 Preguntar por mantenimiento</a>';
+            break;
+          case 'proyecto':
+            r = '🏠 <strong>Atendemos todo tipo de proyectos:</strong><br><br>' + kb.proyectos.tipos + '<br><br>Desde una pared de acento en casa hasta remodelaciones completas de locales comerciales. Cada proyecto es único y tenemos el material perfecto para ti.<br><br>💡 <strong>Consejo:</strong> Si no estás seguro de qué material elegir, contame:<br>• ¿Es interior o exterior?<br>• ¿Hay humedad o contacto con agua?<br>• ¿Qué estética buscas? (madera, mármol, moderno, rústico)<br><br><a href="https://wa.me/526311928993?text=Hola%20ADIS,%20tengo%20un%20proyecto%20de" target="_blank" class="chat-whatsapp-btn">📱 Contar mi proyecto</a>';
+            break;
+          case 'agradecimiento':
+            r = '¡Con mucho gusto! 😊🙌 Estoy aquí para lo que necesites. Si tienes más dudas, escríbenos por WhatsApp al <strong>' + kb.contacto.whatsapp + '</strong> o visítanos en el showroom. ¡Que tengas un excelente día!';
+            break;
+          case 'despedida':
+            r = '¡Hasta luego! 👋 Gracias por contactar a ADIS Diseño & Remodelación. Recuerda que puedes volver cuando quieras o escribirnos al WhatsApp. ¡Éxito con tu proyecto! 🏠✨';
+            break;
+          case 'negacion':
+            r = 'Perfecto, ¿en qué más puedo ayudarte? Puedo:<br>• Mostrarte productos 📦<br>• Darte precios 💰<br>• Contarte horarios 🕐<br>• Explicarte envíos 📍<br>• Ayudarte con una cotización 📝';
+            suggestions = ['Ver productos', 'Horarios', 'Cotización', 'Ubicación'];
+            break;
+          case 'ayuda':
+            r = '¡Claro! Puedo ayudarte con:<br>• Productos y catálogo 📦<br>• Precios y cotizaciones 💰<br>• Horarios de atención 🕐<br>• Ubicación y envíos 📍<br>• Formas de pago 💳<br>• Instalación 🛠️<br><br>Escribe tu pregunta o usa los botones de abajo.';
+            break;
+          case 'medidas':
+            r = handleSpecs(category, q);
+            break;
+          case 'definicion':
+            if (q.includes('pvc')) r = '📘 <strong>¿Qué es PVC?</strong><br><br>' + kb.definiciones.pvc + '<br><br>En ADIS lo usamos para placas decorativas, plafones y vigas con acabados que imitan madera, espejo y texturas.';
+            else if (q.includes('wpc')) r = '📗 <strong>¿Qué es WPC?</strong><br><br>' + kb.definiciones.wpc + '<br><br>En ADIS lo usamos para lambrín de interior y exterior, pisos y revestimientos que lucen como madera real pero duran más.';
+            else r = '📘 Puedo explicarte qué es <strong>PVC</strong>, <strong>WPC</strong>, <strong>SPC</strong>, <strong>laminado</strong> o <strong>cladding</strong>. ¿Cuál te interesa?';
+            break;
+          default:
+            r = 'Disculpa, no entendí muy bien. 😅 Puedo ayudarte con:<br><br>• Productos y catálogo 📦<br>• Precios y cotizaciones 💰<br>• Horarios de atención 🕐<br>• Ubicación y envíos 📍<br>• Formas de pago 💳<br>• Instalación 🛠️<br><br>Escribe tu pregunta o usa los botones de abajo.';
+        }
+        
+        if (!suggestions.length) suggestions = getSuggestions(intent, category, []);
+        chatContext.lastTopic = category || chatContext.lastTopic;
+        chatContext.lastIntent = intent;
+        chatContext.lastResponseType = 'info';
+        saveContext();
+        
+        return { text: r, suggestions };
+      }
+      
+      function findResponse(q, original) {
+        let normalized = normalizeQuery(q);
+        if (isContextualQuestion(normalized, original)) normalized = applyContext(normalized);
+        
+        // Referencias a productos previos
+        if (chatContext.lastProducts.length > 0 && /(primero|segundo|tercero|ese|aquel|ultimo|último)/.test(normalized)) {
+          const idx = normalized.includes('segundo') ? 1 : normalized.includes('tercero') ? 2 : 0;
+          const p = chatContext.lastProducts[idx];
+          if (p) {
+            chatContext.lastIntent = 'producto';
+            saveContext();
+            return { 
+              text: 'Aquí tienes más información de <strong>' + p.name + '</strong>:<br><br>' + formatProductCard(p),
+              suggestions: ['Cotizar este producto', 'Ver productos similares', 'Hablar con asesor']
+            };
+          }
+        }
+        
+        // Búsqueda de productos
+        const prodMatches = findProductMatches(normalized);
+        if (prodMatches.length > 0 && original.length > 2) {
+          const products = prodMatches.map(x => x.p);
+          chatContext.lastProducts = products;
+          chatContext.lastTopic = detectCategory(normalized) || chatContext.lastTopic;
+          chatContext.lastIntent = 'producto';
+          chatContext.lastResponseType = 'products';
+          saveContext();
+          return {
+            text: '🔎 <strong>Encontré estos productos:</strong><br><br>' + products.map(formatProductCard).join('') + '<br>¿Te gustaría cotizar alguno?',
+            suggestions: getSuggestions('producto', chatContext.lastTopic, products)
+          };
+        }
+        
+        let intent = scoreIntent(normalized);
+        let category = detectCategory(normalized);
+        
+        // Mármol específico
+        if (normalized.includes('marmol') || normalized.includes('marble')) {
+          return { 
+            text: '🏛️ <strong>Hoja de PVC tipo Mármol</strong><br><br>Es una solución decorativa perfecta para cualquier espacio interior. Añade un toque de elegancia a tu hogar, oficina o espacio comercial.<br><br>✨ <strong>Características:</strong><br>• Fabricada con PVC rígido de alta calidad<br>• Dimensiones: 2440 x 1220 x 5 mm (2.977 m² por pieza)<br>• Duradera y ligera, fácil de instalar y mantener<br>• 100% resistente al agua, manchas y arañazos<br>• No requiere sellado ni barnizado<br>• Garantía: 15 años<br><br>🏠 <strong>Aplicaciones:</strong> Cocinas, baños, salas de estar, recepciones, muros de acento y más.<br><br>🎨 <strong>Diseños disponibles:</strong> Carrara, Carrara Oscuro, Aurora Dorada, Onix, Cuarzo, Opalo, Perla, Topacio, Grafito, Jaspe, Agata, Arena, Obsidiana y más.<br><br>💡 <strong>Consejo:</strong> Para instalación en espejos se requiere perfil de aluminio obligatoriamente.',
+            suggestions: ['Ver Placas PVC', 'Cotizar mármol PVC', 'Medidas', 'Hablar con asesor']
+          };
+        }
+        
+        // Comparaciones
+        if ((normalized.includes('wpc') && normalized.includes('pvc')) || normalized.includes('diferencia')) {
+          return {
+            text: '🆚 <strong>WPC vs PVC:</strong><br><br><strong>WPC (Wood Plastic Composite):</strong><br>• 60-70% fibras de madera + 30-40% plástico HDPE<br>• Aspecto más natural tipo madera real<br>• Absorción de agua menor al 1% — no se hincha ni se deforma<br>• Ideal para exteriores (resistente a UV y lluvia)<br>• Vida útil: 25-30 años | Garantía: 15 años<br><br><strong>PVC:</strong><br>• Plástico 100% con aditivos estabilizadores UV<br>• Más ligero y fácil de instalar<br>• Ideal para interiores<br>• Mayor variedad de diseños (madera, espejo, mármol, textura)<br>• Vida útil: 20-25 años | Garantía: 15 años<br><br>💡 <strong>¿Cuál elegir?</strong><br>• Exteriores / fachadas → <strong>WPC</strong><br>• Interiores / cocinas / baños → <strong>PVC</strong> (más económico)',
+            suggestions: ['Ver Lambrín WPC', 'Ver Placas PVC', 'Cotizar', 'Hablar con asesor']
+          };
+        }
+        
+        return respond(intent.name, category, normalized, original);
+      }
+      
+      // === EVENTOS ===
+      window.toggleChat = function() {
+        const wasActive = chatWindow.classList.contains('active');
+        chatWindow.classList.toggle('active');
+        if (!wasActive && chatWindow.classList.contains('active')) {
+          if (chatBody.children.length === 0) {
+            if (!renderHistory()) {
+              showWelcome();
+            } else {
+              addInputField();
+            }
+          }
+        }
+      };
+      
       window.chatBotProcess = function(rawText) {
         if (!rawText || !rawText.trim()) return;
         const text = rawText.trim();
         addMessage(text, true);
+        saveHistory(text, true);
         removeInputs();
         
-        const q = text.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
-        const response = findResponse(q, text);
+        const q = text.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+        const result = findResponse(q, text);
         
         setTimeout(() => {
-          addMessage(response, false);
-          showQuickReplies(['Ver productos', 'Horarios', 'Cotización', 'Ubicación', 'Hablar con asesor']);
+          addMessage(result.text, false);
+          saveHistory(result.text, false);
+          showQuickReplies(result.suggestions);
           addInputField();
         }, 500);
       };
       
-      function findResponse(q, original) {
-        // SALUDO
-        if (/^(hola|buenas|buenos|hey|hi|hello|que tal|q tal)/.test(q)) {
-          return '¡Hola! 👋 Bienvenido a <strong>ADIS Diseño & Remodelación</strong>. Soy tu asistente virtual y puedo ayudarte con:<br><br>• Productos y catálogo 📦<br>• Precios y cotizaciones 💰<br>• Horarios de atención 🕐<br>• Ubicación y envíos 📍<br>• Información técnica 📋<br><br>¿Qué necesitas? Escribe tu pregunta o usa los botones de abajo.';
-        }
-        
-        // HORARIOS
-        if (q.includes('horario') || q.includes('hora') || q.includes('abierto') || q.includes('atencion') || q.includes('cierran') || q.includes('abren')) {
-          let r = '🕐 <strong>Horarios de atención (Showroom):</strong><br><br>';
-          r += '• <strong>Lunes:</strong> ' + kb.horarios.lunes + '<br>';
-          r += '• <strong>Martes:</strong> ' + kb.horarios.martes + '<br>';
-          r += '• <strong>Miércoles:</strong> ' + kb.horarios.miercoles + '<br>';
-          r += '• <strong>Jueves:</strong> ' + kb.horarios.jueves + '<br>';
-          r += '• <strong>Viernes:</strong> ' + kb.horarios.viernes + '<br>';
-          r += '• <strong>Sábado:</strong> ' + kb.horarios.sabado + '<br>';
-          r += '• <strong>Domingo:</strong> ' + kb.horarios.domingo + '<br><br>';
-          r += '💬 ' + kb.horarios.whatsapp;
-          return r;
-        }
-        if (q.includes('lunes')) return 'Los <strong>lunes</strong> estamos <strong>cerrados</strong> 🚪 en showroom, pero WhatsApp está disponible. Te atendemos de martes a domingo. ¿Te gustaría saber otro horario?';
-        if (q.includes('domingo')) return 'Los <strong>domingos</strong> abrimos de <strong>9:00 a 15:00</strong> ☀️. Es un buen día para venir a conocer nuestros productos sin prisa.';
-        if (q.includes('sabado')) return 'Los <strong>sábados</strong> atendemos de <strong>9:00 a 19:00</strong> 💪. Es nuestro día con más afluencia, te recomiendo venir temprano.';
-        
-        // CONTACTO / WHATSAPP / TELEFONO
-        if (q.includes('whatsapp') || q.includes('telefono') || q.includes('celular') || q.includes('numero') || q.includes('llamar') || q.includes('contacto') || q.includes('hablar')) {
-          return '📱 <strong>Contactos directos:</strong><br><br>• <strong>WhatsApp:</strong> ' + kb.contacto.whatsapp + '<br>• <strong>Showroom:</strong> ' + kb.contacto.tel_showroom + '<br>• <strong>Email:</strong> ' + kb.contacto.email + '<br><br><a href="https://wa.me/526311928993?text=Hola%20ADIS,%20tengo%20una%20pregunta" target="_blank" class="chat-whatsapp-btn">💬 Abrir WhatsApp</a>';
-        }
-        
-        // UBICACION
-        if (q.includes('ubicacion') || q.includes('donde') || q.includes('direccion') || q.includes('ubicados') || q.includes('local') || q.includes('tienda') || q.includes('showroom') || q.includes('nogales') || q.includes('rio rico')) {
-          return '📍 <strong>ADIS Diseño & Remodelación</strong><br><br>🏠 <strong>Dirección:</strong><br>' + kb.contacto.direccion + '<br><br>📱 <strong>WhatsApp:</strong> ' + kb.contacto.whatsapp + '<br>☎️ <strong>Showroom:</strong> ' + kb.contacto.tel_showroom + '<br>✉️ <strong>Email:</strong> ' + kb.contacto.email + '<br><br>🕐 Horario showroom: Martes a domingo (lunes cerrado)<br>📍 También atendemos en <strong>Rio Rico, AZ</strong><br><br><a href="https://maps.app.goo.gl/Q3raWUzhCj2rvhjm8" target="_blank" style="color:#C5A059">🗺️ Ver en Google Maps →</a>';
-        }
-        
-        // PRECIOS / COTIZACION
-        if (q.includes('precio') || q.includes('cuesta') || q.includes('cuanto') || q.includes('valor') || q.includes('cotizacion') || q.includes('cotizar') || q.includes('presupuesto')) {
-          let r = '💰 <strong>Precios y cotizaciones:</strong><br><br>';
-          r += '• ' + kb.precios.iva + '<br>';
-          r += '• ' + kb.precios.mayorista + '<br>';
-          r += '• Los precios son <strong>solo por el material</strong> (por pieza, caja o metro cuadrado según categoría)<br><br>';
-          r += '📋 <strong>Cotización detallada:</strong> ' + kb.cotizacion.tiempo + '<br>';
-          r += '📦 <strong>Incluye:</strong> ' + kb.cotizacion.incluye + '<br>';
-          r += '⏱️ <strong>Sin stock:</strong> ' + kb.cotizacion.sin_stock + '<br><br>';
-          r += '🔨 ¿Requieres instalación? Un representante visita tu obra para cotizarla aparte.<br><br>';
-          r += '<a href="https://wa.me/526311928993?text=Hola%20ADIS,%20quiero%20una%20cotización" target="_blank" class="chat-whatsapp-btn">📱 Solicitar cotización gratis</a>';
-          return r;
-        }
-        
-        // ENVIO / ENTREGA
-        if (q.includes('envio') || q.includes('entrega') || q.includes('mandan') || q.includes('envian') || q.includes('domicilio') || q.includes('llevan')) {
-          let r = '🚚 <strong>Envíos y entregas:</strong><br><br>';
-          r += '🎁 <strong>Entrega GRATIS</strong> en: ' + kb.envios.gratis + '<br><br>';
-          r += '📦 ' + kb.envios.nacional + '<br><br>';
-          r += '⏱️ ' + kb.envios.tiempo_grandes + '<br><br>';
-          r += 'Envíanos tu dirección por WhatsApp para cotizar el envío exacto.<br><br>';
-          r += '<a href="https://wa.me/526311928993?text=Hola%20ADIS,%20quiero%20cotizar%20un%20envío" target="_blank" class="chat-whatsapp-btn">📱 Cotizar envío</a>';
-          return r;
-        }
-        
-        // INSTALACION
-        if (q.includes('instalacion') || q.includes('instalan') || q.includes('colocan') || q.includes('ponen') || q.includes('colocacion')) {
-          let r = '🛠️ <strong>Servicio de instalación:</strong><br><br>';
-          r += kb.instalacion.costo + '<br><br>';
-          r += '👷 ' + kb.instalacion.proceso + '<br><br>';
-          r += '💡 <strong>Consejos para instalación:</strong><br>';
-          r += '• Superficie limpia, seca y nivelada<br>';
-          r += '• Temperatura ideal: 15°C a 30°C<br>';
-          r += '• Dejar junta de dilatación de 2-3 mm<br>';
-          r += '• Corte con sierra circular / disco de carburo de tungsteno<br>';
-          r += '• Para espejos: usar perfiles de aluminio obligatoriamente<br><br>';
-          r += '✅ También vendemos materiales sueltos si prefieres instalar por tu cuenta.<br><br>';
-          r += '<a href="https://wa.me/526311928993?text=Hola%20ADIS,%20quiero%20cotizar%20instalación" target="_blank" class="chat-whatsapp-btn">📱 Cotizar instalación</a>';
-          return r;
-        }
-        
-        // PAGO / FORMAS DE PAGO
-        if (q.includes('pago') || q.includes('pagos') || q.includes('tarjeta') || q.includes('credito') || q.includes('efectivo') || q.includes('transferencia') || q.includes('meses') || q.includes('debito')) {
-          let r = '💳 <strong>Formas de pago:</strong><br><br>';
-          kb.pagos.metodos.forEach(m => { r += '• ' + m + '<br>'; });
-          r += '<br>⚠️ <strong>' + kb.pagos.anticipo + '</strong><br><br>';
-          r += 'Escríbenos para más detalles.<br><br>';
-          r += '<a href="https://wa.me/526311928993?text=Hola%20ADIS,%20pregunto%20por%20formas%20de%20pago" target="_blank" class="chat-whatsapp-btn">📱 Preguntar por pagos</a>';
-          return r;
-        }
-        
-        // GARANTIA
-        if (q.includes('garantia') || q.includes('garantiza')) {
-          let r = '✅ <strong>Garantía:</strong><br><br>';
-          r += '🛡️ ' + kb.garantia.validacion + '<br><br>';
-          r += '• Placas PVC: ' + kb.garantia.pvc + '<br>';
-          r += '• Lambrín WPC: ' + kb.garantia.wpc + '<br>';
-          r += '• Pisos SPC: ' + kb.garantia.spc + '<br>';
-          r += '• Zacate sintético: ' + kb.garantia.zacate + '<br><br>';
-          r += 'La garantía cubre defectos de fábrica. Conserva tu ticket de compra.';
-          return r;
-        }
-        
-        // PRODUCTOS / CATALOGO / MATERIALES / PROYECTOS
-        if (q.includes('producto') || q.includes('catalogo') || q.includes('materiales') || q.includes('que venden') || q.includes('tienen') || q.includes('ofrecen')) {
-          return '📦 <strong>Nuestros productos (250 productos en 9 categorías):</strong><br><br>• <strong>Placas PVC</strong> — 34 productos. Tipo madera, texturizadas, espejo y mármol. 100% impermeables, 15 años de garantía. Ideales para cocinas, baños y muros de alto impacto visual.<br>• <strong>Lambrín WPC</strong> — 40 productos. Madera tecnológica que no se pudre, no le entran termitas y no necesita barniz. 15 años de garantía.<br>• <strong>Paneles 3D</strong> — 24 productos. Decorativos en blanco, grises, madera, negro y oro. Transforman cualquier muro en una obra de arte.<br>• <strong>Pisos</strong> — 78 productos. Laminado, WPC, SPC y deck sintético. Resistentes al agua y de fácil instalación.<br>• <strong>Plafón PVC</strong> — 15 productos. Laminado tipo madera y ranurado. Inmune a la humedad, no se cuartea, no crece moho.<br>• <strong>Vigas PVC/WPC</strong> — 15 productos. Decorativas para interior y exterior. Acabado realista de madera sin mantenimiento.<br>• <strong>Zacate sintético</strong> — 29 productos. Follaje y pasto recreativo. Verde todo el año, sin riego ni poda.<br>• <strong>Cladding</strong> — 11 productos. Placas tipo roca y revestimientos de fachada. Piedra real que pesa 8-12 veces menos.<br>• <strong>Revestimiento Flexible</strong> — 6 productos. Concreto aparente y texturas realistas.<br><br>🏠 Atendemos: ' + kb.proyectos.tipos + '<br><br>💡 Escribe el nombre de un producto o categoría para saber más.';
-        }
-        
-        // PVC TIPO MARMOL
-        if (q.includes('marmol') || q.includes('marble') || (q.includes('pvc') && q.includes('marmol'))) {
-          return '🏛️ <strong>Hoja de PVC tipo Mármol</strong><br><br>Es una solución decorativa perfecta para cualquier espacio interior. Añade un toque de elegancia a tu hogar, oficina o espacio comercial.<br><br>✨ <strong>Características:</strong><br>• Fabricada con PVC rígido de alta calidad<br>• Dimensiones: 2440 x 1220 x 5 mm (2.977 m² por pieza)<br>• Duradera y ligera, fácil de instalar y mantener<br>• 100% resistente al agua, manchas y arañazos<br>• No requiere sellado ni barnizado<br>• Garantía: 15 años<br><br>🏠 <strong>Aplicaciones:</strong> Cocinas, baños, salas de estar, recepciones, muros de acento y más.<br><br>🎨 <strong>Diseños disponibles:</strong> Carrara, Carrara Oscuro, Aurora Dorada, Onix, Cuarzo, Opalo, Perla, Topacio, Grafito, Jaspe, Agata, Arena, Obsidiana y más.<br><br>💡 <strong>Consejo:</strong> Para instalación en espejos se requiere perfil de aluminio obligatoriamente.';
-        }
-        
-        // DIFERENCIAS ENTRE MATERIALES
-        if ((q.includes('wpc') && q.includes('pvc')) || q.includes('diferencia wpc') || q.includes('wpc o pvc') || q.includes('cual es mejor')) {
-          return '🆚 <strong>WPC vs PVC:</strong><br><br><strong>WPC (Wood Plastic Composite):</strong><br>• 60-70% fibras de madera + 30-40% plástico HDPE<br>• Aspecto más natural tipo madera real<br>• Absorción de agua menor al 1% — no se hincha ni se deforma<br>• Ideal para exteriores (resistente a UV y lluvia)<br>• Vida útil: 25-30 años | Garantía: 15 años<br><br><strong>PVC:</strong><br>• Plástico 100% con aditivos estabilizadores UV<br>• Más ligero y fácil de instalar<br>• Ideal para interiores<br>• Mayor variedad de diseños (madera, espejo, mármol, textura)<br>• Vida útil: 20-25 años | Garantía: 15 años<br><br>💡 <strong>¿Cuál elegir?</strong><br>• Exteriores / fachadas → <strong>WPC</strong><br>• Interiores / cocinas / baños → <strong>PVC</strong> (más económico)<br>• ¿Buscas madera real sin mantenimiento? → <strong>WPC</strong><br><br>¿Te ayudo a cotizar para tu proyecto? 💬';
-        }
-        if (q.includes('spc') && (q.includes('wpc') || q.includes('diferencia') || q.includes('pvc'))) {
-          return '🆚 <strong>SPC vs WPC vs Laminado:</strong><br><br><strong>SPC (Stone Plastic Composite):</strong><br>• Muy resistente al agua 💧<br>• Ideal para cocinas y baños<br>• Instalación rápida tipo click<br><br><strong>WPC:</strong><br>• Más cálido y confortable al caminar<br>• Buen aislamiento térmico y acústico<br>• Ideal para recámaras y salas<br><br><strong>Laminado:</strong><br>• Más económico<br>• Recomendado para áreas de bajo tráfico<br><br>¿Para qué espacio es? Te recomiendo el mejor.';
-        }
-        
-        // BUSQUEDA DE PRODUCTOS POR NOMBRE
-        if (allProducts.length > 0) {
-          const terms = q.split(/\s+/).filter(t => t.length > 2);
-          const matches = allProducts.filter(p => {
-            const text = (p.name + ' ' + p.category + ' ' + (p.subcategory || '')).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
-            return terms.some(t => text.includes(t));
-          }).slice(0, 3);
-          
-          if (matches.length > 0) {
-            let r = '🔎 <strong>Encontré estos productos:</strong><br><br>';
-            matches.forEach(m => {
-              r += `<div style="display:flex;gap:0.6rem;align-items:center;margin-bottom:0.6rem;padding:0.5rem;background:rgba(197,160,89,0.08);border-radius:8px;"><img src="${m.thumb}" style="width:40px;height:40px;object-fit:cover;border-radius:6px;border:1px solid rgba(197,160,89,0.2);"><div><a href="${m.url}" style="color:#C5A059;font-weight:600;font-size:0.85rem;">${m.name}</a><div style="font-size:0.72rem;color:rgba(245,245,245,0.5);">${m.category}${m.subcategory ? ' / ' + m.subcategory : ''}</div></div></div>`;
-            });
-            r += '<br>¿Quieres que te ayude con algo específico de estos productos?';
-            return r;
-          }
-        }
-        
-        // AGRADECIMIENTO / DESPEDIDA
-        if (q.includes('gracias') || q.includes('thank') || q.includes('perfecto') || q.includes('excelente')) {
-          return '¡Con mucho gusto! 😊🙌 Estoy aquí para lo que necesites. Si tienes más dudas, escríbenos por WhatsApp al <strong>' + kb.contacto.whatsapp + '</strong> o visítanos en el showroom. ¡Que tengas un excelente día!';
-        }
-        if (q.includes('adios') || q.includes('bye') || q.includes('hasta luego') || q.includes('nos vemos')) {
-          return '¡Hasta luego! 👋 Gracias por contactar a ADIS Diseño & Remodelación. Recuerda que puedes volver cuando quieras o escribirnos al WhatsApp. ¡Éxito con tu proyecto! 🏠✨';
-        }
-        
-        // MANTENIMIENTO / LIMPIEZA
-        if (q.includes('mantenimiento') || q.includes('limpiar') || q.includes('limpieza') || q.includes('cuidado')) {
-          return '🧼 <strong>Mantenimiento y limpieza:</strong><br><br>• <strong>Limpieza regular:</strong> Paño suave humedecido con agua tibia y jabón neutro (pH 7)<br>• <strong>Manchas difíciles:</strong> Alcohol isopropílico al 70% o limpiador multiusos suave<br>• <strong>Evitar:</strong> Acetona, thinner, solventes fuertes, estropajos metálicos y amoníaco concentrado<br>• <strong>Frecuencia:</strong> Residencial = mensual | Comercial = semanal<br>• <strong>Inspección anual:</strong> Revisar juntas de dilatación y selladores<br><br>💡 Los productos PVC y WPC no requieren barnizado ni sellado. Solo limpieza básica.<br><br><a href="https://wa.me/526311928993?text=Hola%20ADIS,%20pregunto%20por%20mantenimiento" target="_blank" class="chat-whatsapp-btn">📱 Preguntar por mantenimiento</a>';
-        }
-        
-        // TIPO DE PROYECTO / A QUIEN ATIENDEN
-        if (q.includes('casa') || q.includes('oficina') || q.includes('negocio') || q.includes('local') || q.includes('proyecto')) {
-          return '🏠 <strong>Atendemos todo tipo de proyectos:</strong><br><br>' + kb.proyectos.tipos + '<br><br>Desde una pared de acento en casa hasta remodelaciones completas de locales comerciales. Cada proyecto es único y tenemos el material perfecto para ti.<br><br>💡 <strong>Consejo:</strong> Si no estás seguro de qué material elegir, contame:<br>• ¿Es interior o exterior?<br>• ¿Hay humedad o contacto con agua?<br>• ¿Qué estética buscas? (madera, mármol, moderno, rústico)<br><br><a href="https://wa.me/526311928993?text=Hola%20ADIS,%20tengo%20un%20proyecto%20de" target="_blank" class="chat-whatsapp-btn">📱 Contar mi proyecto</a>';
-        }
-        
-        // DEFINICIONES PVC / WPC
-        if (q.includes('que es pvc') || q.includes('significa pvc') || q.includes('pvc significa') || q.includes('definicion pvc')) {
-          return '📘 <strong>¿Qué es PVC?</strong><br><br>' + kb.definiciones.pvc + '<br><br>En ADIS lo usamos para placas decorativas, plafones y vigas con acabados que imitan madera, espejo y texturas.';
-        }
-        if (q.includes('que es wpc') || q.includes('significa wpc') || q.includes('wpc significa') || q.includes('definicion wpc')) {
-          return '📗 <strong>¿Qué es WPC?</strong><br><br>' + kb.definiciones.wpc + '<br><br>En ADIS lo usamos para lambrín de interior y exterior, pisos y revestimientos que lucen como madera real pero duran más.';
-        }
-        
-        // MEDIDAS / ESPECIFICACIONES POR CATEGORIA ESPECIFICA
-        if (q.includes('medida') || q.includes('especificacion') || q.includes('dimension') || q.includes('tamano') || q.includes('ficha') || q.includes('hoja tecnica')) {
-          if (q.includes('placa') || q.includes('lamina') || (q.includes('hoja') && q.includes('pvc'))) {
-            return '📐 <strong>Especificaciones técnicas — Placas PVC:</strong><br><br>' + kb.especificaciones.placas_pvc + '<br><br>💡 Las placas PVC miden <strong>2440 x 1220 x 5 mm</strong> (2.977 m² por pieza). Se venden por pieza individual. Peso: 10.5 kg/pz. Garantía: 15 años.';
-          }
-          if (q.includes('lambrin') || (q.includes('wpc') && !q.includes('pvc'))) {
-            return '📐 <strong>Especificaciones técnicas — Lambrín WPC:</strong><br><br>' + kb.especificaciones.lambrin_wpc + '<br><br>💡 Disponible en interior (219 x 26 x 3 mm) y exterior. Varía según modelo.';
-          }
-          if (q.includes('panel') && q.includes('3d')) {
-            return '📐 <strong>Especificaciones técnicas — Paneles 3D:</strong><br><br>' + kb.especificaciones.paneles_3d;
-          }
-          if (q.includes('piso') || q.includes('spc') || q.includes('laminado')) {
-            return '📐 <strong>Especificaciones técnicas — Pisos:</strong><br><br>' + kb.especificaciones.pisos_spc + '<br><br>💡 Tenemos laminado, WPC, SPC y deck sintético. Las medidas varían según el tipo.';
-          }
-          if (q.includes('plafon') || q.includes('cielo')) {
-            return '📐 <strong>Especificaciones técnicas — Plafón PVC:</strong><br><br>' + kb.especificaciones.plafon_pvc;
-          }
-          if (q.includes('viga')) {
-            return '📐 <strong>Especificaciones técnicas — Vigas PVC/WPC:</strong><br><br>' + kb.especificaciones.vigas_pvc;
-          }
-          if (q.includes('zacate') || q.includes('pasto') || q.includes('cesped')) {
-            return '📐 <strong>Especificaciones técnicas — Zacate Sintético:</strong><br><br>' + kb.especificaciones.zacate;
-          }
-          if (q.includes('cladding') || q.includes('fachada')) {
-            return '📐 <strong>Especificaciones técnicas — Cladding:</strong><br><br>' + kb.especificaciones.cladding;
-          }
-          if (q.includes('revestimiento') || q.includes('flexible') || q.includes('concreto')) {
-            return '📐 <strong>Especificaciones técnicas — Revestimiento Flexible:</strong><br><br>Material: Polímero flexible | Dimensiones: varían según modelo | Aplicación: Muros interiores y exteriores | Resistente al agua y UV.';
-          }
-        }
-        
-        // UNIDAD DE VENTA / FICHAS TECNICAS
-        if (q.includes('unidad') || q.includes('como se vende') || q.includes('ficha tecnica') || q.includes('hoja tecnica') || q.includes('pieza') || q.includes('hoja') || q.includes('tamano') || q.includes('medida')) {
-          let r = '📐 <strong>Especificaciones técnicas por categoría:</strong><br><br>';
-          r += '📋 <strong>Placas PVC:</strong><br>' + kb.especificaciones.placas_pvc + '<br><br>';
-          r += '📋 <strong>Lambrín WPC:</strong><br>' + kb.especificaciones.lambrin_wpc + '<br><br>';
-          r += '📋 <strong>Paneles 3D:</strong><br>' + kb.especificaciones.paneles_3d + '<br><br>';
-          r += '📋 <strong>Pisos SPC:</strong><br>' + kb.especificaciones.pisos_spc + '<br><br>';
-          r += '📋 <strong>Plafón PVC:</strong><br>' + kb.especificaciones.plafon_pvc + '<br><br>';
-          r += '📋 <strong>Vigas PVC/WPC:</strong><br>' + kb.especificaciones.vigas_pvc + '<br><br>';
-          r += '📋 <strong>Zacate sintético:</strong><br>' + kb.especificaciones.zacate + '<br><br>';
-          r += '📋 <strong>Cladding:</strong><br>' + kb.especificaciones.cladding + '<br><br>';
-          r += '💡 Cada categoría en el catálogo tiene su ficha técnica completa con medidas exactas, contenido por caja y recomendaciones de instalación.';
-          return r;
-        }
-        
-        // DEFAULT
-        return 'Disculpa, no entendí muy bien. 😅 Puedo ayudarte con:<br><br>• Productos y catálogo 📦<br>• Precios y cotizaciones 💰<br>• Horarios de atención 🕐<br>• Ubicación y envíos 📍<br>• Formas de pago 💳<br>• Instalación 🛠️<br><br>Escribe tu pregunta o usa los botones de abajo.';
-      }
-      
       function showWelcome() {
-        addMessage('¡Hola! 👋 Bienvenido a <strong>ADIS Diseño & Remodelación</strong>.<br><br>Soy tu asistente virtual y puedo ayudarte con información sobre nuestros productos, horarios, precios, cotizaciones y más.<br><br>¿Qué necesitas? Escribe tu pregunta 👇', false);
+        const msg = WELCOME_VARIANTS[Math.floor(Math.random() * WELCOME_VARIANTS.length)];
+        addMessage(msg, false);
+        saveHistory(msg, false);
         showQuickReplies(['Ver productos', 'Horarios', 'Cotización', 'Ubicación', '¿Tienen envío?']);
         addInputField();
       }
-    })();
-    
-    // Scroll reveal animations
-    (function() {
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('active');
-          }
-        });
-      }, { threshold: 0.1 });
       
-      document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-    })();
-    
-    // Animate stats on scroll
-    (function() {
-      const statsObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting && !entry.target.classList.contains('counted')) {
-            entry.target.classList.add('counted');
-            const target = parseInt(entry.target.dataset.target);
-            const duration = 2000;
-            const start = performance.now();
-            
-            function update(currentTime) {
-              const elapsed = currentTime - start;
-              const progress = Math.min(elapsed / duration, 1);
-              const ease = 1 - Math.pow(1 - progress, 3);
-              entry.target.textContent = Math.floor(ease * target);
-              if (progress < 1) requestAnimationFrame(update);
-            }
-            requestAnimationFrame(update);
-          }
-        });
-      }, { threshold: 0.5 });
-      
-      document.querySelectorAll('.stat-number').forEach(el => statsObserver.observe(el));
-    })();
-  </script>
-  <script>(function() {
-  const canvas = document.getElementById('bg-canvas');
-  if (!canvas) return;
-  const ctx = canvas.getContext('2d');
-  let w, h, particles = [];
-  const COUNT = 70;
-  const CONNECT_DIST = 140;
-  const COLOR = 'rgba(197, 160, 89, ';
-  function resize() {
-    w = canvas.width = window.innerWidth;
-    h = canvas.height = window.innerHeight;
-  }
-  window.addEventListener('resize', resize);
-  resize();
-  class Particle {
-    constructor() {
-      this.x = Math.random() * w;
-      this.y = Math.random() * h;
-      this.vx = (Math.random() - 0.5) * 0.5;
-      this.vy = (Math.random() - 0.5) * 0.5;
-      this.r = Math.random() * 2.5 + 0.8;
-    }
-    update() {
-      this.x += this.vx;
-      this.y += this.vy;
-      if (this.x < 0 || this.x > w) this.vx *= -1;
-      if (this.y < 0 || this.y > h) this.vy *= -1;
-    }
-    draw() {
-      ctx.beginPath();
-      ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
-      ctx.fillStyle = COLOR + '0.6)';
-      ctx.fill();
-    }
-  }
-  for (let i = 0; i < COUNT; i++) particles.push(new Particle());
-  function animate() {
-    ctx.clearRect(0, 0, w, h);
-    for (let p of particles) { p.update(); p.draw(); }
-    for (let i = 0; i < particles.length; i++) {
-      for (let j = i + 1; j < particles.length; j++) {
-        let dx = particles[i].x - particles[j].x;
-        let dy = particles[i].y - particles[j].y;
-        let dist = Math.sqrt(dx*dx + dy*dy);
-        if (dist < CONNECT_DIST) {
-          ctx.beginPath();
-          ctx.moveTo(particles[i].x, particles[i].y);
-          ctx.lineTo(particles[j].x, particles[j].y);
-          ctx.strokeStyle = COLOR + (0.2 * (1 - dist/CONNECT_DIST)) + ')';
-          ctx.lineWidth = 0.8;
-          ctx.stroke();
-        }
-      }
-    }
-    requestAnimationFrame(animate);
-  }
-  animate();
-})();</script>
-
-  <!-- Lightbox Modal -->
-  <div class="lightbox" id="lightbox" onclick="closeLightbox(event)">
-    <button class="lightbox-close" onclick="closeLightbox(event)">✕</button>
-    <img id="lightboxImg" src="" alt="">
-    <div class="lightbox-caption" id="lightboxCaption"></div>
-  </div>
-
-  <script>
-    // Lightbox
-    function openLightbox(src, caption) {
-      const lb = document.getElementById('lightbox');
-      const img = document.getElementById('lightboxImg');
-      const cap = document.getElementById('lightboxCaption');
-      img.src = src;
-      cap.textContent = caption || '';
-      lb.classList.add('active');
-      document.body.style.overflow = 'hidden';
-    }
-    function closeLightbox(e) {
-      if (e && e.target !== e.currentTarget && !e.target.classList.contains('lightbox-close')) return;
-      document.getElementById('lightbox').classList.remove('active');
-      document.body.style.overflow = '';
-    }
-    document.addEventListener('keydown', function(e) {
-      if (e.key === 'Escape') closeLightbox();
-    });
-
-    // Spotlight overlay
-    window.openSpotlight = function() {
-      document.getElementById('spotlightOverlay').classList.add('active');
-      const inp = document.getElementById('spotlightInput');
-      if (inp) { setTimeout(() => inp.focus(), 100); }
-      if (typeof spotlightSearch === 'function') spotlightSearch(inp ? inp.value : '');
-    };
-    window.closeSpotlight = function(e) {
-      if (e && e.target !== e.currentTarget && !e.target.classList.contains('spotlight-close')) return;
-      document.getElementById('spotlightOverlay').classList.remove('active');
-    };
-    
-    // Buscador global mejorado
-    (function() {
-      let allProducts = [];
-      let debounceTimer = null;
-      let activeIndex = -1;
-      let currentResults = [];
-      let spotlightResults = [];
-      let spotlightIndex = -1;
-      
+      // Cargar productos
       fetch('products.json')
         .then(r => r.json())
         .then(data => { allProducts = data; })
         .catch(() => { allProducts = []; });
-      
-      // Spotlight search
-      window.spotlightSearch = function(query) {
-        const container = document.getElementById('spotlightResults');
-        if (!query || query.length < 2) {
-          if (container) container.innerHTML = '<div style="padding:2rem;text-align:center;color:rgba(245,245,245,0.5);">Escribe al menos 2 caracteres para buscar...</div>';
-          return;
-        }
-        const q = normalize(query);
-        const terms = q.split(/\s+/).filter(t => t.length > 0);
-        const scored = allProducts.map(p => {
-          const name = normalize(p.name);
-          const cat = normalize(p.category);
-          const sub = normalize(p.subcategory || '');
-          let score = 0;
-          for (const t of terms) {
-            if (name.startsWith(t)) score += 10;
-            else if (name.includes(t)) score += 5;
-            if (sub.startsWith(t)) score += 3;
-            else if (sub.includes(t)) score += 2;
-            if (cat.includes(t)) score += 1;
-          }
-          return { p, score };
-        }).filter(x => x.score > 0).sort((a,b) => b.score - a.score).slice(0, 10);
-        
-        spotlightResults = scored.map(x => x.p);
-        spotlightIndex = -1;
-        
-        if (!container) return;
-        if (scored.length === 0) {
-          container.innerHTML = '<div style="padding:2rem;text-align:center;color:rgba(245,245,245,0.5);">No se encontraron productos</div>';
-        } else {
-          container.innerHTML = scored.map((x, i) => `
-            <a href="${x.p.url}" class="spotlight-item" data-sindex="${i}" onclick="closeSpotlight()">
-              <img src="${x.p.thumb}" alt="${x.p.name}" loading="lazy">
-              <div class="spotlight-item-info">
-                <span class="spotlight-item-name">${highlight(x.p.name, query)}</span>
-                <span class="spotlight-item-cat">${x.p.category}${x.p.subcategory ? ' / ' + x.p.subcategory : ''}</span>
-              </div>
-            </a>
-          `).join('');
-        }
-      };
-      
-      const spotInput = document.getElementById('spotlightInput');
-      if (spotInput) {
-        spotInput.addEventListener('input', e => {
-          clearTimeout(debounceTimer);
-          debounceTimer = setTimeout(() => spotlightSearch(e.target.value), 150);
-        });
-        spotInput.addEventListener('keydown', e => {
-          if (e.key === 'ArrowDown') {
-            e.preventDefault();
-            spotlightIndex = Math.min(spotlightIndex + 1, spotlightResults.length - 1);
-            updateSpotlightActive();
-          } else if (e.key === 'ArrowUp') {
-            e.preventDefault();
-            spotlightIndex = Math.max(spotlightIndex - 1, -1);
-            updateSpotlightActive();
-          } else if (e.key === 'Enter') {
-            e.preventDefault();
-            if (spotlightIndex >= 0 && spotlightResults[spotlightIndex]) {
-              window.location.href = spotlightResults[spotlightIndex].url;
-              closeSpotlight();
-            }
-          } else if (e.key === 'Escape') {
-            closeSpotlight();
-          }
-        });
-      }
-      
-      function updateSpotlightActive() {
-        document.querySelectorAll('.spotlight-item').forEach((el, i) => {
-          el.style.background = i === spotlightIndex ? 'rgba(197,160,89,0.15)' : '';
-        });
-        const active = document.querySelector('.spotlight-item[data-sindex="' + spotlightIndex + '"]');
-        if (active) active.scrollIntoView({ block: 'nearest' });
-      }
-      
-      function normalize(str) {
-        return (str || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
-      }
-      
-      function highlight(text, query) {
-        const nq = normalize(query);
-        const nt = normalize(text);
-        let out = '';
-        let last = 0;
-        let idx = nt.indexOf(nq);
-        while (idx >= 0 && nq.length > 0) {
-          out += text.slice(last, idx);
-          const end = idx + nq.length;
-          out += '<mark>' + text.slice(idx, end) + '</mark>';
-          last = end;
-          idx = nt.indexOf(nq, last);
-        }
-        out += text.slice(last);
-        return out;
-      }
-      
-      function doSearch(query, dropdownId) {
-        const dropdown = document.getElementById(dropdownId);
-        if (!query || query.length < 2) {
-          dropdown.classList.remove('active');
-          currentResults = [];
-          activeIndex = -1;
-          return;
-        }
-        const q = normalize(query);
-        const terms = q.split(/\s+/).filter(t => t.length > 0);
-        
-        const scored = allProducts.map(p => {
-          const name = normalize(p.name);
-          const cat = normalize(p.category);
-          const sub = normalize(p.subcategory || '');
-          let score = 0;
-          for (const t of terms) {
-            if (name.startsWith(t)) score += 10;
-            else if (name.includes(t)) score += 5;
-            if (sub.startsWith(t)) score += 3;
-            else if (sub.includes(t)) score += 2;
-            if (cat.includes(t)) score += 1;
-          }
-          return { p, score };
-        }).filter(x => x.score > 0).sort((a,b) => b.score - a.score).slice(0, 8);
-        
-        currentResults = scored.map(x => x.p);
-        activeIndex = -1;
-        
-        if (scored.length === 0) {
-          dropdown.innerHTML = '<div class="search-empty">No se encontraron productos</div>';
-        } else {
-          dropdown.innerHTML = '<div class="search-dropdown-header">' + scored.length + ' resultado' + (scored.length > 1 ? 's' : '') + ' encontrado' + (scored.length > 1 ? 's' : '') + '</div>' +
-            scored.map((x, i) => `
-              <a href="${x.p.url}" class="search-item" data-index="${i}" onclick="clearSearch()">
-                <img src="${x.p.thumb}" alt="${x.p.name}" loading="lazy">
-                <div class="search-item-info">
-                  <span class="search-item-name">${highlight(x.p.name, query)}</span>
-                  <span class="search-item-cat">${x.p.category}${x.p.subcategory ? ' / ' + x.p.subcategory : ''}</span>
-                </div>
-              </a>
-            `).join('');
-        }
-        dropdown.classList.add('active');
-      }
-      
-      window.clearSearch = function() {
-        const dd = document.getElementById('searchDropdown');
-        const dm = document.getElementById('searchDropdownMobile');
-        if (dd) dd.classList.remove('active');
-        if (dm) dm.classList.remove('active');
-      };
-      
-      function setupInput(inputId, dropdownId) {
-        const input = document.getElementById(inputId);
-        if (!input) return;
-        input.addEventListener('input', e => {
-          clearTimeout(debounceTimer);
-          debounceTimer = setTimeout(() => doSearch(e.target.value, dropdownId), 150);
-        });
-        input.addEventListener('focus', e => doSearch(e.target.value, dropdownId));
-        input.addEventListener('keydown', e => {
-          if (e.key === 'ArrowDown') {
-            e.preventDefault();
-            activeIndex = Math.min(activeIndex + 1, currentResults.length - 1);
-            updateActive(dropdownId);
-          } else if (e.key === 'ArrowUp') {
-            e.preventDefault();
-            activeIndex = Math.max(activeIndex - 1, -1);
-            updateActive(dropdownId);
-          } else if (e.key === 'Enter') {
-            e.preventDefault();
-            if (activeIndex >= 0 && currentResults[activeIndex]) {
-              window.location.href = currentResults[activeIndex].url;
-              clearSearch();
-            }
-          } else if (e.key === 'Escape') {
-            clearSearch();
-            input.blur();
-          }
-        });
-      }
-      
-      function updateActive(dropdownId) {
-        const dropdown = document.getElementById(dropdownId);
-        if (!dropdown) return;
-        dropdown.querySelectorAll('.search-item').forEach((el, i) => {
-          el.classList.toggle('active', i === activeIndex);
-        });
-        const active = dropdown.querySelector('.search-item.active');
-        if (active) active.scrollIntoView({ block: 'nearest' });
-      }
-      
-      setupInput('searchInput', 'searchDropdown');
-      setupInput('searchInputMobile', 'searchDropdownMobile');
-      
-      // Shortcut "/" para enfocar buscador
-      document.addEventListener('keydown', e => {
-        if (e.key === '/' && document.activeElement.tagName !== 'INPUT' && document.activeElement.tagName !== 'TEXTAREA') {
-          e.preventDefault();
-          const inp = document.getElementById('searchInput');
-          if (inp) { inp.focus(); }
-        }
-      });
-      
-      document.addEventListener('click', function(e) {
-        if (!e.target.closest('.search-box')) clearSearch();
-      });
     })();
   </script>
 

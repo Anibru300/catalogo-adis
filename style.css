@@ -702,6 +702,99 @@ footer {
   font-weight: 600;
   margin-top: 0.5rem;
 }
+.chat-product-card {
+  display: flex;
+  gap: 0.8rem;
+  padding: 0.7rem;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(197,160,89,0.15);
+  border-radius: 10px;
+  margin-bottom: 0.5rem;
+  transition: all 0.2s;
+}
+.chat-product-card:hover {
+  background: rgba(255,255,255,0.08);
+  border-color: rgba(197,160,89,0.3);
+}
+.chat-product-card img {
+  width: 55px;
+  height: 55px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid rgba(197,160,89,0.2);
+  flex-shrink: 0;
+}
+.chat-product-info { flex: 1; min-width: 0; }
+.chat-product-info a {
+  color: var(--gold-light);
+  font-weight: 600;
+  font-size: 0.85rem;
+  text-decoration: none;
+  display: block;
+  margin-bottom: 0.15rem;
+}
+.chat-product-info a:hover { color: var(--gold); }
+.chat-product-cat {
+  font-size: 0.72rem;
+  color: rgba(245,245,245,0.55);
+}
+.chat-product-actions {
+  display: flex;
+  gap: 0.4rem;
+  margin-top: 0.5rem;
+  flex-wrap: wrap;
+}
+.chat-product-actions a, .chat-product-actions button {
+  padding: 0.35rem 0.75rem;
+  border-radius: 15px;
+  font-size: 0.72rem;
+  text-decoration: none;
+  cursor: pointer;
+  border: none;
+  font-family: 'Montserrat', sans-serif;
+  transition: all 0.2s;
+}
+.chat-product-actions .primary {
+  background: var(--gold);
+  color: var(--black);
+  font-weight: 600;
+}
+.chat-product-actions .primary:hover { background: var(--gold-light); }
+.chat-product-actions .secondary {
+  background: transparent;
+  border: 1px solid var(--gold);
+  color: var(--gold);
+}
+.chat-product-actions .secondary:hover { background: var(--gold); color: var(--black); }
+.chat-time {
+  font-size: 0.65rem;
+  color: rgba(245,245,245,0.4);
+  margin-top: 0.25rem;
+  text-align: right;
+}
+.chat-header-actions {
+  display: flex;
+  gap: 0.6rem;
+  align-items: center;
+}
+.chat-clear {
+  background: rgba(0,0,0,0.15);
+  border: none;
+  color: var(--black);
+  font-size: 0.75rem;
+  padding: 0.3rem 0.6rem;
+  border-radius: 12px;
+  cursor: pointer;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+}
+.chat-clear:hover { background: rgba(0,0,0,0.25); }
+.chat-context-hint {
+  font-size: 0.75rem;
+  color: rgba(245,245,245,0.5);
+  font-style: italic;
+  margin: -0.3rem 0 0.3rem;
+}
 
 /* SPECS BAR - ESPECIFICACIONES TECNICAS */
 .specs-bar {
