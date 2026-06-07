@@ -31,6 +31,21 @@ try:
 except Exception:
     RESEARCH_DATA = {}
 
+def _copy_if_needed(src, dst):
+    """Copia src a dst solo si dst no existe o tiene tamaño diferente."""
+    try:
+        if not dst.exists() or src.stat().st_size != dst.stat().st_size:
+            shutil.copy2(src, dst)
+            return True
+    except Exception:
+        try:
+            shutil.copy2(src, dst)
+            return True
+        except Exception:
+            return False
+    return False
+
+
 def md_to_html(text):
     """Convierte Markdown básico a HTML."""
     if not text:
@@ -232,14 +247,13 @@ def slugify(name):
 
 
 def sync_images(categories):
-    """Copia imagenes de CATALOGO FINAL a Pagina/img/ para GitHub Pages."""
+    """Copia imagenes de CATALOGO FINAL a Pagina/img/ para GitHub Pages (sync incremental)."""
     img_dir = BASE_DIR / 'img'
-    if img_dir.exists():
-        shutil.rmtree(img_dir)
     img_dir.mkdir(parents=True, exist_ok=True)
     
     total = 0
     errors = []
+    expected = set()
     for cat in categories:
         cat_img_dir = img_dir / cat['slug']
         cat_img_dir.mkdir(parents=True, exist_ok=True)
@@ -248,11 +262,12 @@ def sync_images(categories):
         for prod in cat['direct_products']:
             src = cat['path'] / prod
             dst = cat_img_dir / prod
-            try:
-                shutil.copy2(src, dst)
+            expected.add(dst.resolve())
+            if not src.exists():
+                errors.append(f"  [ERROR] No existe: {src}")
+                continue
+            if _copy_if_needed(src, dst):
                 total += 1
-            except Exception as e:
-                errors.append(f"  [ERROR] {src}: {e}")
         
         # Copiar productos de subcategorias
         for sub in cat['subcategories']:
@@ -261,17 +276,18 @@ def sync_images(categories):
             for prod in sub['products']:
                 src = sub['path'] / prod
                 dst = sub_img_dir / prod
-                try:
-                    shutil.copy2(src, dst)
+                expected.add(dst.resolve())
+                if not src.exists():
+                    errors.append(f"  [ERROR] No existe: {src}")
+                    continue
+                if _copy_if_needed(src, dst):
                     total += 1
-                except Exception as e:
-                    errors.append(f"  [ERROR] {src}: {e}")
     
     if errors:
         print(f"ADVERTENCIA: {len(errors)} imagenes no se pudieron copiar:")
         for e in errors[:10]:
             print(e)
-    print(f"Imagenes sincronizadas: {total} en {img_dir}")
+    print(f"Imagenes sincronizadas: {total} nuevas/actualizadas en {img_dir}")
 
 
 def get_products(folder_path):
@@ -2675,7 +2691,7 @@ def generate_footer():
       function sendQuoteToWhatsApp() {
         const data = chatContext.quoteData;
         if (!data || !data.category) return;
-        const msg = `Hola ADIS, solicito cotización guiada desde el catálogo:\n\n• Producto: ${data.category}\n• Espacio: ${data.space}\n• Metraje: ${data.m2}\n• Instalación: ${data.install}\n• Ubicación: ${data.location}\n${data.contact && data.contact !== 'Prefiero no decir' && data.contact !== 'Solo enviar por WhatsApp' ? '• Contacto: ' + data.contact + '\n' : ''}\nQuedo atento a su respuesta. Gracias.`;
+        const msg = `Hola ADIS, solicito cotización guiada desde el catálogo:\\n\\n• Producto: ${data.category}\\n• Espacio: ${data.space}\\n• Metraje: ${data.m2}\\n• Instalación: ${data.install}\\n• Ubicación: ${data.location}\\n${data.contact && data.contact !== 'Prefiero no decir' && data.contact !== 'Solo enviar por WhatsApp' ? '• Contacto: ' + data.contact + '\\n' : ''}\\nQuedo atento a su respuesta. Gracias.`;
         window.open('https://wa.me/526311928993?text=' + encodeURIComponent(msg), '_blank');
       }
       
@@ -3464,13 +3480,11 @@ def generate_category_page(cat, categories):
 
 
 def sync_media():
-    """Copia TODAS las fotos y videos de Material de Facebock a media/ con nombres limpios."""
+    """Copia TODAS las fotos y videos de Material de Facebock a media/ con nombres limpios (sync incremental)."""
     src_dir = BASE_DIR / 'Material de Facebock'
     media_dir = BASE_DIR / 'media'
     if not src_dir.exists():
         return
-    if media_dir.exists():
-        shutil.rmtree(media_dir)
     media_dir.mkdir(parents=True, exist_ok=True)
     
     img_exts = ('.jpg', '.jpeg', '.png')
@@ -3496,44 +3510,56 @@ def sync_media():
                 all_files.append((Path(root) / f, f))
     all_files.sort(key=lambda x: x[1])
     
-    # Contadores para nombres automáticos
+    # Generar mapeo fuente -> destino con contadores reiniciados (nombres estables mientras no cambien las fuentes)
     auto_img = 0
     auto_vid = 0
     auto_pvc = 0
     mapping = {}
-    
+    expected_names = set()
     for fpath, fname in all_files:
         if fname in known_names:
-            mapping[fpath] = known_names[fname]
+            dst_name = known_names[fname]
         elif 'pvc' in fpath.parent.name.lower() or 'pvc' in fname.lower():
             auto_pvc += 1
             ext = Path(fname).suffix.lower()
-            mapping[fpath] = f'pvc-real-{auto_pvc:02d}{ext}'
+            dst_name = f'pvc-real-{auto_pvc:02d}{ext}'
         elif fname.lower().endswith(img_exts):
             auto_img += 1
             ext = Path(fname).suffix.lower()
-            mapping[fpath] = f'proyecto-{auto_img:02d}{ext}'
+            dst_name = f'proyecto-{auto_img:02d}{ext}'
         elif fname.lower().endswith(vid_exts):
             auto_vid += 1
             ext = Path(fname).suffix.lower()
-            mapping[fpath] = f'video-{auto_vid:02d}{ext}'
+            dst_name = f'video-{auto_vid:02d}{ext}'
+        else:
+            continue
+        mapping[fpath] = dst_name
+        expected_names.add(dst_name.lower())
+    
+    # Eliminar archivos huérfanos en media/ (ya no tienen fuente en el mapeo actual)
+    removed = 0
+    for existing in list(media_dir.iterdir()):
+        if existing.is_file() and existing.name.lower() not in expected_names:
+            try:
+                existing.unlink()
+                removed += 1
+            except Exception:
+                pass
     
     copied = 0
     errors = []
     for src_path, dst_name in mapping.items():
-        if src_path.exists():
-            try:
-                shutil.copy2(src_path, media_dir / dst_name)
-                copied += 1
-            except Exception as e:
-                errors.append(f"  [ERROR] {src_path}: {e}")
-        else:
+        if not src_path.exists():
             errors.append(f"  [ERROR] No existe: {src_path}")
+            continue
+        dst = media_dir / dst_name
+        if _copy_if_needed(src_path, dst):
+            copied += 1
     if errors:
         print(f"ADVERTENCIA: {len(errors)} archivos de media no se pudieron copiar:")
         for e in errors[:10]:
             print(e)
-    print(f"Media sincronizada: {copied} archivos ({auto_img} imgs + {auto_pvc} pvc + {auto_vid} vids nuevos)")
+    print(f"Media sincronizada: {copied} copiados, {removed} huérfanos eliminados ({auto_img} imgs + {auto_pvc} pvc + {auto_vid} vids)")
 
 
 # Datos extraídos de fichas técnicas
@@ -3825,7 +3851,7 @@ def generate_testimonios():
       msg += '%0A%0A' + comentario;
       msg += '%0A%0AProducto/Categoría: ' + (producto || 'No especificado');
       msg += '%0A%0APágina: ' + window.location.href;
-      window.open('https://wa.me/526311928993?text=' + encodeURIComponent(msg.replace(/%0A/g, '\n')), '_blank');
+      window.open('https://wa.me/526311928993?text=' + encodeURIComponent(msg.replace(/%0A/g, '\\n')), '_blank');
       alert('¡Gracias ' + nombre + '! Tu testimonio se envió por WhatsApp. Será revisado y publicado pronto.');
       e.target.reset();
     }

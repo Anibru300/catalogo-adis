@@ -265,8 +265,7 @@
       msg += '%0A%0A' + comentario;
       msg += '%0A%0AProducto/Categoría: ' + (producto || 'No especificado');
       msg += '%0A%0APágina: ' + window.location.href;
-      window.open('https://wa.me/526311928993?text=' + encodeURIComponent(msg.replace(/%0A/g, '
-')), '_blank');
+      window.open('https://wa.me/526311928993?text=' + encodeURIComponent(msg.replace(/%0A/g, '\n')), '_blank');
       alert('¡Gracias ' + nombre + '! Tu testimonio se envió por WhatsApp. Será revisado y publicado pronto.');
       e.target.reset();
     }
@@ -961,16 +960,7 @@
       function sendQuoteToWhatsApp() {
         const data = chatContext.quoteData;
         if (!data || !data.category) return;
-        const msg = `Hola ADIS, solicito cotización guiada desde el catálogo:
-
-• Producto: ${data.category}
-• Espacio: ${data.space}
-• Metraje: ${data.m2}
-• Instalación: ${data.install}
-• Ubicación: ${data.location}
-${data.contact && data.contact !== 'Prefiero no decir' && data.contact !== 'Solo enviar por WhatsApp' ? '• Contacto: ' + data.contact + '
-' : ''}
-Quedo atento a su respuesta. Gracias.`;
+        const msg = `Hola ADIS, solicito cotización guiada desde el catálogo:\n\n• Producto: ${data.category}\n• Espacio: ${data.space}\n• Metraje: ${data.m2}\n• Instalación: ${data.install}\n• Ubicación: ${data.location}\n${data.contact && data.contact !== 'Prefiero no decir' && data.contact !== 'Solo enviar por WhatsApp' ? '• Contacto: ' + data.contact + '\n' : ''}\nQuedo atento a su respuesta. Gracias.`;
         window.open('https://wa.me/526311928993?text=' + encodeURIComponent(msg), '_blank');
       }
       
