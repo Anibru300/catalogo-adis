@@ -2976,6 +2976,7 @@ def generate_index(categories):
 <html lang="es">
 <head>
   <meta charset="UTF-8">
+  <link rel="icon" type="image/png" href="LOGO ADIS.png">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ADIS | Diseño & Remodelación</title>
   <meta name="description" content="{meta_desc}">
@@ -3103,6 +3104,7 @@ def generate_contacto():
 <html lang="es">
 <head>
   <meta charset="UTF-8">
+  <link rel="icon" type="image/png" href="LOGO ADIS.png">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Contacto | ADIS Diseño & Remodelación</title>
   <meta name="description" content="Contacta a ADIS Diseño & Remodelación. WhatsApp, teléfono MX, teléfono USA y correo electrónico.">
@@ -3416,6 +3418,7 @@ def generate_category_page(cat, categories):
 <html lang="es">
 <head>
   <meta charset="UTF-8">
+  <link rel="icon" type="image/png" href="LOGO ADIS.png">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{cat['name']} | ADIS Catálogo</title>
   <meta name="description" content="{cat['name']} - ADIS Diseño & Remodelación. Explora nuestros productos y solicita tu cotización.">
@@ -4003,6 +4006,7 @@ def generate_sabias_que():
 <html lang="es">
 <head>
   <meta charset="UTF-8">
+  <link rel="icon" type="image/png" href="LOGO ADIS.png">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{cat_name} — ¿Sabías que? | ADIS Diseño & Remodelación</title>
   <meta name="description" content="Datos curiosos y preguntas frecuentes sobre {cat_name}.">
@@ -4080,6 +4084,7 @@ function sqToggle(el) {{
 <html lang="es">
 <head>
   <meta charset="UTF-8">
+  <link rel="icon" type="image/png" href="LOGO ADIS.png">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>¿Sabías que? | ADIS Diseño & Remodelación</title>
   <meta name="description" content="Datos curiosos, FAQs y consejos sobre nuestros productos: PVC, WPC, paneles 3D, pisos, zacate y cladding.">
@@ -4237,6 +4242,7 @@ def generate_proyectos():
 <html lang="es">
 <head>
   <meta charset="UTF-8">
+  <link rel="icon" type="image/png" href="LOGO ADIS.png">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Proyectos Reales | ADIS Diseño & Remodelación</title>
   <meta name="description" content="Galería de proyectos reales de ADIS Diseño & Remodelación. Antes y después, remodelaciones de interiores y exteriores.">
