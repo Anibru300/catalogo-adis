@@ -24,6 +24,24 @@ CONTACTO = {
     'facebook': 'https://www.facebook.com/p/Adis-Dise%C3%B1o-Remodelaci%C3%B3n-61579849591594/'
 }
 
+# ========== GOOGLE ANALYTICS 4 ==========
+# Reemplaza 'G-XXXXXXXXXX' por tu Measurement ID de Google Analytics 4.
+# Obtén uno gratis en: https://analytics.google.com/analytics/web/#/
+GA_MEASUREMENT_ID = 'G-XXXXXXXXXX'
+
+def ga_script():
+    if not GA_MEASUREMENT_ID or GA_MEASUREMENT_ID == 'G-XXXXXXXXXX':
+        return ''
+    return f'''
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id={GA_MEASUREMENT_ID}"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){{dataLayer.push(arguments);}}
+    gtag('js', new Date());
+    gtag('config', '{GA_MEASUREMENT_ID}');
+  </script>'''
+
 # ========== RESEARCH DATA (from investigacion/) ==========
 try:
     with open(BASE_DIR / 'investigacion_data.json', 'r', encoding='utf-8') as f:
@@ -3052,7 +3070,7 @@ def generate_index(categories):
   <meta name="twitter:card" content="summary_large_image">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
-</head>
+{ga_script()}\n</head>
 <body>
   <canvas id="bg-canvas"></canvas>
 
@@ -3178,7 +3196,7 @@ def generate_contacto():
   <meta property="og:type" content="website">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
-</head>
+{ga_script()}\n</head>
 <body>
   <canvas id="bg-canvas"></canvas>
 {generate_header('contacto')}
@@ -3492,7 +3510,7 @@ def generate_category_page(cat, categories):
   <meta property="og:type" content="website">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
-</head>
+{ga_script()}\n</head>
 <body>
   <canvas id="bg-canvas"></canvas>
 {generate_header(cat['slug'])}
@@ -4085,7 +4103,7 @@ def generate_sabias_que():
   <meta name="description" content="Datos curiosos y preguntas frecuentes sobre {cat_name}.">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
-</head>
+{ga_script()}\n</head>
 <body>
   <canvas id="bg-canvas"></canvas>
 {generate_header('sabias-que')}
@@ -4166,7 +4184,7 @@ function sqToggle(el) {{
   <meta property="og:image" content="https://anibru300.github.io/catalogo-adis/LOGO%20ADIS.png">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
-</head>
+{ga_script()}\n</head>
 <body>
   <canvas id="bg-canvas"></canvas>
 {generate_header('sabias-que')}
@@ -4341,7 +4359,7 @@ def generate_proyectos():
     .video-card video {{ width: 100%; border-radius: 8px; }}
     @media (max-width: 768px) {{ .carousel-slide img {{ height: 280px; }} .carousel-btn {{ width: 36px; height: 36px; font-size: 1rem; }} }}
   </style>
-</head>
+{ga_script()}\n</head>
 <body>
   <canvas id="bg-canvas"></canvas>
 {generate_header('proyectos')}
