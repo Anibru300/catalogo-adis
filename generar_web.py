@@ -2675,7 +2675,7 @@ def generate_footer():
       function sendQuoteToWhatsApp() {
         const data = chatContext.quoteData;
         if (!data || !data.category) return;
-        const msg = 'Hola ADIS, solicito cotización guiada desde el catálogo:\n\n• Producto: ' + data.category + '\n• Espacio: ' + data.space + '\n• Metraje: ' + data.m2 + '\n• Instalación: ' + data.install + '\n• Ubicación: ' + data.location + '\n' + (data.contact && data.contact !== 'Prefiero no decir' && data.contact !== 'Solo enviar por WhatsApp' ? '• Contacto: ' + data.contact + '\n' : '') + '\nQuedo atento a su respuesta. Gracias.';
+        const msg = `Hola ADIS, solicito cotización guiada desde el catálogo:\n\n• Producto: ${data.category}\n• Espacio: ${data.space}\n• Metraje: ${data.m2}\n• Instalación: ${data.install}\n• Ubicación: ${data.location}\n${data.contact && data.contact !== 'Prefiero no decir' && data.contact !== 'Solo enviar por WhatsApp' ? '• Contacto: ' + data.contact + '\n' : ''}\nQuedo atento a su respuesta. Gracias.`;
         window.open('https://wa.me/526311928993?text=' + encodeURIComponent(msg), '_blank');
       }
       
