@@ -236,31 +236,41 @@ def sync_images(categories):
     img_dir = BASE_DIR / 'img'
     if img_dir.exists():
         shutil.rmtree(img_dir)
-    img_dir.mkdir(parents=True)
+    img_dir.mkdir(parents=True, exist_ok=True)
     
     total = 0
+    errors = []
     for cat in categories:
         cat_img_dir = img_dir / cat['slug']
-        cat_img_dir.mkdir(exist_ok=True)
+        cat_img_dir.mkdir(parents=True, exist_ok=True)
         
         # Copiar productos directos
         for prod in cat['direct_products']:
             src = cat['path'] / prod
             dst = cat_img_dir / prod
-            shutil.copy2(src, dst)
-            total += 1
+            try:
+                shutil.copy2(src, dst)
+                total += 1
+            except Exception as e:
+                errors.append(f"  [ERROR] {src}: {e}")
         
         # Copiar productos de subcategorias
         for sub in cat['subcategories']:
             sub_img_dir = cat_img_dir / sub['slug']
-            sub_img_dir.mkdir(exist_ok=True)
+            sub_img_dir.mkdir(parents=True, exist_ok=True)
             for prod in sub['products']:
                 src = sub['path'] / prod
                 dst = sub_img_dir / prod
-                shutil.copy2(src, dst)
-                total += 1
-            
+                try:
+                    shutil.copy2(src, dst)
+                    total += 1
+                except Exception as e:
+                    errors.append(f"  [ERROR] {src}: {e}")
     
+    if errors:
+        print(f"ADVERTENCIA: {len(errors)} imagenes no se pudieron copiar:")
+        for e in errors[:10]:
+            print(e)
     print(f"Imagenes sincronizadas: {total} en {img_dir}")
 
 
@@ -1889,7 +1899,8 @@ def generate_footer():
           whatsapp: '+52 631-192-8993',
           tel_showroom: '+52 631-120-4943',
           email: 'adis.remodelacion@gmail.com',
-          ubicacion: 'Nogales, Sonora y Rio Rico, AZ'
+          ubicacion: 'Nogales, Sonora y Rio Rico, AZ',
+          direccion: 'C. Alfonso Acosta 16 Local 3, Col. 5 de Mayo, 84000 Heroica Nogales, Sonora'
         },
         envios: {
           gratis: 'Nogales Sonora, Nogales AZ y Tucson',
@@ -1926,7 +1937,20 @@ def generate_footer():
         },
         definiciones: {
           pvc: 'Policloruro de Vinilo. Es un tipo de plástico muy usado en letreros, hojas rígidas, tuberías, anuncios y materiales de impresión porque es resistente, ligero y económico.',
-          wpc: 'Wood Plastic Composite (Compuesto de Madera y Plástico). Es un material hecho de fibras de madera mezcladas con plástico, muy usado en paneles, revestimientos, muebles y decoración porque parece madera pero resiste mejor la humedad y el desgaste.'
+          wpc: 'Wood Plastic Composite (Compuesto de Madera y Plástico). Es un material hecho de fibras de madera mezcladas con plástico, muy usado en paneles, revestimientos, muebles y decoración porque parece madera pero resiste mejor la humedad y el desgaste.',
+          spc: 'Stone Plastic Composite. Material de piso compuesto de piedra caliza y PVC. Muy resistente al agua, ideal para cocinas y baños. Instalación tipo click.',
+          laminado: 'Piso laminado de alta densidad (HDF) con capa decorativa impresa. Económico y fácil de instalar. Recomendado para interiores de bajo tráfico.',
+          cladding: 'Revestimiento de fachada que imita piedra natural. Pesa 8-12 veces menos que la piedra real, es más fácil de instalar y no requiere mantenimiento.'
+        },
+        especificaciones: {
+          placas_pvc: 'Material: PVC rígido | Dimensiones: 2440 x 1220 x 5 mm | Presentación: 2.977 m²/pz, 1 pz/caja, 10.5 kg/pz | Garantía: 15 años | Uso: Interior',
+          lambrin_wpc: 'Material: Wood Plastic Composite | Dimensiones: 219 x 26 x 3 mm (interior), 220 x 21 x 2.5 mm (exterior) | Presentación: 2.85 m²/caja (interior), 3.08 m²/caja (exterior) | Garantía: 15 años | Uso: Interior y exterior',
+          paneles_3d: 'Material: PVC o fibra de bambú | Dimensiones: 500 x 500 mm (varía por modelo) | Presentación: por pieza | Garantía: 10 años | Uso: Interior',
+          pisos_spc: 'Material: Stone Plastic Composite | Dimensiones: 1220 x 180 x 4-5.5 mm | Presentación: 8-10 piezas/caja (1.76-2.0 m²) | Garantía: 12 años residencial | Uso: Interior',
+          plafon_pvc: 'Material: PVC | Dimensiones: 595 x 595 x 7 mm (laminado), 250 x 8000 x 10 mm (wood) | Presentación: por pieza | Garantía: 15 años | Uso: Interior',
+          vigas_pvc: 'Material: PVC o WPC | Dimensiones: varían 70x50mm a 120x80mm | Presentación: por pieza | Garantía: 15 años | Uso: Interior/exterior',
+          zacate: 'Material: Polietileno UV | Altura: 20-40 mm | Presentación: por metro cuadrado | Garantía: 5 años | Uso: Exterior',
+          cladding: 'Material: Poliuretano o compuesto mineral | Dimensiones: 1200 x 600 x 30-50 mm | Presentación: por pieza | Garantía: 10 años | Uso: Exterior'
         },
         venta: {
           unidad: 'El tipo de unidad y cómo se vende viene en las fichas técnicas de cada categoría: por pieza, por hoja, tamaño de la hoja, etc.'
@@ -2025,7 +2049,7 @@ def generate_footer():
         
         // UBICACION
         if (q.includes('ubicacion') || q.includes('donde') || q.includes('direccion') || q.includes('ubicados') || q.includes('local') || q.includes('tienda') || q.includes('showroom') || q.includes('nogales') || q.includes('rio rico')) {
-          return '📍 <strong>Nuestra tienda física está en Nogales, Sonora</strong><br><br>📌 Puedes ver la dirección exacta y el mapa en nuestra página de <a href="contacto.html" style="color:#C5A059">Contacto</a> o en <a href="https://maps.app.goo.gl/Q3raWUzhCj2rvhjm8" target="_blank" style="color:#C5A059">Google Maps →</a><br><br>🏠 ¡Tenemos showroom! Ven a ver y tocar los materiales antes de comprar. También atendemos en <strong>Rio Rico, AZ</strong>.';
+          return '📍 <strong>ADIS Diseño & Remodelación</strong><br><br>🏠 <strong>Dirección:</strong><br>' + kb.contacto.direccion + '<br><br>📱 <strong>WhatsApp:</strong> ' + kb.contacto.whatsapp + '<br>☎️ <strong>Showroom:</strong> ' + kb.contacto.tel_showroom + '<br>✉️ <strong>Email:</strong> ' + kb.contacto.email + '<br><br>🕐 Horario showroom: Martes a domingo (lunes cerrado)<br>📍 También atendemos en <strong>Rio Rico, AZ</strong><br><br><a href="https://maps.app.goo.gl/Q3raWUzhCj2rvhjm8" target="_blank" style="color:#C5A059">🗺️ Ver en Google Maps →</a>';
         }
         
         // PRECIOS / COTIZACION
@@ -2093,12 +2117,12 @@ def generate_footer():
         
         // PRODUCTOS / CATALOGO / MATERIALES / PROYECTOS
         if (q.includes('producto') || q.includes('catalogo') || q.includes('materiales') || q.includes('que venden') || q.includes('tienen') || q.includes('ofrecen')) {
-          return '📦 <strong>Nuestros productos:</strong><br><br>• <strong>Placas PVC</strong> — Tipo madera, texturizadas, espejo y mármol. 100% impermeables, 15 años de garantía. Ideales para cocinas, baños y muros de alto impacto visual.<br>• <strong>Lambrín WPC</strong> — Madera tecnológica que no se pudre, no le entran termitas y no necesita barniz. 15 años de garantía.<br>• <strong>Paneles 3D</strong> — Decorativos en blanco, grises, madera, negro y oro. Transforman cualquier muro en una obra de arte.<br>• <strong>Pisos</strong> — Laminado, WPC, SPC y deck sintético. Resistentes al agua y de fácil instalación.<br>• <strong>Plafón PVC</strong> — Laminado tipo madera y ranurado. Inmune a la humedad, no se cuartea, no crece moho.<br>• <strong>Vigas PVC/WPC</strong> — Decorativas para interior y exterior. Acabado realista de madera sin mantenimiento.<br>• <strong>Zacate sintético</strong> — Follaje y pasto recreativo. Verde todo el año, sin riego ni poda.<br>• <strong>Cladding</strong> — Placas tipo roca y revestimientos de fachada. Piedra real que pesa 8-12 veces menos.<br><br>🏠 Atendemos: ' + kb.proyectos.tipos + '<br><br>👉 <a href="index.html#categorias" style="color:#C5A059">Ver catálogo completo</a>';
+          return '📦 <strong>Nuestros productos (250 productos en 9 categorías):</strong><br><br>• <strong>Placas PVC</strong> — 34 productos. Tipo madera, texturizadas, espejo y mármol. 100% impermeables, 15 años de garantía. Ideales para cocinas, baños y muros de alto impacto visual.<br>• <strong>Lambrín WPC</strong> — 40 productos. Madera tecnológica que no se pudre, no le entran termitas y no necesita barniz. 15 años de garantía.<br>• <strong>Paneles 3D</strong> — 24 productos. Decorativos en blanco, grises, madera, negro y oro. Transforman cualquier muro en una obra de arte.<br>• <strong>Pisos</strong> — 78 productos. Laminado, WPC, SPC y deck sintético. Resistentes al agua y de fácil instalación.<br>• <strong>Plafón PVC</strong> — 15 productos. Laminado tipo madera y ranurado. Inmune a la humedad, no se cuartea, no crece moho.<br>• <strong>Vigas PVC/WPC</strong> — 15 productos. Decorativas para interior y exterior. Acabado realista de madera sin mantenimiento.<br>• <strong>Zacate sintético</strong> — 29 productos. Follaje y pasto recreativo. Verde todo el año, sin riego ni poda.<br>• <strong>Cladding</strong> — 11 productos. Placas tipo roca y revestimientos de fachada. Piedra real que pesa 8-12 veces menos.<br>• <strong>Revestimiento Flexible</strong> — 6 productos. Concreto aparente y texturas realistas.<br><br>🏠 Atendemos: ' + kb.proyectos.tipos + '<br><br>💡 Escribe el nombre de un producto o categoría para saber más.';
         }
         
         // PVC TIPO MARMOL
         if (q.includes('marmol') || q.includes('marble') || (q.includes('pvc') && q.includes('marmol'))) {
-          return '🏛️ <strong>Hoja de PVC tipo Mármol</strong><br><br>Es una solución decorativa perfecta para cualquier espacio interior. Añade un toque de elegancia a tu hogar, oficina o espacio comercial.<br><br>✨ <strong>Características:</strong><br>• Fabricada con materiales de alta calidad<br>• Duradera y ligera, fácil de instalar y mantener<br>• Resistente al agua, manchas y arañazos<br>• Inversión que dura muchos años<br><br>🏠 <strong>Aplicaciones:</strong> Cocinas, baños, salas de estar y más<br><br>👉 <a href="1-placas-pvc.html" style="color:#C5A059">Ver en catálogo →</a>';
+          return '🏛️ <strong>Hoja de PVC tipo Mármol</strong><br><br>Es una solución decorativa perfecta para cualquier espacio interior. Añade un toque de elegancia a tu hogar, oficina o espacio comercial.<br><br>✨ <strong>Características:</strong><br>• Fabricada con PVC rígido de alta calidad<br>• Dimensiones: 2440 x 1220 x 5 mm (2.977 m² por pieza)<br>• Duradera y ligera, fácil de instalar y mantener<br>• 100% resistente al agua, manchas y arañazos<br>• No requiere sellado ni barnizado<br>• Garantía: 15 años<br><br>🏠 <strong>Aplicaciones:</strong> Cocinas, baños, salas de estar, recepciones, muros de acento y más.<br><br>🎨 <strong>Diseños disponibles:</strong> Carrara, Carrara Oscuro, Aurora Dorada, Onix, Cuarzo, Opalo, Perla, Topacio, Grafito, Jaspe, Agata, Arena, Obsidiana y más.<br><br>💡 <strong>Consejo:</strong> Para instalación en espejos se requiere perfil de aluminio obligatoriamente.';
         }
         
         // DIFERENCIAS ENTRE MATERIALES
@@ -2155,7 +2179,17 @@ def generate_footer():
         
         // UNIDAD DE VENTA / FICHAS TECNICAS
         if (q.includes('unidad') || q.includes('como se vende') || q.includes('ficha tecnica') || q.includes('hoja tecnica') || q.includes('pieza') || q.includes('hoja') || q.includes('tamano') || q.includes('medida')) {
-          return '📐 <strong>Unidad de venta y especificaciones:</strong><br><br>' + kb.venta.unidad + '<br><br>👉 Revisa las fichas técnicas en cada categoría del catálogo para ver: medidas, contenido por caja, peso, espesor y recomendaciones de instalación.<br><br><a href="index.html#categorias" style="color:#C5A059">Ir al catálogo →</a>';
+          let r = '📐 <strong>Especificaciones técnicas por categoría:</strong><br><br>';
+          r += '📋 <strong>Placas PVC:</strong><br>' + kb.especificaciones.placas_pvc + '<br><br>';
+          r += '📋 <strong>Lambrín WPC:</strong><br>' + kb.especificaciones.lambrin_wpc + '<br><br>';
+          r += '📋 <strong>Paneles 3D:</strong><br>' + kb.especificaciones.paneles_3d + '<br><br>';
+          r += '📋 <strong>Pisos SPC:</strong><br>' + kb.especificaciones.pisos_spc + '<br><br>';
+          r += '📋 <strong>Plafón PVC:</strong><br>' + kb.especificaciones.plafon_pvc + '<br><br>';
+          r += '📋 <strong>Vigas PVC/WPC:</strong><br>' + kb.especificaciones.vigas_pvc + '<br><br>';
+          r += '📋 <strong>Zacate sintético:</strong><br>' + kb.especificaciones.zacate + '<br><br>';
+          r += '📋 <strong>Cladding:</strong><br>' + kb.especificaciones.cladding + '<br><br>';
+          r += '💡 Cada categoría en el catálogo tiene su ficha técnica completa con medidas exactas, contenido por caja y recomendaciones de instalación.';
+          return r;
         }
         
         // DEFAULT
@@ -2850,9 +2884,20 @@ def generate_category_page(cat, categories):
     sections_html = ''
     
     # Para Placas PVC: productos directos PRIMERO (son los más vendidos - tipo espejo)
+    accessories_html = ''
     if cat['name'] == 'Placas PVC' and cat['direct_products']:
         direct_products_html = ''
+        acc_names = {'perfil', 'angulo'}
+        main_products = []
+        acc_products = []
         for prod_file in cat['direct_products']:
+            stem = os.path.splitext(prod_file)[0].lower().replace(' ', '')
+            if any(stem.startswith(a) for a in acc_names):
+                acc_products.append(prod_file)
+            else:
+                main_products.append(prod_file)
+        
+        for prod_file in main_products:
             if is_dup(prod_file):
                 continue
             prod_name = os.path.splitext(prod_file)[0]
@@ -2871,11 +2916,30 @@ def generate_category_page(cat, categories):
       </div>
 '''
         
+        for prod_file in acc_products:
+            if is_dup(prod_file):
+                continue
+            prod_name = os.path.splitext(prod_file)[0]
+            mailto = mailto_link(prod_name, cat['name'])
+            accessories_html += f'''      <div class="product-card reveal">
+        <div class="product-gallery" onclick="openLightbox('img/{cat['slug']}/{prod_file}', '{prod_name}')">
+          <img src="img/{cat['slug']}/{prod_file}" alt="{prod_name}" loading="lazy">
+        </div>
+        <div class="product-info">
+          <div class="product-name">{prod_name}</div>
+          <div class="product-actions">
+            <a href="{mailto}" class="btn-cotizar">Solicitar Cotización</a>
+            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20{prod_name.replace(' ', '%20')}%20de%20la%20categoría%20{cat['name'].replace(' ', '%20')}" class="btn-whatsapp" target="_blank">WhatsApp</a>
+          </div>
+        </div>
+      </div>
+'''
+        
         cat_specs = generate_specs_table('Placas PVC Tipo espejo')
         sections_html += f'''  <section class="subcat-section reveal">
     <div class="subcat-header">
       <h3>⭐ Más Vendidos — Placas PVC Tipo Espejo</h3>
-      <span class="subcat-count">{len(cat['direct_products'])} productos</span>
+      <span class="subcat-count">{len(main_products)} productos</span>
       <div class="subcat-divider"></div>
     </div>
 {cat_specs}    <div class="products-grid">
@@ -2918,6 +2982,20 @@ def generate_category_page(cat, categories):
     </div>
 {specs_html}    <div class="products-grid">
 {products_html}    </div>
+  </section>
+'''
+
+    # Sección de accesorios para Placas PVC (al final del catálogo)
+    if cat['name'] == 'Placas PVC' and accessories_html:
+        acc_count = accessories_html.strip().count('product-card reveal')
+        sections_html += f'''  <section class="subcat-section reveal" id="accesorios">
+    <div class="subcat-header">
+      <h3>🔩 Accesorios</h3>
+      <span class="subcat-count">{acc_count} producto{"s" if acc_count != 1 else ""}</span>
+      <div class="subcat-divider"></div>
+    </div>
+    <div class="products-grid">
+{accessories_html}    </div>
   </section>
 '''
 
@@ -3034,7 +3112,7 @@ def sync_media():
         return
     if media_dir.exists():
         shutil.rmtree(media_dir)
-    media_dir.mkdir(parents=True)
+    media_dir.mkdir(parents=True, exist_ok=True)
     
     img_exts = ('.jpg', '.jpeg', '.png')
     vid_exts = ('.mp4', '.mov', '.webm')
@@ -3082,10 +3160,20 @@ def sync_media():
             mapping[fpath] = f'video-{auto_vid:02d}{ext}'
     
     copied = 0
+    errors = []
     for src_path, dst_name in mapping.items():
         if src_path.exists():
-            shutil.copy2(src_path, media_dir / dst_name)
-            copied += 1
+            try:
+                shutil.copy2(src_path, media_dir / dst_name)
+                copied += 1
+            except Exception as e:
+                errors.append(f"  [ERROR] {src_path}: {e}")
+        else:
+            errors.append(f"  [ERROR] No existe: {src_path}")
+    if errors:
+        print(f"ADVERTENCIA: {len(errors)} archivos de media no se pudieron copiar:")
+        for e in errors[:10]:
+            print(e)
     print(f"Media sincronizada: {copied} archivos ({auto_img} imgs + {auto_pvc} pvc + {auto_vid} vids nuevos)")
 
 
@@ -3655,7 +3743,8 @@ def generate_proyectos():
 '''
     
     # Fotos sueltas (no usadas en pares) → carrusel general
-    loose_images = [f for f in images if f not in used]
+    # Excluir fotos de producto (hojas sueltas) de la galeria de proyectos
+    loose_images = [f for f in images if f not in used and not f.startswith('pvc-real-')]
     gallery_section = ''
     if loose_images:
         slides = ''
