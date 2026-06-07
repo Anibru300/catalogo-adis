@@ -24,6 +24,10 @@ CONTACTO = {
     'facebook': 'https://www.facebook.com/p/Adis-Dise%C3%B1o-Remodelaci%C3%B3n-61579849591594/'
 }
 
+# ========== CONFIGURACIÓN DEL SITIO ==========
+# URL base del sitio. Cambia cuando conectes un dominio propio.
+SITE_URL = 'https://adis-diseño.com/'
+
 # ========== GOOGLE ANALYTICS 4 ==========
 # Reemplaza 'G-XXXXXXXXXX' por tu Measurement ID de Google Analytics 4.
 # Obtén uno gratis en: https://analytics.google.com/analytics/web/#/
@@ -3064,8 +3068,8 @@ def generate_index(categories):
   <meta name="keywords" content="{meta_keywords}">
   <meta property="og:title" content="ADIS | Diseño & Remodelación">
   <meta property="og:description" content="{meta_desc}">
-  <meta property="og:image" content="https://anibru300.github.io/catalogo-adis/LOGO%20ADIS.png">
-  <meta property="og:url" content="https://anibru300.github.io/catalogo-adis/">
+  <meta property="og:image" content="{SITE_URL}LOGO%20ADIS.png">
+  <meta property="og:url" content="{SITE_URL}">
   <meta property="og:type" content="website">
   <meta name="twitter:card" content="summary_large_image">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
@@ -3191,8 +3195,8 @@ def generate_contacto():
   <meta name="description" content="Contacta a ADIS Diseño & Remodelación. WhatsApp, teléfono MX, teléfono USA y correo electrónico.">
   <meta property="og:title" content="Contacto | ADIS Diseño & Remodelación">
   <meta property="og:description" content="Contacta a ADIS Diseño & Remodelación. WhatsApp, teléfono MX, teléfono USA y correo electrónico.">
-  <meta property="og:image" content="https://anibru300.github.io/catalogo-adis/LOGO%20ADIS.png">
-  <meta property="og:url" content="https://anibru300.github.io/catalogo-adis/contacto.html">
+  <meta property="og:image" content="{SITE_URL}LOGO%20ADIS.png">
+  <meta property="og:url" content="{SITE_URL}contacto.html">
   <meta property="og:type" content="website">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
@@ -3506,7 +3510,7 @@ def generate_category_page(cat, categories):
   <meta property="og:title" content="{cat['name']} | ADIS Catálogo">
   <meta property="og:description" content="{cat['name']} - ADIS Diseño & Remodelación. Explora nuestros productos y solicita tu cotización.">
   <meta property="og:image" content="{hero_bg}">
-  <meta property="og:url" content="https://anibru300.github.io/catalogo-adis/{cat['filename']}">
+  <meta property="og:url" content="{SITE_URL}{cat['filename']}">
   <meta property="og:type" content="website">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
@@ -4181,7 +4185,7 @@ function sqToggle(el) {{
   <meta name="description" content="Datos curiosos, FAQs y consejos sobre nuestros productos: PVC, WPC, paneles 3D, pisos, zacate y cladding.">
   <meta property="og:title" content="¿Sabías que? | ADIS">
   <meta property="og:description" content="Descubre datos sorprendentes sobre nuestros materiales de construcción.">
-  <meta property="og:image" content="https://anibru300.github.io/catalogo-adis/LOGO%20ADIS.png">
+  <meta property="og:image" content="{SITE_URL}LOGO%20ADIS.png">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 {ga_script()}\n</head>
@@ -4340,7 +4344,7 @@ def generate_proyectos():
   <meta property="og:title" content="Proyectos Reales | ADIS Diseño & Remodelación">
   <meta property="og:description" content="Galería de proyectos reales de ADIS Diseño & Remodelación. Antes y después, remodelaciones de interiores y exteriores.">
   <meta property="og:image" content="media/despues.jpg">
-  <meta property="og:url" content="https://anibru300.github.io/catalogo-adis/proyectos.html">
+  <meta property="og:url" content="{SITE_URL}proyectos.html">
   <meta property="og:type" content="website">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
