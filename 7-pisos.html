@@ -1791,31 +1791,17 @@
           }
         }
         
-        // Búsqueda de productos
-        const prodMatches = findProductMatches(normalized);
-        if (prodMatches.length > 0 && original.length > 2) {
-          const products = prodMatches.map(x => x.p);
-          chatContext.lastProducts = products;
-          chatContext.lastTopic = detectCategory(normalized) || chatContext.lastTopic;
-          chatContext.lastIntent = 'producto';
-          chatContext.lastResponseType = 'products';
-          saveContext();
-          return {
-            text: '🔎 <strong>Encontré estos productos:</strong><br><br>' + products.map(formatProductCard).join('') + '<br>¿Te gustaría cotizar alguno?',
-            suggestions: getSuggestions('producto', chatContext.lastTopic, products)
-          };
-        }
-        
+        // 1. Detectar intención y categoría PRIMERO
         let intent = scoreIntent(normalized);
         let category = detectCategory(normalized);
         
-        // Cotización guiada
+        // 2. Cotización guiada
         if (intent.name === 'cotizar') {
           return startQuoteFlow();
         }
         
-        // Recomendador inteligente
-        const recommendation = getRecommendation(normalized);
+        // 3. Recomendador inteligente (antes que productos)
+        const recommendation = getRecommendation(normalized, category);
         if (recommendation) {
           return {
             text: recommendation.text,
@@ -1823,7 +1809,30 @@
           };
         }
         
-        // Mármol específico
+        // 4. Medidas / especificaciones / ficha técnica (respuesta directa, NO tarjetas)
+        const infoKeywords = /medida|dimension|ficha|especificacion|tamano|mide|miden|grueso|espesor|largo|ancho/;
+        if (infoKeywords.test(normalized)) {
+          if (category) {
+            chatContext.lastTopic = category;
+            chatContext.lastIntent = 'medidas';
+            saveContext();
+            return {
+              text: handleSpecs(category, normalized),
+              suggestions: getSuggestions('medidas', category, [])
+            };
+          }
+          // Si no detecta categoría pero hay productos previos, usar el último tema
+          if (chatContext.lastTopic) {
+            chatContext.lastIntent = 'medidas';
+            saveContext();
+            return {
+              text: handleSpecs(chatContext.lastTopic, normalized),
+              suggestions: getSuggestions('medidas', chatContext.lastTopic, [])
+            };
+          }
+        }
+        
+        // 5. Mármol específico
         if (normalized.includes('marmol') || normalized.includes('marble')) {
           return { 
             text: '🏛️ <strong>Hoja de PVC tipo Mármol</strong><br><br>Es una solución decorativa perfecta para cualquier espacio interior. Añade un toque de elegancia a tu hogar, oficina o espacio comercial.<br><br>✨ <strong>Características:</strong><br>• Fabricada con PVC rígido de alta calidad<br>• Dimensiones: 2440 x 1220 x 5 mm (2.977 m² por pieza)<br>• Duradera y ligera, fácil de instalar y mantener<br>• 100% resistente al agua, manchas y arañazos<br>• No requiere sellado ni barnizado<br>• Garantía: 15 años<br><br>🏠 <strong>Aplicaciones:</strong> Cocinas, baños, salas de estar, recepciones, muros de acento y más.<br><br>🎨 <strong>Diseños disponibles:</strong> Carrara, Carrara Oscuro, Aurora Dorada, Onix, Cuarzo, Opalo, Perla, Topacio, Grafito, Jaspe, Agata, Arena, Obsidiana y más.<br><br>💡 <strong>Consejo:</strong> Para instalación en espejos se requiere perfil de aluminio obligatoriamente.',
@@ -1831,7 +1840,7 @@
           };
         }
         
-        // Comparaciones
+        // 6. Comparaciones
         if ((normalized.includes('wpc') && normalized.includes('pvc')) || normalized.includes('diferencia')) {
           return {
             text: '🆚 <strong>WPC vs PVC:</strong><br><br><strong>WPC (Wood Plastic Composite):</strong><br>• 60-70% fibras de madera + 30-40% plástico HDPE<br>• Aspecto más natural tipo madera real<br>• Absorción de agua menor al 1% — no se hincha ni se deforma<br>• Ideal para exteriores (resistente a UV y lluvia)<br>• Vida útil: 25-30 años | Garantía: 15 años<br><br><strong>PVC:</strong><br>• Plástico 100% con aditivos estabilizadores UV<br>• Más ligero y fácil de instalar<br>• Ideal para interiores<br>• Mayor variedad de diseños (madera, espejo, mármol, textura)<br>• Vida útil: 20-25 años | Garantía: 15 años<br><br>💡 <strong>¿Cuál elegir?</strong><br>• Exteriores / fachadas → <strong>WPC</strong><br>• Interiores / cocinas / baños → <strong>PVC</strong> (más económico)',
@@ -1839,7 +1848,7 @@
           };
         }
         
-        // Búsqueda en "Sabías que"
+        // 7. Búsqueda en "Sabías que"
         const researchMatch = searchResearch(normalized, category ? { name: category.name } : null);
         if (researchMatch) {
           chatContext.lastTopic = category || chatContext.lastTopic;
@@ -1848,6 +1857,21 @@
           return {
             text: formatResearchAnswer(researchMatch) + '<br><br>📚 Sacado de <a href="sabias-que.html" style="color:#C5A059">¿Sabías que?</a>',
             suggestions: category ? ['Ver ' + category.labels.short, 'Cotizar ' + category.labels.short, 'Más datos curiosos', 'Hablar con asesor'] : ['Ver datos curiosos', 'Ver productos', 'Cotización', 'Hablar con asesor']
+          };
+        }
+        
+        // 8. Búsqueda de productos (último recurso, solo si no es pregunta de información)
+        const prodMatches = findProductMatches(normalized);
+        if (prodMatches.length > 0 && original.length > 2) {
+          const products = prodMatches.map(x => x.p);
+          chatContext.lastProducts = products;
+          chatContext.lastTopic = category || chatContext.lastTopic;
+          chatContext.lastIntent = 'producto';
+          chatContext.lastResponseType = 'products';
+          saveContext();
+          return {
+            text: '🔎 <strong>Encontré estos productos:</strong><br><br>' + products.map(formatProductCard).join('') + '<br>¿Te gustaría cotizar alguno?',
+            suggestions: getSuggestions('producto', chatContext.lastTopic, products)
           };
         }
         
@@ -1941,7 +1965,7 @@
       }
       
       // === RECOMENDADOR INTELIGENTE ===
-      function getRecommendation(q) {
+      function getRecommendation(q, category) {
         const recoMap = [
           {
             words: ['bano','regadera','ducha','humedad','moho','cocina','salpicaduras'],
@@ -1986,7 +2010,8 @@
           for (let w of reco.words) if (q.includes(w)) score += 1;
           if (score > bestScore) { bestScore = score; best = reco; }
         }
-        return bestScore >= 2 ? best : null;
+        // Si hay categoría detectada, bajar umbral para que recomendaciones parciales funcionen
+        return bestScore >= (category ? 1 : 2) ? best : null;
       }
       
       // === EVENTOS ===
