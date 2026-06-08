@@ -234,12 +234,179 @@
       let allProducts = [];
       let researchData = {};
       let chatContext = loadContext();
-      if (!chatContext.quoteState) chatContext.quoteState = null;
-      if (!chatContext.quoteData) chatContext.quoteData = {};
-      let unreadCount = 0;
-      const HISTORY_KEY = 'adis_chat_v3';
-      const CONTEXT_KEY = 'adis_chat_ctx_v3';
-      const MAX_HISTORY = 40;
+      
+      // === BASE DE CONOCIMIENTO DE PRODUCTOS ===
+      // Regla clave: Nunca cambiar de producto durante la conversación, a menos que el usuario lo solicite explícitamente.
+      const PRODUCT_KB = {
+        placas_pvc: {
+          name: 'Placas PVC',
+          medidas: '2440 x 1220 x 5 mm (2.977 m² por pieza). Peso aprox. 10.5 kg/pz.',
+          agua: '100% impermeables. No absorben agua, no se hinchan, no se deforman. Ideales para baños, cocinas y áreas húmedas.',
+          exterior: 'No recomendadas para exterior directo. Son exclusivamente para interiores. Para exteriores recomendamos Cladding o Lambrín WPC exterior.',
+          material: 'PVC rígido de alta calidad con aditivos estabilizadores UV. Superficie con acabado decorativo (madera, mármol, espejo o textura).',
+          instalacion: 'Instalación en muro con adhesivo de contacto y/o clavos ocultos. La superficie debe estar limpia, seca, nivelada y desengrasada. Para placas tipo espejo se requiere perfil de aluminio obligatoriamente.',
+          colores: 'Tipo madera (Adler, Solaria, Solden, Anton, etc.), Tipo mármol (Carrara, Onix, Cuarzo, Opalo, Perla, Topacio, Grafito, Jaspe, Agata, Arena, Obsidiana, etc.), Tipo espejo (dorado, plateado, metal) y Texturizadas (ASH, CEDAR, ENCINO, IPE, JATOBA, NOGAL, WENGE).',
+          precio: '$850 - $1,400 MXN por pieza. Depende del modelo y acabado.',
+          mantenimiento: 'Limpieza con paño suave humedecido en agua tibia y jabón neutro (pH 7). Para manchas difíciles usar alcohol isopropílico al 70%. Evitar acetona, thinner, solventes fuertes, estropajos metálicos y amoníaco concentrado.',
+          usos: 'Muros interiores: cocinas, baños, salas de estar, recámaras, recepciones, muros de acento, fondos de TV, barras de cocina.',
+          garantia: '15 años contra defectos de fábrica.',
+          diferencias: 'Más ligero y económico que WPC. Mayor variedad de diseños decorativos que el Lambrín. No requiere barnizado ni sellado como la madera natural.'
+        },
+        lambrin_wpc: {
+          name: 'Lambrín WPC',
+          medidas: 'Interior: 219 x 26 x 3 mm (2.85 m²/caja). Exterior: 220 x 21 x 2.5 mm (3.08 m²/caja).',
+          agua: 'Absorción de agua menor al 1%. No se hincha, no se cuartea, no se deforma con la humedad. Resiste lluvia, rocío y salpicaduras.',
+          exterior: 'Sí, disponible en versión exterior (220 x 21 x 2.5 mm) diseñada para resistir UV, lluvia y cambios extremos de temperatura. La versión interior no debe usarse en exterior.',
+          material: 'Wood Plastic Composite (WPC): 60-70% fibras de madera de alta calidad + 30-40% plástico HDPE reciclado. Aspecto natural de madera real sin el mantenimiento de esta.',
+          instalacion: 'Sistema de clip oculto y/o tornillos en estructura metálica o madera tratada. No requiere adhesivo. Dejar junta de dilatación de 2-3 mm entre piezas.',
+          colores: 'Interior: Amanecer, Amizade, Brasilia, Bahía, Estrelado, Fortaleza, Manaos, Nuvem, Río, Sabeiro, Sao Paulo, Sonho, Teak Aracaju, etc. Exterior: Charcoal, Dark Black, Teak, Redwood, Sliver Gray, etc.',
+          precio: '$1,200 - $2,100 MXN por caja. La versión exterior es ligeramente más cara que la interior.',
+          mantenimiento: 'Limpieza ocasional con agua y jabón neutro. No requiere barnizado, sellado ni pintura. Resistente a termitas y hongos.',
+          usos: 'Revestimiento de muros interiores y exteriores, fachadas residenciales y comerciales, pérgolas, terrazas, cielos rasos exteriores, divisores de espacios.',
+          garantia: '15 años contra defectos de fábrica.',
+          diferencias: 'Aspecto más natural de madera real que las Placas PVC. Más resistente al agua que la madera natural o el MDF. Más duradero que el PVC en exteriores. No requiere mantenimiento periódico.'
+        },
+        revestimiento: {
+          name: 'Revestimiento Flexible',
+          medidas: 'Varían por modelo. Consultar ficha técnica específica.',
+          agua: 'Resistente al agua y a la humedad. Ideal para zonas húmedas y exteriores protegidos.',
+          exterior: 'Sí, puede usarse en exteriores protegidos. Resistente a rayos UV y cambios de temperatura moderados.',
+          material: 'Polímero flexible de alta densidad con acabados que imitan concreto, piedra, ladrillo o madera.',
+          instalacion: 'Adhesión con pegamento de contacto sobre superficie limpia y nivelada. Puede cortarse con tijera o cúter.',
+          colores: 'Concreto aparente, concreto gris, granito blanco, granito imperial, granito oro, madera roble, entre otros.',
+          precio: '$650 - $1,100 MXN por pieza.',
+          mantenimiento: 'Limpieza con paño húmedo. No requiere tratamientos especiales.',
+          usos: 'Muros interiores y exteriores, detalles decorativos, revestimiento de columnas, fondos de TV, barras de cocina.',
+          garantia: 'Consultar ficha técnica.',
+          diferencias: 'Mucho más ligero y flexible que el Cladding. Se adapta a curvas y esquinas. Más económico que la piedra real.'
+        },
+        plafon: {
+          name: 'Plafón PVC',
+          medidas: 'Laminado: 595 x 595 x 7 mm. Wood style: 250 x 8000 x 10 mm.',
+          agua: '100% impermeable. No absorbe humedad, no se cuartea, no se deforma. Ideal para cocinas y baños.',
+          exterior: 'No recomendado para exterior expuesto. Es para interiores.',
+          material: 'PVC rígido con acabado laminado tipo madera o ranurado moderno.',
+          instalacion: 'Instalación en estructura de aluminio o madera. Sistema de encaje tipo puzzle o sobre estructura visible.',
+          colores: 'Sherwood y otros acabados tipo madera. También disponible en blanco y tonos modernos.',
+          precio: '$180 - $350 MXN por pieza.',
+          mantenimiento: 'Limpieza con paño húmedo. No requiere pintura ni barniz.',
+          usos: 'Techos y cielos falsos de interiores: cocinas, baños, oficinas, consultorios, locales comerciales.',
+          garantia: '15 años.',
+          diferencias: 'Más económico y fácil de instalar que el plafón de yeso. Inmune a humedad y moho, a diferencia del MDF o madera.'
+        },
+        paneles_3d: {
+          name: 'Paneles Tridimensionales 3D',
+          medidas: '500 x 500 mm (varía por modelo).',
+          agua: 'Los de PVC son resistentes al agua. Los de fibra de bambú requieren protección en zonas húmedas.',
+          exterior: 'Solo los modelos de PVC específicos para exterior. Consultar ficha técnica.',
+          material: 'PVC o fibra de bambú natural. Texturas en relieve con diseños geométricos y orgánicos.',
+          instalacion: 'Adhesión con silicona o pegamento de contacto sobre muro limpio y nivelado.',
+          colores: 'Blanco, grises, madera, negro, dorado. Algunos modelos se pueden pintar.',
+          precio: '$280 - $550 MXN por pieza.',
+          mantenimiento: 'Limpieza con paño seco o aspiradora de baja potencia. Para PVC: paño húmedo.',
+          usos: 'Muros de acento, fondos de TV, cabeceras de cama, recepciones, salas, recámaras, locales comerciales.',
+          garantia: '10 años.',
+          diferencias: 'Agrega profundidad y relieve que las placas lisas no logran. Más decorativo que funcional.'
+        },
+        vigas: {
+          name: 'Vigas PVC/WPC/PU',
+          medidas: 'Varían desde 70x50 mm hasta 120x80 mm según modelo.',
+          agua: 'Las de PVC y WPC son resistentes al agua. Las de PU requieren protección en exteriores.',
+          exterior: 'Vigas PVC y WPC: sí. Vigas PU: solo interiores o exteriores protegidos.',
+          material: 'PVC ligero, WPC (aspecto madera real) o PU (poliuretano, muy ligero y detallado).',
+          instalacion: 'Instalación con tornillos, soportes metálicos o adhesivo de construcción según el peso y ubicación.',
+          colores: 'Madera clara, madera oscura, nogal, caoba, blanco, gris.',
+          precio: '$450 - $1,200 MXN por pieza.',
+          mantenimiento: 'Limpieza con paño seco. No requiere barnizado ni sellado (PVC/WPC).',
+          usos: 'Decoración de techos, pérgolas, porches, vigas falsas, marcos de puertas y ventanas.',
+          garantia: '15 años (PVC/WPC).',
+          diferencias: 'PVC: más ligero y económico. WPC: aspecto madera real. PU: máximo detalle decorativo.'
+        },
+        pisos: {
+          name: 'Pisos',
+          medidas: 'SPC: 1220 x 180 x 4-5.5 mm. WPC: 1220 x 180 x 5.5-8 mm. Laminado: 1215 x 195 x 8-12 mm.',
+          agua: 'SPC: 100% impermeable. WPC: muy resistente al agua. Laminado: resistente a salpicaduras, no sumergible.',
+          exterior: 'Deck sintético: sí, diseñado para exteriores. SPC/WPC/Laminado: solo interiores.',
+          material: 'SPC: piedra + plástico. WPC: madera + plástico. Laminado: fibra de alta densidad (HDF). Deck: WPC exterior.',
+          instalacion: 'Sistema click (encaje tipo puzzle). No requiere pegamento. Superficie nivelada y limpia. Dejar junta de dilatación perimetral.',
+          colores: 'Maderas claras, medias y oscuras. Cements, grises, blancos. Imitaciones de mármol y piedra.',
+          precio: '$900 - $2,500 MXN por caja. SPC más económico, WPC más cálido.',
+          mantenimiento: 'Barrido regular y trapeado húmedo con jabón neutro. Evitar abrasivos y exceso de agua en laminado.',
+          usos: 'Interiores residenciales y comerciales: recámaras, salas, cocinas, baños (SPC), oficinas, tiendas. Deck para terrazas y albercas.',
+          garantia: 'SPC: 12 años residencial. WPC: 15 años. Laminado: 10-15 años.',
+          diferencias: 'SPC: más duro y resistente al agua. WPC: más cálido al tacto y confortable. Laminado: más económico pero sensible al agua.'
+        },
+        zacate: {
+          name: 'Zacate Sintético',
+          medidas: 'Rollos de 2m o 4m de ancho. Altura: 20-40 mm.',
+          agua: 'Drenaje integrado. No se encharca. Resistente a lluvia y rocío.',
+          exterior: 'Sí, es exclusivamente para exteriores. Resistente a rayos UV.',
+          material: 'Polietileno UV de alta densidad. Hilos texturizados que imitan pasto natural.',
+          instalacion: 'Colocación sobre terreno nivelado con base de grava o cemento. Se fija con clavos en U o adhesivo.',
+          colores: 'Verde natural, verde oscuro, verde-amarillo, mixtos.',
+          precio: '$220 - $480 MXN por m².',
+          mantenimiento: 'Barrido de hojas y residuos. Lavado ocasional con manguera. No requiere riego, poda ni fertilizantes.',
+          usos: 'Jardines, terrazas, balcones, albercas, áreas de juego, rooftops, eventos, decoración de interiores (follaje).',
+          garantia: '5 años contra decoloración por UV.',
+          diferencias: 'No requiere riego, poda ni mantenimiento como el pasto natural. Más higiénico para mascotas y niños.'
+        },
+        cladding: {
+          name: 'Cladding (Placas tipo piedra)',
+          medidas: '1200 x 600 x 30-50 mm.',
+          agua: 'Resistente al agua y a la intemperie. No absorbe humedad.',
+          exterior: 'Sí, diseñado específicamente para exteriores. Resiste lluvia, viento, UV y cambios de temperatura.',
+          material: 'Poliuretano o compuesto mineral de alta densidad. Imitación de piedra real con textura y color naturales.',
+          instalacion: 'Adhesión con mortero especial o tornillos en estructura. Requiere nivelación previa y sellado de juntas.',
+          colores: 'BLACK, WHITE, GRAY, BEIGE, BROWN, RUSTIC, CEMENT.',
+          precio: '$550 - $1,050 MXN por pieza.',
+          mantenimiento: 'Limpieza con manguera o cepillo suave. No requiere tratamientos químicos.',
+          usos: 'Fachadas residenciales y comerciales, muros de contención decorativos, columnas, chimeneas, detalles arquitectónicos.',
+          garantia: '10 años.',
+          diferencias: 'Pesa 8-12 veces menos que la piedra real. Instalación más rápida y económica. No requiere cimentación especial.'
+        }
+      };
+      
+      function detectQuestionType(q) {
+        if (/\b(medida|dimension|tamano|largo|ancho|grueso|espesor|cuanto mide|que tan grande|que tan ancho)\b/.test(q)) return 'medidas';
+        if (/\b(agua|mojar|moja|humedad|moho|impermeable|resistente al agua|resiste agua|se puede mojar|llover|lluvia)\b/.test(q)) return 'agua';
+        if (/\b(exterior|interior|afuera|adentro|intemperie|sol|uv|exterior|exterio|afuera)\b/.test(q)) return 'exterior';
+        if (/\b(material|de que esta hecho|de que es|composicion|compuesto|que tiene)\b/.test(q)) return 'material';
+        if (/\b(instalar|instalacion|colocar|colocacion|poner|como se pone|como se instala)\b/.test(q)) return 'instalacion';
+        if (/\b(color|colores|tono|tonalidad|acabado|diseño|modelo|hay en|tienen en)\b/.test(q)) return 'colores';
+        if (/\b(precio|cuesta|cuanto|valor|costo|dinero|barato|caro)\b/.test(q)) return 'precio';
+        if (/\b(mantenimiento|limpiar|limpieza|cuidado|conservar|durar|vida util)\b/.test(q)) return 'mantenimiento';
+        if (/\b(uso|usar|donde se usa|para que sirve|aplicacion|aplicar|para que es|en que se usa)\b/.test(q)) return 'usos';
+        if (/\b(garantia|garantiza|garantizar|cuanto dura la garantia)\b/.test(q)) return 'garantia';
+        if (/\b(diferencia|comparar|versus|vs|mejor que|peor que|diferente a)\b/.test(q)) return 'comparar';
+        return null;
+      }
+      
+      function answerFromKB(category, questionType) {
+        if (!category || !PRODUCT_KB[category.name]) return null;
+        const kb = PRODUCT_KB[category.name];
+        const val = kb[questionType];
+        if (!val) return null;
+        const labels = {
+          medidas: '📐 Medidas', agua: '💧 Resistencia al agua', exterior: '🌤️ Uso exterior/interior',
+          material: '🧱 Material', instalacion: '🛠️ Instalación', colores: '🎨 Colores',
+          precio: '💰 Precio', mantenimiento: '🧼 Mantenimiento', usos: '🏠 Usos recomendados',
+          garantia: '✅ Garantía', comparar: '⚖️ Diferencias'
+        };
+        return '<strong>' + labels[questionType] + ' — ' + kb.name + ':</strong><br><br>' + val;
+      }
+      
+      function getKBOverview(catName) {
+        const kb = PRODUCT_KB[catName];
+        if (!kb) return null;
+        return '📋 <strong>Ficha técnica de ' + kb.name + ':</strong><br><br>' +
+          '📐 <strong>Medidas:</strong> ' + kb.medidas + '<br>' +
+          '💧 <strong>Agua:</strong> ' + kb.agua + '<br>' +
+          '🌤️ <strong>Exterior:</strong> ' + kb.exterior + '<br>' +
+          '🧱 <strong>Material:</strong> ' + kb.material + '<br>' +
+          '💰 <strong>Precio:</strong> ' + kb.precio + '<br>' +
+          '✅ <strong>Garantía:</strong> ' + kb.garantia + '<br><br>' +
+          '¿Te gustaría saber más sobre colores, instalación o mantenimiento?';
+      }
       
       const WELCOME_VARIANTS = [
         '¡Hola! 👋 Bienvenido a <strong>ADIS Diseño & Remodelación</strong>.<br><br>Soy tu asistente virtual y puedo ayudarte con información sobre nuestros productos, horarios, precios, cotizaciones y más.<br><br>¿Qué necesitas? Escribe tu pregunta 👇',
@@ -339,7 +506,9 @@
         {from: /\b(gracias|thank|perfecto|excelente|muy amable)\b/g, to: 'agradecimiento'},
         {from: /\b(adios|bye|hasta luego|nos vemos|chao)\b/g, to: 'despedida'},
         {from: /\b(no|no es|otra cosa|cambio de tema|no gracias|nada mas|eso es todo)\b/g, to: 'negacion'},
-        {from: /\b(ayuda|help|auxilio|soporte|asistencia)\b/g, to: 'ayuda'}
+        {from: /\b(ayuda|help|auxilio|soporte|asistencia)\b/g, to: 'ayuda'},
+        {from: /\b(agua|mojar|moja|humedad|moho|impermeable|resistente al agua|resiste agua|se puede mojar|lloviendo|lluvia)\b/g, to: 'resistencia_agua'},
+        {from: /\b(exterior|interior|interiores|exteriores|pared|muro|techo|piso|suelo|fachada)\b/g, to: 'uso_espacio'}
       ];
       
       function normalizeQuery(raw) {
@@ -369,6 +538,8 @@
           { name: 'despedida', words: ['adios','bye','hasta luego','nos vemos'], score: 3 },
           { name: 'negacion', words: ['no es','otra cosa','cambio de tema','no gracias','nada'], score: 2 },
           { name: 'cotizar', words: ['cotizar','cotizacion','cotizacion guiada','quiero cotizar','me interesa','comprar','pedir','ordenar','cotiza'], score: 4 },
+          { name: 'resistencia', words: ['resistencia_agua','resistencia','impermeable','durabilidad','aguanta','soporta'], score: 4 },
+          { name: 'usos', words: ['uso_espacio','aplicacion','aplicación','donde se usa','para que sirve'], score: 3 },
           { name: 'ayuda', words: ['ayuda','help','auxilio','soporte'], score: 2 }
         ];
         
@@ -406,14 +577,20 @@
       }
       
       function isContextualQuestion(q, original) {
-        return /^(y|y las|y los|y el|y la|tambien|también|cuéntame|cuentame|más|mas|info|informacion|información|detalles|el primero|el segundo|el tercero|ese|esa|aquel|esa de|el de)\b/.test(q) || q.length < 18 || original.length < 25;
+        const contextualStarters = /^(y|y las|y los|y el|y la|tambien|también|cuéntame|cuentame|más|mas|info|informacion|información|detalles|el primero|el segundo|el tercero|ese|esa|aquel|esa de|el de|las de|los de)\b/;
+        const followUpPatterns = /\b(cuanto cuestan|cuanto valen|el precio|los precios|las medidas|las dimensiones|cuanto miden|mide|el color|los colores|tienen stock|hay stock|esta disponible|estan disponibles|no me gusta|no me gustaron|no es eso|otra cosa|algo mas|mostrame mas|ver mas|y eso|de esos|de estas|de esas)\b/;
+        return contextualStarters.test(q) || followUpPatterns.test(q) || q.length < 20 || original.length < 28;
       }
       
       function applyContext(q) {
-        if (!chatContext.lastTopic && !chatContext.lastIntent) return q;
-        if (/^y\b/.test(q) || q.includes('tambien') || q.includes('también') || q.includes('cuentame') || q.includes('cuéntame')) {
+        if (!chatContext.lastTopic && !chatContext.lastIntent && !chatContext.activeProduct) return q;
+        const topic = chatContext.activeProduct || chatContext.lastTopic;
+        if (/\b(cuanto cuestan|cuanto valen|el precio|los precios|las medidas|las dimensiones|cuanto miden|mide|grueso|espesor|largo|ancho|detalles|info|informacion|agua|mojar|humedad|impermeable|resistente|exterior|interior|material|instalacion|colocar|color|colores|mantenimiento|limpiar|uso|usar|garantia|donde se usa|para que sirve)\b/.test(q) && topic) {
+          return topic.name.replace(/_/g,' ') + ' ' + q;
+        }
+        if (/^y\b/.test(q) || q.includes('tambien') || q.includes('también') || q.includes('cuentame') || q.includes('cuéntame') || q.includes('mas informacion') || q.includes('más información')) {
           let prefix = '';
-          if (chatContext.lastTopic) prefix += chatContext.lastTopic.name.replace(/_/g,' ') + ' ';
+          if (topic) prefix += topic.name.replace(/_/g,' ') + ' ';
           return (prefix + q).trim();
         }
         return q;
@@ -423,8 +600,8 @@
       function loadContext() {
         try {
           const saved = localStorage.getItem(CONTEXT_KEY);
-          return saved ? JSON.parse(saved) : { lastTopic: null, lastIntent: null, lastProducts: [], lastResponseType: null };
-        } catch(e) { return { lastTopic: null, lastIntent: null, lastProducts: [], lastResponseType: null }; }
+          return saved ? JSON.parse(saved) : { lastTopic: null, lastIntent: null, lastProducts: [], lastResponseType: null, activeProduct: null };
+        } catch(e) { return { lastTopic: null, lastIntent: null, lastProducts: [], lastResponseType: null, activeProduct: null }; }
       }
       function saveContext() {
         try { localStorage.setItem(CONTEXT_KEY, JSON.stringify(chatContext)); } catch(e) {}
@@ -444,7 +621,7 @@
         localStorage.removeItem(HISTORY_KEY);
         localStorage.removeItem(CONTEXT_KEY);
         chatBody.innerHTML = '';
-        chatContext = { lastTopic: null, lastIntent: null, lastProducts: [], lastResponseType: null };
+        chatContext = { lastTopic: null, lastIntent: null, lastProducts: [], lastResponseType: null, activeProduct: null };
         showWelcome();
       };
       
@@ -505,11 +682,13 @@
       // === TARJETAS DE PRODUCTO ===
       function formatProductCard(m) {
         const waText = encodeURIComponent('Hola ADIS, vi el ' + m.name + ' en el catálogo y me interesa cotizar');
+        const priceTag = m.price ? `<div style="color:var(--gold);font-size:0.75rem;font-weight:600;margin-top:0.25rem;">💰 ${m.price} <span style="opacity:0.7;font-weight:400;">por ${m.price_unit || 'pieza'}</span></div>` : '';
         return `<div class="chat-product-card">
           <img src="${m.thumb}" alt="${m.name}" loading="lazy">
           <div class="chat-product-info">
             <a href="${m.url}" target="_blank">${m.name}</a>
             <div class="chat-product-cat">${m.category}${m.subcategory ? ' / ' + m.subcategory : ''}</div>
+            ${priceTag}
             <div class="chat-product-actions">
               <a href="${m.url}" class="primary" target="_blank">Ver producto</a>
               <a href="https://wa.me/526311928993?text=${waText}" class="secondary" target="_blank">Cotizar</a>
@@ -518,11 +697,13 @@
         </div>`;
       }
       
-      function findProductMatches(q) {
+      function findProductMatches(q, excludeIds) {
         if (!allProducts.length) return [];
         const terms = q.split(/\s+/).filter(t => t.length > 2);
-        if (terms.length === 0) return [];
+        // Búsqueda por nombre exacto (incluso con términos cortos como "gris", "negro")
+        const shortTerms = q.split(/\s+/).filter(t => t.length >= 3);
         return allProducts.map(p => {
+          if (excludeIds && excludeIds.includes(p.name)) return { p, score: 0 };
           const text = normalizeQuery(p.name + ' ' + p.category + ' ' + (p.subcategory || ''));
           let score = 0;
           for (let t of terms) {
@@ -533,8 +714,32 @@
             if (nameNorm === t) score += 5;
             else if (nameNorm.startsWith(t)) score += 3;
           }
+          // Bonus por coincidencias de color/modelo exacto
+          for (let t of shortTerms) {
+            if (nameNorm.includes(t)) score += 2;
+          }
           return { p, score };
         }).filter(x => x.score > 0).sort((a,b) => b.score - a.score).slice(0, 3);
+      }
+      
+      function findRelatedProducts(currentProducts) {
+        if (!allProducts.length || !currentProducts.length) return [];
+        const sameCat = currentProducts[0].category;
+        const sameSub = currentProducts[0].subcategory;
+        const excludeNames = currentProducts.map(p => p.name);
+        // Buscar productos de la misma subcategoría, excluyendo los ya mostrados
+        let candidates = allProducts.filter(p => 
+          p.category === sameCat && 
+          (!sameSub || p.subcategory === sameSub) && 
+          !excludeNames.includes(p.name)
+        );
+        if (candidates.length === 0) {
+          // Si no hay en la misma subcategoría, buscar en la misma categoría
+          candidates = allProducts.filter(p => p.category === sameCat && !excludeNames.includes(p.name));
+        }
+        // Tomar hasta 3 aleatorios
+        const shuffled = candidates.sort(() => 0.5 - Math.random());
+        return shuffled.slice(0, 3);
       }
       
       // === BÚSQUEDA EN "SABÍAS QUE" ===
@@ -594,9 +799,19 @@
         }
         if (category) {
           const catName = category.labels.short;
-          if (intent === 'medidas') return ['Ver ' + catName, 'Precios de ' + catName, 'Cotizar ' + catName, 'Hablar con asesor'];
-          if (intent === 'precio') return ['Ver ' + catName, 'Medidas de ' + catName, 'Cotizar ' + catName, 'Hablar con asesor'];
-          return ['Ver ' + catName, 'Medidas de ' + catName, 'Precios de ' + catName, 'Hablar con asesor'];
+          const base = ['Ver ' + catName, 'Cotizar ' + catName, 'Hablar con asesor'];
+          if (intent === 'medidas') return ['Precios de ' + catName, '¿Se puede mojar?', 'Colores de ' + catName].concat(base);
+          if (intent === 'precio') return ['Medidas de ' + catName, 'Colores de ' + catName, '¿Para exterior?'].concat(base);
+          if (intent === 'agua') return ['Medidas de ' + catName, 'Mantenimiento', 'Colores de ' + catName].concat(base);
+          if (intent === 'exterior') return ['Medidas de ' + catName, 'Material', 'Instalación'].concat(base);
+          if (intent === 'material') return ['Medidas', 'Colores', 'Precios'].concat(base);
+          if (intent === 'instalacion') return ['Medidas', 'Material', 'Precios'].concat(base);
+          if (intent === 'colores') return ['Ver ' + catName, 'Precios', 'Medidas'].concat(base);
+          if (intent === 'mantenimiento') return ['Material', 'Precios', 'Garantía'].concat(base);
+          if (intent === 'usos') return ['Medidas', 'Precios', 'Colores'].concat(base);
+          if (intent === 'garantia') return ['Medidas', 'Precios', 'Mantenimiento'].concat(base);
+          if (intent === 'comparar') return ['Ver ' + catName, 'Precios', 'Medidas'].concat(base);
+          return ['Medidas de ' + catName, 'Precios de ' + catName, 'Colores de ' + catName, 'Hablar con asesor'];
         }
         if (intent === 'precio') return ['Solicitar cotización', 'Ver productos', 'Horarios', 'Hablar con asesor'];
         if (intent === 'medidas') return ['Ver productos', 'Cotización', 'Horarios', 'Hablar con asesor'];
@@ -698,6 +913,24 @@
             else if (q.includes('wpc')) r = '📗 <strong>¿Qué es WPC?</strong><br><br>' + kb.definiciones.wpc + '<br><br>En ADIS lo usamos para lambrín de interior y exterior, pisos y revestimientos que lucen como madera real pero duran más.';
             else r = '📘 Puedo explicarte qué es <strong>PVC</strong>, <strong>WPC</strong>, <strong>SPC</strong>, <strong>laminado</strong> o <strong>cladding</strong>. ¿Cuál te interesa?';
             break;
+          case 'resistencia':
+            if (category) {
+              const catName = category.labels.short;
+              if (catName.includes('PVC')) r = '💧 <strong>Resistencia al agua — ' + catName + ':</strong><br><br>• 100% impermeable y resistente a la humedad<br>• No absorbe agua, no se hincha ni se deforma<br>• Ideal para baños, cocinas y áreas húmedas<br>• Resistente a moho y hongos<br>• Limpieza fácil con paño húmedo<br><br>💡 <strong>¿Se puede mojar?</strong> Sí, perfectamente. Solo evita sumergir los perfiles de aluminio si lleva espejo.';
+              else if (catName.includes('WPC')) r = '💧 <strong>Resistencia al agua — ' + catName + ':</strong><br><br>• Absorción de agua menor al 1%<br>• No se hincha, no se cuartea, no se deforma<br>• Resistente a humedad, lluvia y rayos UV<br>• Ideal para exteriores y fachadas<br><br>💡 <strong>¿Se puede mojar?</strong> Sí, está diseñado para intemperie.';
+              else if (catName.includes('Piso')) r = '💧 <strong>Resistencia al agua — ' + catName + ':</strong><br><br>• SPC: 100% impermeable, ideal baños y cocinas<br>• WPC: Resistente al agua, ideal recámaras<br>• Laminado: Resistente a salpicaduras, no sumergible<br><br>💡 Dime para qué espacio lo necesitas y te recomiendo el mejor.';
+              else r = '💧 <strong>Resistencia al agua — ' + catName + ':</strong><br><br>Consulta la ficha técnica de cada modelo en el catálogo. La mayoría de nuestros materiales son resistentes a la humedad.';
+            } else {
+              r = '💧 <strong>Resistencia al agua por material:</strong><br><br>• <strong>Placas PVC:</strong> 100% impermeables<br>• <strong>Lambrín WPC:</strong> Absorción <1%, ideal exterior<br>• <strong>Pisos SPC:</strong> 100% impermeables<br>• <strong>Cladding:</strong> Resistente a lluvia y UV<br>• <strong>Zacate sintético:</strong> Drenaje integrado<br><br>💡 Dime qué producto te interesa y te doy los detalles específicos.';
+            }
+            break;
+          case 'usos':
+            if (category) {
+              r = '🏠 <strong>Usos recomendados — ' + category.labels.short + ':</strong><br><br>' + handleSpecs(category, q);
+            } else {
+              r = '🏠 <strong>Usos por material:</strong><br><br>• <strong>Placas PVC:</strong> Muros interiores (baños, cocinas, salas, recepciones)<br>• <strong>Lambrín WPC:</strong> Muros interior y exterior, fachadas<br>• <strong>Pisos SPC/WPC:</strong> Interiores residenciales y comerciales<br>• <strong>Plafón PVC:</strong> Techos y cielos falsos<br>• <strong>Paneles 3D:</strong> Muros de acento, fondos de TV<br>• <strong>Vigas:</strong> Decoración de techos y pérgolas<br>• <strong>Zacate:</strong> Jardines, terrazas, balcones<br>• <strong>Cladding:</strong> Fachadas, muros exteriores<br><br>💡 Dime para qué espacio lo necesitas y te recomiendo el mejor material.';
+            }
+            break;
           default:
             r = 'Disculpa, no entendí muy bien. 😅 Puedo ayudarte con:<br><br>• Productos y catálogo 📦<br>• Precios y cotizaciones 💰<br>• Horarios de atención 🕐<br>• Ubicación y envíos 📍<br>• Formas de pago 💳<br>• Instalación 🛠️<br><br>Escribe tu pregunta o usa los botones de abajo.';
         }
@@ -715,11 +948,29 @@
         let normalized = normalizeQuery(q);
         if (isContextualQuestion(normalized, original)) normalized = applyContext(normalized);
         
-        // Referencias a productos previos
+        // === 1. Referencias a productos previos ("el primero", "ese", etc.) ===
         if (chatContext.lastProducts.length > 0 && /(primero|segundo|tercero|ese|aquel|ultimo|último)/.test(normalized)) {
           const idx = normalized.includes('segundo') ? 1 : normalized.includes('tercero') ? 2 : 0;
           const p = chatContext.lastProducts[idx];
           if (p) {
+            // Fijar el producto activo basado en el producto referenciado
+            const cats = [
+              { name: 'placas_pvc', words: ['placa pvc','placas pvc','hoja pvc','lamina pvc','pvc rigido','pvc tipo madera','pvc espejo','pvc marmol'], labels: {short:'Placas PVC', url:'1-placas-pvc.html'} },
+              { name: 'lambrin_wpc', words: ['lambrin wpc','lambrin','wpc'], labels: {short:'Lambrín WPC', url:'2-lambrin-wpc.html'} },
+              { name: 'paneles_3d', words: ['panel 3d','paneles 3d','3d','tridimensional'], labels: {short:'Paneles 3D', url:'5-paneles-tridimensionales.html'} },
+              { name: 'pisos', words: ['piso','pisos','spc','laminado','deck'], labels: {short:'Pisos', url:'7-pisos.html'} },
+              { name: 'plafon', words: ['plafon','plafon pvc','cielo falso'], labels: {short:'Plafón PVC', url:'4-plafon-pvc.html'} },
+              { name: 'vigas', words: ['viga','vigas','viga pvc','viga wpc'], labels: {short:'Vigas', url:'6-vigas-pvc.html'} },
+              { name: 'zacate', words: ['zacate','pasto','cesped'], labels: {short:'Zacate', url:'8-zacate.html'} },
+              { name: 'cladding', words: ['cladding','fachada','piedra'], labels: {short:'Cladding', url:'9-cladding.html'} },
+              { name: 'revestimiento', words: ['revestimiento','concreto','flexible'], labels: {short:'Revestimiento', url:'3-revestimiento-flexible.html'} }
+            ];
+            for (let cat of cats) {
+              if (p.category && cat.words.some(w => p.category.toLowerCase().includes(w))) {
+                chatContext.activeProduct = cat;
+                break;
+              }
+            }
             chatContext.lastIntent = 'producto';
             saveContext();
             return { 
@@ -729,91 +980,229 @@
           }
         }
         
-        // 1. Detectar intención y categoría PRIMERO
+        // === 2. Detectar categoría y tipo de pregunta ===
         let intent = scoreIntent(normalized);
         let category = detectCategory(normalized);
+        let questionType = detectQuestionType(normalized);
         
-        // 2. Cotización guiada
+        // === 3. REGLA CLAVE: Fijar producto activo ===
+        // Si el usuario menciona explícitamente una categoría → CAMBIA el producto activo
+        // Si NO menciona categoría → MANTENER el producto activo actual
+        if (category) {
+          chatContext.activeProduct = category;
+          chatContext.lastTopic = category;
+        }
+        const activeProduct = chatContext.activeProduct;
+        
+        // === 4. Respuestas rápidas generales (no dependen de producto) ===
+        if (original.length < 30 && !category && !activeProduct) {
+          if (intent.name === 'horario') {
+            return { text: '🕐 <strong>Horario showroom:</strong> Martes a Domingo 10:00-19:00. Lunes cerrado.<br><br>¿Necesitas algo más?', suggestions: ['Ubicación', 'Ver productos', 'Cotización'] };
+          }
+          if (intent.name === 'contacto') {
+            return { text: '📱 WhatsApp: ' + kb.contacto.whatsapp + '<br>☎️ Showroom: ' + kb.contacto.tel_showroom, suggestions: ['Abrir WhatsApp', 'Ubicación', 'Horarios'] };
+          }
+          if (intent.name === 'ubicacion') {
+            return { text: '📍 ' + kb.contacto.direccion + '<br><br>🕐 Martes a domingo 10:00-19:00', suggestions: ['Ver en Google Maps', 'WhatsApp', 'Horarios'] };
+          }
+          if (intent.name === 'precio' && !questionType) {
+            return { text: '💰 Los precios varían por material y modelo.<br><br>✅ Cotización gratis por WhatsApp con respuesta en menos de 24 horas.', suggestions: ['Solicitar cotización', 'Ver productos', 'Hablar con asesor'] };
+          }
+          if (intent.name === 'envio') {
+            return { text: '🚚 Envío GRATIS en Nogales y Rio Rico. A otras ciudades cotizamos por WhatsApp.', suggestions: ['Cotizar envío', 'Ubicación', 'WhatsApp'] };
+          }
+        }
+        
+        // === 5. Cotización guiada ===
         if (intent.name === 'cotizar') {
           return startQuoteFlow();
         }
         
-        // 3. Recomendador inteligente (antes que productos)
-        const recommendation = getRecommendation(normalized, category);
-        if (recommendation) {
+        // === 6. RESPUESTA DIRECTA DESDE KB (máxima prioridad si hay producto activo) ===
+        // Si el usuario hace una pregunta técnica sobre un producto activo → responder EXACTAMENTE de ese producto
+        if (questionType && activeProduct) {
+          const kbAnswer = answerFromKB(activeProduct, questionType);
+          if (kbAnswer) {
+            chatContext.lastTopic = activeProduct;
+            chatContext.lastIntent = questionType;
+            chatContext.lastResponseType = 'info';
+            saveContext();
+            return {
+              text: kbAnswer,
+              suggestions: getSuggestions(questionType, activeProduct, [])
+            };
+          }
+        }
+        
+        // Si hay tipo de pregunta pero NO hay producto activo → preguntar de qué producto habla
+        if (questionType && !activeProduct) {
           return {
-            text: recommendation.text,
-            suggestions: recommendation.suggestions
+            text: '🤔 Para darte la información correcta, ¿sobre qué producto necesitas saber?<br><br>• <strong>Placas PVC</strong><br>• <strong>Lambrín WPC</strong><br>• <strong>Pisos</strong><br>• <strong>Plafón PVC</strong><br>• <strong>Paneles 3D</strong><br>• <strong>Vigas</strong><br>• <strong>Cladding</strong><br>• <strong>Zacate</strong><br>• <strong>Revestimiento Flexible</strong>',
+            suggestions: ['Placas PVC', 'Lambrín WPC', 'Pisos', 'Plafón PVC', 'Paneles 3D', 'Cladding', 'Hablar con asesor']
           };
         }
         
-        // 4. Medidas / especificaciones / ficha técnica (respuesta directa, NO tarjetas)
-        const infoKeywords = /medida|dimension|ficha|especificacion|tamano|mide|miden|grueso|espesor|largo|ancho/;
-        if (infoKeywords.test(normalized)) {
-          if (category) {
-            chatContext.lastTopic = category;
-            chatContext.lastIntent = 'medidas';
-            saveContext();
-            return {
-              text: handleSpecs(category, normalized),
-              suggestions: getSuggestions('medidas', category, [])
-            };
-          }
-          // Si no detecta categoría pero hay productos previos, usar el último tema
-          if (chatContext.lastTopic) {
-            chatContext.lastIntent = 'medidas';
-            saveContext();
-            return {
-              text: handleSpecs(chatContext.lastTopic, normalized),
-              suggestions: getSuggestions('medidas', chatContext.lastTopic, [])
-            };
+        // === 7. Recomendador inteligente (solo si NO hay producto activo o el usuario pide explícitamente recomendación) ===
+        if (!activeProduct || /\b(recomienda|recomiendame|recomendar|que me recomiendas|que sugieres|sugerencia|mejor opcion|mejor opción)\b/.test(normalized)) {
+          const recommendation = getRecommendation(normalized, category);
+          if (recommendation) {
+            return { text: recommendation.text, suggestions: recommendation.suggestions };
           }
         }
         
-        // 5. Mármol específico
-        if (normalized.includes('marmol') || normalized.includes('marble')) {
+        // === 8. Comparaciones (SOLO si el usuario lo pide explícitamente) ===
+        if (/\b(diferencia|comparar|versus|vs|mejor que|peor que|diferente a|comparacion|comparación)\b/.test(normalized)) {
+          if ((normalized.includes('wpc') && normalized.includes('pvc')) || (normalized.includes('pvc') && normalized.includes('wpc'))) {
+            return {
+              text: '🆚 <strong>WPC vs PVC:</strong><br><br><strong>WPC (Wood Plastic Composite):</strong><br>• 60-70% fibras de madera + 30-40% plástico HDPE<br>• Aspecto más natural tipo madera real<br>• Absorción de agua menor al 1% — no se hincha ni se deforma<br>• Ideal para exteriores (resistente a UV y lluvia)<br>• Vida útil: 25-30 años | Garantía: 15 años<br><br><strong>PVC:</strong><br>• Plástico 100% con aditivos estabilizadores UV<br>• Más ligero y fácil de instalar<br>• Ideal para interiores<br>• Mayor variedad de diseños (madera, espejo, mármol, textura)<br>• Vida útil: 20-25 años | Garantía: 15 años<br><br>💡 <strong>¿Cuál elegir?</strong><br>• Exteriores / fachadas → <strong>WPC</strong><br>• Interiores / cocinas / baños → <strong>PVC</strong> (más económico)',
+              suggestions: ['Ver Lambrín WPC', 'Ver Placas PVC', 'Cotizar', 'Hablar con asesor']
+            };
+          }
+          if (activeProduct) {
+            const kb = PRODUCT_KB[activeProduct.name];
+            if (kb && kb.diferencias) {
+              return {
+                text: '<strong>⚖️ Diferencias — ' + kb.name + ':</strong><br><br>' + kb.diferencias,
+                suggestions: getSuggestions('comparar', activeProduct, [])
+              };
+            }
+          }
+        }
+        
+        // === 9. Mármol específico (solo si no hay producto activo o si el usuario lo menciona explícitamente) ===
+        if (!activeProduct && (normalized.includes('marmol') || normalized.includes('marble'))) {
           return { 
             text: '🏛️ <strong>Hoja de PVC tipo Mármol</strong><br><br>Es una solución decorativa perfecta para cualquier espacio interior. Añade un toque de elegancia a tu hogar, oficina o espacio comercial.<br><br>✨ <strong>Características:</strong><br>• Fabricada con PVC rígido de alta calidad<br>• Dimensiones: 2440 x 1220 x 5 mm (2.977 m² por pieza)<br>• Duradera y ligera, fácil de instalar y mantener<br>• 100% resistente al agua, manchas y arañazos<br>• No requiere sellado ni barnizado<br>• Garantía: 15 años<br><br>🏠 <strong>Aplicaciones:</strong> Cocinas, baños, salas de estar, recepciones, muros de acento y más.<br><br>🎨 <strong>Diseños disponibles:</strong> Carrara, Carrara Oscuro, Aurora Dorada, Onix, Cuarzo, Opalo, Perla, Topacio, Grafito, Jaspe, Agata, Arena, Obsidiana y más.<br><br>💡 <strong>Consejo:</strong> Para instalación en espejos se requiere perfil de aluminio obligatoriamente.',
             suggestions: ['Ver Placas PVC', 'Cotizar mármol PVC', 'Medidas', 'Hablar con asesor']
           };
         }
         
-        // 6. Comparaciones
-        if ((normalized.includes('wpc') && normalized.includes('pvc')) || normalized.includes('diferencia')) {
-          return {
-            text: '🆚 <strong>WPC vs PVC:</strong><br><br><strong>WPC (Wood Plastic Composite):</strong><br>• 60-70% fibras de madera + 30-40% plástico HDPE<br>• Aspecto más natural tipo madera real<br>• Absorción de agua menor al 1% — no se hincha ni se deforma<br>• Ideal para exteriores (resistente a UV y lluvia)<br>• Vida útil: 25-30 años | Garantía: 15 años<br><br><strong>PVC:</strong><br>• Plástico 100% con aditivos estabilizadores UV<br>• Más ligero y fácil de instalar<br>• Ideal para interiores<br>• Mayor variedad de diseños (madera, espejo, mármol, textura)<br>• Vida útil: 20-25 años | Garantía: 15 años<br><br>💡 <strong>¿Cuál elegir?</strong><br>• Exteriores / fachadas → <strong>WPC</strong><br>• Interiores / cocinas / baños → <strong>PVC</strong> (más económico)',
-            suggestions: ['Ver Lambrín WPC', 'Ver Placas PVC', 'Cotizar', 'Hablar con asesor']
+        // === 10. Clarificación inteligente para términos ambiguos (solo si NO hay producto activo) ===
+        const ambiguousTerms = ['pvc','wpc','piso','pisos','placa','placas','viga','vigas','panel','paneles'];
+        const isAmbiguous = ambiguousTerms.includes(normalized.trim()) || (normalized.trim().length < 5 && !category);
+        if (isAmbiguous && !activeProduct) {
+          const clarifications = {
+            'pvc': '🤔 <strong>¿Qué tipo de PVC te interesa?</strong><br><br>• <strong>Placas PVC</strong> — Muros decorativos (madera, mármol, espejo, textura)<br>• <strong>Plafón PVC</strong> — Techos y cielos falsos<br>• <strong>Vigas PVC</strong> — Decoración de interiores y exteriores',
+            'wpc': '🤔 <strong>¿Qué tipo de WPC te interesa?</strong><br><br>• <strong>Lambrín WPC</strong> — Revestimiento de muros interior/exterior<br>• <strong>Pisos WPC</strong> — Pisos cálidos y resistentes<br>• <strong>Vigas WPC</strong> — Decoración tipo madera real',
+            'piso': '🤔 <strong>¿Qué tipo de piso buscas?</strong><br><br>• <strong>SPC</strong> — Muy resistente al agua<br>• <strong>WPC</strong> — Cálido y confortable<br>• <strong>Laminado</strong> — Económico<br>• <strong>Deck sintético</strong> — Para exteriores',
+            'pisos': '🤔 <strong>¿Qué tipo de piso buscas?</strong><br><br>• <strong>SPC</strong> — Muy resistente al agua<br>• <strong>WPC</strong> — Cálido y confortable<br>• <strong>Laminado</strong> — Económico<br>• <strong>Deck sintético</strong> — Para exteriores',
+            'placa': '🤔 <strong>¿Qué tipo de placa te interesa?</strong><br><br>• <strong>Placas PVC</strong> — Decorativas para muros<br>• <strong>Paneles 3D</strong> — Con relieve y textura<br>• <strong>Cladding</strong> — Imitación piedra para exterior',
+            'placas': '🤔 <strong>¿Qué tipo de placa te interesa?</strong><br><br>• <strong>Placas PVC</strong> — Decorativas para muros<br>• <strong>Paneles 3D</strong> — Con relieve y textura<br>• <strong>Cladding</strong> — Imitación piedra para exterior',
+            'viga': '🤔 <strong>¿Qué tipo de viga te interesa?</strong><br><br>• <strong>Vigas PVC</strong> — Ligeras, gran variedad<br>• <strong>Vigas WPC</strong> — Aspecto madera real',
+            'vigas': '🤔 <strong>¿Qué tipo de viga te interesa?</strong><br><br>• <strong>Vigas PVC</strong> — Ligeras, gran variedad<br>• <strong>Vigas WPC</strong> — Aspecto madera real',
+            'panel': '🤔 <strong>¿Qué tipo de panel te interesa?</strong><br><br>• <strong>Paneles 3D</strong> — Decorativos con relieve<br>• <strong>Placas PVC</strong> — Lisas tipo madera/mármol<br>• <strong>Cladding</strong> — Imitación piedra',
+            'paneles': '🤔 <strong>¿Qué tipo de panel te interesa?</strong><br><br>• <strong>Paneles 3D</strong> — Decorativos con relieve<br>• <strong>Placas PVC</strong> — Lisas tipo madera/mármol<br>• <strong>Cladding</strong> — Imitación piedra'
           };
+          const term = normalized.trim();
+          if (clarifications[term]) {
+            return { text: clarifications[term], suggestions: ['Ver catálogo completo', 'Hablar con asesor', 'Cotizar'] };
+          }
         }
         
-        // 7. Búsqueda en "Sabías que"
-        const researchMatch = searchResearch(normalized, category ? { name: category.name } : null);
-        if (researchMatch) {
-          chatContext.lastTopic = category || chatContext.lastTopic;
-          chatContext.lastIntent = 'research';
-          saveContext();
-          return {
-            text: formatResearchAnswer(researchMatch) + '<br><br>📚 Sacado de <a href="sabias-que.html" style="color:#C5A059">¿Sabías que?</a>',
-            suggestions: category ? ['Ver ' + category.labels.short, 'Cotizar ' + category.labels.short, 'Más datos curiosos', 'Hablar con asesor'] : ['Ver datos curiosos', 'Ver productos', 'Cotización', 'Hablar con asesor']
-          };
+        // === 11. Memoria profunda: "otro", "otro color", "otro similar" ===
+        if (/\b(otro|otra|otros|otras|otro color|otro modelo|otro diseño|otra opcion|otra opción|algo similar|parecido|mas de esos|más de esos|muestrame mas|mostrame mas)\b/.test(normalized) && chatContext.lastProducts.length > 0) {
+          const related = findRelatedProducts(chatContext.lastProducts);
+          if (related.length > 0) {
+            chatContext.lastProducts = related;
+            chatContext.lastIntent = 'producto';
+            chatContext.lastResponseType = 'products';
+            saveContext();
+            return {
+              text: '✨ <strong>Otras opciones similares:</strong><br><br>' + related.map(formatProductCard).join('') + '<br>¿Alguna de estas te interesa?',
+              suggestions: getSuggestions('producto', chatContext.lastTopic, related)
+            };
+          }
         }
         
-        // 8. Búsqueda de productos (último recurso, solo si no es pregunta de información)
+        // === 12. Manejar rechazos / negaciones ===
+        if (/\b(no me gusta|no me gustaron|no es eso|no eso|otra cosa|algo diferente|no quiero eso|no es lo que busco|busco otra)\b/.test(normalized)) {
+          if (activeProduct || chatContext.lastTopic) {
+            chatContext.activeProduct = null;
+            chatContext.lastTopic = null;
+            chatContext.lastIntent = 'negacion';
+            saveContext();
+            return {
+              text: 'Entendido. 😊 ¿Qué tipo de acabado o material te gustaría explorar?<br><br>Puedo mostrarte:<br>• Diseños tipo madera 🪵<br>• Acabados tipo mármol 🏛️<br>• Texturas modernas 🎨<br>• Opciones en espejo ✨<br>• Colores específicos 🎨<br><br>Dime qué tienes en mente.',
+              suggestions: ['Tipo madera', 'Tipo mármol', 'Espejo', 'Colores oscuros', 'Ver todo el catálogo', 'Hablar con asesor']
+            };
+          }
+          return respond('negacion', category, normalized, original);
+        }
+        
+        // === 13. Respuestas concisas para preguntas simples después de ver productos ===
+        if (original.length < 35 && !category && activeProduct && chatContext.lastResponseType === 'products') {
+          if (/\b(precio|cuesta|valen)\b/.test(normalized)) {
+            const lastProds = chatContext.lastProducts;
+            const priceInfo = lastProds.length > 0 && lastProds[0].price ? 
+              '<br><br>💰 Rango de estos modelos: <strong>' + lastProds[0].price + '</strong> por ' + (lastProds[0].price_unit || 'pieza') + '.' : '';
+            return {
+              text: 'Los precios varían por modelo y acabado.' + priceInfo + '<br><br>✅ Envío gratis en Nogales y Rio Rico. Mayoreo desde 10 cajas.<br><br>¿Te gustaría una cotización exacta?',
+              suggestions: ['Cotizar ' + activeProduct.labels.short, 'Ver más modelos', 'Hablar con asesor']
+            };
+          }
+        }
+        
+        // === 14. Detección de urgencia ===
+        const urgencyWords = /\b(urgente|urgencia|prisa|rapido|rápido|ya|ahora|hoy|mañana|lo antes posible|express|express)\b/;
+        const isUrgent = urgencyWords.test(normalized);
+        
+        // === 15. Búsqueda de productos (solo si no es pregunta directa de info) ===
         const prodMatches = findProductMatches(normalized);
         if (prodMatches.length > 0 && original.length > 2) {
           const products = prodMatches.map(x => x.p);
           chatContext.lastProducts = products;
-          chatContext.lastTopic = category || chatContext.lastTopic;
+          chatContext.lastTopic = category || chatContext.lastTopic || activeProduct;
           chatContext.lastIntent = 'producto';
           chatContext.lastResponseType = 'products';
           saveContext();
+          let urgencyMsg = '';
+          if (isUrgent) {
+            urgencyMsg = '<br>⚡ <strong>Entrega urgente:</strong> Si tu material está en stock, puede salir hoy mismo. Si no, el tiempo de reposición es de 2-5 días hábiles. Escríbenos por WhatsApp para confirmar disponibilidad.';
+          }
           return {
-            text: '🔎 <strong>Encontré estos productos:</strong><br><br>' + products.map(formatProductCard).join('') + '<br>¿Te gustaría cotizar alguno?',
+            text: '🔎 <strong>Encontré estos productos:</strong><br><br>' + products.map(formatProductCard).join('') + urgencyMsg + '<br>¿Te gustaría cotizar alguno?',
             suggestions: getSuggestions('producto', chatContext.lastTopic, products)
           };
         }
         
-        return respond(intent.name, category, normalized, original);
+        // === 16. respond() con intents generales ===
+        const respondResult = respond(intent.name, category, normalized, original);
+        if (respondResult.text && !respondResult.text.includes('no entendí')) {
+          if (isUrgent && respondResult.text) {
+            respondResult.text += '<br><br>⚡ <strong>Urgente:</strong> Si necesitas el material rápido, escríbenos al WhatsApp para confirmar stock inmediatamente.';
+          }
+          return respondResult;
+        }
+        
+        // === 17. Búsqueda en "Sabías que" (último recurso) ===
+        const researchMatch = searchResearch(normalized, activeProduct || category ? { name: (activeProduct || category).name } : null);
+        if (researchMatch) {
+          chatContext.lastTopic = category || chatContext.lastTopic || activeProduct;
+          chatContext.lastIntent = 'research';
+          saveContext();
+          return {
+            text: formatResearchAnswer(researchMatch) + '<br><br>📚 Sacado de <a href="sabias-que.html" style="color:#C5A059">¿Sabías que?</a>',
+            suggestions: (activeProduct || category) ? ['Ver ' + (activeProduct || category).labels.short, 'Cotizar ' + (activeProduct || category).labels.short, 'Más datos curiosos', 'Hablar con asesor'] : ['Ver datos curiosos', 'Ver productos', 'Cotización', 'Hablar con asesor']
+          };
+        }
+        
+        // === 18. FALLBACK SEGURO: Si hay producto activo pero no sabemos responder ===
+        if (activeProduct) {
+          return {
+            text: '🤔 No tengo ese dato confirmado en la información de <strong>' + activeProduct.labels.short + '</strong>, pero puedo ayudarte a contactar a un asesor para validarlo.<br><br>📱 <strong>' + kb.contacto.whatsapp + '</strong><br><br>Un experto te responderá en menos de 24 horas.',
+            suggestions: ['Hablar con asesor', 'Ver ' + activeProduct.labels.short, 'Cotizar ' + activeProduct.labels.short]
+          };
+        }
+        
+        // === 19. Urgencia sin resultado ===
+        if (isUrgent) {
+          return {
+            text: '⚡ Entiendo que lo necesitas con urgencia.<br><br>📱 Te recomiendo escribirnos directo al WhatsApp <strong>' + kb.contacto.whatsapp + '</strong> para confirmar stock y tiempos de entrega inmediatamente.<br><br>También puedo ayudarte a hacer una cotización guiada.',
+            suggestions: ['Cotización urgente', 'WhatsApp', 'Ver productos']
+          };
+        }
+        
+        return respondResult;
       }
       
       // === FORMULARIO DE COTIZACIÓN GUIADA ===
