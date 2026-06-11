@@ -1,0 +1,3267 @@
+{
+  "missing_in_web": [
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\4. Plafon PVC\\Ficha Tecnica.jpg",
+      "clean_name": "4. plafon pvc/ficha tecnica.jpg",
+      "md5": "b5d73d33b7c238a8dd2b524ef74691ab",
+      "size": 50203
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\4. Plafon PVC\\York.jpg",
+      "clean_name": "4. plafon pvc/york.jpg",
+      "md5": "908b88368c647963a93940f2e892facb",
+      "size": 14371
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\4. Plafon PVC\\Liverpool.jpg",
+      "clean_name": "4. plafon pvc/liverpool.jpg",
+      "md5": "773f03010bb8ce1ebfbc931ecef3b345",
+      "size": 45110
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\4. Plafon PVC\\Cambridge.jpg",
+      "clean_name": "4. plafon pvc/cambridge.jpg",
+      "md5": "b49976df32c3290a6791f2c58371e02f",
+      "size": 27031
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\4. Plafon PVC\\bristol.jpg",
+      "clean_name": "4. plafon pvc/bristol.jpg",
+      "md5": "f1d99175b2bbbeab3fda73a33375a0d7",
+      "size": 11166
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\4. Plafon PVC\\4.1 Plafon pvc laminado\\ficha Tecnica.jpg",
+      "clean_name": "4. plafon pvc/plafon pvc laminado/ficha tecnica.jpg",
+      "md5": "6048343ddff657d41f377bf804a10890",
+      "size": 37060
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\4. Plafon PVC\\4.1 Plafon pvc laminado\\Teesdale.jpg",
+      "clean_name": "4. plafon pvc/plafon pvc laminado/teesdale.jpg",
+      "md5": "23f8c53689527bc8f238b9f0e79f000a",
+      "size": 265429
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\4. Plafon PVC\\4.1 Plafon pvc laminado\\SHERWOOD.jpg",
+      "clean_name": "4. plafon pvc/plafon pvc laminado/sherwood.jpg",
+      "md5": "19435cb4666eede3eeebb34aedff9664",
+      "size": 544414
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\4. Plafon PVC\\4.2 Plafon Laminado wood\\ficha Tecnica.jpg",
+      "clean_name": "4. plafon pvc/plafon laminado wood/ficha tecnica.jpg",
+      "md5": "77379dbe05b1138448a1ba855dadd3b5",
+      "size": 46125
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\4. Plafon PVC\\4.2 Plafon Laminado wood\\Ash Nomad.jpg",
+      "clean_name": "4. plafon pvc/plafon laminado wood/ash nomad.jpg",
+      "md5": "06f6edd5dd6444e8f4c25f1fb9c82545",
+      "size": 24887
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\4. Plafon PVC\\4.2 Plafon Laminado wood\\Wild Teak.jpg",
+      "clean_name": "4. plafon pvc/plafon laminado wood/wild teak.jpg",
+      "md5": "131f10b3becefab0cb122e48af2827d9",
+      "size": 28991
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\4. Plafon PVC\\4.2 Plafon Laminado wood\\Walnut Elipse.jpg",
+      "clean_name": "4. plafon pvc/plafon laminado wood/walnut elipse.jpg",
+      "md5": "13a4a75b32e3125e16e35f0670d4d340",
+      "size": 43918
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\4. Plafon PVC\\4.2 Plafon Laminado wood\\Maple Dusk.jpg",
+      "clean_name": "4. plafon pvc/plafon laminado wood/maple dusk.jpg",
+      "md5": "6b9d43aa9b20e0d37e964b93e1785f85",
+      "size": 24982
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\4. Plafon PVC\\4.2 Plafon Laminado wood\\Ivory Elm.jpg",
+      "clean_name": "4. plafon pvc/plafon laminado wood/ivory elm.jpg",
+      "md5": "9aac1e60935a6202982eaf4c256ba6f1",
+      "size": 15320
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\4. Plafon PVC\\4.2 Plafon Laminado wood\\Cocoa Ash.jpg",
+      "clean_name": "4. plafon pvc/plafon laminado wood/cocoa ash.jpg",
+      "md5": "b114718bab41315523da50864b6f446d",
+      "size": 29663
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\4. Plafon PVC\\4.2 Plafon Laminado wood\\Birch Ember.jpg",
+      "clean_name": "4. plafon pvc/plafon laminado wood/birch ember.jpg",
+      "md5": "2391e06e3dd8c90d365a4dcadd4ab8da",
+      "size": 31092
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\4. Plafon PVC\\Plafon Ranurado\\Ranurado vista 2.jpg",
+      "clean_name": "4. plafon pvc/plafon ranurado/ranurado vista 2.jpg",
+      "md5": "25ce3690290bfe9ce09b47b8f9a696b1",
+      "size": 653198
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\4. Plafon PVC\\Plafon Ranurado\\Ranurado.jpg",
+      "clean_name": "4. plafon pvc/plafon ranurado/ranurado.jpg",
+      "md5": "ed62e5b99872120f3b6cba7f9214f2e0",
+      "size": 570419
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\3. Revestimiento Flexible\\CONCRETO Aparente.jpg",
+      "clean_name": "3. revestimiento flexible/concreto aparente.jpg",
+      "md5": "464162bd8a4d8d0be89f0517e51a02af",
+      "size": 330917
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\3. Revestimiento Flexible\\Concreto Gris.jpg",
+      "clean_name": "3. revestimiento flexible/concreto gris.jpg",
+      "md5": "1f062a3e38e6fbd880eee86af3603b3e",
+      "size": 33711
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\3. Revestimiento Flexible\\Granito Blanco.jpg",
+      "clean_name": "3. revestimiento flexible/granito blanco.jpg",
+      "md5": "89f903cb3127b12724ffaf8bd7d94ffd",
+      "size": 47191
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\3. Revestimiento Flexible\\Granito Imperial Blanco.jpg",
+      "clean_name": "3. revestimiento flexible/granito imperial blanco.jpg",
+      "md5": "22153f2848bde7a1710feaff8e9656b4",
+      "size": 34367
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\3. Revestimiento Flexible\\Granito Oro.jpg",
+      "clean_name": "3. revestimiento flexible/granito oro.jpg",
+      "md5": "6a66217388ad53fc0417896f4eb33163",
+      "size": 37027
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\3. Revestimiento Flexible\\Madera Roble.jpeg",
+      "clean_name": "3. revestimiento flexible/madera roble.jpeg",
+      "md5": "aae3b0c46172e93e9953f1f01378149d",
+      "size": 73162
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\3. Revestimiento Flexible\\ficha tecnica.jpg",
+      "clean_name": "3. revestimiento flexible/ficha tecnica.jpg",
+      "md5": "18f1ab83de36fc0df942d5e8e60d24bc",
+      "size": 54947
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\1. Placas PVC\\AGATA.jpg",
+      "clean_name": "1. placas pvc/agata.jpg",
+      "md5": "972077fa0a89b76c882403e100c767b5",
+      "size": 31235
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\1. Placas PVC\\ARENA.jpg",
+      "clean_name": "1. placas pvc/arena.jpg",
+      "md5": "5367a5fb92d7a558c37431bf6c4f5baa",
+      "size": 6021
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\1. Placas PVC\\Aurora Dorada.jpg",
+      "clean_name": "1. placas pvc/aurora dorada.jpg",
+      "md5": "5fd59487c8828d1693676d7453b3e8f7",
+      "size": 46311
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\1. Placas PVC\\Carrara Oscuro.jpg",
+      "clean_name": "1. placas pvc/carrara oscuro.jpg",
+      "md5": "039e09b62c592e44cd648989f553984a",
+      "size": 55852
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\1. Placas PVC\\Cuarzo.jpg",
+      "clean_name": "1. placas pvc/cuarzo.jpg",
+      "md5": "e81e479e3e53ed7fd047538b4d329968",
+      "size": 11332
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\1. Placas PVC\\Grafito.jpg",
+      "clean_name": "1. placas pvc/grafito.jpg",
+      "md5": "c91b29093af81ff794632733ce44366a",
+      "size": 129839
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\1. Placas PVC\\Jaspe.jpg",
+      "clean_name": "1. placas pvc/jaspe.jpg",
+      "md5": "a385b0418efd68f78c2f4871757a635c",
+      "size": 51728
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\1. Placas PVC\\OBSIDIANA.jpg",
+      "clean_name": "1. placas pvc/obsidiana.jpg",
+      "md5": "cf344a38df9f0805d32b5e7bda603922",
+      "size": 69442
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\1. Placas PVC\\Onix.jpg",
+      "clean_name": "1. placas pvc/onix.jpg",
+      "md5": "20cba7571a55133469a13d0e0904aa02",
+      "size": 50973
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\1. Placas PVC\\Opalo.jpg",
+      "clean_name": "1. placas pvc/opalo.jpg",
+      "md5": "48a87af900f0ee089a53a3cd44045735",
+      "size": 67650
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\1. Placas PVC\\Perla.jpg",
+      "clean_name": "1. placas pvc/perla.jpg",
+      "md5": "5ccbeea000657e7f99988fd967d896f9",
+      "size": 25208
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\1. Placas PVC\\Topacio.jpg",
+      "clean_name": "1. placas pvc/topacio.jpg",
+      "md5": "c2384530a80082f244dbaa03f60295c4",
+      "size": 47583
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\1. Placas PVC\\ZAFIRO.jpg",
+      "clean_name": "1. placas pvc/zafiro.jpg",
+      "md5": "a785579087ad11b5f41f301acb1aa7e2",
+      "size": 119761
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\1. Placas PVC\\Perfil t 7x3x2440mm.jpg",
+      "clean_name": "1. placas pvc/perfil t 7x3x2440mm.jpg",
+      "md5": "f1dcebf3d49ae87ab789ce5ae807a6db",
+      "size": 105755
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\1. Placas PVC\\angulo 8x8x2440mm.jpg",
+      "clean_name": "1. placas pvc/angulo 8x8x2440mm.jpg",
+      "md5": "7f3410d88f6784b16289b560e839b34e",
+      "size": 176064
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\1. Placas PVC\\1.1 Placas PVC tipo madera\\perfil T 7x3x2440mm.jpg",
+      "clean_name": "1. placas pvc/placas pvc tipo madera/perfil t 7x3x2440mm.jpg",
+      "md5": "f1dcebf3d49ae87ab789ce5ae807a6db",
+      "size": 105755
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\1. Placas PVC\\1.1 Placas PVC tipo madera\\ficha Tecnica.jpg",
+      "clean_name": "1. placas pvc/placas pvc tipo madera/ficha tecnica.jpg",
+      "md5": "1f618c2a2e144e2d8cafe73b4159fbeb",
+      "size": 42020
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\1. Placas PVC\\1.1 Placas PVC tipo madera\\Solden.jpg",
+      "clean_name": "1. placas pvc/placas pvc tipo madera/solden.jpg",
+      "md5": "d5e3d4303a25a4d37a53aaaff3dffec3",
+      "size": 289163
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\1. Placas PVC\\1.1 Placas PVC tipo madera\\Solaria.jpg",
+      "clean_name": "1. placas pvc/placas pvc tipo madera/solaria.jpg",
+      "md5": "dfb79b428c9c04b2f1e5ac8bf48c1c35",
+      "size": 250711
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\1. Placas PVC\\1.1 Placas PVC tipo madera\\anton.jpg",
+      "clean_name": "1. placas pvc/placas pvc tipo madera/anton.jpg",
+      "md5": "18a4690fa9f944b98ba7805cef60527f",
+      "size": 282055
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\1. Placas PVC\\1.1 Placas PVC tipo madera\\Angulo 8x8x2440mm.jpg",
+      "clean_name": "1. placas pvc/placas pvc tipo madera/angulo 8x8x2440mm.jpg",
+      "md5": "7f3410d88f6784b16289b560e839b34e",
+      "size": 176064
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\1. Placas PVC\\1.1 Placas PVC tipo madera\\Alpina.jpg",
+      "clean_name": "1. placas pvc/placas pvc tipo madera/alpina.jpg",
+      "md5": "58b17ca67c49a4aa96b95e648eed6e28",
+      "size": 300772
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\1. Placas PVC\\1.1 Placas PVC tipo madera\\Adler.jpg",
+      "clean_name": "1. placas pvc/placas pvc tipo madera/adler.jpg",
+      "md5": "3cb7974021f1e7c5e405def785e5ccd0",
+      "size": 404158
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\1. Placas PVC\\1.2 Placas PVC Texturizadas\\ficha tecnica.jpg",
+      "clean_name": "1. placas pvc/placas pvc texturizadas/ficha tecnica.jpg",
+      "md5": "e1fd9ae6edae2ff749f0f67503c9a569",
+      "size": 45187
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\1. Placas PVC\\1.2 Placas PVC Texturizadas\\ANGULO 8x8x2440mm.jpg",
+      "clean_name": "1. placas pvc/placas pvc texturizadas/angulo 8x8x2440mm.jpg",
+      "md5": "7f3410d88f6784b16289b560e839b34e",
+      "size": 176064
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\1. Placas PVC\\1.2 Placas PVC Texturizadas\\WENGE.png",
+      "clean_name": "1. placas pvc/placas pvc texturizadas/wenge.png",
+      "md5": "acef8be0493f9860828eda638c5fac66",
+      "size": 819774
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\1. Placas PVC\\1.2 Placas PVC Texturizadas\\PERFIL T 7x3x2440mm.jpg",
+      "clean_name": "1. placas pvc/placas pvc texturizadas/perfil t 7x3x2440mm.jpg",
+      "md5": "f1dcebf3d49ae87ab789ce5ae807a6db",
+      "size": 105755
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\1. Placas PVC\\1.2 Placas PVC Texturizadas\\NOGAL.png",
+      "clean_name": "1. placas pvc/placas pvc texturizadas/nogal.png",
+      "md5": "326fec2b7828e9e50ea0ad412ce399d5",
+      "size": 311171
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\1. Placas PVC\\1.2 Placas PVC Texturizadas\\JATOBA.png",
+      "clean_name": "1. placas pvc/placas pvc texturizadas/jatoba.png",
+      "md5": "0d48538496abef044dc30cac12f64d06",
+      "size": 286907
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\1. Placas PVC\\1.2 Placas PVC Texturizadas\\IPE.png",
+      "clean_name": "1. placas pvc/placas pvc texturizadas/ipe.png",
+      "md5": "b1f0b068981dc68bf88c64506aa66904",
+      "size": 402802
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\1. Placas PVC\\1.2 Placas PVC Texturizadas\\ENCINO.png",
+      "clean_name": "1. placas pvc/placas pvc texturizadas/encino.png",
+      "md5": "641f1d3bc9b5f3b3917517e11e797b44",
+      "size": 185526
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\1. Placas PVC\\1.2 Placas PVC Texturizadas\\CEDAR.png",
+      "clean_name": "1. placas pvc/placas pvc texturizadas/cedar.png",
+      "md5": "d70c5f4fd4dfa578f226d1194a475860",
+      "size": 624083
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\1. Placas PVC\\1.2 Placas PVC Texturizadas\\ASH.png",
+      "clean_name": "1. placas pvc/placas pvc texturizadas/ash.png",
+      "md5": "1d7e2a7c71a053ad329e8275de9ede96",
+      "size": 342586
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\1. Placas PVC\\1.3 Placas PVC Tipo espejo\\PLACA TIPO ESPEJO.jpg",
+      "clean_name": "1. placas pvc/placas pvc tipo espejo/placa tipo espejo.jpg",
+      "md5": "5e4372bffd118445e45587d393feba93",
+      "size": 97436
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\1. Placas PVC\\1.3 Placas PVC Tipo espejo\\PLACA TIPO ESPEJO DORADO.jpg",
+      "clean_name": "1. placas pvc/placas pvc tipo espejo/placa tipo espejo dorado.jpg",
+      "md5": "77ce018d8a59004db1c196ee31fdf8c5",
+      "size": 19545
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\1. Placas PVC\\1.3 Placas PVC Tipo espejo\\PLACA TIPO METAL.jpg",
+      "clean_name": "1. placas pvc/placas pvc tipo espejo/placa tipo metal.jpg",
+      "md5": "7c265f9ded89a174b164c98725cccf0c",
+      "size": 72550
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\1. Placas PVC\\1.3 Placas PVC Tipo espejo\\ficha tecnica.jpg",
+      "clean_name": "1. placas pvc/placas pvc tipo espejo/ficha tecnica.jpg",
+      "md5": "20ad2ecf3412ee892e7463f2969691f7",
+      "size": 44209
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\7. Pisos\\7.1 Laminado\\EVEREST.jpg",
+      "clean_name": "7. pisos/laminado/everest.jpg",
+      "md5": "7f95aeb33a66731ec0332b957cebb73c",
+      "size": 36309
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\7. Pisos\\7.1 Laminado\\PLANTATION OAK.jpg",
+      "clean_name": "7. pisos/laminado/plantation oak.jpg",
+      "md5": "804e92a11a1956d7bc2a97ac9ff12cc2",
+      "size": 28841
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\7. Pisos\\7.1 Laminado\\INDEPENDENCE OAK.jpg",
+      "clean_name": "7. pisos/laminado/independence oak.jpg",
+      "md5": "d17cc3d832734aa3ee8d45bb552a2f0f",
+      "size": 18025
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\7. Pisos\\7.1 Laminado\\KILIMANJARO.jpg",
+      "clean_name": "7. pisos/laminado/kilimanjaro.jpg",
+      "md5": "939c5d6d047483a053c0f40033304f59",
+      "size": 77361
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\7. Pisos\\7.1 Laminado\\ELBRUS.jpg",
+      "clean_name": "7. pisos/laminado/elbrus.jpg",
+      "md5": "1496f405a23979882247322b79007d07",
+      "size": 32966
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\7. Pisos\\7.1 Laminado\\DENALI.jpg",
+      "clean_name": "7. pisos/laminado/denali.jpg",
+      "md5": "73c6917f75c6575d361f83eef52ec7de",
+      "size": 80124
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\7. Pisos\\7.1 Laminado\\ACONCAGUA.jpg",
+      "clean_name": "7. pisos/laminado/aconcagua.jpg",
+      "md5": "2e3e00bf0af36ba2fdd4fe97a70cdbee",
+      "size": 31809
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\7. Pisos\\7.1 Laminado\\UTRILLAS.jpeg",
+      "clean_name": "7. pisos/laminado/utrillas.jpeg",
+      "md5": "6ef2884c62e58d64013299be26e70b71",
+      "size": 47782
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\7. Pisos\\7.1 Laminado\\BOULDER.jpg",
+      "clean_name": "7. pisos/laminado/boulder.jpg",
+      "md5": "f10b9337ee06760e405570bd79830a42",
+      "size": 6640
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\7. Pisos\\7.1 Laminado\\DEMOCRACY OAK.jpg",
+      "clean_name": "7. pisos/laminado/democracy oak.jpg",
+      "md5": "2b4e03a432c211c30c8fcb33636bc519",
+      "size": 26525
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\7. Pisos\\7.1 Laminado\\GUDAR.jpeg",
+      "clean_name": "7. pisos/laminado/gudar.jpeg",
+      "md5": "2672c7d93ed6962174e674eea6bac9d7",
+      "size": 43723
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\7. Pisos\\7.1 Laminado\\OAK FRESCO.jpg",
+      "clean_name": "7. pisos/laminado/oak fresco.jpg",
+      "md5": "27b53e3ef55a8284293681bcb260490c",
+      "size": 25139
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\7. Pisos\\7.1 Laminado\\OAK CABANA LAGOS.jpg",
+      "clean_name": "7. pisos/laminado/oak cabana lagos.jpg",
+      "md5": "00b421e49de47011163d08a83b9af691",
+      "size": 353977
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\7. Pisos\\7.1 Laminado\\ALCAÑIZ.jpeg",
+      "clean_name": "7. pisos/laminado/alcañiz.jpeg",
+      "md5": "b6304b4ee6096478ba1cef79e7a3ba40",
+      "size": 45759
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\7. Pisos\\7.1 Laminado\\HICKORY CAROLINA.jpg",
+      "clean_name": "7. pisos/laminado/hickory carolina.jpg",
+      "md5": "16adce3aa7205ae6d1d9da041e04c79e",
+      "size": 544246
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\7. Pisos\\7.1 Laminado\\COPPER OAK.jpg",
+      "clean_name": "7. pisos/laminado/copper oak.jpg",
+      "md5": "5fd227e9e3eb34dce757883d91bcf920",
+      "size": 63047
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\7. Pisos\\7.1 Laminado\\TITANIUM OAK.jpg",
+      "clean_name": "7. pisos/laminado/titanium oak.jpg",
+      "md5": "4997208e9e1c4387e7f7537343495b05",
+      "size": 20727
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\7. Pisos\\7.1 Laminado\\TAHOE.jpg",
+      "clean_name": "7. pisos/laminado/tahoe.jpg",
+      "md5": "df089184ce1ce7acc09c2ef1ba0434c8",
+      "size": 19120
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\7. Pisos\\7.1 Laminado\\MOUNTAIN BEECH.jpg",
+      "clean_name": "7. pisos/laminado/mountain beech.jpg",
+      "md5": "a1ce2fe12184fd55660453c93100a759",
+      "size": 26466
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\7. Pisos\\7.1 Laminado\\REVOLUTION OAK.jpg",
+      "clean_name": "7. pisos/laminado/revolution oak.jpg",
+      "md5": "f6e3284728368f2c17e1f571bb56a581",
+      "size": 24475
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\7. Pisos\\7.1 Laminado\\COLONIAL OAK.jpg",
+      "clean_name": "7. pisos/laminado/colonial oak.jpg",
+      "md5": "83053d137b58cb979dfd4b069ed2a819",
+      "size": 23010
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\7. Pisos\\7.1 Laminado\\OAK BREEZE.jpg",
+      "clean_name": "7. pisos/laminado/oak breeze.jpg",
+      "md5": "34b6b2311d07687bc51b9f4b8c662b29",
+      "size": 22283
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\7. Pisos\\7.1 Laminado\\OAK DESIGN.jpg",
+      "clean_name": "7. pisos/laminado/oak design.jpg",
+      "md5": "f428bd67185dfd3b59bd0979b66e8087",
+      "size": 86049
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\7. Pisos\\7.1 Laminado\\OAK SOLANO.png",
+      "clean_name": "7. pisos/laminado/oak solano.png",
+      "md5": "1894358e2a8960d5f066721e0d3677fe",
+      "size": 1434001
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\7. Pisos\\7.1 Laminado\\OAK VOUGE.png",
+      "clean_name": "7. pisos/laminado/oak vouge.png",
+      "md5": "1d4f6d0086f4a13f1defe40790b7e9c4",
+      "size": 1373254
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\7. Pisos\\7.1 Laminado\\OAK THUNDER.jpg",
+      "clean_name": "7. pisos/laminado/oak thunder.jpg",
+      "md5": "885a610569e2f60b7ae4ef891ebb793b",
+      "size": 82904
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\7. Pisos\\7.1 Laminado\\TERNASCO.jpeg",
+      "clean_name": "7. pisos/laminado/ternasco.jpeg",
+      "md5": "0d4352b87f99ac314bcb6bba87e01cd5",
+      "size": 76992
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\7. Pisos\\7.1 Laminado\\OAK SUNSET.png",
+      "clean_name": "7. pisos/laminado/oak sunset.png",
+      "md5": "836738073dbbe36de2a5806ea7e52c77",
+      "size": 1387449
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\7. Pisos\\7.1 Laminado\\OAK SOUL.jpg",
+      "clean_name": "7. pisos/laminado/oak soul.jpg",
+      "md5": "c73bab3d7e91522722b71c5b273d1341",
+      "size": 55856
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\7. Pisos\\7.1 Laminado\\CALANDA.jpeg",
+      "clean_name": "7. pisos/laminado/calanda.jpeg",
+      "md5": "030256d2ea9fd6113aaf570d6f9d66c6",
+      "size": 48252
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\7. Pisos\\7.1 Laminado\\CEREZO TABLA.jpg",
+      "clean_name": "7. pisos/laminado/cerezo tabla.jpg",
+      "md5": "fb8b2cdf9f6439df94917e0929330ef7",
+      "size": 30220
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\7. Pisos\\7.1 Laminado\\IVORY WHITE.jpg",
+      "clean_name": "7. pisos/laminado/ivory white.jpg",
+      "md5": "57a86adcf7d195e9087d11d6ff3cb52a",
+      "size": 20151
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\7. Pisos\\7.1 Laminado\\OAK NATURAL.jpg",
+      "clean_name": "7. pisos/laminado/oak natural.jpg",
+      "md5": "47b4eabe8f7f8d469628ef1ad796f650",
+      "size": 70439
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\7. Pisos\\7.1 Laminado\\KIEFER STORM.jpg",
+      "clean_name": "7. pisos/laminado/kiefer storm.jpg",
+      "md5": "14b8329ab774921d0771a905cc725ac6",
+      "size": 84432
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\7. Pisos\\7.1 Laminado\\SPRUCE ANTIQUE.jpg",
+      "clean_name": "7. pisos/laminado/spruce antique.jpg",
+      "md5": "9b05aca56fca60f27a22c9e7633f9f51",
+      "size": 36700
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\7. Pisos\\7.1 Laminado\\OAK SILEA.jpg",
+      "clean_name": "7. pisos/laminado/oak silea.jpg",
+      "md5": "301a5cae0a8957f6be0d419cd126736c",
+      "size": 134971
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\7. Pisos\\7.1 Laminado\\NOGAL AMERICANO.jpg",
+      "clean_name": "7. pisos/laminado/nogal americano.jpg",
+      "md5": "6892e12344d9345e99cc1484742f4312",
+      "size": 50742
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\7. Pisos\\7.1 Laminado\\OAK EVOKE CRYSTAL.jpg",
+      "clean_name": "7. pisos/laminado/oak evoke crystal.jpg",
+      "md5": "af99e473c7c604da0015b80ca965daa6",
+      "size": 120982
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\7. Pisos\\7.1 Laminado\\OAK EPIC APULIEN.jpg",
+      "clean_name": "7. pisos/laminado/oak epic apulien.jpg",
+      "md5": "7c278848b48c6fab952aa072bfe78942",
+      "size": 92076
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\7. Pisos\\7.1 Laminado\\OAK VIENNA.jpg",
+      "clean_name": "7. pisos/laminado/oak vienna.jpg",
+      "md5": "4f2d07964a4915d607f56f9389878ea5",
+      "size": 81058
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\7. Pisos\\7.1 Laminado\\WALNUT SABO.jpg",
+      "clean_name": "7. pisos/laminado/walnut sabo.jpg",
+      "md5": "8296d1481c4c999284c6e191ea567df7",
+      "size": 109780
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\7. Pisos\\7.1 Laminado\\WALNUT.jpg",
+      "clean_name": "7. pisos/laminado/walnut.jpg",
+      "md5": "9f3dcb87dc6765a221f0aedb8bb67012",
+      "size": 43357
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\7. Pisos\\7.1 Laminado\\OAK TREND.jpg",
+      "clean_name": "7. pisos/laminado/oak trend.jpg",
+      "md5": "6c09776c666475c57c9032b1b1a366a2",
+      "size": 71742
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\7. Pisos\\7.1 Laminado\\MOUNTAIN BEECH SPLASH.jpg",
+      "clean_name": "7. pisos/laminado/mountain beech splash.jpg",
+      "md5": "303140af907517b6b1a76a6d9adecc79",
+      "size": 53841
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\7. Pisos\\7.1 Laminado\\GOLDEN OAK.jpg",
+      "clean_name": "7. pisos/laminado/golden oak.jpg",
+      "md5": "1834060d3ac60060c5e7e9196aba057c",
+      "size": 73103
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\7. Pisos\\7.1 Laminado\\AUSTRALIAN WALNUT SPLASH.jpg",
+      "clean_name": "7. pisos/laminado/australian walnut splash.jpg",
+      "md5": "bb68ec075c9a712037c48d5fb38fdaf7",
+      "size": 51264
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\7. Pisos\\7.1 Laminado\\ARCTIC OAK SPLASH.jpg",
+      "clean_name": "7. pisos/laminado/arctic oak splash.jpg",
+      "md5": "e9ff953ca7a110a8d1df0f4c779d6eec",
+      "size": 42327
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\7. Pisos\\7.2 WPC\\VERMONT.jpg",
+      "clean_name": "7. pisos/wpc/vermont.jpg",
+      "md5": "1aff4b474fe08ab8ae388bb396bd8cd1",
+      "size": 19969
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\7. Pisos\\7.2 WPC\\CANBERRA.jpg",
+      "clean_name": "7. pisos/wpc/canberra.jpg",
+      "md5": "369b7fb7d73522005e860d9e4f7cb4ed",
+      "size": 18568
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\7. Pisos\\7.2 WPC\\ALBANY CREEK.jpg",
+      "clean_name": "7. pisos/wpc/albany creek.jpg",
+      "md5": "74a4db2316fabcf7245d86d115b68cd6",
+      "size": 15831
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\7. Pisos\\7.2 WPC\\NORWELL.jpg",
+      "clean_name": "7. pisos/wpc/norwell.jpg",
+      "md5": "c7e1b6e7abe44bc28428535e6aceebab",
+      "size": 32094
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\7. Pisos\\7.2 WPC\\HAMPTON.jpg",
+      "clean_name": "7. pisos/wpc/hampton.jpg",
+      "md5": "9db57159f838560b50258d58b9760179",
+      "size": 37162
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\7. Pisos\\7.3 SPC\\EXPRESSO.jpg",
+      "clean_name": "7. pisos/spc/expresso.jpg",
+      "md5": "6c3e98461be40d62a88f42c844477285",
+      "size": 253283
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\7. Pisos\\7.3 SPC\\CONCRETE LITE.jpg",
+      "clean_name": "7. pisos/spc/concrete lite.jpg",
+      "md5": "0790d969539c4288dc88e58afd45c7a0",
+      "size": 73591
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\7. Pisos\\7.3 SPC\\AMAZON.jpg",
+      "clean_name": "7. pisos/spc/amazon.jpg",
+      "md5": "dfd25ae1f6050a75b713f12158117994",
+      "size": 267594
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\7. Pisos\\7.3 SPC\\SILVERSTONE.jpg",
+      "clean_name": "7. pisos/spc/silverstone.jpg",
+      "md5": "909f59ba864e7ec2261b2a2bf794f978",
+      "size": 238012
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\7. Pisos\\7.3 SPC\\ASHLAR GRAY.jpg",
+      "clean_name": "7. pisos/spc/ashlar gray.jpg",
+      "md5": "0032784f26f313cb2a631ced46132562",
+      "size": 215928
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\7. Pisos\\7.3 SPC\\MINERAL GRAY.jpg",
+      "clean_name": "7. pisos/spc/mineral gray.jpg",
+      "md5": "16e5ac831f0523865f714b052f46e950",
+      "size": 156340
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\7. Pisos\\7.3 SPC\\ASHLAR.jpg",
+      "clean_name": "7. pisos/spc/ashlar.jpg",
+      "md5": "43e8d3354f1f14cd0f94704c91daded4",
+      "size": 160789
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\7. Pisos\\7.3 SPC\\SILVESTER.jpg",
+      "clean_name": "7. pisos/spc/silvester.jpg",
+      "md5": "d6c3df25771d777ee7e6d5aabd86dd15",
+      "size": 242133
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\7. Pisos\\7.3 SPC\\PARKLAND.jpg",
+      "clean_name": "7. pisos/spc/parkland.jpg",
+      "md5": "e2602dfa1a9db70d03658c57780a59c8",
+      "size": 264283
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\7. Pisos\\7.3 SPC\\STERLING OAK.jpg",
+      "clean_name": "7. pisos/spc/sterling oak.jpg",
+      "md5": "037e8da37b2b4c33bd48424bb60d2965",
+      "size": 184909
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\7. Pisos\\7.3 SPC\\BANFF.jpg",
+      "clean_name": "7. pisos/spc/banff.jpg",
+      "md5": "b191d27b94971994b6323a230d5bf710",
+      "size": 224555
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\7. Pisos\\7.3 SPC\\NOMADIC.jpg",
+      "clean_name": "7. pisos/spc/nomadic.jpg",
+      "md5": "19156ddb6bd3d32400f373aad06da378",
+      "size": 339900
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\7. Pisos\\7.3 SPC\\COLORADO RUSH.jpg",
+      "clean_name": "7. pisos/spc/colorado rush.jpg",
+      "md5": "b7e167d4337b1568dab4bd99b974c7f4",
+      "size": 253101
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\7. Pisos\\7.3 SPC\\YOSEMITE.jpg",
+      "clean_name": "7. pisos/spc/yosemite.jpg",
+      "md5": "49876c00bcc3c2caf8af6e4d10a3238f",
+      "size": 73320
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\7. Pisos\\7.3 SPC\\TONGASS.jpg",
+      "clean_name": "7. pisos/spc/tongass.jpg",
+      "md5": "64356286c9d27369f92d7783bda04209",
+      "size": 72336
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\7. Pisos\\7.3 SPC\\JASPER.jpg",
+      "clean_name": "7. pisos/spc/jasper.jpg",
+      "md5": "d92d7495c5b984719ca5b31db74b8d93",
+      "size": 85287
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\7. Pisos\\7.3 SPC\\DELAMERE.jpg",
+      "clean_name": "7. pisos/spc/delamere.jpg",
+      "md5": "f3843cac5107bccbf16c6fdf9a4fd734",
+      "size": 69568
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\7. Pisos\\7.3 SPC\\DALBY.jpg",
+      "clean_name": "7. pisos/spc/dalby.jpg",
+      "md5": "8cb6df0119fe640d8e6936a8a7ac179c",
+      "size": 78816
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\7. Pisos\\7.3 SPC\\CONCRETE.jpg",
+      "clean_name": "7. pisos/spc/concrete.jpg",
+      "md5": "8c468baff1f96601614f08600e598ed6",
+      "size": 79174
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\7. Pisos\\7.3 SPC\\ALBERTA.jpg",
+      "clean_name": "7. pisos/spc/alberta.jpg",
+      "md5": "6a0505c1dd226ced96bd58c909383a51",
+      "size": 164019
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\7. Pisos\\7.3 SPC\\MOKA.jpg",
+      "clean_name": "7. pisos/spc/moka.jpg",
+      "md5": "2510b9bd31de4b5ac6e2f80eb342ee39",
+      "size": 141841
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\7. Pisos\\7.3 SPC\\FICHA TECNICA.jpg",
+      "clean_name": "7. pisos/spc/ficha tecnica.jpg",
+      "md5": "f447f90df9963a83cb491c3e6368674d",
+      "size": 28100
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\7. Pisos\\7.3 SPC\\CARAMEL.jpg",
+      "clean_name": "7. pisos/spc/caramel.jpg",
+      "md5": "256cb801f58008f3b51112f64e6af48c",
+      "size": 131173
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\7. Pisos\\7.4 Deck Sintetico\\FICHA TECNICA.jpg",
+      "clean_name": "7. pisos/deck sintetico/ficha tecnica.jpg",
+      "md5": "c52620d4b856140144a60beabde5ef45",
+      "size": 26922
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\7. Pisos\\7.4 Deck Sintetico\\MAPLE.jpg",
+      "clean_name": "7. pisos/deck sintetico/maple.jpg",
+      "md5": "a6e4f0558d069edfedefa411a5f6870e",
+      "size": 126050
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\7. Pisos\\7.4 Deck Sintetico\\TEAK.jpg",
+      "clean_name": "7. pisos/deck sintetico/teak.jpg",
+      "md5": "3d460258f707d4d3539a63d33809142a",
+      "size": 117108
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\7. Pisos\\7.4 Deck Sintetico\\WENGE.jpg",
+      "clean_name": "7. pisos/deck sintetico/wenge.jpg",
+      "md5": "6a095387825aa9079a73c48105032931",
+      "size": 114506
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\7. Pisos\\7.4 Deck Sintetico\\LIGHT GRAY.jpg",
+      "clean_name": "7. pisos/deck sintetico/light gray.jpg",
+      "md5": "0138ac4c6e6d3d216749c9bb3941617b",
+      "size": 114144
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\6. Vigas PVC\\6.1 Interior\\ficha tecnica.jpg",
+      "clean_name": "6. vigas pvc/interior/ficha tecnica.jpg",
+      "md5": "9c987abc23592919354ce3ebee1a8bbc",
+      "size": 83290
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\6. Vigas PVC\\6.1 Interior\\COPLE PARA VIGA 2.jpg",
+      "clean_name": "6. vigas pvc/interior/cople para viga 2.jpg",
+      "md5": "708ef5a0ddc329c4b06ef41ee7965873",
+      "size": 13260
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\6. Vigas PVC\\6.1 Interior\\COPLE PARA VIGA.jpg",
+      "clean_name": "6. vigas pvc/interior/cople para viga.jpg",
+      "md5": "6aaf79f76f855d78a0a6770a246dec03",
+      "size": 14061
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\6. Vigas PVC\\6.1 Interior\\SOPORTE PARA VIGA INTERIOR 100X50MM.jpg",
+      "clean_name": "6. vigas pvc/interior/soporte para viga interior 100x50mm.jpg",
+      "md5": "04286eb3337ae1d318fec739ffda87e4",
+      "size": 25100
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\6. Vigas PVC\\6.1 Interior\\RIO 1.jpg",
+      "clean_name": "6. vigas pvc/interior/rio 1.jpg",
+      "md5": "85e01d12d79b12dd109c3b3ec397ce00",
+      "size": 28685
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\6. Vigas PVC\\6.1 Interior\\BRASILIA 1.jpg",
+      "clean_name": "6. vigas pvc/interior/brasilia 1.jpg",
+      "md5": "ec45ee5fd720be1dd6a357061911d895",
+      "size": 31796
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\6. Vigas PVC\\6.1 Interior\\SAO PAULO 1.jpg",
+      "clean_name": "6. vigas pvc/interior/sao paulo 1.jpg",
+      "md5": "6dc7bed46bdba9721e454b7f56dcac13",
+      "size": 22286
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\6. Vigas PVC\\6.1 Interior\\BAHIA 1.jpg",
+      "clean_name": "6. vigas pvc/interior/bahia 1.jpg",
+      "md5": "4da548d9372559d8226463df52b9edff",
+      "size": 26330
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\6. Vigas PVC\\6.1 Interior\\RIO.jpg",
+      "clean_name": "6. vigas pvc/interior/rio.jpg",
+      "md5": "a2a4661777512f995b7bd2367531cda7",
+      "size": 36549
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\6. Vigas PVC\\6.1 Interior\\BRASILIA.jpg",
+      "clean_name": "6. vigas pvc/interior/brasilia.jpg",
+      "md5": "ac5fcb03e55b4b9a3a45cae278f6251e",
+      "size": 39709
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\6. Vigas PVC\\6.1 Interior\\SAO PAULO.jpg",
+      "clean_name": "6. vigas pvc/interior/sao paulo.jpg",
+      "md5": "7837f92317a26d27853a555cf7e7d830",
+      "size": 26687
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\6. Vigas PVC\\6.1 Interior\\BAHIA.jpg",
+      "clean_name": "6. vigas pvc/interior/bahia.jpg",
+      "md5": "a76b10bc9263bfeefae1129011567265",
+      "size": 30792
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\6. Vigas PVC\\6.2 Exterior\\DARK BLACK.jpg",
+      "clean_name": "6. vigas pvc/exterior/dark black.jpg",
+      "md5": "65300c1ee7fbf38162c946c8a6f54484",
+      "size": 34999
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\6. Vigas PVC\\6.2 Exterior\\Ficha TEcnica.jpg",
+      "clean_name": "6. vigas pvc/exterior/ficha tecnica.jpg",
+      "md5": "3b65b047d08b1c882553a6ef4025432c",
+      "size": 60570
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\6. Vigas PVC\\6.2 Exterior\\TEAK.jpg",
+      "clean_name": "6. vigas pvc/exterior/teak.jpg",
+      "md5": "81e14f935431b2ed78f50a0e382e94b2",
+      "size": 40619
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\6. Vigas PVC\\6.2 Exterior\\SOPORTE GIRATORIO PARA VIGA EXTERIOR.jpg",
+      "clean_name": "6. vigas pvc/exterior/soporte giratorio para viga exterior.jpg",
+      "md5": "a494e6884a80af87570b3178cc6c6866",
+      "size": 47017
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\6. Vigas PVC\\6.2 Exterior\\REDWOOD.jpg",
+      "clean_name": "6. vigas pvc/exterior/redwood.jpg",
+      "md5": "32142f5c69c00e3f291f2531f6f1a6ac",
+      "size": 40130
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\8. Zacate\\8.1 Follaje Sintetico\\JAZMIN.jpg",
+      "clean_name": "8. zacate/follaje sintetico/jazmin.jpg",
+      "md5": "f76ac4b28ffc3ed8e4a1b5507c3d50c9",
+      "size": 200898
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\8. Zacate\\8.1 Follaje Sintetico\\GRECIA.jpg",
+      "clean_name": "8. zacate/follaje sintetico/grecia.jpg",
+      "md5": "5813843ac59be6edd5758a1acdeffaf8",
+      "size": 137265
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\8. Zacate\\8.1 Follaje Sintetico\\FICHA TECNICA.jpg",
+      "clean_name": "8. zacate/follaje sintetico/ficha tecnica.jpg",
+      "md5": "26da78898e5019249d6f50bac10f699f",
+      "size": 12838
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\8. Zacate\\8.1 Follaje Sintetico\\AMAZONAS-C.jpg",
+      "clean_name": "8. zacate/follaje sintetico/amazonas-c.jpg",
+      "md5": "37cd958524dc5b2459787275770a53ed",
+      "size": 132505
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\8. Zacate\\8.1 Follaje Sintetico\\AMAZONAS-B.jpg",
+      "clean_name": "8. zacate/follaje sintetico/amazonas-b.jpg",
+      "md5": "3b13fb9d0be3743de010ba99cb93f8df",
+      "size": 108742
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\8. Zacate\\8.1 Follaje Sintetico\\LAUREL DORADO.jpg",
+      "clean_name": "8. zacate/follaje sintetico/laurel dorado.jpg",
+      "md5": "3be728a7715a0e9f25b602a16f24d658",
+      "size": 619227
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\8. Zacate\\8.1 Follaje Sintetico\\ARRAYAN VERDE.jpg",
+      "clean_name": "8. zacate/follaje sintetico/arrayan verde.jpg",
+      "md5": "3d5dee37548980eeead8b58d116d5e80",
+      "size": 181334
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\8. Zacate\\8.1 Follaje Sintetico\\AMAZONAS-A.jpg",
+      "clean_name": "8. zacate/follaje sintetico/amazonas-a.jpg",
+      "md5": "6c4ba42b24e5b68038f672a0cfc0e4b3",
+      "size": 120183
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\8. Zacate\\8.1 Follaje Sintetico\\ARRAYAN ROJO.jpg",
+      "clean_name": "8. zacate/follaje sintetico/arrayan rojo.jpg",
+      "md5": "55ab05cdc1f31dcaafac6ba98b057d36",
+      "size": 209602
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\8. Zacate\\8.1 Follaje Sintetico\\ARRAYAN NATURAL.jpg",
+      "clean_name": "8. zacate/follaje sintetico/arrayan natural.jpg",
+      "md5": "ce2c953f37984f46173ec4684168c224",
+      "size": 175902
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\8. Zacate\\8.1 Follaje Sintetico\\ARRAYAN MORADO.jpg",
+      "clean_name": "8. zacate/follaje sintetico/arrayan morado.jpg",
+      "md5": "17b6d07921da919fc0ea2a3b47028381",
+      "size": 205586
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\8. Zacate\\8.1 Follaje Sintetico\\ARRAYAN AMARILLO.jpg",
+      "clean_name": "8. zacate/follaje sintetico/arrayan amarillo.jpg",
+      "md5": "3b225dd4bee81a9349762c55e7fff71f",
+      "size": 219906
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\8. Zacate\\8.1 Follaje Sintetico\\BRUSELAS.jpg",
+      "clean_name": "8. zacate/follaje sintetico/bruselas.jpg",
+      "md5": "6426af54b9cdd1d2b77afe7efa680f03",
+      "size": 129955
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\8. Zacate\\8.1 Follaje Sintetico\\AMSTERDAM.jpg",
+      "clean_name": "8. zacate/follaje sintetico/amsterdam.jpg",
+      "md5": "e1bdf71348e58895e8325d04bb191bcd",
+      "size": 135470
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\8. Zacate\\8.1 Follaje Sintetico\\TREBOL.jpg",
+      "clean_name": "8. zacate/follaje sintetico/trebol.jpg",
+      "md5": "74a9219ace3f75e8f90da83314f308b9",
+      "size": 127163
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\8. Zacate\\8.1 Follaje Sintetico\\SIBERIA.jpg",
+      "clean_name": "8. zacate/follaje sintetico/siberia.jpg",
+      "md5": "16286cd7c1b05373f69acabd40b01b75",
+      "size": 129052
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\8. Zacate\\8.1 Follaje Sintetico\\SEVILLA.jpg",
+      "clean_name": "8. zacate/follaje sintetico/sevilla.jpg",
+      "md5": "d8ab0e641e14bc115d22479a38088912",
+      "size": 208074
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\8. Zacate\\8.1 Follaje Sintetico\\PERSIA.jpg",
+      "clean_name": "8. zacate/follaje sintetico/persia.jpg",
+      "md5": "5a867a6d89b731968bc31225fd000a25",
+      "size": 221868
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\8. Zacate\\8.1 Follaje Sintetico\\MILAN.jpg",
+      "clean_name": "8. zacate/follaje sintetico/milan.jpg",
+      "md5": "b86028f53423f80c8d89b0e5fab11468",
+      "size": 211221
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\8. Zacate\\8.1 Follaje Sintetico\\MENTA.jpg",
+      "clean_name": "8. zacate/follaje sintetico/menta.jpg",
+      "md5": "e0c353743b7c5ac97cdca4f9fc6a290f",
+      "size": 170945
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\8. Zacate\\8.2 Pasto Recreativo\\TG-50-ANAKENA.jpg",
+      "clean_name": "8. zacate/pasto recreativo/tg-50-anakena.jpg",
+      "md5": "0c6725f739e13b5503c3c247ea0f6a8f",
+      "size": 88058
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\8. Zacate\\8.2 Pasto Recreativo\\TG-45-GULHI.jpg",
+      "clean_name": "8. zacate/pasto recreativo/tg-45-gulhi.jpg",
+      "md5": "3ff4a1ce3966fd781024bf49bef557d1",
+      "size": 86898
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\8. Zacate\\8.2 Pasto Recreativo\\TG-40-BALI.jpg",
+      "clean_name": "8. zacate/pasto recreativo/tg-40-bali.jpg",
+      "md5": "cc43ad390dd0a32a4f68cdc29917c8dc",
+      "size": 81622
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\8. Zacate\\8.2 Pasto Recreativo\\TG-35-TULUM.jpg",
+      "clean_name": "8. zacate/pasto recreativo/tg-35-tulum.jpg",
+      "md5": "ce9ae9373ecc8066ec7374152733130c",
+      "size": 82856
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\8. Zacate\\8.2 Pasto Recreativo\\TG-30-MAUI.jpg",
+      "clean_name": "8. zacate/pasto recreativo/tg-30-maui.jpg",
+      "md5": "bff100ed76cbc9ae3c126132de105cac",
+      "size": 69992
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\8. Zacate\\8.2 Pasto Recreativo\\TG-25-CANCUN.jpg",
+      "clean_name": "8. zacate/pasto recreativo/tg-25-cancun.jpg",
+      "md5": "c00d8d1a35c14a92c676eeeeea02e53e",
+      "size": 63103
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\8. Zacate\\8.2 Pasto Recreativo\\TG-20-BERMUDA.jpg",
+      "clean_name": "8. zacate/pasto recreativo/tg-20-bermuda.jpg",
+      "md5": "22c1ae9b5e413a0a92671bbf99258214",
+      "size": 61135
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\8. Zacate\\8.2 Pasto Recreativo\\TG-18-SUMMER.jpg",
+      "clean_name": "8. zacate/pasto recreativo/tg-18-summer.jpg",
+      "md5": "85d6a86036b2b5bc5e53536cf3c90005",
+      "size": 79179
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\8. Zacate\\8.2 Pasto Recreativo\\TG-10-ACA.jpg",
+      "clean_name": "8. zacate/pasto recreativo/tg-10-aca.jpg",
+      "md5": "239b1b3e29ea15a3aa416a65f0e93a1b",
+      "size": 72032
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\8. Zacate\\8.2 Pasto Recreativo\\FICHA TECNICA.jpg",
+      "clean_name": "8. zacate/pasto recreativo/ficha tecnica.jpg",
+      "md5": "8f4f06b4d6c3e6818c23b5c91105e846",
+      "size": 64623
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\8. Zacate\\8.2 Pasto Recreativo\\TG-07-ARUBA.jpg",
+      "clean_name": "8. zacate/pasto recreativo/tg-07-aruba.jpg",
+      "md5": "b57633eba34419bdddd0dac308c83423",
+      "size": 64528
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\2. Lambrin WPC\\2.1 Lambrin Interior\\AMANECHER.jpg",
+      "clean_name": "2. lambrin wpc/lambrin interior/amanecher.jpg",
+      "md5": "bb436180766d93ffee8f21dd7057672c",
+      "size": 40879
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\2. Lambrin WPC\\2.1 Lambrin Interior\\Amizade.jpg",
+      "clean_name": "2. lambrin wpc/lambrin interior/amizade.jpg",
+      "md5": "227de2fe2567bfec5d08d4ab74f216f1",
+      "size": 62380
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\2. Lambrin WPC\\2.1 Lambrin Interior\\ANGULO WPC PARA INTERIOR.jpg",
+      "clean_name": "2. lambrin wpc/lambrin interior/angulo wpc para interior.jpg",
+      "md5": "f8e9c5dc0d99b98b34b4cb0bf5b86338",
+      "size": 140113
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\2. Lambrin WPC\\2.1 Lambrin Interior\\BAHIA.jpg",
+      "clean_name": "2. lambrin wpc/lambrin interior/bahia.jpg",
+      "md5": "860fff8c5bccbc7adf8c41f120d1eaaa",
+      "size": 86121
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\2. Lambrin WPC\\2.1 Lambrin Interior\\Brasilia.jpg",
+      "clean_name": "2. lambrin wpc/lambrin interior/brasilia.jpg",
+      "md5": "6fc449d1b5dff07590816280581a6655",
+      "size": 104150
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\2. Lambrin WPC\\2.1 Lambrin Interior\\Cerezo Macapa.jpg",
+      "clean_name": "2. lambrin wpc/lambrin interior/cerezo macapa.jpg",
+      "md5": "03fc45191bc70e175daadb42206c0ebb",
+      "size": 17709
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\2. Lambrin WPC\\2.1 Lambrin Interior\\Estrelado.jpg",
+      "clean_name": "2. lambrin wpc/lambrin interior/estrelado.jpg",
+      "md5": "f68c2cb5f923e286faf6002fe59c8dcd",
+      "size": 44722
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\2. Lambrin WPC\\2.1 Lambrin Interior\\Fortaleza.jpg",
+      "clean_name": "2. lambrin wpc/lambrin interior/fortaleza.jpg",
+      "md5": "f62d6446cd229f063b9d855ec7757e7d",
+      "size": 102342
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\2. Lambrin WPC\\2.1 Lambrin Interior\\Manaos.jpg",
+      "clean_name": "2. lambrin wpc/lambrin interior/manaos.jpg",
+      "md5": "1023d63aa26b6ae2e1b056b2aef6096a",
+      "size": 39356
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\2. Lambrin WPC\\2.1 Lambrin Interior\\Nogal Olinda.jpg",
+      "clean_name": "2. lambrin wpc/lambrin interior/nogal olinda.jpg",
+      "md5": "280dfe60f64757bd4b3035909df10a4d",
+      "size": 15731
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\2. Lambrin WPC\\2.1 Lambrin Interior\\Nuvem.jpg",
+      "clean_name": "2. lambrin wpc/lambrin interior/nuvem.jpg",
+      "md5": "0ced96531b7043f240a88dae46551235",
+      "size": 110938
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\2. Lambrin WPC\\2.1 Lambrin Interior\\Ouro Preto.jpg",
+      "clean_name": "2. lambrin wpc/lambrin interior/ouro preto.jpg",
+      "md5": "9a2a98c7764a21531222fe841faf1f97",
+      "size": 53391
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\2. Lambrin WPC\\2.1 Lambrin Interior\\Ribeira.jpg",
+      "clean_name": "2. lambrin wpc/lambrin interior/ribeira.jpg",
+      "md5": "50be917a43596aad95a4893e35b48716",
+      "size": 107466
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\2. Lambrin WPC\\2.1 Lambrin Interior\\Río.jpg",
+      "clean_name": "2. lambrin wpc/lambrin interior/río.jpg",
+      "md5": "ca8039e94369d327ed9df8a9c964dacf",
+      "size": 96587
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\2. Lambrin WPC\\2.1 Lambrin Interior\\Rodeiro.jpg",
+      "clean_name": "2. lambrin wpc/lambrin interior/rodeiro.jpg",
+      "md5": "043ce274f248bfc10c21620d8545f58f",
+      "size": 98704
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\2. Lambrin WPC\\2.1 Lambrin Interior\\Sabeiro.jpg",
+      "clean_name": "2. lambrin wpc/lambrin interior/sabeiro.jpg",
+      "md5": "793fec5005a15e85eb419319715954f8",
+      "size": 117763
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\2. Lambrin WPC\\2.1 Lambrin Interior\\Sao Paulo.jpg",
+      "clean_name": "2. lambrin wpc/lambrin interior/sao paulo.jpg",
+      "md5": "2b2bb8bec53d0b46235400f5af66c890",
+      "size": 78701
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\2. Lambrin WPC\\2.1 Lambrin Interior\\Sonho.jpg",
+      "clean_name": "2. lambrin wpc/lambrin interior/sonho.jpg",
+      "md5": "02282dee56bf4458bb469c3c4a4376e7",
+      "size": 69059
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\2. Lambrin WPC\\2.1 Lambrin Interior\\Teak Aracaju.jpg",
+      "clean_name": "2. lambrin wpc/lambrin interior/teak aracaju.jpg",
+      "md5": "ef0bab77c6ecb353ee811da676f70d3b",
+      "size": 22660
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\2. Lambrin WPC\\2.1 Lambrin Interior\\FICHA ECNICA.png",
+      "clean_name": "2. lambrin wpc/lambrin interior/ficha ecnica.png",
+      "md5": "acd6f41fea45ca729178e8c297cfe8b1",
+      "size": 30222
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\2. Lambrin WPC\\2.2 Lambrin Exterior\\Esquinero.jpg",
+      "clean_name": "2. lambrin wpc/lambrin exterior/esquinero.jpg",
+      "md5": "871300b6b334c7de25b92d3ac0526bf2",
+      "size": 115652
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\2. Lambrin WPC\\2.2 Lambrin Exterior\\CHARCOAL.jpg",
+      "clean_name": "2. lambrin wpc/lambrin exterior/charcoal.jpg",
+      "md5": "3471badd0ee5234ae1acb0e55c0212fb",
+      "size": 102469
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\2. Lambrin WPC\\2.2 Lambrin Exterior\\DARK BLACK.jpg",
+      "clean_name": "2. lambrin wpc/lambrin exterior/dark black.jpg",
+      "md5": "e3adc79e5c5ee99ca79ac8e65ef8657f",
+      "size": 134291
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\2. Lambrin WPC\\2.2 Lambrin Exterior\\REDWOOD.jpg",
+      "clean_name": "2. lambrin wpc/lambrin exterior/redwood.jpg",
+      "md5": "8c47e27af702c553a7d66d1ad1b385bd",
+      "size": 103347
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\2. Lambrin WPC\\2.2 Lambrin Exterior\\SLIVER GRAY.jpg",
+      "clean_name": "2. lambrin wpc/lambrin exterior/sliver gray.jpg",
+      "md5": "6dddea537257797d1aee282717e486e5",
+      "size": 78972
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\2. Lambrin WPC\\2.2 Lambrin Exterior\\TEAK.jpg",
+      "clean_name": "2. lambrin wpc/lambrin exterior/teak.jpg",
+      "md5": "725214320e529cc6d7968fcaf9dbd036",
+      "size": 96674
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\2. Lambrin WPC\\2.5 Media luna PS\\FICHA TECNICA.jpg",
+      "clean_name": "2. lambrin wpc/media luna ps/ficha tecnica.jpg",
+      "md5": "6b17f65cf014a84d3aba1cdf101a44c8",
+      "size": 43022
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\2. Lambrin WPC\\2.5 Media luna PS\\GILDARA.jpg",
+      "clean_name": "2. lambrin wpc/media luna ps/gildara.jpg",
+      "md5": "aaf1a2e1906085e47562026f0a181748",
+      "size": 43489
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\2. Lambrin WPC\\2.5 Media luna PS\\AURELI.jpg",
+      "clean_name": "2. lambrin wpc/media luna ps/aureli.jpg",
+      "md5": "36d9749a407bcaebb84f11fc8f7f836f",
+      "size": 44232
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\2. Lambrin WPC\\2.5 Media luna PS\\ELARA.jpg",
+      "clean_name": "2. lambrin wpc/media luna ps/elara.jpg",
+      "md5": "1536d43591a3569f684d5127ec9b01c5",
+      "size": 59159
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\2. Lambrin WPC\\2.5 Media luna PS\\CRESSIDA.jpg",
+      "clean_name": "2. lambrin wpc/media luna ps/cressida.jpg",
+      "md5": "9125a6499b97fd92c232818118648548",
+      "size": 81259
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\2. Lambrin WPC\\2.3 Desigual\\Bahia.jpg",
+      "clean_name": "2. lambrin wpc/desigual/bahia.jpg",
+      "md5": "b924374d440e84d41fe9bacf06c15f4b",
+      "size": 72006
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\2. Lambrin WPC\\2.3 Desigual\\Sao Paulo.jpg",
+      "clean_name": "2. lambrin wpc/desigual/sao paulo.jpg",
+      "md5": "b61f9c51a1617113b73f972bb2d2091d",
+      "size": 62031
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\2. Lambrin WPC\\2.3 Desigual\\Rio.jpg",
+      "clean_name": "2. lambrin wpc/desigual/rio.jpg",
+      "md5": "c12a356104c5ac5262f36dc39ef7cda0",
+      "size": 93448
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\2. Lambrin WPC\\2.3 Desigual\\Parota.jpg",
+      "clean_name": "2. lambrin wpc/desigual/parota.jpg",
+      "md5": "c37f2f15455613cd34980bb68f6b9c78",
+      "size": 79510
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\2. Lambrin WPC\\2.3 Desigual\\Brasilia.jpg",
+      "clean_name": "2. lambrin wpc/desigual/brasilia.jpg",
+      "md5": "52832d942e26698ce8fc627ed896136e",
+      "size": 89214
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\2. Lambrin WPC\\2.4 Media luna\\ficha tecnica.jpg",
+      "clean_name": "2. lambrin wpc/media luna/ficha tecnica.jpg",
+      "md5": "17fcefe035641f0800d79463d8232a3e",
+      "size": 41458
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\2. Lambrin WPC\\2.4 Media luna\\Sao Paulo.jpg",
+      "clean_name": "2. lambrin wpc/media luna/sao paulo.jpg",
+      "md5": "f05f161cd36b1560643fcf85c188fc28",
+      "size": 101680
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\2. Lambrin WPC\\2.4 Media luna\\Bahia.jpg",
+      "clean_name": "2. lambrin wpc/media luna/bahia.jpg",
+      "md5": "487cb47b8a864f70324e1f1de77d5c15",
+      "size": 112775
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\2. Lambrin WPC\\2.4 Media luna\\rio.jpg",
+      "clean_name": "2. lambrin wpc/media luna/rio.jpg",
+      "md5": "d618a01c4153da76d4ac580797c719c3",
+      "size": 138756
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\2. Lambrin WPC\\2.4 Media luna\\brasilia.jpg",
+      "clean_name": "2. lambrin wpc/media luna/brasilia.jpg",
+      "md5": "2d694ed2644abfe0894e99f9eb34747c",
+      "size": 139390
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\2. Lambrin WPC\\2.4 Media luna\\azeituna.jpg",
+      "clean_name": "2. lambrin wpc/media luna/azeituna.jpg",
+      "md5": "ecfb03caf5defb911cd272be2abce821",
+      "size": 48020
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\5. Paneles tridimensionales\\5.1 Blanco\\Austin.jpg",
+      "clean_name": "5. paneles tridimensionales/blanco/austin.jpg",
+      "md5": "a1d22f073c51656b0c1667fd8c406d5a",
+      "size": 33643
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\5. Paneles tridimensionales\\5.1 Blanco\\Boston.jpg",
+      "clean_name": "5. paneles tridimensionales/blanco/boston.jpg",
+      "md5": "07f07609a03dad5963a7b5bf72b09bf8",
+      "size": 25184
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\5. Paneles tridimensionales\\5.1 Blanco\\Charleston.jpg",
+      "clean_name": "5. paneles tridimensionales/blanco/charleston.jpg",
+      "md5": "168eb1fbd3d28eb368365ff579701c29",
+      "size": 45223
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\5. Paneles tridimensionales\\5.1 Blanco\\Charlotte.jpg",
+      "clean_name": "5. paneles tridimensionales/blanco/charlotte.jpg",
+      "md5": "f40493db80a83cbb8c1a5f587e614d02",
+      "size": 25692
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\5. Paneles tridimensionales\\5.1 Blanco\\Chicago.jpg",
+      "clean_name": "5. paneles tridimensionales/blanco/chicago.jpg",
+      "md5": "c2a0f7dd568c0745dcb456e9bd0e6b15",
+      "size": 27219
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\5. Paneles tridimensionales\\5.1 Blanco\\Cleveland.jpg",
+      "clean_name": "5. paneles tridimensionales/blanco/cleveland.jpg",
+      "md5": "904c3ee4e382c320b8ac31106e6d4a86",
+      "size": 29868
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\5. Paneles tridimensionales\\5.1 Blanco\\Detroit.jpg",
+      "clean_name": "5. paneles tridimensionales/blanco/detroit.jpg",
+      "md5": "b9e78c177048bed853f4d59567385fbf",
+      "size": 82747
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\5. Paneles tridimensionales\\5.1 Blanco\\Columbus.jpg",
+      "clean_name": "5. paneles tridimensionales/blanco/columbus.jpg",
+      "md5": "d0035b8909f46b9696e30c7cde472e87",
+      "size": 23614
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\5. Paneles tridimensionales\\5.1 Blanco\\Dallas.jpg",
+      "clean_name": "5. paneles tridimensionales/blanco/dallas.jpg",
+      "md5": "7a6718ff5feacc181615b56461f56c8b",
+      "size": 22736
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\5. Paneles tridimensionales\\5.1 Blanco\\Denver.jpg",
+      "clean_name": "5. paneles tridimensionales/blanco/denver.jpg",
+      "md5": "3331470dc3978aae360fbf542ca2b513",
+      "size": 71301
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\5. Paneles tridimensionales\\5.1 Blanco\\Filadelfia.jpg",
+      "clean_name": "5. paneles tridimensionales/blanco/filadelfia.jpg",
+      "md5": "e8eb0b3bc17ec065557961c52d1cf01e",
+      "size": 26030
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\5. Paneles tridimensionales\\5.1 Blanco\\Frisco.jpg",
+      "clean_name": "5. paneles tridimensionales/blanco/frisco.jpg",
+      "md5": "9dd12eeb2e7e74a7ca8e002c0b1141a4",
+      "size": 24880
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\5. Paneles tridimensionales\\5.1 Blanco\\Houston.jpg",
+      "clean_name": "5. paneles tridimensionales/blanco/houston.jpg",
+      "md5": "7262a9418c25a485ff4e6896ffbdeb10",
+      "size": 23999
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\5. Paneles tridimensionales\\5.1 Blanco\\ficha tecnica.jpg",
+      "clean_name": "5. paneles tridimensionales/blanco/ficha tecnica.jpg",
+      "md5": "9f10a5e502bda15a29290f637e847bd4",
+      "size": 46780
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\5. Paneles tridimensionales\\5.2 Grises\\Oklahoma.jpg",
+      "clean_name": "5. paneles tridimensionales/grises/oklahoma.jpg",
+      "md5": "ebb2dab2df0a3ef686fce8311a7a5972",
+      "size": 51913
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\5. Paneles tridimensionales\\5.2 Grises\\ficha tecnica.jpg",
+      "clean_name": "5. paneles tridimensionales/grises/ficha tecnica.jpg",
+      "md5": "59c13dab7567f9cfd9316be57b2c986d",
+      "size": 51266
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\5. Paneles tridimensionales\\5.2 Grises\\Orlando.jpg",
+      "clean_name": "5. paneles tridimensionales/grises/orlando.jpg",
+      "md5": "9d100008005eb2a6bf2d4956ce346cdf",
+      "size": 104852
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\5. Paneles tridimensionales\\5.2 Grises\\Minneapolis.jpg",
+      "clean_name": "5. paneles tridimensionales/grises/minneapolis.jpg",
+      "md5": "83e7900d4e6104149c05b9c3ee9dabe6",
+      "size": 68190
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\5. Paneles tridimensionales\\5.3 Madera\\Ficha Tecnica.jpg",
+      "clean_name": "5. paneles tridimensionales/madera/ficha tecnica.jpg",
+      "md5": "dc84de8f2a50547ddb8a50bc34d54f3c",
+      "size": 45983
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\5. Paneles tridimensionales\\5.3 Madera\\Raleigh.jpg",
+      "clean_name": "5. paneles tridimensionales/madera/raleigh.jpg",
+      "md5": "2e07d3cb68cedfb954f2520fa15b1a73",
+      "size": 417087
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\5. Paneles tridimensionales\\5.3 Madera\\Reno.jpg",
+      "clean_name": "5. paneles tridimensionales/madera/reno.jpg",
+      "md5": "46aebebad8fcf28adab7eed31f283ff0",
+      "size": 136264
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\5. Paneles tridimensionales\\5.3 Madera\\Providence.jpg",
+      "clean_name": "5. paneles tridimensionales/madera/providence.jpg",
+      "md5": "5979cc8610b04b0165bd3d24d52ebf3d",
+      "size": 139525
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\5. Paneles tridimensionales\\5.3 Madera\\Portland.jpg",
+      "clean_name": "5. paneles tridimensionales/madera/portland.jpg",
+      "md5": "1217d98dc71aade4fb3ef268269c843d",
+      "size": 157568
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\5. Paneles tridimensionales\\5.4 Negro\\ficha tecnica.jpg",
+      "clean_name": "5. paneles tridimensionales/negro/ficha tecnica.jpg",
+      "md5": "41943d7923ea41900f83b548a56a3169",
+      "size": 46849
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\5. Paneles tridimensionales\\5.4 Negro\\seattle.jpg",
+      "clean_name": "5. paneles tridimensionales/negro/seattle.jpg",
+      "md5": "6d2bc9cbe0594356348664cf0afbe6c7",
+      "size": 56572
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\5. Paneles tridimensionales\\5.5 Oro\\Laredo.jpg",
+      "clean_name": "5. paneles tridimensionales/oro/laredo.jpg",
+      "md5": "b0ee402858e03e1ec247f73e22a334b8",
+      "size": 33566
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\5. Paneles tridimensionales\\5.5 Oro\\ficha tecnica.jpg",
+      "clean_name": "5. paneles tridimensionales/oro/ficha tecnica.jpg",
+      "md5": "036a1ed99ccb1773f4418773e96535c6",
+      "size": 46071
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\5. Paneles tridimensionales\\5.5 Oro\\Miami.jpg",
+      "clean_name": "5. paneles tridimensionales/oro/miami.jpg",
+      "md5": "1e9ea84af9f141292dcad24a1310825b",
+      "size": 112035
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\5. Paneles tridimensionales\\5.5 Oro\\memphis.jpg",
+      "clean_name": "5. paneles tridimensionales/oro/memphis.jpg",
+      "md5": "229808b2ad23c16c50582dbc362e41a2",
+      "size": 45831
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\9 Cladding\\ficha tecnica.jpg",
+      "clean_name": "cladding/ficha tecnica.jpg",
+      "md5": "ceeca5f781d9beee99568ac6436b9877",
+      "size": 29121
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\9 Cladding\\perfil plano25X3X2900MM.jpg",
+      "clean_name": "cladding/perfil plano25x3x2900mm.jpg",
+      "md5": "3216178332ffdb791b504e4e04e5029f",
+      "size": 18125
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\9 Cladding\\Esquiner 35X45X2900MM.jpg",
+      "clean_name": "cladding/esquiner 35x45x2900mm.jpg",
+      "md5": "7488654ecceafdb9996d3268d4d5cd47",
+      "size": 21188
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\9 Cladding\\HICKORY.jpg",
+      "clean_name": "cladding/hickory.jpg",
+      "md5": "5967b6bf1864a72fa0277b3f1c50284c",
+      "size": 56951
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\9 Cladding\\WENGE.jpg",
+      "clean_name": "cladding/wenge.jpg",
+      "md5": "d1642c79354a387f1877a3946fb693e5",
+      "size": 28701
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\9 Cladding\\MAPLE.jpg",
+      "clean_name": "cladding/maple.jpg",
+      "md5": "2500e80b40ab975fa3902dbd639cec8d",
+      "size": 33309
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\9 Cladding\\TEAK.jpg",
+      "clean_name": "cladding/teak.jpg",
+      "md5": "604837a2f81e883868a85062749a4750",
+      "size": 44732
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\9 Cladding\\REDWOOD.jpg",
+      "clean_name": "cladding/redwood.jpg",
+      "md5": "4b0a7fc4659aa30b341de02bd3499290",
+      "size": 44492
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\9 Cladding\\MERBAU.jpg",
+      "clean_name": "cladding/merbau.jpg",
+      "md5": "22db38f492680bc6f3294c958ee7c486",
+      "size": 52074
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\9 Cladding\\TASMANIA.jpg",
+      "clean_name": "cladding/tasmania.jpg",
+      "md5": "fbc1de9f897bfb68a99be72e595bb01a",
+      "size": 61571
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\9 Cladding\\9.1 Placa tipo roca\\ficha Tecnica.jpg",
+      "clean_name": "cladding/placa tipo roca/ficha tecnica.jpg",
+      "md5": "67300edfaa6a6d875a83a6df02cad366",
+      "size": 28259
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\9 Cladding\\9.1 Placa tipo roca\\GRAY.jpg",
+      "clean_name": "cladding/placa tipo roca/gray.jpg",
+      "md5": "f537d8a8f5904206e9702d9a9bab8fbd",
+      "size": 38155
+    },
+    {
+      "catalogo_path": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL\\9 Cladding\\9.1 Placa tipo roca\\BLACK.jpg",
+      "clean_name": "cladding/placa tipo roca/black.jpg",
+      "md5": "747625a8c72ce98657152c49582dc812",
+      "size": 21853
+    }
+  ],
+  "missing_in_catalogo": [
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\2-lambrin-wpc\\23-desigual\\Bahia.jpg",
+      "clean_name": "2-lambrin-wpc/23-desigual/bahia.jpg",
+      "md5": "b924374d440e84d41fe9bacf06c15f4b",
+      "size": 72006
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\2-lambrin-wpc\\23-desigual\\Brasilia.jpg",
+      "clean_name": "2-lambrin-wpc/23-desigual/brasilia.jpg",
+      "md5": "52832d942e26698ce8fc627ed896136e",
+      "size": 89214
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\2-lambrin-wpc\\23-desigual\\Parota.jpg",
+      "clean_name": "2-lambrin-wpc/23-desigual/parota.jpg",
+      "md5": "c37f2f15455613cd34980bb68f6b9c78",
+      "size": 79510
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\2-lambrin-wpc\\23-desigual\\Rio.jpg",
+      "clean_name": "2-lambrin-wpc/23-desigual/rio.jpg",
+      "md5": "c12a356104c5ac5262f36dc39ef7cda0",
+      "size": 93448
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\2-lambrin-wpc\\23-desigual\\Sao Paulo.jpg",
+      "clean_name": "2-lambrin-wpc/23-desigual/sao paulo.jpg",
+      "md5": "b61f9c51a1617113b73f972bb2d2091d",
+      "size": 62031
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\2-lambrin-wpc\\24-media-luna\\Bahia.jpg",
+      "clean_name": "2-lambrin-wpc/24-media-luna/bahia.jpg",
+      "md5": "487cb47b8a864f70324e1f1de77d5c15",
+      "size": 112775
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\2-lambrin-wpc\\24-media-luna\\Sao Paulo.jpg",
+      "clean_name": "2-lambrin-wpc/24-media-luna/sao paulo.jpg",
+      "md5": "f05f161cd36b1560643fcf85c188fc28",
+      "size": 101680
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\2-lambrin-wpc\\24-media-luna\\azeituna.jpg",
+      "clean_name": "2-lambrin-wpc/24-media-luna/azeituna.jpg",
+      "md5": "ecfb03caf5defb911cd272be2abce821",
+      "size": 48020
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\2-lambrin-wpc\\24-media-luna\\brasilia.jpg",
+      "clean_name": "2-lambrin-wpc/24-media-luna/brasilia.jpg",
+      "md5": "2d694ed2644abfe0894e99f9eb34747c",
+      "size": 139390
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\2-lambrin-wpc\\24-media-luna\\rio.jpg",
+      "clean_name": "2-lambrin-wpc/24-media-luna/rio.jpg",
+      "md5": "d618a01c4153da76d4ac580797c719c3",
+      "size": 138756
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\2-lambrin-wpc\\25-media-luna-ps\\AURELI.jpg",
+      "clean_name": "2-lambrin-wpc/25-media-luna-ps/aureli.jpg",
+      "md5": "36d9749a407bcaebb84f11fc8f7f836f",
+      "size": 44232
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\2-lambrin-wpc\\25-media-luna-ps\\CRESSIDA.jpg",
+      "clean_name": "2-lambrin-wpc/25-media-luna-ps/cressida.jpg",
+      "md5": "9125a6499b97fd92c232818118648548",
+      "size": 81259
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\2-lambrin-wpc\\25-media-luna-ps\\ELARA.jpg",
+      "clean_name": "2-lambrin-wpc/25-media-luna-ps/elara.jpg",
+      "md5": "1536d43591a3569f684d5127ec9b01c5",
+      "size": 59159
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\2-lambrin-wpc\\25-media-luna-ps\\GILDARA.jpg",
+      "clean_name": "2-lambrin-wpc/25-media-luna-ps/gildara.jpg",
+      "md5": "aaf1a2e1906085e47562026f0a181748",
+      "size": 43489
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\2-lambrin-wpc\\21-lambrin-interior\\AMANECHER.jpg",
+      "clean_name": "2-lambrin-wpc/21-lambrin-interior/amanecher.jpg",
+      "md5": "bb436180766d93ffee8f21dd7057672c",
+      "size": 40879
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\2-lambrin-wpc\\21-lambrin-interior\\ANGULO WPC PARA INTERIOR.jpg",
+      "clean_name": "2-lambrin-wpc/21-lambrin-interior/angulo wpc para interior.jpg",
+      "md5": "f8e9c5dc0d99b98b34b4cb0bf5b86338",
+      "size": 140113
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\2-lambrin-wpc\\21-lambrin-interior\\Amizade.jpg",
+      "clean_name": "2-lambrin-wpc/21-lambrin-interior/amizade.jpg",
+      "md5": "227de2fe2567bfec5d08d4ab74f216f1",
+      "size": 62380
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\2-lambrin-wpc\\21-lambrin-interior\\BAHIA.jpg",
+      "clean_name": "2-lambrin-wpc/21-lambrin-interior/bahia.jpg",
+      "md5": "860fff8c5bccbc7adf8c41f120d1eaaa",
+      "size": 86121
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\2-lambrin-wpc\\21-lambrin-interior\\Brasilia.jpg",
+      "clean_name": "2-lambrin-wpc/21-lambrin-interior/brasilia.jpg",
+      "md5": "6fc449d1b5dff07590816280581a6655",
+      "size": 104150
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\2-lambrin-wpc\\21-lambrin-interior\\Cerezo Macapa.jpg",
+      "clean_name": "2-lambrin-wpc/21-lambrin-interior/cerezo macapa.jpg",
+      "md5": "03fc45191bc70e175daadb42206c0ebb",
+      "size": 17709
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\2-lambrin-wpc\\21-lambrin-interior\\Estrelado.jpg",
+      "clean_name": "2-lambrin-wpc/21-lambrin-interior/estrelado.jpg",
+      "md5": "f68c2cb5f923e286faf6002fe59c8dcd",
+      "size": 44722
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\2-lambrin-wpc\\21-lambrin-interior\\Fortaleza.jpg",
+      "clean_name": "2-lambrin-wpc/21-lambrin-interior/fortaleza.jpg",
+      "md5": "f62d6446cd229f063b9d855ec7757e7d",
+      "size": 102342
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\2-lambrin-wpc\\21-lambrin-interior\\Manaos.jpg",
+      "clean_name": "2-lambrin-wpc/21-lambrin-interior/manaos.jpg",
+      "md5": "1023d63aa26b6ae2e1b056b2aef6096a",
+      "size": 39356
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\2-lambrin-wpc\\21-lambrin-interior\\Nogal Olinda.jpg",
+      "clean_name": "2-lambrin-wpc/21-lambrin-interior/nogal olinda.jpg",
+      "md5": "280dfe60f64757bd4b3035909df10a4d",
+      "size": 15731
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\2-lambrin-wpc\\21-lambrin-interior\\Nuvem.jpg",
+      "clean_name": "2-lambrin-wpc/21-lambrin-interior/nuvem.jpg",
+      "md5": "0ced96531b7043f240a88dae46551235",
+      "size": 110938
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\2-lambrin-wpc\\21-lambrin-interior\\Ouro Preto.jpg",
+      "clean_name": "2-lambrin-wpc/21-lambrin-interior/ouro preto.jpg",
+      "md5": "9a2a98c7764a21531222fe841faf1f97",
+      "size": 53391
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\2-lambrin-wpc\\21-lambrin-interior\\Ribeira.jpg",
+      "clean_name": "2-lambrin-wpc/21-lambrin-interior/ribeira.jpg",
+      "md5": "50be917a43596aad95a4893e35b48716",
+      "size": 107466
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\2-lambrin-wpc\\21-lambrin-interior\\Rodeiro.jpg",
+      "clean_name": "2-lambrin-wpc/21-lambrin-interior/rodeiro.jpg",
+      "md5": "043ce274f248bfc10c21620d8545f58f",
+      "size": 98704
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\2-lambrin-wpc\\21-lambrin-interior\\Río.jpg",
+      "clean_name": "2-lambrin-wpc/21-lambrin-interior/río.jpg",
+      "md5": "ca8039e94369d327ed9df8a9c964dacf",
+      "size": 96587
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\2-lambrin-wpc\\21-lambrin-interior\\Sabeiro.jpg",
+      "clean_name": "2-lambrin-wpc/21-lambrin-interior/sabeiro.jpg",
+      "md5": "793fec5005a15e85eb419319715954f8",
+      "size": 117763
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\2-lambrin-wpc\\21-lambrin-interior\\Sao Paulo.jpg",
+      "clean_name": "2-lambrin-wpc/21-lambrin-interior/sao paulo.jpg",
+      "md5": "2b2bb8bec53d0b46235400f5af66c890",
+      "size": 78701
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\2-lambrin-wpc\\21-lambrin-interior\\Sonho.jpg",
+      "clean_name": "2-lambrin-wpc/21-lambrin-interior/sonho.jpg",
+      "md5": "02282dee56bf4458bb469c3c4a4376e7",
+      "size": 69059
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\2-lambrin-wpc\\21-lambrin-interior\\Teak Aracaju.jpg",
+      "clean_name": "2-lambrin-wpc/21-lambrin-interior/teak aracaju.jpg",
+      "md5": "ef0bab77c6ecb353ee811da676f70d3b",
+      "size": 22660
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\2-lambrin-wpc\\22-lambrin-exterior\\CHARCOAL.jpg",
+      "clean_name": "2-lambrin-wpc/22-lambrin-exterior/charcoal.jpg",
+      "md5": "3471badd0ee5234ae1acb0e55c0212fb",
+      "size": 102469
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\2-lambrin-wpc\\22-lambrin-exterior\\DARK BLACK.jpg",
+      "clean_name": "2-lambrin-wpc/22-lambrin-exterior/dark black.jpg",
+      "md5": "e3adc79e5c5ee99ca79ac8e65ef8657f",
+      "size": 134291
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\2-lambrin-wpc\\22-lambrin-exterior\\Esquinero.jpg",
+      "clean_name": "2-lambrin-wpc/22-lambrin-exterior/esquinero.jpg",
+      "md5": "871300b6b334c7de25b92d3ac0526bf2",
+      "size": 115652
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\2-lambrin-wpc\\22-lambrin-exterior\\REDWOOD.jpg",
+      "clean_name": "2-lambrin-wpc/22-lambrin-exterior/redwood.jpg",
+      "md5": "8c47e27af702c553a7d66d1ad1b385bd",
+      "size": 103347
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\2-lambrin-wpc\\22-lambrin-exterior\\SLIVER GRAY.jpg",
+      "clean_name": "2-lambrin-wpc/22-lambrin-exterior/sliver gray.jpg",
+      "md5": "6dddea537257797d1aee282717e486e5",
+      "size": 78972
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\2-lambrin-wpc\\22-lambrin-exterior\\TEAK.jpg",
+      "clean_name": "2-lambrin-wpc/22-lambrin-exterior/teak.jpg",
+      "md5": "725214320e529cc6d7968fcaf9dbd036",
+      "size": 96674
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\3-revestimiento-flexible\\CONCRETO Aparente.jpg",
+      "clean_name": "3-revestimiento-flexible/concreto aparente.jpg",
+      "md5": "464162bd8a4d8d0be89f0517e51a02af",
+      "size": 330917
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\3-revestimiento-flexible\\Concreto Gris.jpg",
+      "clean_name": "3-revestimiento-flexible/concreto gris.jpg",
+      "md5": "1f062a3e38e6fbd880eee86af3603b3e",
+      "size": 33711
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\3-revestimiento-flexible\\Granito Blanco.jpg",
+      "clean_name": "3-revestimiento-flexible/granito blanco.jpg",
+      "md5": "89f903cb3127b12724ffaf8bd7d94ffd",
+      "size": 47191
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\3-revestimiento-flexible\\Granito Imperial Blanco.jpg",
+      "clean_name": "3-revestimiento-flexible/granito imperial blanco.jpg",
+      "md5": "22153f2848bde7a1710feaff8e9656b4",
+      "size": 34367
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\3-revestimiento-flexible\\Granito Oro.jpg",
+      "clean_name": "3-revestimiento-flexible/granito oro.jpg",
+      "md5": "6a66217388ad53fc0417896f4eb33163",
+      "size": 37027
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\3-revestimiento-flexible\\Madera Roble.jpeg",
+      "clean_name": "3-revestimiento-flexible/madera roble.jpeg",
+      "md5": "aae3b0c46172e93e9953f1f01378149d",
+      "size": 73162
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\4-plafon-pvc\\Cambridge.jpg",
+      "clean_name": "4-plafon-pvc/cambridge.jpg",
+      "md5": "b49976df32c3290a6791f2c58371e02f",
+      "size": 27031
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\4-plafon-pvc\\Liverpool.jpg",
+      "clean_name": "4-plafon-pvc/liverpool.jpg",
+      "md5": "773f03010bb8ce1ebfbc931ecef3b345",
+      "size": 45110
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\4-plafon-pvc\\York.jpg",
+      "clean_name": "4-plafon-pvc/york.jpg",
+      "md5": "908b88368c647963a93940f2e892facb",
+      "size": 14371
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\4-plafon-pvc\\bristol.jpg",
+      "clean_name": "4-plafon-pvc/bristol.jpg",
+      "md5": "f1d99175b2bbbeab3fda73a33375a0d7",
+      "size": 11166
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\4-plafon-pvc\\41-plafon-pvc-laminado\\SHERWOOD.jpg",
+      "clean_name": "4-plafon-pvc/41-plafon-pvc-laminado/sherwood.jpg",
+      "md5": "19435cb4666eede3eeebb34aedff9664",
+      "size": 544414
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\4-plafon-pvc\\41-plafon-pvc-laminado\\Teesdale.jpg",
+      "clean_name": "4-plafon-pvc/41-plafon-pvc-laminado/teesdale.jpg",
+      "md5": "23f8c53689527bc8f238b9f0e79f000a",
+      "size": 265429
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\4-plafon-pvc\\42-plafon-laminado-wood\\Ash Nomad.jpg",
+      "clean_name": "4-plafon-pvc/42-plafon-laminado-wood/ash nomad.jpg",
+      "md5": "06f6edd5dd6444e8f4c25f1fb9c82545",
+      "size": 24887
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\4-plafon-pvc\\42-plafon-laminado-wood\\Birch Ember.jpg",
+      "clean_name": "4-plafon-pvc/42-plafon-laminado-wood/birch ember.jpg",
+      "md5": "2391e06e3dd8c90d365a4dcadd4ab8da",
+      "size": 31092
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\4-plafon-pvc\\42-plafon-laminado-wood\\Cocoa Ash.jpg",
+      "clean_name": "4-plafon-pvc/42-plafon-laminado-wood/cocoa ash.jpg",
+      "md5": "b114718bab41315523da50864b6f446d",
+      "size": 29663
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\4-plafon-pvc\\42-plafon-laminado-wood\\Ivory Elm.jpg",
+      "clean_name": "4-plafon-pvc/42-plafon-laminado-wood/ivory elm.jpg",
+      "md5": "9aac1e60935a6202982eaf4c256ba6f1",
+      "size": 15320
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\4-plafon-pvc\\42-plafon-laminado-wood\\Maple Dusk.jpg",
+      "clean_name": "4-plafon-pvc/42-plafon-laminado-wood/maple dusk.jpg",
+      "md5": "6b9d43aa9b20e0d37e964b93e1785f85",
+      "size": 24982
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\4-plafon-pvc\\42-plafon-laminado-wood\\Walnut Elipse.jpg",
+      "clean_name": "4-plafon-pvc/42-plafon-laminado-wood/walnut elipse.jpg",
+      "md5": "13a4a75b32e3125e16e35f0670d4d340",
+      "size": 43918
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\4-plafon-pvc\\42-plafon-laminado-wood\\Wild Teak.jpg",
+      "clean_name": "4-plafon-pvc/42-plafon-laminado-wood/wild teak.jpg",
+      "md5": "131f10b3becefab0cb122e48af2827d9",
+      "size": 28991
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\4-plafon-pvc\\plafon-ranurado\\Ranurado vista 2.jpg",
+      "clean_name": "4-plafon-pvc/plafon-ranurado/ranurado vista 2.jpg",
+      "md5": "25ce3690290bfe9ce09b47b8f9a696b1",
+      "size": 653198
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\4-plafon-pvc\\plafon-ranurado\\Ranurado.jpg",
+      "clean_name": "4-plafon-pvc/plafon-ranurado/ranurado.jpg",
+      "md5": "ed62e5b99872120f3b6cba7f9214f2e0",
+      "size": 570419
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\5-paneles-tridimensionales\\51-blanco\\Austin.jpg",
+      "clean_name": "5-paneles-tridimensionales/51-blanco/austin.jpg",
+      "md5": "a1d22f073c51656b0c1667fd8c406d5a",
+      "size": 33643
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\5-paneles-tridimensionales\\51-blanco\\Boston.jpg",
+      "clean_name": "5-paneles-tridimensionales/51-blanco/boston.jpg",
+      "md5": "07f07609a03dad5963a7b5bf72b09bf8",
+      "size": 25184
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\5-paneles-tridimensionales\\51-blanco\\Charleston.jpg",
+      "clean_name": "5-paneles-tridimensionales/51-blanco/charleston.jpg",
+      "md5": "168eb1fbd3d28eb368365ff579701c29",
+      "size": 45223
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\5-paneles-tridimensionales\\51-blanco\\Charlotte.jpg",
+      "clean_name": "5-paneles-tridimensionales/51-blanco/charlotte.jpg",
+      "md5": "f40493db80a83cbb8c1a5f587e614d02",
+      "size": 25692
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\5-paneles-tridimensionales\\51-blanco\\Chicago.jpg",
+      "clean_name": "5-paneles-tridimensionales/51-blanco/chicago.jpg",
+      "md5": "c2a0f7dd568c0745dcb456e9bd0e6b15",
+      "size": 27219
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\5-paneles-tridimensionales\\51-blanco\\Cleveland.jpg",
+      "clean_name": "5-paneles-tridimensionales/51-blanco/cleveland.jpg",
+      "md5": "904c3ee4e382c320b8ac31106e6d4a86",
+      "size": 29868
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\5-paneles-tridimensionales\\51-blanco\\Columbus.jpg",
+      "clean_name": "5-paneles-tridimensionales/51-blanco/columbus.jpg",
+      "md5": "d0035b8909f46b9696e30c7cde472e87",
+      "size": 23614
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\5-paneles-tridimensionales\\51-blanco\\Dallas.jpg",
+      "clean_name": "5-paneles-tridimensionales/51-blanco/dallas.jpg",
+      "md5": "7a6718ff5feacc181615b56461f56c8b",
+      "size": 22736
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\5-paneles-tridimensionales\\51-blanco\\Denver.jpg",
+      "clean_name": "5-paneles-tridimensionales/51-blanco/denver.jpg",
+      "md5": "3331470dc3978aae360fbf542ca2b513",
+      "size": 71301
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\5-paneles-tridimensionales\\51-blanco\\Detroit.jpg",
+      "clean_name": "5-paneles-tridimensionales/51-blanco/detroit.jpg",
+      "md5": "b9e78c177048bed853f4d59567385fbf",
+      "size": 82747
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\5-paneles-tridimensionales\\51-blanco\\Filadelfia.jpg",
+      "clean_name": "5-paneles-tridimensionales/51-blanco/filadelfia.jpg",
+      "md5": "e8eb0b3bc17ec065557961c52d1cf01e",
+      "size": 26030
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\5-paneles-tridimensionales\\51-blanco\\Frisco.jpg",
+      "clean_name": "5-paneles-tridimensionales/51-blanco/frisco.jpg",
+      "md5": "9dd12eeb2e7e74a7ca8e002c0b1141a4",
+      "size": 24880
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\5-paneles-tridimensionales\\51-blanco\\Houston.jpg",
+      "clean_name": "5-paneles-tridimensionales/51-blanco/houston.jpg",
+      "md5": "7262a9418c25a485ff4e6896ffbdeb10",
+      "size": 23999
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\5-paneles-tridimensionales\\52-grises\\Minneapolis.jpg",
+      "clean_name": "5-paneles-tridimensionales/52-grises/minneapolis.jpg",
+      "md5": "83e7900d4e6104149c05b9c3ee9dabe6",
+      "size": 68190
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\5-paneles-tridimensionales\\52-grises\\Oklahoma.jpg",
+      "clean_name": "5-paneles-tridimensionales/52-grises/oklahoma.jpg",
+      "md5": "ebb2dab2df0a3ef686fce8311a7a5972",
+      "size": 51913
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\5-paneles-tridimensionales\\52-grises\\Orlando.jpg",
+      "clean_name": "5-paneles-tridimensionales/52-grises/orlando.jpg",
+      "md5": "9d100008005eb2a6bf2d4956ce346cdf",
+      "size": 104852
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\5-paneles-tridimensionales\\53-madera\\Portland.jpg",
+      "clean_name": "5-paneles-tridimensionales/53-madera/portland.jpg",
+      "md5": "1217d98dc71aade4fb3ef268269c843d",
+      "size": 157568
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\5-paneles-tridimensionales\\53-madera\\Providence.jpg",
+      "clean_name": "5-paneles-tridimensionales/53-madera/providence.jpg",
+      "md5": "5979cc8610b04b0165bd3d24d52ebf3d",
+      "size": 139525
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\5-paneles-tridimensionales\\53-madera\\Raleigh.jpg",
+      "clean_name": "5-paneles-tridimensionales/53-madera/raleigh.jpg",
+      "md5": "2e07d3cb68cedfb954f2520fa15b1a73",
+      "size": 417087
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\5-paneles-tridimensionales\\53-madera\\Reno.jpg",
+      "clean_name": "5-paneles-tridimensionales/53-madera/reno.jpg",
+      "md5": "46aebebad8fcf28adab7eed31f283ff0",
+      "size": 136264
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\5-paneles-tridimensionales\\54-negro\\seattle.jpg",
+      "clean_name": "5-paneles-tridimensionales/54-negro/seattle.jpg",
+      "md5": "6d2bc9cbe0594356348664cf0afbe6c7",
+      "size": 56572
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\5-paneles-tridimensionales\\55-oro\\Laredo.jpg",
+      "clean_name": "5-paneles-tridimensionales/55-oro/laredo.jpg",
+      "md5": "b0ee402858e03e1ec247f73e22a334b8",
+      "size": 33566
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\5-paneles-tridimensionales\\55-oro\\Miami.jpg",
+      "clean_name": "5-paneles-tridimensionales/55-oro/miami.jpg",
+      "md5": "1e9ea84af9f141292dcad24a1310825b",
+      "size": 112035
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\5-paneles-tridimensionales\\55-oro\\memphis.jpg",
+      "clean_name": "5-paneles-tridimensionales/55-oro/memphis.jpg",
+      "md5": "229808b2ad23c16c50582dbc362e41a2",
+      "size": 45831
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\6-vigas-pvc\\61-interior\\BAHIA 1.jpg",
+      "clean_name": "6-vigas-pvc/61-interior/bahia 1.jpg",
+      "md5": "4da548d9372559d8226463df52b9edff",
+      "size": 26330
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\6-vigas-pvc\\61-interior\\BAHIA.jpg",
+      "clean_name": "6-vigas-pvc/61-interior/bahia.jpg",
+      "md5": "a76b10bc9263bfeefae1129011567265",
+      "size": 30792
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\6-vigas-pvc\\61-interior\\BRASILIA 1.jpg",
+      "clean_name": "6-vigas-pvc/61-interior/brasilia 1.jpg",
+      "md5": "ec45ee5fd720be1dd6a357061911d895",
+      "size": 31796
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\6-vigas-pvc\\61-interior\\BRASILIA.jpg",
+      "clean_name": "6-vigas-pvc/61-interior/brasilia.jpg",
+      "md5": "ac5fcb03e55b4b9a3a45cae278f6251e",
+      "size": 39709
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\6-vigas-pvc\\61-interior\\COPLE PARA VIGA 2.jpg",
+      "clean_name": "6-vigas-pvc/61-interior/cople para viga 2.jpg",
+      "md5": "708ef5a0ddc329c4b06ef41ee7965873",
+      "size": 13260
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\6-vigas-pvc\\61-interior\\COPLE PARA VIGA.jpg",
+      "clean_name": "6-vigas-pvc/61-interior/cople para viga.jpg",
+      "md5": "6aaf79f76f855d78a0a6770a246dec03",
+      "size": 14061
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\6-vigas-pvc\\61-interior\\RIO 1.jpg",
+      "clean_name": "6-vigas-pvc/61-interior/rio 1.jpg",
+      "md5": "85e01d12d79b12dd109c3b3ec397ce00",
+      "size": 28685
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\6-vigas-pvc\\61-interior\\RIO.jpg",
+      "clean_name": "6-vigas-pvc/61-interior/rio.jpg",
+      "md5": "a2a4661777512f995b7bd2367531cda7",
+      "size": 36549
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\6-vigas-pvc\\61-interior\\SAO PAULO 1.jpg",
+      "clean_name": "6-vigas-pvc/61-interior/sao paulo 1.jpg",
+      "md5": "6dc7bed46bdba9721e454b7f56dcac13",
+      "size": 22286
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\6-vigas-pvc\\61-interior\\SAO PAULO.jpg",
+      "clean_name": "6-vigas-pvc/61-interior/sao paulo.jpg",
+      "md5": "7837f92317a26d27853a555cf7e7d830",
+      "size": 26687
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\6-vigas-pvc\\61-interior\\SOPORTE PARA VIGA INTERIOR 100X50MM.jpg",
+      "clean_name": "6-vigas-pvc/61-interior/soporte para viga interior 100x50mm.jpg",
+      "md5": "04286eb3337ae1d318fec739ffda87e4",
+      "size": 25100
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\6-vigas-pvc\\62-exterior\\DARK BLACK.jpg",
+      "clean_name": "6-vigas-pvc/62-exterior/dark black.jpg",
+      "md5": "65300c1ee7fbf38162c946c8a6f54484",
+      "size": 34999
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\6-vigas-pvc\\62-exterior\\REDWOOD.jpg",
+      "clean_name": "6-vigas-pvc/62-exterior/redwood.jpg",
+      "md5": "32142f5c69c00e3f291f2531f6f1a6ac",
+      "size": 40130
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\6-vigas-pvc\\62-exterior\\SOPORTE GIRATORIO PARA VIGA EXTERIOR.jpg",
+      "clean_name": "6-vigas-pvc/62-exterior/soporte giratorio para viga exterior.jpg",
+      "md5": "a494e6884a80af87570b3178cc6c6866",
+      "size": 47017
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\6-vigas-pvc\\62-exterior\\TEAK.jpg",
+      "clean_name": "6-vigas-pvc/62-exterior/teak.jpg",
+      "md5": "81e14f935431b2ed78f50a0e382e94b2",
+      "size": 40619
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\7-pisos\\71-laminado\\ACONCAGUA.jpg",
+      "clean_name": "7-pisos/71-laminado/aconcagua.jpg",
+      "md5": "2e3e00bf0af36ba2fdd4fe97a70cdbee",
+      "size": 31809
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\7-pisos\\71-laminado\\ALCAÑIZ.jpeg",
+      "clean_name": "7-pisos/71-laminado/alcañiz.jpeg",
+      "md5": "b6304b4ee6096478ba1cef79e7a3ba40",
+      "size": 45759
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\7-pisos\\71-laminado\\ARCTIC OAK SPLASH.jpg",
+      "clean_name": "7-pisos/71-laminado/arctic oak splash.jpg",
+      "md5": "e9ff953ca7a110a8d1df0f4c779d6eec",
+      "size": 42327
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\7-pisos\\71-laminado\\AUSTRALIAN WALNUT SPLASH.jpg",
+      "clean_name": "7-pisos/71-laminado/australian walnut splash.jpg",
+      "md5": "bb68ec075c9a712037c48d5fb38fdaf7",
+      "size": 51264
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\7-pisos\\71-laminado\\BOULDER.jpg",
+      "clean_name": "7-pisos/71-laminado/boulder.jpg",
+      "md5": "f10b9337ee06760e405570bd79830a42",
+      "size": 6640
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\7-pisos\\71-laminado\\CALANDA.jpeg",
+      "clean_name": "7-pisos/71-laminado/calanda.jpeg",
+      "md5": "030256d2ea9fd6113aaf570d6f9d66c6",
+      "size": 48252
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\7-pisos\\71-laminado\\CEREZO TABLA.jpg",
+      "clean_name": "7-pisos/71-laminado/cerezo tabla.jpg",
+      "md5": "fb8b2cdf9f6439df94917e0929330ef7",
+      "size": 30220
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\7-pisos\\71-laminado\\COLONIAL OAK.jpg",
+      "clean_name": "7-pisos/71-laminado/colonial oak.jpg",
+      "md5": "83053d137b58cb979dfd4b069ed2a819",
+      "size": 23010
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\7-pisos\\71-laminado\\COPPER OAK.jpg",
+      "clean_name": "7-pisos/71-laminado/copper oak.jpg",
+      "md5": "5fd227e9e3eb34dce757883d91bcf920",
+      "size": 63047
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\7-pisos\\71-laminado\\DEMOCRACY OAK.jpg",
+      "clean_name": "7-pisos/71-laminado/democracy oak.jpg",
+      "md5": "2b4e03a432c211c30c8fcb33636bc519",
+      "size": 26525
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\7-pisos\\71-laminado\\DENALI.jpg",
+      "clean_name": "7-pisos/71-laminado/denali.jpg",
+      "md5": "73c6917f75c6575d361f83eef52ec7de",
+      "size": 80124
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\7-pisos\\71-laminado\\ELBRUS.jpg",
+      "clean_name": "7-pisos/71-laminado/elbrus.jpg",
+      "md5": "1496f405a23979882247322b79007d07",
+      "size": 32966
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\7-pisos\\71-laminado\\EVEREST.jpg",
+      "clean_name": "7-pisos/71-laminado/everest.jpg",
+      "md5": "7f95aeb33a66731ec0332b957cebb73c",
+      "size": 36309
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\7-pisos\\71-laminado\\GOLDEN OAK.jpg",
+      "clean_name": "7-pisos/71-laminado/golden oak.jpg",
+      "md5": "1834060d3ac60060c5e7e9196aba057c",
+      "size": 73103
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\7-pisos\\71-laminado\\GUDAR.jpeg",
+      "clean_name": "7-pisos/71-laminado/gudar.jpeg",
+      "md5": "2672c7d93ed6962174e674eea6bac9d7",
+      "size": 43723
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\7-pisos\\71-laminado\\HICKORY CAROLINA.jpg",
+      "clean_name": "7-pisos/71-laminado/hickory carolina.jpg",
+      "md5": "16adce3aa7205ae6d1d9da041e04c79e",
+      "size": 544246
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\7-pisos\\71-laminado\\INDEPENDENCE OAK.jpg",
+      "clean_name": "7-pisos/71-laminado/independence oak.jpg",
+      "md5": "d17cc3d832734aa3ee8d45bb552a2f0f",
+      "size": 18025
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\7-pisos\\71-laminado\\IVORY WHITE.jpg",
+      "clean_name": "7-pisos/71-laminado/ivory white.jpg",
+      "md5": "57a86adcf7d195e9087d11d6ff3cb52a",
+      "size": 20151
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\7-pisos\\71-laminado\\KIEFER STORM.jpg",
+      "clean_name": "7-pisos/71-laminado/kiefer storm.jpg",
+      "md5": "14b8329ab774921d0771a905cc725ac6",
+      "size": 84432
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\7-pisos\\71-laminado\\KILIMANJARO.jpg",
+      "clean_name": "7-pisos/71-laminado/kilimanjaro.jpg",
+      "md5": "939c5d6d047483a053c0f40033304f59",
+      "size": 77361
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\7-pisos\\71-laminado\\MOUNTAIN BEECH SPLASH.jpg",
+      "clean_name": "7-pisos/71-laminado/mountain beech splash.jpg",
+      "md5": "303140af907517b6b1a76a6d9adecc79",
+      "size": 53841
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\7-pisos\\71-laminado\\MOUNTAIN BEECH.jpg",
+      "clean_name": "7-pisos/71-laminado/mountain beech.jpg",
+      "md5": "a1ce2fe12184fd55660453c93100a759",
+      "size": 26466
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\7-pisos\\71-laminado\\NOGAL AMERICANO.jpg",
+      "clean_name": "7-pisos/71-laminado/nogal americano.jpg",
+      "md5": "6892e12344d9345e99cc1484742f4312",
+      "size": 50742
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\7-pisos\\71-laminado\\OAK BREEZE.jpg",
+      "clean_name": "7-pisos/71-laminado/oak breeze.jpg",
+      "md5": "34b6b2311d07687bc51b9f4b8c662b29",
+      "size": 22283
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\7-pisos\\71-laminado\\OAK CABANA LAGOS.jpg",
+      "clean_name": "7-pisos/71-laminado/oak cabana lagos.jpg",
+      "md5": "00b421e49de47011163d08a83b9af691",
+      "size": 353977
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\7-pisos\\71-laminado\\OAK DESIGN.jpg",
+      "clean_name": "7-pisos/71-laminado/oak design.jpg",
+      "md5": "f428bd67185dfd3b59bd0979b66e8087",
+      "size": 86049
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\7-pisos\\71-laminado\\OAK EPIC APULIEN.jpg",
+      "clean_name": "7-pisos/71-laminado/oak epic apulien.jpg",
+      "md5": "7c278848b48c6fab952aa072bfe78942",
+      "size": 92076
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\7-pisos\\71-laminado\\OAK EVOKE CRYSTAL.jpg",
+      "clean_name": "7-pisos/71-laminado/oak evoke crystal.jpg",
+      "md5": "af99e473c7c604da0015b80ca965daa6",
+      "size": 120982
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\7-pisos\\71-laminado\\OAK FRESCO.jpg",
+      "clean_name": "7-pisos/71-laminado/oak fresco.jpg",
+      "md5": "27b53e3ef55a8284293681bcb260490c",
+      "size": 25139
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\7-pisos\\71-laminado\\OAK NATURAL.jpg",
+      "clean_name": "7-pisos/71-laminado/oak natural.jpg",
+      "md5": "47b4eabe8f7f8d469628ef1ad796f650",
+      "size": 70439
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\7-pisos\\71-laminado\\OAK SILEA.jpg",
+      "clean_name": "7-pisos/71-laminado/oak silea.jpg",
+      "md5": "301a5cae0a8957f6be0d419cd126736c",
+      "size": 134971
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\7-pisos\\71-laminado\\OAK SOLANO.png",
+      "clean_name": "7-pisos/71-laminado/oak solano.png",
+      "md5": "1894358e2a8960d5f066721e0d3677fe",
+      "size": 1434001
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\7-pisos\\71-laminado\\OAK SOUL.jpg",
+      "clean_name": "7-pisos/71-laminado/oak soul.jpg",
+      "md5": "c73bab3d7e91522722b71c5b273d1341",
+      "size": 55856
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\7-pisos\\71-laminado\\OAK SUNSET.png",
+      "clean_name": "7-pisos/71-laminado/oak sunset.png",
+      "md5": "836738073dbbe36de2a5806ea7e52c77",
+      "size": 1387449
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\7-pisos\\71-laminado\\OAK THUNDER.jpg",
+      "clean_name": "7-pisos/71-laminado/oak thunder.jpg",
+      "md5": "885a610569e2f60b7ae4ef891ebb793b",
+      "size": 82904
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\7-pisos\\71-laminado\\OAK TREND.jpg",
+      "clean_name": "7-pisos/71-laminado/oak trend.jpg",
+      "md5": "6c09776c666475c57c9032b1b1a366a2",
+      "size": 71742
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\7-pisos\\71-laminado\\OAK VIENNA.jpg",
+      "clean_name": "7-pisos/71-laminado/oak vienna.jpg",
+      "md5": "4f2d07964a4915d607f56f9389878ea5",
+      "size": 81058
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\7-pisos\\71-laminado\\OAK VOUGE.png",
+      "clean_name": "7-pisos/71-laminado/oak vouge.png",
+      "md5": "1d4f6d0086f4a13f1defe40790b7e9c4",
+      "size": 1373254
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\7-pisos\\71-laminado\\PLANTATION OAK.jpg",
+      "clean_name": "7-pisos/71-laminado/plantation oak.jpg",
+      "md5": "804e92a11a1956d7bc2a97ac9ff12cc2",
+      "size": 28841
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\7-pisos\\71-laminado\\REVOLUTION OAK.jpg",
+      "clean_name": "7-pisos/71-laminado/revolution oak.jpg",
+      "md5": "f6e3284728368f2c17e1f571bb56a581",
+      "size": 24475
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\7-pisos\\71-laminado\\SPRUCE ANTIQUE.jpg",
+      "clean_name": "7-pisos/71-laminado/spruce antique.jpg",
+      "md5": "9b05aca56fca60f27a22c9e7633f9f51",
+      "size": 36700
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\7-pisos\\71-laminado\\TAHOE.jpg",
+      "clean_name": "7-pisos/71-laminado/tahoe.jpg",
+      "md5": "df089184ce1ce7acc09c2ef1ba0434c8",
+      "size": 19120
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\7-pisos\\71-laminado\\TERNASCO.jpeg",
+      "clean_name": "7-pisos/71-laminado/ternasco.jpeg",
+      "md5": "0d4352b87f99ac314bcb6bba87e01cd5",
+      "size": 76992
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\7-pisos\\71-laminado\\TITANIUM OAK.jpg",
+      "clean_name": "7-pisos/71-laminado/titanium oak.jpg",
+      "md5": "4997208e9e1c4387e7f7537343495b05",
+      "size": 20727
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\7-pisos\\71-laminado\\UTRILLAS.jpeg",
+      "clean_name": "7-pisos/71-laminado/utrillas.jpeg",
+      "md5": "6ef2884c62e58d64013299be26e70b71",
+      "size": 47782
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\7-pisos\\71-laminado\\WALNUT SABO.jpg",
+      "clean_name": "7-pisos/71-laminado/walnut sabo.jpg",
+      "md5": "8296d1481c4c999284c6e191ea567df7",
+      "size": 109780
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\7-pisos\\71-laminado\\WALNUT.jpg",
+      "clean_name": "7-pisos/71-laminado/walnut.jpg",
+      "md5": "9f3dcb87dc6765a221f0aedb8bb67012",
+      "size": 43357
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\7-pisos\\72-wpc\\ALBANY CREEK.jpg",
+      "clean_name": "7-pisos/72-wpc/albany creek.jpg",
+      "md5": "74a4db2316fabcf7245d86d115b68cd6",
+      "size": 15831
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\7-pisos\\72-wpc\\CANBERRA.jpg",
+      "clean_name": "7-pisos/72-wpc/canberra.jpg",
+      "md5": "369b7fb7d73522005e860d9e4f7cb4ed",
+      "size": 18568
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\7-pisos\\72-wpc\\HAMPTON.jpg",
+      "clean_name": "7-pisos/72-wpc/hampton.jpg",
+      "md5": "9db57159f838560b50258d58b9760179",
+      "size": 37162
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\7-pisos\\72-wpc\\NORWELL.jpg",
+      "clean_name": "7-pisos/72-wpc/norwell.jpg",
+      "md5": "c7e1b6e7abe44bc28428535e6aceebab",
+      "size": 32094
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\7-pisos\\72-wpc\\VERMONT.jpg",
+      "clean_name": "7-pisos/72-wpc/vermont.jpg",
+      "md5": "1aff4b474fe08ab8ae388bb396bd8cd1",
+      "size": 19969
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\7-pisos\\73-spc\\ALBERTA.jpg",
+      "clean_name": "7-pisos/73-spc/alberta.jpg",
+      "md5": "6a0505c1dd226ced96bd58c909383a51",
+      "size": 164019
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\7-pisos\\73-spc\\AMAZON.jpg",
+      "clean_name": "7-pisos/73-spc/amazon.jpg",
+      "md5": "dfd25ae1f6050a75b713f12158117994",
+      "size": 267594
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\7-pisos\\73-spc\\ASHLAR GRAY.jpg",
+      "clean_name": "7-pisos/73-spc/ashlar gray.jpg",
+      "md5": "0032784f26f313cb2a631ced46132562",
+      "size": 215928
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\7-pisos\\73-spc\\ASHLAR.jpg",
+      "clean_name": "7-pisos/73-spc/ashlar.jpg",
+      "md5": "43e8d3354f1f14cd0f94704c91daded4",
+      "size": 160789
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\7-pisos\\73-spc\\BANFF.jpg",
+      "clean_name": "7-pisos/73-spc/banff.jpg",
+      "md5": "b191d27b94971994b6323a230d5bf710",
+      "size": 224555
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\7-pisos\\73-spc\\CARAMEL.jpg",
+      "clean_name": "7-pisos/73-spc/caramel.jpg",
+      "md5": "256cb801f58008f3b51112f64e6af48c",
+      "size": 131173
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\7-pisos\\73-spc\\COLORADO RUSH.jpg",
+      "clean_name": "7-pisos/73-spc/colorado rush.jpg",
+      "md5": "b7e167d4337b1568dab4bd99b974c7f4",
+      "size": 253101
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\7-pisos\\73-spc\\CONCRETE LITE.jpg",
+      "clean_name": "7-pisos/73-spc/concrete lite.jpg",
+      "md5": "0790d969539c4288dc88e58afd45c7a0",
+      "size": 73591
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\7-pisos\\73-spc\\CONCRETE.jpg",
+      "clean_name": "7-pisos/73-spc/concrete.jpg",
+      "md5": "8c468baff1f96601614f08600e598ed6",
+      "size": 79174
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\7-pisos\\73-spc\\DALBY.jpg",
+      "clean_name": "7-pisos/73-spc/dalby.jpg",
+      "md5": "8cb6df0119fe640d8e6936a8a7ac179c",
+      "size": 78816
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\7-pisos\\73-spc\\DELAMERE.jpg",
+      "clean_name": "7-pisos/73-spc/delamere.jpg",
+      "md5": "f3843cac5107bccbf16c6fdf9a4fd734",
+      "size": 69568
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\7-pisos\\73-spc\\EXPRESSO.jpg",
+      "clean_name": "7-pisos/73-spc/expresso.jpg",
+      "md5": "6c3e98461be40d62a88f42c844477285",
+      "size": 253283
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\7-pisos\\73-spc\\JASPER.jpg",
+      "clean_name": "7-pisos/73-spc/jasper.jpg",
+      "md5": "d92d7495c5b984719ca5b31db74b8d93",
+      "size": 85287
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\7-pisos\\73-spc\\MINERAL GRAY.jpg",
+      "clean_name": "7-pisos/73-spc/mineral gray.jpg",
+      "md5": "16e5ac831f0523865f714b052f46e950",
+      "size": 156340
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\7-pisos\\73-spc\\MOKA.jpg",
+      "clean_name": "7-pisos/73-spc/moka.jpg",
+      "md5": "2510b9bd31de4b5ac6e2f80eb342ee39",
+      "size": 141841
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\7-pisos\\73-spc\\NOMADIC.jpg",
+      "clean_name": "7-pisos/73-spc/nomadic.jpg",
+      "md5": "19156ddb6bd3d32400f373aad06da378",
+      "size": 339900
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\7-pisos\\73-spc\\PARKLAND.jpg",
+      "clean_name": "7-pisos/73-spc/parkland.jpg",
+      "md5": "e2602dfa1a9db70d03658c57780a59c8",
+      "size": 264283
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\7-pisos\\73-spc\\SILVERSTONE.jpg",
+      "clean_name": "7-pisos/73-spc/silverstone.jpg",
+      "md5": "909f59ba864e7ec2261b2a2bf794f978",
+      "size": 238012
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\7-pisos\\73-spc\\SILVESTER.jpg",
+      "clean_name": "7-pisos/73-spc/silvester.jpg",
+      "md5": "d6c3df25771d777ee7e6d5aabd86dd15",
+      "size": 242133
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\7-pisos\\73-spc\\STERLING OAK.jpg",
+      "clean_name": "7-pisos/73-spc/sterling oak.jpg",
+      "md5": "037e8da37b2b4c33bd48424bb60d2965",
+      "size": 184909
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\7-pisos\\73-spc\\TONGASS.jpg",
+      "clean_name": "7-pisos/73-spc/tongass.jpg",
+      "md5": "64356286c9d27369f92d7783bda04209",
+      "size": 72336
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\7-pisos\\73-spc\\YOSEMITE.jpg",
+      "clean_name": "7-pisos/73-spc/yosemite.jpg",
+      "md5": "49876c00bcc3c2caf8af6e4d10a3238f",
+      "size": 73320
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\7-pisos\\74-deck-sintetico\\LIGHT GRAY.jpg",
+      "clean_name": "7-pisos/74-deck-sintetico/light gray.jpg",
+      "md5": "0138ac4c6e6d3d216749c9bb3941617b",
+      "size": 114144
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\7-pisos\\74-deck-sintetico\\MAPLE.jpg",
+      "clean_name": "7-pisos/74-deck-sintetico/maple.jpg",
+      "md5": "a6e4f0558d069edfedefa411a5f6870e",
+      "size": 126050
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\7-pisos\\74-deck-sintetico\\TEAK.jpg",
+      "clean_name": "7-pisos/74-deck-sintetico/teak.jpg",
+      "md5": "3d460258f707d4d3539a63d33809142a",
+      "size": 117108
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\7-pisos\\74-deck-sintetico\\WENGE.jpg",
+      "clean_name": "7-pisos/74-deck-sintetico/wenge.jpg",
+      "md5": "6a095387825aa9079a73c48105032931",
+      "size": 114506
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\8-zacate\\81-follaje-sintetico\\AMAZONAS-A.jpg",
+      "clean_name": "8-zacate/81-follaje-sintetico/amazonas-a.jpg",
+      "md5": "6c4ba42b24e5b68038f672a0cfc0e4b3",
+      "size": 120183
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\8-zacate\\81-follaje-sintetico\\AMAZONAS-B.jpg",
+      "clean_name": "8-zacate/81-follaje-sintetico/amazonas-b.jpg",
+      "md5": "3b13fb9d0be3743de010ba99cb93f8df",
+      "size": 108742
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\8-zacate\\81-follaje-sintetico\\AMAZONAS-C.jpg",
+      "clean_name": "8-zacate/81-follaje-sintetico/amazonas-c.jpg",
+      "md5": "37cd958524dc5b2459787275770a53ed",
+      "size": 132505
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\8-zacate\\81-follaje-sintetico\\AMSTERDAM.jpg",
+      "clean_name": "8-zacate/81-follaje-sintetico/amsterdam.jpg",
+      "md5": "e1bdf71348e58895e8325d04bb191bcd",
+      "size": 135470
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\8-zacate\\81-follaje-sintetico\\ARRAYAN AMARILLO.jpg",
+      "clean_name": "8-zacate/81-follaje-sintetico/arrayan amarillo.jpg",
+      "md5": "3b225dd4bee81a9349762c55e7fff71f",
+      "size": 219906
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\8-zacate\\81-follaje-sintetico\\ARRAYAN MORADO.jpg",
+      "clean_name": "8-zacate/81-follaje-sintetico/arrayan morado.jpg",
+      "md5": "17b6d07921da919fc0ea2a3b47028381",
+      "size": 205586
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\8-zacate\\81-follaje-sintetico\\ARRAYAN NATURAL.jpg",
+      "clean_name": "8-zacate/81-follaje-sintetico/arrayan natural.jpg",
+      "md5": "ce2c953f37984f46173ec4684168c224",
+      "size": 175902
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\8-zacate\\81-follaje-sintetico\\ARRAYAN ROJO.jpg",
+      "clean_name": "8-zacate/81-follaje-sintetico/arrayan rojo.jpg",
+      "md5": "55ab05cdc1f31dcaafac6ba98b057d36",
+      "size": 209602
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\8-zacate\\81-follaje-sintetico\\ARRAYAN VERDE.jpg",
+      "clean_name": "8-zacate/81-follaje-sintetico/arrayan verde.jpg",
+      "md5": "3d5dee37548980eeead8b58d116d5e80",
+      "size": 181334
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\8-zacate\\81-follaje-sintetico\\BRUSELAS.jpg",
+      "clean_name": "8-zacate/81-follaje-sintetico/bruselas.jpg",
+      "md5": "6426af54b9cdd1d2b77afe7efa680f03",
+      "size": 129955
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\8-zacate\\81-follaje-sintetico\\GRECIA.jpg",
+      "clean_name": "8-zacate/81-follaje-sintetico/grecia.jpg",
+      "md5": "5813843ac59be6edd5758a1acdeffaf8",
+      "size": 137265
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\8-zacate\\81-follaje-sintetico\\JAZMIN.jpg",
+      "clean_name": "8-zacate/81-follaje-sintetico/jazmin.jpg",
+      "md5": "f76ac4b28ffc3ed8e4a1b5507c3d50c9",
+      "size": 200898
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\8-zacate\\81-follaje-sintetico\\LAUREL DORADO.jpg",
+      "clean_name": "8-zacate/81-follaje-sintetico/laurel dorado.jpg",
+      "md5": "3be728a7715a0e9f25b602a16f24d658",
+      "size": 619227
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\8-zacate\\81-follaje-sintetico\\MENTA.jpg",
+      "clean_name": "8-zacate/81-follaje-sintetico/menta.jpg",
+      "md5": "e0c353743b7c5ac97cdca4f9fc6a290f",
+      "size": 170945
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\8-zacate\\81-follaje-sintetico\\MILAN.jpg",
+      "clean_name": "8-zacate/81-follaje-sintetico/milan.jpg",
+      "md5": "b86028f53423f80c8d89b0e5fab11468",
+      "size": 211221
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\8-zacate\\81-follaje-sintetico\\PERSIA.jpg",
+      "clean_name": "8-zacate/81-follaje-sintetico/persia.jpg",
+      "md5": "5a867a6d89b731968bc31225fd000a25",
+      "size": 221868
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\8-zacate\\81-follaje-sintetico\\SEVILLA.jpg",
+      "clean_name": "8-zacate/81-follaje-sintetico/sevilla.jpg",
+      "md5": "d8ab0e641e14bc115d22479a38088912",
+      "size": 208074
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\8-zacate\\81-follaje-sintetico\\SIBERIA.jpg",
+      "clean_name": "8-zacate/81-follaje-sintetico/siberia.jpg",
+      "md5": "16286cd7c1b05373f69acabd40b01b75",
+      "size": 129052
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\8-zacate\\81-follaje-sintetico\\TREBOL.jpg",
+      "clean_name": "8-zacate/81-follaje-sintetico/trebol.jpg",
+      "md5": "74a9219ace3f75e8f90da83314f308b9",
+      "size": 127163
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\8-zacate\\82-pasto-recreativo\\TG-07-ARUBA.jpg",
+      "clean_name": "8-zacate/82-pasto-recreativo/tg-07-aruba.jpg",
+      "md5": "b57633eba34419bdddd0dac308c83423",
+      "size": 64528
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\8-zacate\\82-pasto-recreativo\\TG-10-ACA.jpg",
+      "clean_name": "8-zacate/82-pasto-recreativo/tg-10-aca.jpg",
+      "md5": "239b1b3e29ea15a3aa416a65f0e93a1b",
+      "size": 72032
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\8-zacate\\82-pasto-recreativo\\TG-18-SUMMER.jpg",
+      "clean_name": "8-zacate/82-pasto-recreativo/tg-18-summer.jpg",
+      "md5": "85d6a86036b2b5bc5e53536cf3c90005",
+      "size": 79179
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\8-zacate\\82-pasto-recreativo\\TG-20-BERMUDA.jpg",
+      "clean_name": "8-zacate/82-pasto-recreativo/tg-20-bermuda.jpg",
+      "md5": "22c1ae9b5e413a0a92671bbf99258214",
+      "size": 61135
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\8-zacate\\82-pasto-recreativo\\TG-25-CANCUN.jpg",
+      "clean_name": "8-zacate/82-pasto-recreativo/tg-25-cancun.jpg",
+      "md5": "c00d8d1a35c14a92c676eeeeea02e53e",
+      "size": 63103
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\8-zacate\\82-pasto-recreativo\\TG-30-MAUI.jpg",
+      "clean_name": "8-zacate/82-pasto-recreativo/tg-30-maui.jpg",
+      "md5": "bff100ed76cbc9ae3c126132de105cac",
+      "size": 69992
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\8-zacate\\82-pasto-recreativo\\TG-35-TULUM.jpg",
+      "clean_name": "8-zacate/82-pasto-recreativo/tg-35-tulum.jpg",
+      "md5": "ce9ae9373ecc8066ec7374152733130c",
+      "size": 82856
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\8-zacate\\82-pasto-recreativo\\TG-40-BALI.jpg",
+      "clean_name": "8-zacate/82-pasto-recreativo/tg-40-bali.jpg",
+      "md5": "cc43ad390dd0a32a4f68cdc29917c8dc",
+      "size": 81622
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\8-zacate\\82-pasto-recreativo\\TG-45-GULHI.jpg",
+      "clean_name": "8-zacate/82-pasto-recreativo/tg-45-gulhi.jpg",
+      "md5": "3ff4a1ce3966fd781024bf49bef557d1",
+      "size": 86898
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\8-zacate\\82-pasto-recreativo\\TG-50-ANAKENA.jpg",
+      "clean_name": "8-zacate/82-pasto-recreativo/tg-50-anakena.jpg",
+      "md5": "0c6725f739e13b5503c3c247ea0f6a8f",
+      "size": 88058
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\9-cladding\\Esquiner 35X45X2900MM.jpg",
+      "clean_name": "9-cladding/esquiner 35x45x2900mm.jpg",
+      "md5": "7488654ecceafdb9996d3268d4d5cd47",
+      "size": 21188
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\9-cladding\\HICKORY.jpg",
+      "clean_name": "9-cladding/hickory.jpg",
+      "md5": "5967b6bf1864a72fa0277b3f1c50284c",
+      "size": 56951
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\9-cladding\\MAPLE.jpg",
+      "clean_name": "9-cladding/maple.jpg",
+      "md5": "2500e80b40ab975fa3902dbd639cec8d",
+      "size": 33309
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\9-cladding\\MERBAU.jpg",
+      "clean_name": "9-cladding/merbau.jpg",
+      "md5": "22db38f492680bc6f3294c958ee7c486",
+      "size": 52074
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\9-cladding\\REDWOOD.jpg",
+      "clean_name": "9-cladding/redwood.jpg",
+      "md5": "4b0a7fc4659aa30b341de02bd3499290",
+      "size": 44492
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\9-cladding\\TASMANIA.jpg",
+      "clean_name": "9-cladding/tasmania.jpg",
+      "md5": "fbc1de9f897bfb68a99be72e595bb01a",
+      "size": 61571
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\9-cladding\\TEAK.jpg",
+      "clean_name": "9-cladding/teak.jpg",
+      "md5": "604837a2f81e883868a85062749a4750",
+      "size": 44732
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\9-cladding\\WENGE.jpg",
+      "clean_name": "9-cladding/wenge.jpg",
+      "md5": "d1642c79354a387f1877a3946fb693e5",
+      "size": 28701
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\9-cladding\\perfil plano25X3X2900MM.jpg",
+      "clean_name": "9-cladding/perfil plano25x3x2900mm.jpg",
+      "md5": "3216178332ffdb791b504e4e04e5029f",
+      "size": 18125
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\9-cladding\\91-placa-tipo-roca\\BLACK.jpg",
+      "clean_name": "9-cladding/91-placa-tipo-roca/black.jpg",
+      "md5": "747625a8c72ce98657152c49582dc812",
+      "size": 21853
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\9-cladding\\91-placa-tipo-roca\\GRAY.jpg",
+      "clean_name": "9-cladding/91-placa-tipo-roca/gray.jpg",
+      "md5": "f537d8a8f5904206e9702d9a9bab8fbd",
+      "size": 38155
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\1-placas-pvc\\AGATA.jpg",
+      "clean_name": "1-placas-pvc/agata.jpg",
+      "md5": "972077fa0a89b76c882403e100c767b5",
+      "size": 31235
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\1-placas-pvc\\ARENA.jpg",
+      "clean_name": "1-placas-pvc/arena.jpg",
+      "md5": "5367a5fb92d7a558c37431bf6c4f5baa",
+      "size": 6021
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\1-placas-pvc\\Aurora Dorada.jpg",
+      "clean_name": "1-placas-pvc/aurora dorada.jpg",
+      "md5": "5fd59487c8828d1693676d7453b3e8f7",
+      "size": 46311
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\1-placas-pvc\\Carrara Oscuro.jpg",
+      "clean_name": "1-placas-pvc/carrara oscuro.jpg",
+      "md5": "039e09b62c592e44cd648989f553984a",
+      "size": 55852
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\1-placas-pvc\\Cuarzo.jpg",
+      "clean_name": "1-placas-pvc/cuarzo.jpg",
+      "md5": "e81e479e3e53ed7fd047538b4d329968",
+      "size": 11332
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\1-placas-pvc\\Grafito.jpg",
+      "clean_name": "1-placas-pvc/grafito.jpg",
+      "md5": "c91b29093af81ff794632733ce44366a",
+      "size": 129839
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\1-placas-pvc\\Jaspe.jpg",
+      "clean_name": "1-placas-pvc/jaspe.jpg",
+      "md5": "a385b0418efd68f78c2f4871757a635c",
+      "size": 51728
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\1-placas-pvc\\OBSIDIANA.jpg",
+      "clean_name": "1-placas-pvc/obsidiana.jpg",
+      "md5": "cf344a38df9f0805d32b5e7bda603922",
+      "size": 69442
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\1-placas-pvc\\Onix.jpg",
+      "clean_name": "1-placas-pvc/onix.jpg",
+      "md5": "20cba7571a55133469a13d0e0904aa02",
+      "size": 50973
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\1-placas-pvc\\Opalo.jpg",
+      "clean_name": "1-placas-pvc/opalo.jpg",
+      "md5": "48a87af900f0ee089a53a3cd44045735",
+      "size": 67650
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\1-placas-pvc\\Perfil t 7x3x2440mm.jpg",
+      "clean_name": "1-placas-pvc/perfil t 7x3x2440mm.jpg",
+      "md5": "f1dcebf3d49ae87ab789ce5ae807a6db",
+      "size": 105755
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\1-placas-pvc\\Perla.jpg",
+      "clean_name": "1-placas-pvc/perla.jpg",
+      "md5": "5ccbeea000657e7f99988fd967d896f9",
+      "size": 25208
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\1-placas-pvc\\Topacio.jpg",
+      "clean_name": "1-placas-pvc/topacio.jpg",
+      "md5": "c2384530a80082f244dbaa03f60295c4",
+      "size": 47583
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\1-placas-pvc\\ZAFIRO.jpg",
+      "clean_name": "1-placas-pvc/zafiro.jpg",
+      "md5": "a785579087ad11b5f41f301acb1aa7e2",
+      "size": 119761
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\1-placas-pvc\\angulo 8x8x2440mm.jpg",
+      "clean_name": "1-placas-pvc/angulo 8x8x2440mm.jpg",
+      "md5": "7f3410d88f6784b16289b560e839b34e",
+      "size": 176064
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\1-placas-pvc\\11-placas-pvc-tipo-madera\\Adler.jpg",
+      "clean_name": "1-placas-pvc/11-placas-pvc-tipo-madera/adler.jpg",
+      "md5": "3cb7974021f1e7c5e405def785e5ccd0",
+      "size": 404158
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\1-placas-pvc\\11-placas-pvc-tipo-madera\\Alpina.jpg",
+      "clean_name": "1-placas-pvc/11-placas-pvc-tipo-madera/alpina.jpg",
+      "md5": "58b17ca67c49a4aa96b95e648eed6e28",
+      "size": 300772
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\1-placas-pvc\\11-placas-pvc-tipo-madera\\Angulo 8x8x2440mm.jpg",
+      "clean_name": "1-placas-pvc/11-placas-pvc-tipo-madera/angulo 8x8x2440mm.jpg",
+      "md5": "7f3410d88f6784b16289b560e839b34e",
+      "size": 176064
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\1-placas-pvc\\11-placas-pvc-tipo-madera\\Solaria.jpg",
+      "clean_name": "1-placas-pvc/11-placas-pvc-tipo-madera/solaria.jpg",
+      "md5": "dfb79b428c9c04b2f1e5ac8bf48c1c35",
+      "size": 250711
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\1-placas-pvc\\11-placas-pvc-tipo-madera\\Solden.jpg",
+      "clean_name": "1-placas-pvc/11-placas-pvc-tipo-madera/solden.jpg",
+      "md5": "d5e3d4303a25a4d37a53aaaff3dffec3",
+      "size": 289163
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\1-placas-pvc\\11-placas-pvc-tipo-madera\\anton.jpg",
+      "clean_name": "1-placas-pvc/11-placas-pvc-tipo-madera/anton.jpg",
+      "md5": "18a4690fa9f944b98ba7805cef60527f",
+      "size": 282055
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\1-placas-pvc\\11-placas-pvc-tipo-madera\\perfil T 7x3x2440mm.jpg",
+      "clean_name": "1-placas-pvc/11-placas-pvc-tipo-madera/perfil t 7x3x2440mm.jpg",
+      "md5": "f1dcebf3d49ae87ab789ce5ae807a6db",
+      "size": 105755
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\1-placas-pvc\\12-placas-pvc-texturizadas\\ANGULO 8x8x2440mm.jpg",
+      "clean_name": "1-placas-pvc/12-placas-pvc-texturizadas/angulo 8x8x2440mm.jpg",
+      "md5": "7f3410d88f6784b16289b560e839b34e",
+      "size": 176064
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\1-placas-pvc\\12-placas-pvc-texturizadas\\ASH.png",
+      "clean_name": "1-placas-pvc/12-placas-pvc-texturizadas/ash.png",
+      "md5": "1d7e2a7c71a053ad329e8275de9ede96",
+      "size": 342586
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\1-placas-pvc\\12-placas-pvc-texturizadas\\CEDAR.png",
+      "clean_name": "1-placas-pvc/12-placas-pvc-texturizadas/cedar.png",
+      "md5": "d70c5f4fd4dfa578f226d1194a475860",
+      "size": 624083
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\1-placas-pvc\\12-placas-pvc-texturizadas\\ENCINO.png",
+      "clean_name": "1-placas-pvc/12-placas-pvc-texturizadas/encino.png",
+      "md5": "641f1d3bc9b5f3b3917517e11e797b44",
+      "size": 185526
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\1-placas-pvc\\12-placas-pvc-texturizadas\\IPE.png",
+      "clean_name": "1-placas-pvc/12-placas-pvc-texturizadas/ipe.png",
+      "md5": "b1f0b068981dc68bf88c64506aa66904",
+      "size": 402802
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\1-placas-pvc\\12-placas-pvc-texturizadas\\JATOBA.png",
+      "clean_name": "1-placas-pvc/12-placas-pvc-texturizadas/jatoba.png",
+      "md5": "0d48538496abef044dc30cac12f64d06",
+      "size": 286907
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\1-placas-pvc\\12-placas-pvc-texturizadas\\NOGAL.png",
+      "clean_name": "1-placas-pvc/12-placas-pvc-texturizadas/nogal.png",
+      "md5": "326fec2b7828e9e50ea0ad412ce399d5",
+      "size": 311171
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\1-placas-pvc\\12-placas-pvc-texturizadas\\PERFIL T 7x3x2440mm.jpg",
+      "clean_name": "1-placas-pvc/12-placas-pvc-texturizadas/perfil t 7x3x2440mm.jpg",
+      "md5": "f1dcebf3d49ae87ab789ce5ae807a6db",
+      "size": 105755
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\1-placas-pvc\\12-placas-pvc-texturizadas\\WENGE.png",
+      "clean_name": "1-placas-pvc/12-placas-pvc-texturizadas/wenge.png",
+      "md5": "acef8be0493f9860828eda638c5fac66",
+      "size": 819774
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\1-placas-pvc\\13-placas-pvc-tipo-espejo\\PLACA TIPO ESPEJO DORADO.jpg",
+      "clean_name": "1-placas-pvc/13-placas-pvc-tipo-espejo/placa tipo espejo dorado.jpg",
+      "md5": "77ce018d8a59004db1c196ee31fdf8c5",
+      "size": 19545
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\1-placas-pvc\\13-placas-pvc-tipo-espejo\\PLACA TIPO ESPEJO.jpg",
+      "clean_name": "1-placas-pvc/13-placas-pvc-tipo-espejo/placa tipo espejo.jpg",
+      "md5": "5e4372bffd118445e45587d393feba93",
+      "size": 97436
+    },
+    {
+      "web_path": "G:\\Mi unidad\\ADIS DISEÑO\\Pagina\\img\\1-placas-pvc\\13-placas-pvc-tipo-espejo\\PLACA TIPO METAL.jpg",
+      "clean_name": "1-placas-pvc/13-placas-pvc-tipo-espejo/placa tipo metal.jpg",
+      "md5": "7c265f9ded89a174b164c98725cccf0c",
+      "size": 72550
+    }
+  ],
+  "content_mismatch": [],
+  "duplicates_in_catalogo": [
+    {
+      "md5": "f1dcebf3d49ae87ab789ce5ae807a6db",
+      "paths": [
+        "1. placas pvc/perfil t 7x3x2440mm.jpg",
+        "1. placas pvc/placas pvc tipo madera/perfil t 7x3x2440mm.jpg",
+        "1. placas pvc/placas pvc texturizadas/perfil t 7x3x2440mm.jpg"
+      ],
+      "sizes": [
+        105755,
+        105755,
+        105755
+      ]
+    },
+    {
+      "md5": "7f3410d88f6784b16289b560e839b34e",
+      "paths": [
+        "1. placas pvc/angulo 8x8x2440mm.jpg",
+        "1. placas pvc/placas pvc tipo madera/angulo 8x8x2440mm.jpg",
+        "1. placas pvc/placas pvc texturizadas/angulo 8x8x2440mm.jpg"
+      ],
+      "sizes": [
+        176064,
+        176064,
+        176064
+      ]
+    }
+  ],
+  "fotos_matches": [
+    {
+      "foto_path": "G:\\Mi unidad\\ADIS DISEÑO\\FOTOS\\onix.jpeg",
+      "foto_md5": "18dbb076385a4cd379af5045ababaca4",
+      "foto_size": 209532,
+      "matches": [
+        "1. placas pvc/onix.jpg"
+      ]
+    },
+    {
+      "foto_path": "G:\\Mi unidad\\ADIS DISEÑO\\FOTOS\\Agata.jpeg",
+      "foto_md5": "64892e7eff12e1b67547b637b658b6d8",
+      "foto_size": 148255,
+      "matches": [
+        "1. placas pvc/agata.jpg"
+      ]
+    },
+    {
+      "foto_path": "G:\\Mi unidad\\ADIS DISEÑO\\FOTOS\\topacio.jpeg",
+      "foto_md5": "436de9b19676541ba0a1658775ea4942",
+      "foto_size": 92750,
+      "matches": [
+        "1. placas pvc/topacio.jpg"
+      ]
+    },
+    {
+      "foto_path": "G:\\Mi unidad\\ADIS DISEÑO\\FOTOS\\Hojas\\ARENA.jpeg",
+      "foto_md5": "0a9ac943e5f81b74eef4b655f2717736",
+      "foto_size": 39789,
+      "matches": [
+        "1. placas pvc/arena.jpg"
+      ]
+    },
+    {
+      "foto_path": "G:\\Mi unidad\\ADIS DISEÑO\\FOTOS\\Hojas\\ONIX.jpeg",
+      "foto_md5": "ded6096906b6ae60ba12da7d097ae6a9",
+      "foto_size": 134306,
+      "matches": [
+        "1. placas pvc/onix.jpg"
+      ]
+    },
+    {
+      "foto_path": "G:\\Mi unidad\\ADIS DISEÑO\\FOTOS\\Hojas\\ZAFIRO.jpeg",
+      "foto_md5": "a4a824f2392c77a398954efc16132c49",
+      "foto_size": 234939,
+      "matches": [
+        "1. placas pvc/zafiro.jpg"
+      ]
+    },
+    {
+      "foto_path": "G:\\Mi unidad\\ADIS DISEÑO\\FOTOS\\Hojas\\GRAFITO.jpeg",
+      "foto_md5": "0fb339524cb3e5cc83d1d6b960c3fc8c",
+      "foto_size": 182473,
+      "matches": [
+        "1. placas pvc/grafito.jpg"
+      ]
+    },
+    {
+      "foto_path": "G:\\Mi unidad\\ADIS DISEÑO\\FOTOS\\Hojas\\AGATA.jpeg",
+      "foto_md5": "64892e7eff12e1b67547b637b658b6d8",
+      "foto_size": 148255,
+      "matches": [
+        "1. placas pvc/agata.jpg"
+      ]
+    },
+    {
+      "foto_path": "G:\\Mi unidad\\ADIS DISEÑO\\FOTOS\\Hojas\\TOPACIO.jpeg",
+      "foto_md5": "436de9b19676541ba0a1658775ea4942",
+      "foto_size": 92750,
+      "matches": [
+        "1. placas pvc/topacio.jpg"
+      ]
+    },
+    {
+      "foto_path": "G:\\Mi unidad\\ADIS DISEÑO\\FOTOS\\Hojas\\CARRARA OSCURO.jpeg",
+      "foto_md5": "a5967470a3249f44bef5f1e23449470b",
+      "foto_size": 2142939,
+      "matches": [
+        "1. placas pvc/carrara oscuro.jpg"
+      ]
+    }
+  ]
+}
