@@ -1,0 +1,2531 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Catálogo ADIS 2025</title>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&family=Playfair+Display:wght@400;700&display=swap');
+        @page { size: A4 portrait; margin: 0; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        html, body { font-family: 'Montserrat', sans-serif; background: #080808; color: #F0F0F0; font-size: 10pt; }
+        .page { width: 210mm; min-height: 297mm; padding: 14mm 18mm; position: relative; overflow: hidden; page-break-after: always; display: flex; flex-direction: column; }
+        .page:last-child { page-break-after: auto; }
+        
+        /* Tipografía */
+        h1 { font-family: 'Playfair Display', serif; font-size: 32pt; font-weight: 700; color: #F0F0F0; line-height: 1.1; }
+        h2 { font-family: 'Playfair Display', serif; font-size: 22pt; font-weight: 700; color: #C9A84C; line-height: 1.2; }
+        h3 { font-size: 11pt; font-weight: 700; color: #F0F0F0; text-transform: uppercase; letter-spacing: 1px; }
+        .muted { color: #888; font-size: 9pt; }
+        .gold { color: #C9A84C; }
+        
+        /* Header/Footer */
+        .header { display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #2A2A2A; padding-bottom: 6px; margin-bottom: 10px; }
+        .header img { height: 22px; }
+        .header span { font-size: 8pt; color: #888; text-transform: uppercase; letter-spacing: 1px; }
+        .footer { margin-top: auto; border-top: 1px solid #2A2A2A; padding-top: 6px; display: flex; justify-content: space-between; align-items: center; font-size: 7.5pt; color: #777; }
+        .back-btn { position: absolute; top: 14mm; right: 18mm; background: #1A1A1A; border: 1px solid #555; color: #C9A84C; padding: 3px 10px; border-radius: 3px; font-size: 7.5pt; font-weight: 700; text-decoration: none; }
+        
+        /* Portada */
+        .cover { background-size: cover; background-position: center; position: relative; justify-content: center; align-items: center; text-align: center; padding: 0; }
+        .cover-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.80); }
+        .cover-frame { position: absolute; inset: 12mm; border: 1.5px solid #C9A84C; border-radius: 10px; pointer-events: none; }
+        .cover-frame2 { position: absolute; inset: 15mm; border: 0.5px solid #8A7340; border-radius: 8px; pointer-events: none; }
+        .cover-content { position: relative; z-index: 2; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; padding: 20mm; }
+        .cover-content img { max-width: 110mm; max-height: 85mm; object-fit: contain; margin-bottom: 15mm; }
+        .cover-content h1 { font-family: 'Montserrat', sans-serif; font-size: 28pt; font-weight: 800; letter-spacing: 2px; margin-bottom: 4mm; }
+        .cover-content .sub { font-size: 11pt; color: #E5C97A; margin-bottom: 6mm; }
+        .cover-content .line { width: 50mm; height: 1px; background: #C9A84C; margin-bottom: 6mm; }
+        .cover-content .year { font-size: 9pt; color: #888; }
+        
+        /* Índice */
+        .index-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 8mm; }
+        .index-card { background: #121212; border: 1px solid #222; border-radius: 6px; overflow: hidden; display: flex; flex-direction: column; transition: border-color 0.2s; text-decoration: none; color: inherit; page-break-inside: avoid; }
+        .index-card:hover { border-color: #C9A84C; }
+        .index-card.destacado { border: 2px solid #C9A84C; }
+        .index-card img { width: 100%; height: 38mm; object-fit: cover; }
+        .index-card-body { padding: 8px; flex: 1; display: flex; flex-direction: column; }
+        .index-card-body h4 { font-size: 9.5pt; font-weight: 700; color: #F0F0F0; text-transform: uppercase; margin-bottom: 2px; }
+        .index-card-body .count { font-size: 8pt; color: #C9A84C; font-weight: 700; margin-bottom: 3px; }
+        .index-card-body p { font-size: 7.5pt; color: #888; line-height: 1.3; margin-bottom: 4px; flex: 1; }
+        .index-card-body .cta { font-size: 7.5pt; color: #8A7340; font-weight: 700; text-align: center; }
+        .index-card .badge { background: #C9A84C; color: #080808; font-size: 6.5pt; font-weight: 800; text-align: center; padding: 2px; text-transform: uppercase; }
+        
+        /* Categoría intro */
+        .cat-intro { display: flex; flex-direction: column; gap: 8px; }
+        .cat-header { display: flex; justify-content: space-between; align-items: baseline; border-bottom: 1px solid #C9A84C; padding-bottom: 4px; margin-bottom: 2px; }
+        .cat-header h1 { font-size: 26pt; }
+        .cat-header .count { font-size: 10pt; color: #C9A84C; font-weight: 700; }
+        .cat-desc { font-size: 9.5pt; color: #CCC; line-height: 1.4; max-width: 85%; }
+        .cat-img { width: 100%; height: 52mm; object-fit: cover; border-radius: 4px; margin: 4px 0; }
+        .specs-box { background: #121212; border-radius: 4px; padding: 6px 10px; display: flex; flex-wrap: wrap; gap: 8px 16px; font-size: 8pt; color: #BBB; }
+        .specs-box span strong { color: #C9A84C; }
+        .benefits { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-top: 4px; }
+        .benefit { background: #181818; border-radius: 4px; padding: 5px 8px; border-left: 2px solid #C9A84C; }
+        .benefit b { color: #C9A84C; font-size: 8pt; display: block; margin-bottom: 1px; }
+        .benefit span { color: #888; font-size: 7.5pt; }
+        .banner-sq { background: #121212; border: 1px solid #333; border-radius: 4px; padding: 6px 10px; margin-top: 6px; display: flex; align-items: center; gap: 8px; font-size: 8pt; color: #BBB; }
+        .banner-sq .icon { font-size: 14pt; }
+        .banner-sq b { color: #C9A84C; margin-right: 4px; }
+        
+        /* Productos grid */
+        .prod-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; flex: 1; }
+        .prod-card { background: #181818; border: 1px solid #222; border-radius: 4px; overflow: hidden; display: flex; flex-direction: column; page-break-inside: avoid; }
+        .prod-card .img-wrap { flex: 1; min-height: 0; display: flex; align-items: center; justify-content: center; padding: 6px; }
+        .prod-card img { max-width: 100%; max-height: 100%; object-fit: contain; }
+        .prod-card .info { padding: 5px 6px 6px; border-top: 1px solid #222; }
+        .prod-card .name { font-size: 7.5pt; font-weight: 700; color: #F0F0F0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 1px; }
+        .prod-card .sku { font-family: 'Courier New', monospace; font-size: 6.5pt; color: #C9A84C; font-weight: 700; }
+        .prod-card .sub { font-size: 6.5pt; color: #666; margin-top: 1px; }
+        
+        /* Comparativa */
+        .comp-table { width: 100%; border-collapse: collapse; margin-top: 6px; }
+        .comp-table th { background: #C9A84C; color: #080808; font-size: 8.5pt; font-weight: 700; padding: 6px 8px; text-align: center; border: 1px solid #333; }
+        .comp-table td { background: #121212; color: #CCC; font-size: 8pt; padding: 5px 8px; text-align: center; border: 1px solid #222; }
+        .comp-table tr:nth-child(even) td { background: #181818; }
+        .comp-table .ok { color: #4CAF50; font-weight: 700; }
+        .comp-table .bar { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #C9A84C; margin: 0 1px; }
+        .comp-table .bar.empty { background: #333; }
+        
+        /* Final */
+        .final { text-align: center; justify-content: center; align-items: center; }
+        .final img.logo { max-width: 60mm; margin-bottom: 10mm; }
+        .final h2 { margin-bottom: 4mm; }
+        .final .contact-box { background: #121212; border: 1px solid #222; border-radius: 6px; padding: 10px 20px; margin: 8mm 0; max-width: 130mm; }
+        .final .contact-box p { font-size: 9pt; color: #CCC; margin: 3px 0; }
+        .final .qr-wrap { background: #fff; padding: 8px; border-radius: 6px; display: inline-block; margin-top: 6mm; }
+        .final .qr-wrap img { width: 35mm; height: 35mm; display: block; }
+        .final .qr-label { font-size: 8pt; color: #C9A84C; margin-top: 3mm; font-weight: 700; }
+    </style>
+    
+</head>
+<body>
+<div class="page cover" style="background-image:url('file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/Pagina/media/proyecto-recepcion.jpg');">
+        <div class="cover-overlay"></div>
+        <div class="cover-frame"></div>
+        <div class="cover-frame2"></div>
+        <div class="cover-content">
+            <img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/Pagina/logo%20nuevo.jpeg" alt="ADIS">
+            <div class="sub">Materiales premium para arquitectura e interiorismo</div>
+            <div class="line"></div>
+            <div class="year">CATÁLOGO 2025 &nbsp;|&nbsp; ADIS DISEÑO & REMODELACIÓN<br>Nogales, Sonora &nbsp;|&nbsp; Río Rico, AZ</div>
+        </div>
+    </div><div class="page" id="indice">
+<div style="text-align:center; margin-bottom:8px;"><h2 style="font-size:26pt;">ÍNDICE</h2><div style="width:30mm;height:1px;background:#C9A84C;margin:4px auto 0;"></div><p class="muted" style="margin-top:4px;">Selecciona una categoría para navegar</p></div>
+<div class="index-grid">
+<a href="#cat_0" class="index-card destacado">
+            <img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/Pagina/media/pvc-real-01.jpeg" alt="Placas PVC">
+            <div class="index-card-body">
+                <h4>PLACAS PVC</h4>
+                <div class="count">34 productos</div>
+                <p>Placas PVC</p>
+                <div class="cta">VER CATEGORÍA →</div>
+            </div>
+            <div class="badge">★ Categoría Destacada ★</div>
+        </a>
+<a href="#cat_1" class="index-card destacado">
+            <img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/Pagina/media/proyecto-02.jpeg" alt="Lambrin WPC">
+            <div class="index-card-body">
+                <h4>LAMBRIN WPC</h4>
+                <div class="count">39 productos</div>
+                <p>Lambrin WPC</p>
+                <div class="cta">VER CATEGORÍA →</div>
+            </div>
+            <div class="badge">★ Categoría Destacada ★</div>
+        </a>
+<a href="#cat_2" class="index-card ">
+            <img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/Pagina/media/proyecto-07.jpeg" alt="Revestimiento Flexible">
+            <div class="index-card-body">
+                <h4>REVESTIMIENTO FLEXIBLE</h4>
+                <div class="count">6 productos</div>
+                <p>Revestimiento Flexible</p>
+                <div class="cta">VER CATEGORÍA →</div>
+            </div>
+            
+        </a>
+<a href="#cat_3" class="index-card ">
+            <img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/Pagina/media/pvc-real-04.jpeg" alt="Plafon PVC">
+            <div class="index-card-body">
+                <h4>PLAFON PVC</h4>
+                <div class="count">15 productos</div>
+                <p>Plafon PVC</p>
+                <div class="cta">VER CATEGORÍA →</div>
+            </div>
+            
+        </a>
+<a href="#cat_4" class="index-card ">
+            <img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/Pagina/media/proyecto-01.jpeg" alt="Paneles tridimensionales">
+            <div class="index-card-body">
+                <h4>PANELES TRIDIMENSIONALES</h4>
+                <div class="count">24 productos</div>
+                <p>Paneles tridimensionales</p>
+                <div class="cta">VER CATEGORÍA →</div>
+            </div>
+            
+        </a>
+<a href="#cat_5" class="index-card ">
+            <img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/Pagina/media/proyecto-06.jpeg" alt="Vigas PVC">
+            <div class="index-card-body">
+                <h4>VIGAS PVC</h4>
+                <div class="count">15 productos</div>
+                <p>Vigas PVC</p>
+                <div class="cta">VER CATEGORÍA →</div>
+            </div>
+            
+        </a>
+<a href="#cat_6" class="index-card ">
+            <img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/Pagina/media/pvc-real-01.jpeg" alt="Pisos">
+            <div class="index-card-body">
+                <h4>PISOS</h4>
+                <div class="count">78 productos</div>
+                <p>Pisos</p>
+                <div class="cta">VER CATEGORÍA →</div>
+            </div>
+            
+        </a>
+<a href="#cat_7" class="index-card ">
+            <img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/Pagina/media/proyecto-recepcion.jpg" alt="Zacate">
+            <div class="index-card-body">
+                <h4>ZACATE</h4>
+                <div class="count">29 productos</div>
+                <p>Zacate</p>
+                <div class="cta">VER CATEGORÍA →</div>
+            </div>
+            
+        </a>
+<a href="#cat_8" class="index-card ">
+            <img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/Pagina/media/ejemplo-tapiz.jpg" alt="Cladding">
+            <div class="index-card-body">
+                <h4>CLADDING</h4>
+                <div class="count">11 productos</div>
+                <p>Cladding</p>
+                <div class="cta">VER CATEGORÍA →</div>
+            </div>
+            
+        </a>
+</div>
+<div class="footer"><span>ADIS Diseño & Remodelación</span><span>Página 2</span><span>adis-diseño.com | +52 631-192-8993</span></div>
+</div><div class="page cat-intro" id="cat_0">
+<div class="header"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/Pagina/logo%20nuevo.jpeg" alt="ADIS"><span>PLACAS PVC</span><a href="#indice" class="back-btn">← Índice</a></div>
+<div class="cat-header"><h1>PLACAS PVC</h1><div class="count">34 PRODUCTOS</div></div>
+<p class="cat-desc">Placas PVC. Soluciones decorativas premium de alta calidad.</p>
+<img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/Pagina/media/pvc-real-01.jpeg" class="cat-img" alt="Placas PVC">
+<div class="specs-box"><span><strong>Material:</strong> PVC</span> <span><strong>Dimensiones:</strong> 2440×1220mm</span> <span><strong>Presentación:</strong> 2.98m²/pz</span> <span><strong>Garantía:</strong> 15 años</span> <span><strong>Uso:</strong> Interior</span></div>
+<div class="benefits">
+<div class="benefit"><b>Impermeable</b><span>Ideal cocinas y baños</span></div>
+<div class="benefit"><b>Antibacteriano</b><span>Higiénico, fácil limpieza</span></div>
+<div class="benefit"><b>Resistente</b><span>No se deforma</span></div>
+<div class="benefit"><b>Duradero</b><span>15+ años</span></div>
+</div>
+<div class="banner-sq"><span class="icon">💧</span><b>¿SABÍAS QUE?</b> Los pisos SPC son 100% resistentes al agua, ideales para cocinas y baños.</div>
+<div class="footer"><span>ADIS Diseño & Remodelación</span><span>Página 3</span><span>adis-diseño.com | +52 631-192-8993</span></div>
+</div><div class="page">
+<div class="header"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/Pagina/logo%20nuevo.jpeg" alt="ADIS"><span>PLACAS PVC</span><a href="#indice" class="back-btn">← Índice</a></div>
+<div class="prod-grid">
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/1.%20Placas%20PVC/1.1%20Placas%20PVC%20tipo%20madera/Adler.jpg" alt="Adler"></div>
+                    <div class="info">
+                        <div class="name" title="Adler">Adler</div>
+                        <div class="sku">PLA-ADLER-01</div>
+                        <div class="sub">Placas PVC tipo madera</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/1.%20Placas%20PVC/1.1%20Placas%20PVC%20tipo%20madera/Alpina.jpg" alt="Alpina"></div>
+                    <div class="info">
+                        <div class="name" title="Alpina">Alpina</div>
+                        <div class="sku">PLA-ALPIN-02</div>
+                        <div class="sub">Placas PVC tipo madera</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/1.%20Placas%20PVC/1.1%20Placas%20PVC%20tipo%20madera/Angulo%208x8x2440mm.jpg" alt="Angulo 8x8x2440mm"></div>
+                    <div class="info">
+                        <div class="name" title="Angulo 8x8x2440mm">Angulo 8x8x2440mm</div>
+                        <div class="sku">PLA-ANGUL-03</div>
+                        <div class="sub">Placas PVC tipo madera</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/1.%20Placas%20PVC/1.1%20Placas%20PVC%20tipo%20madera/Solaria.jpg" alt="Solaria"></div>
+                    <div class="info">
+                        <div class="name" title="Solaria">Solaria</div>
+                        <div class="sku">PLA-SOLAR-04</div>
+                        <div class="sub">Placas PVC tipo madera</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/1.%20Placas%20PVC/1.1%20Placas%20PVC%20tipo%20madera/Solden.jpg" alt="Solden"></div>
+                    <div class="info">
+                        <div class="name" title="Solden">Solden</div>
+                        <div class="sku">PLA-SOLDE-05</div>
+                        <div class="sub">Placas PVC tipo madera</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/1.%20Placas%20PVC/1.1%20Placas%20PVC%20tipo%20madera/anton.jpg" alt="Anton"></div>
+                    <div class="info">
+                        <div class="name" title="Anton">Anton</div>
+                        <div class="sku">PLA-ANTON-06</div>
+                        <div class="sub">Placas PVC tipo madera</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/1.%20Placas%20PVC/1.1%20Placas%20PVC%20tipo%20madera/perfil%20T%207x3x2440mm.jpg" alt="Perfil T 7x3x2440mm"></div>
+                    <div class="info">
+                        <div class="name" title="Perfil T 7x3x2440mm">Perfil T 7x3x2440mm</div>
+                        <div class="sku">PLA-PERFI-07</div>
+                        <div class="sub">Placas PVC tipo madera</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/1.%20Placas%20PVC/1.2%20Placas%20PVC%20Texturizadas/ANGULO%208x8x2440mm.jpg" alt="Angulo 8x8x2440mm"></div>
+                    <div class="info">
+                        <div class="name" title="Angulo 8x8x2440mm">Angulo 8x8x2440mm</div>
+                        <div class="sku">PLA-ANGUL-08</div>
+                        <div class="sub">Placas PVC Texturizadas</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/1.%20Placas%20PVC/1.2%20Placas%20PVC%20Texturizadas/ASH.png" alt="Ash"></div>
+                    <div class="info">
+                        <div class="name" title="Ash">Ash</div>
+                        <div class="sku">PLA-ASH-09</div>
+                        <div class="sub">Placas PVC Texturizadas</div>
+                    </div>
+                </div>
+</div>
+<div class="footer"><span>ADIS Diseño & Remodelación</span><span>Página 4</span><span>adis-diseño.com | +52 631-192-8993</span></div>
+</div><div class="page">
+<div class="header"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/Pagina/logo%20nuevo.jpeg" alt="ADIS"><span>PLACAS PVC</span><a href="#indice" class="back-btn">← Índice</a></div>
+<div class="prod-grid">
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/1.%20Placas%20PVC/1.2%20Placas%20PVC%20Texturizadas/CEDAR.png" alt="Cedar"></div>
+                    <div class="info">
+                        <div class="name" title="Cedar">Cedar</div>
+                        <div class="sku">PLA-CEDAR-10</div>
+                        <div class="sub">Placas PVC Texturizadas</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/1.%20Placas%20PVC/1.2%20Placas%20PVC%20Texturizadas/ENCINO.png" alt="Encino"></div>
+                    <div class="info">
+                        <div class="name" title="Encino">Encino</div>
+                        <div class="sku">PLA-ENCIN-11</div>
+                        <div class="sub">Placas PVC Texturizadas</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/1.%20Placas%20PVC/1.2%20Placas%20PVC%20Texturizadas/IPE.png" alt="Ipe"></div>
+                    <div class="info">
+                        <div class="name" title="Ipe">Ipe</div>
+                        <div class="sku">PLA-IPE-12</div>
+                        <div class="sub">Placas PVC Texturizadas</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/1.%20Placas%20PVC/1.2%20Placas%20PVC%20Texturizadas/JATOBA.png" alt="Jatoba"></div>
+                    <div class="info">
+                        <div class="name" title="Jatoba">Jatoba</div>
+                        <div class="sku">PLA-JATOB-13</div>
+                        <div class="sub">Placas PVC Texturizadas</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/1.%20Placas%20PVC/1.2%20Placas%20PVC%20Texturizadas/NOGAL.png" alt="Nogal"></div>
+                    <div class="info">
+                        <div class="name" title="Nogal">Nogal</div>
+                        <div class="sku">PLA-NOGAL-14</div>
+                        <div class="sub">Placas PVC Texturizadas</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/1.%20Placas%20PVC/1.2%20Placas%20PVC%20Texturizadas/PERFIL%20T%207x3x2440mm.jpg" alt="Perfil T 7x3x2440mm"></div>
+                    <div class="info">
+                        <div class="name" title="Perfil T 7x3x2440mm">Perfil T 7x3x2440mm</div>
+                        <div class="sku">PLA-PERFI-15</div>
+                        <div class="sub">Placas PVC Texturizadas</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/1.%20Placas%20PVC/1.2%20Placas%20PVC%20Texturizadas/WENGE.png" alt="Wenge"></div>
+                    <div class="info">
+                        <div class="name" title="Wenge">Wenge</div>
+                        <div class="sku">PLA-WENGE-16</div>
+                        <div class="sub">Placas PVC Texturizadas</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/1.%20Placas%20PVC/1.3%20Placas%20PVC%20Tipo%20espejo/PLACA%20TIPO%20ESPEJO%20DORADO.jpg" alt="Placa Tipo Espejo Dorado"></div>
+                    <div class="info">
+                        <div class="name" title="Placa Tipo Espejo Dorado">Placa Tipo Espejo Dorado</div>
+                        <div class="sku">PLA-PLACA-17</div>
+                        <div class="sub">Placas PVC Tipo espejo</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/1.%20Placas%20PVC/1.3%20Placas%20PVC%20Tipo%20espejo/PLACA%20TIPO%20ESPEJO.jpg" alt="Placa Tipo Espejo"></div>
+                    <div class="info">
+                        <div class="name" title="Placa Tipo Espejo">Placa Tipo Espejo</div>
+                        <div class="sku">PLA-PLACA-18</div>
+                        <div class="sub">Placas PVC Tipo espejo</div>
+                    </div>
+                </div>
+</div>
+<div class="footer"><span>ADIS Diseño & Remodelación</span><span>Página 5</span><span>adis-diseño.com | +52 631-192-8993</span></div>
+</div><div class="page">
+<div class="header"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/Pagina/logo%20nuevo.jpeg" alt="ADIS"><span>PLACAS PVC</span><a href="#indice" class="back-btn">← Índice</a></div>
+<div class="prod-grid">
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/1.%20Placas%20PVC/1.3%20Placas%20PVC%20Tipo%20espejo/PLACA%20TIPO%20METAL.jpg" alt="Placa Tipo Metal"></div>
+                    <div class="info">
+                        <div class="name" title="Placa Tipo Metal">Placa Tipo Metal</div>
+                        <div class="sku">PLA-PLACA-19</div>
+                        <div class="sub">Placas PVC Tipo espejo</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/1.%20Placas%20PVC/AGATA.jpg" alt="Agata"></div>
+                    <div class="info">
+                        <div class="name" title="Agata">Agata</div>
+                        <div class="sku">PLA-AGATA-20</div>
+                        <div class="sub">Placas PVC</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/1.%20Placas%20PVC/ARENA.jpg" alt="Arena"></div>
+                    <div class="info">
+                        <div class="name" title="Arena">Arena</div>
+                        <div class="sku">PLA-ARENA-21</div>
+                        <div class="sub">Placas PVC</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/1.%20Placas%20PVC/Aurora%20Dorada.jpg" alt="Aurora Dorada"></div>
+                    <div class="info">
+                        <div class="name" title="Aurora Dorada">Aurora Dorada</div>
+                        <div class="sku">PLA-AUROR-22</div>
+                        <div class="sub">Placas PVC</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/1.%20Placas%20PVC/Carrara%20Oscuro.jpg" alt="Carrara Oscuro"></div>
+                    <div class="info">
+                        <div class="name" title="Carrara Oscuro">Carrara Oscuro</div>
+                        <div class="sku">PLA-CARRA-23</div>
+                        <div class="sub">Placas PVC</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/1.%20Placas%20PVC/Cuarzo.jpg" alt="Cuarzo"></div>
+                    <div class="info">
+                        <div class="name" title="Cuarzo">Cuarzo</div>
+                        <div class="sku">PLA-CUARZ-24</div>
+                        <div class="sub">Placas PVC</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/1.%20Placas%20PVC/Grafito.jpg" alt="Grafito"></div>
+                    <div class="info">
+                        <div class="name" title="Grafito">Grafito</div>
+                        <div class="sku">PLA-GRAFI-25</div>
+                        <div class="sub">Placas PVC</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/1.%20Placas%20PVC/Jaspe.jpg" alt="Jaspe"></div>
+                    <div class="info">
+                        <div class="name" title="Jaspe">Jaspe</div>
+                        <div class="sku">PLA-JASPE-26</div>
+                        <div class="sub">Placas PVC</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/1.%20Placas%20PVC/OBSIDIANA.jpg" alt="Obsidiana"></div>
+                    <div class="info">
+                        <div class="name" title="Obsidiana">Obsidiana</div>
+                        <div class="sku">PLA-OBSID-27</div>
+                        <div class="sub">Placas PVC</div>
+                    </div>
+                </div>
+</div>
+<div class="footer"><span>ADIS Diseño & Remodelación</span><span>Página 6</span><span>adis-diseño.com | +52 631-192-8993</span></div>
+</div><div class="page">
+<div class="header"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/Pagina/logo%20nuevo.jpeg" alt="ADIS"><span>PLACAS PVC</span><a href="#indice" class="back-btn">← Índice</a></div>
+<div class="prod-grid">
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/1.%20Placas%20PVC/Onix.jpg" alt="Onix"></div>
+                    <div class="info">
+                        <div class="name" title="Onix">Onix</div>
+                        <div class="sku">PLA-ONIX-28</div>
+                        <div class="sub">Placas PVC</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/1.%20Placas%20PVC/Opalo.jpg" alt="Opalo"></div>
+                    <div class="info">
+                        <div class="name" title="Opalo">Opalo</div>
+                        <div class="sku">PLA-OPALO-29</div>
+                        <div class="sub">Placas PVC</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/1.%20Placas%20PVC/Perfil%20t%207x3x2440mm.jpg" alt="Perfil T 7x3x2440mm"></div>
+                    <div class="info">
+                        <div class="name" title="Perfil T 7x3x2440mm">Perfil T 7x3x2440mm</div>
+                        <div class="sku">PLA-PERFI-30</div>
+                        <div class="sub">Placas PVC</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/1.%20Placas%20PVC/Perla.jpg" alt="Perla"></div>
+                    <div class="info">
+                        <div class="name" title="Perla">Perla</div>
+                        <div class="sku">PLA-PERLA-31</div>
+                        <div class="sub">Placas PVC</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/1.%20Placas%20PVC/Topacio.jpg" alt="Topacio"></div>
+                    <div class="info">
+                        <div class="name" title="Topacio">Topacio</div>
+                        <div class="sku">PLA-TOPAC-32</div>
+                        <div class="sub">Placas PVC</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/1.%20Placas%20PVC/ZAFIRO.jpg" alt="Zafiro"></div>
+                    <div class="info">
+                        <div class="name" title="Zafiro">Zafiro</div>
+                        <div class="sku">PLA-ZAFIR-33</div>
+                        <div class="sub">Placas PVC</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/1.%20Placas%20PVC/angulo%208x8x2440mm.jpg" alt="Angulo 8x8x2440mm"></div>
+                    <div class="info">
+                        <div class="name" title="Angulo 8x8x2440mm">Angulo 8x8x2440mm</div>
+                        <div class="sku">PLA-ANGUL-34</div>
+                        <div class="sub">Placas PVC</div>
+                    </div>
+                </div>
+</div>
+<div class="footer"><span>ADIS Diseño & Remodelación</span><span>Página 7</span><span>adis-diseño.com | +52 631-192-8993</span></div>
+</div><div class="page cat-intro" id="cat_1">
+<div class="header"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/Pagina/logo%20nuevo.jpeg" alt="ADIS"><span>LAMBRIN WPC</span><a href="#indice" class="back-btn">← Índice</a></div>
+<div class="cat-header"><h1>LAMBRIN WPC</h1><div class="count">39 PRODUCTOS</div></div>
+<p class="cat-desc">Lambrin WPC. Soluciones decorativas premium de alta calidad.</p>
+<img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/Pagina/media/proyecto-02.jpeg" class="cat-img" alt="Lambrin WPC">
+<div class="specs-box"><span><strong>Material:</strong> WPC</span> <span><strong>Dimensiones:</strong> 2900×160mm</span> <span><strong>Presentación:</strong> Consultar</span> <span><strong>Garantía:</strong> 15 años</span> <span><strong>Uso:</strong> Int/Ext</span></div>
+<div class="benefits">
+<div class="benefit"><b>Natural</b><span>Textura real de madera</span></div>
+<div class="benefit"><b>Indestructible</b><span>No se pudre</span></div>
+<div class="benefit"><b>Sin mantenimiento</b><span>Sin barniz</span></div>
+<div class="benefit"><b>Ecológico</b><span>Madera reciclada</span></div>
+</div>
+<div class="banner-sq"><span class="icon">🌲</span><b>¿SABÍAS QUE?</b> El WPC combina fibras de madera y polímeros para ofrecer la belleza natural de la madera sin mantenimiento.</div>
+<div class="footer"><span>ADIS Diseño & Remodelación</span><span>Página 8</span><span>adis-diseño.com | +52 631-192-8993</span></div>
+</div><div class="page">
+<div class="header"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/Pagina/logo%20nuevo.jpeg" alt="ADIS"><span>LAMBRIN WPC</span><a href="#indice" class="back-btn">← Índice</a></div>
+<div class="prod-grid">
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/2.%20Lambrin%20WPC/2.1%20Lambrin%20Interior/AMANECHER.jpg" alt="Amanecher"></div>
+                    <div class="info">
+                        <div class="name" title="Amanecher">Amanecher</div>
+                        <div class="sku">LAM-AMANE-01</div>
+                        <div class="sub">Lambrin Interior</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/2.%20Lambrin%20WPC/2.1%20Lambrin%20Interior/ANGULO%20WPC%20PARA%20INTERIOR.jpg" alt="Angulo WPC Para Interior"></div>
+                    <div class="info">
+                        <div class="name" title="Angulo WPC Para Interior">Angulo WPC Para Interior</div>
+                        <div class="sku">LAM-ANGUL-02</div>
+                        <div class="sub">Lambrin Interior</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/2.%20Lambrin%20WPC/2.1%20Lambrin%20Interior/Amizade.jpg" alt="Amizade"></div>
+                    <div class="info">
+                        <div class="name" title="Amizade">Amizade</div>
+                        <div class="sku">LAM-AMIZA-03</div>
+                        <div class="sub">Lambrin Interior</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/2.%20Lambrin%20WPC/2.1%20Lambrin%20Interior/BAHIA.jpg" alt="Bahia"></div>
+                    <div class="info">
+                        <div class="name" title="Bahia">Bahia</div>
+                        <div class="sku">LAM-BAHIA-04</div>
+                        <div class="sub">Lambrin Interior</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/2.%20Lambrin%20WPC/2.1%20Lambrin%20Interior/Brasilia.jpg" alt="Brasilia"></div>
+                    <div class="info">
+                        <div class="name" title="Brasilia">Brasilia</div>
+                        <div class="sku">LAM-BRASI-05</div>
+                        <div class="sub">Lambrin Interior</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/2.%20Lambrin%20WPC/2.1%20Lambrin%20Interior/Cerezo%20Macapa.jpg" alt="Cerezo Macapa"></div>
+                    <div class="info">
+                        <div class="name" title="Cerezo Macapa">Cerezo Macapa</div>
+                        <div class="sku">LAM-CEREZ-06</div>
+                        <div class="sub">Lambrin Interior</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/2.%20Lambrin%20WPC/2.1%20Lambrin%20Interior/Estrelado.jpg" alt="Estrelado"></div>
+                    <div class="info">
+                        <div class="name" title="Estrelado">Estrelado</div>
+                        <div class="sku">LAM-ESTRE-07</div>
+                        <div class="sub">Lambrin Interior</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/2.%20Lambrin%20WPC/2.1%20Lambrin%20Interior/Fortaleza.jpg" alt="Fortaleza"></div>
+                    <div class="info">
+                        <div class="name" title="Fortaleza">Fortaleza</div>
+                        <div class="sku">LAM-FORTA-08</div>
+                        <div class="sub">Lambrin Interior</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/2.%20Lambrin%20WPC/2.1%20Lambrin%20Interior/Manaos.jpg" alt="Manaos"></div>
+                    <div class="info">
+                        <div class="name" title="Manaos">Manaos</div>
+                        <div class="sku">LAM-MANAO-09</div>
+                        <div class="sub">Lambrin Interior</div>
+                    </div>
+                </div>
+</div>
+<div class="footer"><span>ADIS Diseño & Remodelación</span><span>Página 9</span><span>adis-diseño.com | +52 631-192-8993</span></div>
+</div><div class="page">
+<div class="header"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/Pagina/logo%20nuevo.jpeg" alt="ADIS"><span>LAMBRIN WPC</span><a href="#indice" class="back-btn">← Índice</a></div>
+<div class="prod-grid">
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/2.%20Lambrin%20WPC/2.1%20Lambrin%20Interior/Nogal%20Olinda.jpg" alt="Nogal Olinda"></div>
+                    <div class="info">
+                        <div class="name" title="Nogal Olinda">Nogal Olinda</div>
+                        <div class="sku">LAM-NOGAL-10</div>
+                        <div class="sub">Lambrin Interior</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/2.%20Lambrin%20WPC/2.1%20Lambrin%20Interior/Nuvem.jpg" alt="Nuvem"></div>
+                    <div class="info">
+                        <div class="name" title="Nuvem">Nuvem</div>
+                        <div class="sku">LAM-NUVEM-11</div>
+                        <div class="sub">Lambrin Interior</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/2.%20Lambrin%20WPC/2.1%20Lambrin%20Interior/Ouro%20Preto.jpg" alt="Ouro Preto"></div>
+                    <div class="info">
+                        <div class="name" title="Ouro Preto">Ouro Preto</div>
+                        <div class="sku">LAM-OUROP-12</div>
+                        <div class="sub">Lambrin Interior</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/2.%20Lambrin%20WPC/2.1%20Lambrin%20Interior/Ribeira.jpg" alt="Ribeira"></div>
+                    <div class="info">
+                        <div class="name" title="Ribeira">Ribeira</div>
+                        <div class="sku">LAM-RIBEI-13</div>
+                        <div class="sub">Lambrin Interior</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/2.%20Lambrin%20WPC/2.1%20Lambrin%20Interior/Rodeiro.jpg" alt="Rodeiro"></div>
+                    <div class="info">
+                        <div class="name" title="Rodeiro">Rodeiro</div>
+                        <div class="sku">LAM-RODEI-14</div>
+                        <div class="sub">Lambrin Interior</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/2.%20Lambrin%20WPC/2.1%20Lambrin%20Interior/R%C3%ADo.jpg" alt="Río"></div>
+                    <div class="info">
+                        <div class="name" title="Río">Río</div>
+                        <div class="sku">LAM-RO-15</div>
+                        <div class="sub">Lambrin Interior</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/2.%20Lambrin%20WPC/2.1%20Lambrin%20Interior/Sabeiro.jpg" alt="Sabeiro"></div>
+                    <div class="info">
+                        <div class="name" title="Sabeiro">Sabeiro</div>
+                        <div class="sku">LAM-SABEI-16</div>
+                        <div class="sub">Lambrin Interior</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/2.%20Lambrin%20WPC/2.1%20Lambrin%20Interior/Sao%20Paulo.jpg" alt="Sao Paulo"></div>
+                    <div class="info">
+                        <div class="name" title="Sao Paulo">Sao Paulo</div>
+                        <div class="sku">LAM-SAOPA-17</div>
+                        <div class="sub">Lambrin Interior</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/2.%20Lambrin%20WPC/2.1%20Lambrin%20Interior/Sonho.jpg" alt="Sonho"></div>
+                    <div class="info">
+                        <div class="name" title="Sonho">Sonho</div>
+                        <div class="sku">LAM-SONHO-18</div>
+                        <div class="sub">Lambrin Interior</div>
+                    </div>
+                </div>
+</div>
+<div class="footer"><span>ADIS Diseño & Remodelación</span><span>Página 10</span><span>adis-diseño.com | +52 631-192-8993</span></div>
+</div><div class="page">
+<div class="header"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/Pagina/logo%20nuevo.jpeg" alt="ADIS"><span>LAMBRIN WPC</span><a href="#indice" class="back-btn">← Índice</a></div>
+<div class="prod-grid">
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/2.%20Lambrin%20WPC/2.1%20Lambrin%20Interior/Teak%20Aracaju.jpg" alt="Teak Aracaju"></div>
+                    <div class="info">
+                        <div class="name" title="Teak Aracaju">Teak Aracaju</div>
+                        <div class="sku">LAM-TEAKA-19</div>
+                        <div class="sub">Lambrin Interior</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/2.%20Lambrin%20WPC/2.2%20Lambrin%20Exterior/CHARCOAL.jpg" alt="Charcoal"></div>
+                    <div class="info">
+                        <div class="name" title="Charcoal">Charcoal</div>
+                        <div class="sku">LAM-CHARC-20</div>
+                        <div class="sub">Lambrin Exterior</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/2.%20Lambrin%20WPC/2.2%20Lambrin%20Exterior/DARK%20BLACK.jpg" alt="Dark Black"></div>
+                    <div class="info">
+                        <div class="name" title="Dark Black">Dark Black</div>
+                        <div class="sku">LAM-DARKB-21</div>
+                        <div class="sub">Lambrin Exterior</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/2.%20Lambrin%20WPC/2.2%20Lambrin%20Exterior/Esquinero.jpg" alt="Esquinero"></div>
+                    <div class="info">
+                        <div class="name" title="Esquinero">Esquinero</div>
+                        <div class="sku">LAM-ESQUI-22</div>
+                        <div class="sub">Lambrin Exterior</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/2.%20Lambrin%20WPC/2.2%20Lambrin%20Exterior/REDWOOD.jpg" alt="Redwood"></div>
+                    <div class="info">
+                        <div class="name" title="Redwood">Redwood</div>
+                        <div class="sku">LAM-REDWO-23</div>
+                        <div class="sub">Lambrin Exterior</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/2.%20Lambrin%20WPC/2.2%20Lambrin%20Exterior/SLIVER%20GRAY.jpg" alt="Sliver Gray"></div>
+                    <div class="info">
+                        <div class="name" title="Sliver Gray">Sliver Gray</div>
+                        <div class="sku">LAM-SLIVE-24</div>
+                        <div class="sub">Lambrin Exterior</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/2.%20Lambrin%20WPC/2.2%20Lambrin%20Exterior/TEAK.jpg" alt="Teak"></div>
+                    <div class="info">
+                        <div class="name" title="Teak">Teak</div>
+                        <div class="sku">LAM-TEAK-25</div>
+                        <div class="sub">Lambrin Exterior</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/2.%20Lambrin%20WPC/2.3%20Desigual/Bahia.jpg" alt="Bahia"></div>
+                    <div class="info">
+                        <div class="name" title="Bahia">Bahia</div>
+                        <div class="sku">LAM-BAHIA-26</div>
+                        <div class="sub">Desigual</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/2.%20Lambrin%20WPC/2.3%20Desigual/Brasilia.jpg" alt="Brasilia"></div>
+                    <div class="info">
+                        <div class="name" title="Brasilia">Brasilia</div>
+                        <div class="sku">LAM-BRASI-27</div>
+                        <div class="sub">Desigual</div>
+                    </div>
+                </div>
+</div>
+<div class="footer"><span>ADIS Diseño & Remodelación</span><span>Página 11</span><span>adis-diseño.com | +52 631-192-8993</span></div>
+</div><div class="page">
+<div class="header"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/Pagina/logo%20nuevo.jpeg" alt="ADIS"><span>LAMBRIN WPC</span><a href="#indice" class="back-btn">← Índice</a></div>
+<div class="prod-grid">
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/2.%20Lambrin%20WPC/2.3%20Desigual/Parota.jpg" alt="Parota"></div>
+                    <div class="info">
+                        <div class="name" title="Parota">Parota</div>
+                        <div class="sku">LAM-PAROT-28</div>
+                        <div class="sub">Desigual</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/2.%20Lambrin%20WPC/2.3%20Desigual/Rio.jpg" alt="Rio"></div>
+                    <div class="info">
+                        <div class="name" title="Rio">Rio</div>
+                        <div class="sku">LAM-RIO-29</div>
+                        <div class="sub">Desigual</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/2.%20Lambrin%20WPC/2.3%20Desigual/Sao%20Paulo.jpg" alt="Sao Paulo"></div>
+                    <div class="info">
+                        <div class="name" title="Sao Paulo">Sao Paulo</div>
+                        <div class="sku">LAM-SAOPA-30</div>
+                        <div class="sub">Desigual</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/2.%20Lambrin%20WPC/2.4%20Media%20luna/Bahia.jpg" alt="Bahia"></div>
+                    <div class="info">
+                        <div class="name" title="Bahia">Bahia</div>
+                        <div class="sku">LAM-BAHIA-31</div>
+                        <div class="sub">Media luna</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/2.%20Lambrin%20WPC/2.4%20Media%20luna/Sao%20Paulo.jpg" alt="Sao Paulo"></div>
+                    <div class="info">
+                        <div class="name" title="Sao Paulo">Sao Paulo</div>
+                        <div class="sku">LAM-SAOPA-32</div>
+                        <div class="sub">Media luna</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/2.%20Lambrin%20WPC/2.4%20Media%20luna/azeituna.jpg" alt="Azeituna"></div>
+                    <div class="info">
+                        <div class="name" title="Azeituna">Azeituna</div>
+                        <div class="sku">LAM-AZEIT-33</div>
+                        <div class="sub">Media luna</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/2.%20Lambrin%20WPC/2.4%20Media%20luna/brasilia.jpg" alt="Brasilia"></div>
+                    <div class="info">
+                        <div class="name" title="Brasilia">Brasilia</div>
+                        <div class="sku">LAM-BRASI-34</div>
+                        <div class="sub">Media luna</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/2.%20Lambrin%20WPC/2.4%20Media%20luna/rio.jpg" alt="Rio"></div>
+                    <div class="info">
+                        <div class="name" title="Rio">Rio</div>
+                        <div class="sku">LAM-RIO-35</div>
+                        <div class="sub">Media luna</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/2.%20Lambrin%20WPC/2.5%20Media%20luna%20PS/AURELI.jpg" alt="Aureli"></div>
+                    <div class="info">
+                        <div class="name" title="Aureli">Aureli</div>
+                        <div class="sku">LAM-AUREL-36</div>
+                        <div class="sub">Media luna PS</div>
+                    </div>
+                </div>
+</div>
+<div class="footer"><span>ADIS Diseño & Remodelación</span><span>Página 12</span><span>adis-diseño.com | +52 631-192-8993</span></div>
+</div><div class="page">
+<div class="header"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/Pagina/logo%20nuevo.jpeg" alt="ADIS"><span>LAMBRIN WPC</span><a href="#indice" class="back-btn">← Índice</a></div>
+<div class="prod-grid">
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/2.%20Lambrin%20WPC/2.5%20Media%20luna%20PS/CRESSIDA.jpg" alt="Cressida"></div>
+                    <div class="info">
+                        <div class="name" title="Cressida">Cressida</div>
+                        <div class="sku">LAM-CRESS-37</div>
+                        <div class="sub">Media luna PS</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/2.%20Lambrin%20WPC/2.5%20Media%20luna%20PS/ELARA.jpg" alt="Elara"></div>
+                    <div class="info">
+                        <div class="name" title="Elara">Elara</div>
+                        <div class="sku">LAM-ELARA-38</div>
+                        <div class="sub">Media luna PS</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/2.%20Lambrin%20WPC/2.5%20Media%20luna%20PS/GILDARA.jpg" alt="Gildara"></div>
+                    <div class="info">
+                        <div class="name" title="Gildara">Gildara</div>
+                        <div class="sku">LAM-GILDA-39</div>
+                        <div class="sub">Media luna PS</div>
+                    </div>
+                </div>
+</div>
+<div class="footer"><span>ADIS Diseño & Remodelación</span><span>Página 13</span><span>adis-diseño.com | +52 631-192-8993</span></div>
+</div><div class="page cat-intro" id="cat_2">
+<div class="header"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/Pagina/logo%20nuevo.jpeg" alt="ADIS"><span>REVESTIMIENTO FLEXIBLE</span><a href="#indice" class="back-btn">← Índice</a></div>
+<div class="cat-header"><h1>REVESTIMIENTO FLEXIBLE</h1><div class="count">6 PRODUCTOS</div></div>
+<p class="cat-desc">Revestimiento Flexible. Soluciones decorativas premium de alta calidad.</p>
+<img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/Pagina/media/proyecto-07.jpeg" class="cat-img" alt="Revestimiento Flexible">
+<div class="specs-box"><span><strong>Material:</strong> Flexible</span> <span><strong>Dimensiones:</strong> 900×600mm</span> <span><strong>Presentación:</strong> 0.54m²/pz</span> <span><strong>Garantía:</strong> 35 años</span> <span><strong>Uso:</strong> Int/Ext</span></div>
+<div class="benefits">
+<div class="benefit"><b>Flexible</b><span>Cualquier superficie</span></div>
+<div class="benefit"><b>35 años</b><span>Garantía máxima</span></div>
+<div class="benefit"><b>Int/Ext</b><span>Versátil</span></div>
+<div class="benefit"><b>Ligero</b><span>No sobrecarga</span></div>
+</div>
+<div class="banner-sq"><span class="icon">🪨</span><b>¿SABÍAS QUE?</b> Los revestimientos flexibles se adaptan a superficies curvas sin perder su apariencia de piedra natural.</div>
+<div class="footer"><span>ADIS Diseño & Remodelación</span><span>Página 14</span><span>adis-diseño.com | +52 631-192-8993</span></div>
+</div><div class="page">
+<div class="header"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/Pagina/logo%20nuevo.jpeg" alt="ADIS"><span>REVESTIMIENTO FLEXIBLE</span><a href="#indice" class="back-btn">← Índice</a></div>
+<div class="prod-grid">
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/3.%20Revestimiento%20Flexible/CONCRETO%20Aparente.jpg" alt="Concreto Aparente"></div>
+                    <div class="info">
+                        <div class="name" title="Concreto Aparente">Concreto Aparente</div>
+                        <div class="sku">REV-CONCR-01</div>
+                        
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/3.%20Revestimiento%20Flexible/Concreto%20Gris.jpg" alt="Concreto Gris"></div>
+                    <div class="info">
+                        <div class="name" title="Concreto Gris">Concreto Gris</div>
+                        <div class="sku">REV-CONCR-02</div>
+                        
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/3.%20Revestimiento%20Flexible/Granito%20Blanco.jpg" alt="Granito Blanco"></div>
+                    <div class="info">
+                        <div class="name" title="Granito Blanco">Granito Blanco</div>
+                        <div class="sku">REV-GRANI-03</div>
+                        
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/3.%20Revestimiento%20Flexible/Granito%20Imperial%20Blanco.jpg" alt="Granito Imperial Blanco"></div>
+                    <div class="info">
+                        <div class="name" title="Granito Imperial Blanco">Granito Imperial Blanco</div>
+                        <div class="sku">REV-GRANI-04</div>
+                        
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/3.%20Revestimiento%20Flexible/Granito%20Oro.jpg" alt="Granito Oro"></div>
+                    <div class="info">
+                        <div class="name" title="Granito Oro">Granito Oro</div>
+                        <div class="sku">REV-GRANI-05</div>
+                        
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/3.%20Revestimiento%20Flexible/Madera%20Roble.jpeg" alt="Madera Roble"></div>
+                    <div class="info">
+                        <div class="name" title="Madera Roble">Madera Roble</div>
+                        <div class="sku">REV-MADER-06</div>
+                        
+                    </div>
+                </div>
+</div>
+<div class="footer"><span>ADIS Diseño & Remodelación</span><span>Página 15</span><span>adis-diseño.com | +52 631-192-8993</span></div>
+</div><div class="page cat-intro" id="cat_3">
+<div class="header"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/Pagina/logo%20nuevo.jpeg" alt="ADIS"><span>PLAFON PVC</span><a href="#indice" class="back-btn">← Índice</a></div>
+<div class="cat-header"><h1>PLAFON PVC</h1><div class="count">15 PRODUCTOS</div></div>
+<p class="cat-desc">Plafon PVC. Soluciones decorativas premium de alta calidad.</p>
+<img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/Pagina/media/pvc-real-04.jpeg" class="cat-img" alt="Plafon PVC">
+<div class="specs-box"><span><strong>Material:</strong> PVC</span> <span><strong>Dimensiones:</strong> 2900×250mm</span> <span><strong>Presentación:</strong> Consultar</span> <span><strong>Garantía:</strong> 15 años</span> <span><strong>Uso:</strong> Interior</span></div>
+<div class="benefits">
+<div class="benefit"><b>Impermeable</b><span>Humedad cero</span></div>
+<div class="benefit"><b>Fácil limpieza</b><span>Mantenimiento mínimo</span></div>
+<div class="benefit"><b>Decorativo</b><span>Múltiples acabados</span></div>
+<div class="benefit"><b>Duradero</b><span>15 años</span></div>
+</div>
+<div class="banner-sq"><span class="icon">🧼</span><b>¿SABÍAS QUE?</b> Las placas PVC previenen la acumulación de humedad y son extremadamente fáciles de limpiar.</div>
+<div class="footer"><span>ADIS Diseño & Remodelación</span><span>Página 16</span><span>adis-diseño.com | +52 631-192-8993</span></div>
+</div><div class="page">
+<div class="header"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/Pagina/logo%20nuevo.jpeg" alt="ADIS"><span>PLAFON PVC</span><a href="#indice" class="back-btn">← Índice</a></div>
+<div class="prod-grid">
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/4.%20Plafon%20PVC/4.1%20Plafon%20pvc%20laminado/SHERWOOD.jpg" alt="Sherwood"></div>
+                    <div class="info">
+                        <div class="name" title="Sherwood">Sherwood</div>
+                        <div class="sku">PLA-SHERW-01</div>
+                        <div class="sub">Plafon pvc laminado</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/4.%20Plafon%20PVC/4.1%20Plafon%20pvc%20laminado/Teesdale.jpg" alt="Teesdale"></div>
+                    <div class="info">
+                        <div class="name" title="Teesdale">Teesdale</div>
+                        <div class="sku">PLA-TEESD-02</div>
+                        <div class="sub">Plafon pvc laminado</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/4.%20Plafon%20PVC/4.2%20Plafon%20Laminado%20wood/Ash%20Nomad.jpg" alt="Ash Nomad"></div>
+                    <div class="info">
+                        <div class="name" title="Ash Nomad">Ash Nomad</div>
+                        <div class="sku">PLA-ASHNO-03</div>
+                        <div class="sub">Plafon Laminado wood</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/4.%20Plafon%20PVC/4.2%20Plafon%20Laminado%20wood/Birch%20Ember.jpg" alt="Birch Ember"></div>
+                    <div class="info">
+                        <div class="name" title="Birch Ember">Birch Ember</div>
+                        <div class="sku">PLA-BIRCH-04</div>
+                        <div class="sub">Plafon Laminado wood</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/4.%20Plafon%20PVC/4.2%20Plafon%20Laminado%20wood/Cocoa%20Ash.jpg" alt="Cocoa Ash"></div>
+                    <div class="info">
+                        <div class="name" title="Cocoa Ash">Cocoa Ash</div>
+                        <div class="sku">PLA-COCOA-05</div>
+                        <div class="sub">Plafon Laminado wood</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/4.%20Plafon%20PVC/4.2%20Plafon%20Laminado%20wood/Ivory%20Elm.jpg" alt="Ivory Elm"></div>
+                    <div class="info">
+                        <div class="name" title="Ivory Elm">Ivory Elm</div>
+                        <div class="sku">PLA-IVORY-06</div>
+                        <div class="sub">Plafon Laminado wood</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/4.%20Plafon%20PVC/4.2%20Plafon%20Laminado%20wood/Maple%20Dusk.jpg" alt="Maple Dusk"></div>
+                    <div class="info">
+                        <div class="name" title="Maple Dusk">Maple Dusk</div>
+                        <div class="sku">PLA-MAPLE-07</div>
+                        <div class="sub">Plafon Laminado wood</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/4.%20Plafon%20PVC/4.2%20Plafon%20Laminado%20wood/Walnut%20Elipse.jpg" alt="Walnut Elipse"></div>
+                    <div class="info">
+                        <div class="name" title="Walnut Elipse">Walnut Elipse</div>
+                        <div class="sku">PLA-WALNU-08</div>
+                        <div class="sub">Plafon Laminado wood</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/4.%20Plafon%20PVC/4.2%20Plafon%20Laminado%20wood/Wild%20Teak.jpg" alt="Wild Teak"></div>
+                    <div class="info">
+                        <div class="name" title="Wild Teak">Wild Teak</div>
+                        <div class="sku">PLA-WILDT-09</div>
+                        <div class="sub">Plafon Laminado wood</div>
+                    </div>
+                </div>
+</div>
+<div class="footer"><span>ADIS Diseño & Remodelación</span><span>Página 17</span><span>adis-diseño.com | +52 631-192-8993</span></div>
+</div><div class="page">
+<div class="header"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/Pagina/logo%20nuevo.jpeg" alt="ADIS"><span>PLAFON PVC</span><a href="#indice" class="back-btn">← Índice</a></div>
+<div class="prod-grid">
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/4.%20Plafon%20PVC/Plafon%20Ranurado/Ranurado%20vista%202.jpg" alt="Ranurado Vista 2"></div>
+                    <div class="info">
+                        <div class="name" title="Ranurado Vista 2">Ranurado Vista 2</div>
+                        <div class="sku">PLA-RANUR-10</div>
+                        <div class="sub">Plafon Ranurado</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/4.%20Plafon%20PVC/Plafon%20Ranurado/Ranurado.jpg" alt="Ranurado"></div>
+                    <div class="info">
+                        <div class="name" title="Ranurado">Ranurado</div>
+                        <div class="sku">PLA-RANUR-11</div>
+                        <div class="sub">Plafon Ranurado</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/4.%20Plafon%20PVC/Cambridge.jpg" alt="Cambridge"></div>
+                    <div class="info">
+                        <div class="name" title="Cambridge">Cambridge</div>
+                        <div class="sku">PLA-CAMBR-12</div>
+                        <div class="sub">Plafon PVC</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/4.%20Plafon%20PVC/Liverpool.jpg" alt="Liverpool"></div>
+                    <div class="info">
+                        <div class="name" title="Liverpool">Liverpool</div>
+                        <div class="sku">PLA-LIVER-13</div>
+                        <div class="sub">Plafon PVC</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/4.%20Plafon%20PVC/York.jpg" alt="York"></div>
+                    <div class="info">
+                        <div class="name" title="York">York</div>
+                        <div class="sku">PLA-YORK-14</div>
+                        <div class="sub">Plafon PVC</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/4.%20Plafon%20PVC/bristol.jpg" alt="Bristol"></div>
+                    <div class="info">
+                        <div class="name" title="Bristol">Bristol</div>
+                        <div class="sku">PLA-BRIST-15</div>
+                        <div class="sub">Plafon PVC</div>
+                    </div>
+                </div>
+</div>
+<div class="footer"><span>ADIS Diseño & Remodelación</span><span>Página 18</span><span>adis-diseño.com | +52 631-192-8993</span></div>
+</div><div class="page cat-intro" id="cat_4">
+<div class="header"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/Pagina/logo%20nuevo.jpeg" alt="ADIS"><span>PANELES TRIDIMENSIONALES</span><a href="#indice" class="back-btn">← Índice</a></div>
+<div class="cat-header"><h1>PANELES TRIDIMENSIONALES</h1><div class="count">24 PRODUCTOS</div></div>
+<p class="cat-desc">Paneles tridimensionales. Soluciones decorativas premium de alta calidad.</p>
+<img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/Pagina/media/proyecto-01.jpeg" class="cat-img" alt="Paneles tridimensionales">
+<div class="specs-box"><span><strong>Material:</strong> PVC/Compuesto</span> <span><strong>Dimensiones:</strong> 500×500mm</span> <span><strong>Presentación:</strong> 0.25m²/pz</span> <span><strong>Garantía:</strong> 1 año</span> <span><strong>Uso:</strong> Res/Com</span></div>
+<div class="benefits">
+<div class="benefit"><b>Impacto visual</b><span>Diseño arquitectónico</span></div>
+<div class="benefit"><b>Fácil</b><span>Instalación sencilla</span></div>
+<div class="benefit"><b>Pintable</b><span>Personalizable</span></div>
+<div class="benefit"><b>Acústico</b><span>Insonorización</span></div>
+</div>
+<div class="banner-sq"><span class="icon">☀️</span><b>¿SABÍAS QUE?</b> El pasto sintético premium incorpora protección UV para conservar su color durante años.</div>
+<div class="footer"><span>ADIS Diseño & Remodelación</span><span>Página 19</span><span>adis-diseño.com | +52 631-192-8993</span></div>
+</div><div class="page">
+<div class="header"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/Pagina/logo%20nuevo.jpeg" alt="ADIS"><span>PANELES TRIDIMENSIONALES</span><a href="#indice" class="back-btn">← Índice</a></div>
+<div class="prod-grid">
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/5.%20Paneles%20tridimensionales/5.1%20Blanco/Austin.jpg" alt="Austin"></div>
+                    <div class="info">
+                        <div class="name" title="Austin">Austin</div>
+                        <div class="sku">PAN-AUSTI-01</div>
+                        <div class="sub">Blanco</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/5.%20Paneles%20tridimensionales/5.1%20Blanco/Boston.jpg" alt="Boston"></div>
+                    <div class="info">
+                        <div class="name" title="Boston">Boston</div>
+                        <div class="sku">PAN-BOSTO-02</div>
+                        <div class="sub">Blanco</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/5.%20Paneles%20tridimensionales/5.1%20Blanco/Charleston.jpg" alt="Charleston"></div>
+                    <div class="info">
+                        <div class="name" title="Charleston">Charleston</div>
+                        <div class="sku">PAN-CHARL-03</div>
+                        <div class="sub">Blanco</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/5.%20Paneles%20tridimensionales/5.1%20Blanco/Charlotte.jpg" alt="Charlotte"></div>
+                    <div class="info">
+                        <div class="name" title="Charlotte">Charlotte</div>
+                        <div class="sku">PAN-CHARL-04</div>
+                        <div class="sub">Blanco</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/5.%20Paneles%20tridimensionales/5.1%20Blanco/Chicago.jpg" alt="Chicago"></div>
+                    <div class="info">
+                        <div class="name" title="Chicago">Chicago</div>
+                        <div class="sku">PAN-CHICA-05</div>
+                        <div class="sub">Blanco</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/5.%20Paneles%20tridimensionales/5.1%20Blanco/Cleveland.jpg" alt="Cleveland"></div>
+                    <div class="info">
+                        <div class="name" title="Cleveland">Cleveland</div>
+                        <div class="sku">PAN-CLEVE-06</div>
+                        <div class="sub">Blanco</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/5.%20Paneles%20tridimensionales/5.1%20Blanco/Columbus.jpg" alt="Columbus"></div>
+                    <div class="info">
+                        <div class="name" title="Columbus">Columbus</div>
+                        <div class="sku">PAN-COLUM-07</div>
+                        <div class="sub">Blanco</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/5.%20Paneles%20tridimensionales/5.1%20Blanco/Dallas.jpg" alt="Dallas"></div>
+                    <div class="info">
+                        <div class="name" title="Dallas">Dallas</div>
+                        <div class="sku">PAN-DALLA-08</div>
+                        <div class="sub">Blanco</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/5.%20Paneles%20tridimensionales/5.1%20Blanco/Denver.jpg" alt="Denver"></div>
+                    <div class="info">
+                        <div class="name" title="Denver">Denver</div>
+                        <div class="sku">PAN-DENVE-09</div>
+                        <div class="sub">Blanco</div>
+                    </div>
+                </div>
+</div>
+<div class="footer"><span>ADIS Diseño & Remodelación</span><span>Página 20</span><span>adis-diseño.com | +52 631-192-8993</span></div>
+</div><div class="page">
+<div class="header"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/Pagina/logo%20nuevo.jpeg" alt="ADIS"><span>PANELES TRIDIMENSIONALES</span><a href="#indice" class="back-btn">← Índice</a></div>
+<div class="prod-grid">
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/5.%20Paneles%20tridimensionales/5.1%20Blanco/Detroit.jpg" alt="Detroit"></div>
+                    <div class="info">
+                        <div class="name" title="Detroit">Detroit</div>
+                        <div class="sku">PAN-DETRO-10</div>
+                        <div class="sub">Blanco</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/5.%20Paneles%20tridimensionales/5.1%20Blanco/Filadelfia.jpg" alt="Filadelfia"></div>
+                    <div class="info">
+                        <div class="name" title="Filadelfia">Filadelfia</div>
+                        <div class="sku">PAN-FILAD-11</div>
+                        <div class="sub">Blanco</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/5.%20Paneles%20tridimensionales/5.1%20Blanco/Frisco.jpg" alt="Frisco"></div>
+                    <div class="info">
+                        <div class="name" title="Frisco">Frisco</div>
+                        <div class="sku">PAN-FRISC-12</div>
+                        <div class="sub">Blanco</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/5.%20Paneles%20tridimensionales/5.1%20Blanco/Houston.jpg" alt="Houston"></div>
+                    <div class="info">
+                        <div class="name" title="Houston">Houston</div>
+                        <div class="sku">PAN-HOUST-13</div>
+                        <div class="sub">Blanco</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/5.%20Paneles%20tridimensionales/5.2%20Grises/Minneapolis.jpg" alt="Minneapolis"></div>
+                    <div class="info">
+                        <div class="name" title="Minneapolis">Minneapolis</div>
+                        <div class="sku">PAN-MINNE-14</div>
+                        <div class="sub">Grises</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/5.%20Paneles%20tridimensionales/5.2%20Grises/Oklahoma.jpg" alt="Oklahoma"></div>
+                    <div class="info">
+                        <div class="name" title="Oklahoma">Oklahoma</div>
+                        <div class="sku">PAN-OKLAH-15</div>
+                        <div class="sub">Grises</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/5.%20Paneles%20tridimensionales/5.2%20Grises/Orlando.jpg" alt="Orlando"></div>
+                    <div class="info">
+                        <div class="name" title="Orlando">Orlando</div>
+                        <div class="sku">PAN-ORLAN-16</div>
+                        <div class="sub">Grises</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/5.%20Paneles%20tridimensionales/5.3%20Madera/Portland.jpg" alt="Portland"></div>
+                    <div class="info">
+                        <div class="name" title="Portland">Portland</div>
+                        <div class="sku">PAN-PORTL-17</div>
+                        <div class="sub">Madera</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/5.%20Paneles%20tridimensionales/5.3%20Madera/Providence.jpg" alt="Providence"></div>
+                    <div class="info">
+                        <div class="name" title="Providence">Providence</div>
+                        <div class="sku">PAN-PROVI-18</div>
+                        <div class="sub">Madera</div>
+                    </div>
+                </div>
+</div>
+<div class="footer"><span>ADIS Diseño & Remodelación</span><span>Página 21</span><span>adis-diseño.com | +52 631-192-8993</span></div>
+</div><div class="page">
+<div class="header"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/Pagina/logo%20nuevo.jpeg" alt="ADIS"><span>PANELES TRIDIMENSIONALES</span><a href="#indice" class="back-btn">← Índice</a></div>
+<div class="prod-grid">
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/5.%20Paneles%20tridimensionales/5.3%20Madera/Raleigh.jpg" alt="Raleigh"></div>
+                    <div class="info">
+                        <div class="name" title="Raleigh">Raleigh</div>
+                        <div class="sku">PAN-RALEI-19</div>
+                        <div class="sub">Madera</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/5.%20Paneles%20tridimensionales/5.3%20Madera/Reno.jpg" alt="Reno"></div>
+                    <div class="info">
+                        <div class="name" title="Reno">Reno</div>
+                        <div class="sku">PAN-RENO-20</div>
+                        <div class="sub">Madera</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/5.%20Paneles%20tridimensionales/5.4%20Negro/seattle.jpg" alt="Seattle"></div>
+                    <div class="info">
+                        <div class="name" title="Seattle">Seattle</div>
+                        <div class="sku">PAN-SEATT-21</div>
+                        <div class="sub">Negro</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/5.%20Paneles%20tridimensionales/5.5%20Oro/Laredo.jpg" alt="Laredo"></div>
+                    <div class="info">
+                        <div class="name" title="Laredo">Laredo</div>
+                        <div class="sku">PAN-LARED-22</div>
+                        <div class="sub">Oro</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/5.%20Paneles%20tridimensionales/5.5%20Oro/Miami.jpg" alt="Miami"></div>
+                    <div class="info">
+                        <div class="name" title="Miami">Miami</div>
+                        <div class="sku">PAN-MIAMI-23</div>
+                        <div class="sub">Oro</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/5.%20Paneles%20tridimensionales/5.5%20Oro/memphis.jpg" alt="Memphis"></div>
+                    <div class="info">
+                        <div class="name" title="Memphis">Memphis</div>
+                        <div class="sku">PAN-MEMPH-24</div>
+                        <div class="sub">Oro</div>
+                    </div>
+                </div>
+</div>
+<div class="footer"><span>ADIS Diseño & Remodelación</span><span>Página 22</span><span>adis-diseño.com | +52 631-192-8993</span></div>
+</div><div class="page cat-intro" id="cat_5">
+<div class="header"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/Pagina/logo%20nuevo.jpeg" alt="ADIS"><span>VIGAS PVC</span><a href="#indice" class="back-btn">← Índice</a></div>
+<div class="cat-header"><h1>VIGAS PVC</h1><div class="count">15 PRODUCTOS</div></div>
+<p class="cat-desc">Vigas PVC. Soluciones decorativas premium de alta calidad.</p>
+<img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/Pagina/media/proyecto-06.jpeg" class="cat-img" alt="Vigas PVC">
+<div class="specs-box"><span><strong>Material:</strong> WPC/PVC</span> <span><strong>Dimensiones:</strong> Consultar</span> <span><strong>Presentación:</strong> Consultar</span> <span><strong>Garantía:</strong> 15 años</span> <span><strong>Uso:</strong> Int/Ext</span></div>
+<div class="benefits">
+<div class="benefit"><b>Realista</b><span>Imita madera</span></div>
+<div class="benefit"><b>Impermeable</b><span>Resiste humedad</span></div>
+<div class="benefit"><b>Ligero</b><span>Fácil instalar</span></div>
+<div class="benefit"><b>Int/Ext</b><span>Ambos ambientes</span></div>
+</div>
+<div class="banner-sq"><span class="icon">🏠</span><b>¿SABÍAS QUE?</b> El cladding mejora la estética de fachadas y protege los muros exteriores del clima.</div>
+<div class="footer"><span>ADIS Diseño & Remodelación</span><span>Página 23</span><span>adis-diseño.com | +52 631-192-8993</span></div>
+</div><div class="page">
+<div class="header"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/Pagina/logo%20nuevo.jpeg" alt="ADIS"><span>VIGAS PVC</span><a href="#indice" class="back-btn">← Índice</a></div>
+<div class="prod-grid">
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/6.%20Vigas%20PVC/6.1%20Interior/BAHIA%201.jpg" alt="Bahia 1"></div>
+                    <div class="info">
+                        <div class="name" title="Bahia 1">Bahia 1</div>
+                        <div class="sku">VIG-BAHIA-01</div>
+                        <div class="sub">Interior</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/6.%20Vigas%20PVC/6.1%20Interior/BAHIA.jpg" alt="Bahia"></div>
+                    <div class="info">
+                        <div class="name" title="Bahia">Bahia</div>
+                        <div class="sku">VIG-BAHIA-02</div>
+                        <div class="sub">Interior</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/6.%20Vigas%20PVC/6.1%20Interior/BRASILIA%201.jpg" alt="Brasilia 1"></div>
+                    <div class="info">
+                        <div class="name" title="Brasilia 1">Brasilia 1</div>
+                        <div class="sku">VIG-BRASI-03</div>
+                        <div class="sub">Interior</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/6.%20Vigas%20PVC/6.1%20Interior/BRASILIA.jpg" alt="Brasilia"></div>
+                    <div class="info">
+                        <div class="name" title="Brasilia">Brasilia</div>
+                        <div class="sku">VIG-BRASI-04</div>
+                        <div class="sub">Interior</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/6.%20Vigas%20PVC/6.1%20Interior/COPLE%20PARA%20VIGA%202.jpg" alt="Cople Para Viga 2"></div>
+                    <div class="info">
+                        <div class="name" title="Cople Para Viga 2">Cople Para Viga 2</div>
+                        <div class="sku">VIG-COPLE-05</div>
+                        <div class="sub">Interior</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/6.%20Vigas%20PVC/6.1%20Interior/COPLE%20PARA%20VIGA.jpg" alt="Cople Para Viga"></div>
+                    <div class="info">
+                        <div class="name" title="Cople Para Viga">Cople Para Viga</div>
+                        <div class="sku">VIG-COPLE-06</div>
+                        <div class="sub">Interior</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/6.%20Vigas%20PVC/6.1%20Interior/RIO%201.jpg" alt="Rio 1"></div>
+                    <div class="info">
+                        <div class="name" title="Rio 1">Rio 1</div>
+                        <div class="sku">VIG-RIO1-07</div>
+                        <div class="sub">Interior</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/6.%20Vigas%20PVC/6.1%20Interior/RIO.jpg" alt="Rio"></div>
+                    <div class="info">
+                        <div class="name" title="Rio">Rio</div>
+                        <div class="sku">VIG-RIO-08</div>
+                        <div class="sub">Interior</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/6.%20Vigas%20PVC/6.1%20Interior/SAO%20PAULO%201.jpg" alt="Sao Paulo 1"></div>
+                    <div class="info">
+                        <div class="name" title="Sao Paulo 1">Sao Paulo 1</div>
+                        <div class="sku">VIG-SAOPA-09</div>
+                        <div class="sub">Interior</div>
+                    </div>
+                </div>
+</div>
+<div class="footer"><span>ADIS Diseño & Remodelación</span><span>Página 24</span><span>adis-diseño.com | +52 631-192-8993</span></div>
+</div><div class="page">
+<div class="header"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/Pagina/logo%20nuevo.jpeg" alt="ADIS"><span>VIGAS PVC</span><a href="#indice" class="back-btn">← Índice</a></div>
+<div class="prod-grid">
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/6.%20Vigas%20PVC/6.1%20Interior/SAO%20PAULO.jpg" alt="Sao Paulo"></div>
+                    <div class="info">
+                        <div class="name" title="Sao Paulo">Sao Paulo</div>
+                        <div class="sku">VIG-SAOPA-10</div>
+                        <div class="sub">Interior</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/6.%20Vigas%20PVC/6.1%20Interior/SOPORTE%20PARA%20VIGA%20INTERIOR%20100X50MM.jpg" alt="Soporte Para Viga Interior 100x50mm"></div>
+                    <div class="info">
+                        <div class="name" title="Soporte Para Viga Interior 100x50mm">Soporte Para Viga Interior 100x50mm</div>
+                        <div class="sku">VIG-SOPOR-11</div>
+                        <div class="sub">Interior</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/6.%20Vigas%20PVC/6.2%20Exterior/DARK%20BLACK.jpg" alt="Dark Black"></div>
+                    <div class="info">
+                        <div class="name" title="Dark Black">Dark Black</div>
+                        <div class="sku">VIG-DARKB-12</div>
+                        <div class="sub">Exterior</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/6.%20Vigas%20PVC/6.2%20Exterior/REDWOOD.jpg" alt="Redwood"></div>
+                    <div class="info">
+                        <div class="name" title="Redwood">Redwood</div>
+                        <div class="sku">VIG-REDWO-13</div>
+                        <div class="sub">Exterior</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/6.%20Vigas%20PVC/6.2%20Exterior/SOPORTE%20GIRATORIO%20PARA%20VIGA%20EXTERIOR.jpg" alt="Soporte Giratorio Para Viga Exterior"></div>
+                    <div class="info">
+                        <div class="name" title="Soporte Giratorio Para Viga Exterior">Soporte Giratorio Para Viga Exterior</div>
+                        <div class="sku">VIG-SOPOR-14</div>
+                        <div class="sub">Exterior</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/6.%20Vigas%20PVC/6.2%20Exterior/TEAK.jpg" alt="Teak"></div>
+                    <div class="info">
+                        <div class="name" title="Teak">Teak</div>
+                        <div class="sku">VIG-TEAK-15</div>
+                        <div class="sub">Exterior</div>
+                    </div>
+                </div>
+</div>
+<div class="footer"><span>ADIS Diseño & Remodelación</span><span>Página 25</span><span>adis-diseño.com | +52 631-192-8993</span></div>
+</div><div class="page cat-intro" id="cat_6">
+<div class="header"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/Pagina/logo%20nuevo.jpeg" alt="ADIS"><span>PISOS</span><a href="#indice" class="back-btn">← Índice</a></div>
+<div class="cat-header"><h1>PISOS</h1><div class="count">78 PRODUCTOS</div></div>
+<p class="cat-desc">Pisos. Soluciones decorativas premium de alta calidad.</p>
+<img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/Pagina/media/pvc-real-01.jpeg" class="cat-img" alt="Pisos">
+<div class="specs-box"><span><strong>Material:</strong> Varios</span> <span><strong>Dimensiones:</strong> Consultar</span> <span><strong>Presentación:</strong> Consultar</span> <span><strong>Garantía:</strong> 10-25 años</span> <span><strong>Uso:</strong> Res/Com</span></div>
+<div class="benefits">
+<div class="benefit"><b>Variedad</b><span>Múltiples materiales</span></div>
+<div class="benefit"><b>Resistente</b><span>Alto tráfico</span></div>
+<div class="benefit"><b>Fácil</b><span>Instalación rápida</span></div>
+<div class="benefit"><b>Garantía</b><span>Hasta 25 años</span></div>
+</div>
+<div class="banner-sq"><span class="icon">🔇</span><b>¿SABÍAS QUE?</b> Los paneles 3D no solo decoran: también mejoran la insonorización de tus espacios.</div>
+<div class="footer"><span>ADIS Diseño & Remodelación</span><span>Página 26</span><span>adis-diseño.com | +52 631-192-8993</span></div>
+</div><div class="page">
+<div class="header"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/Pagina/logo%20nuevo.jpeg" alt="ADIS"><span>PISOS</span><a href="#indice" class="back-btn">← Índice</a></div>
+<div class="prod-grid">
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/7.%20Pisos/7.1%20Laminado/ACONCAGUA.jpg" alt="Aconcagua"></div>
+                    <div class="info">
+                        <div class="name" title="Aconcagua">Aconcagua</div>
+                        <div class="sku">PIS-ACONC-01</div>
+                        <div class="sub">Laminado</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/7.%20Pisos/7.1%20Laminado/ALCA%C3%91IZ.jpeg" alt="Alcañiz"></div>
+                    <div class="info">
+                        <div class="name" title="Alcañiz">Alcañiz</div>
+                        <div class="sku">PIS-ALCAI-02</div>
+                        <div class="sub">Laminado</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/7.%20Pisos/7.1%20Laminado/ARCTIC%20OAK%20SPLASH.jpg" alt="Arctic Oak Splash"></div>
+                    <div class="info">
+                        <div class="name" title="Arctic Oak Splash">Arctic Oak Splash</div>
+                        <div class="sku">PIS-ARCTI-03</div>
+                        <div class="sub">Laminado</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/7.%20Pisos/7.1%20Laminado/AUSTRALIAN%20WALNUT%20SPLASH.jpg" alt="Australian Walnut Splash"></div>
+                    <div class="info">
+                        <div class="name" title="Australian Walnut Splash">Australian Walnut Splash</div>
+                        <div class="sku">PIS-AUSTR-04</div>
+                        <div class="sub">Laminado</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/7.%20Pisos/7.1%20Laminado/BOULDER.jpg" alt="Boulder"></div>
+                    <div class="info">
+                        <div class="name" title="Boulder">Boulder</div>
+                        <div class="sku">PIS-BOULD-05</div>
+                        <div class="sub">Laminado</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/7.%20Pisos/7.1%20Laminado/CALANDA.jpeg" alt="Calanda"></div>
+                    <div class="info">
+                        <div class="name" title="Calanda">Calanda</div>
+                        <div class="sku">PIS-CALAN-06</div>
+                        <div class="sub">Laminado</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/7.%20Pisos/7.1%20Laminado/CEREZO%20TABLA.jpg" alt="Cerezo Tabla"></div>
+                    <div class="info">
+                        <div class="name" title="Cerezo Tabla">Cerezo Tabla</div>
+                        <div class="sku">PIS-CEREZ-07</div>
+                        <div class="sub">Laminado</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/7.%20Pisos/7.1%20Laminado/COLONIAL%20OAK.jpg" alt="Colonial Oak"></div>
+                    <div class="info">
+                        <div class="name" title="Colonial Oak">Colonial Oak</div>
+                        <div class="sku">PIS-COLON-08</div>
+                        <div class="sub">Laminado</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/7.%20Pisos/7.1%20Laminado/COPPER%20OAK.jpg" alt="Copper Oak"></div>
+                    <div class="info">
+                        <div class="name" title="Copper Oak">Copper Oak</div>
+                        <div class="sku">PIS-COPPE-09</div>
+                        <div class="sub">Laminado</div>
+                    </div>
+                </div>
+</div>
+<div class="footer"><span>ADIS Diseño & Remodelación</span><span>Página 27</span><span>adis-diseño.com | +52 631-192-8993</span></div>
+</div><div class="page">
+<div class="header"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/Pagina/logo%20nuevo.jpeg" alt="ADIS"><span>PISOS</span><a href="#indice" class="back-btn">← Índice</a></div>
+<div class="prod-grid">
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/7.%20Pisos/7.1%20Laminado/DEMOCRACY%20OAK.jpg" alt="Democracy Oak"></div>
+                    <div class="info">
+                        <div class="name" title="Democracy Oak">Democracy Oak</div>
+                        <div class="sku">PIS-DEMOC-10</div>
+                        <div class="sub">Laminado</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/7.%20Pisos/7.1%20Laminado/DENALI.jpg" alt="Denali"></div>
+                    <div class="info">
+                        <div class="name" title="Denali">Denali</div>
+                        <div class="sku">PIS-DENAL-11</div>
+                        <div class="sub">Laminado</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/7.%20Pisos/7.1%20Laminado/ELBRUS.jpg" alt="Elbrus"></div>
+                    <div class="info">
+                        <div class="name" title="Elbrus">Elbrus</div>
+                        <div class="sku">PIS-ELBRU-12</div>
+                        <div class="sub">Laminado</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/7.%20Pisos/7.1%20Laminado/EVEREST.jpg" alt="Everest"></div>
+                    <div class="info">
+                        <div class="name" title="Everest">Everest</div>
+                        <div class="sku">PIS-EVERE-13</div>
+                        <div class="sub">Laminado</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/7.%20Pisos/7.1%20Laminado/GOLDEN%20OAK.jpg" alt="Golden Oak"></div>
+                    <div class="info">
+                        <div class="name" title="Golden Oak">Golden Oak</div>
+                        <div class="sku">PIS-GOLDE-14</div>
+                        <div class="sub">Laminado</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/7.%20Pisos/7.1%20Laminado/GUDAR.jpeg" alt="Gudar"></div>
+                    <div class="info">
+                        <div class="name" title="Gudar">Gudar</div>
+                        <div class="sku">PIS-GUDAR-15</div>
+                        <div class="sub">Laminado</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/7.%20Pisos/7.1%20Laminado/HICKORY%20CAROLINA.jpg" alt="Hickory Carolina"></div>
+                    <div class="info">
+                        <div class="name" title="Hickory Carolina">Hickory Carolina</div>
+                        <div class="sku">PIS-HICKO-16</div>
+                        <div class="sub">Laminado</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/7.%20Pisos/7.1%20Laminado/INDEPENDENCE%20OAK.jpg" alt="Independence Oak"></div>
+                    <div class="info">
+                        <div class="name" title="Independence Oak">Independence Oak</div>
+                        <div class="sku">PIS-INDEP-17</div>
+                        <div class="sub">Laminado</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/7.%20Pisos/7.1%20Laminado/IVORY%20WHITE.jpg" alt="Ivory White"></div>
+                    <div class="info">
+                        <div class="name" title="Ivory White">Ivory White</div>
+                        <div class="sku">PIS-IVORY-18</div>
+                        <div class="sub">Laminado</div>
+                    </div>
+                </div>
+</div>
+<div class="footer"><span>ADIS Diseño & Remodelación</span><span>Página 28</span><span>adis-diseño.com | +52 631-192-8993</span></div>
+</div><div class="page">
+<div class="header"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/Pagina/logo%20nuevo.jpeg" alt="ADIS"><span>PISOS</span><a href="#indice" class="back-btn">← Índice</a></div>
+<div class="prod-grid">
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/7.%20Pisos/7.1%20Laminado/KIEFER%20STORM.jpg" alt="Kiefer Storm"></div>
+                    <div class="info">
+                        <div class="name" title="Kiefer Storm">Kiefer Storm</div>
+                        <div class="sku">PIS-KIEFE-19</div>
+                        <div class="sub">Laminado</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/7.%20Pisos/7.1%20Laminado/KILIMANJARO.jpg" alt="Kilimanjaro"></div>
+                    <div class="info">
+                        <div class="name" title="Kilimanjaro">Kilimanjaro</div>
+                        <div class="sku">PIS-KILIM-20</div>
+                        <div class="sub">Laminado</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/7.%20Pisos/7.1%20Laminado/MOUNTAIN%20BEECH%20SPLASH.jpg" alt="Mountain Beech Splash"></div>
+                    <div class="info">
+                        <div class="name" title="Mountain Beech Splash">Mountain Beech Splash</div>
+                        <div class="sku">PIS-MOUNT-21</div>
+                        <div class="sub">Laminado</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/7.%20Pisos/7.1%20Laminado/MOUNTAIN%20BEECH.jpg" alt="Mountain Beech"></div>
+                    <div class="info">
+                        <div class="name" title="Mountain Beech">Mountain Beech</div>
+                        <div class="sku">PIS-MOUNT-22</div>
+                        <div class="sub">Laminado</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/7.%20Pisos/7.1%20Laminado/NOGAL%20AMERICANO.jpg" alt="Nogal Americano"></div>
+                    <div class="info">
+                        <div class="name" title="Nogal Americano">Nogal Americano</div>
+                        <div class="sku">PIS-NOGAL-23</div>
+                        <div class="sub">Laminado</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/7.%20Pisos/7.1%20Laminado/OAK%20BREEZE.jpg" alt="Oak Breeze"></div>
+                    <div class="info">
+                        <div class="name" title="Oak Breeze">Oak Breeze</div>
+                        <div class="sku">PIS-OAKBR-24</div>
+                        <div class="sub">Laminado</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/7.%20Pisos/7.1%20Laminado/OAK%20CABANA%20LAGOS.jpg" alt="Oak Cabana Lagos"></div>
+                    <div class="info">
+                        <div class="name" title="Oak Cabana Lagos">Oak Cabana Lagos</div>
+                        <div class="sku">PIS-OAKCA-25</div>
+                        <div class="sub">Laminado</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/7.%20Pisos/7.1%20Laminado/OAK%20DESIGN.jpg" alt="Oak Design"></div>
+                    <div class="info">
+                        <div class="name" title="Oak Design">Oak Design</div>
+                        <div class="sku">PIS-OAKDE-26</div>
+                        <div class="sub">Laminado</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/7.%20Pisos/7.1%20Laminado/OAK%20EPIC%20APULIEN.jpg" alt="Oak Epic Apulien"></div>
+                    <div class="info">
+                        <div class="name" title="Oak Epic Apulien">Oak Epic Apulien</div>
+                        <div class="sku">PIS-OAKEP-27</div>
+                        <div class="sub">Laminado</div>
+                    </div>
+                </div>
+</div>
+<div class="footer"><span>ADIS Diseño & Remodelación</span><span>Página 29</span><span>adis-diseño.com | +52 631-192-8993</span></div>
+</div><div class="page">
+<div class="header"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/Pagina/logo%20nuevo.jpeg" alt="ADIS"><span>PISOS</span><a href="#indice" class="back-btn">← Índice</a></div>
+<div class="prod-grid">
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/7.%20Pisos/7.1%20Laminado/OAK%20EVOKE%20CRYSTAL.jpg" alt="Oak Evoke Crystal"></div>
+                    <div class="info">
+                        <div class="name" title="Oak Evoke Crystal">Oak Evoke Crystal</div>
+                        <div class="sku">PIS-OAKEV-28</div>
+                        <div class="sub">Laminado</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/7.%20Pisos/7.1%20Laminado/OAK%20FRESCO.jpg" alt="Oak Fresco"></div>
+                    <div class="info">
+                        <div class="name" title="Oak Fresco">Oak Fresco</div>
+                        <div class="sku">PIS-OAKFR-29</div>
+                        <div class="sub">Laminado</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/7.%20Pisos/7.1%20Laminado/OAK%20NATURAL.jpg" alt="Oak Natural"></div>
+                    <div class="info">
+                        <div class="name" title="Oak Natural">Oak Natural</div>
+                        <div class="sku">PIS-OAKNA-30</div>
+                        <div class="sub">Laminado</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/7.%20Pisos/7.1%20Laminado/OAK%20SILEA.jpg" alt="Oak Silea"></div>
+                    <div class="info">
+                        <div class="name" title="Oak Silea">Oak Silea</div>
+                        <div class="sku">PIS-OAKSI-31</div>
+                        <div class="sub">Laminado</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/7.%20Pisos/7.1%20Laminado/OAK%20SOLANO.png" alt="Oak Solano"></div>
+                    <div class="info">
+                        <div class="name" title="Oak Solano">Oak Solano</div>
+                        <div class="sku">PIS-OAKSO-32</div>
+                        <div class="sub">Laminado</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/7.%20Pisos/7.1%20Laminado/OAK%20SOUL.jpg" alt="Oak Soul"></div>
+                    <div class="info">
+                        <div class="name" title="Oak Soul">Oak Soul</div>
+                        <div class="sku">PIS-OAKSO-33</div>
+                        <div class="sub">Laminado</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/7.%20Pisos/7.1%20Laminado/OAK%20SUNSET.png" alt="Oak Sunset"></div>
+                    <div class="info">
+                        <div class="name" title="Oak Sunset">Oak Sunset</div>
+                        <div class="sku">PIS-OAKSU-34</div>
+                        <div class="sub">Laminado</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/7.%20Pisos/7.1%20Laminado/OAK%20THUNDER.jpg" alt="Oak Thunder"></div>
+                    <div class="info">
+                        <div class="name" title="Oak Thunder">Oak Thunder</div>
+                        <div class="sku">PIS-OAKTH-35</div>
+                        <div class="sub">Laminado</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/7.%20Pisos/7.1%20Laminado/OAK%20TREND.jpg" alt="Oak Trend"></div>
+                    <div class="info">
+                        <div class="name" title="Oak Trend">Oak Trend</div>
+                        <div class="sku">PIS-OAKTR-36</div>
+                        <div class="sub">Laminado</div>
+                    </div>
+                </div>
+</div>
+<div class="footer"><span>ADIS Diseño & Remodelación</span><span>Página 30</span><span>adis-diseño.com | +52 631-192-8993</span></div>
+</div><div class="page">
+<div class="header"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/Pagina/logo%20nuevo.jpeg" alt="ADIS"><span>PISOS</span><a href="#indice" class="back-btn">← Índice</a></div>
+<div class="prod-grid">
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/7.%20Pisos/7.1%20Laminado/OAK%20VIENNA.jpg" alt="Oak Vienna"></div>
+                    <div class="info">
+                        <div class="name" title="Oak Vienna">Oak Vienna</div>
+                        <div class="sku">PIS-OAKVI-37</div>
+                        <div class="sub">Laminado</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/7.%20Pisos/7.1%20Laminado/OAK%20VOUGE.png" alt="Oak Vouge"></div>
+                    <div class="info">
+                        <div class="name" title="Oak Vouge">Oak Vouge</div>
+                        <div class="sku">PIS-OAKVO-38</div>
+                        <div class="sub">Laminado</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/7.%20Pisos/7.1%20Laminado/PLANTATION%20OAK.jpg" alt="Plantation Oak"></div>
+                    <div class="info">
+                        <div class="name" title="Plantation Oak">Plantation Oak</div>
+                        <div class="sku">PIS-PLANT-39</div>
+                        <div class="sub">Laminado</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/7.%20Pisos/7.1%20Laminado/REVOLUTION%20OAK.jpg" alt="Revolution Oak"></div>
+                    <div class="info">
+                        <div class="name" title="Revolution Oak">Revolution Oak</div>
+                        <div class="sku">PIS-REVOL-40</div>
+                        <div class="sub">Laminado</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/7.%20Pisos/7.1%20Laminado/SPRUCE%20ANTIQUE.jpg" alt="Spruce Antique"></div>
+                    <div class="info">
+                        <div class="name" title="Spruce Antique">Spruce Antique</div>
+                        <div class="sku">PIS-SPRUC-41</div>
+                        <div class="sub">Laminado</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/7.%20Pisos/7.1%20Laminado/TAHOE.jpg" alt="Tahoe"></div>
+                    <div class="info">
+                        <div class="name" title="Tahoe">Tahoe</div>
+                        <div class="sku">PIS-TAHOE-42</div>
+                        <div class="sub">Laminado</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/7.%20Pisos/7.1%20Laminado/TERNASCO.jpeg" alt="Ternasco"></div>
+                    <div class="info">
+                        <div class="name" title="Ternasco">Ternasco</div>
+                        <div class="sku">PIS-TERNA-43</div>
+                        <div class="sub">Laminado</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/7.%20Pisos/7.1%20Laminado/TITANIUM%20OAK.jpg" alt="Titanium Oak"></div>
+                    <div class="info">
+                        <div class="name" title="Titanium Oak">Titanium Oak</div>
+                        <div class="sku">PIS-TITAN-44</div>
+                        <div class="sub">Laminado</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/7.%20Pisos/7.1%20Laminado/UTRILLAS.jpeg" alt="Utrillas"></div>
+                    <div class="info">
+                        <div class="name" title="Utrillas">Utrillas</div>
+                        <div class="sku">PIS-UTRIL-45</div>
+                        <div class="sub">Laminado</div>
+                    </div>
+                </div>
+</div>
+<div class="footer"><span>ADIS Diseño & Remodelación</span><span>Página 31</span><span>adis-diseño.com | +52 631-192-8993</span></div>
+</div><div class="page">
+<div class="header"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/Pagina/logo%20nuevo.jpeg" alt="ADIS"><span>PISOS</span><a href="#indice" class="back-btn">← Índice</a></div>
+<div class="prod-grid">
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/7.%20Pisos/7.1%20Laminado/WALNUT%20SABO.jpg" alt="Walnut Sabo"></div>
+                    <div class="info">
+                        <div class="name" title="Walnut Sabo">Walnut Sabo</div>
+                        <div class="sku">PIS-WALNU-46</div>
+                        <div class="sub">Laminado</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/7.%20Pisos/7.1%20Laminado/WALNUT.jpg" alt="Walnut"></div>
+                    <div class="info">
+                        <div class="name" title="Walnut">Walnut</div>
+                        <div class="sku">PIS-WALNU-47</div>
+                        <div class="sub">Laminado</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/7.%20Pisos/7.2%20WPC/ALBANY%20CREEK.jpg" alt="Albany Creek"></div>
+                    <div class="info">
+                        <div class="name" title="Albany Creek">Albany Creek</div>
+                        <div class="sku">PIS-ALBAN-48</div>
+                        <div class="sub">WPC</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/7.%20Pisos/7.2%20WPC/CANBERRA.jpg" alt="Canberra"></div>
+                    <div class="info">
+                        <div class="name" title="Canberra">Canberra</div>
+                        <div class="sku">PIS-CANBE-49</div>
+                        <div class="sub">WPC</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/7.%20Pisos/7.2%20WPC/HAMPTON.jpg" alt="Hampton"></div>
+                    <div class="info">
+                        <div class="name" title="Hampton">Hampton</div>
+                        <div class="sku">PIS-HAMPT-50</div>
+                        <div class="sub">WPC</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/7.%20Pisos/7.2%20WPC/NORWELL.jpg" alt="Norwell"></div>
+                    <div class="info">
+                        <div class="name" title="Norwell">Norwell</div>
+                        <div class="sku">PIS-NORWE-51</div>
+                        <div class="sub">WPC</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/7.%20Pisos/7.2%20WPC/VERMONT.jpg" alt="Vermont"></div>
+                    <div class="info">
+                        <div class="name" title="Vermont">Vermont</div>
+                        <div class="sku">PIS-VERMO-52</div>
+                        <div class="sub">WPC</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/7.%20Pisos/7.3%20SPC/ALBERTA.jpg" alt="Alberta"></div>
+                    <div class="info">
+                        <div class="name" title="Alberta">Alberta</div>
+                        <div class="sku">PIS-ALBER-53</div>
+                        <div class="sub">SPC</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/7.%20Pisos/7.3%20SPC/AMAZON.jpg" alt="Amazon"></div>
+                    <div class="info">
+                        <div class="name" title="Amazon">Amazon</div>
+                        <div class="sku">PIS-AMAZO-54</div>
+                        <div class="sub">SPC</div>
+                    </div>
+                </div>
+</div>
+<div class="footer"><span>ADIS Diseño & Remodelación</span><span>Página 32</span><span>adis-diseño.com | +52 631-192-8993</span></div>
+</div><div class="page">
+<div class="header"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/Pagina/logo%20nuevo.jpeg" alt="ADIS"><span>PISOS</span><a href="#indice" class="back-btn">← Índice</a></div>
+<div class="prod-grid">
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/7.%20Pisos/7.3%20SPC/ASHLAR%20GRAY.jpg" alt="Ashlar Gray"></div>
+                    <div class="info">
+                        <div class="name" title="Ashlar Gray">Ashlar Gray</div>
+                        <div class="sku">PIS-ASHLA-55</div>
+                        <div class="sub">SPC</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/7.%20Pisos/7.3%20SPC/ASHLAR.jpg" alt="Ashlar"></div>
+                    <div class="info">
+                        <div class="name" title="Ashlar">Ashlar</div>
+                        <div class="sku">PIS-ASHLA-56</div>
+                        <div class="sub">SPC</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/7.%20Pisos/7.3%20SPC/BANFF.jpg" alt="Banff"></div>
+                    <div class="info">
+                        <div class="name" title="Banff">Banff</div>
+                        <div class="sku">PIS-BANFF-57</div>
+                        <div class="sub">SPC</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/7.%20Pisos/7.3%20SPC/CARAMEL.jpg" alt="Caramel"></div>
+                    <div class="info">
+                        <div class="name" title="Caramel">Caramel</div>
+                        <div class="sku">PIS-CARAM-58</div>
+                        <div class="sub">SPC</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/7.%20Pisos/7.3%20SPC/COLORADO%20RUSH.jpg" alt="Colorado Rush"></div>
+                    <div class="info">
+                        <div class="name" title="Colorado Rush">Colorado Rush</div>
+                        <div class="sku">PIS-COLOR-59</div>
+                        <div class="sub">SPC</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/7.%20Pisos/7.3%20SPC/CONCRETE%20LITE.jpg" alt="Concrete Lite"></div>
+                    <div class="info">
+                        <div class="name" title="Concrete Lite">Concrete Lite</div>
+                        <div class="sku">PIS-CONCR-60</div>
+                        <div class="sub">SPC</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/7.%20Pisos/7.3%20SPC/CONCRETE.jpg" alt="Concrete"></div>
+                    <div class="info">
+                        <div class="name" title="Concrete">Concrete</div>
+                        <div class="sku">PIS-CONCR-61</div>
+                        <div class="sub">SPC</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/7.%20Pisos/7.3%20SPC/DALBY.jpg" alt="Dalby"></div>
+                    <div class="info">
+                        <div class="name" title="Dalby">Dalby</div>
+                        <div class="sku">PIS-DALBY-62</div>
+                        <div class="sub">SPC</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/7.%20Pisos/7.3%20SPC/DELAMERE.jpg" alt="Delamere"></div>
+                    <div class="info">
+                        <div class="name" title="Delamere">Delamere</div>
+                        <div class="sku">PIS-DELAM-63</div>
+                        <div class="sub">SPC</div>
+                    </div>
+                </div>
+</div>
+<div class="footer"><span>ADIS Diseño & Remodelación</span><span>Página 33</span><span>adis-diseño.com | +52 631-192-8993</span></div>
+</div><div class="page">
+<div class="header"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/Pagina/logo%20nuevo.jpeg" alt="ADIS"><span>PISOS</span><a href="#indice" class="back-btn">← Índice</a></div>
+<div class="prod-grid">
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/7.%20Pisos/7.3%20SPC/EXPRESSO.jpg" alt="Expresso"></div>
+                    <div class="info">
+                        <div class="name" title="Expresso">Expresso</div>
+                        <div class="sku">PIS-EXPRE-64</div>
+                        <div class="sub">SPC</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/7.%20Pisos/7.3%20SPC/JASPER.jpg" alt="Jasper"></div>
+                    <div class="info">
+                        <div class="name" title="Jasper">Jasper</div>
+                        <div class="sku">PIS-JASPE-65</div>
+                        <div class="sub">SPC</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/7.%20Pisos/7.3%20SPC/MINERAL%20GRAY.jpg" alt="Mineral Gray"></div>
+                    <div class="info">
+                        <div class="name" title="Mineral Gray">Mineral Gray</div>
+                        <div class="sku">PIS-MINER-66</div>
+                        <div class="sub">SPC</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/7.%20Pisos/7.3%20SPC/MOKA.jpg" alt="Moka"></div>
+                    <div class="info">
+                        <div class="name" title="Moka">Moka</div>
+                        <div class="sku">PIS-MOKA-67</div>
+                        <div class="sub">SPC</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/7.%20Pisos/7.3%20SPC/NOMADIC.jpg" alt="Nomadic"></div>
+                    <div class="info">
+                        <div class="name" title="Nomadic">Nomadic</div>
+                        <div class="sku">PIS-NOMAD-68</div>
+                        <div class="sub">SPC</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/7.%20Pisos/7.3%20SPC/PARKLAND.jpg" alt="Parkland"></div>
+                    <div class="info">
+                        <div class="name" title="Parkland">Parkland</div>
+                        <div class="sku">PIS-PARKL-69</div>
+                        <div class="sub">SPC</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/7.%20Pisos/7.3%20SPC/SILVERSTONE.jpg" alt="Silverstone"></div>
+                    <div class="info">
+                        <div class="name" title="Silverstone">Silverstone</div>
+                        <div class="sku">PIS-SILVE-70</div>
+                        <div class="sub">SPC</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/7.%20Pisos/7.3%20SPC/SILVESTER.jpg" alt="Silvester"></div>
+                    <div class="info">
+                        <div class="name" title="Silvester">Silvester</div>
+                        <div class="sku">PIS-SILVE-71</div>
+                        <div class="sub">SPC</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/7.%20Pisos/7.3%20SPC/STERLING%20OAK.jpg" alt="Sterling Oak"></div>
+                    <div class="info">
+                        <div class="name" title="Sterling Oak">Sterling Oak</div>
+                        <div class="sku">PIS-STERL-72</div>
+                        <div class="sub">SPC</div>
+                    </div>
+                </div>
+</div>
+<div class="footer"><span>ADIS Diseño & Remodelación</span><span>Página 34</span><span>adis-diseño.com | +52 631-192-8993</span></div>
+</div><div class="page">
+<div class="header"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/Pagina/logo%20nuevo.jpeg" alt="ADIS"><span>PISOS</span><a href="#indice" class="back-btn">← Índice</a></div>
+<div class="prod-grid">
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/7.%20Pisos/7.3%20SPC/TONGASS.jpg" alt="Tongass"></div>
+                    <div class="info">
+                        <div class="name" title="Tongass">Tongass</div>
+                        <div class="sku">PIS-TONGA-73</div>
+                        <div class="sub">SPC</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/7.%20Pisos/7.3%20SPC/YOSEMITE.jpg" alt="Yosemite"></div>
+                    <div class="info">
+                        <div class="name" title="Yosemite">Yosemite</div>
+                        <div class="sku">PIS-YOSEM-74</div>
+                        <div class="sub">SPC</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/7.%20Pisos/7.4%20Deck%20Sintetico/LIGHT%20GRAY.jpg" alt="Light Gray"></div>
+                    <div class="info">
+                        <div class="name" title="Light Gray">Light Gray</div>
+                        <div class="sku">PIS-LIGHT-75</div>
+                        <div class="sub">Deck Sintetico</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/7.%20Pisos/7.4%20Deck%20Sintetico/MAPLE.jpg" alt="Maple"></div>
+                    <div class="info">
+                        <div class="name" title="Maple">Maple</div>
+                        <div class="sku">PIS-MAPLE-76</div>
+                        <div class="sub">Deck Sintetico</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/7.%20Pisos/7.4%20Deck%20Sintetico/TEAK.jpg" alt="Teak"></div>
+                    <div class="info">
+                        <div class="name" title="Teak">Teak</div>
+                        <div class="sku">PIS-TEAK-77</div>
+                        <div class="sub">Deck Sintetico</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/7.%20Pisos/7.4%20Deck%20Sintetico/WENGE.jpg" alt="Wenge"></div>
+                    <div class="info">
+                        <div class="name" title="Wenge">Wenge</div>
+                        <div class="sku">PIS-WENGE-78</div>
+                        <div class="sub">Deck Sintetico</div>
+                    </div>
+                </div>
+</div>
+<div class="footer"><span>ADIS Diseño & Remodelación</span><span>Página 35</span><span>adis-diseño.com | +52 631-192-8993</span></div>
+</div><div class="page">
+<div class="header"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/Pagina/logo%20nuevo.jpeg" alt="ADIS"><span>COMPARATIVA</span><a href="#indice" class="back-btn">← Índice</a></div>
+<div style="text-align:center; margin-bottom:8px;"><h2>COMPARATIVA DE PISOS</h2><p class="muted">Encuentra el piso ideal según tus necesidades</p></div>
+<table class="comp-table"><thead><tr><th>Característica</th><th>Laminado</th><th>SPC</th><th>WPC</th></tr></thead><tbody>
+<tr><td style="text-align:left; font-weight:600;">Resistencia al agua</td><td>Moderada</td><td><span class="ok">✓ 100%</span></td><td><span class="ok">✓ Impermeable</span></td></tr>
+<tr><td style="text-align:left; font-weight:600;">Uso recomendado</td><td>Residencial</td><td>Res / Comercial</td><td>Exterior / Residencial</td></tr>
+<tr><td style="text-align:left; font-weight:600;">Instalación</td><td>Sistema click</td><td>Sistema click</td><td>Click / Atornillado</td></tr>
+<tr><td style="text-align:left; font-weight:600;">Resistencia impacto</td><td><span class="bar"></span><span class="bar"></span><span class="bar"></span><span class="bar empty"></span><span class="bar empty"></span></td><td><span class="bar"></span><span class="bar"></span><span class="bar"></span><span class="bar"></span><span class="bar"></span></td><td><span class="bar"></span><span class="bar"></span><span class="bar"></span><span class="bar"></span><span class="bar empty"></span></td></tr>
+<tr><td style="text-align:left; font-weight:600;">Confort acústico</td><td><span class="bar"></span><span class="bar"></span><span class="bar"></span><span class="bar empty"></span><span class="bar empty"></span></td><td><span class="bar"></span><span class="bar"></span><span class="bar"></span><span class="bar"></span><span class="bar"></span></td><td><span class="bar"></span><span class="bar"></span><span class="bar"></span><span class="bar empty"></span><span class="bar empty"></span></td></tr>
+<tr><td style="text-align:left; font-weight:600;">Garantía</td><td>10 años</td><td>12 años</td><td>15 años</td></tr>
+</tbody></table>
+<div class="footer"><span>ADIS Diseño & Remodelación</span><span>Página 36</span><span>adis-diseño.com | +52 631-192-8993</span></div>
+</div><div class="page cat-intro" id="cat_7">
+<div class="header"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/Pagina/logo%20nuevo.jpeg" alt="ADIS"><span>ZACATE</span><a href="#indice" class="back-btn">← Índice</a></div>
+<div class="cat-header"><h1>ZACATE</h1><div class="count">29 PRODUCTOS</div></div>
+<p class="cat-desc">Zacate. Soluciones decorativas premium de alta calidad.</p>
+<img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/Pagina/media/proyecto-recepcion.jpg" class="cat-img" alt="Zacate">
+<div class="specs-box"><span><strong>Material:</strong> Polietileno</span> <span><strong>Dimensiones:</strong> Consultar</span> <span><strong>Presentación:</strong> Consultar</span> <span><strong>Garantía:</strong> 5-12 años</span> <span><strong>Uso:</strong> Int/Ext</span></div>
+<div class="benefits">
+<div class="benefit"><b>Siempre verde</b><span>Sin riego</span></div>
+<div class="benefit"><b>Anti-UV</b><span>No se decolora</span></div>
+<div class="benefit"><b>Drenaje</b><span>No encharca</span></div>
+<div class="benefit"><b>Pet friendly</b><span>Seguro</span></div>
+</div>
+<div class="banner-sq"><span class="icon">💧</span><b>¿SABÍAS QUE?</b> Los pisos SPC son 100% resistentes al agua, ideales para cocinas y baños.</div>
+<div class="footer"><span>ADIS Diseño & Remodelación</span><span>Página 37</span><span>adis-diseño.com | +52 631-192-8993</span></div>
+</div><div class="page">
+<div class="header"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/Pagina/logo%20nuevo.jpeg" alt="ADIS"><span>ZACATE</span><a href="#indice" class="back-btn">← Índice</a></div>
+<div class="prod-grid">
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/8.%20Zacate/8.1%20Follaje%20Sintetico/AMAZONAS-A.jpg" alt="Amazonas-a"></div>
+                    <div class="info">
+                        <div class="name" title="Amazonas-a">Amazonas-a</div>
+                        <div class="sku">ZAC-AMAZO-01</div>
+                        <div class="sub">Follaje Sintetico</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/8.%20Zacate/8.1%20Follaje%20Sintetico/AMAZONAS-B.jpg" alt="Amazonas-b"></div>
+                    <div class="info">
+                        <div class="name" title="Amazonas-b">Amazonas-b</div>
+                        <div class="sku">ZAC-AMAZO-02</div>
+                        <div class="sub">Follaje Sintetico</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/8.%20Zacate/8.1%20Follaje%20Sintetico/AMAZONAS-C.jpg" alt="Amazonas-c"></div>
+                    <div class="info">
+                        <div class="name" title="Amazonas-c">Amazonas-c</div>
+                        <div class="sku">ZAC-AMAZO-03</div>
+                        <div class="sub">Follaje Sintetico</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/8.%20Zacate/8.1%20Follaje%20Sintetico/AMSTERDAM.jpg" alt="Amsterdam"></div>
+                    <div class="info">
+                        <div class="name" title="Amsterdam">Amsterdam</div>
+                        <div class="sku">ZAC-AMSTE-04</div>
+                        <div class="sub">Follaje Sintetico</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/8.%20Zacate/8.1%20Follaje%20Sintetico/ARRAYAN%20AMARILLO.jpg" alt="Arrayan Amarillo"></div>
+                    <div class="info">
+                        <div class="name" title="Arrayan Amarillo">Arrayan Amarillo</div>
+                        <div class="sku">ZAC-ARRAY-05</div>
+                        <div class="sub">Follaje Sintetico</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/8.%20Zacate/8.1%20Follaje%20Sintetico/ARRAYAN%20MORADO.jpg" alt="Arrayan Morado"></div>
+                    <div class="info">
+                        <div class="name" title="Arrayan Morado">Arrayan Morado</div>
+                        <div class="sku">ZAC-ARRAY-06</div>
+                        <div class="sub">Follaje Sintetico</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/8.%20Zacate/8.1%20Follaje%20Sintetico/ARRAYAN%20NATURAL.jpg" alt="Arrayan Natural"></div>
+                    <div class="info">
+                        <div class="name" title="Arrayan Natural">Arrayan Natural</div>
+                        <div class="sku">ZAC-ARRAY-07</div>
+                        <div class="sub">Follaje Sintetico</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/8.%20Zacate/8.1%20Follaje%20Sintetico/ARRAYAN%20ROJO.jpg" alt="Arrayan Rojo"></div>
+                    <div class="info">
+                        <div class="name" title="Arrayan Rojo">Arrayan Rojo</div>
+                        <div class="sku">ZAC-ARRAY-08</div>
+                        <div class="sub">Follaje Sintetico</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/8.%20Zacate/8.1%20Follaje%20Sintetico/ARRAYAN%20VERDE.jpg" alt="Arrayan Verde"></div>
+                    <div class="info">
+                        <div class="name" title="Arrayan Verde">Arrayan Verde</div>
+                        <div class="sku">ZAC-ARRAY-09</div>
+                        <div class="sub">Follaje Sintetico</div>
+                    </div>
+                </div>
+</div>
+<div class="footer"><span>ADIS Diseño & Remodelación</span><span>Página 38</span><span>adis-diseño.com | +52 631-192-8993</span></div>
+</div><div class="page">
+<div class="header"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/Pagina/logo%20nuevo.jpeg" alt="ADIS"><span>ZACATE</span><a href="#indice" class="back-btn">← Índice</a></div>
+<div class="prod-grid">
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/8.%20Zacate/8.1%20Follaje%20Sintetico/BRUSELAS.jpg" alt="Bruselas"></div>
+                    <div class="info">
+                        <div class="name" title="Bruselas">Bruselas</div>
+                        <div class="sku">ZAC-BRUSE-10</div>
+                        <div class="sub">Follaje Sintetico</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/8.%20Zacate/8.1%20Follaje%20Sintetico/GRECIA.jpg" alt="Grecia"></div>
+                    <div class="info">
+                        <div class="name" title="Grecia">Grecia</div>
+                        <div class="sku">ZAC-GRECI-11</div>
+                        <div class="sub">Follaje Sintetico</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/8.%20Zacate/8.1%20Follaje%20Sintetico/JAZMIN.jpg" alt="Jazmin"></div>
+                    <div class="info">
+                        <div class="name" title="Jazmin">Jazmin</div>
+                        <div class="sku">ZAC-JAZMI-12</div>
+                        <div class="sub">Follaje Sintetico</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/8.%20Zacate/8.1%20Follaje%20Sintetico/LAUREL%20DORADO.jpg" alt="Laurel Dorado"></div>
+                    <div class="info">
+                        <div class="name" title="Laurel Dorado">Laurel Dorado</div>
+                        <div class="sku">ZAC-LAURE-13</div>
+                        <div class="sub">Follaje Sintetico</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/8.%20Zacate/8.1%20Follaje%20Sintetico/MENTA.jpg" alt="Menta"></div>
+                    <div class="info">
+                        <div class="name" title="Menta">Menta</div>
+                        <div class="sku">ZAC-MENTA-14</div>
+                        <div class="sub">Follaje Sintetico</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/8.%20Zacate/8.1%20Follaje%20Sintetico/MILAN.jpg" alt="Milan"></div>
+                    <div class="info">
+                        <div class="name" title="Milan">Milan</div>
+                        <div class="sku">ZAC-MILAN-15</div>
+                        <div class="sub">Follaje Sintetico</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/8.%20Zacate/8.1%20Follaje%20Sintetico/PERSIA.jpg" alt="Persia"></div>
+                    <div class="info">
+                        <div class="name" title="Persia">Persia</div>
+                        <div class="sku">ZAC-PERSI-16</div>
+                        <div class="sub">Follaje Sintetico</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/8.%20Zacate/8.1%20Follaje%20Sintetico/SEVILLA.jpg" alt="Sevilla"></div>
+                    <div class="info">
+                        <div class="name" title="Sevilla">Sevilla</div>
+                        <div class="sku">ZAC-SEVIL-17</div>
+                        <div class="sub">Follaje Sintetico</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/8.%20Zacate/8.1%20Follaje%20Sintetico/SIBERIA.jpg" alt="Siberia"></div>
+                    <div class="info">
+                        <div class="name" title="Siberia">Siberia</div>
+                        <div class="sku">ZAC-SIBER-18</div>
+                        <div class="sub">Follaje Sintetico</div>
+                    </div>
+                </div>
+</div>
+<div class="footer"><span>ADIS Diseño & Remodelación</span><span>Página 39</span><span>adis-diseño.com | +52 631-192-8993</span></div>
+</div><div class="page">
+<div class="header"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/Pagina/logo%20nuevo.jpeg" alt="ADIS"><span>ZACATE</span><a href="#indice" class="back-btn">← Índice</a></div>
+<div class="prod-grid">
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/8.%20Zacate/8.1%20Follaje%20Sintetico/TREBOL.jpg" alt="Trebol"></div>
+                    <div class="info">
+                        <div class="name" title="Trebol">Trebol</div>
+                        <div class="sku">ZAC-TREBO-19</div>
+                        <div class="sub">Follaje Sintetico</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/8.%20Zacate/8.2%20Pasto%20Recreativo/TG-07-ARUBA.jpg" alt="Tg-07-aruba"></div>
+                    <div class="info">
+                        <div class="name" title="Tg-07-aruba">Tg-07-aruba</div>
+                        <div class="sku">ZAC-TG07A-20</div>
+                        <div class="sub">Pasto Recreativo</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/8.%20Zacate/8.2%20Pasto%20Recreativo/TG-10-ACA.jpg" alt="Tg-10-aca"></div>
+                    <div class="info">
+                        <div class="name" title="Tg-10-aca">Tg-10-aca</div>
+                        <div class="sku">ZAC-TG10A-21</div>
+                        <div class="sub">Pasto Recreativo</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/8.%20Zacate/8.2%20Pasto%20Recreativo/TG-18-SUMMER.jpg" alt="Tg-18-summer"></div>
+                    <div class="info">
+                        <div class="name" title="Tg-18-summer">Tg-18-summer</div>
+                        <div class="sku">ZAC-TG18S-22</div>
+                        <div class="sub">Pasto Recreativo</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/8.%20Zacate/8.2%20Pasto%20Recreativo/TG-20-BERMUDA.jpg" alt="Tg-20-bermuda"></div>
+                    <div class="info">
+                        <div class="name" title="Tg-20-bermuda">Tg-20-bermuda</div>
+                        <div class="sku">ZAC-TG20B-23</div>
+                        <div class="sub">Pasto Recreativo</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/8.%20Zacate/8.2%20Pasto%20Recreativo/TG-25-CANCUN.jpg" alt="Tg-25-cancun"></div>
+                    <div class="info">
+                        <div class="name" title="Tg-25-cancun">Tg-25-cancun</div>
+                        <div class="sku">ZAC-TG25C-24</div>
+                        <div class="sub">Pasto Recreativo</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/8.%20Zacate/8.2%20Pasto%20Recreativo/TG-30-MAUI.jpg" alt="Tg-30-maui"></div>
+                    <div class="info">
+                        <div class="name" title="Tg-30-maui">Tg-30-maui</div>
+                        <div class="sku">ZAC-TG30M-25</div>
+                        <div class="sub">Pasto Recreativo</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/8.%20Zacate/8.2%20Pasto%20Recreativo/TG-35-TULUM.jpg" alt="Tg-35-tulum"></div>
+                    <div class="info">
+                        <div class="name" title="Tg-35-tulum">Tg-35-tulum</div>
+                        <div class="sku">ZAC-TG35T-26</div>
+                        <div class="sub">Pasto Recreativo</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/8.%20Zacate/8.2%20Pasto%20Recreativo/TG-40-BALI.jpg" alt="Tg-40-bali"></div>
+                    <div class="info">
+                        <div class="name" title="Tg-40-bali">Tg-40-bali</div>
+                        <div class="sku">ZAC-TG40B-27</div>
+                        <div class="sub">Pasto Recreativo</div>
+                    </div>
+                </div>
+</div>
+<div class="footer"><span>ADIS Diseño & Remodelación</span><span>Página 40</span><span>adis-diseño.com | +52 631-192-8993</span></div>
+</div><div class="page">
+<div class="header"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/Pagina/logo%20nuevo.jpeg" alt="ADIS"><span>ZACATE</span><a href="#indice" class="back-btn">← Índice</a></div>
+<div class="prod-grid">
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/8.%20Zacate/8.2%20Pasto%20Recreativo/TG-45-GULHI.jpg" alt="Tg-45-gulhi"></div>
+                    <div class="info">
+                        <div class="name" title="Tg-45-gulhi">Tg-45-gulhi</div>
+                        <div class="sku">ZAC-TG45G-28</div>
+                        <div class="sub">Pasto Recreativo</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/8.%20Zacate/8.2%20Pasto%20Recreativo/TG-50-ANAKENA.jpg" alt="Tg-50-anakena"></div>
+                    <div class="info">
+                        <div class="name" title="Tg-50-anakena">Tg-50-anakena</div>
+                        <div class="sku">ZAC-TG50A-29</div>
+                        <div class="sub">Pasto Recreativo</div>
+                    </div>
+                </div>
+</div>
+<div class="footer"><span>ADIS Diseño & Remodelación</span><span>Página 41</span><span>adis-diseño.com | +52 631-192-8993</span></div>
+</div><div class="page cat-intro" id="cat_8">
+<div class="header"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/Pagina/logo%20nuevo.jpeg" alt="ADIS"><span>CLADDING</span><a href="#indice" class="back-btn">← Índice</a></div>
+<div class="cat-header"><h1>CLADDING</h1><div class="count">11 PRODUCTOS</div></div>
+<p class="cat-desc">Cladding. Soluciones decorativas premium de alta calidad.</p>
+<img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/Pagina/media/ejemplo-tapiz.jpg" class="cat-img" alt="Cladding">
+<div class="specs-box"><span><strong>Material:</strong> PU/Poliuretano</span> <span><strong>Dimensiones:</strong> Consultar</span> <span><strong>Presentación:</strong> Consultar</span> <span><strong>Garantía:</strong> Consultar</span> <span><strong>Uso:</strong> Int/Ext</span></div>
+<div class="benefits">
+<div class="benefit"><b>Piedra real</b><span>Natural</span></div>
+<div class="benefit"><b>Ligero</b><span>Fácil instalar</span></div>
+<div class="benefit"><b>Versátil</b><span>Int/Ext</span></div>
+<div class="benefit"><b>Térmico</b><span>Aislante</span></div>
+</div>
+<div class="banner-sq"><span class="icon">🌲</span><b>¿SABÍAS QUE?</b> El WPC combina fibras de madera y polímeros para ofrecer la belleza natural de la madera sin mantenimiento.</div>
+<div class="footer"><span>ADIS Diseño & Remodelación</span><span>Página 42</span><span>adis-diseño.com | +52 631-192-8993</span></div>
+</div><div class="page">
+<div class="header"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/Pagina/logo%20nuevo.jpeg" alt="ADIS"><span>CLADDING</span><a href="#indice" class="back-btn">← Índice</a></div>
+<div class="prod-grid">
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/9%20Cladding/9.1%20Placa%20tipo%20roca/BLACK.jpg" alt="Black"></div>
+                    <div class="info">
+                        <div class="name" title="Black">Black</div>
+                        <div class="sku">CLA-BLACK-01</div>
+                        <div class="sub">Placa tipo roca</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/9%20Cladding/9.1%20Placa%20tipo%20roca/GRAY.jpg" alt="Gray"></div>
+                    <div class="info">
+                        <div class="name" title="Gray">Gray</div>
+                        <div class="sku">CLA-GRAY-02</div>
+                        <div class="sub">Placa tipo roca</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/9%20Cladding/Esquiner%2035X45X2900MM.jpg" alt="Esquiner 35x45x2900mm"></div>
+                    <div class="info">
+                        <div class="name" title="Esquiner 35x45x2900mm">Esquiner 35x45x2900mm</div>
+                        <div class="sku">CLA-ESQUI-03</div>
+                        <div class="sub">Cladding</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/9%20Cladding/HICKORY.jpg" alt="Hickory"></div>
+                    <div class="info">
+                        <div class="name" title="Hickory">Hickory</div>
+                        <div class="sku">CLA-HICKO-04</div>
+                        <div class="sub">Cladding</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/9%20Cladding/MAPLE.jpg" alt="Maple"></div>
+                    <div class="info">
+                        <div class="name" title="Maple">Maple</div>
+                        <div class="sku">CLA-MAPLE-05</div>
+                        <div class="sub">Cladding</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/9%20Cladding/MERBAU.jpg" alt="Merbau"></div>
+                    <div class="info">
+                        <div class="name" title="Merbau">Merbau</div>
+                        <div class="sku">CLA-MERBA-06</div>
+                        <div class="sub">Cladding</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/9%20Cladding/REDWOOD.jpg" alt="Redwood"></div>
+                    <div class="info">
+                        <div class="name" title="Redwood">Redwood</div>
+                        <div class="sku">CLA-REDWO-07</div>
+                        <div class="sub">Cladding</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/9%20Cladding/TASMANIA.jpg" alt="Tasmania"></div>
+                    <div class="info">
+                        <div class="name" title="Tasmania">Tasmania</div>
+                        <div class="sku">CLA-TASMA-08</div>
+                        <div class="sub">Cladding</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/9%20Cladding/TEAK.jpg" alt="Teak"></div>
+                    <div class="info">
+                        <div class="name" title="Teak">Teak</div>
+                        <div class="sku">CLA-TEAK-09</div>
+                        <div class="sub">Cladding</div>
+                    </div>
+                </div>
+</div>
+<div class="footer"><span>ADIS Diseño & Remodelación</span><span>Página 43</span><span>adis-diseño.com | +52 631-192-8993</span></div>
+</div><div class="page">
+<div class="header"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/Pagina/logo%20nuevo.jpeg" alt="ADIS"><span>CLADDING</span><a href="#indice" class="back-btn">← Índice</a></div>
+<div class="prod-grid">
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/9%20Cladding/WENGE.jpg" alt="Wenge"></div>
+                    <div class="info">
+                        <div class="name" title="Wenge">Wenge</div>
+                        <div class="sku">CLA-WENGE-10</div>
+                        <div class="sub">Cladding</div>
+                    </div>
+                </div>
+<div class="prod-card">
+                    <div class="img-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/CATALOGO%20FINAL/9%20Cladding/perfil%20plano25X3X2900MM.jpg" alt="Perfil Plano25x3x2900mm"></div>
+                    <div class="info">
+                        <div class="name" title="Perfil Plano25x3x2900mm">Perfil Plano25x3x2900mm</div>
+                        <div class="sku">CLA-PERFI-11</div>
+                        <div class="sub">Cladding</div>
+                    </div>
+                </div>
+</div>
+<div class="footer"><span>ADIS Diseño & Remodelación</span><span>Página 44</span><span>adis-diseño.com | +52 631-192-8993</span></div>
+</div><div class="page final">
+<img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/Pagina/logo%20nuevo.jpeg" class="logo" alt="ADIS">
+<h2>Gracias por preferirnos</h2>
+<p style="color:#BBB; font-size:10pt; margin-bottom:8mm;">Estamos listos para transformar tu espacio</p>
+<div class="contact-box">
+<p><strong style="color:#C9A84C;">CONTACTO</strong></p>
+<p>WhatsApp: +52 631-192-8993</p>
+<p>Showroom: +52 631-120-4943</p>
+<p>Email: adis.remodelacion@gmail.com</p>
+<p>Web: adis-diseño.com</p>
+<p>Nogales, Sonora | Río Rico, AZ</p>
+</div>
+<div class="qr-wrap"><img src="file:///G:/Mi%20unidad/ADIS%20DISE%C3%91O/Pagina/codigo%20QR.jpeg" alt="QR"></div>
+<div class="qr-label">Escanea para visitarnos</div>
+<div class="footer"><span>ADIS Diseño & Remodelación</span><span>Última página</span><span>adis-diseño.com | +52 631-192-8993</span></div>
+</div>
+</body>
+</html>
