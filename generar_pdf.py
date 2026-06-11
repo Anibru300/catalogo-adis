@@ -75,8 +75,8 @@ def clean_product(filename):
         else:
             result.append(w.capitalize())
     name = ' '.join(result)
-    if len(name) > 24:
-        name = name[:22] + '...'
+    if len(name) > 20:
+        name = name[:18] + '...'
     return name
 
 def scan_catalog():
@@ -374,17 +374,21 @@ def draw_index(cats):
         # nombre
         total = sum(len(s['products']) for s in cat['subs'])
         c.setFillColor(WHITE); c.setFont("Helvetica-Bold", 10)
-        c.drawCentredString(x+card_w/2, y+card_h*0.38, cat['name'].upper())
+        c.drawCentredString(x+card_w/2, y+card_h*0.36, cat['name'].upper())
         c.setFillColor(GOLD); c.setFont("Helvetica-Bold", 8.5)
-        c.drawCentredString(x+card_w/2, y+card_h*0.28, f"{total} productos")
+        c.drawCentredString(x+card_w/2, y+card_h*0.26, f"{total} productos")
         # descripción
         desc = CAT_DESC.get(cat['name'], '')
-        if len(desc) > 50: desc = desc[:47] + '...'
+        if len(desc) > 45: desc = desc[:42] + '...'
         c.setFillColor(MUTED); c.setFont("Helvetica", 7.5)
-        c.drawCentredString(x+card_w/2, y+card_h*0.19, desc)
+        c.drawCentredString(x+card_w/2, y+card_h*0.17, desc)
+        # destacado para PVC y Lambrin
+        if cat['name'] in ('Placas PVC', 'Lambrin WPC'):
+            c.setFillColor(GOLD); c.setFont("Helvetica-Bold", 6.5)
+            c.drawCentredString(x+card_w/2, y+card_h*0.08, "★ CATEGORÍA DESTACADA ★")
         # clickeable
         c.setFillColor(GOLD_DIM); c.setFont("Helvetica-Bold", 7.5)
-        c.drawCentredString(x+card_w/2, y+0.25*cm, "VER CATEGORÍA →")
+        c.drawCentredString(x+card_w/2, y+0.22*cm, "VER CATEGORÍA →")
         dest = f"cat_{i}"
         c.linkAbsolute(f"Ir a {cat['name']}", dest, (x, y, x+card_w, y+card_h))
     draw_footer()
@@ -425,8 +429,8 @@ def draw_category_intro(cat_name, cat_idx, total_prods, sabias_item=None):
     c.drawString(MARGIN_L, top, cat_name.upper())
     c.setStrokeColor(GOLD); c.setLineWidth(1)
     c.line(MARGIN_L, top-0.42*cm, MARGIN_L+5.5*cm, top-0.42*cm)
-    c.setFillColor(GOLD); c.setFont("Helvetica-Bold", 11)
-    c.drawRightString(pw-MARGIN_R, top, f"{total_prods} PRODUCTOS")
+    c.setFillColor(GOLD); c.setFont("Helvetica-Bold", 10)
+    c.drawRightString(pw-MARGIN_R, top-0.15*cm, f"{total_prods} PRODUCTOS")
     # descripción
     desc = CAT_DESC.get(cat_name, '')
     c.setFillColor(BODY); c.setFont("Helvetica", 10)
@@ -451,10 +455,13 @@ def draw_category_intro(cat_name, cat_idx, total_prods, sabias_item=None):
     specs_y = img_y - 0.6*cm
     rep_spec = get_spec_for_cat(cat_name)
     if rep_spec:
-        c.setFillColor(SURFACE); c.roundRect(MARGIN_L, specs_y-0.55*cm, CONTENT_W, 0.65*cm, 4, fill=1, stroke=0)
-        line = "  |  ".join([f"{k}: {v}" for k,v in rep_spec.items()])
-        c.setFillColor(BODY); c.setFont("Helvetica", 8.5)
-        c.drawString(MARGIN_L+0.3*cm, specs_y-0.22*cm, line)
+        c.setFillColor(SURFACE); c.roundRect(MARGIN_L, specs_y-0.75*cm, CONTENT_W, 0.85*cm, 4, fill=1, stroke=0)
+        line1 = "  |  ".join([f"{k}: {v}" for k,v in list(rep_spec.items())[:3]])
+        line2 = "  |  ".join([f"{k}: {v}" for k,v in list(rep_spec.items())[3:]])
+        c.setFillColor(BODY); c.setFont("Helvetica", 8)
+        c.drawString(MARGIN_L+0.3*cm, specs_y-0.22*cm, line1)
+        if line2:
+            c.drawString(MARGIN_L+0.3*cm, specs_y-0.48*cm, line2)
     # ventajas
     ben_y = specs_y - 1.0*cm
     benefits = get_benefits(cat_name)
@@ -532,7 +539,8 @@ def draw_product_page(cat_name, prods, tmp_img_dir, global_idx_start, sabias_ite
             c.drawImage(str(dst), ix, iy, width=iw, height=ih, mask='auto')
         # nombre
         name = clean_product(prod['file'])
-        c.setFillColor(WHITE); c.setFont("Helvetica-Bold", 8)
+        fn = 8 if len(name) <= 16 else 7
+        c.setFillColor(WHITE); c.setFont("Helvetica-Bold", fn)
         c.drawCentredString(x + cell_w/2, y + 0.30*cm, name)
         # código
         code = get_product_code(cat_name, prod['file'], global_idx_start+i+1)
