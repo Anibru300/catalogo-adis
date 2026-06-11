@@ -20,7 +20,8 @@ if hasattr(sys.stdout, 'reconfigure'):
 BASE_DIR   = Path(r'G:\Mi unidad\ADIS DISEÑO\Pagina')
 CATALOG_DIR= Path(r'G:\Mi unidad\ADIS DISEÑO\CATALOGO FINAL')
 OUTPUT_PDF = BASE_DIR / 'catalogo.pdf'
-LOGO_PATH  = BASE_DIR / 'LOGO ADIS.png'
+LOGO_PATH  = BASE_DIR / 'logo nuevo.jpeg'
+QR_PATH    = BASE_DIR / 'codigo QR.jpeg'
 MEDIA_DIR  = BASE_DIR / 'media'
 
 # ========== PALETA EDITORIAL ==========
@@ -392,6 +393,7 @@ def draw_brand_page(qr_path):
         "WhatsApp: +52 631-192-8993",
         "Showroom: +52 631-120-4943",
         "Email: adis.remodelacion@gmail.com",
+        "Web: adis-diseño.com",
         "Ubicacion: Nogales, Sonora | Rio Rico, AZ",
     ]
     c.setFillColor(BODY); c.setFont("Helvetica", 9)
@@ -400,15 +402,16 @@ def draw_brand_page(qr_path):
     
     # QR
     if qr_path and os.path.exists(qr_path):
-        qs = 2.8*cm
+        qs = 3.2*cm
         qx = (pw-qs)/2
-        qy = box_y - 4.6*cm
-        c.setFillColor(SURFACE); c.roundRect(qx-0.2*cm, qy-0.2*cm, qs+0.4*cm, qs+0.7*cm, 5, fill=1, stroke=0)
-        c.setStrokeColor(GOLD); c.setLineWidth(0.5)
-        c.roundRect(qx-0.2*cm, qy-0.2*cm, qs+0.4*cm, qs+0.7*cm, 5, fill=0, stroke=1)
+        qy = box_y - 5.0*cm
+        # fondo blanco para que resalte el QR
+        c.setFillColor(WHITE); c.roundRect(qx-0.15*cm, qy-0.15*cm, qs+0.3*cm, qs+0.9*cm, 6, fill=1, stroke=0)
+        c.setStrokeColor(GOLD); c.setLineWidth(0.6)
+        c.roundRect(qx-0.15*cm, qy-0.15*cm, qs+0.3*cm, qs+0.9*cm, 6, fill=0, stroke=1)
         c.drawImage(str(qr_path), qx, qy, width=qs, height=qs, mask='auto')
         c.setFillColor(GOLD); c.setFont("Helvetica-Bold", 8)
-        c.drawCentredString(pw/2, qy-0.45*cm, "Escanea para cotizar por WhatsApp")
+        c.drawCentredString(pw/2, qy-0.5*cm, "Escanea para visitarnos")
     
     # garantias resumidas
     c.setFillColor(MUTED); c.setFont("Helvetica", 8)
@@ -597,7 +600,7 @@ def draw_final_page(qr_path):
     # contacto compacto
     c.setFillColor(MUTED); c.setFont("Helvetica", 9)
     c.drawCentredString(pw/2, ph-9.5*cm, "+52 631-192-8993  |  adis.remodelacion@gmail.com")
-    c.drawCentredString(pw/2, ph-9.9*cm, "Nogales, Sonora  |  Rio Rico, AZ")
+    c.drawCentredString(pw/2, ph-9.9*cm, "adis-diseño.com  |  Nogales, Sonora  |  Rio Rico, AZ")
     
     if qr_path and os.path.exists(qr_path):
         qs = 2.2*cm
@@ -622,7 +625,11 @@ with tempfile.TemporaryDirectory() as tmpdir:
     
     print("\n[1/4] Preparando assets...")
     prepare_logo(logo_prep)
-    gen_qr(qr_file, WA_URL, size=220)
+    # Usar QR profesional guardado; si no existe, generar uno
+    if QR_PATH.exists():
+        qr_file = QR_PATH
+    else:
+        gen_qr(qr_file, WA_URL, size=220)
     
     print("[2/4] Escaneando catalogo...")
     cats = scan_catalog()
