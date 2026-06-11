@@ -321,13 +321,9 @@ def draw_cover(logo_path):
     
     # logo grande centrado
     if logo_path and os.path.exists(logo_path):
-        lw, lh = img_size(logo_path, 7.5*cm, 7.5*cm)
+        lw, lh = img_size(logo_path, 10*cm, 10*cm)
         lx = (pw - lw)/2
-        ly = ph/2 + 1.0*cm
-        # circulo dorado sutil
-        c.setStrokeColor(GOLD); c.setLineWidth(0.8)
-        r = max(lw,lh)/2 + 0.5*cm
-        c.circle(pw/2, ly+lh/2, r, fill=0, stroke=1)
+        ly = ph/2 - lh/2 + 0.8*cm
         c.drawImage(str(logo_path), lx, ly, width=lw, height=lh, mask='auto')
     
     # tagline
@@ -380,8 +376,8 @@ def draw_brand_page(qr_path):
             c.line(x+sw, y-0.3*cm, x+sw, y-1.1*cm)
     
     # caja de contacto
-    box_y = ph - 11*cm
-    bh = 4.2*cm
+    box_y = ph - 10.2*cm
+    bh = 4.6*cm
     c.setFillColor(SURFACE); c.roundRect(MARGIN_L, box_y-bh, CONTENT_W, bh, 8, fill=1, stroke=0)
     c.setStrokeColor(LINE); c.setLineWidth(0.5)
     c.roundRect(MARGIN_L, box_y-bh, CONTENT_W, bh, 8, fill=0, stroke=1)
@@ -398,13 +394,13 @@ def draw_brand_page(qr_path):
     ]
     c.setFillColor(BODY); c.setFont("Helvetica", 9)
     for i, line in enumerate(contacts):
-        c.drawCentredString(pw/2, box_y-1.0*cm - i*0.42*cm, line)
+        c.drawCentredString(pw/2, box_y-1.0*cm - i*0.40*cm, line)
     
-    # QR
+    # QR profesional
     if qr_path and os.path.exists(qr_path):
-        qs = 3.2*cm
+        qs = 3.4*cm
         qx = (pw-qs)/2
-        qy = box_y - 5.0*cm
+        qy = box_y - 5.1*cm
         # fondo blanco para que resalte el QR
         c.setFillColor(WHITE); c.roundRect(qx-0.15*cm, qy-0.15*cm, qs+0.3*cm, qs+0.9*cm, 6, fill=1, stroke=0)
         c.setStrokeColor(GOLD); c.setLineWidth(0.6)
@@ -415,8 +411,8 @@ def draw_brand_page(qr_path):
     
     # garantias resumidas
     c.setFillColor(MUTED); c.setFont("Helvetica", 8)
-    c.drawCentredString(pw/2, 1.8*cm, "Garantias: PVC/WPC 15años | SPC 12años | Flexible 35años | Deck 18-25años")
-    c.drawCentredString(pw/2, 1.4*cm, "Todos los precios incluyen IVA | Envios a todo Mexico")
+    c.drawCentredString(pw/2, 1.5*cm, "Garantias: PVC/WPC 15años | SPC 12años | Flexible 35años | Deck 18-25años")
+    c.drawCentredString(pw/2, 1.1*cm, "Todos los precios incluyen IVA | Envios a todo Mexico")
 
 
 def draw_category_intro(cat_name, cat_idx):
@@ -513,34 +509,34 @@ def draw_separator(cat_name):
 
 
 def draw_product_page(cat_name, subs_group, tmp_img_dir, global_idx_start):
-    """Pagina de productos: grid 2x2, aireado, minimalista."""
+    """Pagina de productos: grid 3x3, compacto y limpio."""
     draw_bg()
     hh = draw_header_min(cat_name)
-    top = ph - MARGIN_T - hh - 0.4*cm
+    top = ph - MARGIN_T - hh - 0.3*cm
     
     # titulo de grupo si es combinado
     if len(subs_group) > 1:
         names = " + ".join([s['name'] for s in subs_group])
-        c.setFillColor(GOLD); c.setFont("Helvetica-Bold", 11)
+        c.setFillColor(GOLD); c.setFont("Helvetica-Bold", 10)
         c.drawString(MARGIN_L, top, names)
-        top -= 0.5*cm
-    elif len(subs_group) == 1:
-        c.setFillColor(MUTED); c.setFont("Helvetica", 9)
-        c.drawString(MARGIN_L, top, subs_group[0]['name'])
         top -= 0.4*cm
+    elif len(subs_group) == 1:
+        c.setFillColor(MUTED); c.setFont("Helvetica", 8)
+        c.drawString(MARGIN_L, top, subs_group[0]['name'])
+        top -= 0.3*cm
     
-    # grid 2x2
-    cols, rows = 2, 2
-    gap = 0.5*cm
-    cell_w = (CONTENT_W - gap) / cols
-    cell_h = (top - MARGIN_B - gap) / rows
+    # grid 3x3
+    cols, rows = 3, 3
+    gap = 0.3*cm
+    cell_w = (CONTENT_W - (cols-1)*gap) / cols
+    cell_h = (top - MARGIN_B - (rows-1)*gap) / rows
     
     all_prods = []
     for sub in subs_group:
         for p in sub['products']:
             all_prods.append({'file':p, 'path':sub['path'], 'sub':sub['name']})
     
-    for i, prod in enumerate(all_prods[:4]):
+    for i, prod in enumerate(all_prods[:9]):
         col = i % cols
         row = i // cols
         x = MARGIN_L + col * (cell_w + gap)
@@ -548,34 +544,36 @@ def draw_product_page(cat_name, subs_group, tmp_img_dir, global_idx_start):
         
         # fondo celda
         c.setFillColor(SURFACE)
-        c.roundRect(x, y, cell_w, cell_h, 5, fill=1, stroke=0)
+        c.roundRect(x, y, cell_w, cell_h, 3, fill=1, stroke=0)
         # linea dorada inferior sutil
-        c.setStrokeColor(GOLD); c.setLineWidth(0.5)
+        c.setStrokeColor(GOLD); c.setLineWidth(0.3)
         c.line(x, y, x+cell_w, y)
         
         # imagen optimizada
         src = prod['path'] / prod['file']
         dst = tmp_img_dir / f"opt_{global_idx_start+i}_{prod['file']}"
         if not dst.exists():
-            optimize_image(src, dst, max_dim=450, quality=75)
+            optimize_image(src, dst, max_dim=320, quality=72)
         
-        img_max_w = cell_w - 0.8*cm
-        img_max_h = cell_h - 1.6*cm
+        img_max_w = cell_w - 0.2*cm
+        img_max_h = cell_h - 0.65*cm
         if dst.exists():
             iw, ih = img_size(dst, img_max_w, img_max_h)
             ix = x + (cell_w - iw)/2
-            iy = y + 0.9*cm
+            iy = y + 0.48*cm
             c.drawImage(str(dst), ix, iy, width=iw, height=ih, mask='auto')
         
         # nombre
         name = clean_product(prod['file'])
-        c.setFillColor(WHITE); c.setFont("Helvetica-Bold", 9.5)
-        c.drawCentredString(x + cell_w/2, y + 0.5*cm, name)
+        c.setFillColor(WHITE); c.setFont("Helvetica-Bold", 7.5)
+        c.drawCentredString(x + cell_w/2, y + 0.28*cm, name)
         
-        # SKU
-        sku = get_sku(prod['sub'], global_idx_start+i+1)
-        c.setFillColor(GOLD); c.setFont("Courier-Bold", 7.5)
-        c.drawCentredString(x + cell_w/2, y + 0.2*cm, sku)
+        # CODIGO NUEVO: 3 letras cat + nombre abreviado + consecutivo
+        cat_code = re.sub(r'[^a-zA-Z]', '', cat_name)[:3].upper()
+        prod_short = re.sub(r'[^a-zA-Z0-9]', '', name)[:6].upper()
+        code = f"{cat_code}-{prod_short}-{global_idx_start+i+1:02d}"
+        c.setFillColor(GOLD); c.setFont("Courier-Bold", 6.5)
+        c.drawCentredString(x + cell_w/2, y + 0.08*cm, code)
     
     draw_footer_min()
 
@@ -595,20 +593,24 @@ def draw_final_page(qr_path):
     c.line(pw/2-2*cm, ph-7.85*cm, pw/2+2*cm, ph-7.85*cm)
     
     c.setFillColor(BODY); c.setFont("Helvetica", 10)
-    c.drawCentredString(pw/2, ph-8.5*cm, "Estamos listos para transformar tu espacio")
+    c.drawCentredString(pw/2, ph-8.3*cm, "Estamos listos para transformar tu espacio")
     
     # contacto compacto
     c.setFillColor(MUTED); c.setFont("Helvetica", 9)
-    c.drawCentredString(pw/2, ph-9.5*cm, "+52 631-192-8993  |  adis.remodelacion@gmail.com")
-    c.drawCentredString(pw/2, ph-9.9*cm, "adis-diseño.com  |  Nogales, Sonora  |  Rio Rico, AZ")
+    c.drawCentredString(pw/2, ph-9.2*cm, "+52 631-192-8993  |  adis.remodelacion@gmail.com")
+    c.drawCentredString(pw/2, ph-9.6*cm, "adis-diseño.com  |  Nogales, Sonora  |  Rio Rico, AZ")
     
+    # QR profesional grande
     if qr_path and os.path.exists(qr_path):
-        qs = 2.2*cm
+        qs = 3.2*cm
         qx = (pw-qs)/2
-        qy = 2.5*cm
+        qy = 2.4*cm
+        c.setFillColor(WHITE); c.roundRect(qx-0.15*cm, qy-0.15*cm, qs+0.3*cm, qs+0.9*cm, 6, fill=1, stroke=0)
+        c.setStrokeColor(GOLD); c.setLineWidth(0.6)
+        c.roundRect(qx-0.15*cm, qy-0.15*cm, qs+0.3*cm, qs+0.9*cm, 6, fill=0, stroke=1)
         c.drawImage(str(qr_path), qx, qy, width=qs, height=qs, mask='auto')
-        c.setFillColor(MUTED); c.setFont("Helvetica", 8)
-        c.drawCentredString(pw/2, qy-0.4*cm, "Escanea para cotizar")
+        c.setFillColor(GOLD); c.setFont("Helvetica-Bold", 8)
+        c.drawCentredString(pw/2, qy-0.5*cm, "Escanea para visitarnos")
 
 
 # ========== GENERACIÓN PRINCIPAL ==========
@@ -644,7 +646,7 @@ with tempfile.TemporaryDirectory() as tmpdir:
     
     for cat in cats:
         for sub in cat['subs']:
-            total_pages += (len(sub['products']) + 3) // 4  # 4 por pagina
+            total_pages += (len(sub['products']) + 8) // 9  # 9 por pagina
     total_pages += 1  # cierre
     
     print(f"       Paginas estimadas: {total_pages}")
@@ -681,11 +683,11 @@ with tempfile.TemporaryDirectory() as tmpdir:
         # productos por subcategoria
         for sub in cat['subs']:
             n = len(sub['products'])
-            npages = (n + 3) // 4
+            npages = (n + 8) // 9
             print(f"       -> {cat['name']} | {sub['name']} ({n} productos, {npages} paginas)")
             for pi in range(npages):
-                start = pi * 4
-                group = [{'name':sub['name'], 'products':sub['products'][start:start+4], 'path':sub['path']}]
+                start = pi * 9
+                group = [{'name':sub['name'], 'products':sub['products'][start:start+9], 'path':sub['path']}]
                 draw_product_page(cat['name'], group, img_tmp, global_idx + start)
                 next_page()
             global_idx += n
