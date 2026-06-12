@@ -17,7 +17,7 @@ G:\Mi unidad\ADIS DISEÑO\CATALOGO FINAL\  ← Catálogo de imágenes fuente
 | Archivo | Descripción |
 |---------|-------------|
 | `generar_web.py` | Script principal. Genera todo el sitio web (HTML, CSS, JSON) desde `CATALOGO FINAL` |
-| `generar_pdf.py` | Genera el catálogo PDF (`catalogo_adis.pdf`) con ReportLab |
+| `generar_pdf.py` | Genera el catálogo PDF (`catalogos/pdf/catalogo_adis.pdf`) con ReportLab |
 | `style.css` | Generado automáticamente por `generar_web.py` |
 | `products.json` | Catálogo de 250 productos en JSON (para el buscador) |
 | `img/` | Imágenes de productos sincronizadas desde `CATALOGO FINAL` |

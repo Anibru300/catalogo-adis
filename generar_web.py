@@ -1972,6 +1972,25 @@ footer {
 .sq-index-info { padding: 1.2rem; }
 .sq-index-info h3 { color: var(--gold-light); font-size: 1rem; font-family: 'Montserrat', sans-serif; font-weight: 600; margin-bottom: 0.4rem; }
 .sq-index-info span { color: var(--gold); font-size: 0.8rem; }
+
+/* Sección de descargas de catálogos PDF */
+.downloads-section { background: linear-gradient(180deg, rgba(197,160,89,0.05) 0%, transparent 100%); }
+.downloads-lead { max-width: 600px; margin: 0 auto 2.5rem; text-align: center; color: rgba(245,245,245,0.75); font-size: 1rem; line-height: 1.7; }
+.downloads-main { display: flex; justify-content: center; margin-bottom: 3rem; }
+.download-complete { display: inline-flex; align-items: center; gap: 1rem; background: linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 100%); color: var(--black); padding: 1.1rem 2.2rem; border-radius: 14px; text-decoration: none; font-weight: 700; font-size: 1.05rem; transition: all 0.3s ease; box-shadow: 0 8px 24px rgba(197,160,89,0.25); }
+.download-complete:hover { transform: translateY(-4px); box-shadow: 0 14px 36px rgba(197,160,89,0.35); }
+.download-complete .icon { font-size: 1.6rem; }
+.download-complete .sub { display: block; font-size: 0.75rem; font-weight: 500; opacity: 0.85; margin-top: 2px; }
+.download-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.2rem; max-width: 1200px; margin: 0 auto; }
+.download-card { display: flex; align-items: center; gap: 1rem; background: rgba(255,255,255,0.03); border: 1px solid rgba(197,160,89,0.12); border-radius: 12px; padding: 1rem 1.2rem; text-decoration: none; transition: all 0.3s ease; }
+.download-card:hover { background: rgba(197,160,89,0.08); border-color: rgba(197,160,89,0.35); transform: translateY(-3px); box-shadow: 0 10px 28px rgba(0,0,0,0.25); }
+.download-card .icon { font-size: 1.8rem; flex-shrink: 0; }
+.download-card .info { flex: 1; min-width: 0; }
+.download-card .info h4 { color: var(--white); font-size: 0.95rem; font-weight: 600; margin-bottom: 0.2rem; }
+.download-card .info span { color: var(--gold); font-size: 0.75rem; }
+.download-card .arrow { color: var(--gold); font-size: 1.2rem; transition: transform 0.3s ease; }
+.download-card:hover .arrow { transform: translateX(4px); }
+@media (max-width: 600px) { .download-complete { width: 100%; justify-content: center; } .download-grid { grid-template-columns: 1fr; } }
 '''
 
 # ========== PARTICLES JS ==========
@@ -3530,6 +3549,24 @@ def generate_index(categories):
       </a>
 '''
 
+    # Tarjetas de descarga por categoría
+    downloads_html = ''
+    for cat in categories:
+        cat_slug_pdf = cat['name'].lower().replace(' ', '-').replace('ñ','n').replace('á','a').replace('é','e').replace('í','i').replace('ó','o').replace('ú','u')
+        pdf_name = f'catalogo_{cat_slug_pdf}.pdf'
+        total_prods = len(cat['direct_products'])
+        for sub in cat['subcategories']:
+            total_prods += len(sub['products'])
+        downloads_html += f'''      <a href="catalogos/pdf/{pdf_name}" class="download-card" download>
+        <span class="icon">📄</span>
+        <div class="info">
+          <h4>{cat['name']}</h4>
+          <span>{total_prods} productos · PDF</span>
+        </div>
+        <span class="arrow">→</span>
+      </a>
+'''
+
     html = f'''<!DOCTYPE html>
 <html lang="es">
 <head>
@@ -3645,6 +3682,26 @@ def generate_index(categories):
     </div>
     <div class="cat-grid">
 {cat_cards}    </div>
+  </section>
+
+  <!-- DESCARGAS DE CATÁLOGOS PDF -->
+  <section class="section-wrap downloads-section reveal" id="descargas">
+    <div class="section-header">
+      <h2>📥 Descargas</h2>
+      <div class="divider"></div>
+      <p class="downloads-lead">Descarga nuestros catálogos en PDF para consultarlos sin conexión o compartirlos con tu cliente.</p>
+    </div>
+    <div class="downloads-main">
+      <a href="catalogos/pdf/catalogo_premium.pdf" class="download-complete" download>
+        <span class="icon">📚</span>
+        <div>
+          <div>Descargar catálogo completo</div>
+          <span class="sub">Todas las categorías en un solo PDF</span>
+        </div>
+      </a>
+    </div>
+    <div class="download-grid">
+{downloads_html}    </div>
   </section>
 
 {generate_testimonios()}
@@ -3901,13 +3958,14 @@ def generate_category_page(cat, categories):
     # Sección de accesorios para Placas PVC (al final del catálogo)
     if cat['name'] == 'Placas PVC' and accessories_html:
         acc_count = accessories_html.strip().count('product-card reveal')
+        acc_specs = generate_specs_table('Accesorios placas PVC')
         sections_html += f'''  <section class="subcat-section reveal" id="accesorios">
     <div class="subcat-header">
       <h3>🔩 Accesorios</h3>
       <span class="subcat-count">{acc_count} producto{"s" if acc_count != 1 else ""}</span>
       <div class="subcat-divider"></div>
     </div>
-    <div class="products-grid">
+{acc_specs}    <div class="products-grid">
 {accessories_html}    </div>
   </section>
 '''
@@ -3934,13 +3992,22 @@ def generate_category_page(cat, categories):
       </div>
 '''
 
+        # Clave de specs para productos directos según categoría
+        direct_specs_map = {
+            '3-revestimiento-flexible': 'Revestimiento Flexible',
+            '4-plafon-pvc': 'Plafon PVC directos',
+            '9-cladding': 'Cladding',
+        }
+        direct_specs_key = direct_specs_map.get(cat['slug'])
+        direct_specs = generate_specs_table(direct_specs_key) if direct_specs_key else ''
+
         sections_html += f'''  <section class="subcat-section reveal">
     <div class="subcat-header">
       <h3>Productos {cat['name']}</h3>
       <span class="subcat-count">{len(cat['direct_products'])} productos</span>
       <div class="subcat-divider"></div>
     </div>
-    <div class="products-grid">
+{direct_specs}    <div class="products-grid">
 {direct_products_html}    </div>
   </section>
 '''
@@ -4138,15 +4205,15 @@ SPECS_DATA = {
     },
     'Lambrin Exterior': {
         'Material': 'WPC',
-        'Dimensiones': 'Consultar ficha técnica',
-        'Presentación': 'Consultar ficha técnica',
-        'Garantía': 'Consultar ficha técnica',
+        'Dimensiones': '2850 x 200 x 26 mm',
+        'Presentación': '2.28 m²/Caja, 4 pz/Caja, 34 kg/Caja',
+        'Garantía': '10 años',
         'Uso': 'Exterior',
     },
     'Desigual': {
         'Material': 'WPC',
-        'Dimensiones': 'Consultar ficha técnica',
-        'Presentación': 'Consultar ficha técnica',
+        'Dimensiones': '2900 x 149 x 14 mm',
+        'Presentación': '0.4321 m²/pz, 4.321 m²/caja, 10 pz/caja, 26 kg/caja',
         'Garantía': 'Consultar ficha técnica',
         'Uso': 'Interior',
     },
@@ -4187,13 +4254,27 @@ SPECS_DATA = {
         'Garantía': '15 años',
         'Uso': 'Interior',
     },
-    'Plafon ranurado': {
+    'Plafon Ranurado': {
         'Material': 'PVC',
         'Dimensiones': '2900 x 250 x 8 mm',
         'Presentación': 'Por pieza, 2.90 m largo x 0.25 m ancho',
         'Garantía': '15 años',
         'Uso': 'Interior',
         'Acabado': 'Ranurado decorativo',
+    },
+    'Plafon PVC directos': {
+        'Material': 'PVC',
+        'Dimensiones': 'Consultar ficha técnica',
+        'Presentación': 'Consultar ficha técnica',
+        'Garantía': '15 años',
+        'Uso': 'Interior',
+    },
+    'Accesorios placas PVC': {
+        'Material': 'PVC',
+        'Dimensiones': 'Perfil T: 7 x 3 x 2440 mm / Ángulo: 8 x 8 x 2440 mm',
+        'Presentación': 'Por pieza',
+        'Garantía': '15 años',
+        'Uso': 'Interior',
     },
     # 5. Paneles tridimensionales
     'Blanco': {
@@ -4312,9 +4393,15 @@ def generate_specs_table(product_name):
     """Genera tabla de especificaciones técnicas en formato texto."""
     data = SPECS_DATA.get(product_name, {})
     items = []
-    for label in ('Material', 'Dimensiones', 'Presentación', 'Garantía', 'Uso'):
+    # Campos principales en orden fijo (sin Garantía por ahora)
+    main_labels = ('Material', 'Dimensiones', 'Presentación', 'Uso')
+    for label in main_labels:
         value = data.get(label, 'Consultar ficha técnica')
         items.append(f'<div class="spec-item"><span class="spec-label">{label}</span><span class="spec-value">{value}</span></div>')
+    # Campos adicionales definidos en la ficha técnica (ej. Acabado)
+    for label, value in data.items():
+        if label not in main_labels and label != 'Garantía':
+            items.append(f'<div class="spec-item"><span class="spec-label">{label}</span><span class="spec-value">{value}</span></div>')
     return '    <div class="specs-bar reveal">\n      ' + '\n      '.join(items) + '\n    </div>\n'
 
 

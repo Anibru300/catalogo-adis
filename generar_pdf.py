@@ -19,7 +19,7 @@ if hasattr(sys.stdout, 'reconfigure'):
 # ========== RUTAS ==========
 BASE_DIR   = Path(r'G:\Mi unidad\ADIS DISEÑO\Pagina')
 CATALOG_DIR= Path(r'G:\Mi unidad\ADIS DISEÑO\CATALOGO FINAL')
-OUTPUT_PDF = BASE_DIR / 'catalogo.pdf'
+OUTPUT_PDF = BASE_DIR / 'catalogos' / 'pdf' / 'catalogo.pdf'
 LOGO_PATH  = BASE_DIR / 'logo nuevo.jpeg'
 QR_PATH    = BASE_DIR / 'codigo QR.jpeg'
 MEDIA_DIR  = BASE_DIR / 'media'

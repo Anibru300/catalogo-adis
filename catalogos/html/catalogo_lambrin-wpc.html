@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Catálogo Lambrin WPC | ADIS 2025</title>
+
+    <style>
+        @page { size: A4 portrait; margin: 0; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        html, body { font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; background: #080808; color: #F0F0F0; font-size: 10pt; }
+
+        .page { width: 210mm; min-height: 297mm; padding: 14mm 18mm; position: relative; overflow: hidden; page-break-after: always; display: flex; flex-direction: column; background: #080808; }
+        .page:last-child { page-break-after: auto; }
+
+        h1 { font-family: Georgia, 'Times New Roman', serif; font-size: 32pt; font-weight: 700; color: #F0F0F0; line-height: 1.1; }
+        h2 { font-family: Georgia, 'Times New Roman', serif; font-size: 22pt; font-weight: 700; line-height: 1.2; color: #E5C97A; }
+        h3 { font-size: 11pt; font-weight: 700; color: #F0F0F0; text-transform: uppercase; letter-spacing: 1px; }
+        .muted { color: #888; font-size: 9pt; }
+        .gold { color: #C9A84C; }
+
+        .header { display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #2A2A2A; padding-bottom: 6px; margin-bottom: 10px; position: relative; }
+        .header img { height: 22px; }
+        .header span { font-size: 8pt; color: #888; text-transform: uppercase; letter-spacing: 1px; }
+        .footer { margin-top: auto; border-top: 1px solid #2A2A2A; padding-top: 6px; display: flex; justify-content: space-between; align-items: center; font-size: 7.5pt; color: #777; }
+        .back-btn { background: rgba(26,26,26,0.9); border: 1px solid #444; color: #C9A84C; padding: 3px 12px; border-radius: 3px; font-size: 7.5pt; font-weight: 700; text-decoration: none; position: absolute; left: 50%; transform: translateX(-50%); top: 0; }
+
+        /* Portada */
+        .cover { position: relative; justify-content: center; align-items: center; text-align: center; padding: 0; background: #080808; overflow: hidden; }
+        .cover::before { content:''; position: absolute; inset: 0; background: radial-gradient(circle at 30% 30%, rgba(201,168,76,0.12) 0%, transparent 40%); z-index: 1; }
+        .cover-frame { position: absolute; inset: 12mm; border: 1.5px solid #C9A84C; border-radius: 12px; pointer-events: none; z-index: 2; }
+        .cover-frame2 { position: absolute; inset: 15mm; border: 0.5px solid #8A7340; border-radius: 10px; pointer-events: none; z-index: 2; }
+        .cover-content { position: relative; z-index: 3; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; padding: 22mm; }
+        .cover-content img { max-width: 115mm; max-height: 90mm; object-fit: contain; margin-bottom: 10mm; filter: drop-shadow(0 15px 40px rgba(0,0,0,0.6)); }
+        .cover-content h1 { font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; font-size: 28pt; font-weight: 800; letter-spacing: 3px; margin-bottom: 4mm; color: #E5C97A; }
+        .cover-content .sub { font-size: 11pt; color: #E5C97A; margin-bottom: 6mm; letter-spacing: 1px; }
+        .cover-content .line { width: 55mm; height: 1.5px; background: linear-gradient(90deg, transparent, #C9A84C, transparent); margin-bottom: 6mm; }
+        .cover-content .year { font-size: 9pt; color: #888; line-height: 1.6; }
+
+        /* Separador */
+        .separator { justify-content: center; align-items: center; text-align: center; background-size: cover; background-position: center; position: relative; }
+        .separator::before { content:''; position: absolute; inset: 0; background: rgba(0,0,0,0.55); }
+        .sep-content { position: relative; z-index: 2; flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; }
+        .sep-content h1 { font-size: 52pt; letter-spacing: 5px; margin-bottom: 5mm; color: #F0F0F0; }
+        .sep-content .line { width: 40mm; height: 1.5px; background: linear-gradient(90deg, transparent, #C9A84C, transparent); margin: 0 auto 4mm; }
+        .sep-content p { font-size: 10pt; color: #BBB; }
+
+        /* Intro */
+        .cat-intro { display: flex; flex-direction: column; gap: 6px; }
+        .cat-header { display: flex; justify-content: space-between; align-items: baseline; border-bottom: 1.5px solid #C9A84C; padding-bottom: 4px; margin-bottom: 2px; }
+        .cat-header h1 { font-size: 26pt; color: #F0F0F0; }
+        .cat-header .count { font-size: 10pt; color: #C9A84C; font-weight: 700; }
+        .cat-desc { font-size: 9.5pt; color: #CCC; line-height: 1.4; max-width: 85%; }
+        .cat-img { width: 100%; height: 42mm; object-fit: cover; border-radius: 4px; margin: 2px 0; border: 1px solid #222; }
+        .benefits { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; margin-top: 2px; }
+        .benefit { background: #181818; border-radius: 4px; padding: 4px 7px; border-left: 2px solid #C9A84C; }
+        .benefit b { color: #C9A84C; font-size: 8pt; display: block; margin-bottom: 1px; }
+        .benefit span { color: #888; font-size: 7.5pt; }
+        .banner-sq { background: #121212; border: 1px solid #333; border-radius: 4px; padding: 5px 8px; margin-top: 4px; display: flex; align-items: center; gap: 8px; font-size: 8pt; color: #BBB; }
+        .banner-sq .icon { font-size: 13pt; }
+        .banner-sq b { color: #C9A84C; margin-right: 4px; }
+        .qr-box { display: flex; align-items: center; gap: 8px; margin-top: 4px; padding: 5px 8px; background: #121212; border: 1px solid #333; border-radius: 4px; }
+        .qr-box img { width: 18mm; height: 18mm; }
+        .qr-box span { font-size: 7.5pt; color: #888; }
+
+        .ficha-table { width: 100%; border-collapse: collapse; margin-top: 3px; }
+        .ficha-table td { padding: 2px 5px; font-size: 7pt; border-bottom: 1px solid #222; }
+        .ficha-table td:nth-child(odd) { color: #C9A84C; font-weight: 700; background: #121212; width: 18%; }
+        .ficha-table td:nth-child(even) { color: #CCC; background: #181818; width: 32%; }
+        .ficha-table tr:nth-child(even) td:nth-child(odd) { background: #0f0f0f; }
+        .ficha-table tr:nth-child(even) td:nth-child(even) { background: #151515; }
+
+        /* Productos */
+        .prod-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; flex: 1; }
+        .prod-card { background: #181818; border: 1px solid #222; border-radius: 4px; overflow: hidden; display: flex; flex-direction: column; page-break-inside: avoid; }
+        .prod-card .img-wrap { width: 100%; height: 50mm; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+        .prod-card .img-wrap img { width: 100%; height: 100%; object-fit: cover; }
+        .prod-card .info { padding: 5px 6px 6px; border-top: 1px solid #222; }
+        .prod-card .name { font-size: 7.5pt; font-weight: 700; color: #F0F0F0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 1px; }
+        .prod-card .sku { font-family: 'Courier New', monospace; font-size: 6.5pt; color: #C9A84C; font-weight: 700; }
+        .prod-card .sub { font-size: 6.5pt; color: #666; margin-top: 1px; }
+
+        /* Comparativa */
+        .comp-table { width: 100%; border-collapse: collapse; margin-top: 6px; }
+        .comp-table th { background: #C9A84C; color: #080808; font-size: 8.5pt; font-weight: 700; padding: 6px 8px; text-align: center; border: 1px solid #333; }
+        .comp-table td { background: #121212; color: #CCC; font-size: 8pt; padding: 5px 8px; text-align: center; border: 1px solid #222; }
+        .comp-table tr:nth-child(even) td { background: #181818; }
+        .comp-table .ok { color: #4CAF50; font-weight: 700; }
+        .comp-table .bar { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #C9A84C; margin: 0 1px; }
+        .comp-table .bar.empty { background: #333; }
+
+        /* Final */
+        .final { text-align: center; justify-content: center; align-items: center; }
+        .final img.logo { max-width: 60mm; margin-bottom: 10mm; filter: drop-shadow(0 5px 15px rgba(0,0,0,0.4)); }
+        .final h2 { margin-bottom: 4mm; }
+        .final .contact-box { background: #121212; border: 1px solid #222; border-radius: 6px; padding: 10px 20px; margin: 8mm 0; max-width: 130mm; }
+        .final .contact-box p { font-size: 9pt; color: #CCC; margin: 3px 0; }
+        .final .qr-wrap { background: #fff; padding: 8px; border-radius: 6px; display: inline-block; margin-top: 6mm; }
+        .final .qr-wrap img { width: 35mm; height: 35mm; display: block; }
+        .final .qr-label { font-size: 8pt; color: #C9A84C; margin-top: 3mm; font-weight: 700; }
+    </style>
+    
+</head>
+<body>
+<div class="page cover">
+        <div class="cover-frame"></div>
+        <div class="cover-frame2"></div>
+        <div class="cover-content">
+            <img src="./catalogo_img/logo.jpg" alt="ADIS">
+            <h1>CATÁLOGO<br>LAMBRIN WPC</h1>
+            <div class="sub">Materiales premium para arquitectura e interiorismo</div>
+            <div class="line"></div>
+            <div class="year">CATÁLOGO 2025 &nbsp;|&nbsp; ADIS DISEÑO & REMODELACIÓN<br>Nogales, Sonora &nbsp;|&nbsp; Río Rico, AZ</div>
+        </div>
+    </div><div class="page separator" style="background-image:url('./catalogo_img/amb_1.jpg');">
+            <div class="sep-content">
+                <h1>LAMBRIN WPC</h1>
+                <div class="line"></div>
+                <p>39 productos &nbsp;|&nbsp; Ficha técnica incluida</p>
+            </div>
+            <div class="footer"><span>ADIS Diseño & Remodelación</span><span>Página 2</span><span>adis-diseño.com | +52 631-192-8993</span></div>
+        </div><div class="page cat-intro">
+<div class="header"><img src="./catalogo_img/logo.jpg" alt="ADIS"><span>LAMBRIN WPC</span></div>
+<div class="cat-header"><h1>LAMBRIN WPC</h1><div class="count">39 PRODUCTOS</div></div>
+<p class="cat-desc">Revestimientos de Wood Plastic Composite con apariencia natural de madera. Interior y exterior.</p>
+<img src="./catalogo_img/amb_1.jpg" class="cat-img" alt="Lambrin WPC">
+<div class="benefits">
+<div class="benefit"><b>Natural</b><span>Textura real de madera</span></div>
+<div class="benefit"><b>Indestructible</b><span>No se pudre</span></div>
+<div class="benefit"><b>Sin mantenimiento</b><span>Sin barniz</span></div>
+<div class="benefit"><b>Ecológico</b><span>Madera reciclada</span></div>
+</div>
+<div class="banner-sq"><span class="icon">🌲</span><b>¿SABÍAS QUE?</b> El WPC combina fibras de madera y polímeros para ofrecer la belleza natural de la madera sin mantenimiento.</div>
+<div class="qr-box"><img src="./catalogo_img/qr_cat_1.png" alt="QR"><span>Escanea para cotizar Lambrin WPC por WhatsApp</span></div>
+<div style="margin-top:4px;"><h3 style="font-size:9pt; color:#C9A84C; margin-bottom:2px;">FICHA TÉCNICA</h3><table class="ficha-table">
+<tr><td>Material</td><td>WPC</td><td>Dimensiones</td><td>2900×160mm</td></tr>
+<tr><td>Espesor</td><td>12-24mm</td><td>Presentación</td><td>Consultar</td></tr>
+<tr><td>Uso</td><td>Int/Ext</td><td>Resistencia al agua</td><td>100%</td></tr>
+<tr><td>Resistencia UV</td><td>Alta</td><td>Mantenimiento</td><td>Limpieza seca</td></tr>
+<tr><td>Instalación</td><td colspan="3">Click / Tornillos</td></tr>
+</table></div>
+<div class="footer"><span>ADIS Diseño & Remodelación</span><span>Página 3</span><span>adis-diseño.com | +52 631-192-8993</span></div>
+</div><div class="page">
+<div class="header"><img src="./catalogo_img/logo.jpg" alt="ADIS"><span>LAMBRIN WPC</span></div>
+<div class="prod-grid">
+<div class="prod-card">
+                <div class="img-wrap"><img src="./catalogo_img/opt_1_0.jpg" alt="Amanecher"></div>
+                <div class="info">
+                    <div class="name" title="Amanecher">Amanecher</div>
+                    <div class="sku">LAM-AMANE-01</div>
+                    <div class="sub">Lambrin Interior</div>
+                </div>
+            </div>
+<div class="prod-card">
+                <div class="img-wrap"><img src="./catalogo_img/opt_1_1.jpg" alt="Amizade"></div>
+                <div class="info">
+                    <div class="name" title="Amizade">Amizade</div>
+                    <div class="sku">LAM-AMIZA-02</div>
+                    <div class="sub">Lambrin Interior</div>
+                </div>
+            </div>
+<div class="prod-card">
+                <div class="img-wrap"><img src="./catalogo_img/opt_1_2.jpg" alt="Bahia"></div>
+                <div class="info">
+                    <div class="name" title="Bahia">Bahia</div>
+                    <div class="sku">LAM-BAHIA-03</div>
+                    <div class="sub">Lambrin Interior</div>
+                </div>
+            </div>
+<div class="prod-card">
+                <div class="img-wrap"><img src="./catalogo_img/opt_1_3.jpg" alt="Brasilia"></div>
+                <div class="info">
+                    <div class="name" title="Brasilia">Brasilia</div>
+                    <div class="sku">LAM-BRASI-04</div>
+                    <div class="sub">Lambrin Interior</div>
+                </div>
+            </div>
+<div class="prod-card">
+                <div class="img-wrap"><img src="./catalogo_img/opt_1_4.jpg" alt="Cerezo Macapa"></div>
+                <div class="info">
+                    <div class="name" title="Cerezo Macapa">Cerezo Macapa</div>
+                    <div class="sku">LAM-CEREZ-05</div>
+                    <div class="sub">Lambrin Interior</div>
+                </div>
+            </div>
+<div class="prod-card">
+                <div class="img-wrap"><img src="./catalogo_img/opt_1_5.jpg" alt="Estrelado"></div>
+                <div class="info">
+                    <div class="name" title="Estrelado">Estrelado</div>
+                    <div class="sku">LAM-ESTRE-06</div>
+                    <div class="sub">Lambrin Interior</div>
+                </div>
+            </div>
+<div class="prod-card">
+                <div class="img-wrap"><img src="./catalogo_img/opt_1_6.jpg" alt="Fortaleza"></div>
+                <div class="info">
+                    <div class="name" title="Fortaleza">Fortaleza</div>
+                    <div class="sku">LAM-FORTA-07</div>
+                    <div class="sub">Lambrin Interior</div>
+                </div>
+            </div>
+<div class="prod-card">
+                <div class="img-wrap"><img src="./catalogo_img/opt_1_7.jpg" alt="Manaos"></div>
+                <div class="info">
+                    <div class="name" title="Manaos">Manaos</div>
+                    <div class="sku">LAM-MANAO-08</div>
+                    <div class="sub">Lambrin Interior</div>
+                </div>
+            </div>
+<div class="prod-card">
+                <div class="img-wrap"><img src="./catalogo_img/opt_1_8.jpg" alt="Nogal Olinda"></div>
+                <div class="info">
+                    <div class="name" title="Nogal Olinda">Nogal Olinda</div>
+                    <div class="sku">LAM-NOGAL-09</div>
+                    <div class="sub">Lambrin Interior</div>
+                </div>
+            </div>
+</div>
+<div class="footer"><span>ADIS Diseño & Remodelación</span><span>Página 4</span><span>adis-diseño.com | +52 631-192-8993</span></div>
+</div><div class="page">
+<div class="header"><img src="./catalogo_img/logo.jpg" alt="ADIS"><span>LAMBRIN WPC</span></div>
+<div class="prod-grid">
+<div class="prod-card">
+                <div class="img-wrap"><img src="./catalogo_img/opt_1_9.jpg" alt="Nuvem"></div>
+                <div class="info">
+                    <div class="name" title="Nuvem">Nuvem</div>
+                    <div class="sku">LAM-NUVEM-10</div>
+                    <div class="sub">Lambrin Interior</div>
+                </div>
+            </div>
+<div class="prod-card">
+                <div class="img-wrap"><img src="./catalogo_img/opt_1_10.jpg" alt="Ouro Preto"></div>
+                <div class="info">
+                    <div class="name" title="Ouro Preto">Ouro Preto</div>
+                    <div class="sku">LAM-OUROP-11</div>
+                    <div class="sub">Lambrin Interior</div>
+                </div>
+            </div>
+<div class="prod-card">
+                <div class="img-wrap"><img src="./catalogo_img/opt_1_11.jpg" alt="Ribeira"></div>
+                <div class="info">
+                    <div class="name" title="Ribeira">Ribeira</div>
+                    <div class="sku">LAM-RIBEI-12</div>
+                    <div class="sub">Lambrin Interior</div>
+                </div>
+            </div>
+<div class="prod-card">
+                <div class="img-wrap"><img src="./catalogo_img/opt_1_12.jpg" alt="Rodeiro"></div>
+                <div class="info">
+                    <div class="name" title="Rodeiro">Rodeiro</div>
+                    <div class="sku">LAM-RODEI-13</div>
+                    <div class="sub">Lambrin Interior</div>
+                </div>
+            </div>
+<div class="prod-card">
+                <div class="img-wrap"><img src="./catalogo_img/opt_1_13.jpg" alt="Río"></div>
+                <div class="info">
+                    <div class="name" title="Río">Río</div>
+                    <div class="sku">LAM-RO-14</div>
+                    <div class="sub">Lambrin Interior</div>
+                </div>
+            </div>
+<div class="prod-card">
+                <div class="img-wrap"><img src="./catalogo_img/opt_1_14.jpg" alt="Sabeiro"></div>
+                <div class="info">
+                    <div class="name" title="Sabeiro">Sabeiro</div>
+                    <div class="sku">LAM-SABEI-15</div>
+                    <div class="sub">Lambrin Interior</div>
+                </div>
+            </div>
+<div class="prod-card">
+                <div class="img-wrap"><img src="./catalogo_img/opt_1_15.jpg" alt="Sao Paulo"></div>
+                <div class="info">
+                    <div class="name" title="Sao Paulo">Sao Paulo</div>
+                    <div class="sku">LAM-SAOPA-16</div>
+                    <div class="sub">Lambrin Interior</div>
+                </div>
+            </div>
+<div class="prod-card">
+                <div class="img-wrap"><img src="./catalogo_img/opt_1_16.jpg" alt="Sonho"></div>
+                <div class="info">
+                    <div class="name" title="Sonho">Sonho</div>
+                    <div class="sku">LAM-SONHO-17</div>
+                    <div class="sub">Lambrin Interior</div>
+                </div>
+            </div>
+<div class="prod-card">
+                <div class="img-wrap"><img src="./catalogo_img/opt_1_17.jpg" alt="Teak Aracaju"></div>
+                <div class="info">
+                    <div class="name" title="Teak Aracaju">Teak Aracaju</div>
+                    <div class="sku">LAM-TEAKA-18</div>
+                    <div class="sub">Lambrin Interior</div>
+                </div>
+            </div>
+</div>
+<div class="footer"><span>ADIS Diseño & Remodelación</span><span>Página 5</span><span>adis-diseño.com | +52 631-192-8993</span></div>
+</div><div class="page">
+<div class="header"><img src="./catalogo_img/logo.jpg" alt="ADIS"><span>LAMBRIN WPC</span></div>
+<div class="prod-grid">
+<div class="prod-card">
+                <div class="img-wrap"><img src="./catalogo_img/opt_1_18.jpg" alt="Charcoal"></div>
+                <div class="info">
+                    <div class="name" title="Charcoal">Charcoal</div>
+                    <div class="sku">LAM-CHARC-19</div>
+                    <div class="sub">Lambrin Exterior</div>
+                </div>
+            </div>
+<div class="prod-card">
+                <div class="img-wrap"><img src="./catalogo_img/opt_1_19.jpg" alt="Dark Black"></div>
+                <div class="info">
+                    <div class="name" title="Dark Black">Dark Black</div>
+                    <div class="sku">LAM-DARKB-20</div>
+                    <div class="sub">Lambrin Exterior</div>
+                </div>
+            </div>
+<div class="prod-card">
+                <div class="img-wrap"><img src="./catalogo_img/opt_1_20.jpg" alt="Redwood"></div>
+                <div class="info">
+                    <div class="name" title="Redwood">Redwood</div>
+                    <div class="sku">LAM-REDWO-21</div>
+                    <div class="sub">Lambrin Exterior</div>
+                </div>
+            </div>
+<div class="prod-card">
+                <div class="img-wrap"><img src="./catalogo_img/opt_1_21.jpg" alt="Sliver Gray"></div>
+                <div class="info">
+                    <div class="name" title="Sliver Gray">Sliver Gray</div>
+                    <div class="sku">LAM-SLIVE-22</div>
+                    <div class="sub">Lambrin Exterior</div>
+                </div>
+            </div>
+<div class="prod-card">
+                <div class="img-wrap"><img src="./catalogo_img/opt_1_22.jpg" alt="Teak"></div>
+                <div class="info">
+                    <div class="name" title="Teak">Teak</div>
+                    <div class="sku">LAM-TEAK-23</div>
+                    <div class="sub">Lambrin Exterior</div>
+                </div>
+            </div>
+<div class="prod-card">
+                <div class="img-wrap"><img src="./catalogo_img/opt_1_23.jpg" alt="Bahia"></div>
+                <div class="info">
+                    <div class="name" title="Bahia">Bahia</div>
+                    <div class="sku">LAM-BAHIA-24</div>
+                    <div class="sub">Desigual</div>
+                </div>
+            </div>
+<div class="prod-card">
+                <div class="img-wrap"><img src="./catalogo_img/opt_1_24.jpg" alt="Brasilia"></div>
+                <div class="info">
+                    <div class="name" title="Brasilia">Brasilia</div>
+                    <div class="sku">LAM-BRASI-25</div>
+                    <div class="sub">Desigual</div>
+                </div>
+            </div>
+<div class="prod-card">
+                <div class="img-wrap"><img src="./catalogo_img/opt_1_25.jpg" alt="Parota"></div>
+                <div class="info">
+                    <div class="name" title="Parota">Parota</div>
+                    <div class="sku">LAM-PAROT-26</div>
+                    <div class="sub">Desigual</div>
+                </div>
+            </div>
+<div class="prod-card">
+                <div class="img-wrap"><img src="./catalogo_img/opt_1_26.jpg" alt="Rio"></div>
+                <div class="info">
+                    <div class="name" title="Rio">Rio</div>
+                    <div class="sku">LAM-RIO-27</div>
+                    <div class="sub">Desigual</div>
+                </div>
+            </div>
+</div>
+<div class="footer"><span>ADIS Diseño & Remodelación</span><span>Página 6</span><span>adis-diseño.com | +52 631-192-8993</span></div>
+</div><div class="page">
+<div class="header"><img src="./catalogo_img/logo.jpg" alt="ADIS"><span>LAMBRIN WPC</span></div>
+<div class="prod-grid">
+<div class="prod-card">
+                <div class="img-wrap"><img src="./catalogo_img/opt_1_27.jpg" alt="Sao Paulo"></div>
+                <div class="info">
+                    <div class="name" title="Sao Paulo">Sao Paulo</div>
+                    <div class="sku">LAM-SAOPA-28</div>
+                    <div class="sub">Desigual</div>
+                </div>
+            </div>
+<div class="prod-card">
+                <div class="img-wrap"><img src="./catalogo_img/opt_1_28.jpg" alt="Bahia"></div>
+                <div class="info">
+                    <div class="name" title="Bahia">Bahia</div>
+                    <div class="sku">LAM-BAHIA-29</div>
+                    <div class="sub">Media luna</div>
+                </div>
+            </div>
+<div class="prod-card">
+                <div class="img-wrap"><img src="./catalogo_img/opt_1_29.jpg" alt="Sao Paulo"></div>
+                <div class="info">
+                    <div class="name" title="Sao Paulo">Sao Paulo</div>
+                    <div class="sku">LAM-SAOPA-30</div>
+                    <div class="sub">Media luna</div>
+                </div>
+            </div>
+<div class="prod-card">
+                <div class="img-wrap"><img src="./catalogo_img/opt_1_30.jpg" alt="Azeituna"></div>
+                <div class="info">
+                    <div class="name" title="Azeituna">Azeituna</div>
+                    <div class="sku">LAM-AZEIT-31</div>
+                    <div class="sub">Media luna</div>
+                </div>
+            </div>
+<div class="prod-card">
+                <div class="img-wrap"><img src="./catalogo_img/opt_1_31.jpg" alt="Brasilia"></div>
+                <div class="info">
+                    <div class="name" title="Brasilia">Brasilia</div>
+                    <div class="sku">LAM-BRASI-32</div>
+                    <div class="sub">Media luna</div>
+                </div>
+            </div>
+<div class="prod-card">
+                <div class="img-wrap"><img src="./catalogo_img/opt_1_32.jpg" alt="Rio"></div>
+                <div class="info">
+                    <div class="name" title="Rio">Rio</div>
+                    <div class="sku">LAM-RIO-33</div>
+                    <div class="sub">Media luna</div>
+                </div>
+            </div>
+<div class="prod-card">
+                <div class="img-wrap"><img src="./catalogo_img/opt_1_33.jpg" alt="Aureli"></div>
+                <div class="info">
+                    <div class="name" title="Aureli">Aureli</div>
+                    <div class="sku">LAM-AUREL-34</div>
+                    <div class="sub">Media luna PS</div>
+                </div>
+            </div>
+<div class="prod-card">
+                <div class="img-wrap"><img src="./catalogo_img/opt_1_34.jpg" alt="Cressida"></div>
+                <div class="info">
+                    <div class="name" title="Cressida">Cressida</div>
+                    <div class="sku">LAM-CRESS-35</div>
+                    <div class="sub">Media luna PS</div>
+                </div>
+            </div>
+<div class="prod-card">
+                <div class="img-wrap"><img src="./catalogo_img/opt_1_35.jpg" alt="Elara"></div>
+                <div class="info">
+                    <div class="name" title="Elara">Elara</div>
+                    <div class="sku">LAM-ELARA-36</div>
+                    <div class="sub">Media luna PS</div>
+                </div>
+            </div>
+</div>
+<div class="footer"><span>ADIS Diseño & Remodelación</span><span>Página 7</span><span>adis-diseño.com | +52 631-192-8993</span></div>
+</div><div class="page">
+<div class="header"><img src="./catalogo_img/logo.jpg" alt="ADIS"><span>LAMBRIN WPC</span></div>
+<div class="prod-grid">
+<div class="prod-card">
+                <div class="img-wrap"><img src="./catalogo_img/opt_1_36.jpg" alt="Gildara"></div>
+                <div class="info">
+                    <div class="name" title="Gildara">Gildara</div>
+                    <div class="sku">LAM-GILDA-37</div>
+                    <div class="sub">Media luna PS</div>
+                </div>
+            </div>
+<div class="prod-card">
+                <div class="img-wrap"><img src="./catalogo_img/opt_1_37.jpg" alt="Angulo WPC Para Interior"></div>
+                <div class="info">
+                    <div class="name" title="Angulo WPC Para Interior">Angulo WPC Para Interior</div>
+                    <div class="sku">LAM-ANGUL-38</div>
+                    <div class="sub">Lambrin Interior</div>
+                </div>
+            </div>
+<div class="prod-card">
+                <div class="img-wrap"><img src="./catalogo_img/opt_1_38.jpg" alt="Esquinero"></div>
+                <div class="info">
+                    <div class="name" title="Esquinero">Esquinero</div>
+                    <div class="sku">LAM-ESQUI-39</div>
+                    <div class="sub">Lambrin Exterior</div>
+                </div>
+            </div>
+</div>
+<div class="footer"><span>ADIS Diseño & Remodelación</span><span>Página 8</span><span>adis-diseño.com | +52 631-192-8993</span></div>
+</div><div class="page final">
+<img src="./catalogo_img/logo.jpg" class="logo" alt="ADIS">
+<h2>Gracias por preferirnos</h2>
+<p style="color:#BBB; font-size:10pt; margin-bottom:8mm;">Estamos listos para transformar tu espacio</p>
+<div class="contact-box">
+<p><strong style="color:#C9A84C;">CONTACTO</strong></p>
+<p>WhatsApp: +52 631-192-8993</p>
+<p>Showroom: +52 631-120-4943</p>
+<p>Email: adis.remodelacion@gmail.com</p>
+<p>Web: adis-diseño.com</p>
+<p>Nogales, Sonora | Río Rico, AZ</p>
+</div>
+<div class="qr-wrap"><img src="./catalogo_img/qr.jpg" alt="QR"></div>
+<div class="qr-label">Escanea para visitarnos</div>
+<div class="footer"><span>ADIS Diseño & Remodelación</span><span>Última página</span><span>adis-diseño.com | +52 631-192-8993</span></div>
+</div>
+</body>
+</html>
