@@ -383,7 +383,7 @@ def build_html(cats, cats_prepared, img_dir):
     cat_index = 0
 
     def footer(page_text):
-        return f'<div class="footer"><span>ADIS Diseño & Remodelación</span><span>{page_text}</span><span>adis-diseño.com | +52 631-192-8993</span></div>'
+        return f'<div class="footer"><span>ADIS Diseño & Remodelación</span><span>{page_text}</span><span>adis-diseño.com | +1 (520) 839-2877</span></div>'
 
     # ===== PORTADA =====
     body_parts.append(f'''<div class="page cover">
@@ -573,7 +573,7 @@ def build_html(cats, cats_prepared, img_dir):
     final_html.append('<p style="color:#BBB; font-size:10pt; margin-bottom:8mm;">Estamos listos para transformar tu espacio</p>')
     final_html.append('<div class="contact-box">')
     final_html.append('<p><strong style="color:#C9A84C;">CONTACTO</strong></p>')
-    final_html.append('<p>WhatsApp: +52 631-192-8993</p>')
+    final_html.append('<p>WhatsApp: +1 (520) 839-2877</p>')
     final_html.append('<p>Showroom: +52 631-120-4943</p>')
     final_html.append('<p>Email: adis.remodelacion@gmail.com</p>')
     final_html.append('<p>Web: adis-diseño.com</p>')

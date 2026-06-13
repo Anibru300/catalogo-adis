@@ -14,10 +14,10 @@ BASE_DIR = Path(r'G:\Mi unidad\ADIS DISEÑO\Pagina')
 CATALOG_DIR = Path(r'G:\Mi unidad\ADIS DISEÑO\CATALOGO FINAL')
 
 CONTACTO = {
-    'whatsapp': '526311928993',
+    'whatsapp': '15208392877',
     'whatsapp_msg': 'Hola ADIS, vi el catálogo y me interesa obtener información sobre sus productos.',
     'email': 'adis.remodelacion@gmail.com',
-    'tel_mx': '+52 631-192-8993',
+    'tel_mx': '+1 (520) 839-2877',
     'tel_usa': '+1 (520) 839-2877',
     'tel_showroom': '+52 631-120-4943',
     'ubicacion': 'Nogales, Sonora · Rio Rico, AZ',
@@ -2394,7 +2394,7 @@ def generate_footer():
           whatsapp: 'Atendemos WhatsApp casi 24/7, excepto madrugada (aprox. 00:00 - 07:00)'
         },
         contacto: {
-          whatsapp: '+52 631-192-8993',
+          whatsapp: '+1 (520) 839-2877',
           tel_showroom: '+52 631-120-4943',
           email: 'adis.remodelacion@gmail.com',
           ubicacion: 'Nogales, Sonora y Rio Rico, AZ',
@@ -2660,7 +2660,7 @@ def generate_footer():
             ${priceTag}
             <div class="chat-product-actions">
               <a href="${m.url}" class="primary" target="_blank">Ver producto</a>
-              <a href="https://wa.me/526311928993?text=${waText}" class="secondary" target="_blank">Cotizar</a>
+              <a href="https://wa.me/15208392877?text=${waText}" class="secondary" target="_blank">Cotizar</a>
             </div>
           </div>
         </div>`;
@@ -2830,24 +2830,24 @@ def generate_footer():
             r = '🕐 <strong>Horarios de atención (Showroom):</strong><br><br>• <strong>Lunes:</strong> ' + kb.horarios.lunes + '<br>• <strong>Martes:</strong> ' + kb.horarios.martes + '<br>• <strong>Miércoles:</strong> ' + kb.horarios.miercoles + '<br>• <strong>Jueves:</strong> ' + kb.horarios.jueves + '<br>• <strong>Viernes:</strong> ' + kb.horarios.viernes + '<br>• <strong>Sábado:</strong> ' + kb.horarios.sabado + '<br>• <strong>Domingo:</strong> ' + kb.horarios.domingo + '<br><br>💬 ' + kb.horarios.whatsapp;
             break;
           case 'contacto':
-            r = '📱 <strong>Contactos directos:</strong><br><br>• <strong>WhatsApp:</strong> ' + kb.contacto.whatsapp + '<br>• <strong>Showroom:</strong> ' + kb.contacto.tel_showroom + '<br>• <strong>Email:</strong> ' + kb.contacto.email + '<br><br><a href="https://wa.me/526311928993?text=Hola%20ADIS,%20tengo%20una%20pregunta" target="_blank" class="chat-whatsapp-btn">💬 Abrir WhatsApp</a>';
+            r = '📱 <strong>Contactos directos:</strong><br><br>• <strong>WhatsApp:</strong> ' + kb.contacto.whatsapp + '<br>• <strong>Showroom:</strong> ' + kb.contacto.tel_showroom + '<br>• <strong>Email:</strong> ' + kb.contacto.email + '<br><br><a href="https://wa.me/15208392877?text=Hola%20ADIS,%20tengo%20una%20pregunta" target="_blank" class="chat-whatsapp-btn">💬 Abrir WhatsApp</a>';
             break;
           case 'ubicacion':
             r = '📍 <strong>ADIS Diseño & Remodelación</strong><br><br>🏠 <strong>Dirección:</strong><br>' + kb.contacto.direccion + '<br><br>📱 <strong>WhatsApp:</strong> ' + kb.contacto.whatsapp + '<br>☎️ <strong>Showroom:</strong> ' + kb.contacto.tel_showroom + '<br>✉️ <strong>Email:</strong> ' + kb.contacto.email + '<br><br>🕐 Horario showroom: Martes a domingo (lunes cerrado)<br>📍 También atendemos en <strong>Rio Rico, AZ</strong><br><br><a href="https://maps.app.goo.gl/Q3raWUzhCj2rvhjm8" target="_blank" style="color:#C5A059">🗺️ Ver en Google Maps →</a>';
             break;
           case 'precio':
-            r = '💰 <strong>Precios y cotizaciones:</strong><br><br>• ' + kb.precios.iva + '<br>• ' + kb.precios.mayorista + '<br>• Los precios son <strong>solo por el material</strong> (por pieza, caja o metro cuadrado según categoría)<br><br>📋 <strong>Cotización detallada:</strong> ' + kb.cotizacion.tiempo + '<br>📦 <strong>Incluye:</strong> ' + kb.cotizacion.incluye + '<br>⏱️ <strong>Sin stock:</strong> ' + kb.cotizacion.sin_stock + '<br><br>🔨 ¿Requieres instalación? Un representante visita tu obra para cotizarla aparte.<br><br><a href="https://wa.me/526311928993?text=Hola%20ADIS,%20quiero%20una%20cotización" target="_blank" class="chat-whatsapp-btn">📱 Solicitar cotización gratis</a>';
+            r = '💰 <strong>Precios y cotizaciones:</strong><br><br>• ' + kb.precios.iva + '<br>• ' + kb.precios.mayorista + '<br>• Los precios son <strong>solo por el material</strong> (por pieza, caja o metro cuadrado según categoría)<br><br>📋 <strong>Cotización detallada:</strong> ' + kb.cotizacion.tiempo + '<br>📦 <strong>Incluye:</strong> ' + kb.cotizacion.incluye + '<br>⏱️ <strong>Sin stock:</strong> ' + kb.cotizacion.sin_stock + '<br><br>🔨 ¿Requieres instalación? Un representante visita tu obra para cotizarla aparte.<br><br><a href="https://wa.me/15208392877?text=Hola%20ADIS,%20quiero%20una%20cotización" target="_blank" class="chat-whatsapp-btn">📱 Solicitar cotización gratis</a>';
             break;
           case 'envio':
-            r = '🚚 <strong>Envíos y entregas:</strong><br><br>🎁 <strong>Entrega GRATIS</strong> en: ' + kb.envios.gratis + '<br><br>📦 ' + kb.envios.nacional + '<br><br>⏱️ ' + kb.envios.tiempo_grandes + '<br><br>Envíanos tu dirección por WhatsApp para cotizar el envío exacto.<br><br><a href="https://wa.me/526311928993?text=Hola%20ADIS,%20quiero%20cotizar%20un%20envío" target="_blank" class="chat-whatsapp-btn">📱 Cotizar envío</a>';
+            r = '🚚 <strong>Envíos y entregas:</strong><br><br>🎁 <strong>Entrega GRATIS</strong> en: ' + kb.envios.gratis + '<br><br>📦 ' + kb.envios.nacional + '<br><br>⏱️ ' + kb.envios.tiempo_grandes + '<br><br>Envíanos tu dirección por WhatsApp para cotizar el envío exacto.<br><br><a href="https://wa.me/15208392877?text=Hola%20ADIS,%20quiero%20cotizar%20un%20envío" target="_blank" class="chat-whatsapp-btn">📱 Cotizar envío</a>';
             break;
           case 'instalacion':
-            r = '🛠️ <strong>Servicio de instalación:</strong><br><br>' + kb.instalacion.costo + '<br><br>👷 ' + kb.instalacion.proceso + '<br><br>💡 <strong>Consejos para instalación:</strong><br>• Superficie limpia, seca y nivelada<br>• Temperatura ideal: 15°C a 30°C<br>• Dejar junta de dilatación de 2-3 mm<br>• Corte con sierra circular / disco de carburo de tungsteno<br>• Para espejos: usar perfiles de aluminio obligatoriamente<br><br>✅ También vendemos materiales sueltos si prefieres instalar por tu cuenta.<br><br><a href="https://wa.me/526311928993?text=Hola%20ADIS,%20quiero%20cotizar%20instalación" target="_blank" class="chat-whatsapp-btn">📱 Cotizar instalación</a>';
+            r = '🛠️ <strong>Servicio de instalación:</strong><br><br>' + kb.instalacion.costo + '<br><br>👷 ' + kb.instalacion.proceso + '<br><br>💡 <strong>Consejos para instalación:</strong><br>• Superficie limpia, seca y nivelada<br>• Temperatura ideal: 15°C a 30°C<br>• Dejar junta de dilatación de 2-3 mm<br>• Corte con sierra circular / disco de carburo de tungsteno<br>• Para espejos: usar perfiles de aluminio obligatoriamente<br><br>✅ También vendemos materiales sueltos si prefieres instalar por tu cuenta.<br><br><a href="https://wa.me/15208392877?text=Hola%20ADIS,%20quiero%20cotizar%20instalación" target="_blank" class="chat-whatsapp-btn">📱 Cotizar instalación</a>';
             break;
           case 'pago':
             r = '💳 <strong>Formas de pago:</strong><br><br>';
             kb.pagos.metodos.forEach(m => { r += '• ' + m + '<br>'; });
-            r += '<br>⚠️ <strong>' + kb.pagos.anticipo + '</strong><br><br>Escríbenos para más detalles.<br><br><a href="https://wa.me/526311928993?text=Hola%20ADIS,%20pregunto%20por%20formas%20de%20pago" target="_blank" class="chat-whatsapp-btn">📱 Preguntar por pagos</a>';
+            r += '<br>⚠️ <strong>' + kb.pagos.anticipo + '</strong><br><br>Escríbenos para más detalles.<br><br><a href="https://wa.me/15208392877?text=Hola%20ADIS,%20pregunto%20por%20formas%20de%20pago" target="_blank" class="chat-whatsapp-btn">📱 Preguntar por pagos</a>';
             break;
           case 'garantia':
             r = '✅ <strong>Garantía:</strong><br><br>🛡️ ' + kb.garantia.validacion + '<br><br>• Placas PVC: ' + kb.garantia.pvc + '<br>• Lambrín WPC: ' + kb.garantia.wpc + '<br>• Pisos SPC: ' + kb.garantia.spc + '<br>• Zacate sintético: ' + kb.garantia.zacate + '<br><br>La garantía cubre defectos de fábrica. Conserva tu ticket de compra.';
@@ -2856,10 +2856,10 @@ def generate_footer():
             r = '📦 <strong>Nuestros productos (250 productos en 9 categorías):</strong><br><br>• <strong>Placas PVC</strong> — 34 productos<br>• <strong>Lambrín WPC</strong> — 40 productos<br>• <strong>Paneles 3D</strong> — 24 productos<br>• <strong>Pisos</strong> — 78 productos<br>• <strong>Plafón PVC</strong> — 15 productos<br>• <strong>Vigas PVC/WPC</strong> — 15 productos<br>• <strong>Zacate sintético</strong> — 29 productos<br>• <strong>Cladding</strong> — 11 productos<br>• <strong>Revestimiento Flexible</strong> — 6 productos<br><br>🏠 Atendemos: ' + kb.proyectos.tipos + '<br><br>💡 Escribe el nombre de un producto o categoría para saber más.';
             break;
           case 'mantenimiento':
-            r = '🧼 <strong>Mantenimiento y limpieza:</strong><br><br>• <strong>Limpieza regular:</strong> Paño suave humedecido con agua tibia y jabón neutro (pH 7)<br>• <strong>Manchas difíciles:</strong> Alcohol isopropílico al 70% o limpiador multiusos suave<br>• <strong>Evitar:</strong> Acetona, thinner, solventes fuertes, estropajos metálicos y amoníaco concentrado<br>• <strong>Frecuencia:</strong> Residencial = mensual | Comercial = semanal<br>• <strong>Inspección anual:</strong> Revisar juntas de dilatación y selladores<br><br>💡 Los productos PVC y WPC no requieren barnizado ni sellado. Solo limpieza básica.<br><br><a href="https://wa.me/526311928993?text=Hola%20ADIS,%20pregunto%20por%20mantenimiento" target="_blank" class="chat-whatsapp-btn">📱 Preguntar por mantenimiento</a>';
+            r = '🧼 <strong>Mantenimiento y limpieza:</strong><br><br>• <strong>Limpieza regular:</strong> Paño suave humedecido con agua tibia y jabón neutro (pH 7)<br>• <strong>Manchas difíciles:</strong> Alcohol isopropílico al 70% o limpiador multiusos suave<br>• <strong>Evitar:</strong> Acetona, thinner, solventes fuertes, estropajos metálicos y amoníaco concentrado<br>• <strong>Frecuencia:</strong> Residencial = mensual | Comercial = semanal<br>• <strong>Inspección anual:</strong> Revisar juntas de dilatación y selladores<br><br>💡 Los productos PVC y WPC no requieren barnizado ni sellado. Solo limpieza básica.<br><br><a href="https://wa.me/15208392877?text=Hola%20ADIS,%20pregunto%20por%20mantenimiento" target="_blank" class="chat-whatsapp-btn">📱 Preguntar por mantenimiento</a>';
             break;
           case 'proyecto':
-            r = '🏠 <strong>Atendemos todo tipo de proyectos:</strong><br><br>' + kb.proyectos.tipos + '<br><br>Desde una pared de acento en casa hasta remodelaciones completas de locales comerciales. Cada proyecto es único y tenemos el material perfecto para ti.<br><br>💡 <strong>Consejo:</strong> Si no estás seguro de qué material elegir, contame:<br>• ¿Es interior o exterior?<br>• ¿Hay humedad o contacto con agua?<br>• ¿Qué estética buscas? (madera, mármol, moderno, rústico)<br><br><a href="https://wa.me/526311928993?text=Hola%20ADIS,%20tengo%20un%20proyecto%20de" target="_blank" class="chat-whatsapp-btn">📱 Contar mi proyecto</a>';
+            r = '🏠 <strong>Atendemos todo tipo de proyectos:</strong><br><br>' + kb.proyectos.tipos + '<br><br>Desde una pared de acento en casa hasta remodelaciones completas de locales comerciales. Cada proyecto es único y tenemos el material perfecto para ti.<br><br>💡 <strong>Consejo:</strong> Si no estás seguro de qué material elegir, contame:<br>• ¿Es interior o exterior?<br>• ¿Hay humedad o contacto con agua?<br>• ¿Qué estética buscas? (madera, mármol, moderno, rústico)<br><br><a href="https://wa.me/15208392877?text=Hola%20ADIS,%20tengo%20un%20proyecto%20de" target="_blank" class="chat-whatsapp-btn">📱 Contar mi proyecto</a>';
             break;
           case 'agradecimiento':
             r = '¡Con mucho gusto! 😊🙌 Estoy aquí para lo que necesites. Si tienes más dudas, escríbenos por WhatsApp al <strong>' + kb.contacto.whatsapp + '</strong> o visítanos en el showroom. ¡Que tengas un excelente día!';
@@ -3257,7 +3257,7 @@ def generate_footer():
         const data = chatContext.quoteData;
         if (!data || !data.category) return;
         const msg = `Hola ADIS, solicito cotización guiada desde el catálogo:\\n\\n• Producto: ${data.category}\\n• Espacio: ${data.space}\\n• Metraje: ${data.m2}\\n• Instalación: ${data.install}\\n• Ubicación: ${data.location}\\n${data.contact && data.contact !== 'Prefiero no decir' && data.contact !== 'Solo enviar por WhatsApp' ? '• Contacto: ' + data.contact + '\\n' : ''}\\nQuedo atento a su respuesta. Gracias.`;
-        window.open('https://wa.me/526311928993?text=' + encodeURIComponent(msg), '_blank');
+        window.open('https://wa.me/15208392877?text=' + encodeURIComponent(msg), '_blank');
       }
       
       // === RECOMENDADOR INTELIGENTE ===
@@ -3899,7 +3899,7 @@ def generate_category_page(cat, categories):
           <div class="product-name">{prod_name}</div>
           <div class="product-actions">
             <a href="{mailto}" class="btn-cotizar">Solicitar Cotización</a>
-            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20{prod_name.replace(' ', '%20')}%20de%20la%20categoría%20{cat['name'].replace(' ', '%20')}" class="btn-whatsapp" target="_blank">WhatsApp</a>
+            <a href="https://wa.me/15208392877?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20{prod_name.replace(' ', '%20')}%20de%20la%20categoría%20{cat['name'].replace(' ', '%20')}" class="btn-whatsapp" target="_blank">WhatsApp</a>
           </div>
         </div>
       </div>
@@ -3918,7 +3918,7 @@ def generate_category_page(cat, categories):
           <div class="product-name">{prod_name}</div>
           <div class="product-actions">
             <a href="{mailto}" class="btn-cotizar">Solicitar Cotización</a>
-            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20{prod_name.replace(' ', '%20')}%20de%20la%20categoría%20{cat['name'].replace(' ', '%20')}" class="btn-whatsapp" target="_blank">WhatsApp</a>
+            <a href="https://wa.me/15208392877?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20{prod_name.replace(' ', '%20')}%20de%20la%20categoría%20{cat['name'].replace(' ', '%20')}" class="btn-whatsapp" target="_blank">WhatsApp</a>
           </div>
         </div>
       </div>
@@ -3957,7 +3957,7 @@ def generate_category_page(cat, categories):
           <div class="product-name">{prod_name}</div>
           <div class="product-actions">
             <a href="{mailto}" class="btn-cotizar">Solicitar Cotización</a>
-            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20{prod_name.replace(' ', '%20')}%20de%20la%20categoría%20{cat['name'].replace(' ', '%20')}%20/%20subcategoría%20{sub['name'].replace(' ', '%20')}" class="btn-whatsapp" target="_blank">WhatsApp</a>
+            <a href="https://wa.me/15208392877?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20{prod_name.replace(' ', '%20')}%20de%20la%20categoría%20{cat['name'].replace(' ', '%20')}%20/%20subcategoría%20{sub['name'].replace(' ', '%20')}" class="btn-whatsapp" target="_blank">WhatsApp</a>
           </div>
         </div>
       </div>
@@ -4005,7 +4005,7 @@ def generate_category_page(cat, categories):
           <div class="product-name">{prod_name}</div>
           <div class="product-actions">
             <a href="{mailto}" class="btn-cotizar">Solicitar Cotización</a>
-            <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20{prod_name.replace(' ', '%20')}%20de%20la%20categoría%20{cat['name'].replace(' ', '%20')}" class="btn-whatsapp" target="_blank">WhatsApp</a>
+            <a href="https://wa.me/15208392877?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20{prod_name.replace(' ', '%20')}%20de%20la%20categoría%20{cat['name'].replace(' ', '%20')}" class="btn-whatsapp" target="_blank">WhatsApp</a>
           </div>
         </div>
       </div>
@@ -4485,7 +4485,7 @@ def generate_testimonios():
       <div style="text-align: center; margin-top: 1.2rem; font-size: 0.8rem; color: rgba(245,245,245,0.5); line-height: 1.6;">
         Los testimonios son revisados antes de publicarse.<br>
         También puedes enviarlos directamente por 
-        <a href="https://wa.me/526311928993?text=Hola%20ADIS,%20quiero%20dejar%20un%20testimonio" target="_blank" style="color: var(--gold); text-decoration: none; font-weight: 600;">WhatsApp 💬</a>
+        <a href="https://wa.me/15208392877?text=Hola%20ADIS,%20quiero%20dejar%20un%20testimonio" target="_blank" style="color: var(--gold); text-decoration: none; font-weight: 600;">WhatsApp 💬</a>
       </div>
     </div>
   </section>
@@ -4499,7 +4499,7 @@ def generate_testimonios():
       msg += '%0A%0A' + comentario;
       msg += '%0A%0AProducto/Categoría: ' + (producto || 'No especificado');
       msg += '%0A%0APágina: ' + window.location.href;
-      window.open('https://wa.me/526311928993?text=' + encodeURIComponent(msg.replace(/%0A/g, '\\n')), '_blank');
+      window.open('https://wa.me/15208392877?text=' + encodeURIComponent(msg.replace(/%0A/g, '\\n')), '_blank');
       alert('¡Gracias ' + nombre + '! Tu testimonio se envió por WhatsApp. Será revisado y publicado pronto.');
       e.target.reset();
     }

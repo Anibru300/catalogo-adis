@@ -47,7 +47,7 @@ MARGIN_B = 1.4*cm
 CONTENT_W = pw - MARGIN_L - MARGIN_R
 
 WEB_URL = 'https://adis-diseño.com'
-WA_NUM  = '526311928993'
+WA_NUM  = '15208392877'
 WA_MSG  = 'Hola ADIS, vi el catalogo y me interesa cotizar sus productos.'
 WA_URL  = f'https://wa.me/{WA_NUM}?text={WA_MSG.replace(" ", "%20")}'
 
@@ -281,7 +281,7 @@ def draw_footer():
     c.drawCentredString(pw/2, fy+0.18*cm, f"Página {page_num}")
     # contacto derecha
     c.setFillColor(MUTED); c.setFont("Helvetica", 7.5)
-    c.drawRightString(pw-MARGIN_R, fy+0.18*cm, "adis-diseño.com  |  WhatsApp +52 631-192-8993")
+    c.drawRightString(pw-MARGIN_R, fy+0.18*cm, "adis-diseño.com  |  WhatsApp +1 (520) 839-2877")
 
 # ========== BOTÓN VOLVER AL ÍNDICE (discreto) ==========
 def draw_back_to_index():
@@ -617,7 +617,7 @@ def draw_final_page(qr_path):
     c.setFillColor(GOLD); c.setFont("Helvetica-Bold", 12)
     c.drawCentredString(pw/2, 8.3*cm, "CONTACTO")
     lines = [
-        "WhatsApp: +52 631-192-8993",
+        "WhatsApp: +1 (520) 839-2877",
         "Showroom: +52 631-120-4943",
         "Email: adis.remodelacion@gmail.com",
         "Web: adis-diseño.com",

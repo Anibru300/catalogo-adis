@@ -49,7 +49,7 @@ old_chatbot = '''    // Chatbot
           ubicacion: `📍 <strong>Nogales, Sonora</strong> y atendemos también en <strong>Rio Rico, AZ</strong>.<br><br>Puedes ver nuestra ubicación exacta en la página de <a href="contacto.html" style="color:#C5A059">Contacto</a> o en <a href="https://maps.app.goo.gl/Q3raWUzhCj2rvhjm8" target="_blank" style="color:#C5A059">Google Maps →</a>`,
           fichas: `📋 Cada producto tiene su ficha técnica disponible.<br><br>Ve al <a href="index.html#categorias" style="color:#C5A059">Catálogo</a>, selecciona la categoría y subcategoría que te interesa, y haz clic en <strong>"Ver Ficha Técnica"</strong>.`,
           venta: `📦 Vendemos por pieza, caja o metro cuadrado según el producto.<br><br>Usa la <strong>calculadora de materiales</strong> en cada categoría para saber cuánto necesitas, o solicita una <strong>cotización</strong> directamente desde cualquier producto.`,
-          precios: `💰 Los precios varían según el producto y la cantidad.<br><br>¿Te gustaría que un asesor te prepare una cotización personalizada?<br><a href="https://wa.me/526311928993?text=Hola%20ADIS,%20quiero%20una%20cotización" target="_blank" class="chat-whatsapp-btn">📱 Solicitar cotización</a>`,
+          precios: `💰 Los precios varían según el producto y la cantidad.<br><br>¿Te gustaría que un asesor te prepare una cotización personalizada?<br><a href="https://wa.me/15208392877?text=Hola%20ADIS,%20quiero%20una%20cotización" target="_blank" class="chat-whatsapp-btn">📱 Solicitar cotización</a>`,
           whatsapp: `💬 Te conecto con un asesor por WhatsApp...`
         };
         
@@ -65,7 +65,7 @@ old_chatbot = '''    // Chatbot
         
         if (key === 'whatsapp') {
           setTimeout(() => {
-            window.open('https://wa.me/526311928993?text=Hola%20ADIS,%20tengo%20una%20pregunta', '_blank');
+            window.open('https://wa.me/15208392877?text=Hola%20ADIS,%20tengo%20una%20pregunta', '_blank');
             addMessage('✅ Se abrió WhatsApp. Un asesor te atenderá pronto.', false);
             setTimeout(showOptions, 1000);
           }, 500);
@@ -99,7 +99,7 @@ new_chatbot = '''    // Chatbot Inteligente v2
           domingo: '9:00 a 15:00'
         },
         contacto: {
-          whatsapp: '+52 631-192-8993',
+          whatsapp: '+1 (520) 839-2877',
           tel_showroom: '+52 631-120-4943',
           email: 'adis.remodelacion@gmail.com',
           ubicacion: 'Nogales, Sonora y Rio Rico, AZ'
@@ -193,7 +193,7 @@ new_chatbot = '''    // Chatbot Inteligente v2
         
         // CONTACTO / WHATSAPP / TELEFONO
         if (q.includes('whatsapp') || q.includes('telefono') || q.includes('celular') || q.includes('numero') || q.includes('llamar') || q.includes('contacto') || q.includes('hablar')) {
-          return '📱 <strong>Contactos directos:</strong><br><br>• <strong>WhatsApp:</strong> ' + kb.contacto.whatsapp + '<br>• <strong>Showroom:</strong> ' + kb.contacto.tel_showroom + '<br>• <strong>Email:</strong> ' + kb.contacto.email + '<br><br><a href="https://wa.me/526311928993?text=Hola%20ADIS,%20tengo%20una%20pregunta" target="_blank" class="chat-whatsapp-btn">💬 Abrir WhatsApp</a>';
+          return '📱 <strong>Contactos directos:</strong><br><br>• <strong>WhatsApp:</strong> ' + kb.contacto.whatsapp + '<br>• <strong>Showroom:</strong> ' + kb.contacto.tel_showroom + '<br>• <strong>Email:</strong> ' + kb.contacto.email + '<br><br><a href="https://wa.me/15208392877?text=Hola%20ADIS,%20tengo%20una%20pregunta" target="_blank" class="chat-whatsapp-btn">💬 Abrir WhatsApp</a>';
         }
         
         // UBICACION
@@ -203,22 +203,22 @@ new_chatbot = '''    // Chatbot Inteligente v2
         
         // PRECIOS / COTIZACION
         if (q.includes('precio') || q.includes('cuesta') || q.includes('cuanto') || q.includes('valor') || q.includes('cotizacion') || q.includes('cotizar') || q.includes('presupuesto')) {
-          return '💰 <strong>Precios:</strong><br><br>Los precios varían según el producto, cantidad y zona de entrega. Vendemos por pieza, caja o metro cuadrado según la categoría.<br><br>✅ La mejor forma de saber el precio exacto es solicitando una <strong>cotización personalizada</strong>. Es gratis y te respondemos el mismo día.<br><br><a href="https://wa.me/526311928993?text=Hola%20ADIS,%20quiero%20una%20cotización" target="_blank" class="chat-whatsapp-btn">📱 Solicitar cotización gratis</a>';
+          return '💰 <strong>Precios:</strong><br><br>Los precios varían según el producto, cantidad y zona de entrega. Vendemos por pieza, caja o metro cuadrado según la categoría.<br><br>✅ La mejor forma de saber el precio exacto es solicitando una <strong>cotización personalizada</strong>. Es gratis y te respondemos el mismo día.<br><br><a href="https://wa.me/15208392877?text=Hola%20ADIS,%20quiero%20una%20cotización" target="_blank" class="chat-whatsapp-btn">📱 Solicitar cotización gratis</a>';
         }
         
         // ENVIO / ENTREGA
         if (q.includes('envio') || q.includes('entrega') || q.includes('mandan') || q.includes('envian') || q.includes('domicilio') || q.includes('llevan')) {
-          return '🚚 <strong>Envíos y entregas:</strong><br><br>Realizamos entregas a domicilio. El costo y tiempo depende de la zona y el volumen del pedido.<br><br>📦 Para cotizar el envío, envíanos tu dirección por WhatsApp con los productos que necesitas.<br><br><a href="https://wa.me/526311928993?text=Hola%20ADIS,%20quiero%20cotizar%20un%20envío" target="_blank" class="chat-whatsapp-btn">📱 Cotizar envío</a>';
+          return '🚚 <strong>Envíos y entregas:</strong><br><br>Realizamos entregas a domicilio. El costo y tiempo depende de la zona y el volumen del pedido.<br><br>📦 Para cotizar el envío, envíanos tu dirección por WhatsApp con los productos que necesitas.<br><br><a href="https://wa.me/15208392877?text=Hola%20ADIS,%20quiero%20cotizar%20un%20envío" target="_blank" class="chat-whatsapp-btn">📱 Cotizar envío</a>';
         }
         
         // INSTALACION
         if (q.includes('instalacion') || q.includes('instalan') || q.includes('colocan') || q.includes('ponen') || q.includes('colocacion')) {
-          return '🛠️ <strong>Servicio de instalación:</strong><br><br>Sí contamos con equipo de instalación profesional. El costo se cotiza aparte según el tipo de trabajo, metros cuadrados y ubicación.<br><br>✅ También vendemos materiales sueltos si prefieres instalar por tu cuenta.<br><br><a href="https://wa.me/526311928993?text=Hola%20ADIS,%20quiero%20cotizar%20instalación" target="_blank" class="chat-whatsapp-btn">📱 Cotizar instalación</a>';
+          return '🛠️ <strong>Servicio de instalación:</strong><br><br>Sí contamos con equipo de instalación profesional. El costo se cotiza aparte según el tipo de trabajo, metros cuadrados y ubicación.<br><br>✅ También vendemos materiales sueltos si prefieres instalar por tu cuenta.<br><br><a href="https://wa.me/15208392877?text=Hola%20ADIS,%20quiero%20cotizar%20instalación" target="_blank" class="chat-whatsapp-btn">📱 Cotizar instalación</a>';
         }
         
         // PAGO / FORMAS DE PAGO
         if (q.includes('pago') || q.includes('pagos') || q.includes('tarjeta') || q.includes('credito') || q.includes('efectivo') || q.includes('transferencia') || q.includes('meses')) {
-          return '💳 <strong>Formas de pago:</strong><br><br>• Efectivo 💵<br>• Transferencia bancaria 🏦<br>• Depósito 📥<br>• Tarjetas de crédito/débito 💳<br><br>Para pedidos grandes podemos manejar pagos a convenir. Escríbenos para más detalles.<br><br><a href="https://wa.me/526311928993?text=Hola%20ADIS,%20pregunto%20por%20formas%20de%20pago" target="_blank" class="chat-whatsapp-btn">📱 Preguntar por pagos</a>';
+          return '💳 <strong>Formas de pago:</strong><br><br>• Efectivo 💵<br>• Transferencia bancaria 🏦<br>• Depósito 📥<br>• Tarjetas de crédito/débito 💳<br><br>Para pedidos grandes podemos manejar pagos a convenir. Escríbenos para más detalles.<br><br><a href="https://wa.me/15208392877?text=Hola%20ADIS,%20pregunto%20por%20formas%20de%20pago" target="_blank" class="chat-whatsapp-btn">📱 Preguntar por pagos</a>';
         }
         
         // GARANTIA

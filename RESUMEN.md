@@ -88,7 +88,7 @@ G:\Mi unidad\ADIS DISEÑO\CATALOGO FINAL\  ← Catálogo de imágenes fuente
 
 | Canal | Valor |
 |-------|-------|
-| WhatsApp MX | +52 631-192-8993 |
+| WhatsApp MX | +1 (520) 839-2877 |
 | Teléfono USA | +1 (520) 839-2877 |
 | Email | adis.remodelacion@gmail.com |
 | Facebook | https://www.facebook.com/p/Adis-Dise%C3%B1o-Remodelaci%C3%B3n-61579849591594/ |

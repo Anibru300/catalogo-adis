@@ -667,7 +667,7 @@ html_parts.append('''  <footer id="contacto">
       <strong>ADI'S DISEÑO & REMODELACIÓN</strong><br>
       Creando espacios, reinventando hogares.<br>
       Nogales, Sonora · Rio Rico, AZ · Decosonora<br>
-      Tel. MX: +52 631-192-8993 · Tel. USA: +1 (520) 839-2877<br>
+      Tel. USA: +1 (520) 839-2877<br>
       adis.remodelacion@gmail.com
     </div>
     <div class="social-links">
