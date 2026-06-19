@@ -1,1 +1,4 @@
 ﻿desktop.ini
+__pycache__/
+backup_*.py
+backup_*.css

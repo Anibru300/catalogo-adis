@@ -336,12 +336,12 @@ def sync_images(categories):
     errors = []
     expected = set()
     for cat in categories:
-        cat_img_dir = img_dir / cat['slug']
+        cat_img_dir = img_dir / cat["slug"]
         cat_img_dir.mkdir(parents=True, exist_ok=True)
         
         # Copiar productos directos
-        for prod in cat['direct_products']:
-            src = cat['path'] / prod
+        for prod in cat["direct_products"]:
+            src = cat["path"] / prod
             dst = cat_img_dir / prod
             expected.add(dst.resolve())
             if not src.exists():
@@ -351,11 +351,11 @@ def sync_images(categories):
                 total += 1
         
         # Copiar productos de subcategorias
-        for sub in cat['subcategories']:
-            sub_img_dir = cat_img_dir / sub['slug']
+        for sub in cat["subcategories"]:
+            sub_img_dir = cat_img_dir / sub["slug"]
             sub_img_dir.mkdir(parents=True, exist_ok=True)
-            for prod in sub['products']:
-                src = sub['path'] / prod
+            for prod in sub["products"]:
+                src = sub["path"] / prod
                 dst = sub_img_dir / prod
                 expected.add(dst.resolve())
                 if not src.exists():
@@ -429,8 +429,8 @@ def scan_catalog():
         thumb = None
         if subcategories:
             for sub in subcategories:
-                if sub['products']:
-                    thumb = sub['path'] / sub['products'][0]
+                if sub["products"]:
+                    thumb = sub["path"] / sub["products"][0]
                     break
         if not thumb and direct_products:
             thumb = cat_path / direct_products[0]
@@ -458,7 +458,7 @@ def mailto_link(product_name, category_name, subcategory_name=None):
     if subcategory_name:
         body += f"Subcategoria: {subcategory_name}%0D%0A"
     body += f"%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias."
-    return f"mailto:{CONTACTO['email']}?subject={subject}&body={body}"
+    return f'mailto:{CONTACTO["email"]}?subject={subject}&body={body}'
 
 
 # ========== CSS COMPLETO ==========
@@ -472,6 +472,7 @@ body {
   color: var(--light);
   overflow-x: hidden;
   line-height: 1.6;
+  padding-bottom: 90px;
 }
 ::-webkit-scrollbar { width: 8px; }
 ::-webkit-scrollbar-track { background: var(--dark); }
@@ -551,6 +552,73 @@ nav.desktop-nav a:hover::after { width: 100%; }
   70% { box-shadow: 0 0 0 15px rgba(37,211,102,0); }
   100% { box-shadow: 0 0 0 0 rgba(37,211,102,0); }
 }
+.wa-tooltip {
+  position: absolute; right: 72px; top: 50%; transform: translateY(-50%) translateX(10px);
+  background: var(--black); color: var(--white); padding: 0.5rem 0.9rem; border-radius: 8px;
+  font-size: 0.78rem; font-weight: 600; white-space: nowrap; opacity: 0; visibility: hidden;
+  transition: all 0.3s ease; border: 1px solid rgba(197,160,89,0.25); box-shadow: 0 4px 15px rgba(0,0,0,0.25);
+}
+.wa-tooltip::after {
+  content: ''; position: absolute; right: -6px; top: 50%; transform: translateY(-50%);
+  border-width: 6px 0 6px 6px; border-style: solid; border-color: transparent transparent transparent var(--black);
+}
+.whatsapp-float:hover .wa-tooltip { opacity: 1; visibility: visible; transform: translateY(-50%) translateX(0); }
+
+/* MODAL COTIZAR POR WHATSAPP */
+.wa-modal {
+  position: fixed; inset: 0; z-index: 10000; background: rgba(15,15,15,0.92);
+  display: flex; align-items: center; justify-content: center; padding: 1rem;
+  opacity: 0; visibility: hidden; transition: all 0.3s ease; backdrop-filter: blur(6px);
+}
+.wa-modal.active { opacity: 1; visibility: visible; }
+.wa-modal-box {
+  background: linear-gradient(145deg, rgba(26,26,26,0.98) 0%, rgba(15,15,15,0.98) 100%);
+  border: 1px solid rgba(197,160,89,0.2); border-radius: 18px; width: 100%; max-width: 460px;
+  padding: 1.8rem; position: relative; box-shadow: 0 25px 70px rgba(0,0,0,0.6);
+  transform: translateY(20px) scale(0.97); transition: all 0.3s ease;
+}
+.wa-modal.active .wa-modal-box { transform: translateY(0) scale(1); }
+.wa-modal-close {
+  position: absolute; top: 0.8rem; right: 0.9rem; background: transparent; border: none;
+  color: rgba(245,245,245,0.5); font-size: 1.3rem; cursor: pointer; transition: color 0.2s;
+}
+.wa-modal-close:hover { color: var(--gold); }
+.wa-modal-title { font-family: 'Playfair Display', serif; font-size: 1.5rem; color: var(--gold-light); margin-bottom: 0.4rem; text-align: center; }
+.wa-modal-subtitle { color: rgba(245,245,245,0.6); font-size: 0.85rem; text-align: center; margin-bottom: 1.4rem; }
+.wa-modal-field { margin-bottom: 0.9rem; }
+.wa-modal-field label { display: block; font-size: 0.75rem; font-weight: 600; color: rgba(245,245,245,0.7); margin-bottom: 0.3rem; text-transform: uppercase; letter-spacing: 0.5px; }
+.wa-modal-field input, .wa-modal-field select, .wa-modal-field textarea {
+  width: 100%; background: rgba(255,255,255,0.05); border: 1px solid rgba(197,160,89,0.2);
+  border-radius: 10px; padding: 0.7rem 0.9rem; color: var(--white); font-family: 'Montserrat', sans-serif;
+  font-size: 0.9rem; transition: all 0.2s;
+}
+.wa-modal-field input:focus, .wa-modal-field select:focus, .wa-modal-field textarea:focus {
+  outline: none; border-color: var(--gold); background: rgba(255,255,255,0.08); box-shadow: 0 0 0 3px rgba(197,160,89,0.1);
+}
+.wa-modal-field textarea { min-height: 80px; resize: vertical; }
+.wa-modal-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0.9rem; }
+.wa-modal-product { background: rgba(197,160,89,0.1); border: 1px dashed rgba(197,160,89,0.3); border-radius: 10px; padding: 0.7rem 0.9rem; color: var(--gold-light); font-size: 0.85rem; font-weight: 600; margin-bottom: 0.9rem; text-align: center; }
+.wa-modal-submit {
+  width: 100%; background: #25D366; color: white; border: none; border-radius: 12px;
+  padding: 0.95rem; font-size: 1rem; font-weight: 700; cursor: pointer; transition: all 0.25s ease;
+  display: flex; align-items: center; justify-content: center; gap: 0.5rem;
+}
+.wa-modal-submit:hover { background: #1ebe57; transform: translateY(-2px); box-shadow: 0 8px 25px rgba(37,211,102,0.35); }
+
+/* STICKY CTA BAR */
+.sticky-cta-bar {
+  position: fixed; bottom: 0; left: 0; right: 0; z-index: 9998;
+  display: grid; grid-template-columns: 1fr auto; gap: 0.6rem;
+  padding: 0.7rem 1rem; background: rgba(15,15,15,0.96);
+  border-top: 1px solid rgba(197,160,89,0.2); box-shadow: 0 -6px 30px rgba(0,0,0,0.35);
+  transform: translateY(100%); transition: transform 0.35s ease;
+}
+.sticky-cta-bar.visible { transform: translateY(0); }
+.sticky-cta-bar a { display: flex; align-items: center; justify-content: center; gap: 0.5rem; padding: 0.75rem 1rem; border-radius: 10px; text-decoration: none; font-weight: 700; font-size: 0.85rem; transition: all 0.25s ease; }
+.sticky-cta-wa { background: #25D366; color: white; }
+.sticky-cta-wa:hover { background: #1ebe57; transform: translateY(-2px); }
+.sticky-cta-pdf { background: rgba(197,160,89,0.15); color: var(--gold-light); border: 1px solid rgba(197,160,89,0.3); }
+.sticky-cta-pdf:hover { background: rgba(197,160,89,0.25); }
 
 /* SECCIONES GENERALES */
 .section-wrap {
@@ -1528,6 +1596,15 @@ footer {
   margin-bottom: 1.5rem;
   background: rgba(15,15,15,0.5);
 }
+.hero-cat-actions {
+  display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-top: 1.8rem;
+}
+.hero-cat-actions .btn-primary { padding: 0.9rem 2rem; font-size: 0.9rem; }
+.hero-star-badge {
+  display: inline-block; padding: 0.35rem 1rem; background: var(--gold); color: var(--black);
+  font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;
+  border-radius: 20px; margin-bottom: 1rem;
+}
 
 /* SUBCATEGORIA MEJORADA */
 .subcat-section {
@@ -1863,11 +1940,19 @@ footer {
   .info-grid { grid-template-columns: 1fr; }
   .header-inner { padding: 0.8rem 1rem; }
   .whatsapp-float { width: 50px; height: 50px; font-size: 1.5rem; }
+  .wa-tooltip { display: none; }
   .chatbot-float { width: 50px; height: 50px; font-size: 1.5rem; }
   .chatbot-window { width: calc(100vw - 40px); left: 20px; }
   .stat-number { font-size: 2rem; }
   .hero-cat-bg { min-height: 45vh; }
+  .hero-cat-actions { flex-direction: column; gap: 0.8rem; }
+  .hero-cat-actions .btn-primary { width: 100%; }
   .product-gallery { height: 300px; }
+  .wa-modal-box { margin: 1rem; padding: 1.4rem; }
+  .wa-modal-row { grid-template-columns: 1fr; }
+  .sticky-cta-bar { grid-template-columns: 1fr auto; padding: 0.6rem 0.8rem; }
+  .sticky-cta-bar a { padding: 0.65rem 0.7rem; font-size: 0.78rem; }
+  body { padding-bottom: 80px; }
 }
 
 /* PRODUCTO DESTACADO - PVC MARMOL */
@@ -1998,6 +2083,15 @@ footer {
 @media (max-width: 600px) { .download-complete { width: 100%; justify-content: center; padding: 1.1rem 1.5rem; font-size: 1rem; } .download-grid { grid-template-columns: 1fr; gap: 1rem; } .download-card { padding: 1rem 1.2rem; } .download-card .icon { font-size: 2rem; } }
 '''
 
+
+def generate_style():
+    """Escribe el CSS completo en style.css."""
+    css_path = BASE_DIR / 'style.css'
+    with open(css_path, 'w', encoding='utf-8') as f:
+        f.write(CSS.strip())
+    print(f"  style.css generado ({len(CSS):,} caracteres)")
+
+
 # ========== PARTICLES JS ==========
 PARTICLES_JS = '''(function() {
   const canvas = document.getElementById('bg-canvas');
@@ -2059,10 +2153,147 @@ PARTICLES_JS = '''(function() {
 })();'''
 
 
-def generate_style():
-    with open(BASE_DIR / 'style.css', 'w', encoding='utf-8') as f:
-        f.write(CSS.strip())
-    print("✅ style.css generado")
+# ========== WHATSAPP & COTIZACIÓN HELPERS ==========
+
+def whatsapp_url(phone, message):
+    """Construye URL de WhatsApp con mensaje prellenado y seguro."""
+    import urllib.parse
+    return 'https://wa.me/' + phone + '?text=' + urllib.parse.quote(message, safe='')
+
+
+def build_whatsapp_message(product, category, subcategory=None, nombre='', ciudad='', metros='', uso='', comentario=''):
+    """Construye mensaje enriquecido para cotización por WhatsApp."""
+    lines = ['Hola ADIS, soy ' + (nombre or 'un cliente interesado') + '. Me interesa cotizar:']
+    lines.append('Producto: ' + product)
+    lines.append('Categoría: ' + category)
+    if subcategory:
+        lines.append('Subcategoría: ' + subcategory)
+    if ciudad:
+        lines.append('Ubicación de la obra: ' + ciudad)
+    if metros:
+        lines.append('Metros cuadrados aproximados: ' + metros)
+    if uso:
+        lines.append('Uso: ' + uso)
+    if comentario:
+        lines.append('Comentario: ' + comentario)
+    lines.append('Favor de contactarme para más detalles. ¡Gracias!')
+    return '\n'.join(lines)
+
+
+def modal_cotizar_html():
+    """Modal único de cotización por WhatsApp. Se inyecta una vez por página."""
+    return '''
+  <!-- MODAL COTIZAR WHATSAPP -->
+  <div class="wa-modal" id="waModal" onclick="closeWaModal(event)">
+    <div class="wa-modal-box" onclick="event.stopPropagation()">
+      <button class="wa-modal-close" onclick="closeWaModal()">&#10005;</button>
+      <h3>Cotizar por WhatsApp</h3>
+      <p class="wa-modal-subtitle">Completa tus datos y te responderemos con información y asesoría.</p>
+      <form id="waModalForm" onsubmit="sendWaModal(event)">
+        <input type="hidden" id="waModalProduct" value="">
+        <input type="hidden" id="waModalCategory" value="">
+        <input type="hidden" id="waModalSubcategory" value="">
+        <div class="wa-modal-field">
+          <label for="waModalNombre">Nombre *</label>
+          <input type="text" id="waModalNombre" placeholder="Tu nombre" required>
+        </div>
+        <div class="wa-modal-field">
+          <label for="waModalCiudad">Ciudad / Ubicación de la obra *</label>
+          <input type="text" id="waModalCiudad" placeholder="Ej. Nogales, Sonora" required>
+        </div>
+        <div class="wa-modal-row">
+          <div class="wa-modal-field">
+            <label for="waModalMetros">m2 aproximados</label>
+            <input type="number" id="waModalMetros" placeholder="Ej. 25" min="1" step="0.1">
+          </div>
+          <div class="wa-modal-field">
+            <label for="waModalUso">Uso</label>
+            <select id="waModalUso">
+              <option value="Residencial">Residencial</option>
+              <option value="Comercial">Comercial</option>
+              <option value="Otro">Otro</option>
+            </select>
+          </div>
+        </div>
+        <div class="wa-modal-field">
+          <label for="waModalComentario">Comentario (opcional)</label>
+          <textarea id="waModalComentario" rows="3" placeholder="¿Alguna duda o requerimiento especial?"></textarea>
+        </div>
+        <div class="wa-modal-product" id="waModalProductLabel"></div>
+        <button type="submit" class="wa-modal-submit">Enviar a WhatsApp</button>
+      </form>
+    </div>
+  </div>
+  <script>
+    function openWaModal(product, category, subcategory) {
+      document.getElementById('waModalProduct').value = product || '';
+      document.getElementById('waModalCategory').value = category || '';
+      document.getElementById('waModalSubcategory').value = subcategory || '';
+      document.getElementById('waModalProductLabel').textContent = product + (subcategory ? ' - ' + subcategory : '');
+      document.getElementById('waModal').classList.add('active');
+      setTimeout(function() { document.getElementById('waModalNombre').focus(); }, 100);
+    }
+    function closeWaModal(e) {
+      if (e && e.target !== e.currentTarget) return;
+      document.getElementById('waModal').classList.remove('active');
+    }
+    function sendWaModal(e) {
+      e.preventDefault();
+      var phone = '15208392877';
+      var product = document.getElementById('waModalProduct').value;
+      var category = document.getElementById('waModalCategory').value;
+      var subcategory = document.getElementById('waModalSubcategory').value;
+      var nombre = document.getElementById('waModalNombre').value.trim();
+      var ciudad = document.getElementById('waModalCiudad').value.trim();
+      var metros = document.getElementById('waModalMetros').value.trim();
+      var uso = document.getElementById('waModalUso').value;
+      var comentario = document.getElementById('waModalComentario').value.trim();
+      var msg = `Hola ADIS, soy ${nombre || 'un cliente interesado'}. Me interesa cotizar:
+Producto: ${product}
+Categoria: ${category}`;
+      if (subcategory) msg += `\nSubcategoria: ${subcategory}`;
+      if (ciudad) msg += `\nUbicacion de la obra: ${ciudad}`;
+      if (metros) msg += `\nMetros cuadrados aproximados: ${metros}`;
+      msg += `\nUso: ${uso}`;
+      if (comentario) msg += `\nComentario: ${comentario}`;
+      msg += `\nFavor de contactarme para mas detalles. ¡Gracias!`;
+      window.open('https://wa.me/' + phone + '?text=' + encodeURIComponent(msg), '_blank');
+      closeWaModal();
+      e.target.reset();
+    }
+  </script>
+'''
+
+
+def product_card_html(prod_file, cat, sub=None):
+    """Genera tarjeta de producto con CTA unificado a WhatsApp via modal."""
+    prod_name = os.path.splitext(prod_file)[0]
+    img_path = "img/{cat_slug}/{sub_slug}/{prod_file}".format(
+        cat_slug=cat["slug"],
+        sub_slug=sub["slug"] if sub else "",
+        prod_file=prod_file
+    ) if sub else "img/{cat_slug}/{prod_file}".format(cat_slug=cat["slug"], prod_file=prod_file)
+    sub_name = sub["name"] if sub else None
+    sub_arg = "'" + sub_name + "'" if sub_name else "null"
+    cat_name = cat["name"]
+    return '''      <div class="product-card reveal" data-name="{prod_name_lower}" data-category="{cat_name}">
+        <div class="product-gallery" onclick="openLightbox('{img_path}', '{prod_name}')">
+          <img src="{img_path}" alt="{prod_name}" loading="lazy">
+        </div>
+        <div class="product-info">
+          <div class="product-name">{prod_name}</div>
+          <div class="product-actions">
+            <button type="button" class="btn-cotizar" onclick="openWaModal('{prod_name}', '{cat_name}', {sub_arg})">Cotizar por WhatsApp</button>
+          </div>
+        </div>
+      </div>
+'''.format(
+        prod_name=prod_name,
+        prod_name_lower=prod_name.lower(),
+        cat_name=cat_name,
+        img_path=img_path,
+        sub_arg=sub_arg
+    )
 
 
 def generate_header(current_page='index'):
@@ -2085,7 +2316,7 @@ def generate_header(current_page='index'):
         ('sabias-que-pvc.html', '🔬', 'Placas PVC'),
         ('sabias-que-wpc.html', '🌲', 'Lambrín WPC'),
         ('sabias-que-revestimiento.html', '🪨', 'Revestimiento Flexible'),
-        ('sabias-que-plafon.html', '🏠', 'Plafón PVC'),
+        ('sabias-que-plafon.html', '&#127968;', 'Plafón PVC'),
         ('sabias-que-3d.html', '🎨', 'Paneles 3D'),
         ('sabias-que-vigas.html', '📐', 'Vigas PVC/WPC/PU'),
         ('sabias-que-pisos.html', '🏗️', 'Pisos'),
@@ -2105,16 +2336,16 @@ def generate_header(current_page='index'):
         {nav_links}
         <div class="search-box">
           <input type="text" id="searchInput" placeholder="Buscar producto..." autocomplete="off" title="Presiona / para buscar">
-          <button onclick="openSpotlight()">🔍</button>
+          <button onclick="openSpotlight()">&#128269;</button>
           <div class="search-dropdown" id="searchDropdown"></div>
         </div>
       </nav>
-      <button class="menu-btn" onclick="toggleMenu()">☰</button>
+      <button class="menu-btn" onclick="toggleMenu()">&#9776;</button>
     </div>
   </header>
 
   <div class="mobile-menu" id="mobileMenu">
-    <button class="close-menu" onclick="toggleMenu()">✕</button>
+    <button class="close-menu" onclick="toggleMenu()">&#10005;</button>
     <a href="index.html" onclick="toggleMenu()">Inicio</a>
     <a href="index.html#categorias" onclick="toggleMenu()">Catálogo</a>
     <a href="sabias-que.html" onclick="toggleMenu()">¿Sabías que?</a>
@@ -2122,17 +2353,17 @@ def generate_header(current_page='index'):
     <a href="contacto.html" onclick="toggleMenu()">Contacto</a>
     <div class="search-box" style="margin-top:1rem;">
       <input type="text" id="searchInputMobile" placeholder="Buscar producto..." autocomplete="off" style="width:220px;">
-      <button onclick="performSearchMobile()">🔍</button>
+      <button onclick="performSearchMobile()">&#128269;</button>
       <div class="search-dropdown" id="searchDropdownMobile"></div>
     </div>
   </div>
   
   <!-- SPOTLIGHT OVERLAY -->
   <div class="spotlight-overlay" id="spotlightOverlay" onclick="closeSpotlight(event)">
-    <button class="spotlight-close" onclick="closeSpotlight(event)">✕</button>
+    <button class="spotlight-close" onclick="closeSpotlight(event)">&#10005;</button>
     <div class="spotlight-box">
       <div class="spotlight-input-wrap">
-        <span class="spotlight-icon">🔍</span>
+        <span class="spotlight-icon">&#128269;</span>
         <input type="text" class="spotlight-input" id="spotlightInput" placeholder="Buscar productos, categorías..." autocomplete="off">
       </div>
       <div class="spotlight-results" id="spotlightResults"></div>
@@ -2358,7 +2589,7 @@ def generate_footer():
         const labels = {
           medidas: '📐 Medidas', agua: '💧 Resistencia al agua', exterior: '🌤️ Uso exterior/interior',
           material: '🧱 Material', instalacion: '🛠️ Instalación', colores: '🎨 Colores',
-          precio: '💰 Precio', mantenimiento: '🧼 Mantenimiento', usos: '🏠 Usos recomendados',
+          precio: '💰 Precio', mantenimiento: '🧼 Mantenimiento', usos: '&#127968; Usos recomendados',
           garantia: '✅ Garantía', comparar: '⚖️ Diferencias'
         };
         return '<strong>' + labels[questionType] + ' — ' + kb.name + ':</strong><br><br>' + val;
@@ -2827,13 +3058,13 @@ def generate_footer():
             suggestions = ['Ver productos', 'Horarios', 'Cotización', 'Ubicación', '¿Tienen envío?'];
             break;
           case 'horario':
-            r = '🕐 <strong>Horarios de atención (Showroom):</strong><br><br>• <strong>Lunes:</strong> ' + kb.horarios.lunes + '<br>• <strong>Martes:</strong> ' + kb.horarios.martes + '<br>• <strong>Miércoles:</strong> ' + kb.horarios.miercoles + '<br>• <strong>Jueves:</strong> ' + kb.horarios.jueves + '<br>• <strong>Viernes:</strong> ' + kb.horarios.viernes + '<br>• <strong>Sábado:</strong> ' + kb.horarios.sabado + '<br>• <strong>Domingo:</strong> ' + kb.horarios.domingo + '<br><br>💬 ' + kb.horarios.whatsapp;
+            r = '🕐 <strong>Horarios de atención (Showroom):</strong><br><br>• <strong>Lunes:</strong> ' + kb.horarios.lunes + '<br>• <strong>Martes:</strong> ' + kb.horarios.martes + '<br>• <strong>Miércoles:</strong> ' + kb.horarios.miercoles + '<br>• <strong>Jueves:</strong> ' + kb.horarios.jueves + '<br>• <strong>Viernes:</strong> ' + kb.horarios.viernes + '<br>• <strong>Sábado:</strong> ' + kb.horarios.sabado + '<br>• <strong>Domingo:</strong> ' + kb.horarios.domingo + '<br><br>&#128172; ' + kb.horarios.whatsapp;
             break;
           case 'contacto':
-            r = '📱 <strong>Contactos directos:</strong><br><br>• <strong>WhatsApp:</strong> ' + kb.contacto.whatsapp + '<br>• <strong>Showroom:</strong> ' + kb.contacto.tel_showroom + '<br>• <strong>Email:</strong> ' + kb.contacto.email + '<br><br><a href="https://wa.me/15208392877?text=Hola%20ADIS,%20tengo%20una%20pregunta" target="_blank" class="chat-whatsapp-btn">💬 Abrir WhatsApp</a>';
+            r = '📱 <strong>Contactos directos:</strong><br><br>• <strong>WhatsApp:</strong> ' + kb.contacto.whatsapp + '<br>• <strong>Showroom:</strong> ' + kb.contacto.tel_showroom + '<br>• <strong>Email:</strong> ' + kb.contacto.email + '<br><br><a href="https://wa.me/15208392877?text=Hola%20ADIS,%20tengo%20una%20pregunta" target="_blank" class="chat-whatsapp-btn">&#128172; Abrir WhatsApp</a>';
             break;
           case 'ubicacion':
-            r = '📍 <strong>ADIS Diseño & Remodelación</strong><br><br>🏠 <strong>Dirección:</strong><br>' + kb.contacto.direccion + '<br><br>📱 <strong>WhatsApp:</strong> ' + kb.contacto.whatsapp + '<br>☎️ <strong>Showroom:</strong> ' + kb.contacto.tel_showroom + '<br>✉️ <strong>Email:</strong> ' + kb.contacto.email + '<br><br>🕐 Horario showroom: Martes a domingo (lunes cerrado)<br>📍 También atendemos en <strong>Rio Rico, AZ</strong><br><br><a href="https://maps.app.goo.gl/Q3raWUzhCj2rvhjm8" target="_blank" style="color:#C5A059">🗺️ Ver en Google Maps →</a>';
+            r = '📍 <strong>ADIS Diseño & Remodelación</strong><br><br>&#127968; <strong>Dirección:</strong><br>' + kb.contacto.direccion + '<br><br>📱 <strong>WhatsApp:</strong> ' + kb.contacto.whatsapp + '<br>☎️ <strong>Showroom:</strong> ' + kb.contacto.tel_showroom + '<br>✉️ <strong>Email:</strong> ' + kb.contacto.email + '<br><br>🕐 Horario showroom: Martes a domingo (lunes cerrado)<br>📍 También atendemos en <strong>Rio Rico, AZ</strong><br><br><a href="https://maps.app.goo.gl/Q3raWUzhCj2rvhjm8" target="_blank" style="color:#C5A059">🗺️ Ver en Google Maps →</a>';
             break;
           case 'precio':
             r = '💰 <strong>Precios y cotizaciones:</strong><br><br>• ' + kb.precios.iva + '<br>• ' + kb.precios.mayorista + '<br>• Los precios son <strong>solo por el material</strong> (por pieza, caja o metro cuadrado según categoría)<br><br>📋 <strong>Cotización detallada:</strong> ' + kb.cotizacion.tiempo + '<br>📦 <strong>Incluye:</strong> ' + kb.cotizacion.incluye + '<br>⏱️ <strong>Sin stock:</strong> ' + kb.cotizacion.sin_stock + '<br><br>🔨 ¿Requieres instalación? Un representante visita tu obra para cotizarla aparte.<br><br><a href="https://wa.me/15208392877?text=Hola%20ADIS,%20quiero%20una%20cotización" target="_blank" class="chat-whatsapp-btn">📱 Solicitar cotización gratis</a>';
@@ -2853,19 +3084,19 @@ def generate_footer():
             r = '✅ <strong>Garantía:</strong><br><br>🛡️ ' + kb.garantia.validacion + '<br><br>• Placas PVC: ' + kb.garantia.pvc + '<br>• Lambrín WPC: ' + kb.garantia.wpc + '<br>• Pisos SPC: ' + kb.garantia.spc + '<br>• Zacate sintético: ' + kb.garantia.zacate + '<br><br>La garantía cubre defectos de fábrica. Conserva tu ticket de compra.';
             break;
           case 'producto':
-            r = '📦 <strong>Nuestros productos (250 productos en 9 categorías):</strong><br><br>• <strong>Placas PVC</strong> — 34 productos<br>• <strong>Lambrín WPC</strong> — 40 productos<br>• <strong>Paneles 3D</strong> — 24 productos<br>• <strong>Pisos</strong> — 78 productos<br>• <strong>Plafón PVC</strong> — 15 productos<br>• <strong>Vigas PVC/WPC</strong> — 15 productos<br>• <strong>Zacate sintético</strong> — 29 productos<br>• <strong>Cladding</strong> — 11 productos<br>• <strong>Revestimiento Flexible</strong> — 6 productos<br><br>🏠 Atendemos: ' + kb.proyectos.tipos + '<br><br>💡 Escribe el nombre de un producto o categoría para saber más.';
+            r = '📦 <strong>Nuestros productos (250 productos en 9 categorías):</strong><br><br>• <strong>Placas PVC</strong> — 34 productos<br>• <strong>Lambrín WPC</strong> — 40 productos<br>• <strong>Paneles 3D</strong> — 24 productos<br>• <strong>Pisos</strong> — 78 productos<br>• <strong>Plafón PVC</strong> — 15 productos<br>• <strong>Vigas PVC/WPC</strong> — 15 productos<br>• <strong>Zacate sintético</strong> — 29 productos<br>• <strong>Cladding</strong> — 11 productos<br>• <strong>Revestimiento Flexible</strong> — 6 productos<br><br>&#127968; Atendemos: ' + kb.proyectos.tipos + '<br><br>💡 Escribe el nombre de un producto o categoría para saber más.';
             break;
           case 'mantenimiento':
             r = '🧼 <strong>Mantenimiento y limpieza:</strong><br><br>• <strong>Limpieza regular:</strong> Paño suave humedecido con agua tibia y jabón neutro (pH 7)<br>• <strong>Manchas difíciles:</strong> Alcohol isopropílico al 70% o limpiador multiusos suave<br>• <strong>Evitar:</strong> Acetona, thinner, solventes fuertes, estropajos metálicos y amoníaco concentrado<br>• <strong>Frecuencia:</strong> Residencial = mensual | Comercial = semanal<br>• <strong>Inspección anual:</strong> Revisar juntas de dilatación y selladores<br><br>💡 Los productos PVC y WPC no requieren barnizado ni sellado. Solo limpieza básica.<br><br><a href="https://wa.me/15208392877?text=Hola%20ADIS,%20pregunto%20por%20mantenimiento" target="_blank" class="chat-whatsapp-btn">📱 Preguntar por mantenimiento</a>';
             break;
           case 'proyecto':
-            r = '🏠 <strong>Atendemos todo tipo de proyectos:</strong><br><br>' + kb.proyectos.tipos + '<br><br>Desde una pared de acento en casa hasta remodelaciones completas de locales comerciales. Cada proyecto es único y tenemos el material perfecto para ti.<br><br>💡 <strong>Consejo:</strong> Si no estás seguro de qué material elegir, contame:<br>• ¿Es interior o exterior?<br>• ¿Hay humedad o contacto con agua?<br>• ¿Qué estética buscas? (madera, mármol, moderno, rústico)<br><br><a href="https://wa.me/15208392877?text=Hola%20ADIS,%20tengo%20un%20proyecto%20de" target="_blank" class="chat-whatsapp-btn">📱 Contar mi proyecto</a>';
+            r = '&#127968; <strong>Atendemos todo tipo de proyectos:</strong><br><br>' + kb.proyectos.tipos + '<br><br>Desde una pared de acento en casa hasta remodelaciones completas de locales comerciales. Cada proyecto es único y tenemos el material perfecto para ti.<br><br>💡 <strong>Consejo:</strong> Si no estás seguro de qué material elegir, contame:<br>• ¿Es interior o exterior?<br>• ¿Hay humedad o contacto con agua?<br>• ¿Qué estética buscas? (madera, mármol, moderno, rústico)<br><br><a href="https://wa.me/15208392877?text=Hola%20ADIS,%20tengo%20un%20proyecto%20de" target="_blank" class="chat-whatsapp-btn">📱 Contar mi proyecto</a>';
             break;
           case 'agradecimiento':
             r = '¡Con mucho gusto! 😊🙌 Estoy aquí para lo que necesites. Si tienes más dudas, escríbenos por WhatsApp al <strong>' + kb.contacto.whatsapp + '</strong> o visítanos en el showroom. ¡Que tengas un excelente día!';
             break;
           case 'despedida':
-            r = '¡Hasta luego! 👋 Gracias por contactar a ADIS Diseño & Remodelación. Recuerda que puedes volver cuando quieras o escribirnos al WhatsApp. ¡Éxito con tu proyecto! 🏠✨';
+            r = '¡Hasta luego! 👋 Gracias por contactar a ADIS Diseño & Remodelación. Recuerda que puedes volver cuando quieras o escribirnos al WhatsApp. ¡Éxito con tu proyecto! &#127968;✨';
             break;
           case 'negacion':
             r = 'Perfecto, ¿en qué más puedo ayudarte? Puedo:<br>• Mostrarte productos 📦<br>• Darte precios 💰<br>• Contarte horarios 🕐<br>• Explicarte envíos 📍<br>• Ayudarte con una cotización 📝';
@@ -2878,9 +3109,9 @@ def generate_footer():
             r = handleSpecs(category, q);
             break;
           case 'definicion':
-            if (q.includes('pvc')) r = '📘 <strong>¿Qué es PVC?</strong><br><br>' + kb.definiciones.pvc + '<br><br>En ADIS lo usamos para placas decorativas, plafones y vigas con acabados que imitan madera, espejo y texturas.';
+            if (q.includes('pvc')) r = '&#128220; <strong>¿Qué es PVC?</strong><br><br>' + kb.definiciones.pvc + '<br><br>En ADIS lo usamos para placas decorativas, plafones y vigas con acabados que imitan madera, espejo y texturas.';
             else if (q.includes('wpc')) r = '📗 <strong>¿Qué es WPC?</strong><br><br>' + kb.definiciones.wpc + '<br><br>En ADIS lo usamos para lambrín de interior y exterior, pisos y revestimientos que lucen como madera real pero duran más.';
-            else r = '📘 Puedo explicarte qué es <strong>PVC</strong>, <strong>WPC</strong>, <strong>SPC</strong>, <strong>laminado</strong> o <strong>cladding</strong>. ¿Cuál te interesa?';
+            else r = '&#128220; Puedo explicarte qué es <strong>PVC</strong>, <strong>WPC</strong>, <strong>SPC</strong>, <strong>laminado</strong> o <strong>cladding</strong>. ¿Cuál te interesa?';
             break;
           case 'resistencia':
             if (category) {
@@ -2895,9 +3126,9 @@ def generate_footer():
             break;
           case 'usos':
             if (category) {
-              r = '🏠 <strong>Usos recomendados — ' + category.labels.short + ':</strong><br><br>' + handleSpecs(category, q);
+              r = '&#127968; <strong>Usos recomendados — ' + category.labels.short + ':</strong><br><br>' + handleSpecs(category, q);
             } else {
-              r = '🏠 <strong>Usos por material:</strong><br><br>• <strong>Placas PVC:</strong> Muros interiores (baños, cocinas, salas, recepciones)<br>• <strong>Lambrín WPC:</strong> Muros interior y exterior, fachadas<br>• <strong>Pisos SPC/WPC:</strong> Interiores residenciales y comerciales<br>• <strong>Plafón PVC:</strong> Techos y cielos falsos<br>• <strong>Paneles 3D:</strong> Muros de acento, fondos de TV<br>• <strong>Vigas:</strong> Decoración de techos y pérgolas<br>• <strong>Zacate:</strong> Jardines, terrazas, balcones<br>• <strong>Cladding:</strong> Fachadas, muros exteriores<br><br>💡 Dime para qué espacio lo necesitas y te recomiendo el mejor material.';
+              r = '&#127968; <strong>Usos por material:</strong><br><br>• <strong>Placas PVC:</strong> Muros interiores (baños, cocinas, salas, recepciones)<br>• <strong>Lambrín WPC:</strong> Muros interior y exterior, fachadas<br>• <strong>Pisos SPC/WPC:</strong> Interiores residenciales y comerciales<br>• <strong>Plafón PVC:</strong> Techos y cielos falsos<br>• <strong>Paneles 3D:</strong> Muros de acento, fondos de TV<br>• <strong>Vigas:</strong> Decoración de techos y pérgolas<br>• <strong>Zacate:</strong> Jardines, terrazas, balcones<br>• <strong>Cladding:</strong> Fachadas, muros exteriores<br><br>💡 Dime para qué espacio lo necesitas y te recomiendo el mejor material.';
             }
             break;
           default:
@@ -3041,7 +3272,7 @@ def generate_footer():
         // === 9. Mármol específico (solo si no hay producto activo o si el usuario lo menciona explícitamente) ===
         if (!activeProduct && (normalized.includes('marmol') || normalized.includes('marble'))) {
           return { 
-            text: '🏛️ <strong>Hoja de PVC tipo Mármol</strong><br><br>Es una solución decorativa perfecta para cualquier espacio interior. Añade un toque de elegancia a tu hogar, oficina o espacio comercial.<br><br>✨ <strong>Características:</strong><br>• Fabricada con PVC rígido de alta calidad<br>• Dimensiones: 2440 x 1220 x 5 mm (2.977 m² por pieza)<br>• Duradera y ligera, fácil de instalar y mantener<br>• 100% resistente al agua, manchas y arañazos<br>• No requiere sellado ni barnizado<br>• Garantía: 15 años<br><br>🏠 <strong>Aplicaciones:</strong> Cocinas, baños, salas de estar, recepciones, muros de acento y más.<br><br>🎨 <strong>Diseños disponibles:</strong> Carrara, Carrara Oscuro, Aurora Dorada, Onix, Cuarzo, Opalo, Perla, Topacio, Grafito, Jaspe, Agata, Arena, Obsidiana y más.<br><br>💡 <strong>Consejo:</strong> Para instalación en espejos se requiere perfil de aluminio obligatoriamente.',
+            text: '🏛️ <strong>Hoja de PVC tipo Mármol</strong><br><br>Es una solución decorativa perfecta para cualquier espacio interior. Añade un toque de elegancia a tu hogar, oficina o espacio comercial.<br><br>✨ <strong>Características:</strong><br>• Fabricada con PVC rígido de alta calidad<br>• Dimensiones: 2440 x 1220 x 5 mm (2.977 m² por pieza)<br>• Duradera y ligera, fácil de instalar y mantener<br>• 100% resistente al agua, manchas y arañazos<br>• No requiere sellado ni barnizado<br>• Garantía: 15 años<br><br>&#127968; <strong>Aplicaciones:</strong> Cocinas, baños, salas de estar, recepciones, muros de acento y más.<br><br>🎨 <strong>Diseños disponibles:</strong> Carrara, Carrara Oscuro, Aurora Dorada, Onix, Cuarzo, Opalo, Perla, Topacio, Grafito, Jaspe, Agata, Arena, Obsidiana y más.<br><br>💡 <strong>Consejo:</strong> Para instalación en espejos se requiere perfil de aluminio obligatoriamente.',
             suggestions: ['Ver Placas PVC', 'Cotizar mármol PVC', 'Medidas', 'Hablar con asesor']
           };
         }
@@ -3270,7 +3501,7 @@ def generate_footer():
           },
           {
             words: ['fachada','exterior','sol','lluvia','uv','exterior casa','pared exterior'],
-            text: '🏠 <strong>Para exteriores y fachadas te recomendamos:</strong><br><br>• <strong>Lambrín WPC exterior</strong> — No se deforma con la humedad ni el sol.<br>• <strong>Cladding</strong> — Imitación de piedra real, pesa 8-12 veces menos.<br>• <strong>Zacate sintético</strong> — Para jardines, verde todo el año sin mantenimiento.<br><br>💡 Estos materiales están diseñados para resistir intemperie.',
+            text: '&#127968; <strong>Para exteriores y fachadas te recomendamos:</strong><br><br>• <strong>Lambrín WPC exterior</strong> — No se deforma con la humedad ni el sol.<br>• <strong>Cladding</strong> — Imitación de piedra real, pesa 8-12 veces menos.<br>• <strong>Zacate sintético</strong> — Para jardines, verde todo el año sin mantenimiento.<br><br>💡 Estos materiales están diseñados para resistir intemperie.',
             suggestions: ['Ver Lambrín WPC exterior', 'Ver Cladding', 'Ver Zacate', 'Cotizar fachada']
           },
           {
@@ -3436,47 +3667,68 @@ def generate_footer():
           researchData = {};
         });
     })();
+
+    // Sticky CTA bar visibility on scroll
+    (function() {
+      var bar = document.querySelector(".sticky-cta-bar");
+      if (!bar) return;
+      var shown = false;
+      window.addEventListener("scroll", function() {
+        if (window.scrollY > 400 && !shown) {
+          bar.classList.add("visible");
+          shown = true;
+        } else if (window.scrollY <= 200 && shown) {
+          bar.classList.remove("visible");
+          shown = false;
+        }
+      }, { passive: true });
+    })();
+
   </script>
 '''
-    return f'''  <footer>
+    return f"""  <footer>
     <div class="footer-logo"><img src="LOGO ADIS.png" alt="ADIS Logo"></div>
     <div class="footer-info">
-      <strong>ADI'S DISEÑO & REMODELACIÓN</strong><br>
+      <strong>ADI&#39;S DISEÑO & REMODELACIÓN</strong><br>
       Creando espacios, reinventando hogares.<br>
       {CONTACTO['ubicacion']}<br>
       Tel. MX: {CONTACTO['tel_mx']} · Tel. USA: {CONTACTO['tel_usa']}<br>
       {CONTACTO['email']}
     </div>
     <div class="footer-social">
-      <a href="https://wa.me/{CONTACTO['whatsapp']}?text={CONTACTO['whatsapp_msg'].replace(' ', '%20')}" target="_blank" title="WhatsApp">💬</a>
-      <a href="{CONTACTO['facebook']}" target="_blank" title="Facebook">📘</a>
+      <a href="https://wa.me/{CONTACTO['whatsapp']}?text={CONTACTO["whatsapp_msg"].replace(' ', '%20')}" target="_blank" title="WhatsApp">&#128172;</a>
+      <a href="{CONTACTO['facebook']}" target="_blank" title="Facebook">&#128220;</a>
     </div>
     <div class="copyright">© 2026 ADIS DISEÑO & REMODELACIÓN. TODOS LOS DERECHOS RESERVADOS.</div>
   </footer>
 
   <!-- MOBILE BOTTOM NAV -->
   <nav class="mobile-bottom-nav">
-    <a href="index.html"><span>🏠</span><span>Inicio</span></a>
-    <a href="index.html#categorias"><span>📂</span><span>Catálogo</span></a>
-    <a href="proyectos.html"><span>🖼️</span><span>Proyectos</span></a>
-    <a href="contacto.html"><span>📞</span><span>Contacto</span></a>
+    <a href="index.html"><span>&#127968;</span><span>Inicio</span></a>
+    <a href="index.html#categorias"><span>&#128194;</span><span>Catálogo</span></a>
+    <a href="proyectos.html"><span>&#128444;</span><span>Proyectos</span></a>
+    <a href="contacto.html"><span>&#128222;</span><span>Contacto</span></a>
   </nav>
 
-  <a href="https://wa.me/{CONTACTO['whatsapp']}?text={CONTACTO['whatsapp_msg'].replace(' ', '%20')}" class="whatsapp-float" target="_blank" title="Contáctanos por WhatsApp"><svg viewBox="0 0 24 24" width="32" height="32" fill="white" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.008-.57-.008-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg></a>
+  <a href="https://wa.me/{CONTACTO['whatsapp']}?text={CONTACTO["whatsapp_msg"].replace(' ', '%20')}" class="whatsapp-float" target="_blank" title="Contáctanos por WhatsApp" aria-label="WhatsApp">
+    <svg viewBox="0 0 24 24" width="32" height="32" fill="white" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.008-.57-.008-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+    <span class="wa-tooltip">¿Dudas? Escribenos</span>
+  </a>
 
-  <button class="chatbot-float" onclick="toggleChat()" title="Asistente Virtual">🤖<span class="chatbot-badge" id="chatBadge">0</span></button>
+  <button class="chatbot-float" onclick="toggleChat()" title="Asistente Virtual">&#129302;<span class="chatbot-badge" id="chatBadge">0</span></button>
   <div class="chatbot-window" id="chatbotWindow">
     <div class="chatbot-header">
-      <h4>🤖 Asistente ADIS</h4>
+      <h4>&#129302; Asistente ADIS</h4>
       <div class="chat-header-actions">
-        <button class="chat-clear" onclick="clearAllChat()" title="Nueva conversación">🗑️</button>
-        <button class="chatbot-close" onclick="toggleChat()">✕</button>
+        <button class="chat-clear" onclick="clearAllChat()" title="Nueva conversación">&#128465;</button>
+        <button class="chatbot-close" onclick="toggleChat()">&#10005;</button>
       </div>
     </div>
     <div class="chatbot-body" id="chatbotBody"></div>
   </div>
 
-{chatbot_js}'''
+
+{chatbot_js}"""
 
 
 def generate_index(categories):
@@ -3490,43 +3742,43 @@ def generate_index(categories):
     cat_cards = ''
     
     for cat in categories:
-        total_prods = len(cat['direct_products'])
-        for sub in cat['subcategories']:
-            total_prods += len(sub['products'])
+        total_prods = len(cat["direct_products"])
+        for sub in cat["subcategories"]:
+            total_prods += len(sub["products"])
 
         thumb_src = ''
-        if cat['subcategories'] and cat['subcategories'][0]['products']:
-            thumb_src = f"img/{cat['slug']}/{cat['subcategories'][0]['slug']}/{cat['subcategories'][0]['products'][0]}"
-        elif cat['direct_products']:
-            thumb_src = f"img/{cat['slug']}/{cat['direct_products'][0]}"
+        if cat["subcategories"] and cat["subcategories"][0]["products"]:
+            thumb_src = f'img/{cat["slug"]}/{cat["subcategories"][0]["slug"]}/{cat["subcategories"][0]["products"][0]}'
+        elif cat["direct_products"]:
+            thumb_src = f'img/{cat["slug"]}/{cat["direct_products"][0]}'
         
-        is_star = cat['name'] in STAR_CATEGORIES
+        is_star = cat["name"] in STAR_CATEGORIES
         
         if is_star:
             desc = ''
-            if cat['name'] == 'Lambrin WPC':
+            if cat["name"] == 'Lambrin WPC':
                 desc = 'Wood Plastic Composite de alta gama. Resistente a la humedad, rayos UV y perfecto para interiores y exteriores. Nuestro producto más solicitado.'
-            elif cat['name'] == 'Placas PVC':
+            elif cat["name"] == 'Placas PVC':
                 desc = 'Paneles rígidos tipo madera, texturizados y espejo. Acabado profesional con instalación rápida y garantía extendida.'
             
-            featured_cards += f'''      <a href="{cat['filename']}" class="featured-card reveal">
-        <img src="{thumb_src}" alt="{cat['name']}" loading="lazy">
+            featured_cards += f'''      <a href="{cat["filename"]}" class="featured-card reveal">
+        <img src="{thumb_src}" alt="{cat["name"]}" loading="lazy">
         <div class="featured-card-overlay">
-          <div class="star-label">⭐ Producto Estrella</div>
-          <h3>{cat['name']}</h3>
+          <div class="star-label">&#11088; Producto Estrella</div>
+          <h3>{cat["name"]}</h3>
           <p>{desc}</p>
         </div>
       </a>
 '''
         
-        star_badge = '<div class="star-badge">⭐ Estrella</div>' if is_star else ''
+        star_badge = '<div class="star-badge">&#11088; Estrella</div>' if is_star else ''
         featured_class = ' featured' if is_star else ''
         
-        cat_cards += f'''      <a href="{cat['filename']}" class="cat-card reveal{featured_class}">
-        {star_badge}<img src="{thumb_src}" alt="{cat['name']}" loading="lazy">
+        cat_cards += f'''      <a href="{cat["filename"]}" class="cat-card reveal{featured_class}">
+        {star_badge}<img src="{thumb_src}" alt="{cat["name"]}" loading="lazy">
         <div class="cat-card-overlay">
           <div class="cat-arrow">→</div>
-          <h3>{cat['name']}</h3>
+          <h3>{cat["name"]}</h3>
           <span>{total_prods} productos</span>
         </div>
       </a>
@@ -3559,7 +3811,7 @@ def generate_index(categories):
         'Placas PVC': '🪵',
         'Lambrin WPC': '🌲',
         'Revestimiento Flexible': '🪨',
-        'Plafon PVC': '🏠',
+        'Plafon PVC': '&#127968;',
         'Paneles tridimensionales': '🎨',
         'Vigas PVC': '📐',
         'Pisos': '🏗️',
@@ -3570,21 +3822,24 @@ def generate_index(categories):
     # Tarjetas de descarga por categoría
     downloads_html = ''
     for cat in categories:
-        cat_slug_pdf = cat['name'].lower().replace(' ', '-').replace('ñ','n').replace('á','a').replace('é','e').replace('í','i').replace('ó','o').replace('ú','u')
+        cat_slug_pdf = cat["name"].lower().replace(' ', '-').replace('ñ','n').replace('á','a').replace('é','e').replace('í','i').replace('ó','o').replace('ú','u')
         pdf_name = f'catalogo_{cat_slug_pdf}.pdf'
-        total_prods = len(cat['direct_products'])
-        for sub in cat['subcategories']:
-            total_prods += len(sub['products'])
-        icon = CAT_ICONS.get(cat['name'], '📄')
+        total_prods = len(cat["direct_products"])
+        for sub in cat["subcategories"]:
+            total_prods += len(sub["products"])
+        icon = CAT_ICONS.get(cat["name"], '📄')
         downloads_html += f'''      <a href="catalogos/pdf/{pdf_name}" class="download-card" download>
         <span class="icon">{icon}</span>
         <div class="info">
-          <h4>{cat['name']}</h4>
+          <h4>{cat["name"]}</h4>
           <span>{total_prods} productos · PDF</span>
         </div>
         <span class="arrow">⬇</span>
       </a>
 '''
+
+    wa_sticky_url = whatsapp_url(CONTACTO["whatsapp"], "Hola ADIS, estoy viendo el catalogo y tengo dudas. Me pueden asesorar?")
+    pdf_url = "catalogos/pdf/catalogo_premium.pdf"
 
     html = f'''<!DOCTYPE html>
 <html lang="es">
@@ -3607,7 +3862,7 @@ def generate_index(categories):
 <body>
   <canvas id="bg-canvas"></canvas>
 
-{generate_header('index')}
+{generate_header("index")}
 
   <!-- INICIO -->
   <section class="hero-home" id="inicio">
@@ -3619,7 +3874,7 @@ def generate_index(categories):
       <a href="#categorias" class="btn-primary">Explorar Catálogo</a>
       <div class="search-hero">
         <div class="search-hero-title">🔎 Busca entre 250 productos</div>
-        <span class="search-hero-icon">🔍</span>
+        <span class="search-hero-icon">&#128269;</span>
         <input type="text" class="search-hero-input" id="searchHeroInput" placeholder="Escribe el nombre de un producto, color o material..." autocomplete="off" onfocus="openSpotlight()">
         <div class="search-hero-hint">Presiona <kbd style="background:rgba(255,255,255,0.1);padding:2px 8px;border-radius:4px;font-family:inherit;">/</kbd> para buscar desde cualquier página</div>
       </div>
@@ -3662,7 +3917,7 @@ def generate_index(categories):
   <!-- PRODUCTOS ESTRELLA -->
   <section class="featured-section reveal" id="estrellas">
     <div class="section-header">
-      <h2>⭐ Productos Estrella</h2>
+      <h2>&#11088; Productos Estrella</h2>
       <div class="divider"></div>
       <p>Los favoritos de nuestros clientes. Calidad premium que transforma cualquier espacio.</p>
     </div>
@@ -3724,6 +3979,18 @@ def generate_index(categories):
   </section>
 
 {generate_testimonios()}
+
+  <!-- STICKY CTA BAR -->
+  <div class="sticky-cta-bar">
+    <a href="{wa_sticky_url}" class="sticky-cta-wa" target="_blank">
+      <span>&#128172;</span> ¿Dudas? Escribenos por WhatsApp
+    </a>
+    <a href="{pdf_url}" class="sticky-cta-pdf" download>
+      <span>&#128229;</span> PDF
+    </a>
+  </div>
+
+{modal_cotizar_html()}
 {generate_footer()}
 </body>
 </html>
@@ -3752,7 +4019,7 @@ def generate_contacto():
 {ga_script()}\n</head>
 <body>
   <canvas id="bg-canvas"></canvas>
-{generate_header('contacto')}
+{generate_header("contacto")}
 
   <section class="hero-cat" style="padding-top: 8rem;">
     <h1>Contacto</h1>
@@ -3768,27 +4035,27 @@ def generate_contacto():
       <div class="contact-card">
         <div class="icon">📱</div>
         <h3>WhatsApp MX</h3>
-        <a href="https://wa.me/{CONTACTO['whatsapp']}" target="_blank">{CONTACTO['tel_mx']}</a>
+        <a href="https://wa.me/{CONTACTO["whatsapp"]}" target="_blank">{CONTACTO["tel_mx"]}</a>
       </div>
       <div class="contact-card">
-        <div class="icon">📞</div>
+        <div class="icon">&#128222;</div>
         <h3>Teléfono USA</h3>
-        <a href="tel:+15208392877">{CONTACTO['tel_usa']}</a>
+        <a href="tel:+15208392877">{CONTACTO["tel_usa"]}</a>
       </div>
       <div class="contact-card">
         <div class="icon">✉️</div>
         <h3>Correo</h3>
-        <a href="mailto:{CONTACTO['email']}">{CONTACTO['email']}</a>
+        <a href="mailto:{CONTACTO["email"]}">{CONTACTO["email"]}</a>
       </div>
       <div class="contact-card">
         <div class="icon">📍</div>
         <h3>Ubicación</h3>
-        <p>{CONTACTO['ubicacion']}</p>
+        <p>{CONTACTO["ubicacion"]}</p>
       </div>
       <div class="contact-card">
-        <div class="icon">📘</div>
+        <div class="icon">&#128220;</div>
         <h3>Facebook</h3>
-        <a href="{CONTACTO['facebook']}" target="_blank">Visitar página</a>
+        <a href="{CONTACTO["facebook"]}" target="_blank">Visitar página</a>
       </div>
     </div>
     <div style="text-align: center; margin-top: 3rem; max-width: 900px; margin: 3rem auto 0;">
@@ -3816,7 +4083,7 @@ def generate_category_page(cat, categories):
     import unicodedata
 
     # Prev / Next navegación entre categorías
-    cat_index = [i for i, c in enumerate(categories) if c['slug'] == cat['slug']][0]
+    cat_index = [i for i, c in enumerate(categories) if c["slug"] == cat["slug"]][0]
     prev_cat = categories[cat_index - 1] if cat_index > 0 else None
     next_cat = categories[cat_index + 1] if cat_index < len(categories) - 1 else None
     
@@ -3831,28 +4098,28 @@ def generate_category_page(cat, categories):
 
     # Breadcrumbs
     breadcrumbs_html = f'''  <div class="breadcrumbs">
-    <a href="index.html">Inicio</a> <span>/</span> <a href="index.html#categorias">Catálogo</a> <span>/</span> <span style="color:var(--gold);">{cat['name']}</span>
+    <a href="index.html">Inicio</a> <span>/</span> <a href="index.html#categorias">Catálogo</a> <span>/</span> <span style="color:var(--gold);">{cat["name"]}</span>
   </div>
 '''
 
     # Seleccionar imagen de fondo representativa para el hero
     hero_bg = ''
-    if cat['subcategories'] and cat['subcategories'][0]['products']:
-        hero_bg = f"img/{cat['slug']}/{cat['subcategories'][0]['slug']}/{cat['subcategories'][0]['products'][0]}"
-    elif cat['direct_products']:
-        hero_bg = f"img/{cat['slug']}/{cat['direct_products'][0]}"
+    if cat["subcategories"] and cat["subcategories"][0]["products"]:
+        hero_bg = f'img/{cat["slug"]}/{cat["subcategories"][0]["slug"]}/{cat["subcategories"][0]["products"][0]}'
+    elif cat["direct_products"]:
+        hero_bg = f'img/{cat["slug"]}/{cat["direct_products"][0]}'
 
     # Reordenar subcategorías: Placas PVC debe tener tipo espejo primero
-    subs = list(cat['subcategories'])
-    if cat['name'] == 'Placas PVC':
-        subs.sort(key=lambda s: 0 if 'espejo' in s['name'].lower() else 1)
+    subs = list(cat["subcategories"])
+    if cat["name"] == 'Placas PVC':
+        subs.sort(key=lambda s: 0 if 'espejo' in s["name"].lower() else 1)
 
     # Índice de subcategorías
     subcat_nav_links = ''
     for sub in subs:
-        if sub['products']:
-            sub_slug = sub['slug']
-            sub_name = sub['name']
+        if sub["products"]:
+            sub_slug = sub["slug"]
+            sub_name = sub["name"]
             subcat_nav_links += f'<a href="#{sub_slug}">{sub_name}</a>' + '\n    '
     subcat_nav_html = f'''  <div class="subcat-nav">
     {subcat_nav_links}</div>
@@ -3874,12 +4141,12 @@ def generate_category_page(cat, categories):
     
     # Para Placas PVC: productos directos PRIMERO (son los más vendidos - tipo espejo)
     accessories_html = ''
-    if cat['name'] == 'Placas PVC' and cat['direct_products']:
+    if cat["name"] == 'Placas PVC' and cat["direct_products"]:
         direct_products_html = ''
         acc_names = {'perfil', 'angulo'}
         main_products = []
         acc_products = []
-        for prod_file in cat['direct_products']:
+        for prod_file in cat["direct_products"]:
             stem = os.path.splitext(prod_file)[0].lower().replace(' ', '')
             if any(stem.startswith(a) for a in acc_names):
                 acc_products.append(prod_file)
@@ -3889,45 +4156,17 @@ def generate_category_page(cat, categories):
         for prod_file in main_products:
             if is_dup(prod_file):
                 continue
-            prod_name = os.path.splitext(prod_file)[0]
-            mailto = mailto_link(prod_name, cat['name'])
-            direct_products_html += f'''      <div class="product-card reveal">
-        <div class="product-gallery" onclick="openLightbox('img/{cat['slug']}/{prod_file}', '{prod_name}')">
-          <img src="img/{cat['slug']}/{prod_file}" alt="{prod_name}" loading="lazy">
-        </div>
-        <div class="product-info">
-          <div class="product-name">{prod_name}</div>
-          <div class="product-actions">
-            <a href="{mailto}" class="btn-cotizar">Solicitar Cotización</a>
-            <a href="https://wa.me/15208392877?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20{prod_name.replace(' ', '%20')}%20de%20la%20categoría%20{cat['name'].replace(' ', '%20')}" class="btn-whatsapp" target="_blank">WhatsApp</a>
-          </div>
-        </div>
-      </div>
-'''
+            direct_products_html += product_card_html(prod_file, cat)
         
         for prod_file in acc_products:
             if is_dup(prod_file):
                 continue
-            prod_name = os.path.splitext(prod_file)[0]
-            mailto = mailto_link(prod_name, cat['name'])
-            accessories_html += f'''      <div class="product-card reveal">
-        <div class="product-gallery" onclick="openLightbox('img/{cat['slug']}/{prod_file}', '{prod_name}')">
-          <img src="img/{cat['slug']}/{prod_file}" alt="{prod_name}" loading="lazy">
-        </div>
-        <div class="product-info">
-          <div class="product-name">{prod_name}</div>
-          <div class="product-actions">
-            <a href="{mailto}" class="btn-cotizar">Solicitar Cotización</a>
-            <a href="https://wa.me/15208392877?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20{prod_name.replace(' ', '%20')}%20de%20la%20categoría%20{cat['name'].replace(' ', '%20')}" class="btn-whatsapp" target="_blank">WhatsApp</a>
-          </div>
-        </div>
-      </div>
-'''
+            accessories_html += product_card_html(prod_file, cat)
         
         cat_specs = generate_specs_table('Placas PVC Tipo espejo')
         sections_html += f'''  <section class="subcat-section reveal">
     <div class="subcat-header">
-      <h3>⭐ Más Vendidos — Placas PVC Tipo Espejo</h3>
+      <h3>&#11088; Más Vendidos — Placas PVC Tipo Espejo</h3>
       <span class="subcat-count">{len(main_products)} productos</span>
       <div class="subcat-divider"></div>
     </div>
@@ -3938,35 +4177,21 @@ def generate_category_page(cat, categories):
 
     # Construir secciones de subcategorías
     for sub in subs:
-        if not sub['products']:
+        if not sub["products"]:
             continue
 
-        specs_html = generate_specs_table(sub['name'])
+        specs_html = generate_specs_table(sub["name"])
 
         products_html = ''
-        for prod_file in sub['products']:
+        for prod_file in sub["products"]:
             if is_dup(prod_file):
                 continue
-            prod_name = os.path.splitext(prod_file)[0]
-            mailto = mailto_link(prod_name, cat['name'], sub['name'])
-            products_html += f'''      <div class="product-card reveal">
-        <div class="product-gallery" onclick="openLightbox('img/{cat['slug']}/{sub['slug']}/{prod_file}', '{prod_name}')">
-          <img src="img/{cat['slug']}/{sub['slug']}/{prod_file}" alt="{prod_name}" loading="lazy">
-        </div>
-        <div class="product-info">
-          <div class="product-name">{prod_name}</div>
-          <div class="product-actions">
-            <a href="{mailto}" class="btn-cotizar">Solicitar Cotización</a>
-            <a href="https://wa.me/15208392877?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20{prod_name.replace(' ', '%20')}%20de%20la%20categoría%20{cat['name'].replace(' ', '%20')}%20/%20subcategoría%20{sub['name'].replace(' ', '%20')}" class="btn-whatsapp" target="_blank">WhatsApp</a>
-          </div>
-        </div>
-      </div>
-'''
+            products_html += product_card_html(prod_file, cat, sub)
 
-        sections_html += f'''  <section class="subcat-section reveal" id="{sub['slug']}">
+        sections_html += f'''  <section class="subcat-section reveal" id="{sub["slug"]}">
     <div class="subcat-header">
-      <h3>{sub['name']}</h3>
-      <span class="subcat-count">{len(sub['products'])} productos</span>
+      <h3>{sub["name"]}</h3>
+      <span class="subcat-count">{len(sub["products"])} productos</span>
       <div class="subcat-divider"></div>
     </div>
 {specs_html}    <div class="products-grid">
@@ -3975,7 +4200,7 @@ def generate_category_page(cat, categories):
 '''
 
     # Sección de accesorios para Placas PVC (al final del catálogo)
-    if cat['name'] == 'Placas PVC' and accessories_html:
+    if cat["name"] == 'Placas PVC' and accessories_html:
         acc_count = accessories_html.strip().count('product-card reveal')
         acc_specs = generate_specs_table('Accesorios placas PVC')
         sections_html += f'''  <section class="subcat-section reveal" id="accesorios">
@@ -3990,26 +4215,12 @@ def generate_category_page(cat, categories):
 '''
 
     # Productos directos para otras categorías (no Placas PVC que ya se mostró arriba)
-    if cat['name'] != 'Placas PVC' and cat['direct_products']:
+    if cat["name"] != 'Placas PVC' and cat["direct_products"]:
         direct_products_html = ''
-        for prod_file in cat['direct_products']:
+        for prod_file in cat["direct_products"]:
             if is_dup(prod_file):
                 continue
-            prod_name = os.path.splitext(prod_file)[0]
-            mailto = mailto_link(prod_name, cat['name'])
-            direct_products_html += f'''      <div class="product-card reveal">
-        <div class="product-gallery" onclick="openLightbox('img/{cat['slug']}/{prod_file}', '{prod_name}')">
-          <img src="img/{cat['slug']}/{prod_file}" alt="{prod_name}" loading="lazy">
-        </div>
-        <div class="product-info">
-          <div class="product-name">{prod_name}</div>
-          <div class="product-actions">
-            <a href="{mailto}" class="btn-cotizar">Solicitar Cotización</a>
-            <a href="https://wa.me/15208392877?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20{prod_name.replace(' ', '%20')}%20de%20la%20categoría%20{cat['name'].replace(' ', '%20')}" class="btn-whatsapp" target="_blank">WhatsApp</a>
-          </div>
-        </div>
-      </div>
-'''
+            direct_products_html += product_card_html(prod_file, cat)
 
         # Clave de specs para productos directos según categoría
         direct_specs_map = {
@@ -4017,13 +4228,13 @@ def generate_category_page(cat, categories):
             '4-plafon-pvc': 'Plafon PVC directos',
             '9-cladding': 'Cladding',
         }
-        direct_specs_key = direct_specs_map.get(cat['slug'])
+        direct_specs_key = direct_specs_map.get(cat["slug"])
         direct_specs = generate_specs_table(direct_specs_key) if direct_specs_key else ''
 
         sections_html += f'''  <section class="subcat-section reveal">
     <div class="subcat-header">
-      <h3>Productos {cat['name']}</h3>
-      <span class="subcat-count">{len(cat['direct_products'])} productos</span>
+      <h3>Productos {cat["name"]}</h3>
+      <span class="subcat-count">{len(cat["direct_products"])} productos</span>
       <div class="subcat-divider"></div>
     </div>
 {direct_specs}    <div class="products-grid">
@@ -4033,7 +4244,7 @@ def generate_category_page(cat, categories):
 
     # Galería de hojas reales (solo para Placas PVC)
     real_sheets_html = ''
-    if cat['name'] == 'Placas PVC':
+    if cat["name"] == 'Placas PVC':
         media_dir = BASE_DIR / 'media'
         try:
             real_imgs = sorted([f for f in os.listdir(media_dir) if f.startswith('pvc-real-') and f.lower().endswith(('.jpg', '.jpeg'))])
@@ -4058,31 +4269,39 @@ def generate_category_page(cat, categories):
   </section>
 '''
 
+    wa_hero_url = whatsapp_url(CONTACTO["whatsapp"], "Hola ADIS, vi el catalogo de " + cat["name"] + " y quiero asesoria para elegir el mejor producto para mi proyecto.")
+    wa_sticky_url = whatsapp_url(CONTACTO["whatsapp"], "Hola ADIS, estoy viendo " + cat["name"] + " en el catalogo y tengo dudas. Me pueden asesorar?")
+    pdf_url = "catalogos/pdf/catalogo_" + cat["slug"] + ".pdf"
+
     html = f'''<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
   <link rel="icon" type="image/png" href="LOGO ADIS.png">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{cat['name']} | ADIS Catálogo</title>
-  <meta name="description" content="{cat['name']} - ADIS Diseño & Remodelación. Explora nuestros productos y solicita tu cotización.">
-  <meta property="og:title" content="{cat['name']} | ADIS Catálogo">
-  <meta property="og:description" content="{cat['name']} - ADIS Diseño & Remodelación. Explora nuestros productos y solicita tu cotización.">
+  <title>{cat["name"]} | ADIS Catálogo</title>
+  <meta name="description" content="{cat["name"]} - ADIS Diseño & Remodelación. Explora nuestros productos y solicita tu cotización.">
+  <meta property="og:title" content="{cat["name"]} | ADIS Catálogo">
+  <meta property="og:description" content="{cat["name"]} - ADIS Diseño & Remodelación. Explora nuestros productos y solicita tu cotización.">
   <meta property="og:image" content="{hero_bg}">
-  <meta property="og:url" content="{SITE_URL}{cat['filename']}">
+  <meta property="og:url" content="{SITE_URL}{cat["filename"]}">
   <meta property="og:type" content="website">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 {ga_script()}\n</head>
 <body>
   <canvas id="bg-canvas"></canvas>
-{generate_header(cat['slug'])}
+{generate_header(cat["slug"])}
 {breadcrumbs_html}
   <section class="hero-cat-bg" style="background-image: url('{hero_bg}');">
     <div class="hero-cat-content">
-      {'<div class="hero-star-badge">⭐ Producto Estrella</div>' if cat['name'] in ("Lambrin WPC", "Placas PVC") else '<div class="hero-cat-badge">Categoría</div>'}
-      <h1>{cat['name']}</h1>
-      <p>Explora nuestra línea de {cat['name'].lower()} con {cat['total_products']} productos disponibles. Solicita tu cotización.</p>
+      {'<div class="hero-star-badge">&#11088; Producto Estrella</div>' if cat["name"] in ("Lambrin WPC", "Placas PVC") else '<div class="hero-cat-badge">Categoría</div>'}
+      <h1>{cat["name"]}</h1>
+      <p>Explora nuestra línea de {cat["name"].lower()} con {cat["total_products"]} productos disponibles. Solicita tu cotización.</p>
+      <div class="hero-cat-actions">
+        <a href="{wa_hero_url}" class="btn-primary" target="_blank">Asesoria por WhatsApp</a>
+        <a href="{pdf_url}" class="btn-outline" download>Descargar catalogo PDF</a>
+      </div>
     </div>
   </section>
 
@@ -4097,14 +4316,15 @@ def generate_category_page(cat, categories):
   </section>
 
 {generate_testimonios()}
+{modal_cotizar_html()}
 {generate_footer()}
 </body>
 </html>
 '''
-    filepath = BASE_DIR / cat['filename']
+    filepath = BASE_DIR / cat["filename"]
     with open(filepath, 'w', encoding='utf-8') as f:
         f.write(html)
-    print(f"{cat['filename']} generado")
+    print(f'{cat["filename"]} generado')
 
 
 def sync_media():
@@ -4442,7 +4662,7 @@ def generate_testimonios():
           <div style="width: 40px; height: 40px; border-radius: 50%; background: var(--gold); display: flex; align-items: center; justify-content: center; color: var(--black); font-weight: 700; font-size: 0.9rem;">MG</div>
           <div>
             <div style="font-size: 0.85rem; color: var(--white); font-weight: 600;">María G.</div>
-            <div style="font-size: 0.75rem; color: var(--gold);">⭐⭐⭐⭐⭐ — Placas PVC, Nogales</div>
+            <div style="font-size: 0.75rem; color: var(--gold);">&#11088;&#11088;&#11088;&#11088;&#11088; — Placas PVC, Nogales</div>
           </div>
         </div>
       </div>
@@ -4453,7 +4673,7 @@ def generate_testimonios():
           <div style="width: 40px; height: 40px; border-radius: 50%; background: var(--gold); display: flex; align-items: center; justify-content: center; color: var(--black); font-weight: 700; font-size: 0.9rem;">CR</div>
           <div>
             <div style="font-size: 0.85rem; color: var(--white); font-weight: 600;">Dr. Carlos R.</div>
-            <div style="font-size: 0.75rem; color: var(--gold);">⭐⭐⭐⭐⭐ — Lambrín WPC, Rio Rico</div>
+            <div style="font-size: 0.75rem; color: var(--gold);">&#11088;&#11088;&#11088;&#11088;&#11088; — Lambrín WPC, Rio Rico</div>
           </div>
         </div>
       </div>
@@ -4464,7 +4684,7 @@ def generate_testimonios():
           <div style="width: 40px; height: 40px; border-radius: 50%; background: var(--gold); display: flex; align-items: center; justify-content: center; color: var(--black); font-weight: 700; font-size: 0.9rem;">FL</div>
           <div>
             <div style="font-size: 0.85rem; color: var(--white); font-weight: 600;">Familia López</div>
-            <div style="font-size: 0.75rem; color: var(--gold);">⭐⭐⭐⭐⭐ — Pisos SPC, Nogales</div>
+            <div style="font-size: 0.75rem; color: var(--gold);">&#11088;&#11088;&#11088;&#11088;&#11088; — Pisos SPC, Nogales</div>
           </div>
         </div>
       </div>
@@ -4480,12 +4700,12 @@ def generate_testimonios():
         <input type="text" id="tProducto" placeholder="Producto o categoría que compraste (opcional)"
           style="padding: 0.9rem 1.2rem; background: rgba(42,42,42,0.8); border: 1px solid rgba(197,160,89,0.3); border-radius: 8px; color: var(--white); font-family: 'Montserrat', sans-serif; font-size: 0.9rem; backdrop-filter: blur(8px); transition: all 0.3s;"
           onfocus="this.style.borderColor='var(--gold)';this.style.boxShadow='0 0 15px rgba(197,160,89,0.15)'" onblur="this.style.borderColor='rgba(197,160,89,0.3)';this.style.boxShadow='none'">
-        <button type="submit" class="btn-primary" style="align-self: center; margin-top: 0.5rem;">📩 Enviar Testimonio</button>
+        <button type="submit" class="btn-primary" style="align-self: center; margin-top: 0.5rem;">&#128233; Enviar Testimonio</button>
       </form>
       <div style="text-align: center; margin-top: 1.2rem; font-size: 0.8rem; color: rgba(245,245,245,0.5); line-height: 1.6;">
         Los testimonios son revisados antes de publicarse.<br>
         También puedes enviarlos directamente por 
-        <a href="https://wa.me/15208392877?text=Hola%20ADIS,%20quiero%20dejar%20un%20testimonio" target="_blank" style="color: var(--gold); text-decoration: none; font-weight: 600;">WhatsApp 💬</a>
+        <a href="https://wa.me/15208392877?text=Hola%20ADIS,%20quiero%20dejar%20un%20testimonio" target="_blank" style="color: var(--gold); text-decoration: none; font-weight: 600;">WhatsApp &#128172;</a>
       </div>
     </div>
   </section>
@@ -4540,7 +4760,7 @@ def _extract_curiosos_cards(text):
             continue
         desc = re.sub(r'\*\*(.+?)\*\*', r'<strong>\1</strong>', desc)
         item_count += 1
-        icons = ['🔬', '🌍', '🔥', '🖨️', '⚖️', '🧪', '🌲', '🌧️', '🏠', '📐', '🪨', '🎨']
+        icons = ['🔬', '🌍', '🔥', '🖨️', '⚖️', '🧪', '🌲', '🌧️', '&#127968;', '📐', '🪨', '🎨']
         icon = icons[(item_count-1) % len(icons)]
         if len(desc) > 130:
             desc_trunc = desc[:127] + '...'
@@ -4689,7 +4909,7 @@ def generate_sabias_que():
 {ga_script()}\n</head>
 <body>
   <canvas id="bg-canvas"></canvas>
-{generate_header('sabias-que')}
+{generate_header("sabias-que")}
 
   <section class="sq-hero">
     <h1>¿Sabías que?</h1>
@@ -4770,7 +4990,7 @@ function sqToggle(el) {{
 {ga_script()}\n</head>
 <body>
   <canvas id="bg-canvas"></canvas>
-{generate_header('sabias-que')}
+{generate_header("sabias-que")}
 
   <section class="sq-hero">
     <h1>¿Sabías que?</h1>
@@ -4945,7 +5165,7 @@ def generate_proyectos():
 {ga_script()}\n</head>
 <body>
   <canvas id="bg-canvas"></canvas>
-{generate_header('proyectos')}
+{generate_header("proyectos")}
 
   <section class="hero-cat">
     <h1>Proyectos Reales</h1>
@@ -5018,10 +5238,10 @@ def main():
 
     # Calcular totales por categoria
     for cat in categories:
-        total = len(cat['direct_products'])
-        for sub in cat['subcategories']:
-            total += len(sub['products'])
-        cat['total_products'] = total
+        total = len(cat["direct_products"])
+        for sub in cat["subcategories"]:
+            total += len(sub["products"])
+        cat["total_products"] = total
 
     print("\nGenerando archivos...")
     generate_style()
@@ -5036,26 +5256,26 @@ def main():
     # Generar products.json para el buscador
     products_data = []
     for cat in categories:
-        cat_price = PRICE_DATA.get(cat['name'], {})
-        for sub in cat['subcategories']:
-            for prod in sub['products']:
+        cat_price = PRICE_DATA.get(cat["name"], {})
+        for sub in cat["subcategories"]:
+            for prod in sub["products"]:
                 products_data.append({
                     'name': os.path.splitext(prod)[0],
-                    'category': cat['name'],
-                    'subcategory': sub['name'],
-                    'url': f"{cat['filename']}#{sub['slug']}",
-                    'thumb': f"img/{cat['slug']}/{sub['slug']}/{prod}",
+                    'category': cat["name"],
+                    'subcategory': sub["name"],
+                    'url': f'{cat["filename"]}#{sub["slug"]}',
+                    'thumb': f'img/{cat["slug"]}/{sub["slug"]}/{prod}',
                     'price': cat_price.get('range', 'Consultar'),
                     'price_unit': cat_price.get('unit', 'pieza'),
                     'price_note': cat_price.get('note', '')
                 })
-        for prod in cat['direct_products']:
+        for prod in cat["direct_products"]:
             products_data.append({
                 'name': os.path.splitext(prod)[0],
-                'category': cat['name'],
+                'category': cat["name"],
                 'subcategory': None,
-                'url': cat['filename'],
-                'thumb': f"img/{cat['slug']}/{prod}",
+                'url': cat["filename"],
+                'thumb': f'img/{cat["slug"]}/{prod}',
                 'price': cat_price.get('range', 'Consultar'),
                 'price_unit': cat_price.get('unit', 'pieza'),
                 'price_note': cat_price.get('note', '')
@@ -5097,7 +5317,7 @@ def main():
 
     print("\nSitio web generado exitosamente en:", BASE_DIR)
     print(f"   - {len(categories)} categorias")
-    total_products = sum(len(c['direct_products']) + sum(len(s['products']) for s in c['subcategories']) for c in categories)
+    total_products = sum(len(c["direct_products"]) + sum(len(s["products"]) for s in c["subcategories"]) for c in categories)
     print(f"   - {total_products} productos totales")
 
 

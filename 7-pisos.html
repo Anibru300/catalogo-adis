@@ -40,7 +40,7 @@
         <a href="sabias-que-pvc.html" class="dropdown-item"><span class="dropdown-icon">🔬</span><span>Placas PVC</span></a>
         <a href="sabias-que-wpc.html" class="dropdown-item"><span class="dropdown-icon">🌲</span><span>Lambrín WPC</span></a>
         <a href="sabias-que-revestimiento.html" class="dropdown-item"><span class="dropdown-icon">🪨</span><span>Revestimiento Flexible</span></a>
-        <a href="sabias-que-plafon.html" class="dropdown-item"><span class="dropdown-icon">🏠</span><span>Plafón PVC</span></a>
+        <a href="sabias-que-plafon.html" class="dropdown-item"><span class="dropdown-icon">&#127968;</span><span>Plafón PVC</span></a>
         <a href="sabias-que-3d.html" class="dropdown-item"><span class="dropdown-icon">🎨</span><span>Paneles 3D</span></a>
         <a href="sabias-que-vigas.html" class="dropdown-item"><span class="dropdown-icon">📐</span><span>Vigas PVC/WPC/PU</span></a>
         <a href="sabias-que-pisos.html" class="dropdown-item"><span class="dropdown-icon">🏗️</span><span>Pisos</span></a>
@@ -52,16 +52,16 @@
         <a href="contacto.html">Contacto</a>
         <div class="search-box">
           <input type="text" id="searchInput" placeholder="Buscar producto..." autocomplete="off" title="Presiona / para buscar">
-          <button onclick="openSpotlight()">🔍</button>
+          <button onclick="openSpotlight()">&#128269;</button>
           <div class="search-dropdown" id="searchDropdown"></div>
         </div>
       </nav>
-      <button class="menu-btn" onclick="toggleMenu()">☰</button>
+      <button class="menu-btn" onclick="toggleMenu()">&#9776;</button>
     </div>
   </header>
 
   <div class="mobile-menu" id="mobileMenu">
-    <button class="close-menu" onclick="toggleMenu()">✕</button>
+    <button class="close-menu" onclick="toggleMenu()">&#10005;</button>
     <a href="index.html" onclick="toggleMenu()">Inicio</a>
     <a href="index.html#categorias" onclick="toggleMenu()">Catálogo</a>
     <a href="sabias-que.html" onclick="toggleMenu()">¿Sabías que?</a>
@@ -69,17 +69,17 @@
     <a href="contacto.html" onclick="toggleMenu()">Contacto</a>
     <div class="search-box" style="margin-top:1rem;">
       <input type="text" id="searchInputMobile" placeholder="Buscar producto..." autocomplete="off" style="width:220px;">
-      <button onclick="performSearchMobile()">🔍</button>
+      <button onclick="performSearchMobile()">&#128269;</button>
       <div class="search-dropdown" id="searchDropdownMobile"></div>
     </div>
   </div>
   
   <!-- SPOTLIGHT OVERLAY -->
   <div class="spotlight-overlay" id="spotlightOverlay" onclick="closeSpotlight(event)">
-    <button class="spotlight-close" onclick="closeSpotlight(event)">✕</button>
+    <button class="spotlight-close" onclick="closeSpotlight(event)">&#10005;</button>
     <div class="spotlight-box">
       <div class="spotlight-input-wrap">
-        <span class="spotlight-icon">🔍</span>
+        <span class="spotlight-icon">&#128269;</span>
         <input type="text" class="spotlight-input" id="spotlightInput" placeholder="Buscar productos, categorías..." autocomplete="off">
       </div>
       <div class="spotlight-results" id="spotlightResults"></div>
@@ -95,6 +95,10 @@
       <div class="hero-cat-badge">Categoría</div>
       <h1>Pisos</h1>
       <p>Explora nuestra línea de pisos con 78 productos disponibles. Solicita tu cotización.</p>
+      <div class="hero-cat-actions">
+        <a href="https://wa.me/15208392877?text=Hola%20ADIS%2C%20vi%20el%20catalogo%20de%20Pisos%20y%20quiero%20asesoria%20para%20elegir%20el%20mejor%20producto%20para%20mi%20proyecto." class="btn-primary" target="_blank">Asesoria por WhatsApp</a>
+        <a href="catalogos/pdf/catalogo_7-pisos.pdf" class="btn-outline" download>Descargar catalogo PDF</a>
+      </div>
     </div>
   </section>
 
@@ -118,567 +122,520 @@
       <div class="spec-item"><span class="spec-label">Uso</span><span class="spec-value">Residencial</span></div>
     </div>
     <div class="products-grid">
-      <div class="product-card reveal">
+      <div class="product-card reveal" data-name="aconcagua" data-category="Pisos">
         <div class="product-gallery" onclick="openLightbox('img/7-pisos/71-laminado/ACONCAGUA.jpg', 'ACONCAGUA')">
           <img src="img/7-pisos/71-laminado/ACONCAGUA.jpg" alt="ACONCAGUA" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">ACONCAGUA</div>
           <div class="product-actions">
-            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para ACONCAGUA&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: ACONCAGUA%0D%0ACategoria: Pisos%0D%0ASubcategoria: Laminado%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
-            <a href="https://wa.me/15208392877?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20ACONCAGUA%20de%20la%20categoría%20Pisos%20/%20subcategoría%20Laminado" class="btn-whatsapp" target="_blank">WhatsApp</a>
+            <button type="button" class="btn-cotizar" onclick="openWaModal('ACONCAGUA', 'Pisos', 'Laminado')">Cotizar por WhatsApp</button>
           </div>
         </div>
       </div>
-      <div class="product-card reveal">
+      <div class="product-card reveal" data-name="alcañiz" data-category="Pisos">
         <div class="product-gallery" onclick="openLightbox('img/7-pisos/71-laminado/ALCAÑIZ.jpeg', 'ALCAÑIZ')">
           <img src="img/7-pisos/71-laminado/ALCAÑIZ.jpeg" alt="ALCAÑIZ" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">ALCAÑIZ</div>
           <div class="product-actions">
-            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para ALCAÑIZ&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: ALCAÑIZ%0D%0ACategoria: Pisos%0D%0ASubcategoria: Laminado%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
-            <a href="https://wa.me/15208392877?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20ALCAÑIZ%20de%20la%20categoría%20Pisos%20/%20subcategoría%20Laminado" class="btn-whatsapp" target="_blank">WhatsApp</a>
+            <button type="button" class="btn-cotizar" onclick="openWaModal('ALCAÑIZ', 'Pisos', 'Laminado')">Cotizar por WhatsApp</button>
           </div>
         </div>
       </div>
-      <div class="product-card reveal">
+      <div class="product-card reveal" data-name="arctic oak splash" data-category="Pisos">
         <div class="product-gallery" onclick="openLightbox('img/7-pisos/71-laminado/ARCTIC OAK SPLASH.jpg', 'ARCTIC OAK SPLASH')">
           <img src="img/7-pisos/71-laminado/ARCTIC OAK SPLASH.jpg" alt="ARCTIC OAK SPLASH" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">ARCTIC OAK SPLASH</div>
           <div class="product-actions">
-            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para ARCTIC OAK SPLASH&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: ARCTIC OAK SPLASH%0D%0ACategoria: Pisos%0D%0ASubcategoria: Laminado%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
-            <a href="https://wa.me/15208392877?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20ARCTIC%20OAK%20SPLASH%20de%20la%20categoría%20Pisos%20/%20subcategoría%20Laminado" class="btn-whatsapp" target="_blank">WhatsApp</a>
+            <button type="button" class="btn-cotizar" onclick="openWaModal('ARCTIC OAK SPLASH', 'Pisos', 'Laminado')">Cotizar por WhatsApp</button>
           </div>
         </div>
       </div>
-      <div class="product-card reveal">
+      <div class="product-card reveal" data-name="australian walnut splash" data-category="Pisos">
         <div class="product-gallery" onclick="openLightbox('img/7-pisos/71-laminado/AUSTRALIAN WALNUT SPLASH.jpg', 'AUSTRALIAN WALNUT SPLASH')">
           <img src="img/7-pisos/71-laminado/AUSTRALIAN WALNUT SPLASH.jpg" alt="AUSTRALIAN WALNUT SPLASH" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">AUSTRALIAN WALNUT SPLASH</div>
           <div class="product-actions">
-            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para AUSTRALIAN WALNUT SPLASH&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: AUSTRALIAN WALNUT SPLASH%0D%0ACategoria: Pisos%0D%0ASubcategoria: Laminado%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
-            <a href="https://wa.me/15208392877?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20AUSTRALIAN%20WALNUT%20SPLASH%20de%20la%20categoría%20Pisos%20/%20subcategoría%20Laminado" class="btn-whatsapp" target="_blank">WhatsApp</a>
+            <button type="button" class="btn-cotizar" onclick="openWaModal('AUSTRALIAN WALNUT SPLASH', 'Pisos', 'Laminado')">Cotizar por WhatsApp</button>
           </div>
         </div>
       </div>
-      <div class="product-card reveal">
+      <div class="product-card reveal" data-name="boulder" data-category="Pisos">
         <div class="product-gallery" onclick="openLightbox('img/7-pisos/71-laminado/BOULDER.jpg', 'BOULDER')">
           <img src="img/7-pisos/71-laminado/BOULDER.jpg" alt="BOULDER" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">BOULDER</div>
           <div class="product-actions">
-            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para BOULDER&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: BOULDER%0D%0ACategoria: Pisos%0D%0ASubcategoria: Laminado%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
-            <a href="https://wa.me/15208392877?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20BOULDER%20de%20la%20categoría%20Pisos%20/%20subcategoría%20Laminado" class="btn-whatsapp" target="_blank">WhatsApp</a>
+            <button type="button" class="btn-cotizar" onclick="openWaModal('BOULDER', 'Pisos', 'Laminado')">Cotizar por WhatsApp</button>
           </div>
         </div>
       </div>
-      <div class="product-card reveal">
+      <div class="product-card reveal" data-name="calanda" data-category="Pisos">
         <div class="product-gallery" onclick="openLightbox('img/7-pisos/71-laminado/CALANDA.jpeg', 'CALANDA')">
           <img src="img/7-pisos/71-laminado/CALANDA.jpeg" alt="CALANDA" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">CALANDA</div>
           <div class="product-actions">
-            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para CALANDA&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: CALANDA%0D%0ACategoria: Pisos%0D%0ASubcategoria: Laminado%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
-            <a href="https://wa.me/15208392877?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20CALANDA%20de%20la%20categoría%20Pisos%20/%20subcategoría%20Laminado" class="btn-whatsapp" target="_blank">WhatsApp</a>
+            <button type="button" class="btn-cotizar" onclick="openWaModal('CALANDA', 'Pisos', 'Laminado')">Cotizar por WhatsApp</button>
           </div>
         </div>
       </div>
-      <div class="product-card reveal">
+      <div class="product-card reveal" data-name="cerezo tabla" data-category="Pisos">
         <div class="product-gallery" onclick="openLightbox('img/7-pisos/71-laminado/CEREZO TABLA.jpg', 'CEREZO TABLA')">
           <img src="img/7-pisos/71-laminado/CEREZO TABLA.jpg" alt="CEREZO TABLA" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">CEREZO TABLA</div>
           <div class="product-actions">
-            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para CEREZO TABLA&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: CEREZO TABLA%0D%0ACategoria: Pisos%0D%0ASubcategoria: Laminado%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
-            <a href="https://wa.me/15208392877?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20CEREZO%20TABLA%20de%20la%20categoría%20Pisos%20/%20subcategoría%20Laminado" class="btn-whatsapp" target="_blank">WhatsApp</a>
+            <button type="button" class="btn-cotizar" onclick="openWaModal('CEREZO TABLA', 'Pisos', 'Laminado')">Cotizar por WhatsApp</button>
           </div>
         </div>
       </div>
-      <div class="product-card reveal">
+      <div class="product-card reveal" data-name="colonial oak" data-category="Pisos">
         <div class="product-gallery" onclick="openLightbox('img/7-pisos/71-laminado/COLONIAL OAK.jpg', 'COLONIAL OAK')">
           <img src="img/7-pisos/71-laminado/COLONIAL OAK.jpg" alt="COLONIAL OAK" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">COLONIAL OAK</div>
           <div class="product-actions">
-            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para COLONIAL OAK&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: COLONIAL OAK%0D%0ACategoria: Pisos%0D%0ASubcategoria: Laminado%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
-            <a href="https://wa.me/15208392877?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20COLONIAL%20OAK%20de%20la%20categoría%20Pisos%20/%20subcategoría%20Laminado" class="btn-whatsapp" target="_blank">WhatsApp</a>
+            <button type="button" class="btn-cotizar" onclick="openWaModal('COLONIAL OAK', 'Pisos', 'Laminado')">Cotizar por WhatsApp</button>
           </div>
         </div>
       </div>
-      <div class="product-card reveal">
+      <div class="product-card reveal" data-name="copper oak" data-category="Pisos">
         <div class="product-gallery" onclick="openLightbox('img/7-pisos/71-laminado/COPPER OAK.jpg', 'COPPER OAK')">
           <img src="img/7-pisos/71-laminado/COPPER OAK.jpg" alt="COPPER OAK" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">COPPER OAK</div>
           <div class="product-actions">
-            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para COPPER OAK&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: COPPER OAK%0D%0ACategoria: Pisos%0D%0ASubcategoria: Laminado%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
-            <a href="https://wa.me/15208392877?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20COPPER%20OAK%20de%20la%20categoría%20Pisos%20/%20subcategoría%20Laminado" class="btn-whatsapp" target="_blank">WhatsApp</a>
+            <button type="button" class="btn-cotizar" onclick="openWaModal('COPPER OAK', 'Pisos', 'Laminado')">Cotizar por WhatsApp</button>
           </div>
         </div>
       </div>
-      <div class="product-card reveal">
+      <div class="product-card reveal" data-name="democracy oak" data-category="Pisos">
         <div class="product-gallery" onclick="openLightbox('img/7-pisos/71-laminado/DEMOCRACY OAK.jpg', 'DEMOCRACY OAK')">
           <img src="img/7-pisos/71-laminado/DEMOCRACY OAK.jpg" alt="DEMOCRACY OAK" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">DEMOCRACY OAK</div>
           <div class="product-actions">
-            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para DEMOCRACY OAK&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: DEMOCRACY OAK%0D%0ACategoria: Pisos%0D%0ASubcategoria: Laminado%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
-            <a href="https://wa.me/15208392877?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20DEMOCRACY%20OAK%20de%20la%20categoría%20Pisos%20/%20subcategoría%20Laminado" class="btn-whatsapp" target="_blank">WhatsApp</a>
+            <button type="button" class="btn-cotizar" onclick="openWaModal('DEMOCRACY OAK', 'Pisos', 'Laminado')">Cotizar por WhatsApp</button>
           </div>
         </div>
       </div>
-      <div class="product-card reveal">
+      <div class="product-card reveal" data-name="denali" data-category="Pisos">
         <div class="product-gallery" onclick="openLightbox('img/7-pisos/71-laminado/DENALI.jpg', 'DENALI')">
           <img src="img/7-pisos/71-laminado/DENALI.jpg" alt="DENALI" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">DENALI</div>
           <div class="product-actions">
-            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para DENALI&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: DENALI%0D%0ACategoria: Pisos%0D%0ASubcategoria: Laminado%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
-            <a href="https://wa.me/15208392877?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20DENALI%20de%20la%20categoría%20Pisos%20/%20subcategoría%20Laminado" class="btn-whatsapp" target="_blank">WhatsApp</a>
+            <button type="button" class="btn-cotizar" onclick="openWaModal('DENALI', 'Pisos', 'Laminado')">Cotizar por WhatsApp</button>
           </div>
         </div>
       </div>
-      <div class="product-card reveal">
+      <div class="product-card reveal" data-name="elbrus" data-category="Pisos">
         <div class="product-gallery" onclick="openLightbox('img/7-pisos/71-laminado/ELBRUS.jpg', 'ELBRUS')">
           <img src="img/7-pisos/71-laminado/ELBRUS.jpg" alt="ELBRUS" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">ELBRUS</div>
           <div class="product-actions">
-            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para ELBRUS&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: ELBRUS%0D%0ACategoria: Pisos%0D%0ASubcategoria: Laminado%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
-            <a href="https://wa.me/15208392877?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20ELBRUS%20de%20la%20categoría%20Pisos%20/%20subcategoría%20Laminado" class="btn-whatsapp" target="_blank">WhatsApp</a>
+            <button type="button" class="btn-cotizar" onclick="openWaModal('ELBRUS', 'Pisos', 'Laminado')">Cotizar por WhatsApp</button>
           </div>
         </div>
       </div>
-      <div class="product-card reveal">
+      <div class="product-card reveal" data-name="everest" data-category="Pisos">
         <div class="product-gallery" onclick="openLightbox('img/7-pisos/71-laminado/EVEREST.jpg', 'EVEREST')">
           <img src="img/7-pisos/71-laminado/EVEREST.jpg" alt="EVEREST" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">EVEREST</div>
           <div class="product-actions">
-            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para EVEREST&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: EVEREST%0D%0ACategoria: Pisos%0D%0ASubcategoria: Laminado%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
-            <a href="https://wa.me/15208392877?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20EVEREST%20de%20la%20categoría%20Pisos%20/%20subcategoría%20Laminado" class="btn-whatsapp" target="_blank">WhatsApp</a>
+            <button type="button" class="btn-cotizar" onclick="openWaModal('EVEREST', 'Pisos', 'Laminado')">Cotizar por WhatsApp</button>
           </div>
         </div>
       </div>
-      <div class="product-card reveal">
+      <div class="product-card reveal" data-name="golden oak" data-category="Pisos">
         <div class="product-gallery" onclick="openLightbox('img/7-pisos/71-laminado/GOLDEN OAK.jpg', 'GOLDEN OAK')">
           <img src="img/7-pisos/71-laminado/GOLDEN OAK.jpg" alt="GOLDEN OAK" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">GOLDEN OAK</div>
           <div class="product-actions">
-            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para GOLDEN OAK&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: GOLDEN OAK%0D%0ACategoria: Pisos%0D%0ASubcategoria: Laminado%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
-            <a href="https://wa.me/15208392877?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20GOLDEN%20OAK%20de%20la%20categoría%20Pisos%20/%20subcategoría%20Laminado" class="btn-whatsapp" target="_blank">WhatsApp</a>
+            <button type="button" class="btn-cotizar" onclick="openWaModal('GOLDEN OAK', 'Pisos', 'Laminado')">Cotizar por WhatsApp</button>
           </div>
         </div>
       </div>
-      <div class="product-card reveal">
+      <div class="product-card reveal" data-name="gudar" data-category="Pisos">
         <div class="product-gallery" onclick="openLightbox('img/7-pisos/71-laminado/GUDAR.jpeg', 'GUDAR')">
           <img src="img/7-pisos/71-laminado/GUDAR.jpeg" alt="GUDAR" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">GUDAR</div>
           <div class="product-actions">
-            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para GUDAR&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: GUDAR%0D%0ACategoria: Pisos%0D%0ASubcategoria: Laminado%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
-            <a href="https://wa.me/15208392877?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20GUDAR%20de%20la%20categoría%20Pisos%20/%20subcategoría%20Laminado" class="btn-whatsapp" target="_blank">WhatsApp</a>
+            <button type="button" class="btn-cotizar" onclick="openWaModal('GUDAR', 'Pisos', 'Laminado')">Cotizar por WhatsApp</button>
           </div>
         </div>
       </div>
-      <div class="product-card reveal">
+      <div class="product-card reveal" data-name="hickory carolina" data-category="Pisos">
         <div class="product-gallery" onclick="openLightbox('img/7-pisos/71-laminado/HICKORY CAROLINA.jpg', 'HICKORY CAROLINA')">
           <img src="img/7-pisos/71-laminado/HICKORY CAROLINA.jpg" alt="HICKORY CAROLINA" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">HICKORY CAROLINA</div>
           <div class="product-actions">
-            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para HICKORY CAROLINA&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: HICKORY CAROLINA%0D%0ACategoria: Pisos%0D%0ASubcategoria: Laminado%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
-            <a href="https://wa.me/15208392877?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20HICKORY%20CAROLINA%20de%20la%20categoría%20Pisos%20/%20subcategoría%20Laminado" class="btn-whatsapp" target="_blank">WhatsApp</a>
+            <button type="button" class="btn-cotizar" onclick="openWaModal('HICKORY CAROLINA', 'Pisos', 'Laminado')">Cotizar por WhatsApp</button>
           </div>
         </div>
       </div>
-      <div class="product-card reveal">
+      <div class="product-card reveal" data-name="independence oak" data-category="Pisos">
         <div class="product-gallery" onclick="openLightbox('img/7-pisos/71-laminado/INDEPENDENCE OAK.jpg', 'INDEPENDENCE OAK')">
           <img src="img/7-pisos/71-laminado/INDEPENDENCE OAK.jpg" alt="INDEPENDENCE OAK" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">INDEPENDENCE OAK</div>
           <div class="product-actions">
-            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para INDEPENDENCE OAK&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: INDEPENDENCE OAK%0D%0ACategoria: Pisos%0D%0ASubcategoria: Laminado%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
-            <a href="https://wa.me/15208392877?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20INDEPENDENCE%20OAK%20de%20la%20categoría%20Pisos%20/%20subcategoría%20Laminado" class="btn-whatsapp" target="_blank">WhatsApp</a>
+            <button type="button" class="btn-cotizar" onclick="openWaModal('INDEPENDENCE OAK', 'Pisos', 'Laminado')">Cotizar por WhatsApp</button>
           </div>
         </div>
       </div>
-      <div class="product-card reveal">
+      <div class="product-card reveal" data-name="ivory white" data-category="Pisos">
         <div class="product-gallery" onclick="openLightbox('img/7-pisos/71-laminado/IVORY WHITE.jpg', 'IVORY WHITE')">
           <img src="img/7-pisos/71-laminado/IVORY WHITE.jpg" alt="IVORY WHITE" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">IVORY WHITE</div>
           <div class="product-actions">
-            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para IVORY WHITE&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: IVORY WHITE%0D%0ACategoria: Pisos%0D%0ASubcategoria: Laminado%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
-            <a href="https://wa.me/15208392877?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20IVORY%20WHITE%20de%20la%20categoría%20Pisos%20/%20subcategoría%20Laminado" class="btn-whatsapp" target="_blank">WhatsApp</a>
+            <button type="button" class="btn-cotizar" onclick="openWaModal('IVORY WHITE', 'Pisos', 'Laminado')">Cotizar por WhatsApp</button>
           </div>
         </div>
       </div>
-      <div class="product-card reveal">
+      <div class="product-card reveal" data-name="kiefer storm" data-category="Pisos">
         <div class="product-gallery" onclick="openLightbox('img/7-pisos/71-laminado/KIEFER STORM.jpg', 'KIEFER STORM')">
           <img src="img/7-pisos/71-laminado/KIEFER STORM.jpg" alt="KIEFER STORM" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">KIEFER STORM</div>
           <div class="product-actions">
-            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para KIEFER STORM&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: KIEFER STORM%0D%0ACategoria: Pisos%0D%0ASubcategoria: Laminado%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
-            <a href="https://wa.me/15208392877?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20KIEFER%20STORM%20de%20la%20categoría%20Pisos%20/%20subcategoría%20Laminado" class="btn-whatsapp" target="_blank">WhatsApp</a>
+            <button type="button" class="btn-cotizar" onclick="openWaModal('KIEFER STORM', 'Pisos', 'Laminado')">Cotizar por WhatsApp</button>
           </div>
         </div>
       </div>
-      <div class="product-card reveal">
+      <div class="product-card reveal" data-name="kilimanjaro" data-category="Pisos">
         <div class="product-gallery" onclick="openLightbox('img/7-pisos/71-laminado/KILIMANJARO.jpg', 'KILIMANJARO')">
           <img src="img/7-pisos/71-laminado/KILIMANJARO.jpg" alt="KILIMANJARO" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">KILIMANJARO</div>
           <div class="product-actions">
-            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para KILIMANJARO&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: KILIMANJARO%0D%0ACategoria: Pisos%0D%0ASubcategoria: Laminado%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
-            <a href="https://wa.me/15208392877?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20KILIMANJARO%20de%20la%20categoría%20Pisos%20/%20subcategoría%20Laminado" class="btn-whatsapp" target="_blank">WhatsApp</a>
+            <button type="button" class="btn-cotizar" onclick="openWaModal('KILIMANJARO', 'Pisos', 'Laminado')">Cotizar por WhatsApp</button>
           </div>
         </div>
       </div>
-      <div class="product-card reveal">
+      <div class="product-card reveal" data-name="mountain beech splash" data-category="Pisos">
         <div class="product-gallery" onclick="openLightbox('img/7-pisos/71-laminado/MOUNTAIN BEECH SPLASH.jpg', 'MOUNTAIN BEECH SPLASH')">
           <img src="img/7-pisos/71-laminado/MOUNTAIN BEECH SPLASH.jpg" alt="MOUNTAIN BEECH SPLASH" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">MOUNTAIN BEECH SPLASH</div>
           <div class="product-actions">
-            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para MOUNTAIN BEECH SPLASH&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: MOUNTAIN BEECH SPLASH%0D%0ACategoria: Pisos%0D%0ASubcategoria: Laminado%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
-            <a href="https://wa.me/15208392877?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20MOUNTAIN%20BEECH%20SPLASH%20de%20la%20categoría%20Pisos%20/%20subcategoría%20Laminado" class="btn-whatsapp" target="_blank">WhatsApp</a>
+            <button type="button" class="btn-cotizar" onclick="openWaModal('MOUNTAIN BEECH SPLASH', 'Pisos', 'Laminado')">Cotizar por WhatsApp</button>
           </div>
         </div>
       </div>
-      <div class="product-card reveal">
+      <div class="product-card reveal" data-name="mountain beech" data-category="Pisos">
         <div class="product-gallery" onclick="openLightbox('img/7-pisos/71-laminado/MOUNTAIN BEECH.jpg', 'MOUNTAIN BEECH')">
           <img src="img/7-pisos/71-laminado/MOUNTAIN BEECH.jpg" alt="MOUNTAIN BEECH" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">MOUNTAIN BEECH</div>
           <div class="product-actions">
-            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para MOUNTAIN BEECH&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: MOUNTAIN BEECH%0D%0ACategoria: Pisos%0D%0ASubcategoria: Laminado%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
-            <a href="https://wa.me/15208392877?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20MOUNTAIN%20BEECH%20de%20la%20categoría%20Pisos%20/%20subcategoría%20Laminado" class="btn-whatsapp" target="_blank">WhatsApp</a>
+            <button type="button" class="btn-cotizar" onclick="openWaModal('MOUNTAIN BEECH', 'Pisos', 'Laminado')">Cotizar por WhatsApp</button>
           </div>
         </div>
       </div>
-      <div class="product-card reveal">
+      <div class="product-card reveal" data-name="nogal americano" data-category="Pisos">
         <div class="product-gallery" onclick="openLightbox('img/7-pisos/71-laminado/NOGAL AMERICANO.jpg', 'NOGAL AMERICANO')">
           <img src="img/7-pisos/71-laminado/NOGAL AMERICANO.jpg" alt="NOGAL AMERICANO" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">NOGAL AMERICANO</div>
           <div class="product-actions">
-            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para NOGAL AMERICANO&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: NOGAL AMERICANO%0D%0ACategoria: Pisos%0D%0ASubcategoria: Laminado%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
-            <a href="https://wa.me/15208392877?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20NOGAL%20AMERICANO%20de%20la%20categoría%20Pisos%20/%20subcategoría%20Laminado" class="btn-whatsapp" target="_blank">WhatsApp</a>
+            <button type="button" class="btn-cotizar" onclick="openWaModal('NOGAL AMERICANO', 'Pisos', 'Laminado')">Cotizar por WhatsApp</button>
           </div>
         </div>
       </div>
-      <div class="product-card reveal">
+      <div class="product-card reveal" data-name="oak breeze" data-category="Pisos">
         <div class="product-gallery" onclick="openLightbox('img/7-pisos/71-laminado/OAK BREEZE.jpg', 'OAK BREEZE')">
           <img src="img/7-pisos/71-laminado/OAK BREEZE.jpg" alt="OAK BREEZE" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">OAK BREEZE</div>
           <div class="product-actions">
-            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para OAK BREEZE&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: OAK BREEZE%0D%0ACategoria: Pisos%0D%0ASubcategoria: Laminado%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
-            <a href="https://wa.me/15208392877?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20OAK%20BREEZE%20de%20la%20categoría%20Pisos%20/%20subcategoría%20Laminado" class="btn-whatsapp" target="_blank">WhatsApp</a>
+            <button type="button" class="btn-cotizar" onclick="openWaModal('OAK BREEZE', 'Pisos', 'Laminado')">Cotizar por WhatsApp</button>
           </div>
         </div>
       </div>
-      <div class="product-card reveal">
+      <div class="product-card reveal" data-name="oak cabana lagos" data-category="Pisos">
         <div class="product-gallery" onclick="openLightbox('img/7-pisos/71-laminado/OAK CABANA LAGOS.jpg', 'OAK CABANA LAGOS')">
           <img src="img/7-pisos/71-laminado/OAK CABANA LAGOS.jpg" alt="OAK CABANA LAGOS" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">OAK CABANA LAGOS</div>
           <div class="product-actions">
-            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para OAK CABANA LAGOS&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: OAK CABANA LAGOS%0D%0ACategoria: Pisos%0D%0ASubcategoria: Laminado%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
-            <a href="https://wa.me/15208392877?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20OAK%20CABANA%20LAGOS%20de%20la%20categoría%20Pisos%20/%20subcategoría%20Laminado" class="btn-whatsapp" target="_blank">WhatsApp</a>
+            <button type="button" class="btn-cotizar" onclick="openWaModal('OAK CABANA LAGOS', 'Pisos', 'Laminado')">Cotizar por WhatsApp</button>
           </div>
         </div>
       </div>
-      <div class="product-card reveal">
+      <div class="product-card reveal" data-name="oak design" data-category="Pisos">
         <div class="product-gallery" onclick="openLightbox('img/7-pisos/71-laminado/OAK DESIGN.jpg', 'OAK DESIGN')">
           <img src="img/7-pisos/71-laminado/OAK DESIGN.jpg" alt="OAK DESIGN" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">OAK DESIGN</div>
           <div class="product-actions">
-            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para OAK DESIGN&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: OAK DESIGN%0D%0ACategoria: Pisos%0D%0ASubcategoria: Laminado%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
-            <a href="https://wa.me/15208392877?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20OAK%20DESIGN%20de%20la%20categoría%20Pisos%20/%20subcategoría%20Laminado" class="btn-whatsapp" target="_blank">WhatsApp</a>
+            <button type="button" class="btn-cotizar" onclick="openWaModal('OAK DESIGN', 'Pisos', 'Laminado')">Cotizar por WhatsApp</button>
           </div>
         </div>
       </div>
-      <div class="product-card reveal">
+      <div class="product-card reveal" data-name="oak epic apulien" data-category="Pisos">
         <div class="product-gallery" onclick="openLightbox('img/7-pisos/71-laminado/OAK EPIC APULIEN.jpg', 'OAK EPIC APULIEN')">
           <img src="img/7-pisos/71-laminado/OAK EPIC APULIEN.jpg" alt="OAK EPIC APULIEN" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">OAK EPIC APULIEN</div>
           <div class="product-actions">
-            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para OAK EPIC APULIEN&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: OAK EPIC APULIEN%0D%0ACategoria: Pisos%0D%0ASubcategoria: Laminado%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
-            <a href="https://wa.me/15208392877?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20OAK%20EPIC%20APULIEN%20de%20la%20categoría%20Pisos%20/%20subcategoría%20Laminado" class="btn-whatsapp" target="_blank">WhatsApp</a>
+            <button type="button" class="btn-cotizar" onclick="openWaModal('OAK EPIC APULIEN', 'Pisos', 'Laminado')">Cotizar por WhatsApp</button>
           </div>
         </div>
       </div>
-      <div class="product-card reveal">
+      <div class="product-card reveal" data-name="oak evoke crystal" data-category="Pisos">
         <div class="product-gallery" onclick="openLightbox('img/7-pisos/71-laminado/OAK EVOKE CRYSTAL.jpg', 'OAK EVOKE CRYSTAL')">
           <img src="img/7-pisos/71-laminado/OAK EVOKE CRYSTAL.jpg" alt="OAK EVOKE CRYSTAL" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">OAK EVOKE CRYSTAL</div>
           <div class="product-actions">
-            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para OAK EVOKE CRYSTAL&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: OAK EVOKE CRYSTAL%0D%0ACategoria: Pisos%0D%0ASubcategoria: Laminado%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
-            <a href="https://wa.me/15208392877?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20OAK%20EVOKE%20CRYSTAL%20de%20la%20categoría%20Pisos%20/%20subcategoría%20Laminado" class="btn-whatsapp" target="_blank">WhatsApp</a>
+            <button type="button" class="btn-cotizar" onclick="openWaModal('OAK EVOKE CRYSTAL', 'Pisos', 'Laminado')">Cotizar por WhatsApp</button>
           </div>
         </div>
       </div>
-      <div class="product-card reveal">
+      <div class="product-card reveal" data-name="oak fresco" data-category="Pisos">
         <div class="product-gallery" onclick="openLightbox('img/7-pisos/71-laminado/OAK FRESCO.jpg', 'OAK FRESCO')">
           <img src="img/7-pisos/71-laminado/OAK FRESCO.jpg" alt="OAK FRESCO" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">OAK FRESCO</div>
           <div class="product-actions">
-            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para OAK FRESCO&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: OAK FRESCO%0D%0ACategoria: Pisos%0D%0ASubcategoria: Laminado%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
-            <a href="https://wa.me/15208392877?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20OAK%20FRESCO%20de%20la%20categoría%20Pisos%20/%20subcategoría%20Laminado" class="btn-whatsapp" target="_blank">WhatsApp</a>
+            <button type="button" class="btn-cotizar" onclick="openWaModal('OAK FRESCO', 'Pisos', 'Laminado')">Cotizar por WhatsApp</button>
           </div>
         </div>
       </div>
-      <div class="product-card reveal">
+      <div class="product-card reveal" data-name="oak natural" data-category="Pisos">
         <div class="product-gallery" onclick="openLightbox('img/7-pisos/71-laminado/OAK NATURAL.jpg', 'OAK NATURAL')">
           <img src="img/7-pisos/71-laminado/OAK NATURAL.jpg" alt="OAK NATURAL" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">OAK NATURAL</div>
           <div class="product-actions">
-            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para OAK NATURAL&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: OAK NATURAL%0D%0ACategoria: Pisos%0D%0ASubcategoria: Laminado%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
-            <a href="https://wa.me/15208392877?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20OAK%20NATURAL%20de%20la%20categoría%20Pisos%20/%20subcategoría%20Laminado" class="btn-whatsapp" target="_blank">WhatsApp</a>
+            <button type="button" class="btn-cotizar" onclick="openWaModal('OAK NATURAL', 'Pisos', 'Laminado')">Cotizar por WhatsApp</button>
           </div>
         </div>
       </div>
-      <div class="product-card reveal">
+      <div class="product-card reveal" data-name="oak silea" data-category="Pisos">
         <div class="product-gallery" onclick="openLightbox('img/7-pisos/71-laminado/OAK SILEA.jpg', 'OAK SILEA')">
           <img src="img/7-pisos/71-laminado/OAK SILEA.jpg" alt="OAK SILEA" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">OAK SILEA</div>
           <div class="product-actions">
-            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para OAK SILEA&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: OAK SILEA%0D%0ACategoria: Pisos%0D%0ASubcategoria: Laminado%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
-            <a href="https://wa.me/15208392877?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20OAK%20SILEA%20de%20la%20categoría%20Pisos%20/%20subcategoría%20Laminado" class="btn-whatsapp" target="_blank">WhatsApp</a>
+            <button type="button" class="btn-cotizar" onclick="openWaModal('OAK SILEA', 'Pisos', 'Laminado')">Cotizar por WhatsApp</button>
           </div>
         </div>
       </div>
-      <div class="product-card reveal">
+      <div class="product-card reveal" data-name="oak solano" data-category="Pisos">
         <div class="product-gallery" onclick="openLightbox('img/7-pisos/71-laminado/OAK SOLANO.png', 'OAK SOLANO')">
           <img src="img/7-pisos/71-laminado/OAK SOLANO.png" alt="OAK SOLANO" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">OAK SOLANO</div>
           <div class="product-actions">
-            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para OAK SOLANO&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: OAK SOLANO%0D%0ACategoria: Pisos%0D%0ASubcategoria: Laminado%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
-            <a href="https://wa.me/15208392877?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20OAK%20SOLANO%20de%20la%20categoría%20Pisos%20/%20subcategoría%20Laminado" class="btn-whatsapp" target="_blank">WhatsApp</a>
+            <button type="button" class="btn-cotizar" onclick="openWaModal('OAK SOLANO', 'Pisos', 'Laminado')">Cotizar por WhatsApp</button>
           </div>
         </div>
       </div>
-      <div class="product-card reveal">
+      <div class="product-card reveal" data-name="oak soul" data-category="Pisos">
         <div class="product-gallery" onclick="openLightbox('img/7-pisos/71-laminado/OAK SOUL.jpg', 'OAK SOUL')">
           <img src="img/7-pisos/71-laminado/OAK SOUL.jpg" alt="OAK SOUL" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">OAK SOUL</div>
           <div class="product-actions">
-            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para OAK SOUL&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: OAK SOUL%0D%0ACategoria: Pisos%0D%0ASubcategoria: Laminado%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
-            <a href="https://wa.me/15208392877?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20OAK%20SOUL%20de%20la%20categoría%20Pisos%20/%20subcategoría%20Laminado" class="btn-whatsapp" target="_blank">WhatsApp</a>
+            <button type="button" class="btn-cotizar" onclick="openWaModal('OAK SOUL', 'Pisos', 'Laminado')">Cotizar por WhatsApp</button>
           </div>
         </div>
       </div>
-      <div class="product-card reveal">
+      <div class="product-card reveal" data-name="oak sunset" data-category="Pisos">
         <div class="product-gallery" onclick="openLightbox('img/7-pisos/71-laminado/OAK SUNSET.png', 'OAK SUNSET')">
           <img src="img/7-pisos/71-laminado/OAK SUNSET.png" alt="OAK SUNSET" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">OAK SUNSET</div>
           <div class="product-actions">
-            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para OAK SUNSET&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: OAK SUNSET%0D%0ACategoria: Pisos%0D%0ASubcategoria: Laminado%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
-            <a href="https://wa.me/15208392877?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20OAK%20SUNSET%20de%20la%20categoría%20Pisos%20/%20subcategoría%20Laminado" class="btn-whatsapp" target="_blank">WhatsApp</a>
+            <button type="button" class="btn-cotizar" onclick="openWaModal('OAK SUNSET', 'Pisos', 'Laminado')">Cotizar por WhatsApp</button>
           </div>
         </div>
       </div>
-      <div class="product-card reveal">
+      <div class="product-card reveal" data-name="oak thunder" data-category="Pisos">
         <div class="product-gallery" onclick="openLightbox('img/7-pisos/71-laminado/OAK THUNDER.jpg', 'OAK THUNDER')">
           <img src="img/7-pisos/71-laminado/OAK THUNDER.jpg" alt="OAK THUNDER" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">OAK THUNDER</div>
           <div class="product-actions">
-            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para OAK THUNDER&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: OAK THUNDER%0D%0ACategoria: Pisos%0D%0ASubcategoria: Laminado%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
-            <a href="https://wa.me/15208392877?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20OAK%20THUNDER%20de%20la%20categoría%20Pisos%20/%20subcategoría%20Laminado" class="btn-whatsapp" target="_blank">WhatsApp</a>
+            <button type="button" class="btn-cotizar" onclick="openWaModal('OAK THUNDER', 'Pisos', 'Laminado')">Cotizar por WhatsApp</button>
           </div>
         </div>
       </div>
-      <div class="product-card reveal">
+      <div class="product-card reveal" data-name="oak trend" data-category="Pisos">
         <div class="product-gallery" onclick="openLightbox('img/7-pisos/71-laminado/OAK TREND.jpg', 'OAK TREND')">
           <img src="img/7-pisos/71-laminado/OAK TREND.jpg" alt="OAK TREND" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">OAK TREND</div>
           <div class="product-actions">
-            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para OAK TREND&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: OAK TREND%0D%0ACategoria: Pisos%0D%0ASubcategoria: Laminado%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
-            <a href="https://wa.me/15208392877?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20OAK%20TREND%20de%20la%20categoría%20Pisos%20/%20subcategoría%20Laminado" class="btn-whatsapp" target="_blank">WhatsApp</a>
+            <button type="button" class="btn-cotizar" onclick="openWaModal('OAK TREND', 'Pisos', 'Laminado')">Cotizar por WhatsApp</button>
           </div>
         </div>
       </div>
-      <div class="product-card reveal">
+      <div class="product-card reveal" data-name="oak vienna" data-category="Pisos">
         <div class="product-gallery" onclick="openLightbox('img/7-pisos/71-laminado/OAK VIENNA.jpg', 'OAK VIENNA')">
           <img src="img/7-pisos/71-laminado/OAK VIENNA.jpg" alt="OAK VIENNA" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">OAK VIENNA</div>
           <div class="product-actions">
-            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para OAK VIENNA&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: OAK VIENNA%0D%0ACategoria: Pisos%0D%0ASubcategoria: Laminado%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
-            <a href="https://wa.me/15208392877?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20OAK%20VIENNA%20de%20la%20categoría%20Pisos%20/%20subcategoría%20Laminado" class="btn-whatsapp" target="_blank">WhatsApp</a>
+            <button type="button" class="btn-cotizar" onclick="openWaModal('OAK VIENNA', 'Pisos', 'Laminado')">Cotizar por WhatsApp</button>
           </div>
         </div>
       </div>
-      <div class="product-card reveal">
+      <div class="product-card reveal" data-name="oak vouge" data-category="Pisos">
         <div class="product-gallery" onclick="openLightbox('img/7-pisos/71-laminado/OAK VOUGE.png', 'OAK VOUGE')">
           <img src="img/7-pisos/71-laminado/OAK VOUGE.png" alt="OAK VOUGE" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">OAK VOUGE</div>
           <div class="product-actions">
-            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para OAK VOUGE&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: OAK VOUGE%0D%0ACategoria: Pisos%0D%0ASubcategoria: Laminado%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
-            <a href="https://wa.me/15208392877?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20OAK%20VOUGE%20de%20la%20categoría%20Pisos%20/%20subcategoría%20Laminado" class="btn-whatsapp" target="_blank">WhatsApp</a>
+            <button type="button" class="btn-cotizar" onclick="openWaModal('OAK VOUGE', 'Pisos', 'Laminado')">Cotizar por WhatsApp</button>
           </div>
         </div>
       </div>
-      <div class="product-card reveal">
+      <div class="product-card reveal" data-name="plantation oak" data-category="Pisos">
         <div class="product-gallery" onclick="openLightbox('img/7-pisos/71-laminado/PLANTATION OAK.jpg', 'PLANTATION OAK')">
           <img src="img/7-pisos/71-laminado/PLANTATION OAK.jpg" alt="PLANTATION OAK" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">PLANTATION OAK</div>
           <div class="product-actions">
-            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para PLANTATION OAK&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: PLANTATION OAK%0D%0ACategoria: Pisos%0D%0ASubcategoria: Laminado%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
-            <a href="https://wa.me/15208392877?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20PLANTATION%20OAK%20de%20la%20categoría%20Pisos%20/%20subcategoría%20Laminado" class="btn-whatsapp" target="_blank">WhatsApp</a>
+            <button type="button" class="btn-cotizar" onclick="openWaModal('PLANTATION OAK', 'Pisos', 'Laminado')">Cotizar por WhatsApp</button>
           </div>
         </div>
       </div>
-      <div class="product-card reveal">
+      <div class="product-card reveal" data-name="revolution oak" data-category="Pisos">
         <div class="product-gallery" onclick="openLightbox('img/7-pisos/71-laminado/REVOLUTION OAK.jpg', 'REVOLUTION OAK')">
           <img src="img/7-pisos/71-laminado/REVOLUTION OAK.jpg" alt="REVOLUTION OAK" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">REVOLUTION OAK</div>
           <div class="product-actions">
-            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para REVOLUTION OAK&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: REVOLUTION OAK%0D%0ACategoria: Pisos%0D%0ASubcategoria: Laminado%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
-            <a href="https://wa.me/15208392877?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20REVOLUTION%20OAK%20de%20la%20categoría%20Pisos%20/%20subcategoría%20Laminado" class="btn-whatsapp" target="_blank">WhatsApp</a>
+            <button type="button" class="btn-cotizar" onclick="openWaModal('REVOLUTION OAK', 'Pisos', 'Laminado')">Cotizar por WhatsApp</button>
           </div>
         </div>
       </div>
-      <div class="product-card reveal">
+      <div class="product-card reveal" data-name="spruce antique" data-category="Pisos">
         <div class="product-gallery" onclick="openLightbox('img/7-pisos/71-laminado/SPRUCE ANTIQUE.jpg', 'SPRUCE ANTIQUE')">
           <img src="img/7-pisos/71-laminado/SPRUCE ANTIQUE.jpg" alt="SPRUCE ANTIQUE" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">SPRUCE ANTIQUE</div>
           <div class="product-actions">
-            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para SPRUCE ANTIQUE&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: SPRUCE ANTIQUE%0D%0ACategoria: Pisos%0D%0ASubcategoria: Laminado%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
-            <a href="https://wa.me/15208392877?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20SPRUCE%20ANTIQUE%20de%20la%20categoría%20Pisos%20/%20subcategoría%20Laminado" class="btn-whatsapp" target="_blank">WhatsApp</a>
+            <button type="button" class="btn-cotizar" onclick="openWaModal('SPRUCE ANTIQUE', 'Pisos', 'Laminado')">Cotizar por WhatsApp</button>
           </div>
         </div>
       </div>
-      <div class="product-card reveal">
+      <div class="product-card reveal" data-name="tahoe" data-category="Pisos">
         <div class="product-gallery" onclick="openLightbox('img/7-pisos/71-laminado/TAHOE.jpg', 'TAHOE')">
           <img src="img/7-pisos/71-laminado/TAHOE.jpg" alt="TAHOE" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">TAHOE</div>
           <div class="product-actions">
-            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para TAHOE&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: TAHOE%0D%0ACategoria: Pisos%0D%0ASubcategoria: Laminado%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
-            <a href="https://wa.me/15208392877?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20TAHOE%20de%20la%20categoría%20Pisos%20/%20subcategoría%20Laminado" class="btn-whatsapp" target="_blank">WhatsApp</a>
+            <button type="button" class="btn-cotizar" onclick="openWaModal('TAHOE', 'Pisos', 'Laminado')">Cotizar por WhatsApp</button>
           </div>
         </div>
       </div>
-      <div class="product-card reveal">
+      <div class="product-card reveal" data-name="ternasco" data-category="Pisos">
         <div class="product-gallery" onclick="openLightbox('img/7-pisos/71-laminado/TERNASCO.jpeg', 'TERNASCO')">
           <img src="img/7-pisos/71-laminado/TERNASCO.jpeg" alt="TERNASCO" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">TERNASCO</div>
           <div class="product-actions">
-            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para TERNASCO&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: TERNASCO%0D%0ACategoria: Pisos%0D%0ASubcategoria: Laminado%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
-            <a href="https://wa.me/15208392877?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20TERNASCO%20de%20la%20categoría%20Pisos%20/%20subcategoría%20Laminado" class="btn-whatsapp" target="_blank">WhatsApp</a>
+            <button type="button" class="btn-cotizar" onclick="openWaModal('TERNASCO', 'Pisos', 'Laminado')">Cotizar por WhatsApp</button>
           </div>
         </div>
       </div>
-      <div class="product-card reveal">
+      <div class="product-card reveal" data-name="titanium oak" data-category="Pisos">
         <div class="product-gallery" onclick="openLightbox('img/7-pisos/71-laminado/TITANIUM OAK.jpg', 'TITANIUM OAK')">
           <img src="img/7-pisos/71-laminado/TITANIUM OAK.jpg" alt="TITANIUM OAK" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">TITANIUM OAK</div>
           <div class="product-actions">
-            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para TITANIUM OAK&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: TITANIUM OAK%0D%0ACategoria: Pisos%0D%0ASubcategoria: Laminado%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
-            <a href="https://wa.me/15208392877?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20TITANIUM%20OAK%20de%20la%20categoría%20Pisos%20/%20subcategoría%20Laminado" class="btn-whatsapp" target="_blank">WhatsApp</a>
+            <button type="button" class="btn-cotizar" onclick="openWaModal('TITANIUM OAK', 'Pisos', 'Laminado')">Cotizar por WhatsApp</button>
           </div>
         </div>
       </div>
-      <div class="product-card reveal">
+      <div class="product-card reveal" data-name="utrillas" data-category="Pisos">
         <div class="product-gallery" onclick="openLightbox('img/7-pisos/71-laminado/UTRILLAS.jpeg', 'UTRILLAS')">
           <img src="img/7-pisos/71-laminado/UTRILLAS.jpeg" alt="UTRILLAS" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">UTRILLAS</div>
           <div class="product-actions">
-            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para UTRILLAS&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: UTRILLAS%0D%0ACategoria: Pisos%0D%0ASubcategoria: Laminado%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
-            <a href="https://wa.me/15208392877?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20UTRILLAS%20de%20la%20categoría%20Pisos%20/%20subcategoría%20Laminado" class="btn-whatsapp" target="_blank">WhatsApp</a>
+            <button type="button" class="btn-cotizar" onclick="openWaModal('UTRILLAS', 'Pisos', 'Laminado')">Cotizar por WhatsApp</button>
           </div>
         </div>
       </div>
-      <div class="product-card reveal">
+      <div class="product-card reveal" data-name="walnut sabo" data-category="Pisos">
         <div class="product-gallery" onclick="openLightbox('img/7-pisos/71-laminado/WALNUT SABO.jpg', 'WALNUT SABO')">
           <img src="img/7-pisos/71-laminado/WALNUT SABO.jpg" alt="WALNUT SABO" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">WALNUT SABO</div>
           <div class="product-actions">
-            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para WALNUT SABO&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: WALNUT SABO%0D%0ACategoria: Pisos%0D%0ASubcategoria: Laminado%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
-            <a href="https://wa.me/15208392877?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20WALNUT%20SABO%20de%20la%20categoría%20Pisos%20/%20subcategoría%20Laminado" class="btn-whatsapp" target="_blank">WhatsApp</a>
+            <button type="button" class="btn-cotizar" onclick="openWaModal('WALNUT SABO', 'Pisos', 'Laminado')">Cotizar por WhatsApp</button>
           </div>
         </div>
       </div>
-      <div class="product-card reveal">
+      <div class="product-card reveal" data-name="walnut" data-category="Pisos">
         <div class="product-gallery" onclick="openLightbox('img/7-pisos/71-laminado/WALNUT.jpg', 'WALNUT')">
           <img src="img/7-pisos/71-laminado/WALNUT.jpg" alt="WALNUT" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">WALNUT</div>
           <div class="product-actions">
-            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para WALNUT&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: WALNUT%0D%0ACategoria: Pisos%0D%0ASubcategoria: Laminado%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
-            <a href="https://wa.me/15208392877?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20WALNUT%20de%20la%20categoría%20Pisos%20/%20subcategoría%20Laminado" class="btn-whatsapp" target="_blank">WhatsApp</a>
+            <button type="button" class="btn-cotizar" onclick="openWaModal('WALNUT', 'Pisos', 'Laminado')">Cotizar por WhatsApp</button>
           </div>
         </div>
       </div>
@@ -697,63 +654,58 @@
       <div class="spec-item"><span class="spec-label">Uso</span><span class="spec-value">Residencial</span></div>
     </div>
     <div class="products-grid">
-      <div class="product-card reveal">
+      <div class="product-card reveal" data-name="albany creek" data-category="Pisos">
         <div class="product-gallery" onclick="openLightbox('img/7-pisos/72-wpc/ALBANY CREEK.jpg', 'ALBANY CREEK')">
           <img src="img/7-pisos/72-wpc/ALBANY CREEK.jpg" alt="ALBANY CREEK" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">ALBANY CREEK</div>
           <div class="product-actions">
-            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para ALBANY CREEK&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: ALBANY CREEK%0D%0ACategoria: Pisos%0D%0ASubcategoria: WPC%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
-            <a href="https://wa.me/15208392877?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20ALBANY%20CREEK%20de%20la%20categoría%20Pisos%20/%20subcategoría%20WPC" class="btn-whatsapp" target="_blank">WhatsApp</a>
+            <button type="button" class="btn-cotizar" onclick="openWaModal('ALBANY CREEK', 'Pisos', 'WPC')">Cotizar por WhatsApp</button>
           </div>
         </div>
       </div>
-      <div class="product-card reveal">
+      <div class="product-card reveal" data-name="canberra" data-category="Pisos">
         <div class="product-gallery" onclick="openLightbox('img/7-pisos/72-wpc/CANBERRA.jpg', 'CANBERRA')">
           <img src="img/7-pisos/72-wpc/CANBERRA.jpg" alt="CANBERRA" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">CANBERRA</div>
           <div class="product-actions">
-            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para CANBERRA&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: CANBERRA%0D%0ACategoria: Pisos%0D%0ASubcategoria: WPC%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
-            <a href="https://wa.me/15208392877?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20CANBERRA%20de%20la%20categoría%20Pisos%20/%20subcategoría%20WPC" class="btn-whatsapp" target="_blank">WhatsApp</a>
+            <button type="button" class="btn-cotizar" onclick="openWaModal('CANBERRA', 'Pisos', 'WPC')">Cotizar por WhatsApp</button>
           </div>
         </div>
       </div>
-      <div class="product-card reveal">
+      <div class="product-card reveal" data-name="hampton" data-category="Pisos">
         <div class="product-gallery" onclick="openLightbox('img/7-pisos/72-wpc/HAMPTON.jpg', 'HAMPTON')">
           <img src="img/7-pisos/72-wpc/HAMPTON.jpg" alt="HAMPTON" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">HAMPTON</div>
           <div class="product-actions">
-            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para HAMPTON&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: HAMPTON%0D%0ACategoria: Pisos%0D%0ASubcategoria: WPC%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
-            <a href="https://wa.me/15208392877?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20HAMPTON%20de%20la%20categoría%20Pisos%20/%20subcategoría%20WPC" class="btn-whatsapp" target="_blank">WhatsApp</a>
+            <button type="button" class="btn-cotizar" onclick="openWaModal('HAMPTON', 'Pisos', 'WPC')">Cotizar por WhatsApp</button>
           </div>
         </div>
       </div>
-      <div class="product-card reveal">
+      <div class="product-card reveal" data-name="norwell" data-category="Pisos">
         <div class="product-gallery" onclick="openLightbox('img/7-pisos/72-wpc/NORWELL.jpg', 'NORWELL')">
           <img src="img/7-pisos/72-wpc/NORWELL.jpg" alt="NORWELL" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">NORWELL</div>
           <div class="product-actions">
-            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para NORWELL&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: NORWELL%0D%0ACategoria: Pisos%0D%0ASubcategoria: WPC%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
-            <a href="https://wa.me/15208392877?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20NORWELL%20de%20la%20categoría%20Pisos%20/%20subcategoría%20WPC" class="btn-whatsapp" target="_blank">WhatsApp</a>
+            <button type="button" class="btn-cotizar" onclick="openWaModal('NORWELL', 'Pisos', 'WPC')">Cotizar por WhatsApp</button>
           </div>
         </div>
       </div>
-      <div class="product-card reveal">
+      <div class="product-card reveal" data-name="vermont" data-category="Pisos">
         <div class="product-gallery" onclick="openLightbox('img/7-pisos/72-wpc/VERMONT.jpg', 'VERMONT')">
           <img src="img/7-pisos/72-wpc/VERMONT.jpg" alt="VERMONT" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">VERMONT</div>
           <div class="product-actions">
-            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para VERMONT&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: VERMONT%0D%0ACategoria: Pisos%0D%0ASubcategoria: WPC%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
-            <a href="https://wa.me/15208392877?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20VERMONT%20de%20la%20categoría%20Pisos%20/%20subcategoría%20WPC" class="btn-whatsapp" target="_blank">WhatsApp</a>
+            <button type="button" class="btn-cotizar" onclick="openWaModal('VERMONT', 'Pisos', 'WPC')">Cotizar por WhatsApp</button>
           </div>
         </div>
       </div>
@@ -772,267 +724,245 @@
       <div class="spec-item"><span class="spec-label">Uso</span><span class="spec-value">Residencial / Comercial ligero</span></div>
     </div>
     <div class="products-grid">
-      <div class="product-card reveal">
+      <div class="product-card reveal" data-name="alberta" data-category="Pisos">
         <div class="product-gallery" onclick="openLightbox('img/7-pisos/73-spc/ALBERTA.jpg', 'ALBERTA')">
           <img src="img/7-pisos/73-spc/ALBERTA.jpg" alt="ALBERTA" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">ALBERTA</div>
           <div class="product-actions">
-            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para ALBERTA&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: ALBERTA%0D%0ACategoria: Pisos%0D%0ASubcategoria: SPC%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
-            <a href="https://wa.me/15208392877?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20ALBERTA%20de%20la%20categoría%20Pisos%20/%20subcategoría%20SPC" class="btn-whatsapp" target="_blank">WhatsApp</a>
+            <button type="button" class="btn-cotizar" onclick="openWaModal('ALBERTA', 'Pisos', 'SPC')">Cotizar por WhatsApp</button>
           </div>
         </div>
       </div>
-      <div class="product-card reveal">
+      <div class="product-card reveal" data-name="amazon" data-category="Pisos">
         <div class="product-gallery" onclick="openLightbox('img/7-pisos/73-spc/AMAZON.jpg', 'AMAZON')">
           <img src="img/7-pisos/73-spc/AMAZON.jpg" alt="AMAZON" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">AMAZON</div>
           <div class="product-actions">
-            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para AMAZON&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: AMAZON%0D%0ACategoria: Pisos%0D%0ASubcategoria: SPC%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
-            <a href="https://wa.me/15208392877?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20AMAZON%20de%20la%20categoría%20Pisos%20/%20subcategoría%20SPC" class="btn-whatsapp" target="_blank">WhatsApp</a>
+            <button type="button" class="btn-cotizar" onclick="openWaModal('AMAZON', 'Pisos', 'SPC')">Cotizar por WhatsApp</button>
           </div>
         </div>
       </div>
-      <div class="product-card reveal">
+      <div class="product-card reveal" data-name="ashlar gray" data-category="Pisos">
         <div class="product-gallery" onclick="openLightbox('img/7-pisos/73-spc/ASHLAR GRAY.jpg', 'ASHLAR GRAY')">
           <img src="img/7-pisos/73-spc/ASHLAR GRAY.jpg" alt="ASHLAR GRAY" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">ASHLAR GRAY</div>
           <div class="product-actions">
-            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para ASHLAR GRAY&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: ASHLAR GRAY%0D%0ACategoria: Pisos%0D%0ASubcategoria: SPC%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
-            <a href="https://wa.me/15208392877?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20ASHLAR%20GRAY%20de%20la%20categoría%20Pisos%20/%20subcategoría%20SPC" class="btn-whatsapp" target="_blank">WhatsApp</a>
+            <button type="button" class="btn-cotizar" onclick="openWaModal('ASHLAR GRAY', 'Pisos', 'SPC')">Cotizar por WhatsApp</button>
           </div>
         </div>
       </div>
-      <div class="product-card reveal">
+      <div class="product-card reveal" data-name="ashlar" data-category="Pisos">
         <div class="product-gallery" onclick="openLightbox('img/7-pisos/73-spc/ASHLAR.jpg', 'ASHLAR')">
           <img src="img/7-pisos/73-spc/ASHLAR.jpg" alt="ASHLAR" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">ASHLAR</div>
           <div class="product-actions">
-            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para ASHLAR&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: ASHLAR%0D%0ACategoria: Pisos%0D%0ASubcategoria: SPC%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
-            <a href="https://wa.me/15208392877?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20ASHLAR%20de%20la%20categoría%20Pisos%20/%20subcategoría%20SPC" class="btn-whatsapp" target="_blank">WhatsApp</a>
+            <button type="button" class="btn-cotizar" onclick="openWaModal('ASHLAR', 'Pisos', 'SPC')">Cotizar por WhatsApp</button>
           </div>
         </div>
       </div>
-      <div class="product-card reveal">
+      <div class="product-card reveal" data-name="banff" data-category="Pisos">
         <div class="product-gallery" onclick="openLightbox('img/7-pisos/73-spc/BANFF.jpg', 'BANFF')">
           <img src="img/7-pisos/73-spc/BANFF.jpg" alt="BANFF" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">BANFF</div>
           <div class="product-actions">
-            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para BANFF&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: BANFF%0D%0ACategoria: Pisos%0D%0ASubcategoria: SPC%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
-            <a href="https://wa.me/15208392877?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20BANFF%20de%20la%20categoría%20Pisos%20/%20subcategoría%20SPC" class="btn-whatsapp" target="_blank">WhatsApp</a>
+            <button type="button" class="btn-cotizar" onclick="openWaModal('BANFF', 'Pisos', 'SPC')">Cotizar por WhatsApp</button>
           </div>
         </div>
       </div>
-      <div class="product-card reveal">
+      <div class="product-card reveal" data-name="caramel" data-category="Pisos">
         <div class="product-gallery" onclick="openLightbox('img/7-pisos/73-spc/CARAMEL.jpg', 'CARAMEL')">
           <img src="img/7-pisos/73-spc/CARAMEL.jpg" alt="CARAMEL" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">CARAMEL</div>
           <div class="product-actions">
-            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para CARAMEL&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: CARAMEL%0D%0ACategoria: Pisos%0D%0ASubcategoria: SPC%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
-            <a href="https://wa.me/15208392877?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20CARAMEL%20de%20la%20categoría%20Pisos%20/%20subcategoría%20SPC" class="btn-whatsapp" target="_blank">WhatsApp</a>
+            <button type="button" class="btn-cotizar" onclick="openWaModal('CARAMEL', 'Pisos', 'SPC')">Cotizar por WhatsApp</button>
           </div>
         </div>
       </div>
-      <div class="product-card reveal">
+      <div class="product-card reveal" data-name="colorado rush" data-category="Pisos">
         <div class="product-gallery" onclick="openLightbox('img/7-pisos/73-spc/COLORADO RUSH.jpg', 'COLORADO RUSH')">
           <img src="img/7-pisos/73-spc/COLORADO RUSH.jpg" alt="COLORADO RUSH" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">COLORADO RUSH</div>
           <div class="product-actions">
-            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para COLORADO RUSH&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: COLORADO RUSH%0D%0ACategoria: Pisos%0D%0ASubcategoria: SPC%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
-            <a href="https://wa.me/15208392877?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20COLORADO%20RUSH%20de%20la%20categoría%20Pisos%20/%20subcategoría%20SPC" class="btn-whatsapp" target="_blank">WhatsApp</a>
+            <button type="button" class="btn-cotizar" onclick="openWaModal('COLORADO RUSH', 'Pisos', 'SPC')">Cotizar por WhatsApp</button>
           </div>
         </div>
       </div>
-      <div class="product-card reveal">
+      <div class="product-card reveal" data-name="concrete lite" data-category="Pisos">
         <div class="product-gallery" onclick="openLightbox('img/7-pisos/73-spc/CONCRETE LITE.jpg', 'CONCRETE LITE')">
           <img src="img/7-pisos/73-spc/CONCRETE LITE.jpg" alt="CONCRETE LITE" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">CONCRETE LITE</div>
           <div class="product-actions">
-            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para CONCRETE LITE&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: CONCRETE LITE%0D%0ACategoria: Pisos%0D%0ASubcategoria: SPC%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
-            <a href="https://wa.me/15208392877?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20CONCRETE%20LITE%20de%20la%20categoría%20Pisos%20/%20subcategoría%20SPC" class="btn-whatsapp" target="_blank">WhatsApp</a>
+            <button type="button" class="btn-cotizar" onclick="openWaModal('CONCRETE LITE', 'Pisos', 'SPC')">Cotizar por WhatsApp</button>
           </div>
         </div>
       </div>
-      <div class="product-card reveal">
+      <div class="product-card reveal" data-name="concrete" data-category="Pisos">
         <div class="product-gallery" onclick="openLightbox('img/7-pisos/73-spc/CONCRETE.jpg', 'CONCRETE')">
           <img src="img/7-pisos/73-spc/CONCRETE.jpg" alt="CONCRETE" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">CONCRETE</div>
           <div class="product-actions">
-            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para CONCRETE&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: CONCRETE%0D%0ACategoria: Pisos%0D%0ASubcategoria: SPC%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
-            <a href="https://wa.me/15208392877?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20CONCRETE%20de%20la%20categoría%20Pisos%20/%20subcategoría%20SPC" class="btn-whatsapp" target="_blank">WhatsApp</a>
+            <button type="button" class="btn-cotizar" onclick="openWaModal('CONCRETE', 'Pisos', 'SPC')">Cotizar por WhatsApp</button>
           </div>
         </div>
       </div>
-      <div class="product-card reveal">
+      <div class="product-card reveal" data-name="dalby" data-category="Pisos">
         <div class="product-gallery" onclick="openLightbox('img/7-pisos/73-spc/DALBY.jpg', 'DALBY')">
           <img src="img/7-pisos/73-spc/DALBY.jpg" alt="DALBY" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">DALBY</div>
           <div class="product-actions">
-            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para DALBY&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: DALBY%0D%0ACategoria: Pisos%0D%0ASubcategoria: SPC%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
-            <a href="https://wa.me/15208392877?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20DALBY%20de%20la%20categoría%20Pisos%20/%20subcategoría%20SPC" class="btn-whatsapp" target="_blank">WhatsApp</a>
+            <button type="button" class="btn-cotizar" onclick="openWaModal('DALBY', 'Pisos', 'SPC')">Cotizar por WhatsApp</button>
           </div>
         </div>
       </div>
-      <div class="product-card reveal">
+      <div class="product-card reveal" data-name="delamere" data-category="Pisos">
         <div class="product-gallery" onclick="openLightbox('img/7-pisos/73-spc/DELAMERE.jpg', 'DELAMERE')">
           <img src="img/7-pisos/73-spc/DELAMERE.jpg" alt="DELAMERE" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">DELAMERE</div>
           <div class="product-actions">
-            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para DELAMERE&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: DELAMERE%0D%0ACategoria: Pisos%0D%0ASubcategoria: SPC%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
-            <a href="https://wa.me/15208392877?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20DELAMERE%20de%20la%20categoría%20Pisos%20/%20subcategoría%20SPC" class="btn-whatsapp" target="_blank">WhatsApp</a>
+            <button type="button" class="btn-cotizar" onclick="openWaModal('DELAMERE', 'Pisos', 'SPC')">Cotizar por WhatsApp</button>
           </div>
         </div>
       </div>
-      <div class="product-card reveal">
+      <div class="product-card reveal" data-name="expresso" data-category="Pisos">
         <div class="product-gallery" onclick="openLightbox('img/7-pisos/73-spc/EXPRESSO.jpg', 'EXPRESSO')">
           <img src="img/7-pisos/73-spc/EXPRESSO.jpg" alt="EXPRESSO" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">EXPRESSO</div>
           <div class="product-actions">
-            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para EXPRESSO&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: EXPRESSO%0D%0ACategoria: Pisos%0D%0ASubcategoria: SPC%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
-            <a href="https://wa.me/15208392877?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20EXPRESSO%20de%20la%20categoría%20Pisos%20/%20subcategoría%20SPC" class="btn-whatsapp" target="_blank">WhatsApp</a>
+            <button type="button" class="btn-cotizar" onclick="openWaModal('EXPRESSO', 'Pisos', 'SPC')">Cotizar por WhatsApp</button>
           </div>
         </div>
       </div>
-      <div class="product-card reveal">
+      <div class="product-card reveal" data-name="jasper" data-category="Pisos">
         <div class="product-gallery" onclick="openLightbox('img/7-pisos/73-spc/JASPER.jpg', 'JASPER')">
           <img src="img/7-pisos/73-spc/JASPER.jpg" alt="JASPER" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">JASPER</div>
           <div class="product-actions">
-            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para JASPER&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: JASPER%0D%0ACategoria: Pisos%0D%0ASubcategoria: SPC%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
-            <a href="https://wa.me/15208392877?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20JASPER%20de%20la%20categoría%20Pisos%20/%20subcategoría%20SPC" class="btn-whatsapp" target="_blank">WhatsApp</a>
+            <button type="button" class="btn-cotizar" onclick="openWaModal('JASPER', 'Pisos', 'SPC')">Cotizar por WhatsApp</button>
           </div>
         </div>
       </div>
-      <div class="product-card reveal">
+      <div class="product-card reveal" data-name="mineral gray" data-category="Pisos">
         <div class="product-gallery" onclick="openLightbox('img/7-pisos/73-spc/MINERAL GRAY.jpg', 'MINERAL GRAY')">
           <img src="img/7-pisos/73-spc/MINERAL GRAY.jpg" alt="MINERAL GRAY" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">MINERAL GRAY</div>
           <div class="product-actions">
-            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para MINERAL GRAY&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: MINERAL GRAY%0D%0ACategoria: Pisos%0D%0ASubcategoria: SPC%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
-            <a href="https://wa.me/15208392877?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20MINERAL%20GRAY%20de%20la%20categoría%20Pisos%20/%20subcategoría%20SPC" class="btn-whatsapp" target="_blank">WhatsApp</a>
+            <button type="button" class="btn-cotizar" onclick="openWaModal('MINERAL GRAY', 'Pisos', 'SPC')">Cotizar por WhatsApp</button>
           </div>
         </div>
       </div>
-      <div class="product-card reveal">
+      <div class="product-card reveal" data-name="moka" data-category="Pisos">
         <div class="product-gallery" onclick="openLightbox('img/7-pisos/73-spc/MOKA.jpg', 'MOKA')">
           <img src="img/7-pisos/73-spc/MOKA.jpg" alt="MOKA" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">MOKA</div>
           <div class="product-actions">
-            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para MOKA&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: MOKA%0D%0ACategoria: Pisos%0D%0ASubcategoria: SPC%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
-            <a href="https://wa.me/15208392877?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20MOKA%20de%20la%20categoría%20Pisos%20/%20subcategoría%20SPC" class="btn-whatsapp" target="_blank">WhatsApp</a>
+            <button type="button" class="btn-cotizar" onclick="openWaModal('MOKA', 'Pisos', 'SPC')">Cotizar por WhatsApp</button>
           </div>
         </div>
       </div>
-      <div class="product-card reveal">
+      <div class="product-card reveal" data-name="nomadic" data-category="Pisos">
         <div class="product-gallery" onclick="openLightbox('img/7-pisos/73-spc/NOMADIC.jpg', 'NOMADIC')">
           <img src="img/7-pisos/73-spc/NOMADIC.jpg" alt="NOMADIC" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">NOMADIC</div>
           <div class="product-actions">
-            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para NOMADIC&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: NOMADIC%0D%0ACategoria: Pisos%0D%0ASubcategoria: SPC%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
-            <a href="https://wa.me/15208392877?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20NOMADIC%20de%20la%20categoría%20Pisos%20/%20subcategoría%20SPC" class="btn-whatsapp" target="_blank">WhatsApp</a>
+            <button type="button" class="btn-cotizar" onclick="openWaModal('NOMADIC', 'Pisos', 'SPC')">Cotizar por WhatsApp</button>
           </div>
         </div>
       </div>
-      <div class="product-card reveal">
+      <div class="product-card reveal" data-name="parkland" data-category="Pisos">
         <div class="product-gallery" onclick="openLightbox('img/7-pisos/73-spc/PARKLAND.jpg', 'PARKLAND')">
           <img src="img/7-pisos/73-spc/PARKLAND.jpg" alt="PARKLAND" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">PARKLAND</div>
           <div class="product-actions">
-            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para PARKLAND&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: PARKLAND%0D%0ACategoria: Pisos%0D%0ASubcategoria: SPC%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
-            <a href="https://wa.me/15208392877?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20PARKLAND%20de%20la%20categoría%20Pisos%20/%20subcategoría%20SPC" class="btn-whatsapp" target="_blank">WhatsApp</a>
+            <button type="button" class="btn-cotizar" onclick="openWaModal('PARKLAND', 'Pisos', 'SPC')">Cotizar por WhatsApp</button>
           </div>
         </div>
       </div>
-      <div class="product-card reveal">
+      <div class="product-card reveal" data-name="silverstone" data-category="Pisos">
         <div class="product-gallery" onclick="openLightbox('img/7-pisos/73-spc/SILVERSTONE.jpg', 'SILVERSTONE')">
           <img src="img/7-pisos/73-spc/SILVERSTONE.jpg" alt="SILVERSTONE" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">SILVERSTONE</div>
           <div class="product-actions">
-            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para SILVERSTONE&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: SILVERSTONE%0D%0ACategoria: Pisos%0D%0ASubcategoria: SPC%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
-            <a href="https://wa.me/15208392877?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20SILVERSTONE%20de%20la%20categoría%20Pisos%20/%20subcategoría%20SPC" class="btn-whatsapp" target="_blank">WhatsApp</a>
+            <button type="button" class="btn-cotizar" onclick="openWaModal('SILVERSTONE', 'Pisos', 'SPC')">Cotizar por WhatsApp</button>
           </div>
         </div>
       </div>
-      <div class="product-card reveal">
+      <div class="product-card reveal" data-name="silvester" data-category="Pisos">
         <div class="product-gallery" onclick="openLightbox('img/7-pisos/73-spc/SILVESTER.jpg', 'SILVESTER')">
           <img src="img/7-pisos/73-spc/SILVESTER.jpg" alt="SILVESTER" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">SILVESTER</div>
           <div class="product-actions">
-            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para SILVESTER&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: SILVESTER%0D%0ACategoria: Pisos%0D%0ASubcategoria: SPC%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
-            <a href="https://wa.me/15208392877?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20SILVESTER%20de%20la%20categoría%20Pisos%20/%20subcategoría%20SPC" class="btn-whatsapp" target="_blank">WhatsApp</a>
+            <button type="button" class="btn-cotizar" onclick="openWaModal('SILVESTER', 'Pisos', 'SPC')">Cotizar por WhatsApp</button>
           </div>
         </div>
       </div>
-      <div class="product-card reveal">
+      <div class="product-card reveal" data-name="sterling oak" data-category="Pisos">
         <div class="product-gallery" onclick="openLightbox('img/7-pisos/73-spc/STERLING OAK.jpg', 'STERLING OAK')">
           <img src="img/7-pisos/73-spc/STERLING OAK.jpg" alt="STERLING OAK" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">STERLING OAK</div>
           <div class="product-actions">
-            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para STERLING OAK&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: STERLING OAK%0D%0ACategoria: Pisos%0D%0ASubcategoria: SPC%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
-            <a href="https://wa.me/15208392877?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20STERLING%20OAK%20de%20la%20categoría%20Pisos%20/%20subcategoría%20SPC" class="btn-whatsapp" target="_blank">WhatsApp</a>
+            <button type="button" class="btn-cotizar" onclick="openWaModal('STERLING OAK', 'Pisos', 'SPC')">Cotizar por WhatsApp</button>
           </div>
         </div>
       </div>
-      <div class="product-card reveal">
+      <div class="product-card reveal" data-name="tongass" data-category="Pisos">
         <div class="product-gallery" onclick="openLightbox('img/7-pisos/73-spc/TONGASS.jpg', 'TONGASS')">
           <img src="img/7-pisos/73-spc/TONGASS.jpg" alt="TONGASS" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">TONGASS</div>
           <div class="product-actions">
-            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para TONGASS&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: TONGASS%0D%0ACategoria: Pisos%0D%0ASubcategoria: SPC%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
-            <a href="https://wa.me/15208392877?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20TONGASS%20de%20la%20categoría%20Pisos%20/%20subcategoría%20SPC" class="btn-whatsapp" target="_blank">WhatsApp</a>
+            <button type="button" class="btn-cotizar" onclick="openWaModal('TONGASS', 'Pisos', 'SPC')">Cotizar por WhatsApp</button>
           </div>
         </div>
       </div>
-      <div class="product-card reveal">
+      <div class="product-card reveal" data-name="yosemite" data-category="Pisos">
         <div class="product-gallery" onclick="openLightbox('img/7-pisos/73-spc/YOSEMITE.jpg', 'YOSEMITE')">
           <img src="img/7-pisos/73-spc/YOSEMITE.jpg" alt="YOSEMITE" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">YOSEMITE</div>
           <div class="product-actions">
-            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para YOSEMITE&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: YOSEMITE%0D%0ACategoria: Pisos%0D%0ASubcategoria: SPC%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
-            <a href="https://wa.me/15208392877?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20YOSEMITE%20de%20la%20categoría%20Pisos%20/%20subcategoría%20SPC" class="btn-whatsapp" target="_blank">WhatsApp</a>
+            <button type="button" class="btn-cotizar" onclick="openWaModal('YOSEMITE', 'Pisos', 'SPC')">Cotizar por WhatsApp</button>
           </div>
         </div>
       </div>
@@ -1051,51 +981,47 @@
       <div class="spec-item"><span class="spec-label">Uso</span><span class="spec-value">Residencial</span></div>
     </div>
     <div class="products-grid">
-      <div class="product-card reveal">
+      <div class="product-card reveal" data-name="light gray" data-category="Pisos">
         <div class="product-gallery" onclick="openLightbox('img/7-pisos/74-deck-sintetico/LIGHT GRAY.jpg', 'LIGHT GRAY')">
           <img src="img/7-pisos/74-deck-sintetico/LIGHT GRAY.jpg" alt="LIGHT GRAY" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">LIGHT GRAY</div>
           <div class="product-actions">
-            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para LIGHT GRAY&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: LIGHT GRAY%0D%0ACategoria: Pisos%0D%0ASubcategoria: Deck Sintetico%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
-            <a href="https://wa.me/15208392877?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20LIGHT%20GRAY%20de%20la%20categoría%20Pisos%20/%20subcategoría%20Deck%20Sintetico" class="btn-whatsapp" target="_blank">WhatsApp</a>
+            <button type="button" class="btn-cotizar" onclick="openWaModal('LIGHT GRAY', 'Pisos', 'Deck Sintetico')">Cotizar por WhatsApp</button>
           </div>
         </div>
       </div>
-      <div class="product-card reveal">
+      <div class="product-card reveal" data-name="maple" data-category="Pisos">
         <div class="product-gallery" onclick="openLightbox('img/7-pisos/74-deck-sintetico/MAPLE.jpg', 'MAPLE')">
           <img src="img/7-pisos/74-deck-sintetico/MAPLE.jpg" alt="MAPLE" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">MAPLE</div>
           <div class="product-actions">
-            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para MAPLE&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: MAPLE%0D%0ACategoria: Pisos%0D%0ASubcategoria: Deck Sintetico%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
-            <a href="https://wa.me/15208392877?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20MAPLE%20de%20la%20categoría%20Pisos%20/%20subcategoría%20Deck%20Sintetico" class="btn-whatsapp" target="_blank">WhatsApp</a>
+            <button type="button" class="btn-cotizar" onclick="openWaModal('MAPLE', 'Pisos', 'Deck Sintetico')">Cotizar por WhatsApp</button>
           </div>
         </div>
       </div>
-      <div class="product-card reveal">
+      <div class="product-card reveal" data-name="teak" data-category="Pisos">
         <div class="product-gallery" onclick="openLightbox('img/7-pisos/74-deck-sintetico/TEAK.jpg', 'TEAK')">
           <img src="img/7-pisos/74-deck-sintetico/TEAK.jpg" alt="TEAK" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">TEAK</div>
           <div class="product-actions">
-            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para TEAK&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: TEAK%0D%0ACategoria: Pisos%0D%0ASubcategoria: Deck Sintetico%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
-            <a href="https://wa.me/15208392877?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20TEAK%20de%20la%20categoría%20Pisos%20/%20subcategoría%20Deck%20Sintetico" class="btn-whatsapp" target="_blank">WhatsApp</a>
+            <button type="button" class="btn-cotizar" onclick="openWaModal('TEAK', 'Pisos', 'Deck Sintetico')">Cotizar por WhatsApp</button>
           </div>
         </div>
       </div>
-      <div class="product-card reveal">
+      <div class="product-card reveal" data-name="wenge" data-category="Pisos">
         <div class="product-gallery" onclick="openLightbox('img/7-pisos/74-deck-sintetico/WENGE.jpg', 'WENGE')">
           <img src="img/7-pisos/74-deck-sintetico/WENGE.jpg" alt="WENGE" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">WENGE</div>
           <div class="product-actions">
-            <a href="mailto:adis.remodelacion@gmail.com?subject=Cotizacion para WENGE&body=Hola ADIS,%0D%0A%0D%0AMe interesa obtener una cotizacion para:%0D%0A%0D%0AProducto: WENGE%0D%0ACategoria: Pisos%0D%0ASubcategoria: Deck Sintetico%0D%0A%0D%0AFavor de contactarme para mas detalles.%0D%0A%0D%0AGracias." class="btn-cotizar">Solicitar Cotización</a>
-            <a href="https://wa.me/15208392877?text=Hola%20ADIS,%20me%20interesa%20cotizar%20el%20producto%20WENGE%20de%20la%20categoría%20Pisos%20/%20subcategoría%20Deck%20Sintetico" class="btn-whatsapp" target="_blank">WhatsApp</a>
+            <button type="button" class="btn-cotizar" onclick="openWaModal('WENGE', 'Pisos', 'Deck Sintetico')">Cotizar por WhatsApp</button>
           </div>
         </div>
       </div>
@@ -1130,7 +1056,7 @@
           <div style="width: 40px; height: 40px; border-radius: 50%; background: var(--gold); display: flex; align-items: center; justify-content: center; color: var(--black); font-weight: 700; font-size: 0.9rem;">MG</div>
           <div>
             <div style="font-size: 0.85rem; color: var(--white); font-weight: 600;">María G.</div>
-            <div style="font-size: 0.75rem; color: var(--gold);">⭐⭐⭐⭐⭐ — Placas PVC, Nogales</div>
+            <div style="font-size: 0.75rem; color: var(--gold);">&#11088;&#11088;&#11088;&#11088;&#11088; — Placas PVC, Nogales</div>
           </div>
         </div>
       </div>
@@ -1141,7 +1067,7 @@
           <div style="width: 40px; height: 40px; border-radius: 50%; background: var(--gold); display: flex; align-items: center; justify-content: center; color: var(--black); font-weight: 700; font-size: 0.9rem;">CR</div>
           <div>
             <div style="font-size: 0.85rem; color: var(--white); font-weight: 600;">Dr. Carlos R.</div>
-            <div style="font-size: 0.75rem; color: var(--gold);">⭐⭐⭐⭐⭐ — Lambrín WPC, Rio Rico</div>
+            <div style="font-size: 0.75rem; color: var(--gold);">&#11088;&#11088;&#11088;&#11088;&#11088; — Lambrín WPC, Rio Rico</div>
           </div>
         </div>
       </div>
@@ -1152,7 +1078,7 @@
           <div style="width: 40px; height: 40px; border-radius: 50%; background: var(--gold); display: flex; align-items: center; justify-content: center; color: var(--black); font-weight: 700; font-size: 0.9rem;">FL</div>
           <div>
             <div style="font-size: 0.85rem; color: var(--white); font-weight: 600;">Familia López</div>
-            <div style="font-size: 0.75rem; color: var(--gold);">⭐⭐⭐⭐⭐ — Pisos SPC, Nogales</div>
+            <div style="font-size: 0.75rem; color: var(--gold);">&#11088;&#11088;&#11088;&#11088;&#11088; — Pisos SPC, Nogales</div>
           </div>
         </div>
       </div>
@@ -1168,12 +1094,12 @@
         <input type="text" id="tProducto" placeholder="Producto o categoría que compraste (opcional)"
           style="padding: 0.9rem 1.2rem; background: rgba(42,42,42,0.8); border: 1px solid rgba(197,160,89,0.3); border-radius: 8px; color: var(--white); font-family: 'Montserrat', sans-serif; font-size: 0.9rem; backdrop-filter: blur(8px); transition: all 0.3s;"
           onfocus="this.style.borderColor='var(--gold)';this.style.boxShadow='0 0 15px rgba(197,160,89,0.15)'" onblur="this.style.borderColor='rgba(197,160,89,0.3)';this.style.boxShadow='none'">
-        <button type="submit" class="btn-primary" style="align-self: center; margin-top: 0.5rem;">📩 Enviar Testimonio</button>
+        <button type="submit" class="btn-primary" style="align-self: center; margin-top: 0.5rem;">&#128233; Enviar Testimonio</button>
       </form>
       <div style="text-align: center; margin-top: 1.2rem; font-size: 0.8rem; color: rgba(245,245,245,0.5); line-height: 1.6;">
         Los testimonios son revisados antes de publicarse.<br>
         También puedes enviarlos directamente por 
-        <a href="https://wa.me/15208392877?text=Hola%20ADIS,%20quiero%20dejar%20un%20testimonio" target="_blank" style="color: var(--gold); text-decoration: none; font-weight: 600;">WhatsApp 💬</a>
+        <a href="https://wa.me/15208392877?text=Hola%20ADIS,%20quiero%20dejar%20un%20testimonio" target="_blank" style="color: var(--gold); text-decoration: none; font-weight: 600;">WhatsApp &#128172;</a>
       </div>
     </div>
   </section>
@@ -1193,43 +1119,134 @@
     }
   </script>
 
+
+  <!-- MODAL COTIZAR WHATSAPP -->
+  <div class="wa-modal" id="waModal" onclick="closeWaModal(event)">
+    <div class="wa-modal-box" onclick="event.stopPropagation()">
+      <button class="wa-modal-close" onclick="closeWaModal()">&#10005;</button>
+      <h3>Cotizar por WhatsApp</h3>
+      <p class="wa-modal-subtitle">Completa tus datos y te responderemos con información y asesoría.</p>
+      <form id="waModalForm" onsubmit="sendWaModal(event)">
+        <input type="hidden" id="waModalProduct" value="">
+        <input type="hidden" id="waModalCategory" value="">
+        <input type="hidden" id="waModalSubcategory" value="">
+        <div class="wa-modal-field">
+          <label for="waModalNombre">Nombre *</label>
+          <input type="text" id="waModalNombre" placeholder="Tu nombre" required>
+        </div>
+        <div class="wa-modal-field">
+          <label for="waModalCiudad">Ciudad / Ubicación de la obra *</label>
+          <input type="text" id="waModalCiudad" placeholder="Ej. Nogales, Sonora" required>
+        </div>
+        <div class="wa-modal-row">
+          <div class="wa-modal-field">
+            <label for="waModalMetros">m2 aproximados</label>
+            <input type="number" id="waModalMetros" placeholder="Ej. 25" min="1" step="0.1">
+          </div>
+          <div class="wa-modal-field">
+            <label for="waModalUso">Uso</label>
+            <select id="waModalUso">
+              <option value="Residencial">Residencial</option>
+              <option value="Comercial">Comercial</option>
+              <option value="Otro">Otro</option>
+            </select>
+          </div>
+        </div>
+        <div class="wa-modal-field">
+          <label for="waModalComentario">Comentario (opcional)</label>
+          <textarea id="waModalComentario" rows="3" placeholder="¿Alguna duda o requerimiento especial?"></textarea>
+        </div>
+        <div class="wa-modal-product" id="waModalProductLabel"></div>
+        <button type="submit" class="wa-modal-submit">Enviar a WhatsApp</button>
+      </form>
+    </div>
+  </div>
+  <script>
+    function openWaModal(product, category, subcategory) {
+      document.getElementById('waModalProduct').value = product || '';
+      document.getElementById('waModalCategory').value = category || '';
+      document.getElementById('waModalSubcategory').value = subcategory || '';
+      document.getElementById('waModalProductLabel').textContent = product + (subcategory ? ' - ' + subcategory : '');
+      document.getElementById('waModal').classList.add('active');
+      setTimeout(function() { document.getElementById('waModalNombre').focus(); }, 100);
+    }
+    function closeWaModal(e) {
+      if (e && e.target !== e.currentTarget) return;
+      document.getElementById('waModal').classList.remove('active');
+    }
+    function sendWaModal(e) {
+      e.preventDefault();
+      var phone = '15208392877';
+      var product = document.getElementById('waModalProduct').value;
+      var category = document.getElementById('waModalCategory').value;
+      var subcategory = document.getElementById('waModalSubcategory').value;
+      var nombre = document.getElementById('waModalNombre').value.trim();
+      var ciudad = document.getElementById('waModalCiudad').value.trim();
+      var metros = document.getElementById('waModalMetros').value.trim();
+      var uso = document.getElementById('waModalUso').value;
+      var comentario = document.getElementById('waModalComentario').value.trim();
+      var msg = `Hola ADIS, soy ${nombre || 'un cliente interesado'}. Me interesa cotizar:
+Producto: ${product}
+Categoria: ${category}`;
+      if (subcategory) msg += `
+Subcategoria: ${subcategory}`;
+      if (ciudad) msg += `
+Ubicacion de la obra: ${ciudad}`;
+      if (metros) msg += `
+Metros cuadrados aproximados: ${metros}`;
+      msg += `
+Uso: ${uso}`;
+      if (comentario) msg += `
+Comentario: ${comentario}`;
+      msg += `
+Favor de contactarme para mas detalles. ¡Gracias!`;
+      window.open('https://wa.me/' + phone + '?text=' + encodeURIComponent(msg), '_blank');
+      closeWaModal();
+      e.target.reset();
+    }
+  </script>
+
   <footer>
     <div class="footer-logo"><img src="LOGO ADIS.png" alt="ADIS Logo"></div>
     <div class="footer-info">
-      <strong>ADI'S DISEÑO & REMODELACIÓN</strong><br>
+      <strong>ADI&#39;S DISEÑO & REMODELACIÓN</strong><br>
       Creando espacios, reinventando hogares.<br>
       Nogales, Sonora · Rio Rico, AZ<br>
-      Tel. USA: +1 (520) 839-2877<br>
+      Tel. MX: +1 (520) 839-2877 · Tel. USA: +1 (520) 839-2877<br>
       adis.remodelacion@gmail.com
     </div>
     <div class="footer-social">
-      <a href="https://wa.me/15208392877?text=Hola%20ADIS,%20vi%20el%20catálogo%20y%20me%20interesa%20obtener%20información%20sobre%20sus%20productos." target="_blank" title="WhatsApp">💬</a>
-      <a href="https://www.facebook.com/p/Adis-Dise%C3%B1o-Remodelaci%C3%B3n-61579849591594/" target="_blank" title="Facebook">📘</a>
+      <a href="https://wa.me/15208392877?text=Hola%20ADIS,%20vi%20el%20catálogo%20y%20me%20interesa%20obtener%20información%20sobre%20sus%20productos." target="_blank" title="WhatsApp">&#128172;</a>
+      <a href="https://www.facebook.com/p/Adis-Dise%C3%B1o-Remodelaci%C3%B3n-61579849591594/" target="_blank" title="Facebook">&#128220;</a>
     </div>
     <div class="copyright">© 2026 ADIS DISEÑO & REMODELACIÓN. TODOS LOS DERECHOS RESERVADOS.</div>
   </footer>
 
   <!-- MOBILE BOTTOM NAV -->
   <nav class="mobile-bottom-nav">
-    <a href="index.html"><span>🏠</span><span>Inicio</span></a>
-    <a href="index.html#categorias"><span>📂</span><span>Catálogo</span></a>
-    <a href="proyectos.html"><span>🖼️</span><span>Proyectos</span></a>
-    <a href="contacto.html"><span>📞</span><span>Contacto</span></a>
+    <a href="index.html"><span>&#127968;</span><span>Inicio</span></a>
+    <a href="index.html#categorias"><span>&#128194;</span><span>Catálogo</span></a>
+    <a href="proyectos.html"><span>&#128444;</span><span>Proyectos</span></a>
+    <a href="contacto.html"><span>&#128222;</span><span>Contacto</span></a>
   </nav>
 
-  <a href="https://wa.me/15208392877?text=Hola%20ADIS,%20vi%20el%20catálogo%20y%20me%20interesa%20obtener%20información%20sobre%20sus%20productos." class="whatsapp-float" target="_blank" title="Contáctanos por WhatsApp"><svg viewBox="0 0 24 24" width="32" height="32" fill="white" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.008-.57-.008-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg></a>
+  <a href="https://wa.me/15208392877?text=Hola%20ADIS,%20vi%20el%20catálogo%20y%20me%20interesa%20obtener%20información%20sobre%20sus%20productos." class="whatsapp-float" target="_blank" title="Contáctanos por WhatsApp" aria-label="WhatsApp">
+    <svg viewBox="0 0 24 24" width="32" height="32" fill="white" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.008-.57-.008-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+    <span class="wa-tooltip">¿Dudas? Escribenos</span>
+  </a>
 
-  <button class="chatbot-float" onclick="toggleChat()" title="Asistente Virtual">🤖<span class="chatbot-badge" id="chatBadge">0</span></button>
+  <button class="chatbot-float" onclick="toggleChat()" title="Asistente Virtual">&#129302;<span class="chatbot-badge" id="chatBadge">0</span></button>
   <div class="chatbot-window" id="chatbotWindow">
     <div class="chatbot-header">
-      <h4>🤖 Asistente ADIS</h4>
+      <h4>&#129302; Asistente ADIS</h4>
       <div class="chat-header-actions">
-        <button class="chat-clear" onclick="clearAllChat()" title="Nueva conversación">🗑️</button>
-        <button class="chatbot-close" onclick="toggleChat()">✕</button>
+        <button class="chat-clear" onclick="clearAllChat()" title="Nueva conversación">&#128465;</button>
+        <button class="chatbot-close" onclick="toggleChat()">&#10005;</button>
       </div>
     </div>
     <div class="chatbot-body" id="chatbotBody"></div>
   </div>
+
 
 
   <script>
@@ -1447,7 +1464,7 @@
         const labels = {
           medidas: '📐 Medidas', agua: '💧 Resistencia al agua', exterior: '🌤️ Uso exterior/interior',
           material: '🧱 Material', instalacion: '🛠️ Instalación', colores: '🎨 Colores',
-          precio: '💰 Precio', mantenimiento: '🧼 Mantenimiento', usos: '🏠 Usos recomendados',
+          precio: '💰 Precio', mantenimiento: '🧼 Mantenimiento', usos: '&#127968; Usos recomendados',
           garantia: '✅ Garantía', comparar: '⚖️ Diferencias'
         };
         return '<strong>' + labels[questionType] + ' — ' + kb.name + ':</strong><br><br>' + val;
@@ -1916,13 +1933,13 @@
             suggestions = ['Ver productos', 'Horarios', 'Cotización', 'Ubicación', '¿Tienen envío?'];
             break;
           case 'horario':
-            r = '🕐 <strong>Horarios de atención (Showroom):</strong><br><br>• <strong>Lunes:</strong> ' + kb.horarios.lunes + '<br>• <strong>Martes:</strong> ' + kb.horarios.martes + '<br>• <strong>Miércoles:</strong> ' + kb.horarios.miercoles + '<br>• <strong>Jueves:</strong> ' + kb.horarios.jueves + '<br>• <strong>Viernes:</strong> ' + kb.horarios.viernes + '<br>• <strong>Sábado:</strong> ' + kb.horarios.sabado + '<br>• <strong>Domingo:</strong> ' + kb.horarios.domingo + '<br><br>💬 ' + kb.horarios.whatsapp;
+            r = '🕐 <strong>Horarios de atención (Showroom):</strong><br><br>• <strong>Lunes:</strong> ' + kb.horarios.lunes + '<br>• <strong>Martes:</strong> ' + kb.horarios.martes + '<br>• <strong>Miércoles:</strong> ' + kb.horarios.miercoles + '<br>• <strong>Jueves:</strong> ' + kb.horarios.jueves + '<br>• <strong>Viernes:</strong> ' + kb.horarios.viernes + '<br>• <strong>Sábado:</strong> ' + kb.horarios.sabado + '<br>• <strong>Domingo:</strong> ' + kb.horarios.domingo + '<br><br>&#128172; ' + kb.horarios.whatsapp;
             break;
           case 'contacto':
-            r = '📱 <strong>Contactos directos:</strong><br><br>• <strong>WhatsApp:</strong> ' + kb.contacto.whatsapp + '<br>• <strong>Showroom:</strong> ' + kb.contacto.tel_showroom + '<br>• <strong>Email:</strong> ' + kb.contacto.email + '<br><br><a href="https://wa.me/15208392877?text=Hola%20ADIS,%20tengo%20una%20pregunta" target="_blank" class="chat-whatsapp-btn">💬 Abrir WhatsApp</a>';
+            r = '📱 <strong>Contactos directos:</strong><br><br>• <strong>WhatsApp:</strong> ' + kb.contacto.whatsapp + '<br>• <strong>Showroom:</strong> ' + kb.contacto.tel_showroom + '<br>• <strong>Email:</strong> ' + kb.contacto.email + '<br><br><a href="https://wa.me/15208392877?text=Hola%20ADIS,%20tengo%20una%20pregunta" target="_blank" class="chat-whatsapp-btn">&#128172; Abrir WhatsApp</a>';
             break;
           case 'ubicacion':
-            r = '📍 <strong>ADIS Diseño & Remodelación</strong><br><br>🏠 <strong>Dirección:</strong><br>' + kb.contacto.direccion + '<br><br>📱 <strong>WhatsApp:</strong> ' + kb.contacto.whatsapp + '<br>☎️ <strong>Showroom:</strong> ' + kb.contacto.tel_showroom + '<br>✉️ <strong>Email:</strong> ' + kb.contacto.email + '<br><br>🕐 Horario showroom: Martes a domingo (lunes cerrado)<br>📍 También atendemos en <strong>Rio Rico, AZ</strong><br><br><a href="https://maps.app.goo.gl/Q3raWUzhCj2rvhjm8" target="_blank" style="color:#C5A059">🗺️ Ver en Google Maps →</a>';
+            r = '📍 <strong>ADIS Diseño & Remodelación</strong><br><br>&#127968; <strong>Dirección:</strong><br>' + kb.contacto.direccion + '<br><br>📱 <strong>WhatsApp:</strong> ' + kb.contacto.whatsapp + '<br>☎️ <strong>Showroom:</strong> ' + kb.contacto.tel_showroom + '<br>✉️ <strong>Email:</strong> ' + kb.contacto.email + '<br><br>🕐 Horario showroom: Martes a domingo (lunes cerrado)<br>📍 También atendemos en <strong>Rio Rico, AZ</strong><br><br><a href="https://maps.app.goo.gl/Q3raWUzhCj2rvhjm8" target="_blank" style="color:#C5A059">🗺️ Ver en Google Maps →</a>';
             break;
           case 'precio':
             r = '💰 <strong>Precios y cotizaciones:</strong><br><br>• ' + kb.precios.iva + '<br>• ' + kb.precios.mayorista + '<br>• Los precios son <strong>solo por el material</strong> (por pieza, caja o metro cuadrado según categoría)<br><br>📋 <strong>Cotización detallada:</strong> ' + kb.cotizacion.tiempo + '<br>📦 <strong>Incluye:</strong> ' + kb.cotizacion.incluye + '<br>⏱️ <strong>Sin stock:</strong> ' + kb.cotizacion.sin_stock + '<br><br>🔨 ¿Requieres instalación? Un representante visita tu obra para cotizarla aparte.<br><br><a href="https://wa.me/15208392877?text=Hola%20ADIS,%20quiero%20una%20cotización" target="_blank" class="chat-whatsapp-btn">📱 Solicitar cotización gratis</a>';
@@ -1942,19 +1959,19 @@
             r = '✅ <strong>Garantía:</strong><br><br>🛡️ ' + kb.garantia.validacion + '<br><br>• Placas PVC: ' + kb.garantia.pvc + '<br>• Lambrín WPC: ' + kb.garantia.wpc + '<br>• Pisos SPC: ' + kb.garantia.spc + '<br>• Zacate sintético: ' + kb.garantia.zacate + '<br><br>La garantía cubre defectos de fábrica. Conserva tu ticket de compra.';
             break;
           case 'producto':
-            r = '📦 <strong>Nuestros productos (250 productos en 9 categorías):</strong><br><br>• <strong>Placas PVC</strong> — 34 productos<br>• <strong>Lambrín WPC</strong> — 40 productos<br>• <strong>Paneles 3D</strong> — 24 productos<br>• <strong>Pisos</strong> — 78 productos<br>• <strong>Plafón PVC</strong> — 15 productos<br>• <strong>Vigas PVC/WPC</strong> — 15 productos<br>• <strong>Zacate sintético</strong> — 29 productos<br>• <strong>Cladding</strong> — 11 productos<br>• <strong>Revestimiento Flexible</strong> — 6 productos<br><br>🏠 Atendemos: ' + kb.proyectos.tipos + '<br><br>💡 Escribe el nombre de un producto o categoría para saber más.';
+            r = '📦 <strong>Nuestros productos (250 productos en 9 categorías):</strong><br><br>• <strong>Placas PVC</strong> — 34 productos<br>• <strong>Lambrín WPC</strong> — 40 productos<br>• <strong>Paneles 3D</strong> — 24 productos<br>• <strong>Pisos</strong> — 78 productos<br>• <strong>Plafón PVC</strong> — 15 productos<br>• <strong>Vigas PVC/WPC</strong> — 15 productos<br>• <strong>Zacate sintético</strong> — 29 productos<br>• <strong>Cladding</strong> — 11 productos<br>• <strong>Revestimiento Flexible</strong> — 6 productos<br><br>&#127968; Atendemos: ' + kb.proyectos.tipos + '<br><br>💡 Escribe el nombre de un producto o categoría para saber más.';
             break;
           case 'mantenimiento':
             r = '🧼 <strong>Mantenimiento y limpieza:</strong><br><br>• <strong>Limpieza regular:</strong> Paño suave humedecido con agua tibia y jabón neutro (pH 7)<br>• <strong>Manchas difíciles:</strong> Alcohol isopropílico al 70% o limpiador multiusos suave<br>• <strong>Evitar:</strong> Acetona, thinner, solventes fuertes, estropajos metálicos y amoníaco concentrado<br>• <strong>Frecuencia:</strong> Residencial = mensual | Comercial = semanal<br>• <strong>Inspección anual:</strong> Revisar juntas de dilatación y selladores<br><br>💡 Los productos PVC y WPC no requieren barnizado ni sellado. Solo limpieza básica.<br><br><a href="https://wa.me/15208392877?text=Hola%20ADIS,%20pregunto%20por%20mantenimiento" target="_blank" class="chat-whatsapp-btn">📱 Preguntar por mantenimiento</a>';
             break;
           case 'proyecto':
-            r = '🏠 <strong>Atendemos todo tipo de proyectos:</strong><br><br>' + kb.proyectos.tipos + '<br><br>Desde una pared de acento en casa hasta remodelaciones completas de locales comerciales. Cada proyecto es único y tenemos el material perfecto para ti.<br><br>💡 <strong>Consejo:</strong> Si no estás seguro de qué material elegir, contame:<br>• ¿Es interior o exterior?<br>• ¿Hay humedad o contacto con agua?<br>• ¿Qué estética buscas? (madera, mármol, moderno, rústico)<br><br><a href="https://wa.me/15208392877?text=Hola%20ADIS,%20tengo%20un%20proyecto%20de" target="_blank" class="chat-whatsapp-btn">📱 Contar mi proyecto</a>';
+            r = '&#127968; <strong>Atendemos todo tipo de proyectos:</strong><br><br>' + kb.proyectos.tipos + '<br><br>Desde una pared de acento en casa hasta remodelaciones completas de locales comerciales. Cada proyecto es único y tenemos el material perfecto para ti.<br><br>💡 <strong>Consejo:</strong> Si no estás seguro de qué material elegir, contame:<br>• ¿Es interior o exterior?<br>• ¿Hay humedad o contacto con agua?<br>• ¿Qué estética buscas? (madera, mármol, moderno, rústico)<br><br><a href="https://wa.me/15208392877?text=Hola%20ADIS,%20tengo%20un%20proyecto%20de" target="_blank" class="chat-whatsapp-btn">📱 Contar mi proyecto</a>';
             break;
           case 'agradecimiento':
             r = '¡Con mucho gusto! 😊🙌 Estoy aquí para lo que necesites. Si tienes más dudas, escríbenos por WhatsApp al <strong>' + kb.contacto.whatsapp + '</strong> o visítanos en el showroom. ¡Que tengas un excelente día!';
             break;
           case 'despedida':
-            r = '¡Hasta luego! 👋 Gracias por contactar a ADIS Diseño & Remodelación. Recuerda que puedes volver cuando quieras o escribirnos al WhatsApp. ¡Éxito con tu proyecto! 🏠✨';
+            r = '¡Hasta luego! 👋 Gracias por contactar a ADIS Diseño & Remodelación. Recuerda que puedes volver cuando quieras o escribirnos al WhatsApp. ¡Éxito con tu proyecto! &#127968;✨';
             break;
           case 'negacion':
             r = 'Perfecto, ¿en qué más puedo ayudarte? Puedo:<br>• Mostrarte productos 📦<br>• Darte precios 💰<br>• Contarte horarios 🕐<br>• Explicarte envíos 📍<br>• Ayudarte con una cotización 📝';
@@ -1967,9 +1984,9 @@
             r = handleSpecs(category, q);
             break;
           case 'definicion':
-            if (q.includes('pvc')) r = '📘 <strong>¿Qué es PVC?</strong><br><br>' + kb.definiciones.pvc + '<br><br>En ADIS lo usamos para placas decorativas, plafones y vigas con acabados que imitan madera, espejo y texturas.';
+            if (q.includes('pvc')) r = '&#128220; <strong>¿Qué es PVC?</strong><br><br>' + kb.definiciones.pvc + '<br><br>En ADIS lo usamos para placas decorativas, plafones y vigas con acabados que imitan madera, espejo y texturas.';
             else if (q.includes('wpc')) r = '📗 <strong>¿Qué es WPC?</strong><br><br>' + kb.definiciones.wpc + '<br><br>En ADIS lo usamos para lambrín de interior y exterior, pisos y revestimientos que lucen como madera real pero duran más.';
-            else r = '📘 Puedo explicarte qué es <strong>PVC</strong>, <strong>WPC</strong>, <strong>SPC</strong>, <strong>laminado</strong> o <strong>cladding</strong>. ¿Cuál te interesa?';
+            else r = '&#128220; Puedo explicarte qué es <strong>PVC</strong>, <strong>WPC</strong>, <strong>SPC</strong>, <strong>laminado</strong> o <strong>cladding</strong>. ¿Cuál te interesa?';
             break;
           case 'resistencia':
             if (category) {
@@ -1984,9 +2001,9 @@
             break;
           case 'usos':
             if (category) {
-              r = '🏠 <strong>Usos recomendados — ' + category.labels.short + ':</strong><br><br>' + handleSpecs(category, q);
+              r = '&#127968; <strong>Usos recomendados — ' + category.labels.short + ':</strong><br><br>' + handleSpecs(category, q);
             } else {
-              r = '🏠 <strong>Usos por material:</strong><br><br>• <strong>Placas PVC:</strong> Muros interiores (baños, cocinas, salas, recepciones)<br>• <strong>Lambrín WPC:</strong> Muros interior y exterior, fachadas<br>• <strong>Pisos SPC/WPC:</strong> Interiores residenciales y comerciales<br>• <strong>Plafón PVC:</strong> Techos y cielos falsos<br>• <strong>Paneles 3D:</strong> Muros de acento, fondos de TV<br>• <strong>Vigas:</strong> Decoración de techos y pérgolas<br>• <strong>Zacate:</strong> Jardines, terrazas, balcones<br>• <strong>Cladding:</strong> Fachadas, muros exteriores<br><br>💡 Dime para qué espacio lo necesitas y te recomiendo el mejor material.';
+              r = '&#127968; <strong>Usos por material:</strong><br><br>• <strong>Placas PVC:</strong> Muros interiores (baños, cocinas, salas, recepciones)<br>• <strong>Lambrín WPC:</strong> Muros interior y exterior, fachadas<br>• <strong>Pisos SPC/WPC:</strong> Interiores residenciales y comerciales<br>• <strong>Plafón PVC:</strong> Techos y cielos falsos<br>• <strong>Paneles 3D:</strong> Muros de acento, fondos de TV<br>• <strong>Vigas:</strong> Decoración de techos y pérgolas<br>• <strong>Zacate:</strong> Jardines, terrazas, balcones<br>• <strong>Cladding:</strong> Fachadas, muros exteriores<br><br>💡 Dime para qué espacio lo necesitas y te recomiendo el mejor material.';
             }
             break;
           default:
@@ -2130,7 +2147,7 @@
         // === 9. Mármol específico (solo si no hay producto activo o si el usuario lo menciona explícitamente) ===
         if (!activeProduct && (normalized.includes('marmol') || normalized.includes('marble'))) {
           return { 
-            text: '🏛️ <strong>Hoja de PVC tipo Mármol</strong><br><br>Es una solución decorativa perfecta para cualquier espacio interior. Añade un toque de elegancia a tu hogar, oficina o espacio comercial.<br><br>✨ <strong>Características:</strong><br>• Fabricada con PVC rígido de alta calidad<br>• Dimensiones: 2440 x 1220 x 5 mm (2.977 m² por pieza)<br>• Duradera y ligera, fácil de instalar y mantener<br>• 100% resistente al agua, manchas y arañazos<br>• No requiere sellado ni barnizado<br>• Garantía: 15 años<br><br>🏠 <strong>Aplicaciones:</strong> Cocinas, baños, salas de estar, recepciones, muros de acento y más.<br><br>🎨 <strong>Diseños disponibles:</strong> Carrara, Carrara Oscuro, Aurora Dorada, Onix, Cuarzo, Opalo, Perla, Topacio, Grafito, Jaspe, Agata, Arena, Obsidiana y más.<br><br>💡 <strong>Consejo:</strong> Para instalación en espejos se requiere perfil de aluminio obligatoriamente.',
+            text: '🏛️ <strong>Hoja de PVC tipo Mármol</strong><br><br>Es una solución decorativa perfecta para cualquier espacio interior. Añade un toque de elegancia a tu hogar, oficina o espacio comercial.<br><br>✨ <strong>Características:</strong><br>• Fabricada con PVC rígido de alta calidad<br>• Dimensiones: 2440 x 1220 x 5 mm (2.977 m² por pieza)<br>• Duradera y ligera, fácil de instalar y mantener<br>• 100% resistente al agua, manchas y arañazos<br>• No requiere sellado ni barnizado<br>• Garantía: 15 años<br><br>&#127968; <strong>Aplicaciones:</strong> Cocinas, baños, salas de estar, recepciones, muros de acento y más.<br><br>🎨 <strong>Diseños disponibles:</strong> Carrara, Carrara Oscuro, Aurora Dorada, Onix, Cuarzo, Opalo, Perla, Topacio, Grafito, Jaspe, Agata, Arena, Obsidiana y más.<br><br>💡 <strong>Consejo:</strong> Para instalación en espejos se requiere perfil de aluminio obligatoriamente.',
             suggestions: ['Ver Placas PVC', 'Cotizar mármol PVC', 'Medidas', 'Hablar con asesor']
           };
         }
@@ -2359,7 +2376,7 @@
           },
           {
             words: ['fachada','exterior','sol','lluvia','uv','exterior casa','pared exterior'],
-            text: '🏠 <strong>Para exteriores y fachadas te recomendamos:</strong><br><br>• <strong>Lambrín WPC exterior</strong> — No se deforma con la humedad ni el sol.<br>• <strong>Cladding</strong> — Imitación de piedra real, pesa 8-12 veces menos.<br>• <strong>Zacate sintético</strong> — Para jardines, verde todo el año sin mantenimiento.<br><br>💡 Estos materiales están diseñados para resistir intemperie.',
+            text: '&#127968; <strong>Para exteriores y fachadas te recomendamos:</strong><br><br>• <strong>Lambrín WPC exterior</strong> — No se deforma con la humedad ni el sol.<br>• <strong>Cladding</strong> — Imitación de piedra real, pesa 8-12 veces menos.<br>• <strong>Zacate sintético</strong> — Para jardines, verde todo el año sin mantenimiento.<br><br>💡 Estos materiales están diseñados para resistir intemperie.',
             suggestions: ['Ver Lambrín WPC exterior', 'Ver Cladding', 'Ver Zacate', 'Cotizar fachada']
           },
           {
@@ -2525,6 +2542,23 @@
           researchData = {};
         });
     })();
+
+    // Sticky CTA bar visibility on scroll
+    (function() {
+      var bar = document.querySelector(".sticky-cta-bar");
+      if (!bar) return;
+      var shown = false;
+      window.addEventListener("scroll", function() {
+        if (window.scrollY > 400 && !shown) {
+          bar.classList.add("visible");
+          shown = true;
+        } else if (window.scrollY <= 200 && shown) {
+          bar.classList.remove("visible");
+          shown = false;
+        }
+      }, { passive: true });
+    })();
+
   </script>
 
 </body>
