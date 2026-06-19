@@ -3778,22 +3778,6 @@ def generate_footer():
         });
     })();
 
-    // Sticky CTA bar visibility on scroll
-    (function() {
-      var bar = document.querySelector(".sticky-cta-bar");
-      if (!bar) return;
-      var shown = false;
-      window.addEventListener("scroll", function() {
-        if (window.scrollY > 400 && !shown) {
-          bar.classList.add("visible");
-          shown = true;
-        } else if (window.scrollY <= 200 && shown) {
-          bar.classList.remove("visible");
-          shown = false;
-        }
-      }, { passive: true });
-    })();
-
   </script>
 '''
     return f"""  <footer>
@@ -3948,7 +3932,6 @@ def generate_index(categories):
       </a>
 '''
 
-    wa_sticky_url = whatsapp_url(CONTACTO["whatsapp"], "Hola ADIS, estoy viendo el catalogo y tengo dudas. Me pueden asesorar?")
     pdf_url = "catalogos/pdf/catalogo_premium.pdf"
 
     html = f'''<!DOCTYPE html>
@@ -4089,16 +4072,6 @@ def generate_index(categories):
   </section>
 
 {generate_testimonios()}
-
-  <!-- STICKY CTA BAR -->
-  <div class="sticky-cta-bar">
-    <a href="{wa_sticky_url}" class="sticky-cta-wa" target="_blank" aria-label="WhatsApp">
-      <span>&#128172;</span> WhatsApp
-    </a>
-    <a href="{pdf_url}" class="sticky-cta-pdf" download>
-      <span>&#128229;</span> PDF
-    </a>
-  </div>
 
 {modal_cotizar_html()}
 {generate_footer()}
@@ -4380,7 +4353,6 @@ def generate_category_page(cat, categories):
 '''
 
     wa_hero_url = whatsapp_url(CONTACTO["whatsapp"], "Hola ADIS, vi el catalogo de " + cat["name"] + " y quiero asesoria para elegir el mejor producto para mi proyecto.")
-    wa_sticky_url = whatsapp_url(CONTACTO["whatsapp"], "Hola ADIS, estoy viendo " + cat["name"] + " en el catalogo y tengo dudas. Me pueden asesorar?")
     pdf_url = "catalogos/pdf/catalogo_" + cat["slug"] + ".pdf"
 
     html = f'''<!DOCTYPE html>
@@ -4429,17 +4401,6 @@ def generate_category_page(cat, categories):
 {generate_testimonios()}
 {modal_cotizar_html()}
 {category_filters_js()}
-
-  <!-- STICKY CTA BAR -->
-  <div class="sticky-cta-bar">
-    <a href="{wa_sticky_url}" class="sticky-cta-wa" target="_blank" aria-label="WhatsApp">
-      <span>&#128172;</span> WhatsApp
-    </a>
-    <a href="{pdf_url}" class="sticky-cta-pdf" download>
-      <span>&#128229;</span> PDF
-    </a>
-  </div>
-
 {generate_footer()}
 </body>
 </html>

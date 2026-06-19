@@ -1259,17 +1259,6 @@ Favor de contactarme para mas detalles. ¡Gracias!`;
       });
     })();
   </script>
-
-  <!-- STICKY CTA BAR -->
-  <div class="sticky-cta-bar">
-    <a href="https://wa.me/15208392877?text=Hola%20ADIS%2C%20estoy%20viendo%20Pisos%20en%20el%20catalogo%20y%20tengo%20dudas.%20Me%20pueden%20asesorar%3F" class="sticky-cta-wa" target="_blank" aria-label="WhatsApp">
-      <span>&#128172;</span> WhatsApp
-    </a>
-    <a href="catalogos/pdf/catalogo_7-pisos.pdf" class="sticky-cta-pdf" download>
-      <span>&#128229;</span> PDF
-    </a>
-  </div>
-
   <footer>
     <div class="footer-logo"><img src="LOGO ADIS.png" alt="ADIS Logo"></div>
     <div class="footer-info">
@@ -2605,22 +2594,6 @@ Favor de contactarme para mas detalles. ¡Gracias!`;
           allProducts = [];
           researchData = {};
         });
-    })();
-
-    // Sticky CTA bar visibility on scroll
-    (function() {
-      var bar = document.querySelector(".sticky-cta-bar");
-      if (!bar) return;
-      var shown = false;
-      window.addEventListener("scroll", function() {
-        if (window.scrollY > 400 && !shown) {
-          bar.classList.add("visible");
-          shown = true;
-        } else if (window.scrollY <= 200 && shown) {
-          bar.classList.remove("visible");
-          shown = false;
-        }
-      }, { passive: true });
     })();
 
   </script>
