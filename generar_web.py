@@ -12,8 +12,9 @@ if hasattr(sys.stdout, 'reconfigure'):
     sys.stdout.reconfigure(encoding='utf-8')
 
 # ========== CONFIGURACIÓN ==========
-BASE_DIR = Path(r'G:\Mi unidad\ADIS DISEÑO\Pagina\public')
+BASE_DIR = Path(r'G:\Mi unidad\ADIS DISEÑO\Pagina')
 CATALOG_DIR = Path(r'G:\Mi unidad\ADIS DISEÑO\CATALOGO FINAL')
+OUTPUT_DIR = BASE_DIR / 'public'
 
 CONTACTO = {
     'whatsapp': '15208392877',
@@ -202,7 +203,7 @@ def tracking_script():
 
 # ========== RESEARCH DATA (from investigacion/) ==========
 try:
-    with open(BASE_DIR.parent / 'investigacion_data.json', 'r', encoding='utf-8') as f:
+    with open(BASE_DIR / 'investigacion_data.json', 'r', encoding='utf-8') as f:
         RESEARCH_DATA = json.load(f)
 except Exception:
     RESEARCH_DATA = {}
@@ -439,7 +440,7 @@ def slugify(name):
 
 def sync_images(categories):
     """Copia imagenes de CATALOGO FINAL a Pagina/img/ para GitHub Pages (sync incremental)."""
-    img_dir = BASE_DIR / 'img'
+    img_dir = OUTPUT_DIR / 'img'
     img_dir.mkdir(parents=True, exist_ok=True)
     
     total = 0
@@ -2221,7 +2222,7 @@ footer {
 
 def generate_style():
     """Escribe el CSS completo en style.css."""
-    css_path = BASE_DIR / 'style.css'
+    css_path = OUTPUT_DIR / 'style.css'
     with open(css_path, 'w', encoding='utf-8') as f:
         f.write(CSS.strip())
     print(f"  style.css generado ({len(CSS):,} caracteres)")
@@ -2467,7 +2468,7 @@ def generate_sitemap(categories):
         xml += f'  <url><loc>{url}</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>\n'
     xml += '</urlset>'
 
-    sitemap_path = BASE_DIR / 'sitemap.xml'
+    sitemap_path = OUTPUT_DIR / 'sitemap.xml'
     with open(sitemap_path, 'w', encoding='utf-8') as f:
         f.write(xml)
     print("  sitemap.xml generado")
@@ -2476,7 +2477,7 @@ def generate_sitemap(categories):
 def generate_robots():
     """Genera robots.txt con referencia al sitemap."""
     content = f"User-agent: *\nAllow: /\nSitemap: {SITE_URL}sitemap.xml\n"
-    robots_path = BASE_DIR / 'robots.txt'
+    robots_path = OUTPUT_DIR / 'robots.txt'
     with open(robots_path, 'w', encoding='utf-8') as f:
         f.write(content)
     print("  robots.txt generado")
@@ -4360,7 +4361,7 @@ def generate_index(categories):
 </body>
 </html>
 '''
-    with open(BASE_DIR / 'index.html', 'w', encoding='utf-8') as f:
+    with open(OUTPUT_DIR / 'index.html', 'w', encoding='utf-8') as f:
         f.write(html)
     print("✅ index.html generado")
 
@@ -4446,7 +4447,7 @@ def generate_contacto():
 </body>
 </html>
 '''
-    with open(BASE_DIR / 'contacto.html', 'w', encoding='utf-8') as f:
+    with open(OUTPUT_DIR / 'contacto.html', 'w', encoding='utf-8') as f:
         f.write(html)
     print("✅ contacto.html generado")
 
@@ -4618,7 +4619,7 @@ def generate_category_page(cat, categories):
     # Galería de hojas reales (solo para Placas PVC)
     real_sheets_html = ''
     if cat["name"] == 'Placas PVC':
-        media_dir = BASE_DIR / 'media'
+        media_dir = OUTPUT_DIR / 'media'
         try:
             real_imgs = sorted([f for f in os.listdir(media_dir) if f.startswith('pvc-real-') and f.lower().endswith(('.jpg', '.jpeg'))])
         except (OSError, PermissionError):
@@ -4723,7 +4724,7 @@ def generate_category_page(cat, categories):
 </body>
 </html>
 '''
-    filepath = BASE_DIR / cat["filename"]
+    filepath = OUTPUT_DIR / cat["filename"]
     with open(filepath, 'w', encoding='utf-8') as f:
         f.write(html)
     print(f'{cat["filename"]} generado')
@@ -4731,8 +4732,8 @@ def generate_category_page(cat, categories):
 
 def sync_media():
     """Copia TODAS las fotos y videos de Material de Facebock a media/ con nombres limpios (sync incremental)."""
-    src_dir = BASE_DIR.parent / 'Material de Facebock'
-    media_dir = BASE_DIR / 'media'
+    src_dir = BASE_DIR / 'Material de Facebock'
+    media_dir = OUTPUT_DIR / 'media'
     if not src_dir.exists():
         return
     media_dir.mkdir(parents=True, exist_ok=True)
@@ -5360,7 +5361,7 @@ function sqToggle(el) {{
 </body>
 </html>
 '''
-        with open(BASE_DIR / f'sabias-que-{slug}.html', 'w', encoding='utf-8') as f:
+        with open(OUTPUT_DIR / f'sabias-que-{slug}.html', 'w', encoding='utf-8') as f:
             f.write(page_html)
         print(f"✅ sabias-que-{slug}.html generado ({cat_name})")
     
@@ -5420,14 +5421,14 @@ function sqToggle(el) {{
 </body>
 </html>
 '''
-    with open(BASE_DIR / 'sabias-que.html', 'w', encoding='utf-8') as f:
+    with open(OUTPUT_DIR / 'sabias-que.html', 'w', encoding='utf-8') as f:
         f.write(index_html)
     print("✅ sabias-que.html (indice) generado")
 
 
 def generate_proyectos():
     """Genera página de proyectos con carruseles de antes/después y galería dinámica."""
-    media_dir = BASE_DIR / 'media'
+    media_dir = OUTPUT_DIR / 'media'
     
     img_exts = ('.jpg', '.jpeg', '.png')
     vid_exts = ('.mp4', '.mov', '.webm')
@@ -5639,10 +5640,10 @@ def generate_proyectos():
 </body>
 </html>
 '''
-    with open(BASE_DIR / 'proyectos.html', 'w', encoding='utf-8') as f:
+    with open(OUTPUT_DIR / 'proyectos.html', 'w', encoding='utf-8') as f:
         f.write(html)
     print("proyectos.html generado (carruseles)")
-    with open(BASE_DIR / 'proyectos.html', 'w', encoding='utf-8') as f:
+    with open(OUTPUT_DIR / 'proyectos.html', 'w', encoding='utf-8') as f:
         f.write(html)
     print("proyectos.html generado")
 
@@ -5735,11 +5736,11 @@ def main():
                 }
     
     output_data = {'products': products_data, 'research': research_output}
-    with open(BASE_DIR / 'products.json', 'w', encoding='utf-8') as f:
+    with open(OUTPUT_DIR / 'products.json', 'w', encoding='utf-8') as f:
         json.dump(output_data, f, ensure_ascii=False, indent=2)
     print(f"\nproducts.json generado con {len(products_data)} productos y datos de {len(research_output)} categorías de investigación")
 
-    print("\nSitio web generado exitosamente en:", BASE_DIR)
+    print("\nSitio web generado exitosamente en:", OUTPUT_DIR)
     print(f"   - {len(categories)} categorias")
     total_products = sum(len(c["direct_products"]) + sum(len(s["products"]) for s in c["subcategories"]) for c in categories)
     print(f"   - {total_products} productos totales")
