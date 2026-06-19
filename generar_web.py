@@ -110,6 +110,96 @@ def ga_script():
     gtag('config', '{GA_MEASUREMENT_ID}');
   </script>'''
 
+
+def tracking_script():
+    """Script de tracking de eventos para Google Analytics 4."""
+    return '''
+  <script>
+    (function() {
+      function gtagEvent(name, params) {
+        if (typeof gtag === 'function') {
+          gtag('event', name, params || {});
+        }
+      }
+      
+      // WhatsApp flotante
+      var waFloat = document.querySelector('.whatsapp-float');
+      if (waFloat) {
+        waFloat.addEventListener('click', function() {
+          gtagEvent('whatsapp_click', { location: 'float' });
+        });
+      }
+      
+      // Botones Cotizar por WhatsApp en tarjetas
+      document.querySelectorAll('.btn-cotizar').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          gtagEvent('cotizar_click', { location: 'product_card' });
+        });
+      });
+      
+      // Envio del modal de cotizacion
+      var waModalForm = document.getElementById('waModalForm');
+      if (waModalForm) {
+        waModalForm.addEventListener('submit', function() {
+          gtagEvent('enviar_cotizacion', { location: 'modal' });
+        });
+      }
+      
+      // Descargas de PDF
+      document.querySelectorAll('a[download]').forEach(function(link) {
+        link.addEventListener('click', function() {
+          gtagEvent('pdf_download', { file: link.getAttribute('href') });
+        });
+      });
+      
+      // Boton WhatsApp en hero de categoria
+      document.querySelectorAll('.hero-cat-actions .btn-primary').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          gtagEvent('whatsapp_click', { location: 'hero_categoria' });
+        });
+      });
+      
+      // Buscador desktop
+      var searchInput = document.getElementById('searchInput');
+      if (searchInput) {
+        searchInput.addEventListener('change', function() {
+          var term = searchInput.value.trim();
+          if (term) gtagEvent('busqueda', { term: term });
+        });
+      }
+      
+      // Buscador mobile
+      var searchInputMobile = document.getElementById('searchInputMobile');
+      if (searchInputMobile) {
+        searchInputMobile.addEventListener('change', function() {
+          var term = searchInputMobile.value.trim();
+          if (term) gtagEvent('busqueda', { term: term, location: 'mobile' });
+        });
+      }
+      
+      // Tarjetas de categoria
+      document.querySelectorAll('.cat-card').forEach(function(card) {
+        card.addEventListener('click', function() {
+          gtagEvent('ver_categoria', { categoria: card.querySelector('h3') ? card.querySelector('h3').textContent : '' });
+        });
+      });
+      
+      // Tarjetas de producto estrella
+      document.querySelectorAll('.featured-card').forEach(function(card) {
+        card.addEventListener('click', function() {
+          gtagEvent('ver_producto_estrella', { producto: card.querySelector('h3') ? card.querySelector('h3').textContent : '' });
+        });
+      });
+      
+      // Links de contacto (telefono/email)
+      document.querySelectorAll('a[href^="tel:"], a[href^="mailto:"]').forEach(function(link) {
+        link.addEventListener('click', function() {
+          gtagEvent('contacto_click', { tipo: link.getAttribute('href').split(':')[0] });
+        });
+      });
+    })();
+  </script>'''
+
 # ========== RESEARCH DATA (from investigacion/) ==========
 try:
     with open(BASE_DIR / 'investigacion_data.json', 'r', encoding='utf-8') as f:
@@ -4007,7 +4097,8 @@ def generate_footer():
   </div>
 
 
-{chatbot_js}"""
+{chatbot_js}
+{tracking_script()}"""
 
 
 def generate_index(categories):
