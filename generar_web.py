@@ -12,7 +12,7 @@ if hasattr(sys.stdout, 'reconfigure'):
     sys.stdout.reconfigure(encoding='utf-8')
 
 # ========== CONFIGURACIÓN ==========
-BASE_DIR = Path(r'G:\Mi unidad\ADIS DISEÑO\Pagina')
+BASE_DIR = Path(r'G:\Mi unidad\ADIS DISEÑO\Pagina\public')
 CATALOG_DIR = Path(r'G:\Mi unidad\ADIS DISEÑO\CATALOGO FINAL')
 
 CONTACTO = {
@@ -202,7 +202,7 @@ def tracking_script():
 
 # ========== RESEARCH DATA (from investigacion/) ==========
 try:
-    with open(BASE_DIR / 'investigacion_data.json', 'r', encoding='utf-8') as f:
+    with open(BASE_DIR.parent / 'investigacion_data.json', 'r', encoding='utf-8') as f:
         RESEARCH_DATA = json.load(f)
 except Exception:
     RESEARCH_DATA = {}
@@ -4731,7 +4731,7 @@ def generate_category_page(cat, categories):
 
 def sync_media():
     """Copia TODAS las fotos y videos de Material de Facebock a media/ con nombres limpios (sync incremental)."""
-    src_dir = BASE_DIR / 'Material de Facebock'
+    src_dir = BASE_DIR.parent / 'Material de Facebock'
     media_dir = BASE_DIR / 'media'
     if not src_dir.exists():
         return
