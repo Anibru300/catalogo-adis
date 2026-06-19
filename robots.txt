@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://adis-diseño.com/sitemap.xml

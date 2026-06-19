@@ -23,6 +23,9 @@ CONTACTO = {
     'tel_usa': '+1 (520) 839-2877',
     'tel_showroom': '+52 631-120-4943',
     'ubicacion': 'Nogales, Sonora · Rio Rico, AZ',
+    'direccion': 'C. Alfonso Acosta 16 Local 3, Col. 5 de Mayo, 84000 Heroica Nogales, Sonora',
+    'maps_url': 'https://maps.app.goo.gl/Q3raWUzhCj2rvhjm8',
+    'horarios': 'Martes a domingo 10:00-19:00',
     'facebook': 'https://www.facebook.com/p/Adis-Dise%C3%B1o-Remodelaci%C3%B3n-61579849591594/'
 }
 
@@ -113,6 +116,21 @@ try:
         RESEARCH_DATA = json.load(f)
 except Exception:
     RESEARCH_DATA = {}
+
+# Slugs para paginas de sabias-que (deben coincidir con generate_sabias_que)
+SABIAS_QUE_SLUGS = {
+    'PLACAS PVC': 'pvc',
+    'LAMBRIN WPC': 'wpc',
+    'REVESTIMIENTO FLEXIBLE': 'revestimiento',
+    'PLAFON PVC LAMINADO WOOD STYLE': 'plafon',
+    'PLAFÓN PVC LAMINADO WOOD STYLE': 'plafon',
+    'PANELES TRIDIMENSIONALES 3D': '3d',
+    'VIGAS PVCWPCPU': 'vigas',
+    'PISOS': 'pisos',
+    'ZACATE SINTETICO': 'zacate',
+    'ZACATE SINTÉTICO': 'zacate',
+    'CLADDING  PLACAS TIPO PIEDRA': 'cladding',
+}
 
 def _copy_if_needed(src, dst):
     """Copia src a dst solo si dst no existe o tiene tamaño diferente."""
@@ -2207,6 +2225,173 @@ def build_whatsapp_message(product, category, subcategory=None, nombre='', ciuda
     return '\n'.join(lines)
 
 
+# ========== SCHEMA.ORG / SEO ==========
+def json_ld(data):
+    """Envuelve un diccionario en un script JSON-LD."""
+    return f'<script type="application/ld+json">{json.dumps(data, ensure_ascii=False, indent=2)}</script>'
+
+
+def organization_schema():
+    """Schema.org de Organization + LocalBusiness para ADIS."""
+    return json_ld({
+        "@context": "https://schema.org",
+        "@type": ["Organization", "LocalBusiness"],
+        "@id": f"{SITE_URL}#organization",
+        "name": "ADIS Diseño & Remodelación",
+        "alternateName": "ADIS",
+        "url": SITE_URL,
+        "logo": f"{SITE_URL}LOGO%20ADIS.png",
+        "image": f"{SITE_URL}LOGO%20ADIS.png",
+        "telephone": CONTACTO["tel_mx"],
+        "email": CONTACTO["email"],
+        "address": {
+            "@type": "PostalAddress",
+            "streetAddress": CONTACTO.get("direccion", ""),
+            "addressLocality": "Heroica Nogales",
+            "addressRegion": "Sonora",
+            "postalCode": "84000",
+            "addressCountry": "MX"
+        },
+        "geo": {
+            "@type": "GeoCoordinates",
+            "latitude": "31.3014",
+            "longitude": "-110.9386"
+        },
+        "openingHoursSpecification": [
+            {
+                "@type": "OpeningHoursSpecification",
+                "dayOfWeek": ["Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+                "opens": "10:00",
+                "closes": "19:00"
+            },
+            {
+                "@type": "OpeningHoursSpecification",
+                "dayOfWeek": "Sunday",
+                "opens": "10:00",
+                "closes": "19:00"
+            }
+        ],
+        "sameAs": [
+            CONTACTO["facebook"]
+        ],
+        "priceRange": "$"
+    })
+
+
+def website_schema():
+    """Schema.org de WebSite con buscador integrado."""
+    return json_ld({
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "ADIS Diseño & Remodelación",
+        "url": SITE_URL,
+        "potentialAction": {
+            "@type": "SearchAction",
+            "target": {
+                "@type": "EntryPoint",
+                "urlTemplate": f"{SITE_URL}?q={{search_term_string}}"
+            },
+            "query-input": "required name=search_term_string"
+        }
+    })
+
+
+def breadcrumb_schema(items):
+    """Schema.org de BreadcrumbList.
+    items: lista de tuplas (nombre, url).
+    """
+    return json_ld({
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+            {
+                "@type": "ListItem",
+                "position": i + 1,
+                "name": name,
+                "item": url
+            }
+            for i, (name, url) in enumerate(items)
+        ]
+    })
+
+
+def product_schema(name, category, subcategory, image, url, description=''):
+    """Schema.org de Product para una tarjeta de producto.
+    No incluye precio porque la política es cotizar por WhatsApp.
+    """
+    cat_path = category + (f" > {subcategory}" if subcategory else "")
+    return json_ld({
+        "@context": "https://schema.org",
+        "@type": "Product",
+        "name": name,
+        "image": image,
+        "url": url,
+        "brand": {
+            "@type": "Brand",
+            "name": "ADIS Diseño & Remodelación"
+        },
+        "category": cat_path,
+        "description": description or f"{name} de {cat_path}. Disponible en ADIS Diseño & Remodelación. Cotiza por WhatsApp.",
+        "availability": "https://schema.org/InStock"
+    })
+
+
+def faqpage_schema(faqs):
+    """Schema.org de FAQPage.
+    faqs: lista de tuplas (pregunta, respuesta).
+    """
+    return json_ld({
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+            {
+                "@type": "Question",
+                "name": q,
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": a
+                }
+            }
+            for q, a in faqs
+        ]
+    })
+
+
+def generate_sitemap(categories):
+    """Genera sitemap.xml con todas las URLs públicas."""
+    urls = [
+        SITE_URL,
+        f"{SITE_URL}contacto.html",
+        f"{SITE_URL}proyectos.html",
+        f"{SITE_URL}sabias-que.html",
+    ]
+    for cat in categories:
+        urls.append(f"{SITE_URL}{cat['filename']}")
+    for cat_name in RESEARCH_DATA.keys():
+        sq_slug = SABIAS_QUE_SLUGS.get(cat_name, 'otros')
+        urls.append(f"{SITE_URL}sabias-que-{sq_slug}.html")
+
+    xml = '<?xml version="1.0" encoding="UTF-8"?>\n'
+    xml += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+    for url in urls:
+        xml += f'  <url><loc>{url}</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>\n'
+    xml += '</urlset>'
+
+    sitemap_path = BASE_DIR / 'sitemap.xml'
+    with open(sitemap_path, 'w', encoding='utf-8') as f:
+        f.write(xml)
+    print("  sitemap.xml generado")
+
+
+def generate_robots():
+    """Genera robots.txt con referencia al sitemap."""
+    content = f"User-agent: *\nAllow: /\nSitemap: {SITE_URL}sitemap.xml\n"
+    robots_path = BASE_DIR / 'robots.txt'
+    with open(robots_path, 'w', encoding='utf-8') as f:
+        f.write(content)
+    print("  robots.txt generado")
+
+
 def modal_cotizar_html():
     """Modal único de cotización por WhatsApp. Se inyecta una vez por página."""
     return '''
@@ -3949,9 +4134,16 @@ def generate_index(categories):
   <meta property="og:url" content="{SITE_URL}">
   <meta property="og:type" content="website">
   <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="ADIS | Diseño & Remodelación">
+  <meta name="twitter:description" content="{meta_desc}">
+  <meta name="twitter:image" content="{SITE_URL}LOGO%20ADIS.png">
+  <link rel="canonical" href="{SITE_URL}">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
-{ga_script()}\n</head>
+{ga_script()}
+{organization_schema()}
+{website_schema()}
+</head>
 <body>
   <canvas id="bg-canvas"></canvas>
 
@@ -4097,9 +4289,17 @@ def generate_contacto():
   <meta property="og:image" content="{SITE_URL}LOGO%20ADIS.png">
   <meta property="og:url" content="{SITE_URL}contacto.html">
   <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Contacto | ADIS Diseño & Remodelación">
+  <meta name="twitter:description" content="Contacta a ADIS Diseño & Remodelación. WhatsApp, teléfono MX, teléfono USA y correo electrónico.">
+  <meta name="twitter:image" content="{SITE_URL}LOGO%20ADIS.png">
+  <link rel="canonical" href="{SITE_URL}contacto.html">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
-{ga_script()}\n</head>
+{ga_script()}
+{organization_schema()}
+{breadcrumb_schema([('Inicio', SITE_URL), ('Contacto', f'{SITE_URL}contacto.html')])}
+</head>
 <body>
   <canvas id="bg-canvas"></canvas>
 {generate_header("contacto")}
@@ -4355,6 +4555,26 @@ def generate_category_page(cat, categories):
     wa_hero_url = whatsapp_url(CONTACTO["whatsapp"], "Hola ADIS, vi el catalogo de " + cat["name"] + " y quiero asesoria para elegir el mejor producto para mi proyecto.")
     pdf_url = "catalogos/pdf/catalogo_" + cat["slug"] + ".pdf"
 
+    # Schemas de productos para esta categoría
+    product_schemas_html = ''
+    for sub in cat["subcategories"]:
+        for prod_file in sub["products"]:
+            prod_name = os.path.splitext(prod_file)[0]
+            img_url = f"{SITE_URL}img/{cat['slug']}/{sub['slug']}/{prod_file}"
+            prod_url = f"{SITE_URL}{cat['filename']}#{sub['slug']}"
+            product_schemas_html += product_schema(prod_name, cat["name"], sub["name"], img_url, prod_url) + '\n'
+    for prod_file in cat["direct_products"]:
+        prod_name = os.path.splitext(prod_file)[0]
+        img_url = f"{SITE_URL}img/{cat['slug']}/{prod_file}"
+        prod_url = f"{SITE_URL}{cat['filename']}"
+        product_schemas_html += product_schema(prod_name, cat["name"], None, img_url, prod_url) + '\n'
+
+    breadcrumb_html = breadcrumb_schema([
+        ("Inicio", SITE_URL),
+        ("Catálogo", f"{SITE_URL}index.html#categorias"),
+        (cat["name"], f"{SITE_URL}{cat['filename']}")
+    ])
+
     html = f'''<!DOCTYPE html>
 <html lang="es">
 <head>
@@ -4362,15 +4582,23 @@ def generate_category_page(cat, categories):
   <link rel="icon" type="image/png" href="LOGO ADIS.png">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{cat["name"]} | ADIS Catálogo</title>
-  <meta name="description" content="{cat["name"]} - ADIS Diseño & Remodelación. Explora nuestros productos y solicita tu cotización.">
+  <meta name="description" content="{cat["name"]} - ADIS Diseño & Remodelación. Explora nuestros {cat['total_products']} productos y solicita tu cotización.">
   <meta property="og:title" content="{cat["name"]} | ADIS Catálogo">
-  <meta property="og:description" content="{cat["name"]} - ADIS Diseño & Remodelación. Explora nuestros productos y solicita tu cotización.">
-  <meta property="og:image" content="{hero_bg}">
+  <meta property="og:description" content="{cat["name"]} - ADIS Diseño & Remodelación. Explora nuestros {cat['total_products']} productos y solicita tu cotización.">
+  <meta property="og:image" content="{SITE_URL}{hero_bg}">
   <meta property="og:url" content="{SITE_URL}{cat["filename"]}">
   <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="{cat["name"]} | ADIS Catálogo">
+  <meta name="twitter:description" content="{cat["name"]} - ADIS Diseño & Remodelación. Explora nuestros {cat['total_products']} productos y solicita tu cotización.">
+  <meta name="twitter:image" content="{SITE_URL}{hero_bg}">
+  <link rel="canonical" href="{SITE_URL}{cat["filename"]}">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
-{ga_script()}\n</head>
+{ga_script()}
+{organization_schema()}
+{breadcrumb_html}
+{product_schemas_html}</head>
 <body>
   <canvas id="bg-canvas"></canvas>
 {generate_header(cat["slug"])}
@@ -4958,27 +5186,16 @@ def generate_sabias_que():
         'CLADDING  PLACAS TIPO PIEDRA': 'img/9-cladding/91-placa-tipo-roca/BLACK.jpg',
     }
     
-    cat_slugs = {
-        'PLACAS PVC': 'pvc',
-        'LAMBRIN WPC': 'wpc',
-        'REVESTIMIENTO FLEXIBLE': 'revestimiento',
-        'PLAFON PVC LAMINADO WOOD STYLE': 'plafon',
-        'PLAFÓN PVC LAMINADO WOOD STYLE': 'plafon',
-        'PANELES TRIDIMENSIONALES 3D': '3d',
-        'VIGAS PVCWPCPU': 'vigas',
-        'PISOS': 'pisos',
-        'ZACATE SINTETICO': 'zacate',
-        'ZACATE SINTÉTICO': 'zacate',
-        'CLADDING  PLACAS TIPO PIEDRA': 'cladding',
-    }
-    
     # Generar paginas individuales
     for cat_name, data in RESEARCH_DATA.items():
-        slug = cat_slugs.get(cat_name, 'otros')
+        slug = SABIAS_QUE_SLUGS.get(cat_name, 'otros')
         cat_img = cat_images.get(cat_name, 'LOGO%20ADIS.png')
         
         curiosos_cards = _extract_curiosos_cards(data['curiosos']) if data.get('curiosos') else ''
         faqs_html = _extract_faqs_html(data['faqs']) if data.get('faqs') else ''
+        faqs_data = _extract_faqs_data(data['faqs']) if data.get('faqs') else []
+        faq_schema_html = faqpage_schema([(f['q'], f['a']) for f in faqs_data]) if faqs_data else ''
+        page_url = f"{SITE_URL}sabias-que-{slug}.html"
         
         page_html = f'''<!DOCTYPE html>
 <html lang="es">
@@ -4988,9 +5205,22 @@ def generate_sabias_que():
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{cat_name} — ¿Sabías que? | ADIS Diseño & Remodelación</title>
   <meta name="description" content="Datos curiosos y preguntas frecuentes sobre {cat_name}.">
+  <meta property="og:title" content="{cat_name} — ¿Sabías que? | ADIS">
+  <meta property="og:description" content="Datos curiosos y preguntas frecuentes sobre {cat_name}.">
+  <meta property="og:image" content="{SITE_URL}{cat_img}">
+  <meta property="og:url" content="{page_url}">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="{cat_name} — ¿Sabías que? | ADIS">
+  <meta name="twitter:description" content="Datos curiosos y preguntas frecuentes sobre {cat_name}.">
+  <meta name="twitter:image" content="{SITE_URL}{cat_img}">
+  <link rel="canonical" href="{page_url}">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
-{ga_script()}\n</head>
+{ga_script()}
+{organization_schema()}
+{breadcrumb_schema([('Inicio', SITE_URL), ('¿Sabías que?', f'{SITE_URL}sabias-que.html'), (cat_name, page_url)])}
+{faq_schema_html}</head>
 <body>
   <canvas id="bg-canvas"></canvas>
 {generate_header("sabias-que")}
@@ -5047,7 +5277,7 @@ function sqToggle(el) {{
     # Generar pagina indice
     index_cards = ''
     for cat_name in RESEARCH_DATA.keys():
-        slug = cat_slugs.get(cat_name, 'otros')
+        slug = SABIAS_QUE_SLUGS.get(cat_name, 'otros')
         cat_img = cat_images.get(cat_name, 'LOGO%20ADIS.png')
         index_cards += f'''    <a href="sabias-que-{slug}.html" class="sq-index-card">
       <div class="sq-index-img" style="background-image:url('{cat_img}');"></div>
@@ -5069,9 +5299,19 @@ function sqToggle(el) {{
   <meta property="og:title" content="¿Sabías que? | ADIS">
   <meta property="og:description" content="Descubre datos sorprendentes sobre nuestros materiales de construcción.">
   <meta property="og:image" content="{SITE_URL}LOGO%20ADIS.png">
+  <meta property="og:url" content="{SITE_URL}sabias-que.html">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="¿Sabías que? | ADIS">
+  <meta name="twitter:description" content="Descubre datos sorprendentes sobre nuestros materiales de construcción.">
+  <meta name="twitter:image" content="{SITE_URL}LOGO%20ADIS.png">
+  <link rel="canonical" href="{SITE_URL}sabias-que.html">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
-{ga_script()}\n</head>
+{ga_script()}
+{organization_schema()}
+{breadcrumb_schema([('Inicio', SITE_URL), ('¿Sabías que?', f'{SITE_URL}sabias-que.html')])}
+</head>
 <body>
   <canvas id="bg-canvas"></canvas>
 {generate_header("sabias-que")}
@@ -5229,8 +5469,16 @@ def generate_proyectos():
   <meta property="og:image" content="media/despues.jpg">
   <meta property="og:url" content="{SITE_URL}proyectos.html">
   <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Proyectos Reales | ADIS Diseño & Remodelación">
+  <meta name="twitter:description" content="Galería de proyectos reales de ADIS Diseño & Remodelación. Antes y después, remodelaciones de interiores y exteriores.">
+  <meta name="twitter:image" content="{SITE_URL}media/despues.jpg">
+  <link rel="canonical" href="{SITE_URL}proyectos.html">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
+{ga_script()}
+{organization_schema()}
+{breadcrumb_schema([('Inicio', SITE_URL), ('Proyectos', f'{SITE_URL}proyectos.html')])}
   <style>
     /* CAROUSEL */
     .carousel-wrap {{ position: relative; max-width: 900px; margin: 0 auto; overflow: hidden; border-radius: 12px; border: 1px solid rgba(197,160,89,0.2); }}
@@ -5329,6 +5577,8 @@ def main():
 
     print("\nGenerando archivos...")
     generate_style()
+    generate_sitemap(categories)
+    generate_robots()
     generate_index(categories)
     generate_contacto()
     generate_proyectos()
