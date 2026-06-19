@@ -8,23 +8,23 @@ def md5(filepath):
             h.update(chunk)
     return h.hexdigest()
 
-# Compare images between CATALOGO FINAL and Pagina/img/
+# Compare images between CATALOGO FINAL and public/img/
 comparisons = [
-    ('../CATALOGO FINAL/1. Placas PVC/AGATA.jpg', 'img/1-placas-pvc/AGATA.jpg'),
-    ('../CATALOGO FINAL/1. Placas PVC/ARENA.jpg', 'img/1-placas-pvc/ARENA.jpg'),
-    ('../CATALOGO FINAL/1. Placas PVC/Aurora Dorada.jpg', 'img/1-placas-pvc/Aurora Dorada.jpg'),
-    ('../CATALOGO FINAL/1. Placas PVC/Carrara Oscuro.jpg', 'img/1-placas-pvc/Carrara Oscuro.jpg'),
-    ('../CATALOGO FINAL/1. Placas PVC/Cuarzo.jpg', 'img/1-placas-pvc/Cuarzo.jpg'),
-    ('../CATALOGO FINAL/1. Placas PVC/Grafito.jpg', 'img/1-placas-pvc/Grafito.jpg'),
-    ('../CATALOGO FINAL/1. Placas PVC/Jaspe.jpg', 'img/1-placas-pvc/Jaspe.jpg'),
-    ('../CATALOGO FINAL/1. Placas PVC/OBSIDIANA.jpg', 'img/1-placas-pvc/OBSIDIANA.jpg'),
-    ('../CATALOGO FINAL/1. Placas PVC/Onix.jpg', 'img/1-placas-pvc/Onix.jpg'),
-    ('../CATALOGO FINAL/1. Placas PVC/Opalo.jpg', 'img/1-placas-pvc/Opalo.jpg'),
-    ('../CATALOGO FINAL/1. Placas PVC/Perla.jpg', 'img/1-placas-pvc/Perla.jpg'),
-    ('../CATALOGO FINAL/1. Placas PVC/Topacio.jpg', 'img/1-placas-pvc/Topacio.jpg'),
-    ('../CATALOGO FINAL/1. Placas PVC/ZAFIRO.jpg', 'img/1-placas-pvc/ZAFIRO.jpg'),
-    ('../CATALOGO FINAL/7. Pisos/7.1 Laminado/ACONCAGUA.jpg', 'img/7-pisos/71-laminado/ACONCAGUA.jpg'),
-    ('../CATALOGO FINAL/4. Plafon PVC/4.1 Plafon pvc laminado/SHERWOOD.jpg', 'img/4-plafon-pvc/41-plafon-pvc-laminado/SHERWOOD.jpg'),
+    ('../CATALOGO FINAL/1. Placas PVC/AGATA.jpg', 'public/img/1-placas-pvc/AGATA.jpg'),
+    ('../CATALOGO FINAL/1. Placas PVC/ARENA.jpg', 'public/img/1-placas-pvc/ARENA.jpg'),
+    ('../CATALOGO FINAL/1. Placas PVC/Aurora Dorada.jpg', 'public/img/1-placas-pvc/Aurora Dorada.jpg'),
+    ('../CATALOGO FINAL/1. Placas PVC/Carrara Oscuro.jpg', 'public/img/1-placas-pvc/Carrara Oscuro.jpg'),
+    ('../CATALOGO FINAL/1. Placas PVC/Cuarzo.jpg', 'public/img/1-placas-pvc/Cuarzo.jpg'),
+    ('../CATALOGO FINAL/1. Placas PVC/Grafito.jpg', 'public/img/1-placas-pvc/Grafito.jpg'),
+    ('../CATALOGO FINAL/1. Placas PVC/Jaspe.jpg', 'public/img/1-placas-pvc/Jaspe.jpg'),
+    ('../CATALOGO FINAL/1. Placas PVC/OBSIDIANA.jpg', 'public/img/1-placas-pvc/OBSIDIANA.jpg'),
+    ('../CATALOGO FINAL/1. Placas PVC/Onix.jpg', 'public/img/1-placas-pvc/Onix.jpg'),
+    ('../CATALOGO FINAL/1. Placas PVC/Opalo.jpg', 'public/img/1-placas-pvc/Opalo.jpg'),
+    ('../CATALOGO FINAL/1. Placas PVC/Perla.jpg', 'public/img/1-placas-pvc/Perla.jpg'),
+    ('../CATALOGO FINAL/1. Placas PVC/Topacio.jpg', 'public/img/1-placas-pvc/Topacio.jpg'),
+    ('../CATALOGO FINAL/1. Placas PVC/ZAFIRO.jpg', 'public/img/1-placas-pvc/ZAFIRO.jpg'),
+    ('../CATALOGO FINAL/7. Pisos/7.1 Laminado/ACONCAGUA.jpg', 'public/img/7-pisos/71-laminado/ACONCAGUA.jpg'),
+    ('../CATALOGO FINAL/4. Plafon PVC/4.1 Plafon pvc laminado/SHERWOOD.jpg', 'public/img/4-plafon-pvc/41-plafon-pvc-laminado/SHERWOOD.jpg'),
 ]
 
 for cat_path, web_path in comparisons:

@@ -29,14 +29,14 @@ def scan_images(root, prefix=''):
 
 # Directorios
 CATALOGO = r"G:\Mi unidad\ADIS DISEÑO\CATALOGO FINAL"
-WEB = r"G:\Mi unidad\ADIS DISEÑO\Pagina\img"
+WEB = r"G:\Mi unidad\ADIS DISEÑO\Pagina\public\img"
 FOTOS = r"G:\Mi unidad\ADIS DISEÑO\FOTOS"
 
 print("Escaneando CATALOGO FINAL...")
 cat = scan_images(CATALOGO, "CATALOGO/")
 print(f"  {len(cat)} imágenes encontradas")
 
-print("Escaneando Pagina/img...")
+print("Escaneando public/img...")
 web = scan_images(WEB, "WEB/")
 print(f"  {len(web)} imágenes encontradas")
 
@@ -141,13 +141,13 @@ for k, v in fotos_clean.items():
 print("\n" + "="*60)
 print("REPORTE DE AUDITORÍA DE IMÁGENES")
 print("="*60)
-print(f"\n1. Imágenes en CATALOGO FINAL pero NO en Pagina/img: {len(report['missing_in_web'])}")
+print(f"\n1. Imágenes en CATALOGO FINAL pero NO en public/img: {len(report['missing_in_web'])}")
 for item in report['missing_in_web'][:20]:
     print(f"   - {item['clean_name']} ({item['size']} bytes)")
 if len(report['missing_in_web']) > 20:
     print(f"   ... y {len(report['missing_in_web'])-20} más")
 
-print(f"\n2. Imágenes en Pagina/img pero NO en CATALOGO FINAL: {len(report['missing_in_catalogo'])}")
+print(f"\n2. Imágenes en public/img pero NO en CATALOGO FINAL: {len(report['missing_in_catalogo'])}")
 for item in report['missing_in_catalogo'][:20]:
     print(f"   - {item['clean_name']} ({item['size']} bytes)")
 if len(report['missing_in_catalogo']) > 20:
@@ -177,7 +177,8 @@ if len(report['fotos_matches']) > 20:
     print(f"   ... y {len(report['fotos_matches'])-20} más")
 
 # Guardar reporte completo
-with open(r"G:\Mi unidad\ADIS DISEÑO\Pagina\auditoria_imagenes_reporte.json", 'w', encoding='utf-8') as f:
+script_dir = Path(__file__).parent
+with open(script_dir / "auditoria_imagenes_reporte.json", 'w', encoding='utf-8') as f:
     json.dump(report, f, indent=2, ensure_ascii=False)
 
-print("\n✅ Reporte completo guardado en auditoria_imagenes_reporte.json")
+print("\n[OK] Reporte completo guardado en auditoria_imagenes_reporte.json")

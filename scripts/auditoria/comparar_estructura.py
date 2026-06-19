@@ -10,11 +10,11 @@ def collect_files(base_dir):
                 files[f.lower()] = rel
     return files
 
-# Collect from CATALOGO FINAL and Pagina/img
+# Collect from CATALOGO FINAL and public/img
 catalog = collect_files('..' + os.sep + 'CATALOGO FINAL')
-web = collect_files('img')
+web = collect_files('public' + os.sep + 'img')
 
-print("=== ARCHIVOS EN CATALOGO FINAL QUE NO ESTAN EN Pagina/img ===")
+print("=== ARCHIVOS EN CATALOGO FINAL QUE NO ESTAN EN public/img ===")
 missing_in_web = []
 for name, path in catalog.items():
     if name not in web:
@@ -25,7 +25,7 @@ for name, path in sorted(missing_in_web):
 
 print(f"\nTotal faltantes en web: {len(missing_in_web)}")
 
-print("\n=== ARCHIVOS EN Pagina/img QUE NO ESTAN EN CATALOGO FINAL ===")
+print("\n=== ARCHIVOS EN public/img QUE NO ESTAN EN CATALOGO FINAL ===")
 extra_in_web = []
 for name, path in web.items():
     if name not in catalog:

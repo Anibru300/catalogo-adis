@@ -8,7 +8,7 @@ replacements = [
     ('Carrara%20Oscuro.jpg', 'Carrara Oscuro.jpg'),
 ]
 
-for html in glob.glob(os.path.join(base, "*.html")):
+for html in glob.glob(os.path.join(base, "public", "*.html")):
     with open(html, 'r', encoding='utf-8') as f:
         c = f.read()
     changed = False

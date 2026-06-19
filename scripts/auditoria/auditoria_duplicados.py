@@ -23,10 +23,10 @@ def scan_all(root):
 # Escanear todo el proyecto
 base = r"G:\Mi unidad\ADIS DISEÑO"
 cat = scan_all(os.path.join(base, "CATALOGO FINAL"))
-web = scan_all(os.path.join(base, "Pagina", "img"))
+web = scan_all(os.path.join(base, "Pagina", "public", "img"))
 fotos = scan_all(os.path.join(base, "FOTOS"))
-media = scan_all(os.path.join(base, "Pagina", "media"))
-catalogo_img = scan_all(os.path.join(base, "Pagina", "catalogo_img"))
+media = scan_all(os.path.join(base, "Pagina", "public", "media"))
+catalogo_img = scan_all(os.path.join(base, "Pagina", "public", "catalogos", "html", "catalogo_img"))
 
 # Combinar todo
 all_files = {}

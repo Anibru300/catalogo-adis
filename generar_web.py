@@ -4644,7 +4644,8 @@ def generate_category_page(cat, categories):
 '''
 
     wa_hero_url = whatsapp_url(CONTACTO["whatsapp"], "Hola ADIS, vi el catalogo de " + cat["name"] + " y quiero asesoria para elegir el mejor producto para mi proyecto.")
-    pdf_url = "catalogos/pdf/catalogo_" + cat["slug"] + ".pdf"
+    cat_slug_pdf = cat["name"].lower().replace(' ', '-').replace('ñ','n').replace('á','a').replace('é','e').replace('í','i').replace('ó','o').replace('ú','u')
+    pdf_url = f"catalogos/pdf/catalogo_{cat_slug_pdf}.pdf"
 
     # Schemas de productos para esta categoría
     product_schemas_html = ''

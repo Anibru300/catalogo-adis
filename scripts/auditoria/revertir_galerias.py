@@ -3,7 +3,7 @@ import re
 base = r"G:\Mi unidad\ADIS DISEÑO\Pagina"
 
 # Fix 7-pisos.html: ACONCAGUA product was showing CONCRETE.jpg
-p7 = base + r"\7-pisos.html"
+p7 = base + r"\public\7-pisos.html"
 with open(p7, 'r', encoding='utf-8') as f:
     c = f.read()
 
@@ -21,7 +21,7 @@ with open(p7, 'w', encoding='utf-8') as f:
 print("Fixed 7-pisos.html")
 
 # Fix 4-plafon-pvc.html: SHERWOOD product was showing York.jpg
-p4 = base + r"\4-plafon-pvc.html"
+p4 = base + r"\public\4-plafon-pvc.html"
 with open(p4, 'r', encoding='utf-8') as f:
     c = f.read()
 

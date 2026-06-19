@@ -11,7 +11,7 @@ replacements = [
     ('img/4-plafon-pvc/41-plafon-pvc-laminado/SHERWOOD.jpg', 'img/4-plafon-pvc/York.jpg'),
 ]
 
-html_files = glob.glob(os.path.join(base, "*.html"))
+html_files = glob.glob(os.path.join(base, "public", "*.html"))
 
 for html in html_files:
     with open(html, 'r', encoding='utf-8') as f:
