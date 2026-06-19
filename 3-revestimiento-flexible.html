@@ -103,6 +103,17 @@
   </section>
 
 
+  <!-- FILTROS FACETADOS -->
+  <section class="cat-filters reveal">
+    <div class="cat-filters-inner">
+      <input type="text" class="cat-filter-search" id="catFilterSearch" placeholder="Buscar producto..." autocomplete="off">
+      <div class="cat-filter-chips">
+        <button class="filter-chip active" data-subcategory="all">Todos</button><button class="filter-chip" data-subcategory="general">General</button>
+      </div>
+      <div class="cat-filter-count" id="catFilterCount">6 productos</div>
+    </div>
+  </section>
+
   <section class="subcat-section reveal">
     <div class="subcat-header">
       <h3>Productos Revestimiento Flexible</h3>
@@ -116,7 +127,7 @@
       <div class="spec-item"><span class="spec-label">Uso</span><span class="spec-value">Interior</span></div>
     </div>
     <div class="products-grid">
-      <div class="product-card reveal" data-name="concreto aparente" data-category="Revestimiento Flexible">
+      <div class="product-card reveal" data-name="concreto aparente" data-category="Revestimiento Flexible" data-subcategory="general" data-keywords="concreto aparente">
         <div class="product-gallery" onclick="openLightbox('img/3-revestimiento-flexible/CONCRETO Aparente.jpg', 'CONCRETO Aparente')">
           <img src="img/3-revestimiento-flexible/CONCRETO Aparente.jpg" alt="CONCRETO Aparente" loading="lazy">
         </div>
@@ -127,7 +138,7 @@
           </div>
         </div>
       </div>
-      <div class="product-card reveal" data-name="concreto gris" data-category="Revestimiento Flexible">
+      <div class="product-card reveal" data-name="concreto gris" data-category="Revestimiento Flexible" data-subcategory="general" data-keywords="concreto gris">
         <div class="product-gallery" onclick="openLightbox('img/3-revestimiento-flexible/Concreto Gris.jpg', 'Concreto Gris')">
           <img src="img/3-revestimiento-flexible/Concreto Gris.jpg" alt="Concreto Gris" loading="lazy">
         </div>
@@ -138,7 +149,7 @@
           </div>
         </div>
       </div>
-      <div class="product-card reveal" data-name="granito blanco" data-category="Revestimiento Flexible">
+      <div class="product-card reveal" data-name="granito blanco" data-category="Revestimiento Flexible" data-subcategory="general" data-keywords="granito blanco">
         <div class="product-gallery" onclick="openLightbox('img/3-revestimiento-flexible/Granito Blanco.jpg', 'Granito Blanco')">
           <img src="img/3-revestimiento-flexible/Granito Blanco.jpg" alt="Granito Blanco" loading="lazy">
         </div>
@@ -149,7 +160,7 @@
           </div>
         </div>
       </div>
-      <div class="product-card reveal" data-name="granito imperial blanco" data-category="Revestimiento Flexible">
+      <div class="product-card reveal" data-name="granito imperial blanco" data-category="Revestimiento Flexible" data-subcategory="general" data-keywords="granito imperial blanco">
         <div class="product-gallery" onclick="openLightbox('img/3-revestimiento-flexible/Granito Imperial Blanco.jpg', 'Granito Imperial Blanco')">
           <img src="img/3-revestimiento-flexible/Granito Imperial Blanco.jpg" alt="Granito Imperial Blanco" loading="lazy">
         </div>
@@ -160,7 +171,7 @@
           </div>
         </div>
       </div>
-      <div class="product-card reveal" data-name="granito oro" data-category="Revestimiento Flexible">
+      <div class="product-card reveal" data-name="granito oro" data-category="Revestimiento Flexible" data-subcategory="general" data-keywords="granito oro">
         <div class="product-gallery" onclick="openLightbox('img/3-revestimiento-flexible/Granito Oro.jpg', 'Granito Oro')">
           <img src="img/3-revestimiento-flexible/Granito Oro.jpg" alt="Granito Oro" loading="lazy">
         </div>
@@ -171,7 +182,7 @@
           </div>
         </div>
       </div>
-      <div class="product-card reveal" data-name="madera roble" data-category="Revestimiento Flexible">
+      <div class="product-card reveal" data-name="madera roble" data-category="Revestimiento Flexible" data-subcategory="general" data-keywords="madera roble">
         <div class="product-gallery" onclick="openLightbox('img/3-revestimiento-flexible/Madera Roble.jpeg', 'Madera Roble')">
           <img src="img/3-revestimiento-flexible/Madera Roble.jpeg" alt="Madera Roble" loading="lazy">
         </div>
@@ -363,6 +374,48 @@ Favor de contactarme para mas detalles. ¡Gracias!`;
     }
   </script>
 
+
+  <script>
+    (function() {
+      const search = document.getElementById('catFilterSearch');
+      if (!search) return;
+      const chips = document.querySelectorAll('.filter-chip');
+      const cards = document.querySelectorAll('.product-card');
+      const countEl = document.getElementById('catFilterCount');
+      let activeSubcategory = 'all';
+      function normalize(str) {
+        return (str || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+      }
+      function filter() {
+        const term = normalize(search.value);
+        let visible = 0;
+        cards.forEach(function(card) {
+          const name = normalize(card.dataset.name);
+          const sub = card.dataset.subcategory || '';
+          const keywords = normalize(card.dataset.keywords);
+          const matchSearch = name.indexOf(term) !== -1 || keywords.indexOf(term) !== -1;
+          const matchSub = activeSubcategory === 'all' || sub === activeSubcategory;
+          const show = matchSearch && matchSub;
+          card.style.display = show ? '' : 'none';
+          if (show) visible++;
+        });
+        document.querySelectorAll('.subcat-section').forEach(function(sec) {
+          const visibleCards = sec.querySelectorAll('.product-card:not([style*="display: none"])');
+          sec.style.display = visibleCards.length ? '' : 'none';
+        });
+        if (countEl) countEl.textContent = visible + ' producto' + (visible !== 1 ? 's' : '');
+      }
+      search.addEventListener('input', filter);
+      chips.forEach(function(chip) {
+        chip.addEventListener('click', function() {
+          activeSubcategory = chip.dataset.subcategory;
+          chips.forEach(function(c) { c.classList.remove('active'); });
+          chip.classList.add('active');
+          filter();
+        });
+      });
+    })();
+  </script>
   <footer>
     <div class="footer-logo"><img src="LOGO ADIS.png" alt="ADIS Logo"></div>
     <div class="footer-info">

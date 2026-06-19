@@ -106,6 +106,17 @@
     <a href="#91-placa-tipo-roca">Placa tipo roca</a>
     </div>
 
+  <!-- FILTROS FACETADOS -->
+  <section class="cat-filters reveal">
+    <div class="cat-filters-inner">
+      <input type="text" class="cat-filter-search" id="catFilterSearch" placeholder="Buscar producto..." autocomplete="off">
+      <div class="cat-filter-chips">
+        <button class="filter-chip active" data-subcategory="all">Todos</button><button class="filter-chip" data-subcategory="placa tipo roca">Placa tipo roca</button><button class="filter-chip" data-subcategory="general">General</button>
+      </div>
+      <div class="cat-filter-count" id="catFilterCount">11 productos</div>
+    </div>
+  </section>
+
   <section class="subcat-section reveal" id="91-placa-tipo-roca">
     <div class="subcat-header">
       <h3>Placa tipo roca</h3>
@@ -119,7 +130,7 @@
       <div class="spec-item"><span class="spec-label">Uso</span><span class="spec-value">Interior</span></div>
     </div>
     <div class="products-grid">
-      <div class="product-card reveal" data-name="black" data-category="Cladding">
+      <div class="product-card reveal" data-name="black" data-category="Cladding" data-subcategory="placa tipo roca" data-keywords="black">
         <div class="product-gallery" onclick="openLightbox('img/9-cladding/91-placa-tipo-roca/BLACK.jpg', 'BLACK')">
           <img src="img/9-cladding/91-placa-tipo-roca/BLACK.jpg" alt="BLACK" loading="lazy">
         </div>
@@ -130,7 +141,7 @@
           </div>
         </div>
       </div>
-      <div class="product-card reveal" data-name="gray" data-category="Cladding">
+      <div class="product-card reveal" data-name="gray" data-category="Cladding" data-subcategory="placa tipo roca" data-keywords="gray">
         <div class="product-gallery" onclick="openLightbox('img/9-cladding/91-placa-tipo-roca/GRAY.jpg', 'GRAY')">
           <img src="img/9-cladding/91-placa-tipo-roca/GRAY.jpg" alt="GRAY" loading="lazy">
         </div>
@@ -156,7 +167,7 @@
       <div class="spec-item"><span class="spec-label">Uso</span><span class="spec-value">Exterior</span></div>
     </div>
     <div class="products-grid">
-      <div class="product-card reveal" data-name="esquiner 35x45x2900mm" data-category="Cladding">
+      <div class="product-card reveal" data-name="esquiner 35x45x2900mm" data-category="Cladding" data-subcategory="general" data-keywords="esquiner">
         <div class="product-gallery" onclick="openLightbox('img/9-cladding/Esquiner 35X45X2900MM.jpg', 'Esquiner 35X45X2900MM')">
           <img src="img/9-cladding/Esquiner 35X45X2900MM.jpg" alt="Esquiner 35X45X2900MM" loading="lazy">
         </div>
@@ -167,7 +178,7 @@
           </div>
         </div>
       </div>
-      <div class="product-card reveal" data-name="hickory" data-category="Cladding">
+      <div class="product-card reveal" data-name="hickory" data-category="Cladding" data-subcategory="general" data-keywords="hickory">
         <div class="product-gallery" onclick="openLightbox('img/9-cladding/HICKORY.jpg', 'HICKORY')">
           <img src="img/9-cladding/HICKORY.jpg" alt="HICKORY" loading="lazy">
         </div>
@@ -178,7 +189,7 @@
           </div>
         </div>
       </div>
-      <div class="product-card reveal" data-name="maple" data-category="Cladding">
+      <div class="product-card reveal" data-name="maple" data-category="Cladding" data-subcategory="general" data-keywords="maple">
         <div class="product-gallery" onclick="openLightbox('img/9-cladding/MAPLE.jpg', 'MAPLE')">
           <img src="img/9-cladding/MAPLE.jpg" alt="MAPLE" loading="lazy">
         </div>
@@ -189,7 +200,7 @@
           </div>
         </div>
       </div>
-      <div class="product-card reveal" data-name="merbau" data-category="Cladding">
+      <div class="product-card reveal" data-name="merbau" data-category="Cladding" data-subcategory="general" data-keywords="merbau">
         <div class="product-gallery" onclick="openLightbox('img/9-cladding/MERBAU.jpg', 'MERBAU')">
           <img src="img/9-cladding/MERBAU.jpg" alt="MERBAU" loading="lazy">
         </div>
@@ -200,7 +211,7 @@
           </div>
         </div>
       </div>
-      <div class="product-card reveal" data-name="redwood" data-category="Cladding">
+      <div class="product-card reveal" data-name="redwood" data-category="Cladding" data-subcategory="general" data-keywords="redwood">
         <div class="product-gallery" onclick="openLightbox('img/9-cladding/REDWOOD.jpg', 'REDWOOD')">
           <img src="img/9-cladding/REDWOOD.jpg" alt="REDWOOD" loading="lazy">
         </div>
@@ -211,7 +222,7 @@
           </div>
         </div>
       </div>
-      <div class="product-card reveal" data-name="tasmania" data-category="Cladding">
+      <div class="product-card reveal" data-name="tasmania" data-category="Cladding" data-subcategory="general" data-keywords="tasmania">
         <div class="product-gallery" onclick="openLightbox('img/9-cladding/TASMANIA.jpg', 'TASMANIA')">
           <img src="img/9-cladding/TASMANIA.jpg" alt="TASMANIA" loading="lazy">
         </div>
@@ -222,7 +233,7 @@
           </div>
         </div>
       </div>
-      <div class="product-card reveal" data-name="teak" data-category="Cladding">
+      <div class="product-card reveal" data-name="teak" data-category="Cladding" data-subcategory="general" data-keywords="teak">
         <div class="product-gallery" onclick="openLightbox('img/9-cladding/TEAK.jpg', 'TEAK')">
           <img src="img/9-cladding/TEAK.jpg" alt="TEAK" loading="lazy">
         </div>
@@ -233,7 +244,7 @@
           </div>
         </div>
       </div>
-      <div class="product-card reveal" data-name="wenge" data-category="Cladding">
+      <div class="product-card reveal" data-name="wenge" data-category="Cladding" data-subcategory="general" data-keywords="wenge">
         <div class="product-gallery" onclick="openLightbox('img/9-cladding/WENGE.jpg', 'WENGE')">
           <img src="img/9-cladding/WENGE.jpg" alt="WENGE" loading="lazy">
         </div>
@@ -244,7 +255,7 @@
           </div>
         </div>
       </div>
-      <div class="product-card reveal" data-name="perfil plano25x3x2900mm" data-category="Cladding">
+      <div class="product-card reveal" data-name="perfil plano25x3x2900mm" data-category="Cladding" data-subcategory="general" data-keywords="perfil plano">
         <div class="product-gallery" onclick="openLightbox('img/9-cladding/perfil plano25X3X2900MM.jpg', 'perfil plano25X3X2900MM')">
           <img src="img/9-cladding/perfil plano25X3X2900MM.jpg" alt="perfil plano25X3X2900MM" loading="lazy">
         </div>
@@ -435,6 +446,48 @@ Favor de contactarme para mas detalles. ¡Gracias!`;
     }
   </script>
 
+
+  <script>
+    (function() {
+      const search = document.getElementById('catFilterSearch');
+      if (!search) return;
+      const chips = document.querySelectorAll('.filter-chip');
+      const cards = document.querySelectorAll('.product-card');
+      const countEl = document.getElementById('catFilterCount');
+      let activeSubcategory = 'all';
+      function normalize(str) {
+        return (str || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+      }
+      function filter() {
+        const term = normalize(search.value);
+        let visible = 0;
+        cards.forEach(function(card) {
+          const name = normalize(card.dataset.name);
+          const sub = card.dataset.subcategory || '';
+          const keywords = normalize(card.dataset.keywords);
+          const matchSearch = name.indexOf(term) !== -1 || keywords.indexOf(term) !== -1;
+          const matchSub = activeSubcategory === 'all' || sub === activeSubcategory;
+          const show = matchSearch && matchSub;
+          card.style.display = show ? '' : 'none';
+          if (show) visible++;
+        });
+        document.querySelectorAll('.subcat-section').forEach(function(sec) {
+          const visibleCards = sec.querySelectorAll('.product-card:not([style*="display: none"])');
+          sec.style.display = visibleCards.length ? '' : 'none';
+        });
+        if (countEl) countEl.textContent = visible + ' producto' + (visible !== 1 ? 's' : '');
+      }
+      search.addEventListener('input', filter);
+      chips.forEach(function(chip) {
+        chip.addEventListener('click', function() {
+          activeSubcategory = chip.dataset.subcategory;
+          chips.forEach(function(c) { c.classList.remove('active'); });
+          chip.classList.add('active');
+          filter();
+        });
+      });
+    })();
+  </script>
   <footer>
     <div class="footer-logo"><img src="LOGO ADIS.png" alt="ADIS Logo"></div>
     <div class="footer-info">

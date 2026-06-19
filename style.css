@@ -1141,6 +1141,28 @@ footer {
   border-radius: 20px; margin-bottom: 1rem;
 }
 
+/* FILTROS FACETADOS */
+.cat-filters { max-width: 1200px; margin: 0 auto 2rem; padding: 0 2rem; position: relative; z-index: 1; }
+.cat-filters-inner {
+  background: rgba(255,255,255,0.03); border: 1px solid rgba(197,160,89,0.12);
+  border-radius: 16px; padding: 1.2rem 1.5rem;
+}
+.cat-filter-search {
+  width: 100%; background: rgba(255,255,255,0.05); border: 1px solid rgba(197,160,89,0.2);
+  border-radius: 10px; padding: 0.8rem 1rem; color: var(--white); font-family: 'Montserrat', sans-serif;
+  font-size: 0.9rem; margin-bottom: 1rem; transition: all 0.2s;
+}
+.cat-filter-search:focus { outline: none; border-color: var(--gold); background: rgba(255,255,255,0.08); box-shadow: 0 0 0 3px rgba(197,160,89,0.1); }
+.cat-filter-search::placeholder { color: rgba(245,245,245,0.4); }
+.cat-filter-chips { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.filter-chip {
+  background: transparent; border: 1px solid rgba(197,160,89,0.25); color: rgba(245,245,245,0.7);
+  padding: 0.4rem 0.9rem; border-radius: 20px; cursor: pointer; font-size: 0.8rem; font-weight: 500;
+  transition: all 0.2s; font-family: 'Montserrat', sans-serif;
+}
+.filter-chip:hover, .filter-chip.active { background: var(--gold); color: var(--black); border-color: var(--gold); }
+.cat-filter-count { text-align: right; font-size: 0.8rem; color: rgba(245,245,245,0.5); margin-top: 0.8rem; }
+
 /* SUBCATEGORIA MEJORADA */
 .subcat-section {
   padding: 4rem 2rem;
@@ -1487,6 +1509,9 @@ footer {
   .wa-modal-row { grid-template-columns: 1fr; }
   .sticky-cta-bar { grid-template-columns: 1fr auto; padding: 0.6rem 0.8rem; }
   .sticky-cta-bar a { padding: 0.65rem 0.7rem; font-size: 0.78rem; }
+  .cat-filters { padding: 0 1rem; }
+  .cat-filters-inner { padding: 1rem; }
+  .cat-filter-search { padding: 0.7rem 0.8rem; font-size: 0.85rem; }
   body { padding-bottom: 80px; }
 }
 

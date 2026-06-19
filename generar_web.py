@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
 import os
 import sys
+import re
 import json
 import shutil
+import unicodedata
 from pathlib import Path
 
 # Forzar UTF-8 en stdout para evitar errores de codificación
@@ -1606,6 +1608,28 @@ footer {
   border-radius: 20px; margin-bottom: 1rem;
 }
 
+/* FILTROS FACETADOS */
+.cat-filters { max-width: 1200px; margin: 0 auto 2rem; padding: 0 2rem; position: relative; z-index: 1; }
+.cat-filters-inner {
+  background: rgba(255,255,255,0.03); border: 1px solid rgba(197,160,89,0.12);
+  border-radius: 16px; padding: 1.2rem 1.5rem;
+}
+.cat-filter-search {
+  width: 100%; background: rgba(255,255,255,0.05); border: 1px solid rgba(197,160,89,0.2);
+  border-radius: 10px; padding: 0.8rem 1rem; color: var(--white); font-family: 'Montserrat', sans-serif;
+  font-size: 0.9rem; margin-bottom: 1rem; transition: all 0.2s;
+}
+.cat-filter-search:focus { outline: none; border-color: var(--gold); background: rgba(255,255,255,0.08); box-shadow: 0 0 0 3px rgba(197,160,89,0.1); }
+.cat-filter-search::placeholder { color: rgba(245,245,245,0.4); }
+.cat-filter-chips { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.filter-chip {
+  background: transparent; border: 1px solid rgba(197,160,89,0.25); color: rgba(245,245,245,0.7);
+  padding: 0.4rem 0.9rem; border-radius: 20px; cursor: pointer; font-size: 0.8rem; font-weight: 500;
+  transition: all 0.2s; font-family: 'Montserrat', sans-serif;
+}
+.filter-chip:hover, .filter-chip.active { background: var(--gold); color: var(--black); border-color: var(--gold); }
+.cat-filter-count { text-align: right; font-size: 0.8rem; color: rgba(245,245,245,0.5); margin-top: 0.8rem; }
+
 /* SUBCATEGORIA MEJORADA */
 .subcat-section {
   padding: 4rem 2rem;
@@ -1952,6 +1976,9 @@ footer {
   .wa-modal-row { grid-template-columns: 1fr; }
   .sticky-cta-bar { grid-template-columns: 1fr auto; padding: 0.6rem 0.8rem; }
   .sticky-cta-bar a { padding: 0.65rem 0.7rem; font-size: 0.78rem; }
+  .cat-filters { padding: 0 1rem; }
+  .cat-filters-inner { padding: 1rem; }
+  .cat-filter-search { padding: 0.7rem 0.8rem; font-size: 0.85rem; }
   body { padding-bottom: 80px; }
 }
 
@@ -2265,6 +2292,85 @@ Categoria: ${category}`;
 '''
 
 
+def _extract_keywords(name):
+    """Extrae palabras clave normalizadas de un nombre de producto."""
+    name_norm = unicodedata.normalize('NFKD', name).encode('ASCII', 'ignore').decode('ASCII').lower()
+    tokens = re.findall(r'[a-z]+', name_norm)
+    stopwords = {'de', 'del', 'la', 'el', 'en', 'y', 'o', 'con', 'sin', 'para', 'por', 'un', 'una', 'los', 'las'}
+    return [t for t in tokens if t not in stopwords and len(t) > 2]
+
+
+def category_filters_html(cat):
+    """Genera panel de filtros facetados para una categoría."""
+    chips = ['<button class="filter-chip active" data-subcategory="all">Todos</button>']
+    for sub in cat["subcategories"]:
+        if sub["products"]:
+            chips.append(f'<button class="filter-chip" data-subcategory="{sub["name"].lower()}">{sub["name"]}</button>')
+    has_direct = bool(cat["direct_products"])
+    if has_direct:
+        chips.append('<button class="filter-chip" data-subcategory="general">General</button>')
+    if not cat["subcategories"] and not has_direct:
+        return ''
+    total = len(cat["direct_products"]) + sum(len(s["products"]) for s in cat["subcategories"])
+    return f'''  <!-- FILTROS FACETADOS -->
+  <section class="cat-filters reveal">
+    <div class="cat-filters-inner">
+      <input type="text" class="cat-filter-search" id="catFilterSearch" placeholder="Buscar producto..." autocomplete="off">
+      <div class="cat-filter-chips">
+        {''.join(chips)}
+      </div>
+      <div class="cat-filter-count" id="catFilterCount">{total} productos</div>
+    </div>
+  </section>
+'''
+
+
+def category_filters_js():
+    """JavaScript para manejar los filtros facetados de categoría."""
+    return '''
+  <script>
+    (function() {
+      const search = document.getElementById('catFilterSearch');
+      if (!search) return;
+      const chips = document.querySelectorAll('.filter-chip');
+      const cards = document.querySelectorAll('.product-card');
+      const countEl = document.getElementById('catFilterCount');
+      let activeSubcategory = 'all';
+      function normalize(str) {
+        return (str || '').toLowerCase().normalize('NFD').replace(/[\\u0300-\\u036f]/g, '');
+      }
+      function filter() {
+        const term = normalize(search.value);
+        let visible = 0;
+        cards.forEach(function(card) {
+          const name = normalize(card.dataset.name);
+          const sub = card.dataset.subcategory || '';
+          const keywords = normalize(card.dataset.keywords);
+          const matchSearch = name.indexOf(term) !== -1 || keywords.indexOf(term) !== -1;
+          const matchSub = activeSubcategory === 'all' || sub === activeSubcategory;
+          const show = matchSearch && matchSub;
+          card.style.display = show ? '' : 'none';
+          if (show) visible++;
+        });
+        document.querySelectorAll('.subcat-section').forEach(function(sec) {
+          const visibleCards = sec.querySelectorAll('.product-card:not([style*="display: none"])');
+          sec.style.display = visibleCards.length ? '' : 'none';
+        });
+        if (countEl) countEl.textContent = visible + ' producto' + (visible !== 1 ? 's' : '');
+      }
+      search.addEventListener('input', filter);
+      chips.forEach(function(chip) {
+        chip.addEventListener('click', function() {
+          activeSubcategory = chip.dataset.subcategory;
+          chips.forEach(function(c) { c.classList.remove('active'); });
+          chip.classList.add('active');
+          filter();
+        });
+      });
+    })();
+  </script>'''
+
+
 def product_card_html(prod_file, cat, sub=None):
     """Genera tarjeta de producto con CTA unificado a WhatsApp via modal."""
     prod_name = os.path.splitext(prod_file)[0]
@@ -2276,7 +2382,9 @@ def product_card_html(prod_file, cat, sub=None):
     sub_name = sub["name"] if sub else None
     sub_arg = "'" + sub_name + "'" if sub_name else "null"
     cat_name = cat["name"]
-    return '''      <div class="product-card reveal" data-name="{prod_name_lower}" data-category="{cat_name}">
+    sub_name_lower = sub_name.lower() if sub_name else 'general'
+    keywords = ' '.join(_extract_keywords(prod_name))
+    return '''      <div class="product-card reveal" data-name="{prod_name_lower}" data-category="{cat_name}" data-subcategory="{sub_name_lower}" data-keywords="{keywords}">
         <div class="product-gallery" onclick="openLightbox('{img_path}', '{prod_name}')">
           <img src="{img_path}" alt="{prod_name}" loading="lazy">
         </div>
@@ -2292,7 +2400,9 @@ def product_card_html(prod_file, cat, sub=None):
         prod_name_lower=prod_name.lower(),
         cat_name=cat_name,
         img_path=img_path,
-        sub_arg=sub_arg
+        sub_arg=sub_arg,
+        sub_name_lower=sub_name_lower,
+        keywords=keywords
     )
 
 
@@ -4306,6 +4416,7 @@ def generate_category_page(cat, categories):
   </section>
 
 {subcat_nav_html}{real_sheets_html}
+{category_filters_html(cat)}
 {sections_html}
 {cat_nav_html}
   <section class="section-wrap" style="padding-top: 1rem;">
@@ -4317,6 +4428,7 @@ def generate_category_page(cat, categories):
 
 {generate_testimonios()}
 {modal_cotizar_html()}
+{category_filters_js()}
 {generate_footer()}
 </body>
 </html>
