@@ -4097,8 +4097,7 @@ def generate_footer():
   </div>
 
 
-{chatbot_js}
-{tracking_script()}"""
+{chatbot_js}"""
 
 
 def generate_index(categories):
