@@ -4092,8 +4092,8 @@ def generate_index(categories):
 
   <!-- STICKY CTA BAR -->
   <div class="sticky-cta-bar">
-    <a href="{wa_sticky_url}" class="sticky-cta-wa" target="_blank">
-      <span>&#128172;</span> ¿Dudas? Escribenos por WhatsApp
+    <a href="{wa_sticky_url}" class="sticky-cta-wa" target="_blank" aria-label="WhatsApp">
+      <span>&#128172;</span> WhatsApp
     </a>
     <a href="{pdf_url}" class="sticky-cta-pdf" download>
       <span>&#128229;</span> PDF
@@ -4429,6 +4429,17 @@ def generate_category_page(cat, categories):
 {generate_testimonios()}
 {modal_cotizar_html()}
 {category_filters_js()}
+
+  <!-- STICKY CTA BAR -->
+  <div class="sticky-cta-bar">
+    <a href="{wa_sticky_url}" class="sticky-cta-wa" target="_blank" aria-label="WhatsApp">
+      <span>&#128172;</span> WhatsApp
+    </a>
+    <a href="{pdf_url}" class="sticky-cta-pdf" download>
+      <span>&#128229;</span> PDF
+    </a>
+  </div>
+
 {generate_footer()}
 </body>
 </html>
