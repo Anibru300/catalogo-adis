@@ -1,4 +1,8 @@
 ﻿desktop.ini
 __pycache__/
-backup_*.py
-backup_*.css
+backups/
+*.bak
+*.tmp
+*_output.txt
+*_reporte.json
+test_chars.txt
