@@ -96,7 +96,7 @@ PRICE_DATA = {
 # ========== GOOGLE ANALYTICS 4 ==========
 # Reemplaza 'G-XXXXXXXXXX' por tu Measurement ID de Google Analytics 4.
 # Obtén uno gratis en: https://analytics.google.com/analytics/web/#/
-GA_MEASUREMENT_ID = 'G-XXXXXXXXXX'
+GA_MEASUREMENT_ID = 'G-6DL4217NSC'
 
 def ga_script():
     if not GA_MEASUREMENT_ID or GA_MEASUREMENT_ID == 'G-XXXXXXXXXX':
