@@ -6,3 +6,5 @@ backups/
 *_output.txt
 *_reporte.json
 test_chars.txt
+screenshots/
+venv/

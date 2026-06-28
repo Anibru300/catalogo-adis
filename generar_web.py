@@ -1209,13 +1209,31 @@ footer {
 
 /* SCROLL ANIMATIONS */
 .reveal {
-  opacity: 0;
-  transform: translateY(40px);
-  transition: all 0.8s ease-out;
-}
-.reveal.active {
   opacity: 1;
   transform: translateY(0);
+  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+.js-enabled .reveal {
+  opacity: 0;
+  transform: translateY(40px);
+}
+.js-enabled .reveal.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+@media (max-width: 768px) {
+  .reveal, .js-enabled .reveal, .js-enabled .reveal.active {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .reveal, .js-enabled .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
 }
 
 /* CHATBOT */
@@ -2066,8 +2084,17 @@ footer {
   .spotlight-box { padding-top: 10vh; }
   .desktop-nav { display: none; }
   .menu-btn { display: block; }
-  .hero-home h1 { font-size: 2.2rem; }
-  .hero-content img { height: 100px; }
+  .hero-home { min-height: auto; padding: 5rem 1rem 2rem; }
+  .hero-home h1 { font-size: clamp(1.8rem, 8vw, 2.4rem); }
+  .hero-content img { height: 90px; margin-bottom: 1.2rem; }
+  .hero-badge { font-size: 0.6rem; padding: 0.4rem 1rem; margin-bottom: 1rem; }
+  .hero-home p { font-size: 0.95rem; margin-bottom: 1.5rem; }
+  .btn-primary { padding: 0.8rem 1.8rem; font-size: 0.75rem; width: 100%; max-width: 320px; }
+  .search-hero { margin-top: 1.5rem; }
+  .search-hero-title { font-size: 1.1rem; }
+  .search-hero-input { padding: 0.9rem 1.2rem 0.9rem 3rem; font-size: 0.9rem; border-width: 2px; }
+  .search-hero-icon { left: 1rem; font-size: 1.2rem; }
+  .search-hero-hint { font-size: 0.7rem; }
   .products-grid { grid-template-columns: 1fr; }
   .cat-grid { grid-template-columns: 1fr; }
   .info-grid { grid-template-columns: 1fr; }
@@ -2077,18 +2104,55 @@ footer {
   .chatbot-float { width: 50px; height: 50px; font-size: 1.5rem; }
   .chatbot-window { width: calc(100vw - 40px); left: 20px; }
   .stat-number { font-size: 2rem; }
-  .hero-cat-bg { min-height: 45vh; }
+  .hero-cat-bg { min-height: 32vh; padding: 6rem 1rem 2rem; }
+  .hero-cat-bg h1 { font-size: clamp(1.8rem, 8vw, 2.5rem); }
   .hero-cat-actions { flex-direction: column; gap: 0.8rem; }
   .hero-cat-actions .btn-primary { width: 100%; }
-  .product-gallery { height: 300px; }
+  .product-gallery { height: auto; aspect-ratio: 4/5; background: transparent; }
+  .product-card { border-radius: 12px; }
+  .product-info { padding: 1rem; }
+  .product-name { font-size: 1rem; margin-bottom: 0.7rem; }
+  .btn-cotizar { padding: 0.7rem 1.2rem; font-size: 0.75rem; min-height: 44px; }
   .wa-modal-box { margin: 1rem; padding: 1.4rem; }
   .wa-modal-row { grid-template-columns: 1fr; }
   .sticky-cta-bar { grid-template-columns: 1fr auto; padding: 0.6rem 0.8rem; }
   .sticky-cta-bar a { padding: 0.65rem 0.7rem; font-size: 0.78rem; }
+  .cat-card { height: 260px; }
+  .cat-card-overlay { padding: 1.2rem; }
+  .cat-card-overlay h3 { font-size: 1.3rem; }
+  .cat-card-overlay span { font-size: 0.7rem; }
   .cat-filters { padding: 0 1rem; }
   .cat-filters-inner { padding: 1rem; }
   .cat-filter-search { padding: 0.7rem 0.8rem; font-size: 0.85rem; }
-  body { padding-bottom: 80px; }
+  .cat-filter-chips { gap: 0.5rem; }
+  .filter-chip { padding: 0.5rem 0.8rem; font-size: 0.75rem; }
+  .logo img { height: 45px; }
+  .mobile-bottom-nav { padding: 0.7rem 0 0.9rem; }
+  .mobile-bottom-nav a { font-size: 0.7rem; gap: 0.3rem; min-height: 44px; }
+  .mobile-bottom-nav a span:first-child { font-size: 1.3rem; }
+  body { padding-bottom: 76px; }
+}
+
+@media (max-width: 480px) {
+  .hero-home h1 { font-size: 1.7rem; }
+  .hero-content img { height: 75px; }
+  .hero-cat-bg { min-height: 28vh; }
+  .hero-cat-bg h1 { font-size: 1.6rem; }
+  .product-gallery { aspect-ratio: 1/1; }
+  .cat-card { height: 220px; }
+  .real-sheets-grid { grid-template-columns: repeat(2, 1fr); gap: 0.5rem; }
+  .section-header h2 { font-size: 1.4rem; }
+  .btn-primary { padding: 0.7rem 1rem; }
+  .btn-cotizar { width: 100%; }
+}
+  .subcat-section { padding: 2rem 1rem; }
+  .subcat-header h3 { font-size: 1.3rem; }
+  .real-sheets-section { padding: 2.5rem 1rem; }
+  .real-sheets-grid { grid-template-columns: repeat(2, 1fr); gap: 0.75rem; }
+  .section-header h2 { font-size: 1.6rem; }
+  .contact-section { padding: 6rem 1rem 2rem; }
+  .specs-bar { padding: 0 1rem; margin-bottom: 2rem; }
+  .spec-item { padding: 1rem 0.6rem; }
 }
 
 /* PRODUCTO DESTACADO - PVC MARMOL */
@@ -2527,6 +2591,13 @@ def modal_cotizar_html():
       </form>
     </div>
   </div>
+
+  <!-- LIGHTBOX -->
+  <div class="lightbox" id="lightbox" onclick="closeLightbox(event)">
+    <button class="lightbox-close" onclick="closeLightbox(event)">&#10005;</button>
+    <img src="" alt="" id="lightboxImg">
+    <div class="lightbox-caption" id="lightboxCaption"></div>
+  </div>
   <script>
     function openWaModal(product, category, subcategory) {
       document.getElementById('waModalProduct').value = product || '';
@@ -2564,6 +2635,25 @@ Categoria: ${category}`;
       closeWaModal();
       e.target.reset();
     }
+    // Lightbox
+    function openLightbox(src, caption) {
+      var lb = document.getElementById('lightbox');
+      if (!lb) return;
+      document.getElementById('lightboxImg').src = src;
+      document.getElementById('lightboxCaption').textContent = caption || '';
+      lb.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeLightbox(e) {
+      var lb = document.getElementById('lightbox');
+      if (!lb) return;
+      if (e && e.target !== e.currentTarget && !e.target.classList.contains('lightbox-close')) return;
+      lb.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') closeLightbox();
+    });
   </script>
 '''
 
@@ -4236,6 +4326,7 @@ def generate_index(categories):
 {website_schema()}
 </head>
 <body>
+  <script>document.documentElement.classList.add('js-enabled');</script>
   <canvas id="bg-canvas"></canvas>
 
 {generate_header("index")}
@@ -4392,6 +4483,7 @@ def generate_contacto():
 {breadcrumb_schema([('Inicio', SITE_URL), ('Contacto', f'{SITE_URL}contacto.html')])}
 </head>
 <body>
+  <script>document.documentElement.classList.add('js-enabled');</script>
   <canvas id="bg-canvas"></canvas>
 {generate_header("contacto")}
 
@@ -4692,6 +4784,7 @@ def generate_category_page(cat, categories):
 {breadcrumb_html}
 {product_schemas_html}</head>
 <body>
+  <script>document.documentElement.classList.add('js-enabled');</script>
   <canvas id="bg-canvas"></canvas>
 {generate_header(cat["slug"])}
 {breadcrumbs_html}
@@ -5314,6 +5407,7 @@ def generate_sabias_que():
 {breadcrumb_schema([('Inicio', SITE_URL), ('¿Sabías que?', f'{SITE_URL}sabias-que.html'), (cat_name, page_url)])}
 {faq_schema_html}</head>
 <body>
+  <script>document.documentElement.classList.add('js-enabled');</script>
   <canvas id="bg-canvas"></canvas>
 {generate_header("sabias-que")}
 
@@ -5405,6 +5499,7 @@ function sqToggle(el) {{
 {breadcrumb_schema([('Inicio', SITE_URL), ('¿Sabías que?', f'{SITE_URL}sabias-que.html')])}
 </head>
 <body>
+  <script>document.documentElement.classList.add('js-enabled');</script>
   <canvas id="bg-canvas"></canvas>
 {generate_header("sabias-que")}
 
@@ -5588,6 +5683,7 @@ def generate_proyectos():
   </style>
 {ga_script()}\n</head>
 <body>
+  <script>document.documentElement.classList.add('js-enabled');</script>
   <canvas id="bg-canvas"></canvas>
 {generate_header("proyectos")}
 
