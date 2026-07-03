@@ -1502,6 +1502,16 @@
           }, 700);
           return;
         }
+        if (text === 'Ver en Google Maps') {
+          window.open('https://maps.app.goo.gl/Q3raWUzhCj2rvhjm8', '_blank');
+          setTimeout(() => {
+            addMessage('🗺️ Se abrió Google Maps con la ubicación de nuestro showroom.', false);
+            saveHistory('🗺️ Se abrió Google Maps con la ubicación de nuestro showroom.', false);
+            showQuickReplies(['Ver productos', 'Horarios', 'Cotización', 'WhatsApp']);
+            addInputField();
+          }, 600);
+          return;
+        }
         
         let result;
         if (chatContext.quoteState) {

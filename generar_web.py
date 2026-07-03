@@ -4065,6 +4065,16 @@ def generate_footer():
           }, 700);
           return;
         }
+        if (text === 'Ver en Google Maps') {
+          window.open('https://maps.app.goo.gl/Q3raWUzhCj2rvhjm8', '_blank');
+          setTimeout(() => {
+            addMessage('🗺️ Se abrió Google Maps con la ubicación de nuestro showroom.', false);
+            saveHistory('🗺️ Se abrió Google Maps con la ubicación de nuestro showroom.', false);
+            showQuickReplies(['Ver productos', 'Horarios', 'Cotización', 'WhatsApp']);
+            addInputField();
+          }, 600);
+          return;
+        }
         
         let result;
         if (chatContext.quoteState) {
@@ -4864,6 +4874,9 @@ def sync_media():
     for fpath, fname in all_files:
         if fname in known_names:
             dst_name = known_names[fname]
+        elif re.match(r'^(antes|despues)(\s+\d+)?\.(jpg|jpeg|png)$', fname, re.IGNORECASE):
+            # Conservar nombres de pares antes/después para que generate_proyectos() los detecte
+            dst_name = fname
         elif 'pvc' in fpath.parent.name.lower() or 'pvc' in fname.lower():
             auto_pvc += 1
             ext = Path(fname).suffix.lower()
