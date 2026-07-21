@@ -5029,10 +5029,11 @@ def generate_index(categories):
     if home_videos:
         vcards = ''
         for vid in home_videos:
-            name = Path(vid).stem.replace('-', ' ').replace('_', ' ').title()
+            name = video_caption(vid)
+            mime = video_mime_type(vid)
             vcards += f'''      <div class="video-card reveal">
-        <video class="auto-video" muted loop playsinline poster="media/proyecto-01.jpg">
-          <source src="media/{vid}" type="video/mp4">
+        <video class="auto-video" muted loop playsinline preload="metadata">
+          <source src="media/{vid}" type="{mime}">
         </video>
         <div class="video-card-caption">{name}</div>
       </div>
@@ -5113,16 +5114,6 @@ def generate_index(categories):
     </div>
   </section>
 
-  <!-- STICKY CTA: visible en móvil para convertir tráfico directo -->
-  <div class="sticky-cta-bar visible" id="homeStickyCta">
-    <a href="https://wa.me/{CONTACTO['whatsapp']}?text={CONTACTO['whatsapp_msg'].replace(' ', '%20')}" class="sticky-cta-wa" target="_blank" onclick="gtag('event','whatsapp_click',{{'location':'sticky_bar'}})">
-      <span>💬</span> {i18n('sticky_quote')}
-    </a>
-    <a href="tel:{CONTACTO['tel_mx_link']}" class="sticky-cta-call" onclick="gtag('event','contacto_click',{{'tipo':'tel_mx'}})">
-      <span>📞</span> {i18n('sticky_call')}
-    </a>
-  </div>
-
   <!-- BENEFICIOS / POR QUÉ ELEGIR ADIS -->
   <section class="section-wrap benefits-section reveal" id="beneficios">
     <div class="section-header">
@@ -5157,28 +5148,6 @@ def generate_index(categories):
       <div class="trust-item"><span>50+</span> {i18n('trust_projects')}</div>
       <div class="trust-item"><span>9</span> {i18n('trust_categories')}</div>
       <div class="trust-item"><span>15</span> {i18n('trust_warranty')}</div>
-    </div>
-  </section>
-
-  <!-- PRECIOS ORIENTATIVOS -->
-  <section class="section-wrap prices-section reveal" id="precios">
-    <div class="section-header">
-      <h2>{i18n('prices_title')}</h2>
-      <div class="divider"></div>
-      <p>{i18n('prices_subtitle', html=True)}</p>
-    </div>
-    <div class="prices-grid">
-      <div class="price-card"><h4>Placas PVC</h4><div class="price-range">$850 – $1,400 <span>{i18n('price_unit_piece')}</span></div><p>{i18n('info_pvc_desc')}</p></div>
-      <div class="price-card"><h4>Lambrín WPC</h4><div class="price-range">$1,200 – $2,100 <span>{i18n('price_unit_box')}</span></div><p>{i18n('info_wpc_desc')}</p></div>
-      <div class="price-card"><h4>Revestimiento Flexible</h4><div class="price-range">$650 – $1,100 <span>{i18n('price_unit_piece')}</span></div><p>Concreto, piedra y madera flexible.</p></div>
-      <div class="price-card"><h4>Plafón PVC</h4><div class="price-range">$180 – $350 <span>{i18n('price_unit_piece')}</span></div><p>Laminado y wood style.</p></div>
-      <div class="price-card"><h4>Paneles 3D</h4><div class="price-range">$280 – $550 <span>{i18n('price_unit_piece')}</span></div><p>Texturas decorativas en relieve.</p></div>
-      <div class="price-card"><h4>Pisos</h4><div class="price-range">$900 – $2,500 <span>{i18n('price_unit_box')}</span></div><p>{i18n('info_flooring_desc')}</p></div>
-      <div class="price-card"><h4>Zacate Sintético</h4><div class="price-range">$220 – $480 <span>{i18n('price_unit_m2')}</span></div><p>Pasto artificial para exteriores.</p></div>
-      <div class="price-card"><h4>Cladding</h4><div class="price-range">$550 – $1,050 <span>{i18n('price_unit_piece')}</span></div><p>{i18n('info_cladding_desc')}</p></div>
-    </div>
-    <div style="text-align: center; margin-top: 2rem;">
-      <a href="{whatsapp_url(CONTACTO['whatsapp'], 'Hola ADIS, vi sus precios orientativos y quiero una cotizacion personalizada.')}" class="btn-primary btn-wa" target="_blank" onclick="gtag('event','whatsapp_click',{{'location':'precios_home'}})">{i18n('prices_cta')}</a>
     </div>
   </section>
 
@@ -5302,6 +5271,24 @@ def generate_index(categories):
 {generate_testimonios()}
 
 {modal_cotizar_html()}
+
+  <script>
+    // Autoplay videos en home cuando son visibles
+    (function() {{
+      const videos = document.querySelectorAll('.auto-video');
+      if (!videos.length || !('IntersectionObserver' in window)) return;
+      const observer = new IntersectionObserver((entries) => {{
+        entries.forEach(entry => {{
+          if (entry.isIntersecting) {{
+            entry.target.play();
+          }} else {{
+            entry.target.pause();
+          }}
+        }});
+      }}, {{ threshold: 0.3 }});
+      videos.forEach(v => observer.observe(v));
+    }})();
+  </script>
 {generate_footer()}
 </body>
 </html>
@@ -5773,16 +5760,6 @@ def generate_category_page(cat, categories):
     </div>
   </section>
 
-  <!-- STICKY CTA: visible en móvil para convertir tráfico directo -->
-  <div class="sticky-cta-bar visible" id="catStickyCta">
-    <a href="{wa_hero_url}" class="sticky-cta-wa" target="_blank" onclick="gtag('event','whatsapp_click',{{'location':'sticky_bar_category','category':'{cat['name']}'}})">
-      <span>💬</span> {i18n('sticky_quote_category')} {cat['name']}
-    </a>
-    <a href="tel:{CONTACTO['tel_mx_link']}" class="sticky-cta-call" onclick="gtag('event','contacto_click',{{'tipo':'tel_mx','location':'sticky_bar_category'}})">
-      <span>📞</span> {i18n('sticky_call')}
-    </a>
-  </div>
-
 {subcat_nav_html}{real_sheets_html}
 {category_filters_html(cat)}
 {sections_html}
@@ -5817,6 +5794,32 @@ def generate_category_page(cat, categories):
     with open(filepath, 'w', encoding='utf-8') as f:
         f.write(html)
     print(f'{cat["filename"]} generado')
+
+
+# Títulos descriptivos para videos de proyectos (visibles en home y proyectos.html)
+VIDEO_CAPTIONS = {
+    'video-01.mp4': 'Sala de estar con plafón',
+    'video-02.mp4': 'Panel de lambrín WPC',
+    'video-03.mp4': 'Pared con molduras decorativas',
+    'video-04.mp4': 'Pasillo con cajoneras',
+    'video-05.mp4': 'Puerta con lambrín negro',
+    'video-06.mp4': 'Sala de entretenimiento',
+    'video-07.mp4': 'Salón de uñas remodelado',
+    'video-08.mp4': 'Sala con lambrín y arte',
+    'video-habitacion.mp4': 'Remodelación de habitación',
+    'video-consultorio.mp4': 'Remodelación de consultorio',
+}
+
+
+def video_caption(vid):
+    """Devuelve un título legible para un video; hace fallback al nombre de archivo."""
+    return VIDEO_CAPTIONS.get(vid, Path(vid).stem.replace('-', ' ').replace('_', ' ').title())
+
+
+def video_mime_type(vid):
+    """Devuelve el MIME type correcto según la extensión del video."""
+    ext = Path(vid).suffix.lower()
+    return {'mp4': 'video/mp4', 'mov': 'video/quicktime', 'webm': 'video/webm'}.get(ext, 'video/mp4')
 
 
 def sync_media():
@@ -6630,12 +6633,13 @@ def generate_proyectos():
     # Videos
     videos_html = ''
     for vid in videos:
-        name = Path(vid).stem.replace('-', ' ').replace('_', ' ').title()
+        name = video_caption(vid)
+        mime = video_mime_type(vid)
         poster = loose_images[0] if loose_images else (images[0] if images else '')
         poster_attr = f' poster="media/{poster}"' if poster else ''
         videos_html += f'''      <div class="video-card reveal">
         <video class="auto-video" muted loop playsinline{poster_attr}>
-          <source src="media/{vid}" type="video/mp4">
+          <source src="media/{vid}" type="{mime}">
         </video>
         <div class="product-info">
           <div class="product-name">{name}</div>
