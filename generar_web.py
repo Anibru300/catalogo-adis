@@ -2785,8 +2785,8 @@ footer {
   .mobile-bottom-nav a span:first-child { font-size: 1.3rem; }
   body { padding-bottom: 130px; }
   .hero-actions { flex-direction: column; align-items: center; }
-  .translate-toggle { bottom: 140px; }
-  .whatsapp-float { bottom: 200px; }
+  .translate-toggle { bottom: 90px; }
+  .whatsapp-float { bottom: 25px; }
   .hero-actions .btn-primary, .hero-actions .btn-secondary { width: 100%; max-width: 320px; }
   .contact-layout { grid-template-columns: 1fr; gap: 2rem; }
   .contact-form-panel, .contact-info-panel { padding: 1.5rem; }
@@ -3438,28 +3438,22 @@ def product_card_html(prod_file, cat, sub=None):
     sub_name = sub["name"] if sub else None
     sub_arg = "'" + sub_name + "'" if sub_name else "null"
     cat_name = cat["name"]
+    prod_name_lower = prod_name.lower()
     sub_name_lower = sub_name.lower() if sub_name else 'general'
     keywords = ' '.join(_extract_keywords(prod_name))
-    return '''      <div class="product-card reveal" data-name="{prod_name_lower}" data-category="{cat_name}" data-subcategory="{sub_name_lower}" data-keywords="{keywords}">
+    button_html = f'<button type="button" class="btn-cotizar" onclick="openWaModal(\'{prod_name}\', \'{cat_name}\', {sub_arg})">{i18n("modal_title")}</button>'
+    return f'''      <div class="product-card reveal" data-name="{prod_name_lower}" data-category="{cat_name}" data-subcategory="{sub_name_lower}" data-keywords="{keywords}">
         <div class="product-gallery" onclick="openLightbox('{img_path}', '{prod_name}')">
           <img src="{img_path}" alt="{prod_name}" loading="lazy">
         </div>
         <div class="product-info">
           <div class="product-name">{prod_name}</div>
           <div class="product-actions">
-            <button type="button" class="btn-cotizar" onclick="openWaModal('{prod_name}', '{cat_name}', {sub_arg})">{{i18n('modal_title')}}</button>
+            {button_html}
           </div>
         </div>
       </div>
-'''.format(
-        prod_name=prod_name,
-        prod_name_lower=prod_name.lower(),
-        cat_name=cat_name,
-        img_path=img_path,
-        sub_arg=sub_arg,
-        sub_name_lower=sub_name_lower,
-        keywords=keywords
-    )
+'''
 
 
 def generate_header(current_page='index'):
@@ -3491,9 +3485,33 @@ def generate_header(current_page='index'):
     ]
     sabias_html = '\n'.join([f'        <a href="{u}" class="dropdown-item"><span class="dropdown-icon">{i}</span><span>{t}</span></a>' for u, i, t in SABIAS_ITEMS])
     
-    nav_links = f'<a href="index.html">{i18n("nav_home")}</a>\n        <a href="index.html#categorias" class="mega-trigger">{i18n("nav_catalog")}\n          <div class="mega-menu">\n' + mega_html + '\n          </div>\n        </a>\n        <a href="sabias-que.html" class="mega-trigger">{i18n("nav_did_you_know")}\n          <div class="nav-dropdown">\n' + sabias_html + '\n          </div>\n        </a>\n        <a href="proyectos.html">{i18n("nav_projects")}</a>\n        <a href="contacto.html">{i18n("nav_contact")}</a>'
+    nav_links = f'''<a href="index.html">{i18n("nav_home")}</a>
+        <a href="index.html#categorias" class="mega-trigger">{i18n("nav_catalog")}
+          <div class="mega-menu">
+{mega_html}
+          </div>
+        </a>
+        <a href="sabias-que.html" class="mega-trigger">{i18n("nav_did_you_know")}
+          <div class="nav-dropdown">
+{sabias_html}
+          </div>
+        </a>
+        <a href="proyectos.html">{i18n("nav_projects")}</a>
+        <a href="contacto.html">{i18n("nav_contact")}</a>'''
     if current_page != 'index':
-        nav_links = f'<a href="index.html">{i18n("nav_back_home")}</a>\n        <a href="index.html#categorias" class="mega-trigger">{i18n("nav_catalog")}\n          <div class="mega-menu">\n' + mega_html + '\n          </div>\n        </a>\n        <a href="sabias-que.html" class="mega-trigger">{i18n("nav_did_you_know")}\n          <div class="nav-dropdown">\n' + sabias_html + '\n          </div>\n        </a>\n        <a href="proyectos.html">{i18n("nav_projects")}</a>\n        <a href="contacto.html">{i18n("nav_contact")}</a>'
+        nav_links = f'''<a href="index.html">{i18n("nav_back_home")}</a>
+        <a href="index.html#categorias" class="mega-trigger">{i18n("nav_catalog")}
+          <div class="mega-menu">
+{mega_html}
+          </div>
+        </a>
+        <a href="sabias-que.html" class="mega-trigger">{i18n("nav_did_you_know")}
+          <div class="nav-dropdown">
+{sabias_html}
+          </div>
+        </a>
+        <a href="proyectos.html">{i18n("nav_projects")}</a>
+        <a href="contacto.html">{i18n("nav_contact")}</a>'''
 
     return f'''  <header>
     <div class="header-inner">
@@ -6687,21 +6705,7 @@ def generate_proyectos():
   <section class="hero-cat">
     <h1>{i18n('projects_title')}</h1>
     <p>{i18n('projects_subtitle')}</p>
-    <div class="hero-cat-actions" style="justify-content: center; margin-top: 1.5rem;">
-      <a href="{whatsapp_url(CONTACTO['whatsapp'], 'Hola ADIS, vi sus proyectos y quiero cotizar una remodelacion.')}" class="btn-primary btn-wa" target="_blank" onclick="gtag('event','whatsapp_click',{{'location':'hero_proyectos'}})">{i18n('projects_cta_quote')}</a>
-      <a href="contacto.html" class="btn-secondary">{i18n('projects_cta_form')}</a>
-    </div>
   </section>
-
-  <!-- STICKY CTA: visible en móvil -->
-  <div class="sticky-cta-bar visible" id="proyectosStickyCta">
-    <a href="{whatsapp_url(CONTACTO['whatsapp'], 'Hola ADIS, vi sus proyectos y quiero cotizar una remodelacion.')}" class="sticky-cta-wa" target="_blank" onclick="gtag('event','whatsapp_click',{{'location':'sticky_bar_proyectos'}})">
-      <span>💬</span> {i18n('sticky_quote_project')}
-    </a>
-    <a href="tel:{CONTACTO['tel_mx_link']}" class="sticky-cta-call" onclick="gtag('event','contacto_click',{{'tipo':'tel_mx','location':'sticky_bar_proyectos'}})">
-      <span>📞</span> {i18n('sticky_call')}
-    </a>
-  </div>
 
 {ba_sections}{gallery_section}{video_section}
   <section class="section-wrap" style="padding-top: 1rem;">

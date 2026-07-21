@@ -1786,8 +1786,8 @@ footer {
   .mobile-bottom-nav a span:first-child { font-size: 1.3rem; }
   body { padding-bottom: 130px; }
   .hero-actions { flex-direction: column; align-items: center; }
-  .translate-toggle { bottom: 140px; }
-  .whatsapp-float { bottom: 200px; }
+  .translate-toggle { bottom: 90px; }
+  .whatsapp-float { bottom: 25px; }
   .hero-actions .btn-primary, .hero-actions .btn-secondary { width: 100%; max-width: 320px; }
   .contact-layout { grid-template-columns: 1fr; gap: 2rem; }
   .contact-form-panel, .contact-info-panel { padding: 1.5rem; }
