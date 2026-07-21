@@ -23,6 +23,7 @@
   <link rel="canonical" href="https://adis-diseño.com/contacto.html">
   <link rel="alternate" hreflang="es" href="https://adis-diseño.com/contacto.html">
   <link rel="alternate" hreflang="en" href="https://adis-diseño.com/contacto.html?hl=en">
+  <meta name="description-en" content="Quote wall coverings in Nogales, Sonora & Arizona. Contact ADIS Design & Remodeling via WhatsApp, phone or email. PVC panels, WPC slats, 3D panels, PVC ceilings, flooring and more. We ship to Tucson, Phoenix and Rio Rico.">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 
@@ -36,56 +37,50 @@
   </script>
 
 
-  <!-- Google Translate -->
+  <!-- ADIS i18n Toggle -->
   <script>
     (function() {
-      window._adisLang = 'es';
-      function setTranslateCookie(lang) {
-        var domain = window.location.hostname;
-        var value = lang === 'en' ? '/es/en' : '/es/es';
-        document.cookie = 'googtrans=' + value + '; path=/; domain=.' + domain;
-        document.cookie = 'googtrans=' + value + '; path=/; domain=' + domain;
+      function escapeHtml(str) {
+        return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
       }
-      function getTranslateCookie() {
-        var match = document.cookie.match(/googtrans=([^;]+)/);
-        return match ? match[1] : '/es/es';
+      function unescapeHtml(str) {
+        return str.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&');
       }
-      function updateLangButton() {
+      function setLang(lang) {
+        localStorage.setItem('adis_lang', lang);
+        document.documentElement.setAttribute('lang', lang === 'en' ? 'en' : 'es');
+        document.querySelectorAll('[data-i18n]').forEach(function(el) {
+          var raw = el.getAttribute('data-' + lang);
+          if (raw === null) return;
+          var text = unescapeHtml(raw);
+          if (el.hasAttribute('data-i18n-html')) {
+            el.innerHTML = text;
+          } else {
+            el.textContent = text;
+          }
+        });
         var btn = document.getElementById('translateToggle');
-        if (!btn) return;
-        var cookie = getTranslateCookie();
-        var isEn = cookie.indexOf('/en') !== -1;
-        btn.textContent = isEn ? 'ES' : 'EN';
-        btn.setAttribute('aria-label', isEn ? 'Cambiar a español' : 'Switch to English');
-        btn.title = isEn ? 'Cambiar a español' : 'Switch to English';
+        if (btn) {
+          btn.textContent = lang === 'en' ? 'ES' : 'EN';
+          btn.setAttribute('aria-label', lang === 'en' ? 'Cambiar a español' : 'Switch to English');
+          btn.title = lang === 'en' ? 'Cambiar a español' : 'Switch to English';
+        }
+        if (typeof gtag === 'function') {
+          gtag('event', 'cambiar_idioma', { idioma: lang, location: 'translate_toggle' });
+        }
       }
       window.adisToggleLanguage = function() {
-        var cookie = getTranslateCookie();
-        var toEn = cookie.indexOf('/en') === -1;
-        setTranslateCookie(toEn ? 'en' : 'es');
-        if (typeof gtag === 'function') {
-          gtag('event', 'cambiar_idioma', { idioma: toEn ? 'en' : 'es', location: 'translate_toggle' });
-        }
-        window.location.reload();
+        var current = localStorage.getItem('adis_lang') || 'es';
+        setLang(current === 'en' ? 'es' : 'en');
       };
-      window.adisInitTranslate = function() {
-        updateLangButton();
-      };
-      document.addEventListener('DOMContentLoaded', window.adisInitTranslate);
+      document.addEventListener('DOMContentLoaded', function() {
+        setLang(localStorage.getItem('adis_lang') || 'es');
+      });
     })();
-    function googleTranslateElementInit() {
-      new google.translate.TranslateElement({
-        pageLanguage: 'es',
-        includedLanguages: 'en,es',
-        layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
-        autoDisplay: false
-      }, 'google_translate_element');
-    }
   </script>
-  <script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-  <div id="google_translate_element" style="display:none; visibility:hidden;"></div>
   <button id="translateToggle" class="translate-toggle" onclick="adisToggleLanguage()" aria-label="Switch to English" title="Switch to English">EN</button>
-  <!-- End Google Translate -->
+  <!-- End ADIS i18n Toggle -->
+
 <script type="application/ld+json">{
   "@context": "https://schema.org",
   "@type": [
@@ -220,8 +215,8 @@
     <div class="header-inner">
       <a href="index.html" class="logo"><img src="LOGO ADIS.png" alt="ADIS Logo"></a>
       <nav class="desktop-nav">
-        <a href="index.html">← Inicio</a>
-        <a href="index.html#categorias" class="mega-trigger">Catálogo
+        <a href="index.html"><span data-i18n="nav_back_home" data-es="← Inicio" data-en="← Home">← Inicio</span></a>
+        <a href="index.html#categorias" class="mega-trigger"><span data-i18n="nav_catalog" data-es="Catálogo" data-en="Catalog">Catálogo</span>
           <div class="mega-menu">
         <a href="1-placas-pvc.html" class="mega-item"><img src="img/1-placas-pvc/11-placas-pvc-tipo-madera/Adler.jpg" alt="Placas PVC" loading="lazy"><span>Placas PVC</span></a>
         <a href="2-lambrin-wpc.html" class="mega-item"><img src="img/2-lambrin-wpc/21-lambrin-interior/AMANECHER.jpg" alt="Lambrín WPC" loading="lazy"><span>Lambrín WPC</span></a>
@@ -234,7 +229,7 @@
         <a href="9-cladding.html" class="mega-item"><img src="img/9-cladding/91-placa-tipo-roca/BLACK.jpg" alt="Cladding" loading="lazy"><span>Cladding</span></a>
           </div>
         </a>
-        <a href="sabias-que.html" class="mega-trigger">¿Sabías que?
+        <a href="sabias-que.html" class="mega-trigger">{i18n("nav_did_you_know")}
           <div class="nav-dropdown">
         <a href="sabias-que-pvc.html" class="dropdown-item"><span class="dropdown-icon">🔬</span><span>Placas PVC</span></a>
         <a href="sabias-que-wpc.html" class="dropdown-item"><span class="dropdown-icon">🌲</span><span>Lambrín WPC</span></a>
@@ -247,10 +242,10 @@
         <a href="sabias-que-cladding.html" class="dropdown-item"><span class="dropdown-icon">⛰️</span><span>Cladding</span></a>
           </div>
         </a>
-        <a href="proyectos.html">Proyectos</a>
-        <a href="contacto.html">Contacto</a>
+        <a href="proyectos.html">{i18n("nav_projects")}</a>
+        <a href="contacto.html">{i18n("nav_contact")}</a>
         <div class="search-box">
-          <input type="text" id="searchInput" placeholder="Buscar producto..." autocomplete="off" title="Presiona / para buscar">
+          <input type="text" id="searchInput" placeholder="Buscar producto..." autocomplete="off" title="Presiona / para buscar desde cualquier página">
           <button onclick="openSpotlight()">&#128269;</button>
           <div class="search-dropdown" id="searchDropdown"></div>
         </div>
@@ -261,11 +256,11 @@
 
   <div class="mobile-menu" id="mobileMenu">
     <button class="close-menu" onclick="toggleMenu()">&#10005;</button>
-    <a href="index.html" onclick="toggleMenu()">Inicio</a>
-    <a href="index.html#categorias" onclick="toggleMenu()">Catálogo</a>
-    <a href="sabias-que.html" onclick="toggleMenu()">¿Sabías que?</a>
-    <a href="proyectos.html" onclick="toggleMenu()">Proyectos</a>
-    <a href="contacto.html" onclick="toggleMenu()">Contacto</a>
+    <a href="index.html" onclick="toggleMenu()"><span data-i18n="nav_home" data-es="Inicio" data-en="Home">Inicio</span></a>
+    <a href="index.html#categorias" onclick="toggleMenu()"><span data-i18n="nav_catalog" data-es="Catálogo" data-en="Catalog">Catálogo</span></a>
+    <a href="sabias-que.html" onclick="toggleMenu()"><span data-i18n="nav_did_you_know" data-es="¿Sabías que?" data-en="Did you know?">¿Sabías que?</span></a>
+    <a href="proyectos.html" onclick="toggleMenu()"><span data-i18n="nav_projects" data-es="Proyectos" data-en="Projects">Proyectos</span></a>
+    <a href="contacto.html" onclick="toggleMenu()"><span data-i18n="nav_contact" data-es="Contacto" data-en="Contact">Contacto</span></a>
     <div class="search-box" style="margin-top:1rem;">
       <input type="text" id="searchInputMobile" placeholder="Buscar producto..." autocomplete="off" style="width:220px;">
       <button onclick="performSearchMobile()">&#128269;</button>
@@ -279,7 +274,7 @@
     <div class="spotlight-box">
       <div class="spotlight-input-wrap">
         <span class="spotlight-icon">&#128269;</span>
-        <input type="text" class="spotlight-input" id="spotlightInput" placeholder="Buscar productos, categorías..." autocomplete="off">
+        <input type="text" class="spotlight-input" id="spotlightInput" placeholder="Buscar producto..." autocomplete="off">
       </div>
       <div class="spotlight-results" id="spotlightResults"></div>
     </div>
@@ -287,8 +282,8 @@
 
 
   <section class="hero-cat" style="padding-top: 8rem;">
-    <h1>Cotiza recubrimientos en Nogales, Sonora</h1>
-    <p>Placas PVC, lambrín WPC, paneles 3D, plafón, pisos, zacate y cladding. Respuesta en menos de 24 horas.</p>
+    <h1><span data-i18n="contact_title" data-i18n-html="true" data-es="Cotiza recubrimientos en Nogales, Sonora" data-en="Quote wall coverings in Nogales, Sonora">Cotiza recubrimientos en Nogales, Sonora</span></h1>
+    <p><span data-i18n="contact_subtitle" data-i18n-html="true" data-es="Placas PVC, lambrín WPC, paneles 3D, plafón, pisos, zacate y cladding. Respuesta en menos de 24 horas." data-en="PVC panels, WPC slats, 3D panels, PVC ceilings, flooring, synthetic grass and cladding. Response in less than 24 hours.">Placas PVC, lambrín WPC, paneles 3D, plafón, pisos, zacate y cladding. Respuesta en menos de 24 horas.</span></p>
   </section>
 
   <section class="section-wrap contact-section">
@@ -296,37 +291,37 @@
       <!-- Formulario de cotización -->
       <div class="contact-form-panel reveal">
         <div class="section-header" style="text-align:left; margin-bottom:1.5rem;">
-          <h2 style="font-size:1.6rem;">Solicita tu cotización gratis</h2>
+          <h2 style="font-size:1.6rem;"><span data-i18n="contact_form_title" data-es="Solicita tu cotización gratis" data-en="Request your free quote">Solicita tu cotización gratis</span></h2>
           <div class="divider" style="margin:0.8rem 0;"></div>
-          <p style="margin:0;">Cuéntanos tu proyecto y te contactamos con precios y disponibilidad.</p>
+          <p style="margin:0;"><span data-i18n="contact_form_subtitle" data-i18n-html="true" data-es="Cuéntanos tu proyecto y te contactamos con precios y disponibilidad." data-en="Tell us about your project and we will contact you with prices and availability.">Cuéntanos tu proyecto y te contactamos con precios y disponibilidad.</span></p>
         </div>
         <form id="contactForm" onsubmit="sendContactForm(event)">
           <div class="form-row">
             <div class="form-field">
-              <label for="cfNombre">Nombre *</label>
+              <label for="cfNombre"><span data-i18n="form_name" data-es="Nombre *" data-en="Name *">Nombre *</span></label>
               <input type="text" id="cfNombre" placeholder="Tu nombre" required>
             </div>
             <div class="form-field">
-              <label for="cfTelefono">Teléfono *</label>
+              <label for="cfTelefono"><span data-i18n="form_phone" data-es="Teléfono *" data-en="Phone *">Teléfono *</span></label>
               <input type="tel" id="cfTelefono" placeholder="Ej. 631 123 4567" required>
             </div>
           </div>
           <div class="form-field">
-            <label for="cfEmail">Correo electrónico</label>
+            <label for="cfEmail"><span data-i18n="form_email" data-es="Correo electrónico" data-en="Email">Correo electrónico</span></label>
             <input type="email" id="cfEmail" placeholder="tu@email.com">
           </div>
           <div class="form-row">
             <div class="form-field">
-              <label for="cfCiudad">Ciudad / Ubicación de la obra *</label>
+              <label for="cfCiudad"><span data-i18n="form_city" data-es="Ciudad / Ubicación de la obra *" data-en="City / Project location *">Ciudad / Ubicación de la obra *</span></label>
               <input type="text" id="cfCiudad" placeholder="Ej. Nogales, Sonora" required>
             </div>
             <div class="form-field">
-              <label for="cfMetros">m² aproximados</label>
+              <label for="cfMetros"><span data-i18n="form_sqm" data-es="m² aproximados" data-en="Approx. m²">m² aproximados</span></label>
               <input type="number" id="cfMetros" placeholder="Ej. 30" min="1" step="0.1">
             </div>
           </div>
           <div class="form-field">
-            <label for="cfProducto">Producto de interés</label>
+            <label for="cfProducto"><span data-i18n="form_product" data-es="Producto de interés" data-en="Product of interest">Producto de interés</span></label>
             <select id="cfProducto">
               <option value="No estoy seguro">No estoy seguro, necesito asesoría</option>
               <option value="Placas PVC">Placas PVC</option>
@@ -341,11 +336,11 @@
             </select>
           </div>
           <div class="form-field">
-            <label for="cfMensaje">Mensaje</label>
+            <label for="cfMensaje"><span data-i18n="form_message" data-es="Mensaje" data-en="Message">Mensaje</span></label>
             <textarea id="cfMensaje" rows="3" placeholder="¿Alguna duda o requerimiento especial?"></textarea>
           </div>
-          <button type="submit" class="btn-primary btn-wa" style="width:100%; justify-content:center; display:flex; gap:0.5rem;">💬 Enviar cotización por WhatsApp</button>
-          <p class="form-note">También puedes llamarnos o escribirnos directamente.</p>
+          <button type="submit" class="btn-primary btn-wa" style="width:100%; justify-content:center; display:flex; gap:0.5rem;"><span data-i18n="form_submit" data-es="💬 Enviar cotización por WhatsApp" data-en="💬 Send quote via WhatsApp">💬 Enviar cotización por WhatsApp</span></button>
+          <p class="form-note"><span data-i18n="form_note" data-i18n-html="true" data-es="También puedes llamarnos o escribirnos directamente." data-en="You can also call or write us directly.">También puedes llamarnos o escribirnos directamente.</span></p>
         </form>
       </div>
 
@@ -353,34 +348,34 @@
       <div class="contact-info-panel reveal">
         <div class="contact-card">
           <div class="icon">💬</div>
-          <h3>WhatsApp</h3>
+          <h3><span data-i18n="contact_whatsapp" data-es="WhatsApp" data-en="WhatsApp">WhatsApp</span></h3>
           <a href="https://wa.me/15208392877" target="_blank">+1 (520) 839-2877</a>
-          <p class="contact-card-note">Respuesta en menos de 24 h</p>
+          <p class="contact-card-note"><span data-i18n="contact_whatsapp_note" data-i18n-html="true" data-es="Respuesta en menos de 24 h" data-en="Response in less than 24 h">Respuesta en menos de 24 h</span></p>
         </div>
         <div class="contact-card">
           <div class="icon">📞</div>
-          <h3>Teléfono México</h3>
+          <h3><span data-i18n="contact_phone_mx" data-es="Teléfono México" data-en="Mexico Phone">Teléfono México</span></h3>
           <a href="tel:+526311204943">+52 631-120-4943</a>
         </div>
         <div class="contact-card">
           <div class="icon">&#128222;</div>
-          <h3>Teléfono USA</h3>
+          <h3><span data-i18n="contact_phone_us" data-es="Teléfono USA" data-en="USA Phone">Teléfono USA</span></h3>
           <a href="tel:+15208392877">+1 (520) 839-2877</a>
         </div>
         <div class="contact-card">
           <div class="icon">✉️</div>
-          <h3>Correo</h3>
+          <h3><span data-i18n="contact_email" data-es="Correo" data-en="Email">Correo</span></h3>
           <a href="mailto:adis.remodelacion@gmail.com">adis.remodelacion@gmail.com</a>
         </div>
         <div class="contact-card">
           <div class="icon">📍</div>
-          <h3>Ubicación</h3>
+          <h3><span data-i18n="contact_location" data-es="Ubicación" data-en="Location">Ubicación</span></h3>
           <p>Nogales, Sonora · Rio Rico, AZ<br>C. Alfonso Acosta 16 Local 3, Col. 5 de Mayo, 84000 Heroica Nogales, Sonora</p>
-          <a href="https://maps.app.goo.gl/Q3raWUzhCj2rvhjm8" target="_blank" class="btn-outline" style="margin-top:0.8rem; display:inline-block;">Ver en Google Maps</a>
+          <a href="https://maps.app.goo.gl/Q3raWUzhCj2rvhjm8" target="_blank" class="btn-outline" style="margin-top:0.8rem; display:inline-block;"><span data-i18n="contact_map" data-es="Ver en Google Maps" data-en="View on Google Maps">Ver en Google Maps</span></a>
         </div>
         <div class="contact-card">
           <div class="icon">🕒</div>
-          <h3>Horario</h3>
+          <h3><span data-i18n="contact_hours" data-es="Horario" data-en="Hours">Horario</span></h3>
           <p>Martes a domingo 10:00-19:00</p>
         </div>
       </div>
@@ -388,11 +383,11 @@
 
     <div style="text-align: center; margin-top: 3rem; max-width: 900px; margin: 3rem auto 0;">
       <div style="border-radius: 8px; overflow: hidden; border: 1px solid rgba(197,160,89,0.2); margin-bottom: 1.5rem;">
-        <iframe src="https://maps.google.com/maps?q=31.3088527,-110.9308403&z=17&output=embed" width="100%" height="400" style="border:0;" allowfullscreen="" loading="lazy" title="Ubicación ADIS Diseño & Remodelación"></iframe>
+        <iframe src="https://maps.google.com/maps?q=31.3088527,-110.9308403&z=17&output=embed" width="100%" height="400" style="border:0;" allowfullscreen="" loading="lazy" title="Ubicación"></iframe>
       </div>
     </div>
     <div style="text-align: center; margin-top: 2rem;">
-      <a href="index.html" class="btn-back">← Volver al Inicio</a>
+      <a href="index.html" class="btn-back"><span data-i18n="contact_back_home" data-es="← Volver al Inicio" data-en="← Back to Home">← Volver al Inicio</span></a>
     </div>
   </section>
 
@@ -409,7 +404,7 @@
       var lines = ['Hola ADIS, solicito una cotización:'];
       lines.push('Nombre: ' + nombre);
       lines.push('Teléfono: ' + tel);
-      if (email) lines.push('Email: ' + email);
+      if (email) lines.push('contact_form_email: ' + email);
       lines.push('Ciudad/Obra: ' + ciudad);
       if (metros) lines.push('m² aproximados: ' + metros);
       lines.push('Producto: ' + producto);
@@ -426,7 +421,7 @@
     <div class="footer-logo"><img src="LOGO ADIS.png" alt="ADIS Logo"></div>
     <div class="footer-info">
       <strong>ADI&#39;S DISEÑO & REMODELACIÓN</strong><br>
-      Creando espacios, reinventando hogares.<br>
+      <span data-i18n="footer_slogan" data-es="Creando espacios, reinventando hogares." data-en="Creating spaces, reinventing homes.">Creando espacios, reinventando hogares.</span><br>
       Nogales, Sonora · Rio Rico, AZ<br>
       <a href="tel:+526311204943">Tel. MX: +52 631-120-4943</a> · <a href="tel:+15208392877">Tel. USA: +1 (520) 839-2877</a><br>
       <a href="mailto:adis.remodelacion@gmail.com">adis.remodelacion@gmail.com</a>
@@ -435,29 +430,29 @@
       <a href="https://wa.me/15208392877?text=Hola%20ADIS,%20vi%20el%20catálogo%20y%20me%20interesa%20obtener%20información%20sobre%20sus%20productos." target="_blank" title="WhatsApp">&#128172;</a>
       <a href="https://www.facebook.com/p/Adis-Dise%C3%B1o-Remodelaci%C3%B3n-61579849591594/" target="_blank" title="Facebook">&#128220;</a>
     </div>
-    <div class="copyright">© 2026 ADIS DISEÑO & REMODELACIÓN. TODOS LOS DERECHOS RESERVADOS.</div>
+    <div class="copyright"><span data-i18n="footer_copyright" data-es="© 2026 ADIS DISEÑO & REMODELACIÓN. TODOS LOS DERECHOS RESERVADOS." data-en="© 2026 ADIS DESIGN & REMODELING. ALL RIGHTS RESERVED.">© 2026 ADIS DISEÑO & REMODELACIÓN. TODOS LOS DERECHOS RESERVADOS.</span></div>
   </footer>
 
   <!-- MOBILE BOTTOM NAV -->
   <nav class="mobile-bottom-nav">
-    <a href="index.html"><span>&#127968;</span><span>Inicio</span></a>
-    <a href="index.html#categorias"><span>&#128194;</span><span>Catálogo</span></a>
-    <a href="proyectos.html"><span>&#128444;</span><span>Proyectos</span></a>
-    <a href="contacto.html"><span>&#128222;</span><span>Contacto</span></a>
+    <a href="index.html"><span>&#127968;</span><span><span data-i18n="mobile_nav_home" data-es="Inicio" data-en="Home">Inicio</span></span></a>
+    <a href="index.html#categorias"><span>&#128194;</span><span><span data-i18n="mobile_nav_catalog" data-es="Catálogo" data-en="Catalog">Catálogo</span></span></a>
+    <a href="proyectos.html"><span>&#128444;</span><span><span data-i18n="mobile_nav_projects" data-es="Proyectos" data-en="Projects">Proyectos</span></span></a>
+    <a href="contacto.html"><span>&#128222;</span><span><span data-i18n="mobile_nav_contact" data-es="Contacto" data-en="Contact">Contacto</span></span></a>
   </nav>
 
-  <a href="https://wa.me/15208392877?text=Hola%20ADIS,%20vi%20el%20catálogo%20y%20me%20interesa%20obtener%20información%20sobre%20sus%20productos." class="whatsapp-float" target="_blank" title="Contáctanos por WhatsApp" aria-label="WhatsApp">
+  <a href="https://wa.me/15208392877?text=Hola%20ADIS,%20vi%20el%20catálogo%20y%20me%20interesa%20obtener%20información%20sobre%20sus%20productos." class="whatsapp-float" target="_blank" title="Cotiza gratis por WhatsApp" aria-label="WhatsApp">
     <svg viewBox="0 0 24 24" width="32" height="32" fill="white" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.008-.57-.008-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-    <span class="wa-tooltip">Cotiza gratis por WhatsApp</span>
+    <span class="wa-tooltip"><span data-i18n="wa_tooltip" data-es="Cotiza gratis por WhatsApp" data-en="Free quote via WhatsApp">Cotiza gratis por WhatsApp</span></span>
   </a>
 
-  <button class="chatbot-float" onclick="toggleChat()" title="Asistente Virtual">&#129302;<span class="chatbot-badge" id="chatBadge">0</span></button>
+  <button class="chatbot-float" onclick="toggleChat()" title="Asistente ADIS">&#129302;<span class="chatbot-badge" id="chatBadge">0</span></button>
   <div class="chatbot-window" id="chatbotWindow">
     <div class="chatbot-header">
-      <h4>&#129302; Asistente ADIS</h4>
+      <h4>&#129302; <span data-i18n="chatbot_title" data-es="Asistente ADIS" data-en="ADIS Assistant">Asistente ADIS</span></h4>
       <div class="chat-header-actions">
         <button class="chat-clear" onclick="clearAllChat()" title="Nueva conversación">&#128465;</button>
-        <button class="chatbot-close" onclick="toggleChat()">&#10005;</button>
+        <button class="chatbot-close" onclick="toggleChat()" title="Cerrar">&#10005;</button>
       </div>
     </div>
     <div class="chatbot-body" id="chatbotBody"></div>

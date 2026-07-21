@@ -35,6 +35,350 @@ CONTACTO = {
     'google_business_url': ''
 }
 
+
+# ========== TRADUCCIONES MANUALES ES/EN ==========
+# Diccionario centralizado para el sistema i18n híbrido.
+# Los textos dinámicos (nombres de productos, FAQs) se mantienen en español.
+TRANSLATIONS = {
+    # Navegación
+    'nav_home': {'es': 'Inicio', 'en': 'Home'},
+    'nav_catalog': {'es': 'Catálogo', 'en': 'Catalog'},
+    'nav_did_you_know': {'es': '¿Sabías que?', 'en': 'Did you know?'},
+    'nav_projects': {'es': 'Proyectos', 'en': 'Projects'},
+    'nav_contact': {'es': 'Contacto', 'en': 'Contact'},
+    'nav_back_home': {'es': '← Inicio', 'en': '← Home'},
+    'search_placeholder': {'es': 'Buscar producto...', 'en': 'Search products...'},
+    'search_mobile_placeholder': {'es': 'Buscar producto...', 'en': 'Search products...'},
+    'search_title': {'es': '🔎 Busca entre 250 productos', 'en': '🔎 Search 250+ products'},
+    'search_hint': {'es': 'Presiona / para buscar desde cualquier página', 'en': 'Press / to search from any page'},
+
+    # Hero home
+    'hero_badge': {'es': 'Catálogo 2025 — 2026', 'en': '2025 — 2026 Catalog'},
+    'hero_title': {'es': 'Recubrimientos PVC, WPC y paneles 3D en <em>Nogales, Sonora</em>', 'en': 'PVC, WPC & 3D Wall Panels in <em>Nogales, Sonora</em>'},
+    'hero_subtitle': {'es': 'Transforma tu hogar o negocio con placas PVC, lambrín WPC, plafón, pisos, zacate sintético y cladding. Enviamos a Nogales, Sonora y Arizona. Cotiza gratis hoy.', 'en': 'Transform your home or business with PVC panels, WPC slats, PVC ceilings, flooring, synthetic grass and cladding. We ship to Nogales, Sonora & Arizona. Get a free quote today.'},
+    'cta_quote_whatsapp': {'es': '💬 Cotizar gratis por WhatsApp', 'en': '💬 Free quote via WhatsApp'},
+    'cta_view_catalog': {'es': 'Ver catálogo', 'en': 'View catalog'},
+    'hero_note': {'es': '¿Prefieres que te llamemos? <a href="contacto.html">Llena el formulario de cotización</a> y te contactamos.', 'en': 'Prefer a call? <a href="contacto.html">Fill out the quote form</a> and we will contact you.'},
+
+    # Sticky CTA
+    'sticky_quote': {'es': '💬 Cotizar por WhatsApp', 'en': '💬 Quote via WhatsApp'},
+    'sticky_call': {'es': '📞 Llamar', 'en': '📞 Call'},
+    'sticky_quote_category': {'es': '💬 Cotizar', 'en': '💬 Quote'},
+    'sticky_quote_project': {'es': '💬 Cotizar proyecto', 'en': '💬 Quote project'},
+
+    # Beneficios
+    'benefits_title': {'es': '¿Por qué elegir ADIS?', 'en': 'Why choose ADIS?'},
+    'benefits_subtitle': {'es': 'Materiales premium, asesoría personalizada y entrega en Nogales, Sonora y Arizona.', 'en': 'Premium materials, personalized advice and delivery to Nogales, Sonora & Arizona.'},
+    'benefit_shipping_title': {'es': 'Envíos locales', 'en': 'Local delivery'},
+    'benefit_shipping_desc': {'es': 'Entrega en Nogales, Sonora y Arizona. También enviamos a todo México.', 'en': 'Delivery in Nogales, Sonora & Arizona. We also ship throughout Mexico.'},
+    'benefit_warranty_title': {'es': 'Garantía real', 'en': 'Real warranty'},
+    'benefit_warranty_desc': {'es': 'Hasta 15 años de garantía en placas PVC, WPC y plafón. Calidad comprobada.', 'en': 'Up to 15 years warranty on PVC panels, WPC and PVC ceilings. Proven quality.'},
+    'benefit_advice_title': {'es': 'Asesoría sin costo', 'en': 'Free advice'},
+    'benefit_advice_desc': {'es': 'Te ayudamos a elegir el mejor material según tu proyecto, clima y presupuesto.', 'en': 'We help you choose the best material for your project, climate and budget.'},
+    'benefit_install_title': {'es': 'Instalación profesional', 'en': 'Professional installation'},
+    'benefit_install_desc': {'es': 'Contamos con equipo de instalación para que tu remodelación quede perfecta.', 'en': 'We have an installation team so your remodeling turns out perfect.'},
+
+    # Trust banner
+    'trust_products': {'es': 'productos', 'en': 'products'},
+    'trust_projects': {'es': 'proyectos', 'en': 'projects'},
+    'trust_categories': {'es': 'categorías', 'en': 'categories'},
+    'trust_warranty': {'es': 'años garantía', 'en': 'years warranty'},
+
+    # Precios
+    'prices_title': {'es': 'Precios orientativos', 'en': 'Reference prices'},
+    'prices_subtitle': {'es': 'Conoce rangos aproximados por categoría. El precio final depende del modelo, acabado y metros de tu proyecto.', 'en': 'See approximate ranges by category. Final price depends on model, finish and square footage of your project.'},
+    'prices_cta': {'es': '💬 Pedir cotización exacta', 'en': '💬 Get exact quote'},
+    'price_unit_piece': {'es': 'MXN/pz', 'en': 'MXN/pc'},
+    'price_unit_box': {'es': 'MXN/caja', 'en': 'MXN/box'},
+    'price_unit_m2': {'es': 'MXN/m²', 'en': 'MXN/m²'},
+
+    # Nosotros
+    'about_title': {'es': 'Sobre ADIS', 'en': 'About ADIS'},
+    'about_subtitle': {'es': 'En ADI\'S DISEÑO & REMODELACIÓN nos especializamos en ofrecer soluciones funcionales, estéticas y duraderas.', 'en': 'At ADIS DESIGN & REMODELING we specialize in functional, aesthetic and durable solutions.'},
+    'info_pvc_title': {'es': 'Placas PVC', 'en': 'PVC Panels'},
+    'info_pvc_desc': {'es': 'Paneles rígidos de alta calidad tipo madera, texturizados y espejo. Ideales para interiores.', 'en': 'High-quality rigid panels in wood look, textured and mirror finishes. Ideal for interiors.'},
+    'info_wpc_title': {'es': 'Lambrín WPC', 'en': 'WPC Slats'},
+    'info_wpc_desc': {'es': 'Wood Plastic Composite para interior y exterior. Resistente a la humedad y rayos UV.', 'en': 'Wood Plastic Composite for indoor and outdoor use. Resistant to moisture and UV rays.'},
+    'info_flooring_title': {'es': 'Pisos & Zacate', 'en': 'Flooring & Grass'},
+    'info_flooring_desc': {'es': 'Laminados, WPC, SPC, deck sintético y pasto artificial para todo tipo de espacios.', 'en': 'Laminate, WPC, SPC, synthetic deck and artificial grass for all kinds of spaces.'},
+    'info_cladding_title': {'es': 'Cladding & 3D', 'en': 'Cladding & 3D'},
+    'info_cladding_desc': {'es': 'Paneles decorativos tridimensionales y revestimientos de alta gama para fachadas.', 'en': 'Three-dimensional decorative panels and high-end cladding for facades.'},
+
+    # Stats
+    'stat_products': {'es': 'Productos', 'en': 'Products'},
+    'stat_categories': {'es': 'Categorías', 'en': 'Categories'},
+    'stat_projects_done': {'es': 'Proyectos Realizados', 'en': 'Projects Done'},
+    'stat_happy_clients': {'es': 'Clientes Satisfechos', 'en': 'Happy Clients'},
+
+    # Productos estrella
+    'featured_title': {'es': 'Productos Estrella', 'en': 'Star Products'},
+    'featured_subtitle': {'es': 'Los favoritos de nuestros clientes. Calidad premium que transforma cualquier espacio.', 'en': 'Our customers\' favorites. Premium quality that transforms any space.'},
+    'featured_star_label': {'es': 'Producto Estrella', 'en': 'Star Product'},
+    'featured_star_badge': {'es': 'Estrella', 'en': 'Star'},
+    'featured_wpc_desc': {'es': 'Wood Plastic Composite de alta gama. Resistente a la humedad, rayos UV y perfecto para interiores y exteriores. Nuestro producto más solicitado.', 'en': 'High-end Wood Plastic Composite. Moisture and UV resistant, perfect for indoors and outdoors. Our most requested product.'},
+    'featured_pvc_desc': {'es': 'Paneles rígidos tipo madera, texturizados y espejo. Acabado profesional con instalación rápida y garantía extendida.', 'en': 'Rigid wood-look, textured and mirror panels. Professional finish with fast installation and extended warranty.'},
+
+    # Producto destacado
+    'featured_marble_title': {'es': 'Hoja de PVC tipo Mármol', 'en': 'Marble-look PVC Sheet'},
+    'featured_marble_subtitle': {'es': 'Elegancia y durabilidad para cualquier espacio interior', 'en': 'Elegance and durability for any indoor space'},
+    'featured_marble_text': {'es': 'La lámina de <strong>PVC tipo mármol</strong> es la solución decorativa perfecta si buscas añadir un toque de elegancia a tu hogar, oficina o espacio comercial. Fabricada con materiales de alta calidad, es a la vez <strong>duradera y ligera</strong>, por lo que es fácil de instalar y mantener.', 'en': 'The <strong>marble-look PVC sheet</strong> is the perfect decorative solution if you want to add a touch of elegance to your home, office or commercial space. Made with high-quality materials, it is <strong>durable and lightweight</strong>, making it easy to install and maintain.'},
+    'featured_marble_bullet1': {'es': 'Resistente al <strong>agua, manchas y arañazos</strong>', 'en': 'Resistant to <strong>water, stains and scratches</strong>'},
+    'featured_marble_bullet2': {'es': 'Inversión que <strong>dura muchos años</strong>', 'en': 'Investment that <strong>lasts for many years</strong>'},
+    'featured_marble_bullet3': {'es': 'Ideal para <strong>cocinas, baños, salas de estar</strong> y más', 'en': 'Ideal for <strong>kitchens, bathrooms, living rooms</strong> and more'},
+    'featured_marble_bullet4': {'es': 'Acabado profesional con <strong>garantía extendida</strong>', 'en': 'Professional finish with <strong>extended warranty</strong>'},
+    'featured_marble_cta': {'es': 'Ver en catálogo →', 'en': 'View in catalog →'},
+
+    # Catálogo home
+    'catalog_title': {'es': 'Nuestro Catálogo', 'en': 'Our Catalog'},
+    'catalog_subtitle': {'es': 'Selecciona una categoría para ver los productos con su ficha técnica.', 'en': 'Select a category to see products with technical specs.'},
+
+    # Descargas
+    'downloads_title': {'es': '📥 Descargas', 'en': '📥 Downloads'},
+    'downloads_subtitle': {'es': 'Descarga nuestros catálogos en PDF para consultarlos sin conexión o compartirlos con tu cliente.', 'en': 'Download our PDF catalogs to consult offline or share with your client.'},
+    'download_complete': {'es': '📚 Descargar catálogo completo', 'en': '📚 Download complete catalog'},
+    'download_complete_sub': {'es': 'Todas las categorías en un solo PDF', 'en': 'All categories in one PDF'},
+    'download_products': {'es': 'productos · PDF', 'en': 'products · PDF'},
+
+    # Arizona
+    'arizona_title': {'es': 'Servimos en Arizona', 'en': 'We serve Arizona'},
+    'arizona_subtitle': {'es': 'Enviamos materiales de remodelación a Nogales AZ, Rio Rico, Tucson y Phoenix. Atención en español y cotizaciones en USD/MXN.', 'en': 'We ship remodeling materials to Nogales AZ, Rio Rico, Tucson and Phoenix. Spanish-speaking service and quotes in USD/MXN.'},
+    'arizona_nogales_title': {'es': 'Nogales, AZ', 'en': 'Nogales, AZ'},
+    'arizona_nogales_desc': {'es': 'Showroom fronterizo y entregas coordinadas.', 'en': 'Border showroom and coordinated deliveries.'},
+    'arizona_riorico_title': {'es': 'Rio Rico, AZ', 'en': 'Rio Rico, AZ'},
+    'arizona_riorico_desc': {'es': 'Envíos directos para proyectos residenciales.', 'en': 'Direct shipping for residential projects.'},
+    'arizona_tucson_title': {'es': 'Tucson, AZ', 'en': 'Tucson, AZ'},
+    'arizona_tucson_desc': {'es': 'Materiales para remodelación de interiores y exteriores.', 'en': 'Materials for interior and exterior remodeling.'},
+    'arizona_phoenix_title': {'es': 'Phoenix, AZ', 'en': 'Phoenix, AZ'},
+    'arizona_phoenix_desc': {'es': 'Cotizaciones y envíos para proyectos grandes.', 'en': 'Quotes and shipping for large projects.'},
+    'arizona_cta': {'es': '💬 Cotizar desde Arizona', 'en': '💬 Quote from Arizona'},
+
+    # Videos home
+    'videos_title': {'es': '🎬 Proyectos en video', 'en': '🎬 Projects in video'},
+    'videos_subtitle': {'es': 'Remodelaciones reales que muestran el antes y después de nuestros materiales.', 'en': 'Real remodelings showing before and after with our materials.'},
+    'videos_more': {'es': 'Ver más proyectos', 'en': 'See more projects'},
+
+    # Testimonios
+    'testimonials_title': {'es': 'Testimonios de Clientes', 'en': 'Customer Testimonials'},
+    'testimonials_subtitle': {'es': '¿Ya usaste nuestros productos? Comparte tu experiencia y ayuda a otros a decidirse.', 'en': 'Have you used our products? Share your experience and help others decide.'},
+    'testimonials_name': {'es': 'Tu nombre', 'en': 'Your name'},
+    'testimonials_comment': {'es': '¿Qué te pareció el producto o servicio?', 'en': 'What did you think of the product or service?'},
+    'testimonials_product': {'es': 'Producto o categoría que compraste (opcional)', 'en': 'Product or category you purchased (optional)'},
+    'testimonials_send': {'es': '📧 Enviar Testimonio', 'en': '📧 Send Testimonial'},
+    'testimonials_review': {'es': 'Los testimonios son revisados antes de publicarse.', 'en': 'Testimonials are reviewed before being published.'},
+    'testimonials_whatsapp': {'es': 'También puedes enviarlos directamente por', 'en': 'You can also send them directly via'},
+    'testimonial_maria_text': {'es': 'Excelente calidad en las placas PVC tipo espejo. Transformaron completamente mi sala de estar. La instalación fue súper rápida y el acabado se ve de lujo.', 'en': 'Excellent quality in the mirror-finish PVC panels. They completely transformed my living room. Installation was super fast and the finish looks luxurious.'},
+    'testimonial_maria_name': {'es': 'María G.', 'en': 'María G.'},
+    'testimonial_maria_meta': {'es': 'Placas PVC, Nogales', 'en': 'PVC Panels, Nogales'},
+    'testimonial_carlos_text': {'es': 'Compré el lambrín WPC para el exterior de mi consultorio y quedó espectacular. Resiste perfectamente el sol y la lluvia. 100% recomendado.', 'en': 'I bought WPC slats for the exterior of my office and it looks spectacular. It withstands sun and rain perfectly. 100% recommended.'},
+    'testimonial_carlos_name': {'es': 'Dr. Carlos R.', 'en': 'Dr. Carlos R.'},
+    'testimonial_carlos_meta': {'es': 'Lambrín WPC, Rio Rico', 'en': 'WPC Slats, Rio Rico'},
+    'testimonial_lopez_text': {'es': 'El equipo de ADIS me ayudó a elegir los pisos SPC para toda mi casa. Me dieron asesoría de primera y el precio fue muy competitivo. Quedé encantada.', 'en': 'The ADIS team helped me choose SPC flooring for my entire house. They gave me first-class advice and the price was very competitive. I was delighted.'},
+    'testimonial_lopez_name': {'es': 'Familia López', 'en': 'López Family'},
+    'testimonial_lopez_meta': {'es': 'Pisos SPC, Nogales', 'en': 'SPC Flooring, Nogales'},
+    'testimonial_roberto_text': {'es': 'Excelente servicio desde Tucson. Envían materiales a Arizona y la atención por WhatsApp fue muy rápida. El cladding para mi fachada quedó impecable.', 'en': 'Excellent service from Tucson. They ship materials to Arizona and WhatsApp support was very fast. The cladding for my facade turned out impeccable.'},
+    'testimonial_roberto_name': {'es': 'Roberto M.', 'en': 'Roberto M.'},
+    'testimonial_roberto_meta': {'es': 'Cladding, Tucson AZ', 'en': 'Cladding, Tucson AZ'},
+    'testimonial_thanks': {'es': '¡Gracias ', 'en': 'Thank you '},
+    'testimonial_thanks_end': {'es': '! Tu testimonio se envió por WhatsApp. Será revisado y publicado pronto.', 'en': '! Your testimonial was sent via WhatsApp. It will be reviewed and published soon.'},
+
+    # Footer
+    'footer_slogan': {'es': 'Creando espacios, reinventando hogares.', 'en': 'Creating spaces, reinventing homes.'},
+    'footer_copyright': {'es': '© 2026 ADIS DISEÑO & REMODELACIÓN. TODOS LOS DERECHOS RESERVADOS.', 'en': '© 2026 ADIS DESIGN & REMODELING. ALL RIGHTS RESERVED.'},
+    'footer_whatsapp': {'es': 'WhatsApp', 'en': 'WhatsApp'},
+    'footer_facebook': {'es': 'Facebook', 'en': 'Facebook'},
+
+    # Mobile bottom nav
+    'mobile_nav_home': {'es': 'Inicio', 'en': 'Home'},
+    'mobile_nav_catalog': {'es': 'Catálogo', 'en': 'Catalog'},
+    'mobile_nav_projects': {'es': 'Proyectos', 'en': 'Projects'},
+    'mobile_nav_contact': {'es': 'Contacto', 'en': 'Contact'},
+
+    # Categorías
+    'cat_badge': {'es': 'Categoría', 'en': 'Category'},
+    'cat_hero_subtitle': {'es': 'Explora nuestra línea de {category} con {count} productos disponibles. Solicita tu cotización.', 'en': 'Explore our {category} line with {count} products available. Request your quote.'},
+    'cat_cta_advice': {'es': '💬 Asesoría por WhatsApp', 'en': '💬 Advice via WhatsApp'},
+    'cat_cta_download': {'es': '📥 Descargar catálogo PDF', 'en': '📥 Download PDF catalog'},
+    'cat_cta_call': {'es': '📞 Llamar', 'en': '📞 Call'},
+    'cat_cta_final_title': {'es': '¿Listo para transformar tu espacio con {category}?', 'en': 'Ready to transform your space with {category}?'},
+    'cat_cta_final_subtitle': {'es': 'Solicita tu cotización gratis. Respondemos en menos de 24 h y enviamos a Nogales, Sonora y Arizona.', 'en': 'Request your free quote. We respond in less than 24 hours and ship to Nogales, Sonora & Arizona.'},
+    'cat_cta_final_form': {'es': '📋 Llenar formulario', 'en': '📋 Fill form'},
+    'cat_back_home': {'es': '← Volver al Inicio', 'en': '← Back to Home'},
+    'cat_contact': {'es': 'Contactar', 'en': 'Contact'},
+    'cat_best_sellers': {'es': 'Más Vendidos — Placas PVC Tipo Espejo', 'en': 'Best Sellers — Mirror PVC Panels'},
+    'cat_accessories': {'es': '🔩 Accesorios', 'en': '🔩 Accessories'},
+    'cat_products': {'es': 'Productos {category}', 'en': '{category} Products'},
+    'cat_real_sheets_title': {'es': 'Hojas Reales de PVC', 'en': 'Real PVC Sheets'},
+    'cat_real_sheets_subtitle': {'es': 'Fotos reales de nuestro showroom. Sin filtros, sin edits.', 'en': 'Real photos from our showroom. No filters, no edits.'},
+    'cat_real_sheets_badge': {'es': 'Foto Real', 'en': 'Real Photo'},
+
+    # Contacto
+    'contact_title': {'es': 'Cotiza recubrimientos en Nogales, Sonora', 'en': 'Quote wall coverings in Nogales, Sonora'},
+    'contact_subtitle': {'es': 'Placas PVC, lambrín WPC, paneles 3D, plafón, pisos, zacate y cladding. Respuesta en menos de 24 horas.', 'en': 'PVC panels, WPC slats, 3D panels, PVC ceilings, flooring, synthetic grass and cladding. Response in less than 24 hours.'},
+    'contact_form_title': {'es': 'Solicita tu cotización gratis', 'en': 'Request your free quote'},
+    'contact_form_subtitle': {'es': 'Cuéntanos tu proyecto y te contactamos con precios y disponibilidad.', 'en': 'Tell us about your project and we will contact you with prices and availability.'},
+    'form_name': {'es': 'Nombre *', 'en': 'Name *'},
+    'form_name_placeholder': {'es': 'Tu nombre', 'en': 'Your name'},
+    'form_phone': {'es': 'Teléfono *', 'en': 'Phone *'},
+    'form_phone_placeholder': {'es': 'Ej. 631 123 4567', 'en': 'e.g. 631 123 4567'},
+    'form_email': {'es': 'Correo electrónico', 'en': 'Email'},
+    'form_email_placeholder': {'es': 'tu@email.com', 'en': 'you@email.com'},
+    'form_city': {'es': 'Ciudad / Ubicación de la obra *', 'en': 'City / Project location *'},
+    'form_city_placeholder': {'es': 'Ej. Nogales, Sonora', 'en': 'e.g. Nogales, Sonora'},
+    'form_sqm': {'es': 'm² aproximados', 'en': 'Approx. m²'},
+    'form_sqm_placeholder': {'es': 'Ej. 30', 'en': 'e.g. 30'},
+    'form_product': {'es': 'Producto de interés', 'en': 'Product of interest'},
+    'form_product_unsure': {'es': 'No estoy seguro, necesito asesoría', 'en': "I'm not sure, I need advice"},
+    'form_message': {'es': 'Mensaje', 'en': 'Message'},
+    'form_message_placeholder': {'es': '¿Alguna duda o requerimiento especial?', 'en': 'Any questions or special requirements?'},
+    'form_submit': {'es': '💬 Enviar cotización por WhatsApp', 'en': '💬 Send quote via WhatsApp'},
+    'form_note': {'es': 'También puedes llamarnos o escribirnos directamente.', 'en': 'You can also call or write us directly.'},
+    'contact_whatsapp': {'es': 'WhatsApp', 'en': 'WhatsApp'},
+    'contact_whatsapp_note': {'es': 'Respuesta en menos de 24 h', 'en': 'Response in less than 24 h'},
+    'contact_phone_mx': {'es': 'Teléfono México', 'en': 'Mexico Phone'},
+    'contact_phone_us': {'es': 'Teléfono USA', 'en': 'USA Phone'},
+    'contact_email': {'es': 'Correo', 'en': 'Email'},
+    'contact_location': {'es': 'Ubicación', 'en': 'Location'},
+    'contact_map': {'es': 'Ver en Google Maps', 'en': 'View on Google Maps'},
+    'contact_hours': {'es': 'Horario', 'en': 'Hours'},
+    'contact_back_home': {'es': '← Volver al Inicio', 'en': '← Back to Home'},
+    'contact_form_message': {'es': 'Hola ADIS, solicito una cotización:', 'en': 'Hello ADIS, I request a quote:'},
+    'contact_form_name': {'es': 'Nombre', 'en': 'Name'},
+    'contact_form_phone': {'es': 'Teléfono', 'en': 'Phone'},
+    'contact_form_city': {'es': 'Ciudad/Obra', 'en': 'City/Project'},
+    'contact_form_sqm': {'es': 'm² aproximados', 'en': 'Approx. m²'},
+    'contact_form_product': {'es': 'Producto', 'en': 'Product'},
+    'contact_form_message_label': {'es': 'Mensaje', 'en': 'Message'},
+    'contact_form_closing': {'es': 'Favor de contactarme. ¡Gracias!', 'en': 'Please contact me. Thank you!'},
+
+    # Proyectos
+    'projects_title': {'es': 'Proyectos Reales', 'en': 'Real Projects'},
+    'projects_subtitle': {'es': 'Transformaciones que hablan por sí solas. Conoce nuestro trabajo en Nogales, Sonora y Arizona.', 'en': 'Transformations that speak for themselves. See our work in Nogales, Sonora & Arizona.'},
+    'projects_cta_quote': {'es': '💬 Cotizar mi proyecto', 'en': '💬 Quote my project'},
+    'projects_cta_form': {'es': '📋 Enviar formulario', 'en': '📋 Send form'},
+    'projects_before': {'es': 'Antes', 'en': 'Before'},
+    'projects_after': {'es': 'Después', 'en': 'After'},
+    'projects_remodeling': {'es': 'Remodelación', 'en': 'Remodeling'},
+    'projects_beforeafter_title': {'es': 'Antes y Después', 'en': 'Before and After'},
+    'projects_gallery_title': {'es': 'Galería de Proyectos', 'en': 'Project Gallery'},
+    'projects_gallery_subtitle': {'es': 'Trabajos reales con nuestros materiales de alta gama.', 'en': 'Real jobs with our high-end materials.'},
+    'projects_videos_title': {'es': 'Videos de Remodelaciones', 'en': 'Remodeling Videos'},
+    'projects_videos_subtitle': {'es': 'Transformaciones capturadas en video.', 'en': 'Transformations captured on video.'},
+    'projects_carousel_hint': {'es': 'Desliza para ver la transformación completa.', 'en': 'Swipe to see the full transformation.'},
+
+    # ¿Sabías que?
+    'sq_title': {'es': '¿Sabías que?', 'en': 'Did you know?'},
+    'sq_subtitle': {'es': 'Datos sorprendentes y respuestas a tus dudas sobre nuestros materiales.', 'en': 'Surprising facts and answers to your questions about our materials.'},
+    'sq_subtitle_known': {'es': 'Conoce todo sobre <strong>{category}</strong>', 'en': 'Learn all about <strong>{category}</strong>'},
+    'sq_index_title': {'es': '¿Sabías que? | ADIS Diseño & Remodelación', 'en': 'Did you know? | ADIS Design & Remodeling'},
+    'sq_index_desc': {'es': 'Datos curiosos, FAQs y consejos sobre nuestros productos: PVC, WPC, paneles 3D, pisos, zacate y cladding.', 'en': 'Curious facts, FAQs and tips about our products: PVC, WPC, 3D panels, flooring, synthetic grass and cladding.'},
+    'sq_breadcrumb_home': {'es': 'Inicio', 'en': 'Home'},
+    'sq_breadcrumb_sq': {'es': '¿Sabías que?', 'en': 'Did you know?'},
+    'sq_see_more': {'es': 'Ver datos curiosos y FAQs →', 'en': 'See facts and FAQs →'},
+    'sq_card_readmore': {'es': 'Leer más', 'en': 'Read more'},
+    'sq_card_readless': {'es': 'Leer menos', 'en': 'Read less'},
+    'sq_back_index': {'es': '← Volver al índice', 'en': '← Back to index'},
+    'sq_curiosos_title': {'es': 'Datos Curiosos', 'en': 'Curious Facts'},
+    'sq_faqs_title': {'es': 'Preguntas Frecuentes', 'en': 'Frequently Asked Questions'},
+
+    # Filtros
+    'filter_all': {'es': 'Todos', 'en': 'All'},
+    'filter_count_unit': {'es': 'productos', 'en': 'products'},
+    'filter_count_singular': {'es': 'producto', 'en': 'product'},
+    'filter_placeholder': {'es': 'Buscar producto...', 'en': 'Search products...'},
+
+    # Modal cotizar
+    'modal_title': {'es': 'Cotizar por WhatsApp', 'en': 'Quote via WhatsApp'},
+    'modal_subtitle': {'es': 'Completa tus datos y te responderemos con información y asesoría.', 'en': 'Fill in your details and we will respond with information and advice.'},
+    'modal_name': {'es': 'Nombre *', 'en': 'Name *'},
+    'modal_name_placeholder': {'es': 'Tu nombre', 'en': 'Your name'},
+    'modal_city': {'es': 'Ciudad / Ubicación de la obra *', 'en': 'City / Project location *'},
+    'modal_city_placeholder': {'es': 'Ej. Nogales, Sonora', 'en': 'e.g. Nogales, Sonora'},
+    'modal_sqm': {'es': 'm² aproximados', 'en': 'Approx. m²'},
+    'modal_sqm_placeholder': {'es': 'Ej. 25', 'en': 'e.g. 25'},
+    'modal_use': {'es': 'Uso', 'en': 'Use'},
+    'modal_use_residential': {'es': 'Residencial', 'en': 'Residential'},
+    'modal_use_commercial': {'es': 'Comercial', 'en': 'Commercial'},
+    'modal_use_other': {'es': 'Otro', 'en': 'Other'},
+    'modal_comment': {'es': 'Comentario (opcional)', 'en': 'Comment (optional)'},
+    'modal_comment_placeholder': {'es': '¿Alguna duda o requerimiento especial?', 'en': 'Any questions or special requirements?'},
+    'modal_submit': {'es': 'Enviar a WhatsApp', 'en': 'Send to WhatsApp'},
+    'modal_message': {'es': 'Hola ADIS, soy ', 'en': 'Hello ADIS, I am '},
+    'modal_message_end': {'es': '. Me interesa cotizar:', 'en': '. I am interested in quoting:'},
+
+    # Chatbot
+    'chatbot_title': {'es': 'Asistente ADIS', 'en': 'ADIS Assistant'},
+    'chatbot_badge': {'es': '0', 'en': '0'},
+    'chatbot_new_chat': {'es': 'Nueva conversación', 'en': 'New chat'},
+    'chatbot_close': {'es': 'Cerrar', 'en': 'Close'},
+    'chatbot_welcome_1': {'es': '¡Hola! 👋 Bienvenido a <strong>ADIS Diseño & Remodelación</strong>.<br><br>Soy tu asistente virtual y puedo ayudarte con información sobre nuestros productos, horarios, precios, cotizaciones y más.<br><br>¿Qué necesitas? Escribe tu pregunta 👇', 'en': 'Hello! 👋 Welcome to <strong>ADIS Design & Remodeling</strong>.<br><br>I am your virtual assistant and I can help you with information about our products, hours, prices, quotes and more.<br><br>What do you need? Type your question 👇'},
+    'chatbot_welcome_2': {'es': '¡Qué tal! 👋 Soy el asistente virtual de <strong>ADIS</strong>. Estoy aquí para ayudarte con:<br>• Productos y catálogo 📦<br>• Precios y cotizaciones 💰<br>• Horarios y ubicación 🕐📍<br><br>¿En qué puedo ayudarte?', 'en': 'Hi there! 👋 I am the virtual assistant of <strong>ADIS</strong>. I am here to help you with:<br>• Products and catalog 📦<br>• Prices and quotes 💰<br>• Hours and location 🕐📍<br><br>How can I help you?'},
+    'chatbot_label_measures': {'es': '📐 Medidas', 'en': '📐 Measurements'},
+    'chatbot_label_water': {'es': '💧 Resistencia al agua', 'en': '💧 Water resistance'},
+    'chatbot_label_exterior': {'es': '🌤️ Uso exterior/interior', 'en': '🌤️ Outdoor/indoor use'},
+    'chatbot_label_material': {'es': '🧱 Material', 'en': '🧱 Material'},
+    'chatbot_label_install': {'es': '🛠️ Instalación', 'en': '🛠️ Installation'},
+    'chatbot_label_colors': {'es': '🎨 Colores', 'en': '🎨 Colors'},
+    'chatbot_label_price': {'es': '💰 Precio', 'en': '💰 Price'},
+    'chatbot_label_maintenance': {'es': '🧼 Mantenimiento', 'en': '🧼 Maintenance'},
+    'chatbot_label_uses': {'es': '🏠 Usos recomendados', 'en': '🏠 Recommended uses'},
+    'chatbot_label_warranty': {'es': '✅ Garantía', 'en': '✅ Warranty'},
+    'chatbot_label_compare': {'es': '⚖️ Diferencias', 'en': '⚖️ Differences'},
+    'chatbot_overview': {'es': '📋 <strong>Ficha técnica de', 'en': '📋 <strong>Technical sheet of'},
+    'chatbot_overview_end': {'es': ':</strong><br><br>', 'en': ':</strong><br><br>'},
+    'chatbot_ask_more': {'es': '¿Te gustaría saber más sobre colores, instalación o mantenimiento?', 'en': 'Would you like to know more about colors, installation or maintenance?'},
+    'chatbot_hours_monday': {'es': 'Cerrado 🚪', 'en': 'Closed 🚪'},
+    'chatbot_hours_tuesday': {'es': '10:00 a 19:00', 'en': '10:00 AM to 7:00 PM'},
+    'chatbot_hours_wednesday': {'es': '9:00 a 19:00', 'en': '9:00 AM to 7:00 PM'},
+    'chatbot_hours_thursday': {'es': '9:00 a 19:00', 'en': '9:00 AM to 7:00 PM'},
+    'chatbot_hours_friday': {'es': '9:00 a 19:00', 'en': '9:00 AM to 7:00 PM'},
+    'chatbot_hours_saturday': {'es': '9:00 a 19:00', 'en': '9:00 AM to 7:00 PM'},
+    'chatbot_hours_sunday': {'es': '9:00 a 15:00', 'en': '9:00 AM to 3:00 PM'},
+    'chatbot_fallback': {'es': 'No estoy seguro de entender tu pregunta. ¿Puedes reformularla? Puedo ayudarte con medidas, colores, precios, instalación, usos o cotizaciones. También puedes escribirnos por WhatsApp.', 'en': "I'm not sure I understand your question. Can you rephrase it? I can help with measurements, colors, prices, installation, uses or quotes. You can also write to us on WhatsApp."},
+    'chatbot_no_products': {'es': 'No encontré productos para mostrarte. Intenta con otra palabra o escríbenos por WhatsApp.', 'en': 'I found no products to show you. Try another word or write to us on WhatsApp.'},
+    'chatbot_quote_prompt': {'es': 'Para darte una cotización más precisa, ¿podrías decirme:<br>1. ¿Qué producto te interesa?<br>2. ¿Cuántos m² aproximados?<br>3. ¿Es para interior o exterior?<br>4. ¿En qué ciudad está el proyecto?<br><br>Con esa info te paso precios y opciones.', 'en': 'To give you a more accurate quote, could you tell me:<br>1. Which product interests you?<br>2. Approximate m²?<br>3. Indoor or outdoor?<br>4. What city is the project in?<br><br>With that info I can give you prices and options.'},
+    'chatbot_greeting': {'es': '¡Hola! 👋 Puedo ayudarte con información sobre nuestros productos, precios, instalación y cotizaciones. ¿Qué necesitas?', 'en': 'Hello! 👋 I can help you with information about our products, prices, installation and quotes. What do you need?'},
+    'chatbot_bye': {'es': '¡Gracias por contactarnos! Quedo atento si tienes más dudas. 😊', 'en': 'Thank you for contacting us! I remain attentive if you have more questions. 😊'},
+    'chatbot_thanks': {'es': '¡Con gusto! 😊 Si necesitas más ayuda, aquí estoy.', 'en': 'Gladly! 😊 If you need more help, I am here.'},
+    'chatbot_location': {'es': '📍 Nuestro showroom está en {direccion}.<br>Horario: {horario}<br>WhatsApp: {whatsapp}', 'en': '📍 Our showroom is at {direccion}.<br>Hours: {horario}<br>WhatsApp: {whatsapp}'},
+    'chatbot_source': {'es': '📚 Sacado de <a href="sabias-que.html" style="color:#C5A059">¿Sabías que?</a>', 'en': '📚 From <a href="sabias-que.html" style="color:#C5A059">Did you know?</a>'},
+    'chatbot_quick_questions': {'es': 'Preguntas rápidas:', 'en': 'Quick questions:'},
+
+    # WhatsApp mensajes prellenados (se mantienen en español por operación del negocio)
+    # Los textos visibles de botones sí se traducen.
+
+    # Misc
+    'wa_tooltip': {'es': 'Cotiza gratis por WhatsApp', 'en': 'Free quote via WhatsApp'},
+    'breadcrumb_home': {'es': 'Inicio', 'en': 'Home'},
+    'breadcrumb_catalog': {'es': 'Catálogo', 'en': 'Catalog'},
+}
+
+
+def t(key, lang='es'):
+    """Devuelve la traducción de una clave. Fallback a español y luego a la clave."""
+    entry = TRANSLATIONS.get(key, {})
+    return entry.get(lang, entry.get('es', key))
+
+
+def i18n(key, html=False):
+    """Envuelve texto traducible en un span data-i18n para el toggle JS.
+    Si html=True, el contenido puede incl etiquetas HTML y se cambia con innerHTML.
+    """
+    esc_es = t(key, 'es').replace('"', '&quot;')
+    esc_en = t(key, 'en').replace('"', '&quot;')
+    html_attr = ' data-i18n-html="true"' if html else ''
+    return f'<span data-i18n="{key}"{html_attr} data-es="{esc_es}" data-en="{esc_en}">{t(key, "es")}</span>'
+
+
+def i18n_fmt(key, html=False, **kwargs):
+    """Igual que i18n pero formatea placeholders {var} en ambos idiomas."""
+    es = t(key, 'es').format(**kwargs)
+    en = t(key, 'en').format(**kwargs)
+    esc_es = es.replace('"', '&quot;')
+    esc_en = en.replace('"', '&quot;')
+    html_attr = ' data-i18n-html="true"' if html else ''
+    return f'<span data-i18n="{key}"{html_attr} data-es="{esc_es}" data-en="{esc_en}">{es}</span>'
+
+
 # ========== CONFIGURACIÓN DEL SITIO ==========
 # URL base del sitio. Cambia cuando conectes un dominio propio.
 SITE_URL = 'https://adis-diseño.com/'
@@ -143,58 +487,52 @@ def fb_pixel_script():
 
 
 def translate_script():
-    """Google Translate widget invisible controlado por un botón toggle ES/EN."""
+    """Toggle manual ES/EN basado en diccionario data-i18n. Alta calidad, sin Google Translate."""
     return '''
-  <!-- Google Translate -->
+  <!-- ADIS i18n Toggle -->
   <script>
     (function() {
-      window._adisLang = 'es';
-      function setTranslateCookie(lang) {
-        var domain = window.location.hostname;
-        var value = lang === 'en' ? '/es/en' : '/es/es';
-        document.cookie = 'googtrans=' + value + '; path=/; domain=.' + domain;
-        document.cookie = 'googtrans=' + value + '; path=/; domain=' + domain;
+      function escapeHtml(str) {
+        return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
       }
-      function getTranslateCookie() {
-        var match = document.cookie.match(/googtrans=([^;]+)/);
-        return match ? match[1] : '/es/es';
+      function unescapeHtml(str) {
+        return str.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&');
       }
-      function updateLangButton() {
+      function setLang(lang) {
+        localStorage.setItem('adis_lang', lang);
+        document.documentElement.setAttribute('lang', lang === 'en' ? 'en' : 'es');
+        document.querySelectorAll('[data-i18n]').forEach(function(el) {
+          var raw = el.getAttribute('data-' + lang);
+          if (raw === null) return;
+          var text = unescapeHtml(raw);
+          if (el.hasAttribute('data-i18n-html')) {
+            el.innerHTML = text;
+          } else {
+            el.textContent = text;
+          }
+        });
         var btn = document.getElementById('translateToggle');
-        if (!btn) return;
-        var cookie = getTranslateCookie();
-        var isEn = cookie.indexOf('/en') !== -1;
-        btn.textContent = isEn ? 'ES' : 'EN';
-        btn.setAttribute('aria-label', isEn ? 'Cambiar a español' : 'Switch to English');
-        btn.title = isEn ? 'Cambiar a español' : 'Switch to English';
+        if (btn) {
+          btn.textContent = lang === 'en' ? 'ES' : 'EN';
+          btn.setAttribute('aria-label', lang === 'en' ? 'Cambiar a español' : 'Switch to English');
+          btn.title = lang === 'en' ? 'Cambiar a español' : 'Switch to English';
+        }
+        if (typeof gtag === 'function') {
+          gtag('event', 'cambiar_idioma', { idioma: lang, location: 'translate_toggle' });
+        }
       }
       window.adisToggleLanguage = function() {
-        var cookie = getTranslateCookie();
-        var toEn = cookie.indexOf('/en') === -1;
-        setTranslateCookie(toEn ? 'en' : 'es');
-        if (typeof gtag === 'function') {
-          gtag('event', 'cambiar_idioma', { idioma: toEn ? 'en' : 'es', location: 'translate_toggle' });
-        }
-        window.location.reload();
+        var current = localStorage.getItem('adis_lang') || 'es';
+        setLang(current === 'en' ? 'es' : 'en');
       };
-      window.adisInitTranslate = function() {
-        updateLangButton();
-      };
-      document.addEventListener('DOMContentLoaded', window.adisInitTranslate);
+      document.addEventListener('DOMContentLoaded', function() {
+        setLang(localStorage.getItem('adis_lang') || 'es');
+      });
     })();
-    function googleTranslateElementInit() {
-      new google.translate.TranslateElement({
-        pageLanguage: 'es',
-        includedLanguages: 'en,es',
-        layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
-        autoDisplay: false
-      }, 'google_translate_element');
-    }
   </script>
-  <script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-  <div id="google_translate_element" style="display:none; visibility:hidden;"></div>
   <button id="translateToggle" class="translate-toggle" onclick="adisToggleLanguage()" aria-label="Switch to English" title="Switch to English">EN</button>
-  <!-- End Google Translate -->'''
+  <!-- End ADIS i18n Toggle -->
+'''
 
 
 def tracking_script():
@@ -771,12 +1109,7 @@ nav.desktop-nav a:hover::after { width: 100%; }
   font-family: 'Montserrat', sans-serif;
 }
 .translate-toggle:hover { transform: scale(1.1); box-shadow: 0 6px 30px rgba(197,160,89,0.6); }
-body { top: 0 !important; }
-.goog-te-banner-frame { display: none !important; }
-.goog-te-balloon-frame { display: none !important; }
-.skiptranslate { display: none !important; }
-#goog-gt-tt, #goog-gt-tt * { display: none !important; }
-.goog-text-highlight { background-color: transparent !important; box-shadow: none !important; }
+[data-i18n] { display: inline; }
 
 @media (max-width: 768px) {
   .translate-toggle { width: 44px; height: 44px; font-size: 0.75rem; bottom: 85px; right: 18px; }
@@ -2908,49 +3241,49 @@ def generate_robots():
 
 def modal_cotizar_html():
     """Modal único de cotización por WhatsApp. Se inyecta una vez por página."""
-    return '''
+    return f'''
   <!-- MODAL COTIZAR WHATSAPP -->
   <div class="wa-modal" id="waModal" onclick="closeWaModal(event)">
     <div class="wa-modal-box" onclick="event.stopPropagation()">
       <button class="wa-modal-close" onclick="closeWaModal()">&#10005;</button>
-      <h3>Cotizar por WhatsApp</h3>
-      <p class="wa-modal-subtitle">Completa tus datos y te responderemos con información y asesoría.</p>
+      <h3>{i18n('modal_title')}</h3>
+      <p class="wa-modal-subtitle">{i18n('modal_subtitle')}</p>
       <form id="waModalForm" onsubmit="sendWaModal(event)">
         <input type="hidden" id="waModalProduct" value="">
         <input type="hidden" id="waModalCategory" value="">
         <input type="hidden" id="waModalSubcategory" value="">
         <div class="wa-modal-field">
-          <label for="waModalNombre">Nombre *</label>
-          <input type="text" id="waModalNombre" placeholder="Tu nombre" required>
+          <label for="waModalNombre">{i18n('modal_name')}</label>
+          <input type="text" id="waModalNombre" placeholder="{t('modal_name_placeholder')}" required>
         </div>
         <div class="wa-modal-field">
-          <label for="waModalCiudad">Ciudad / Ubicación de la obra *</label>
-          <input type="text" id="waModalCiudad" placeholder="Ej. Nogales, Sonora" required>
+          <label for="waModalCiudad">{i18n('modal_city')}</label>
+          <input type="text" id="waModalCiudad" placeholder="{t('modal_city_placeholder')}" required>
         </div>
         <div class="wa-modal-row">
           <div class="wa-modal-field">
-            <label for="waModalMetros">m2 aproximados</label>
-            <input type="number" id="waModalMetros" placeholder="Ej. 25" min="1" step="0.1">
+            <label for="waModalMetros">{i18n('modal_sqm')}</label>
+            <input type="number" id="waModalMetros" placeholder="{t('modal_sqm_placeholder')}" min="1" step="0.1">
           </div>
           <div class="wa-modal-field">
-            <label for="waModalUso">Uso</label>
+            <label for="waModalUso">{i18n('modal_use')}</label>
             <select id="waModalUso">
-              <option value="Residencial">Residencial</option>
-              <option value="Comercial">Comercial</option>
-              <option value="Otro">Otro</option>
+              <option value="Residencial">{t('modal_use_residential')}</option>
+              <option value="Comercial">{t('modal_use_commercial')}</option>
+              <option value="Otro">{t('modal_use_other')}</option>
             </select>
           </div>
         </div>
         <div class="wa-modal-field">
-          <label for="waModalComentario">Comentario (opcional)</label>
-          <textarea id="waModalComentario" rows="3" placeholder="¿Alguna duda o requerimiento especial?"></textarea>
+          <label for="waModalComentario">{i18n('modal_comment')}</label>
+          <textarea id="waModalComentario" rows="3" placeholder="{t('modal_comment_placeholder')}"></textarea>
         </div>
         <div class="wa-modal-product" id="waModalProductLabel"></div>
-        <button type="submit" class="wa-modal-submit">Enviar a WhatsApp</button>
+        <button type="submit" class="wa-modal-submit">{i18n('modal_submit')}</button>
       </form>
     </div>
   </div>
-
+''' + '''
   <!-- LIGHTBOX -->
   <div class="lightbox" id="lightbox" onclick="closeLightbox(event)">
     <button class="lightbox-close" onclick="closeLightbox(event)">&#10005;</button>
@@ -2981,15 +3314,13 @@ def modal_cotizar_html():
       var metros = document.getElementById('waModalMetros').value.trim();
       var uso = document.getElementById('waModalUso').value;
       var comentario = document.getElementById('waModalComentario').value.trim();
-      var msg = `Hola ADIS, soy ${nombre || 'un cliente interesado'}. Me interesa cotizar:
-Producto: ${product}
-Categoria: ${category}`;
-      if (subcategory) msg += `\nSubcategoria: ${subcategory}`;
-      if (ciudad) msg += `\nUbicacion de la obra: ${ciudad}`;
-      if (metros) msg += `\nMetros cuadrados aproximados: ${metros}`;
-      msg += `\nUso: ${uso}`;
-      if (comentario) msg += `\nComentario: ${comentario}`;
-      msg += `\nFavor de contactarme para mas detalles. ¡Gracias!`;
+      var msg = 'Hola ADIS, soy ' + (nombre || 'un cliente interesado') + '. Me interesa cotizar:\nProducto: ' + product + '\nCategoria: ' + category;
+      if (subcategory) msg += '\nSubcategoria: ' + subcategory;
+      if (ciudad) msg += '\nUbicacion de la obra: ' + ciudad;
+      if (metros) msg += '\nMetros cuadrados aproximados: ' + metros;
+      msg += '\nUso: ' + uso;
+      if (comentario) msg += '\nComentario: ' + comentario;
+      msg += '\nFavor de contactarme para mas detalles. ¡Gracias!';
       window.open('https://wa.me/' + phone + '?text=' + encodeURIComponent(msg), '_blank');
       closeWaModal();
       e.target.reset();
@@ -3027,7 +3358,7 @@ def _extract_keywords(name):
 
 def category_filters_html(cat):
     """Genera panel de filtros facetados para una categoría."""
-    chips = ['<button class="filter-chip active" data-subcategory="all">Todos</button>']
+    chips = [f'<button class="filter-chip active" data-subcategory="all">{i18n("filter_all")}</button>']
     for sub in cat["subcategories"]:
         if sub["products"]:
             chips.append(f'<button class="filter-chip" data-subcategory="{sub["name"].lower()}">{sub["name"]}</button>')
@@ -3040,11 +3371,11 @@ def category_filters_html(cat):
     return f'''  <!-- FILTROS FACETADOS -->
   <section class="cat-filters reveal">
     <div class="cat-filters-inner">
-      <input type="text" class="cat-filter-search" id="catFilterSearch" placeholder="Buscar producto..." autocomplete="off">
+      <input type="text" class="cat-filter-search" id="catFilterSearch" placeholder="{t('filter_placeholder')}" autocomplete="off">
       <div class="cat-filter-chips">
         {''.join(chips)}
       </div>
-      <div class="cat-filter-count" id="catFilterCount">{total} productos</div>
+      <div class="cat-filter-count" id="catFilterCount">{total} <span data-i18n="filter_count_unit" data-es="productos" data-en="products">productos</span></div>
     </div>
   </section>
 '''
@@ -3081,7 +3412,7 @@ def category_filters_js():
           const visibleCards = sec.querySelectorAll('.product-card:not([style*="display: none"])');
           sec.style.display = visibleCards.length ? '' : 'none';
         });
-        if (countEl) countEl.textContent = visible + ' producto' + (visible !== 1 ? 's' : '');
+        if (countEl) countEl.innerHTML = visible + ' <span data-i18n="filter_count_unit" data-es="productos" data-en="products">' + (visible !== 1 ? 'productos' : 'producto') + '</span>';
       }
       search.addEventListener('input', filter);
       chips.forEach(function(chip) {
@@ -3116,7 +3447,7 @@ def product_card_html(prod_file, cat, sub=None):
         <div class="product-info">
           <div class="product-name">{prod_name}</div>
           <div class="product-actions">
-            <button type="button" class="btn-cotizar" onclick="openWaModal('{prod_name}', '{cat_name}', {sub_arg})">Cotizar por WhatsApp</button>
+            <button type="button" class="btn-cotizar" onclick="openWaModal('{prod_name}', '{cat_name}', {sub_arg})">{{i18n('modal_title')}}</button>
           </div>
         </div>
       </div>
@@ -3160,9 +3491,9 @@ def generate_header(current_page='index'):
     ]
     sabias_html = '\n'.join([f'        <a href="{u}" class="dropdown-item"><span class="dropdown-icon">{i}</span><span>{t}</span></a>' for u, i, t in SABIAS_ITEMS])
     
-    nav_links = '<a href="index.html">Inicio</a>\n        <a href="index.html#categorias" class="mega-trigger">Catálogo\n          <div class="mega-menu">\n' + mega_html + '\n          </div>\n        </a>\n        <a href="sabias-que.html" class="mega-trigger">¿Sabías que?\n          <div class="nav-dropdown">\n' + sabias_html + '\n          </div>\n        </a>\n        <a href="proyectos.html">Proyectos</a>\n        <a href="contacto.html">Contacto</a>'
+    nav_links = f'<a href="index.html">{i18n("nav_home")}</a>\n        <a href="index.html#categorias" class="mega-trigger">{i18n("nav_catalog")}\n          <div class="mega-menu">\n' + mega_html + '\n          </div>\n        </a>\n        <a href="sabias-que.html" class="mega-trigger">{i18n("nav_did_you_know")}\n          <div class="nav-dropdown">\n' + sabias_html + '\n          </div>\n        </a>\n        <a href="proyectos.html">{i18n("nav_projects")}</a>\n        <a href="contacto.html">{i18n("nav_contact")}</a>'
     if current_page != 'index':
-        nav_links = '<a href="index.html">← Inicio</a>\n        <a href="index.html#categorias" class="mega-trigger">Catálogo\n          <div class="mega-menu">\n' + mega_html + '\n          </div>\n        </a>\n        <a href="sabias-que.html" class="mega-trigger">¿Sabías que?\n          <div class="nav-dropdown">\n' + sabias_html + '\n          </div>\n        </a>\n        <a href="proyectos.html">Proyectos</a>\n        <a href="contacto.html">Contacto</a>'
+        nav_links = f'<a href="index.html">{i18n("nav_back_home")}</a>\n        <a href="index.html#categorias" class="mega-trigger">{i18n("nav_catalog")}\n          <div class="mega-menu">\n' + mega_html + '\n          </div>\n        </a>\n        <a href="sabias-que.html" class="mega-trigger">{i18n("nav_did_you_know")}\n          <div class="nav-dropdown">\n' + sabias_html + '\n          </div>\n        </a>\n        <a href="proyectos.html">{i18n("nav_projects")}</a>\n        <a href="contacto.html">{i18n("nav_contact")}</a>'
 
     return f'''  <header>
     <div class="header-inner">
@@ -3170,7 +3501,7 @@ def generate_header(current_page='index'):
       <nav class="desktop-nav">
         {nav_links}
         <div class="search-box">
-          <input type="text" id="searchInput" placeholder="Buscar producto..." autocomplete="off" title="Presiona / para buscar">
+          <input type="text" id="searchInput" placeholder="{t('search_placeholder')}" autocomplete="off" title="{t('search_hint')}">
           <button onclick="openSpotlight()">&#128269;</button>
           <div class="search-dropdown" id="searchDropdown"></div>
         </div>
@@ -3181,13 +3512,13 @@ def generate_header(current_page='index'):
 
   <div class="mobile-menu" id="mobileMenu">
     <button class="close-menu" onclick="toggleMenu()">&#10005;</button>
-    <a href="index.html" onclick="toggleMenu()">Inicio</a>
-    <a href="index.html#categorias" onclick="toggleMenu()">Catálogo</a>
-    <a href="sabias-que.html" onclick="toggleMenu()">¿Sabías que?</a>
-    <a href="proyectos.html" onclick="toggleMenu()">Proyectos</a>
-    <a href="contacto.html" onclick="toggleMenu()">Contacto</a>
+    <a href="index.html" onclick="toggleMenu()">{i18n("nav_home")}</a>
+    <a href="index.html#categorias" onclick="toggleMenu()">{i18n("nav_catalog")}</a>
+    <a href="sabias-que.html" onclick="toggleMenu()">{i18n("nav_did_you_know")}</a>
+    <a href="proyectos.html" onclick="toggleMenu()">{i18n("nav_projects")}</a>
+    <a href="contacto.html" onclick="toggleMenu()">{i18n("nav_contact")}</a>
     <div class="search-box" style="margin-top:1rem;">
-      <input type="text" id="searchInputMobile" placeholder="Buscar producto..." autocomplete="off" style="width:220px;">
+      <input type="text" id="searchInputMobile" placeholder="{t('search_mobile_placeholder')}" autocomplete="off" style="width:220px;">
       <button onclick="performSearchMobile()">&#128269;</button>
       <div class="search-dropdown" id="searchDropdownMobile"></div>
     </div>
@@ -3199,7 +3530,7 @@ def generate_header(current_page='index'):
     <div class="spotlight-box">
       <div class="spotlight-input-wrap">
         <span class="spotlight-icon">&#128269;</span>
-        <input type="text" class="spotlight-input" id="spotlightInput" placeholder="Buscar productos, categorías..." autocomplete="off">
+        <input type="text" class="spotlight-input" id="spotlightInput" placeholder="{t('search_placeholder')}" autocomplete="off">
       </div>
       <div class="spotlight-results" id="spotlightResults"></div>
     </div>
@@ -4519,38 +4850,38 @@ def generate_footer():
     <div class="footer-logo"><img src="LOGO ADIS.png" alt="ADIS Logo"></div>
     <div class="footer-info">
       <strong>ADI&#39;S DISEÑO & REMODELACIÓN</strong><br>
-      Creando espacios, reinventando hogares.<br>
+      {i18n('footer_slogan')}<br>
       {CONTACTO['ubicacion']}<br>
       <a href="tel:{CONTACTO['tel_mx_link']}">Tel. MX: {CONTACTO['tel_mx']}</a> · <a href="tel:{CONTACTO['tel_usa_link']}">Tel. USA: {CONTACTO['tel_usa']}</a><br>
       <a href="mailto:{CONTACTO['email']}">{CONTACTO['email']}</a>
     </div>
     <div class="footer-social">
-      <a href="https://wa.me/{CONTACTO['whatsapp']}?text={CONTACTO["whatsapp_msg"].replace(' ', '%20')}" target="_blank" title="WhatsApp">&#128172;</a>
-      <a href="{CONTACTO['facebook']}" target="_blank" title="Facebook">&#128220;</a>
+      <a href="https://wa.me/{CONTACTO['whatsapp']}?text={CONTACTO["whatsapp_msg"].replace(' ', '%20')}" target="_blank" title="{t('footer_whatsapp')}">&#128172;</a>
+      <a href="{CONTACTO['facebook']}" target="_blank" title="{t('footer_facebook')}">&#128220;</a>
     </div>
-    <div class="copyright">© 2026 ADIS DISEÑO & REMODELACIÓN. TODOS LOS DERECHOS RESERVADOS.</div>
+    <div class="copyright">{i18n('footer_copyright')}</div>
   </footer>
 
   <!-- MOBILE BOTTOM NAV -->
   <nav class="mobile-bottom-nav">
-    <a href="index.html"><span>&#127968;</span><span>Inicio</span></a>
-    <a href="index.html#categorias"><span>&#128194;</span><span>Catálogo</span></a>
-    <a href="proyectos.html"><span>&#128444;</span><span>Proyectos</span></a>
-    <a href="contacto.html"><span>&#128222;</span><span>Contacto</span></a>
+    <a href="index.html"><span>&#127968;</span><span>{i18n('mobile_nav_home')}</span></a>
+    <a href="index.html#categorias"><span>&#128194;</span><span>{i18n('mobile_nav_catalog')}</span></a>
+    <a href="proyectos.html"><span>&#128444;</span><span>{i18n('mobile_nav_projects')}</span></a>
+    <a href="contacto.html"><span>&#128222;</span><span>{i18n('mobile_nav_contact')}</span></a>
   </nav>
 
-  <a href="https://wa.me/{CONTACTO['whatsapp']}?text={CONTACTO["whatsapp_msg"].replace(' ', '%20')}" class="whatsapp-float" target="_blank" title="Contáctanos por WhatsApp" aria-label="WhatsApp">
+  <a href="https://wa.me/{CONTACTO['whatsapp']}?text={CONTACTO["whatsapp_msg"].replace(' ', '%20')}" class="whatsapp-float" target="_blank" title="{t('wa_tooltip')}" aria-label="WhatsApp">
     <svg viewBox="0 0 24 24" width="32" height="32" fill="white" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.008-.57-.008-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-    <span class="wa-tooltip">Cotiza gratis por WhatsApp</span>
+    <span class="wa-tooltip">{i18n('wa_tooltip')}</span>
   </a>
 
-  <button class="chatbot-float" onclick="toggleChat()" title="Asistente Virtual">&#129302;<span class="chatbot-badge" id="chatBadge">0</span></button>
+  <button class="chatbot-float" onclick="toggleChat()" title="{t('chatbot_title')}">&#129302;<span class="chatbot-badge" id="chatBadge">{t('chatbot_badge')}</span></button>
   <div class="chatbot-window" id="chatbotWindow">
     <div class="chatbot-header">
-      <h4>&#129302; Asistente ADIS</h4>
+      <h4>&#129302; {i18n('chatbot_title')}</h4>
       <div class="chat-header-actions">
-        <button class="chat-clear" onclick="clearAllChat()" title="Nueva conversación">&#128465;</button>
-        <button class="chatbot-close" onclick="toggleChat()">&#10005;</button>
+        <button class="chat-clear" onclick="clearAllChat()" title="{t('chatbot_new_chat')}">&#128465;</button>
+        <button class="chatbot-close" onclick="toggleChat()" title="{t('chatbot_close')}">&#10005;</button>
       </div>
     </div>
     <div class="chatbot-body" id="chatbotBody"></div>
@@ -4561,7 +4892,8 @@ def generate_footer():
 
 
 def generate_index(categories):
-    meta_desc = "Recubrimientos en Nogales, Sonora y Arizona: placas PVC, lambrín WPC, paneles 3D, plafón, pisos, zacate y cladding. Cotiza gratis con ADIS Diseño & Remodelación. Enviamos a Nogales, Tucson, Phoenix y Rio Rico."
+    meta_desc_es = "Recubrimientos en Nogales, Sonora y Arizona: placas PVC, lambrín WPC, paneles 3D, plafón, pisos, zacate y cladding. Cotiza gratis con ADIS Diseño & Remodelación. Enviamos a Nogales, Tucson, Phoenix y Rio Rico."
+    meta_desc_en = "Wall coverings in Nogales, Sonora & Arizona: PVC panels, WPC slats, 3D panels, PVC ceilings, flooring, synthetic grass and cladding. Get a free quote from ADIS Design & Remodeling. We ship to Nogales, Tucson, Phoenix and Rio Rico."
     meta_keywords = "recubrimientos Nogales, paneles PVC Sonora, remodelación Nogales Sonora, wall panels Nogales AZ, remodeling materials Arizona, lambrín WPC Nogales, plafón PVC, pisos Nogales, zacate sintético, cladding, ADIS"
 
     STAR_CATEGORIES = {'Lambrin WPC', 'Placas PVC'}
@@ -4584,23 +4916,23 @@ def generate_index(categories):
         is_star = cat["name"] in STAR_CATEGORIES
         
         if is_star:
-            desc = ''
+            desc_key = ''
             if cat["name"] == 'Lambrin WPC':
-                desc = 'Wood Plastic Composite de alta gama. Resistente a la humedad, rayos UV y perfecto para interiores y exteriores. Nuestro producto más solicitado.'
+                desc_key = 'featured_wpc_desc'
             elif cat["name"] == 'Placas PVC':
-                desc = 'Paneles rígidos tipo madera, texturizados y espejo. Acabado profesional con instalación rápida y garantía extendida.'
+                desc_key = 'featured_pvc_desc'
             
             featured_cards += f'''      <a href="{cat["filename"]}" class="featured-card reveal">
         <img src="{thumb_src}" alt="{cat["name"]}" loading="lazy">
         <div class="featured-card-overlay">
-          <div class="star-label">&#11088; Producto Estrella</div>
+          <div class="star-label">&#11088; {i18n('featured_star_label')}</div>
           <h3>{cat["name"]}</h3>
-          <p>{desc}</p>
+          <p>{i18n(desc_key, html=True)}</p>
         </div>
       </a>
 '''
         
-        star_badge = '<div class="star-badge">&#11088; Estrella</div>' if is_star else ''
+        star_badge = f'<div class="star-badge">&#11088; {i18n("featured_star_badge")}</div>' if is_star else ''
         featured_class = ' featured' if is_star else ''
         
         cat_cards += f'''      <a href="{cat["filename"]}" class="cat-card reveal{featured_class}">
@@ -4608,30 +4940,30 @@ def generate_index(categories):
         <div class="cat-card-overlay">
           <div class="cat-arrow">→</div>
           <h3>{cat["name"]}</h3>
-          <span>{total_prods} productos</span>
+          <span>{total_prods} {i18n('trust_products')}</span>
         </div>
       </a>
 '''
 
-    info_cards = '''      <a href="1-placas-pvc.html" class="info-card">
+    info_cards = f'''      <a href="1-placas-pvc.html" class="info-card">
         <div class="icon">✦</div>
-        <h3>Placas PVC</h3>
-        <p>Paneles rígidos de alta calidad tipo madera, texturizados y espejo. Ideales para interiores.</p>
+        <h3>{i18n('info_pvc_title')}</h3>
+        <p>{i18n('info_pvc_desc', html=True)}</p>
       </a>
       <a href="2-lambrin-wpc.html" class="info-card">
         <div class="icon">◈</div>
-        <h3>Lambrín WPC</h3>
-        <p>Wood Plastic Composite para interior y exterior. Resistente a la humedad y rayos UV.</p>
+        <h3>{i18n('info_wpc_title')}</h3>
+        <p>{i18n('info_wpc_desc', html=True)}</p>
       </a>
       <a href="7-pisos.html" class="info-card">
         <div class="icon">◉</div>
-        <h3>Pisos & Zacate</h3>
-        <p>Laminados, WPC, SPC, deck sintético y pasto artificial para todo tipo de espacios.</p>
+        <h3>{i18n('info_flooring_title')}</h3>
+        <p>{i18n('info_flooring_desc', html=True)}</p>
       </a>
       <a href="5-paneles-tridimensionales.html" class="info-card">
         <div class="icon">✚</div>
-        <h3>Cladding & 3D</h3>
-        <p>Paneles decorativos tridimensionales y revestimientos de alta gama para fachadas.</p>
+        <h3>{i18n('info_cladding_title')}</h3>
+        <p>{i18n('info_cladding_desc', html=True)}</p>
       </a>
 '''
 
@@ -4661,7 +4993,7 @@ def generate_index(categories):
         <span class="icon">{icon}</span>
         <div class="info">
           <h4>{cat["name"]}</h4>
-          <span>{total_prods} productos · PDF</span>
+          <span>{total_prods} {i18n('download_products')}</span>
         </div>
         <span class="arrow">⬇</span>
       </a>
@@ -4690,14 +5022,14 @@ def generate_index(categories):
         videos_home_html = f'''  <!-- VIDEOS DE PROYECTOS -->
   <section class="section-wrap videos-home-section reveal" id="videos">
     <div class="section-header">
-      <h2>🎬 Proyectos en video</h2>
+      <h2>{i18n('videos_title')}</h2>
       <div class="divider"></div>
-      <p>Remodelaciones reales que muestran el antes y después de nuestros materiales.</p>
+      <p>{i18n('videos_subtitle', html=True)}</p>
     </div>
     <div class="video-grid">
 {vcards}    </div>
     <div style="text-align: center; margin-top: 2rem;">
-      <a href="proyectos.html" class="btn-outline">Ver más proyectos</a>
+      <a href="proyectos.html" class="btn-outline">{i18n('videos_more')}</a>
     </div>
   </section>
 '''
@@ -4709,24 +5041,25 @@ def generate_index(categories):
   <link rel="icon" type="image/png" href="LOGO ADIS.png">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Recubrimientos en Nogales, Sonora · Arizona | ADIS Diseño & Remodelación</title>
-  <meta name="description" content="{meta_desc}">
+  <meta name="description" content="{meta_desc_es}">
   <meta name="keywords" content="{meta_keywords}">
   <meta name="geo.region" content="MX-SON">
   <meta name="geo.placename" content="Heroica Nogales, Sonora, México">
   <meta name="geo.position" content="31.3014;-110.9386">
   <meta name="ICBM" content="31.3014, -110.9386">
   <meta property="og:title" content="Recubrimientos en Nogales, Sonora · Arizona | ADIS Diseño & Remodelación">
-  <meta property="og:description" content="{meta_desc}">
+  <meta property="og:description" content="{meta_desc_es}">
   <meta property="og:image" content="{SITE_URL}LOGO%20ADIS.png">
   <meta property="og:url" content="{SITE_URL}">
   <meta property="og:type" content="website">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Recubrimientos en Nogales, Sonora · Arizona | ADIS Diseño & Remodelación">
-  <meta name="twitter:description" content="{meta_desc}">
+  <meta name="twitter:description" content="{meta_desc_es}">
   <meta name="twitter:image" content="{SITE_URL}LOGO%20ADIS.png">
   <link rel="canonical" href="{SITE_URL}">
   <link rel="alternate" hreflang="es" href="{SITE_URL}">
   <link rel="alternate" hreflang="en" href="{SITE_URL}?hl=en">
+  <meta name="description-en" content="{meta_desc_en}">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 {ga_script()}
@@ -4745,19 +5078,19 @@ def generate_index(categories):
   <section class="hero-home" id="inicio">
     <div class="hero-content">
       <img src="LOGO ADIS.png" alt="ADIS Logo">
-      <div class="hero-badge">Catálogo 2025 — 2026</div>
-      <h1>Recubrimientos PVC, WPC y paneles 3D en <em>Nogales, Sonora</em></h1>
-      <p>Transforma tu hogar o negocio con placas PVC, lambrín WPC, plafón, pisos, zacate sintético y cladding. Enviamos a Nogales, Sonora y Arizona. Cotiza gratis hoy.</p>
+      <div class="hero-badge">{i18n('hero_badge')}</div>
+      <h1>{i18n('hero_title', html=True)}</h1>
+      <p>{i18n('hero_subtitle', html=True)}</p>
       <div class="hero-actions">
-        <a href="https://wa.me/{CONTACTO['whatsapp']}?text={CONTACTO['whatsapp_msg'].replace(' ', '%20')}" class="btn-primary btn-wa" target="_blank" onclick="gtag('event','whatsapp_click',{{'location':'hero_home'}})">💬 Cotizar gratis por WhatsApp</a>
-        <a href="#categorias" class="btn-secondary">Ver catálogo</a>
+        <a href="https://wa.me/{CONTACTO['whatsapp']}?text={CONTACTO['whatsapp_msg'].replace(' ', '%20')}" class="btn-primary btn-wa" target="_blank" onclick="gtag('event','whatsapp_click',{{'location':'hero_home'}})">{i18n('cta_quote_whatsapp')}</a>
+        <a href="#categorias" class="btn-secondary">{i18n('cta_view_catalog')}</a>
       </div>
-      <p class="hero-note">¿Prefieres que te llamemos? <a href="contacto.html">Llena el formulario de cotización</a> y te contactamos.</p>
+      <p class="hero-note">{i18n('hero_note', html=True)}</p>
       <div class="search-hero">
-        <div class="search-hero-title">🔎 Busca entre 250 productos</div>
+        <div class="search-hero-title">{i18n('search_title')}</div>
         <span class="search-hero-icon">&#128269;</span>
-        <input type="text" class="search-hero-input" id="searchHeroInput" placeholder="Escribe el nombre de un producto, color o material..." autocomplete="off" onfocus="openSpotlight()">
-        <div class="search-hero-hint">Presiona <kbd style="background:rgba(255,255,255,0.1);padding:2px 8px;border-radius:4px;font-family:inherit;">/</kbd> para buscar desde cualquier página</div>
+        <input type="text" class="search-hero-input" id="searchHeroInput" placeholder="{t('search_placeholder')}" autocomplete="off" onfocus="openSpotlight()">
+        <div class="search-hero-hint">{i18n('search_hint')}</div>
       </div>
     </div>
   </section>
@@ -4765,78 +5098,78 @@ def generate_index(categories):
   <!-- STICKY CTA: visible en móvil para convertir tráfico directo -->
   <div class="sticky-cta-bar visible" id="homeStickyCta">
     <a href="https://wa.me/{CONTACTO['whatsapp']}?text={CONTACTO['whatsapp_msg'].replace(' ', '%20')}" class="sticky-cta-wa" target="_blank" onclick="gtag('event','whatsapp_click',{{'location':'sticky_bar'}})">
-      <span>💬</span> Cotizar por WhatsApp
+      <span>💬</span> {i18n('sticky_quote')}
     </a>
     <a href="tel:{CONTACTO['tel_mx_link']}" class="sticky-cta-call" onclick="gtag('event','contacto_click',{{'tipo':'tel_mx'}})">
-      <span>📞</span> Llamar
+      <span>📞</span> {i18n('sticky_call')}
     </a>
   </div>
 
   <!-- BENEFICIOS / POR QUÉ ELEGIR ADIS -->
   <section class="section-wrap benefits-section reveal" id="beneficios">
     <div class="section-header">
-      <h2>¿Por qué elegir ADIS?</h2>
+      <h2>{i18n('benefits_title')}</h2>
       <div class="divider"></div>
-      <p>Materiales premium, asesoría personalizada y entrega en Nogales, Sonora y Arizona.</p>
+      <p>{i18n('benefits_subtitle', html=True)}</p>
     </div>
     <div class="benefits-grid">
       <div class="benefit-card">
         <div class="benefit-icon">🚚</div>
-        <h3>Envíos locales</h3>
-        <p>Entrega en Nogales, Sonora y Arizona. También enviamos a todo México.</p>
+        <h3>{i18n('benefit_shipping_title')}</h3>
+        <p>{i18n('benefit_shipping_desc', html=True)}</p>
       </div>
       <div class="benefit-card">
         <div class="benefit-icon">🛡️</div>
-        <h3>Garantía real</h3>
-        <p>Hasta 15 años de garantía en placas PVC, WPC y plafón. Calidad comprobada.</p>
+        <h3>{i18n('benefit_warranty_title')}</h3>
+        <p>{i18n('benefit_warranty_desc', html=True)}</p>
       </div>
       <div class="benefit-card">
         <div class="benefit-icon">🤝</div>
-        <h3>Asesoría sin costo</h3>
-        <p>Te ayudamos a elegir el mejor material según tu proyecto, clima y presupuesto.</p>
+        <h3>{i18n('benefit_advice_title')}</h3>
+        <p>{i18n('benefit_advice_desc', html=True)}</p>
       </div>
       <div class="benefit-card">
         <div class="benefit-icon">⚡</div>
-        <h3>Instalación profesional</h3>
-        <p>Contamos con equipo de instalación para que tu remodelación quede perfecta.</p>
+        <h3>{i18n('benefit_install_title')}</h3>
+        <p>{i18n('benefit_install_desc', html=True)}</p>
       </div>
     </div>
     <div class="trust-banner">
-      <div class="trust-item"><span>250+</span> productos</div>
-      <div class="trust-item"><span>50+</span> proyectos</div>
-      <div class="trust-item"><span>9</span> categorías</div>
-      <div class="trust-item"><span>15</span> años garantía</div>
+      <div class="trust-item"><span>250+</span> {i18n('trust_products')}</div>
+      <div class="trust-item"><span>50+</span> {i18n('trust_projects')}</div>
+      <div class="trust-item"><span>9</span> {i18n('trust_categories')}</div>
+      <div class="trust-item"><span>15</span> {i18n('trust_warranty')}</div>
     </div>
   </section>
 
   <!-- PRECIOS ORIENTATIVOS -->
   <section class="section-wrap prices-section reveal" id="precios">
     <div class="section-header">
-      <h2>Precios orientativos</h2>
+      <h2>{i18n('prices_title')}</h2>
       <div class="divider"></div>
-      <p>Conoce rangos aproximados por categoría. El precio final depende del modelo, acabado y metros de tu proyecto.</p>
+      <p>{i18n('prices_subtitle', html=True)}</p>
     </div>
     <div class="prices-grid">
-      <div class="price-card"><h4>Placas PVC</h4><div class="price-range">$850 – $1,400 <span>MXN/pz</span></div><p>Tipo madera, mármol y espejo.</p></div>
-      <div class="price-card"><h4>Lambrín WPC</h4><div class="price-range">$1,200 – $2,100 <span>MXN/caja</span></div><p>Interior y exterior, acabado madera real.</p></div>
-      <div class="price-card"><h4>Revestimiento Flexible</h4><div class="price-range">$650 – $1,100 <span>MXN/pz</span></div><p>Concreto, piedra y madera flexible.</p></div>
-      <div class="price-card"><h4>Plafón PVC</h4><div class="price-range">$180 – $350 <span>MXN/pz</span></div><p>Laminado y wood style.</p></div>
-      <div class="price-card"><h4>Paneles 3D</h4><div class="price-range">$280 – $550 <span>MXN/pz</span></div><p>Texturas decorativas en relieve.</p></div>
-      <div class="price-card"><h4>Pisos</h4><div class="price-range">$900 – $2,500 <span>MXN/caja</span></div><p>Laminado, WPC, SPC y deck.</p></div>
-      <div class="price-card"><h4>Zacate Sintético</h4><div class="price-range">$220 – $480 <span>MXN/m²</span></div><p>Pasto artificial para exteriores.</p></div>
-      <div class="price-card"><h4>Cladding</h4><div class="price-range">$550 – $1,050 <span>MXN/pz</span></div><p>Placas tipo piedra para fachadas.</p></div>
+      <div class="price-card"><h4>Placas PVC</h4><div class="price-range">$850 – $1,400 <span>{i18n('price_unit_piece')}</span></div><p>{i18n('info_pvc_desc')}</p></div>
+      <div class="price-card"><h4>Lambrín WPC</h4><div class="price-range">$1,200 – $2,100 <span>{i18n('price_unit_box')}</span></div><p>{i18n('info_wpc_desc')}</p></div>
+      <div class="price-card"><h4>Revestimiento Flexible</h4><div class="price-range">$650 – $1,100 <span>{i18n('price_unit_piece')}</span></div><p>Concreto, piedra y madera flexible.</p></div>
+      <div class="price-card"><h4>Plafón PVC</h4><div class="price-range">$180 – $350 <span>{i18n('price_unit_piece')}</span></div><p>Laminado y wood style.</p></div>
+      <div class="price-card"><h4>Paneles 3D</h4><div class="price-range">$280 – $550 <span>{i18n('price_unit_piece')}</span></div><p>Texturas decorativas en relieve.</p></div>
+      <div class="price-card"><h4>Pisos</h4><div class="price-range">$900 – $2,500 <span>{i18n('price_unit_box')}</span></div><p>{i18n('info_flooring_desc')}</p></div>
+      <div class="price-card"><h4>Zacate Sintético</h4><div class="price-range">$220 – $480 <span>{i18n('price_unit_m2')}</span></div><p>Pasto artificial para exteriores.</p></div>
+      <div class="price-card"><h4>Cladding</h4><div class="price-range">$550 – $1,050 <span>{i18n('price_unit_piece')}</span></div><p>{i18n('info_cladding_desc')}</p></div>
     </div>
     <div style="text-align: center; margin-top: 2rem;">
-      <a href="{whatsapp_url(CONTACTO['whatsapp'], 'Hola ADIS, vi sus precios orientativos y quiero una cotizacion personalizada.')}" class="btn-primary btn-wa" target="_blank" onclick="gtag('event','whatsapp_click',{{'location':'precios_home'}})">💬 Pedir cotización exacta</a>
+      <a href="{whatsapp_url(CONTACTO['whatsapp'], 'Hola ADIS, vi sus precios orientativos y quiero una cotizacion personalizada.')}" class="btn-primary btn-wa" target="_blank" onclick="gtag('event','whatsapp_click',{{'location':'precios_home'}})">{i18n('prices_cta')}</a>
     </div>
   </section>
 
   <!-- NOSOTROS -->
   <section class="section-wrap-alt reveal" id="nosotros">
     <div class="section-header">
-      <h2>Sobre ADIS</h2>
+      <h2>{i18n('about_title')}</h2>
       <div class="divider"></div>
-      <p>En ADI'S DISEÑO & REMODELACIÓN nos especializamos en ofrecer soluciones funcionales, estéticas y duraderas.</p>
+      <p>{i18n('about_subtitle', html=True)}</p>
     </div>
     <div class="info-grid">
 {info_cards}    </div>
@@ -4847,19 +5180,19 @@ def generate_index(categories):
     <div class="stats-grid">
       <div class="stat-item">
         <div class="stat-number" data-target="250">0</div>
-        <div class="stat-label">Productos</div>
+        <div class="stat-label">{i18n('stat_products')}</div>
       </div>
       <div class="stat-item">
         <div class="stat-number" data-target="9">0</div>
-        <div class="stat-label">Categorías</div>
+        <div class="stat-label">{i18n('stat_categories')}</div>
       </div>
       <div class="stat-item">
         <div class="stat-number" data-target="50">0</div>
-        <div class="stat-label">Proyectos Realizados</div>
+        <div class="stat-label">{i18n('stat_projects_done')}</div>
       </div>
       <div class="stat-item">
         <div class="stat-number" data-target="100">0</div>
-        <div class="stat-label">Clientes Satisfechos</div>
+        <div class="stat-label">{i18n('stat_happy_clients')}</div>
       </div>
     </div>
   </section>
@@ -4867,9 +5200,9 @@ def generate_index(categories):
   <!-- PRODUCTOS ESTRELLA -->
   <section class="featured-section reveal" id="estrellas">
     <div class="section-header">
-      <h2>&#11088; Productos Estrella</h2>
+      <h2>&#11088; {i18n('featured_title')}</h2>
       <div class="divider"></div>
-      <p>Los favoritos de nuestros clientes. Calidad premium que transforma cualquier espacio.</p>
+      <p>{i18n('featured_subtitle', html=True)}</p>
     </div>
     <div class="featured-grid">
 {featured_cards}    </div>
@@ -4879,20 +5212,20 @@ def generate_index(categories):
   <section class="featured-product-section reveal" id="pvc-marmol">
     <div class="featured-product-wrap">
       <div class="featured-product-image">
-        <span class="featured-product-badge">Producto Destacado</span>
-        <img src="img/1-placas-pvc/Carrara%20Oscuro.jpg" alt="Hoja de PVC tipo Mármol Carrara Oscuro" loading="lazy">
+        <span class="featured-product-badge">{i18n('featured_marble_title')}</span>
+        <img src="img/1-placas-pvc/Carrara%20Oscuro.jpg" alt="{t('featured_marble_title')}" loading="lazy">
       </div>
       <div class="featured-product-content">
-        <h3>Hoja de PVC tipo Mármol</h3>
-        <div class="subtitle">Elegancia y durabilidad para cualquier espacio interior</div>
-        <p>La lámina de <strong>PVC tipo mármol</strong> es la solución decorativa perfecta si buscas añadir un toque de elegancia a tu hogar, oficina o espacio comercial. Fabricada con materiales de alta calidad, es a la vez <strong>duradera y ligera</strong>, por lo que es fácil de instalar y mantener.</p>
+        <h3>{i18n('featured_marble_title')}</h3>
+        <div class="subtitle">{i18n('featured_marble_subtitle')}</div>
+        <p>{i18n('featured_marble_text', html=True)}</p>
         <ul class="featured-product-features">
-          <li>Resistente al <strong>agua, manchas y arañazos</strong></li>
-          <li>Inversión que <strong>dura muchos años</strong></li>
-          <li>Ideal para <strong>cocinas, baños, salas de estar</strong> y más</li>
-          <li>Acabado profesional con <strong>garantía extendida</strong></li>
+          <li>{i18n('featured_marble_bullet1', html=True)}</li>
+          <li>{i18n('featured_marble_bullet2', html=True)}</li>
+          <li>{i18n('featured_marble_bullet3', html=True)}</li>
+          <li>{i18n('featured_marble_bullet4', html=True)}</li>
         </ul>
-        <a href="1-placas-pvc.html" class="featured-product-cta">Ver en catálogo →</a>
+        <a href="1-placas-pvc.html" class="featured-product-cta">{i18n('featured_marble_cta')}</a>
       </div>
     </div>
   </section>
@@ -4900,27 +5233,27 @@ def generate_index(categories):
   <!-- SERVICIO EN ARIZONA -->
   <section class="section-wrap arizona-section reveal" id="arizona">
     <div class="section-header">
-      <h2>Servimos en Arizona</h2>
+      <h2>{i18n('arizona_title')}</h2>
       <div class="divider"></div>
-      <p>Enviamos materiales de remodelación a Nogales AZ, Rio Rico, Tucson y Phoenix. Atención en español y cotizaciones en USD/MXN.</p>
+      <p>{i18n('arizona_subtitle', html=True)}</p>
     </div>
     <div class="arizonaz-grid">
-      <div class="arizona-card"><span>🇺🇸</span><h3>Nogales, AZ</h3><p>Showroom fronterizo y entregas coordinadas.</p></div>
-      <div class="arizona-card"><span>🇺🇸</span><h3>Rio Rico, AZ</h3><p>Envíos directos para proyectos residenciales.</p></div>
-      <div class="arizona-card"><span>🇺🇸</span><h3>Tucson, AZ</h3><p>Materiales para remodelación de interiores y exteriores.</p></div>
-      <div class="arizona-card"><span>🇺🇸</span><h3>Phoenix, AZ</h3><p>Cotizaciones y envíos para proyectos grandes.</p></div>
+      <div class="arizona-card"><span>🇺🇸</span><h3>{i18n('arizona_nogales_title')}</h3><p>{i18n('arizona_nogales_desc', html=True)}</p></div>
+      <div class="arizona-card"><span>🇺🇸</span><h3>{i18n('arizona_riorico_title')}</h3><p>{i18n('arizona_riorico_desc', html=True)}</p></div>
+      <div class="arizona-card"><span>🇺🇸</span><h3>{i18n('arizona_tucson_title')}</h3><p>{i18n('arizona_tucson_desc', html=True)}</p></div>
+      <div class="arizona-card"><span>🇺🇸</span><h3>{i18n('arizona_phoenix_title')}</h3><p>{i18n('arizona_phoenix_desc', html=True)}</p></div>
     </div>
     <div style="text-align: center; margin-top: 2rem;">
-      <a href="{whatsapp_url(CONTACTO['whatsapp'], 'Hola ADIS, estoy en Arizona y quiero cotizar materiales de remodelacion.')}" class="btn-primary btn-wa" target="_blank" onclick="gtag('event','whatsapp_click',{{'location':'arizona_home'}})">💬 Cotizar desde Arizona</a>
+      <a href="{whatsapp_url(CONTACTO['whatsapp'], 'Hola ADIS, estoy en Arizona y quiero cotizar materiales de remodelacion.')}" class="btn-primary btn-wa" target="_blank" onclick="gtag('event','whatsapp_click',{{'location':'arizona_home'}})">{i18n('arizona_cta')}</a>
     </div>
   </section>
 
   <!-- CATÁLOGO -->
   <section class="section-wrap reveal" id="categorias">
     <div class="section-header">
-      <h2>Nuestro Catálogo</h2>
+      <h2>{i18n('catalog_title')}</h2>
       <div class="divider"></div>
-      <p>Selecciona una categoría para ver los productos con su ficha técnica.</p>
+      <p>{i18n('catalog_subtitle', html=True)}</p>
     </div>
     <div class="cat-grid">
 {cat_cards}    </div>
@@ -4929,16 +5262,16 @@ def generate_index(categories):
   <!-- DESCARGAS DE CATÁLOGOS PDF -->
   <section class="section-wrap downloads-section reveal" id="descargas">
     <div class="section-header">
-      <h2>📥 Descargas</h2>
+      <h2>{i18n('downloads_title')}</h2>
       <div class="divider"></div>
-      <p class="downloads-lead">Descarga nuestros catálogos en PDF para consultarlos sin conexión o compartirlos con tu cliente.</p>
+      <p class="downloads-lead">{i18n('downloads_subtitle', html=True)}</p>
     </div>
     <div class="downloads-main">
       <a href="catalogos/pdf/catalogo_premium.pdf" class="download-complete" download>
         <span class="icon">📚</span>
         <div>
-          <div>Descargar catálogo completo</div>
-          <span class="sub">Todas las categorías en un solo PDF</span>
+          <div>{i18n('download_complete')}</div>
+          <span class="sub">{i18n('download_complete_sub')}</span>
         </div>
       </a>
     </div>
@@ -4961,7 +5294,8 @@ def generate_index(categories):
 
 
 def generate_contacto():
-    meta_desc = "Cotiza recubrimientos en Nogales, Sonora y Arizona. Contacta a ADIS Diseño & Remodelación por WhatsApp, teléfono o email. Placas PVC, lambrín WPC, paneles 3D, plafón, pisos y más. Enviamos a Tucson, Phoenix y Rio Rico."
+    meta_desc_es = "Cotiza recubrimientos en Nogales, Sonora y Arizona. Contacta a ADIS Diseño & Remodelación por WhatsApp, teléfono o email. Placas PVC, lambrín WPC, paneles 3D, plafón, pisos y más. Enviamos a Tucson, Phoenix y Rio Rico."
+    meta_desc_en = "Quote wall coverings in Nogales, Sonora & Arizona. Contact ADIS Design & Remodeling via WhatsApp, phone or email. PVC panels, WPC slats, 3D panels, PVC ceilings, flooring and more. We ship to Tucson, Phoenix and Rio Rico."
     html = f'''<!DOCTYPE html>
 <html lang="es">
 <head>
@@ -4969,24 +5303,25 @@ def generate_contacto():
   <link rel="icon" type="image/png" href="LOGO ADIS.png">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Cotizar Recubrimientos Nogales Sonora · Arizona | Contacto ADIS</title>
-  <meta name="description" content="{meta_desc}">
+  <meta name="description" content="{meta_desc_es}">
   <meta name="keywords" content="cotizar recubrimientos Nogales, contacto ADIS, paneles PVC Sonora, wall panels Nogales AZ, remodeling materials Arizona, WhatsApp ADIS">
   <meta name="geo.region" content="MX-SON">
   <meta name="geo.placename" content="Heroica Nogales, Sonora, México">
   <meta name="geo.position" content="31.3014;-110.9386">
   <meta name="ICBM" content="31.3014, -110.9386">
   <meta property="og:title" content="Cotizar Recubrimientos Nogales Sonora · Arizona | Contacto ADIS">
-  <meta property="og:description" content="{meta_desc}">
+  <meta property="og:description" content="{meta_desc_es}">
   <meta property="og:image" content="{SITE_URL}LOGO%20ADIS.png">
   <meta property="og:url" content="{SITE_URL}contacto.html">
   <meta property="og:type" content="website">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Cotizar Recubrimientos Nogales Sonora · Arizona | Contacto ADIS">
-  <meta name="twitter:description" content="{meta_desc}">
+  <meta name="twitter:description" content="{meta_desc_es}">
   <meta name="twitter:image" content="{SITE_URL}LOGO%20ADIS.png">
   <link rel="canonical" href="{SITE_URL}contacto.html">
   <link rel="alternate" hreflang="es" href="{SITE_URL}contacto.html">
   <link rel="alternate" hreflang="en" href="{SITE_URL}contacto.html?hl=en">
+  <meta name="description-en" content="{meta_desc_en}">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 {ga_script()}
@@ -5001,8 +5336,8 @@ def generate_contacto():
 {generate_header("contacto")}
 
   <section class="hero-cat" style="padding-top: 8rem;">
-    <h1>Cotiza recubrimientos en Nogales, Sonora</h1>
-    <p>Placas PVC, lambrín WPC, paneles 3D, plafón, pisos, zacate y cladding. Respuesta en menos de 24 horas.</p>
+    <h1>{i18n('contact_title', html=True)}</h1>
+    <p>{i18n('contact_subtitle', html=True)}</p>
   </section>
 
   <section class="section-wrap contact-section">
@@ -5010,39 +5345,39 @@ def generate_contacto():
       <!-- Formulario de cotización -->
       <div class="contact-form-panel reveal">
         <div class="section-header" style="text-align:left; margin-bottom:1.5rem;">
-          <h2 style="font-size:1.6rem;">Solicita tu cotización gratis</h2>
+          <h2 style="font-size:1.6rem;">{i18n('contact_form_title')}</h2>
           <div class="divider" style="margin:0.8rem 0;"></div>
-          <p style="margin:0;">Cuéntanos tu proyecto y te contactamos con precios y disponibilidad.</p>
+          <p style="margin:0;">{i18n('contact_form_subtitle', html=True)}</p>
         </div>
         <form id="contactForm" onsubmit="sendContactForm(event)">
           <div class="form-row">
             <div class="form-field">
-              <label for="cfNombre">Nombre *</label>
-              <input type="text" id="cfNombre" placeholder="Tu nombre" required>
+              <label for="cfNombre">{i18n('form_name')}</label>
+              <input type="text" id="cfNombre" placeholder="{t('form_name_placeholder')}" required>
             </div>
             <div class="form-field">
-              <label for="cfTelefono">Teléfono *</label>
-              <input type="tel" id="cfTelefono" placeholder="Ej. 631 123 4567" required>
+              <label for="cfTelefono">{i18n('form_phone')}</label>
+              <input type="tel" id="cfTelefono" placeholder="{t('form_phone_placeholder')}" required>
             </div>
           </div>
           <div class="form-field">
-            <label for="cfEmail">Correo electrónico</label>
-            <input type="email" id="cfEmail" placeholder="tu@email.com">
+            <label for="cfEmail">{i18n('form_email')}</label>
+            <input type="email" id="cfEmail" placeholder="{t('form_email_placeholder')}">
           </div>
           <div class="form-row">
             <div class="form-field">
-              <label for="cfCiudad">Ciudad / Ubicación de la obra *</label>
-              <input type="text" id="cfCiudad" placeholder="Ej. Nogales, Sonora" required>
+              <label for="cfCiudad">{i18n('form_city')}</label>
+              <input type="text" id="cfCiudad" placeholder="{t('form_city_placeholder')}" required>
             </div>
             <div class="form-field">
-              <label for="cfMetros">m² aproximados</label>
-              <input type="number" id="cfMetros" placeholder="Ej. 30" min="1" step="0.1">
+              <label for="cfMetros">{i18n('form_sqm')}</label>
+              <input type="number" id="cfMetros" placeholder="{t('form_sqm_placeholder')}" min="1" step="0.1">
             </div>
           </div>
           <div class="form-field">
-            <label for="cfProducto">Producto de interés</label>
+            <label for="cfProducto">{i18n('form_product')}</label>
             <select id="cfProducto">
-              <option value="No estoy seguro">No estoy seguro, necesito asesoría</option>
+              <option value="No estoy seguro">{t('form_product_unsure')}</option>
               <option value="Placas PVC">Placas PVC</option>
               <option value="Lambrín WPC">Lambrín WPC</option>
               <option value="Revestimiento Flexible">Revestimiento Flexible</option>
@@ -5055,11 +5390,11 @@ def generate_contacto():
             </select>
           </div>
           <div class="form-field">
-            <label for="cfMensaje">Mensaje</label>
-            <textarea id="cfMensaje" rows="3" placeholder="¿Alguna duda o requerimiento especial?"></textarea>
+            <label for="cfMensaje">{i18n('form_message')}</label>
+            <textarea id="cfMensaje" rows="3" placeholder="{t('form_message_placeholder')}"></textarea>
           </div>
-          <button type="submit" class="btn-primary btn-wa" style="width:100%; justify-content:center; display:flex; gap:0.5rem;">💬 Enviar cotización por WhatsApp</button>
-          <p class="form-note">También puedes llamarnos o escribirnos directamente.</p>
+          <button type="submit" class="btn-primary btn-wa" style="width:100%; justify-content:center; display:flex; gap:0.5rem;">{i18n('form_submit')}</button>
+          <p class="form-note">{i18n('form_note', html=True)}</p>
         </form>
       </div>
 
@@ -5067,34 +5402,34 @@ def generate_contacto():
       <div class="contact-info-panel reveal">
         <div class="contact-card">
           <div class="icon">💬</div>
-          <h3>WhatsApp</h3>
+          <h3>{i18n('contact_whatsapp')}</h3>
           <a href="https://wa.me/{CONTACTO["whatsapp"]}" target="_blank">{CONTACTO["tel_usa"]}</a>
-          <p class="contact-card-note">Respuesta en menos de 24 h</p>
+          <p class="contact-card-note">{i18n('contact_whatsapp_note', html=True)}</p>
         </div>
         <div class="contact-card">
           <div class="icon">📞</div>
-          <h3>Teléfono México</h3>
+          <h3>{i18n('contact_phone_mx')}</h3>
           <a href="tel:{CONTACTO['tel_mx_link']}">{CONTACTO["tel_mx"]}</a>
         </div>
         <div class="contact-card">
           <div class="icon">&#128222;</div>
-          <h3>Teléfono USA</h3>
+          <h3>{i18n('contact_phone_us')}</h3>
           <a href="tel:{CONTACTO['tel_usa_link']}">{CONTACTO["tel_usa"]}</a>
         </div>
         <div class="contact-card">
           <div class="icon">✉️</div>
-          <h3>Correo</h3>
+          <h3>{i18n('contact_email')}</h3>
           <a href="mailto:{CONTACTO["email"]}">{CONTACTO["email"]}</a>
         </div>
         <div class="contact-card">
           <div class="icon">📍</div>
-          <h3>Ubicación</h3>
+          <h3>{i18n('contact_location')}</h3>
           <p>{CONTACTO["ubicacion"]}<br>{CONTACTO["direccion"]}</p>
-          <a href="{CONTACTO['maps_url']}" target="_blank" class="btn-outline" style="margin-top:0.8rem; display:inline-block;">Ver en Google Maps</a>
+          <a href="{CONTACTO['maps_url']}" target="_blank" class="btn-outline" style="margin-top:0.8rem; display:inline-block;">{i18n('contact_map')}</a>
         </div>
         <div class="contact-card">
           <div class="icon">🕒</div>
-          <h3>Horario</h3>
+          <h3>{i18n('contact_hours')}</h3>
           <p>{CONTACTO["horarios"]}</p>
         </div>
       </div>
@@ -5102,11 +5437,11 @@ def generate_contacto():
 
     <div style="text-align: center; margin-top: 3rem; max-width: 900px; margin: 3rem auto 0;">
       <div style="border-radius: 8px; overflow: hidden; border: 1px solid rgba(197,160,89,0.2); margin-bottom: 1.5rem;">
-        <iframe src="https://maps.google.com/maps?q=31.3088527,-110.9308403&z=17&output=embed" width="100%" height="400" style="border:0;" allowfullscreen="" loading="lazy" title="Ubicación ADIS Diseño & Remodelación"></iframe>
+        <iframe src="https://maps.google.com/maps?q=31.3088527,-110.9308403&z=17&output=embed" width="100%" height="400" style="border:0;" allowfullscreen="" loading="lazy" title="{t('contact_location')}"></iframe>
       </div>
     </div>
     <div style="text-align: center; margin-top: 2rem;">
-      <a href="index.html" class="btn-back">← Volver al Inicio</a>
+      <a href="index.html" class="btn-back">{i18n('contact_back_home')}</a>
     </div>
   </section>
 
@@ -5120,15 +5455,15 @@ def generate_contacto():
       var metros = document.getElementById('cfMetros').value.trim();
       var producto = document.getElementById('cfProducto').value;
       var mensaje = document.getElementById('cfMensaje').value.trim();
-      var lines = ['Hola ADIS, solicito una cotización:'];
-      lines.push('Nombre: ' + nombre);
-      lines.push('Teléfono: ' + tel);
-      if (email) lines.push('Email: ' + email);
-      lines.push('Ciudad/Obra: ' + ciudad);
-      if (metros) lines.push('m² aproximados: ' + metros);
-      lines.push('Producto: ' + producto);
-      if (mensaje) lines.push('Mensaje: ' + mensaje);
-      lines.push('Favor de contactarme. ¡Gracias!');
+      var lines = ['{t("contact_form_message")}'];
+      lines.push('{t("contact_form_name")}: ' + nombre);
+      lines.push('{t("contact_form_phone")}: ' + tel);
+      if (email) lines.push('{t("contact_form_email")}: ' + email);
+      lines.push('{t("contact_form_city")}: ' + ciudad);
+      if (metros) lines.push('{t("contact_form_sqm")}: ' + metros);
+      lines.push('{t("contact_form_product")}: ' + producto);
+      if (mensaje) lines.push('{t("contact_form_message_label")}: ' + mensaje);
+      lines.push('{t("contact_form_closing")}');
       var url = 'https://wa.me/{CONTACTO["whatsapp"]}?text=' + encodeURIComponent(lines.join('\\n'));
       if (typeof gtag === 'function') gtag('event', 'enviar_cotizacion', {{ location: 'contacto_form' }});
       if (typeof fbq === 'function') fbq('track', 'Lead');
@@ -5165,7 +5500,7 @@ def generate_category_page(cat, categories):
 
     # Breadcrumbs
     breadcrumbs_html = f'''  <div class="breadcrumbs">
-    <a href="index.html">Inicio</a> <span>/</span> <a href="index.html#categorias">Catálogo</a> <span>/</span> <span style="color:var(--gold);">{cat["name"]}</span>
+    <a href="index.html">{i18n('breadcrumb_home')}</a> <span>/</span> <a href="index.html#categorias">{i18n('breadcrumb_catalog')}</a> <span>/</span> <span style="color:var(--gold);">{cat["name"]}</span>
   </div>
 '''
 
@@ -5233,8 +5568,8 @@ def generate_category_page(cat, categories):
         cat_specs = generate_specs_table('Placas PVC Tipo espejo')
         sections_html += f'''  <section class="subcat-section reveal">
     <div class="subcat-header">
-      <h3>&#11088; Más Vendidos — Placas PVC Tipo Espejo</h3>
-      <span class="subcat-count">{len(main_products)} productos</span>
+      <h3>&#11088; {i18n('cat_best_sellers')}</h3>
+      <span class="subcat-count">{len(main_products)} <span data-i18n="filter_count_unit" data-es="productos" data-en="products">productos</span></span>
       <div class="subcat-divider"></div>
     </div>
 {cat_specs}    <div class="products-grid">
@@ -5258,7 +5593,7 @@ def generate_category_page(cat, categories):
         sections_html += f'''  <section class="subcat-section reveal" id="{sub["slug"]}">
     <div class="subcat-header">
       <h3>{sub["name"]}</h3>
-      <span class="subcat-count">{len(sub["products"])} productos</span>
+      <span class="subcat-count">{len(sub["products"])} <span data-i18n="filter_count_unit" data-es="productos" data-en="products">productos</span></span>
       <div class="subcat-divider"></div>
     </div>
 {specs_html}    <div class="products-grid">
@@ -5272,8 +5607,8 @@ def generate_category_page(cat, categories):
         acc_specs = generate_specs_table('Accesorios placas PVC')
         sections_html += f'''  <section class="subcat-section reveal" id="accesorios">
     <div class="subcat-header">
-      <h3>🔩 Accesorios</h3>
-      <span class="subcat-count">{acc_count} producto{"s" if acc_count != 1 else ""}</span>
+      <h3>{i18n('cat_accessories')}</h3>
+      <span class="subcat-count">{acc_count} <span data-i18n="filter_count_unit" data-es="productos" data-en="products">{'productos' if acc_count != 1 else 'producto'}</span></span>
       <div class="subcat-divider"></div>
     </div>
 {acc_specs}    <div class="products-grid">
@@ -5300,8 +5635,8 @@ def generate_category_page(cat, categories):
 
         sections_html += f'''  <section class="subcat-section reveal">
     <div class="subcat-header">
-      <h3>Productos {cat["name"]}</h3>
-      <span class="subcat-count">{len(cat["direct_products"])} productos</span>
+      <h3>{i18n_fmt('cat_products', category=cat["name"])}</h3>
+      <span class="subcat-count">{len(cat["direct_products"])} <span data-i18n="filter_count_unit" data-es="productos" data-en="products">productos</span></span>
       <div class="subcat-divider"></div>
     </div>
 {direct_specs}    <div class="products-grid">
@@ -5320,16 +5655,16 @@ def generate_category_page(cat, categories):
         if real_imgs:
             gallery_items = ''
             for img in real_imgs:
-                gallery_items += f'''      <div class="real-sheets-item" onclick="openLightbox('media/{img}', 'Hoja real de PVC')">
-        <img src="media/{img}" alt="Hoja real de PVC" loading="lazy">
-        <span class="real-sheets-badge">Foto Real</span>
+                gallery_items += f'''      <div class="real-sheets-item" onclick="openLightbox('media/{img}', '{t("cat_real_sheets_title")}')">
+        <img src="media/{img}" alt="{t("cat_real_sheets_title")}" loading="lazy">
+        <span class="real-sheets-badge">{i18n('cat_real_sheets_badge')}</span>
       </div>
 '''
             real_sheets_html = f'''  <section class="real-sheets-section">
     <div class="section-header">
-      <h2>Hojas Reales de PVC</h2>
+      <h2>{i18n('cat_real_sheets_title')}</h2>
       <div class="divider"></div>
-      <p>Fotos reales de nuestro showroom. Sin filtros, sin edits.</p>
+      <p>{i18n('cat_real_sheets_subtitle')}</p>
     </div>
     <div class="real-sheets-grid">
 {gallery_items}    </div>
@@ -5409,13 +5744,13 @@ def generate_category_page(cat, categories):
 {breadcrumbs_html}
   <section class="hero-cat-bg" style="background-image: url('{hero_bg}');">
     <div class="hero-cat-content">
-      {'<div class="hero-star-badge">&#11088; Producto Estrella</div>' if cat["name"] in ("Lambrin WPC", "Placas PVC") else '<div class="hero-cat-badge">Categoría</div>'}
+      {'<div class="hero-star-badge">&#11088; ' + i18n('featured_star_label') + '</div>' if cat["name"] in ("Lambrin WPC", "Placas PVC") else '<div class="hero-cat-badge">' + i18n('cat_badge') + '</div>'}
       <h1>{cat["name"]}</h1>
-      <p>Explora nuestra línea de {cat["name"].lower()} con {cat["total_products"]} productos disponibles. Solicita tu cotización.</p>
+      <p>{i18n_fmt('cat_hero_subtitle', category=cat["name"], count=cat["total_products"])}</p>
       <div class="hero-cat-actions">
-        <a href="{wa_hero_url}" class="btn-primary btn-wa" target="_blank" onclick="gtag('event','whatsapp_click',{{'location':'hero_category','category':'{cat['name']}'}})">💬 Cotizar gratis por WhatsApp</a>
-        <a href="tel:{CONTACTO['tel_mx_link']}" class="btn-outline" onclick="gtag('event','contacto_click',{{'tipo':'tel_mx','location':'hero_category'}})">📞 Llamar</a>
-        <a href="{pdf_url}" class="btn-outline" download onclick="gtag('event','pdf_download',{{'category':'{cat['name']}'}})">📥 Descargar catálogo PDF</a>
+        <a href="{wa_hero_url}" class="btn-primary btn-wa" target="_blank" onclick="gtag('event','whatsapp_click',{{'location':'hero_category','category':'{cat['name']}'}})">{i18n('cta_quote_whatsapp')}</a>
+        <a href="tel:{CONTACTO['tel_mx_link']}" class="btn-outline" onclick="gtag('event','contacto_click',{{'tipo':'tel_mx','location':'hero_category'}})">{i18n('cat_cta_call')}</a>
+        <a href="{pdf_url}" class="btn-outline" download onclick="gtag('event','pdf_download',{{'category':'{cat['name']}'}})">{i18n('cat_cta_download')}</a>
       </div>
     </div>
   </section>
@@ -5423,10 +5758,10 @@ def generate_category_page(cat, categories):
   <!-- STICKY CTA: visible en móvil para convertir tráfico directo -->
   <div class="sticky-cta-bar visible" id="catStickyCta">
     <a href="{wa_hero_url}" class="sticky-cta-wa" target="_blank" onclick="gtag('event','whatsapp_click',{{'location':'sticky_bar_category','category':'{cat['name']}'}})">
-      <span>💬</span> Cotizar {cat['name']}
+      <span>💬</span> {i18n('sticky_quote_category')} {cat['name']}
     </a>
     <a href="tel:{CONTACTO['tel_mx_link']}" class="sticky-cta-call" onclick="gtag('event','contacto_click',{{'tipo':'tel_mx','location':'sticky_bar_category'}})">
-      <span>📞</span> Llamar
+      <span>📞</span> {i18n('sticky_call')}
     </a>
   </div>
 
@@ -5436,19 +5771,19 @@ def generate_category_page(cat, categories):
 {cat_nav_html}
   <section class="section-wrap" style="padding-top: 1rem;">
     <div style="text-align: center;">
-      <a href="index.html" class="btn-back">← Volver al Inicio</a>
-      <a href="contacto.html" class="btn-outline">Contactar</a>
+      <a href="index.html" class="btn-back">{i18n('cat_back_home')}</a>
+      <a href="contacto.html" class="btn-outline">{i18n('cat_contact')}</a>
     </div>
   </section>
 
   <!-- CTA FINAL DE CATEGORÍA -->
   <section class="section-wrap cta-final-section reveal" style="padding-top: 2rem; padding-bottom: 2rem;">
     <div class="cta-final-box">
-      <h2>¿Listo para transformar tu espacio con {cat['name']}?</h2>
-      <p>Solicita tu cotización gratis. Respondemos en menos de 24 h y enviamos a Nogales, Sonora y Arizona.</p>
+      <h2>{i18n_fmt('cat_cta_final_title', category=cat['name'])}</h2>
+      <p>{i18n('cat_cta_final_subtitle', html=True)}</p>
       <div class="hero-cat-actions" style="justify-content: center;">
-        <a href="{wa_hero_url}" class="btn-primary btn-wa" target="_blank" onclick="gtag('event','whatsapp_click',{{'location':'cta_final_category','category':'{cat['name']}'}})">💬 Cotizar por WhatsApp</a>
-        <a href="contacto.html" class="btn-secondary">📋 Llenar formulario</a>
+        <a href="{wa_hero_url}" class="btn-primary btn-wa" target="_blank" onclick="gtag('event','whatsapp_click',{{'location':'cta_final_category','category':'{cat['name']}'}})">{i18n('sticky_quote_category')} {cat['name']}</a>
+        <a href="contacto.html" class="btn-secondary">{i18n('cat_cta_final_form')}</a>
       </div>
     </div>
   </section>
@@ -5788,82 +6123,82 @@ def generate_specs_table(product_name):
 
 def generate_testimonios():
     """Genera formulario de testimonios que envía a WhatsApp para revisión manual."""
-    return '''
+    return f'''
   <!-- TESTIMONIOS -->
   <section class="section-wrap reveal" style="padding-top: 2rem;">
     <div class="section-header">
-      <h2>Testimonios de Clientes</h2>
+      <h2>{i18n('testimonials_title')}</h2>
       <div class="divider"></div>
-      <p>¿Ya usaste nuestros productos? Comparte tu experiencia y ayuda a otros a decidirse.</p>
+      <p>{i18n('testimonials_subtitle', html=True)}</p>
     </div>
     <div style="max-width: 1100px; margin: 0 auto; padding: 0 2rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin-bottom: 3rem;">
       <div style="background: rgba(42,42,42,0.7); backdrop-filter: blur(10px); border: 1px solid rgba(197,160,89,0.2); border-radius: 12px; padding: 1.8rem; position: relative;">
         <div style="font-size: 3rem; color: var(--gold); opacity: 0.3; position: absolute; top: 0.5rem; right: 1rem; font-family: Georgia, serif;">"</div>
-        <p style="font-size: 0.9rem; color: rgba(245,245,245,0.8); line-height: 1.7; margin-bottom: 1rem; font-style: italic;">Excelente calidad en las placas PVC tipo espejo. Transformaron completamente mi sala de estar. La instalación fue súper rápida y el acabado se ve de lujo.</p>
+        <p style="font-size: 0.9rem; color: rgba(245,245,245,0.8); line-height: 1.7; margin-bottom: 1rem; font-style: italic;">{i18n('testimonial_maria_text', html=True)}</p>
         <div style="display: flex; align-items: center; gap: 0.8rem;">
           <div style="width: 40px; height: 40px; border-radius: 50%; background: var(--gold); display: flex; align-items: center; justify-content: center; color: var(--black); font-weight: 700; font-size: 0.9rem;">MG</div>
           <div>
-            <div style="font-size: 0.85rem; color: var(--white); font-weight: 600;">María G.</div>
-            <div style="font-size: 0.75rem; color: var(--gold);">&#11088;&#11088;&#11088;&#11088;&#11088; — Placas PVC, Nogales</div>
+            <div style="font-size: 0.85rem; color: var(--white); font-weight: 600;">{i18n('testimonial_maria_name')}</div>
+            <div style="font-size: 0.75rem; color: var(--gold);">&#11088;&#11088;&#11088;&#11088;&#11088; — {i18n('testimonial_maria_meta')}</div>
           </div>
         </div>
       </div>
       <div style="background: rgba(42,42,42,0.7); backdrop-filter: blur(10px); border: 1px solid rgba(197,160,89,0.2); border-radius: 12px; padding: 1.8rem; position: relative;">
         <div style="font-size: 3rem; color: var(--gold); opacity: 0.3; position: absolute; top: 0.5rem; right: 1rem; font-family: Georgia, serif;">"</div>
-        <p style="font-size: 0.9rem; color: rgba(245,245,245,0.8); line-height: 1.7; margin-bottom: 1rem; font-style: italic;">Compré el lambrín WPC para el exterior de mi consultorio y quedó espectacular. Resiste perfectamente el sol y la lluvia. 100% recomendado.</p>
+        <p style="font-size: 0.9rem; color: rgba(245,245,245,0.8); line-height: 1.7; margin-bottom: 1rem; font-style: italic;">{i18n('testimonial_carlos_text', html=True)}</p>
         <div style="display: flex; align-items: center; gap: 0.8rem;">
           <div style="width: 40px; height: 40px; border-radius: 50%; background: var(--gold); display: flex; align-items: center; justify-content: center; color: var(--black); font-weight: 700; font-size: 0.9rem;">CR</div>
           <div>
-            <div style="font-size: 0.85rem; color: var(--white); font-weight: 600;">Dr. Carlos R.</div>
-            <div style="font-size: 0.75rem; color: var(--gold);">&#11088;&#11088;&#11088;&#11088;&#11088; — Lambrín WPC, Rio Rico</div>
+            <div style="font-size: 0.85rem; color: var(--white); font-weight: 600;">{i18n('testimonial_carlos_name')}</div>
+            <div style="font-size: 0.75rem; color: var(--gold);">&#11088;&#11088;&#11088;&#11088;&#11088; — {i18n('testimonial_carlos_meta')}</div>
           </div>
         </div>
       </div>
       <div style="background: rgba(42,42,42,0.7); backdrop-filter: blur(10px); border: 1px solid rgba(197,160,89,0.2); border-radius: 12px; padding: 1.8rem; position: relative;">
         <div style="font-size: 3rem; color: var(--gold); opacity: 0.3; position: absolute; top: 0.5rem; right: 1rem; font-family: Georgia, serif;">"</div>
-        <p style="font-size: 0.9rem; color: rgba(245,245,245,0.8); line-height: 1.7; margin-bottom: 1rem; font-style: italic;">El equipo de ADIS me ayudó a elegir los pisos SPC para toda mi casa. Me dieron asesoría de primera y el precio fue muy competitivo. Quedé encantada.</p>
+        <p style="font-size: 0.9rem; color: rgba(245,245,245,0.8); line-height: 1.7; margin-bottom: 1rem; font-style: italic;">{i18n('testimonial_lopez_text', html=True)}</p>
         <div style="display: flex; align-items: center; gap: 0.8rem;">
           <div style="width: 40px; height: 40px; border-radius: 50%; background: var(--gold); display: flex; align-items: center; justify-content: center; color: var(--black); font-weight: 700; font-size: 0.9rem;">FL</div>
           <div>
-            <div style="font-size: 0.85rem; color: var(--white); font-weight: 600;">Familia López</div>
-            <div style="font-size: 0.75rem; color: var(--gold);">&#11088;&#11088;&#11088;&#11088;&#11088; — Pisos SPC, Nogales</div>
+            <div style="font-size: 0.85rem; color: var(--white); font-weight: 600;">{i18n('testimonial_lopez_name')}</div>
+            <div style="font-size: 0.75rem; color: var(--gold);">&#11088;&#11088;&#11088;&#11088;&#11088; — {i18n('testimonial_lopez_meta')}</div>
           </div>
         </div>
       </div>
       <div style="background: rgba(42,42,42,0.7); backdrop-filter: blur(10px); border: 1px solid rgba(197,160,89,0.2); border-radius: 12px; padding: 1.8rem; position: relative;">
         <div style="font-size: 3rem; color: var(--gold); opacity: 0.3; position: absolute; top: 0.5rem; right: 1rem; font-family: Georgia, serif;">"</div>
-        <p style="font-size: 0.9rem; color: rgba(245,245,245,0.8); line-height: 1.7; margin-bottom: 1rem; font-style: italic;">Excelente servicio desde Tucson. Envían materiales a Arizona y la atención por WhatsApp fue muy rápida. El cladding para mi fachada quedó impecable.</p>
+        <p style="font-size: 0.9rem; color: rgba(245,245,245,0.8); line-height: 1.7; margin-bottom: 1rem; font-style: italic;">{i18n('testimonial_roberto_text', html=True)}</p>
         <div style="display: flex; align-items: center; gap: 0.8rem;">
           <div style="width: 40px; height: 40px; border-radius: 50%; background: var(--gold); display: flex; align-items: center; justify-content: center; color: var(--black); font-weight: 700; font-size: 0.9rem;">RM</div>
           <div>
-            <div style="font-size: 0.85rem; color: var(--white); font-weight: 600;">Roberto M.</div>
-            <div style="font-size: 0.75rem; color: var(--gold);">&#11088;&#11088;&#11088;&#11088;&#11088; — Cladding, Tucson AZ</div>
+            <div style="font-size: 0.85rem; color: var(--white); font-weight: 600;">{i18n('testimonial_roberto_name')}</div>
+            <div style="font-size: 0.75rem; color: var(--gold);">&#11088;&#11088;&#11088;&#11088;&#11088; — {i18n('testimonial_roberto_meta')}</div>
           </div>
         </div>
       </div>
     </div>
     <div style="max-width: 600px; margin: 0 auto; padding: 0 1rem;">
       <form id="testimonioForm" onsubmit="enviarTestimonio(event)" style="display: flex; flex-direction: column; gap: 1rem;">
-        <input type="text" id="tNombre" placeholder="Tu nombre" required
+        <input type="text" id="tNombre" placeholder="{t('testimonials_name')}" required
           style="padding: 0.9rem 1.2rem; background: rgba(42,42,42,0.8); border: 1px solid rgba(197,160,89,0.3); border-radius: 8px; color: var(--white); font-family: 'Montserrat', sans-serif; font-size: 0.9rem; backdrop-filter: blur(8px); transition: all 0.3s;"
           onfocus="this.style.borderColor='var(--gold)';this.style.boxShadow='0 0 15px rgba(197,160,89,0.15)'" onblur="this.style.borderColor='rgba(197,160,89,0.3)';this.style.boxShadow='none'">
-        <textarea id="tComentario" placeholder="¿Qué te pareció el producto o servicio?" required rows="4"
+        <textarea id="tComentario" placeholder="{t('testimonials_comment')}" required rows="4"
           style="padding: 0.9rem 1.2rem; background: rgba(42,42,42,0.8); border: 1px solid rgba(197,160,89,0.3); border-radius: 8px; color: var(--white); font-family: 'Montserrat', sans-serif; font-size: 0.9rem; backdrop-filter: blur(8px); resize: vertical; transition: all 0.3s;"
           onfocus="this.style.borderColor='var(--gold)';this.style.boxShadow='0 0 15px rgba(197,160,89,0.15)'" onblur="this.style.borderColor='rgba(197,160,89,0.3)';this.style.boxShadow='none'"></textarea>
-        <input type="text" id="tProducto" placeholder="Producto o categoría que compraste (opcional)"
+        <input type="text" id="tProducto" placeholder="{t('testimonials_product')}"
           style="padding: 0.9rem 1.2rem; background: rgba(42,42,42,0.8); border: 1px solid rgba(197,160,89,0.3); border-radius: 8px; color: var(--white); font-family: 'Montserrat', sans-serif; font-size: 0.9rem; backdrop-filter: blur(8px); transition: all 0.3s;"
           onfocus="this.style.borderColor='var(--gold)';this.style.boxShadow='0 0 15px rgba(197,160,89,0.15)'" onblur="this.style.borderColor='rgba(197,160,89,0.3)';this.style.boxShadow='none'">
-        <button type="submit" class="btn-primary" style="align-self: center; margin-top: 0.5rem;">&#128233; Enviar Testimonio</button>
+        <button type="submit" class="btn-primary" style="align-self: center; margin-top: 0.5rem;">&#128233; {i18n('testimonials_send')}</button>
       </form>
       <div style="text-align: center; margin-top: 1.2rem; font-size: 0.8rem; color: rgba(245,245,245,0.5); line-height: 1.6;">
-        Los testimonios son revisados antes de publicarse.<br>
-        También puedes enviarlos directamente por 
+        {i18n('testimonials_review', html=True)}<br>
+        {i18n('testimonials_whatsapp', html=True)}
         <a href="https://wa.me/15208392877?text=Hola%20ADIS,%20quiero%20dejar%20un%20testimonio" target="_blank" style="color: var(--gold); text-decoration: none; font-weight: 600;">WhatsApp &#128172;</a>
       </div>
     </div>
   </section>
   <script>
-    function enviarTestimonio(e) {
+    function enviarTestimonio(e) {{
       e.preventDefault();
       const nombre = document.getElementById('tNombre').value.trim();
       const comentario = document.getElementById('tComentario').value.trim();
@@ -5873,9 +6208,9 @@ def generate_testimonios():
       msg += '%0A%0AProducto/Categoría: ' + (producto || 'No especificado');
       msg += '%0A%0APágina: ' + window.location.href;
       window.open('https://wa.me/15208392877?text=' + encodeURIComponent(msg.replace(/%0A/g, '\\n')), '_blank');
-      alert('¡Gracias ' + nombre + '! Tu testimonio se envió por WhatsApp. Será revisado y publicado pronto.');
+      alert('{t("testimonial_thanks")}' + nombre + '{t("testimonial_thanks_end")}');
       e.target.reset();
-    }
+    }}
   </script>
 '''
 
@@ -6070,12 +6405,12 @@ def generate_sabias_que():
 {generate_header("sabias-que")}
 
   <section class="sq-hero">
-    <h1>¿Sabías que?</h1>
-    <p>Conoce todo sobre <strong>{cat_name}</strong></p>
+    <h1>{i18n('sq_title')}</h1>
+    <p>{i18n_fmt('sq_subtitle_known', category=cat_name, html=True)}</p>
   </section>
 
   <div style="max-width:1100px;margin:0 auto;padding:0 1.5rem;">
-    <a href="sabias-que.html" style="display:inline-flex;align-items:center;gap:0.4rem;color:var(--gold);text-decoration:none;font-size:0.85rem;margin-bottom:1rem;">← Volver al índice</a>
+    <a href="sabias-que.html" style="display:inline-flex;align-items:center;gap:0.4rem;color:var(--gold);text-decoration:none;font-size:0.85rem;margin-bottom:1rem;">{i18n('sq_back_index')}</a>
   </div>
 
   <div class="sq-content" style="padding-top:0;">
@@ -6085,12 +6420,12 @@ def generate_sabias_que():
       </div>
     </div>
     <div class="section-header" style="margin:2rem 0 1.5rem;">
-      <h2 style="font-size:1.4rem;">Datos Curiosos</h2>
+      <h2 style="font-size:1.4rem;">{i18n('sq_curiosos_title')}</h2>
       <div class="divider"></div>
     </div>
     <div class="sq-grid">
 {curiosos_cards}    </div>
-{('<div class="section-header" style="margin:2.5rem 0 1.5rem;"><h2 style="font-size:1.4rem;">Preguntas Frecuentes</h2><div class="divider"></div></div><div class="sq-faqs">' + faqs_html + '</div>') if faqs_html else ''}
+{('<div class="section-header" style="margin:2.5rem 0 1.5rem;"><h2 style="font-size:1.4rem;">' + i18n('sq_faqs_title') + '</h2><div class="divider"></div></div><div class="sq-faqs">' + faqs_html + '</div>') if faqs_html else ''}
   </div>
 
 {generate_footer()}
@@ -6103,11 +6438,11 @@ function sqToggle(el) {{
   if (fullEl.style.display === 'none') {{
     shortEl.style.display = 'none';
     fullEl.style.display = 'inline';
-    el.textContent = 'Leer menos';
+    el.textContent = '{t("sq_card_readless")}';
   }} else {{
     shortEl.style.display = 'inline';
     fullEl.style.display = 'none';
-    el.textContent = 'Leer más';
+    el.textContent = '{t("sq_card_readmore")}';
   }}
 }}
 </script>
@@ -6127,7 +6462,7 @@ function sqToggle(el) {{
       <div class="sq-index-img" style="background-image:url('{cat_img}');"></div>
       <div class="sq-index-info">
         <h3>{cat_name}</h3>
-        <span>Ver datos curiosos y FAQs →</span>
+        <span>{i18n('sq_see_more')}</span>
       </div>
     </a>
 '''
@@ -6164,8 +6499,8 @@ function sqToggle(el) {{
 {generate_header("sabias-que")}
 
   <section class="sq-hero">
-    <h1>¿Sabías que?</h1>
-    <p>Datos sorprendentes y respuestas a tus dudas sobre nuestros materiales.</p>
+    <h1>{i18n('sq_title')}</h1>
+    <p>{i18n('sq_subtitle')}</p>
   </section>
 
   <div class="sq-content">
@@ -6223,22 +6558,22 @@ def generate_proyectos():
     # Secciones de antes/después (carrusel por cada par)
     ba_sections = ''
     for i, (antes, despues) in enumerate(ba_pairs, 1):
-        label = f'Remodelación {i}' if len(ba_pairs) > 1 else 'Antes y Después'
+        label = f'{t("projects_remodeling")} {i}' if len(ba_pairs) > 1 else t("projects_beforeafter_title")
         ba_sections += f'''  <section class="section-wrap reveal">
     <div class="section-header">
       <h2>{label}</h2>
       <div class="divider"></div>
-      <p>Desliza para ver la transformación completa.</p>
+      <p>{i18n('projects_carousel_hint')}</p>
     </div>
     <div class="carousel-wrap">
       <div class="carousel" id="carousel-ba-{i}">
         <div class="carousel-slide">
-          <img src="media/{antes}" alt="Antes" loading="lazy" onclick="openLightbox('media/{antes}', 'Antes - {label}')">
-          <div class="carousel-label" style="background: rgba(197,160,89,0.2);">Antes</div>
+          <img src="media/{antes}" alt="{t("projects_before")}" loading="lazy" onclick="openLightbox('media/{antes}', '{t("projects_before")} - {label}')">
+          <div class="carousel-label" style="background: rgba(197,160,89,0.2);">{i18n('projects_before')}</div>
         </div>
         <div class="carousel-slide">
-          <img src="media/{despues}" alt="Después" loading="lazy" onclick="openLightbox('media/{despues}', 'Después - {label}')">
-          <div class="carousel-label" style="background: var(--gold); color: var(--black);">Después</div>
+          <img src="media/{despues}" alt="{t("projects_after")}" loading="lazy" onclick="openLightbox('media/{despues}', '{t("projects_after")} - {label}')">
+          <div class="carousel-label" style="background: var(--gold); color: var(--black);">{i18n('projects_after')}</div>
         </div>
       </div>
       <button class="carousel-btn prev" onclick="moveCarousel('carousel-ba-{i}', -1)">&#10094;</button>
@@ -6261,9 +6596,9 @@ def generate_proyectos():
 '''
         gallery_section = f'''  <section class="section-wrap-alt reveal">
     <div class="section-header">
-      <h2>Galería de Proyectos</h2>
+      <h2>{i18n('projects_gallery_title')}</h2>
       <div class="divider"></div>
-      <p>Trabajos reales con nuestros materiales de alta gama.</p>
+      <p>{i18n('projects_gallery_subtitle')}</p>
     </div>
     <div class="carousel-wrap">
       <div class="carousel" id="carousel-gallery">
@@ -6294,9 +6629,9 @@ def generate_proyectos():
     if videos_html:
         video_section = f'''  <section class="section-wrap reveal">
     <div class="section-header">
-      <h2>Videos de Remodelaciones</h2>
+      <h2>{i18n('projects_videos_title')}</h2>
       <div class="divider"></div>
-      <p>Transformaciones capturadas en video.</p>
+      <p>{i18n('projects_videos_subtitle')}</p>
     </div>
     <div class="video-grid">
 {videos_html}    </div>
@@ -6350,29 +6685,29 @@ def generate_proyectos():
 {generate_header("proyectos")}
 
   <section class="hero-cat">
-    <h1>Proyectos Reales</h1>
-    <p>Transformaciones que hablan por sí solas. Conoce nuestro trabajo en Nogales, Sonora y Arizona.</p>
+    <h1>{i18n('projects_title')}</h1>
+    <p>{i18n('projects_subtitle')}</p>
     <div class="hero-cat-actions" style="justify-content: center; margin-top: 1.5rem;">
-      <a href="{whatsapp_url(CONTACTO['whatsapp'], 'Hola ADIS, vi sus proyectos y quiero cotizar una remodelacion.')}" class="btn-primary btn-wa" target="_blank" onclick="gtag('event','whatsapp_click',{{'location':'hero_proyectos'}})">💬 Cotizar mi proyecto</a>
-      <a href="contacto.html" class="btn-secondary">📋 Enviar formulario</a>
+      <a href="{whatsapp_url(CONTACTO['whatsapp'], 'Hola ADIS, vi sus proyectos y quiero cotizar una remodelacion.')}" class="btn-primary btn-wa" target="_blank" onclick="gtag('event','whatsapp_click',{{'location':'hero_proyectos'}})">{i18n('projects_cta_quote')}</a>
+      <a href="contacto.html" class="btn-secondary">{i18n('projects_cta_form')}</a>
     </div>
   </section>
 
   <!-- STICKY CTA: visible en móvil -->
   <div class="sticky-cta-bar visible" id="proyectosStickyCta">
     <a href="{whatsapp_url(CONTACTO['whatsapp'], 'Hola ADIS, vi sus proyectos y quiero cotizar una remodelacion.')}" class="sticky-cta-wa" target="_blank" onclick="gtag('event','whatsapp_click',{{'location':'sticky_bar_proyectos'}})">
-      <span>💬</span> Cotizar proyecto
+      <span>💬</span> {i18n('sticky_quote_project')}
     </a>
     <a href="tel:{CONTACTO['tel_mx_link']}" class="sticky-cta-call" onclick="gtag('event','contacto_click',{{'tipo':'tel_mx','location':'sticky_bar_proyectos'}})">
-      <span>📞</span> Llamar
+      <span>📞</span> {i18n('sticky_call')}
     </a>
   </div>
 
 {ba_sections}{gallery_section}{video_section}
   <section class="section-wrap" style="padding-top: 1rem;">
     <div style="text-align: center;">
-      <a href="index.html" class="btn-back">← Volver al Inicio</a>
-      <a href="contacto.html" class="btn-outline">Contactar</a>
+      <a href="index.html" class="btn-back">{i18n('cat_back_home')}</a>
+      <a href="contacto.html" class="btn-outline">{i18n('cat_contact')}</a>
     </div>
   </section>
 

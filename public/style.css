@@ -110,12 +110,7 @@ nav.desktop-nav a:hover::after { width: 100%; }
   font-family: 'Montserrat', sans-serif;
 }
 .translate-toggle:hover { transform: scale(1.1); box-shadow: 0 6px 30px rgba(197,160,89,0.6); }
-body { top: 0 !important; }
-.goog-te-banner-frame { display: none !important; }
-.goog-te-balloon-frame { display: none !important; }
-.skiptranslate { display: none !important; }
-#goog-gt-tt, #goog-gt-tt * { display: none !important; }
-.goog-text-highlight { background-color: transparent !important; box-shadow: none !important; }
+[data-i18n] { display: inline; }
 
 @media (max-width: 768px) {
   .translate-toggle { width: 44px; height: 44px; font-size: 0.75rem; bottom: 85px; right: 18px; }

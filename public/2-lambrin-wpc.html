@@ -30,56 +30,50 @@
   </script>
 
 
-  <!-- Google Translate -->
+  <!-- ADIS i18n Toggle -->
   <script>
     (function() {
-      window._adisLang = 'es';
-      function setTranslateCookie(lang) {
-        var domain = window.location.hostname;
-        var value = lang === 'en' ? '/es/en' : '/es/es';
-        document.cookie = 'googtrans=' + value + '; path=/; domain=.' + domain;
-        document.cookie = 'googtrans=' + value + '; path=/; domain=' + domain;
+      function escapeHtml(str) {
+        return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
       }
-      function getTranslateCookie() {
-        var match = document.cookie.match(/googtrans=([^;]+)/);
-        return match ? match[1] : '/es/es';
+      function unescapeHtml(str) {
+        return str.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&');
       }
-      function updateLangButton() {
+      function setLang(lang) {
+        localStorage.setItem('adis_lang', lang);
+        document.documentElement.setAttribute('lang', lang === 'en' ? 'en' : 'es');
+        document.querySelectorAll('[data-i18n]').forEach(function(el) {
+          var raw = el.getAttribute('data-' + lang);
+          if (raw === null) return;
+          var text = unescapeHtml(raw);
+          if (el.hasAttribute('data-i18n-html')) {
+            el.innerHTML = text;
+          } else {
+            el.textContent = text;
+          }
+        });
         var btn = document.getElementById('translateToggle');
-        if (!btn) return;
-        var cookie = getTranslateCookie();
-        var isEn = cookie.indexOf('/en') !== -1;
-        btn.textContent = isEn ? 'ES' : 'EN';
-        btn.setAttribute('aria-label', isEn ? 'Cambiar a español' : 'Switch to English');
-        btn.title = isEn ? 'Cambiar a español' : 'Switch to English';
+        if (btn) {
+          btn.textContent = lang === 'en' ? 'ES' : 'EN';
+          btn.setAttribute('aria-label', lang === 'en' ? 'Cambiar a español' : 'Switch to English');
+          btn.title = lang === 'en' ? 'Cambiar a español' : 'Switch to English';
+        }
+        if (typeof gtag === 'function') {
+          gtag('event', 'cambiar_idioma', { idioma: lang, location: 'translate_toggle' });
+        }
       }
       window.adisToggleLanguage = function() {
-        var cookie = getTranslateCookie();
-        var toEn = cookie.indexOf('/en') === -1;
-        setTranslateCookie(toEn ? 'en' : 'es');
-        if (typeof gtag === 'function') {
-          gtag('event', 'cambiar_idioma', { idioma: toEn ? 'en' : 'es', location: 'translate_toggle' });
-        }
-        window.location.reload();
+        var current = localStorage.getItem('adis_lang') || 'es';
+        setLang(current === 'en' ? 'es' : 'en');
       };
-      window.adisInitTranslate = function() {
-        updateLangButton();
-      };
-      document.addEventListener('DOMContentLoaded', window.adisInitTranslate);
+      document.addEventListener('DOMContentLoaded', function() {
+        setLang(localStorage.getItem('adis_lang') || 'es');
+      });
     })();
-    function googleTranslateElementInit() {
-      new google.translate.TranslateElement({
-        pageLanguage: 'es',
-        includedLanguages: 'en,es',
-        layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
-        autoDisplay: false
-      }, 'google_translate_element');
-    }
   </script>
-  <script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-  <div id="google_translate_element" style="display:none; visibility:hidden;"></div>
   <button id="translateToggle" class="translate-toggle" onclick="adisToggleLanguage()" aria-label="Switch to English" title="Switch to English">EN</button>
-  <!-- End Google Translate -->
+  <!-- End ADIS i18n Toggle -->
+
 <script type="application/ld+json">{
   "@context": "https://schema.org",
   "@type": [
@@ -766,8 +760,8 @@
     <div class="header-inner">
       <a href="index.html" class="logo"><img src="LOGO ADIS.png" alt="ADIS Logo"></a>
       <nav class="desktop-nav">
-        <a href="index.html">← Inicio</a>
-        <a href="index.html#categorias" class="mega-trigger">Catálogo
+        <a href="index.html"><span data-i18n="nav_back_home" data-es="← Inicio" data-en="← Home">← Inicio</span></a>
+        <a href="index.html#categorias" class="mega-trigger"><span data-i18n="nav_catalog" data-es="Catálogo" data-en="Catalog">Catálogo</span>
           <div class="mega-menu">
         <a href="1-placas-pvc.html" class="mega-item"><img src="img/1-placas-pvc/11-placas-pvc-tipo-madera/Adler.jpg" alt="Placas PVC" loading="lazy"><span>Placas PVC</span></a>
         <a href="2-lambrin-wpc.html" class="mega-item"><img src="img/2-lambrin-wpc/21-lambrin-interior/AMANECHER.jpg" alt="Lambrín WPC" loading="lazy"><span>Lambrín WPC</span></a>
@@ -780,7 +774,7 @@
         <a href="9-cladding.html" class="mega-item"><img src="img/9-cladding/91-placa-tipo-roca/BLACK.jpg" alt="Cladding" loading="lazy"><span>Cladding</span></a>
           </div>
         </a>
-        <a href="sabias-que.html" class="mega-trigger">¿Sabías que?
+        <a href="sabias-que.html" class="mega-trigger">{i18n("nav_did_you_know")}
           <div class="nav-dropdown">
         <a href="sabias-que-pvc.html" class="dropdown-item"><span class="dropdown-icon">🔬</span><span>Placas PVC</span></a>
         <a href="sabias-que-wpc.html" class="dropdown-item"><span class="dropdown-icon">🌲</span><span>Lambrín WPC</span></a>
@@ -793,10 +787,10 @@
         <a href="sabias-que-cladding.html" class="dropdown-item"><span class="dropdown-icon">⛰️</span><span>Cladding</span></a>
           </div>
         </a>
-        <a href="proyectos.html">Proyectos</a>
-        <a href="contacto.html">Contacto</a>
+        <a href="proyectos.html">{i18n("nav_projects")}</a>
+        <a href="contacto.html">{i18n("nav_contact")}</a>
         <div class="search-box">
-          <input type="text" id="searchInput" placeholder="Buscar producto..." autocomplete="off" title="Presiona / para buscar">
+          <input type="text" id="searchInput" placeholder="Buscar producto..." autocomplete="off" title="Presiona / para buscar desde cualquier página">
           <button onclick="openSpotlight()">&#128269;</button>
           <div class="search-dropdown" id="searchDropdown"></div>
         </div>
@@ -807,11 +801,11 @@
 
   <div class="mobile-menu" id="mobileMenu">
     <button class="close-menu" onclick="toggleMenu()">&#10005;</button>
-    <a href="index.html" onclick="toggleMenu()">Inicio</a>
-    <a href="index.html#categorias" onclick="toggleMenu()">Catálogo</a>
-    <a href="sabias-que.html" onclick="toggleMenu()">¿Sabías que?</a>
-    <a href="proyectos.html" onclick="toggleMenu()">Proyectos</a>
-    <a href="contacto.html" onclick="toggleMenu()">Contacto</a>
+    <a href="index.html" onclick="toggleMenu()"><span data-i18n="nav_home" data-es="Inicio" data-en="Home">Inicio</span></a>
+    <a href="index.html#categorias" onclick="toggleMenu()"><span data-i18n="nav_catalog" data-es="Catálogo" data-en="Catalog">Catálogo</span></a>
+    <a href="sabias-que.html" onclick="toggleMenu()"><span data-i18n="nav_did_you_know" data-es="¿Sabías que?" data-en="Did you know?">¿Sabías que?</span></a>
+    <a href="proyectos.html" onclick="toggleMenu()"><span data-i18n="nav_projects" data-es="Proyectos" data-en="Projects">Proyectos</span></a>
+    <a href="contacto.html" onclick="toggleMenu()"><span data-i18n="nav_contact" data-es="Contacto" data-en="Contact">Contacto</span></a>
     <div class="search-box" style="margin-top:1rem;">
       <input type="text" id="searchInputMobile" placeholder="Buscar producto..." autocomplete="off" style="width:220px;">
       <button onclick="performSearchMobile()">&#128269;</button>
@@ -825,25 +819,25 @@
     <div class="spotlight-box">
       <div class="spotlight-input-wrap">
         <span class="spotlight-icon">&#128269;</span>
-        <input type="text" class="spotlight-input" id="spotlightInput" placeholder="Buscar productos, categorías..." autocomplete="off">
+        <input type="text" class="spotlight-input" id="spotlightInput" placeholder="Buscar producto..." autocomplete="off">
       </div>
       <div class="spotlight-results" id="spotlightResults"></div>
     </div>
   </div>
 
   <div class="breadcrumbs">
-    <a href="index.html">Inicio</a> <span>/</span> <a href="index.html#categorias">Catálogo</a> <span>/</span> <span style="color:var(--gold);">Lambrin WPC</span>
+    <a href="index.html"><span data-i18n="breadcrumb_home" data-es="Inicio" data-en="Home">Inicio</span></a> <span>/</span> <a href="index.html#categorias"><span data-i18n="breadcrumb_catalog" data-es="Catálogo" data-en="Catalog">Catálogo</span></a> <span>/</span> <span style="color:var(--gold);">Lambrin WPC</span>
   </div>
 
   <section class="hero-cat-bg" style="background-image: url('img/2-lambrin-wpc/21-lambrin-interior/AMANECHER.jpg');">
     <div class="hero-cat-content">
-      <div class="hero-star-badge">&#11088; Producto Estrella</div>
+      <div class="hero-star-badge">&#11088; <span data-i18n="featured_star_label" data-es="Producto Estrella" data-en="Star Product">Producto Estrella</span></div>
       <h1>Lambrin WPC</h1>
-      <p>Explora nuestra línea de lambrin wpc con 39 productos disponibles. Solicita tu cotización.</p>
+      <p><span data-i18n="cat_hero_subtitle" data-es="Explora nuestra línea de Lambrin WPC con 39 productos disponibles. Solicita tu cotización." data-en="Explore our Lambrin WPC line with 39 products available. Request your quote.">Explora nuestra línea de Lambrin WPC con 39 productos disponibles. Solicita tu cotización.</span></p>
       <div class="hero-cat-actions">
-        <a href="https://wa.me/15208392877?text=Hola%20ADIS%2C%20vi%20el%20catalogo%20de%20Lambrin%20WPC%20y%20quiero%20asesoria%20para%20elegir%20el%20mejor%20producto%20para%20mi%20proyecto." class="btn-primary btn-wa" target="_blank" onclick="gtag('event','whatsapp_click',{'location':'hero_category','category':'Lambrin WPC'})">💬 Cotizar gratis por WhatsApp</a>
-        <a href="tel:+526311204943" class="btn-outline" onclick="gtag('event','contacto_click',{'tipo':'tel_mx','location':'hero_category'})">📞 Llamar</a>
-        <a href="catalogos/pdf/catalogo_lambrin-wpc.pdf" class="btn-outline" download onclick="gtag('event','pdf_download',{'category':'Lambrin WPC'})">📥 Descargar catálogo PDF</a>
+        <a href="https://wa.me/15208392877?text=Hola%20ADIS%2C%20vi%20el%20catalogo%20de%20Lambrin%20WPC%20y%20quiero%20asesoria%20para%20elegir%20el%20mejor%20producto%20para%20mi%20proyecto." class="btn-primary btn-wa" target="_blank" onclick="gtag('event','whatsapp_click',{'location':'hero_category','category':'Lambrin WPC'})"><span data-i18n="cta_quote_whatsapp" data-es="💬 Cotizar gratis por WhatsApp" data-en="💬 Free quote via WhatsApp">💬 Cotizar gratis por WhatsApp</span></a>
+        <a href="tel:+526311204943" class="btn-outline" onclick="gtag('event','contacto_click',{'tipo':'tel_mx','location':'hero_category'})"><span data-i18n="cat_cta_call" data-es="📞 Llamar" data-en="📞 Call">📞 Llamar</span></a>
+        <a href="catalogos/pdf/catalogo_lambrin-wpc.pdf" class="btn-outline" download onclick="gtag('event','pdf_download',{'category':'Lambrin WPC'})"><span data-i18n="cat_cta_download" data-es="📥 Descargar catálogo PDF" data-en="📥 Download PDF catalog">📥 Descargar catálogo PDF</span></a>
       </div>
     </div>
   </section>
@@ -851,10 +845,10 @@
   <!-- STICKY CTA: visible en móvil para convertir tráfico directo -->
   <div class="sticky-cta-bar visible" id="catStickyCta">
     <a href="https://wa.me/15208392877?text=Hola%20ADIS%2C%20vi%20el%20catalogo%20de%20Lambrin%20WPC%20y%20quiero%20asesoria%20para%20elegir%20el%20mejor%20producto%20para%20mi%20proyecto." class="sticky-cta-wa" target="_blank" onclick="gtag('event','whatsapp_click',{'location':'sticky_bar_category','category':'Lambrin WPC'})">
-      <span>💬</span> Cotizar Lambrin WPC
+      <span>💬</span> <span data-i18n="sticky_quote_category" data-es="💬 Cotizar" data-en="💬 Quote">💬 Cotizar</span> Lambrin WPC
     </a>
     <a href="tel:+526311204943" class="sticky-cta-call" onclick="gtag('event','contacto_click',{'tipo':'tel_mx','location':'sticky_bar_category'})">
-      <span>📞</span> Llamar
+      <span>📞</span> <span data-i18n="sticky_call" data-es="📞 Llamar" data-en="📞 Call">📞 Llamar</span>
     </a>
   </div>
 
@@ -871,16 +865,16 @@
     <div class="cat-filters-inner">
       <input type="text" class="cat-filter-search" id="catFilterSearch" placeholder="Buscar producto..." autocomplete="off">
       <div class="cat-filter-chips">
-        <button class="filter-chip active" data-subcategory="all">Todos</button><button class="filter-chip" data-subcategory="lambrin interior">Lambrin Interior</button><button class="filter-chip" data-subcategory="lambrin exterior">Lambrin Exterior</button><button class="filter-chip" data-subcategory="desigual">Desigual</button><button class="filter-chip" data-subcategory="media luna">Media luna</button><button class="filter-chip" data-subcategory="media luna ps">Media luna PS</button>
+        <button class="filter-chip active" data-subcategory="all"><span data-i18n="filter_all" data-es="Todos" data-en="All">Todos</span></button><button class="filter-chip" data-subcategory="lambrin interior">Lambrin Interior</button><button class="filter-chip" data-subcategory="lambrin exterior">Lambrin Exterior</button><button class="filter-chip" data-subcategory="desigual">Desigual</button><button class="filter-chip" data-subcategory="media luna">Media luna</button><button class="filter-chip" data-subcategory="media luna ps">Media luna PS</button>
       </div>
-      <div class="cat-filter-count" id="catFilterCount">39 productos</div>
+      <div class="cat-filter-count" id="catFilterCount">39 <span data-i18n="filter_count_unit" data-es="productos" data-en="products">productos</span></div>
     </div>
   </section>
 
   <section class="subcat-section reveal" id="21-lambrin-interior">
     <div class="subcat-header">
       <h3>Lambrin Interior</h3>
-      <span class="subcat-count">19 productos</span>
+      <span class="subcat-count">19 <span data-i18n="filter_count_unit" data-es="productos" data-en="products">productos</span></span>
       <div class="subcat-divider"></div>
     </div>
     <div class="specs-bar reveal">
@@ -897,7 +891,7 @@
         <div class="product-info">
           <div class="product-name">AMANECHER</div>
           <div class="product-actions">
-            <button type="button" class="btn-cotizar" onclick="openWaModal('AMANECHER', 'Lambrin WPC', 'Lambrin Interior')">Cotizar por WhatsApp</button>
+            <button type="button" class="btn-cotizar" onclick="openWaModal('AMANECHER', 'Lambrin WPC', 'Lambrin Interior')">{i18n('modal_title')}</button>
           </div>
         </div>
       </div>
@@ -908,7 +902,7 @@
         <div class="product-info">
           <div class="product-name">ANGULO WPC PARA INTERIOR</div>
           <div class="product-actions">
-            <button type="button" class="btn-cotizar" onclick="openWaModal('ANGULO WPC PARA INTERIOR', 'Lambrin WPC', 'Lambrin Interior')">Cotizar por WhatsApp</button>
+            <button type="button" class="btn-cotizar" onclick="openWaModal('ANGULO WPC PARA INTERIOR', 'Lambrin WPC', 'Lambrin Interior')">{i18n('modal_title')}</button>
           </div>
         </div>
       </div>
@@ -919,7 +913,7 @@
         <div class="product-info">
           <div class="product-name">Amizade</div>
           <div class="product-actions">
-            <button type="button" class="btn-cotizar" onclick="openWaModal('Amizade', 'Lambrin WPC', 'Lambrin Interior')">Cotizar por WhatsApp</button>
+            <button type="button" class="btn-cotizar" onclick="openWaModal('Amizade', 'Lambrin WPC', 'Lambrin Interior')">{i18n('modal_title')}</button>
           </div>
         </div>
       </div>
@@ -930,7 +924,7 @@
         <div class="product-info">
           <div class="product-name">BAHIA</div>
           <div class="product-actions">
-            <button type="button" class="btn-cotizar" onclick="openWaModal('BAHIA', 'Lambrin WPC', 'Lambrin Interior')">Cotizar por WhatsApp</button>
+            <button type="button" class="btn-cotizar" onclick="openWaModal('BAHIA', 'Lambrin WPC', 'Lambrin Interior')">{i18n('modal_title')}</button>
           </div>
         </div>
       </div>
@@ -941,7 +935,7 @@
         <div class="product-info">
           <div class="product-name">Brasilia</div>
           <div class="product-actions">
-            <button type="button" class="btn-cotizar" onclick="openWaModal('Brasilia', 'Lambrin WPC', 'Lambrin Interior')">Cotizar por WhatsApp</button>
+            <button type="button" class="btn-cotizar" onclick="openWaModal('Brasilia', 'Lambrin WPC', 'Lambrin Interior')">{i18n('modal_title')}</button>
           </div>
         </div>
       </div>
@@ -952,7 +946,7 @@
         <div class="product-info">
           <div class="product-name">Cerezo Macapa</div>
           <div class="product-actions">
-            <button type="button" class="btn-cotizar" onclick="openWaModal('Cerezo Macapa', 'Lambrin WPC', 'Lambrin Interior')">Cotizar por WhatsApp</button>
+            <button type="button" class="btn-cotizar" onclick="openWaModal('Cerezo Macapa', 'Lambrin WPC', 'Lambrin Interior')">{i18n('modal_title')}</button>
           </div>
         </div>
       </div>
@@ -963,7 +957,7 @@
         <div class="product-info">
           <div class="product-name">Estrelado</div>
           <div class="product-actions">
-            <button type="button" class="btn-cotizar" onclick="openWaModal('Estrelado', 'Lambrin WPC', 'Lambrin Interior')">Cotizar por WhatsApp</button>
+            <button type="button" class="btn-cotizar" onclick="openWaModal('Estrelado', 'Lambrin WPC', 'Lambrin Interior')">{i18n('modal_title')}</button>
           </div>
         </div>
       </div>
@@ -974,7 +968,7 @@
         <div class="product-info">
           <div class="product-name">Fortaleza</div>
           <div class="product-actions">
-            <button type="button" class="btn-cotizar" onclick="openWaModal('Fortaleza', 'Lambrin WPC', 'Lambrin Interior')">Cotizar por WhatsApp</button>
+            <button type="button" class="btn-cotizar" onclick="openWaModal('Fortaleza', 'Lambrin WPC', 'Lambrin Interior')">{i18n('modal_title')}</button>
           </div>
         </div>
       </div>
@@ -985,7 +979,7 @@
         <div class="product-info">
           <div class="product-name">Manaos</div>
           <div class="product-actions">
-            <button type="button" class="btn-cotizar" onclick="openWaModal('Manaos', 'Lambrin WPC', 'Lambrin Interior')">Cotizar por WhatsApp</button>
+            <button type="button" class="btn-cotizar" onclick="openWaModal('Manaos', 'Lambrin WPC', 'Lambrin Interior')">{i18n('modal_title')}</button>
           </div>
         </div>
       </div>
@@ -996,7 +990,7 @@
         <div class="product-info">
           <div class="product-name">Nogal Olinda</div>
           <div class="product-actions">
-            <button type="button" class="btn-cotizar" onclick="openWaModal('Nogal Olinda', 'Lambrin WPC', 'Lambrin Interior')">Cotizar por WhatsApp</button>
+            <button type="button" class="btn-cotizar" onclick="openWaModal('Nogal Olinda', 'Lambrin WPC', 'Lambrin Interior')">{i18n('modal_title')}</button>
           </div>
         </div>
       </div>
@@ -1007,7 +1001,7 @@
         <div class="product-info">
           <div class="product-name">Nuvem</div>
           <div class="product-actions">
-            <button type="button" class="btn-cotizar" onclick="openWaModal('Nuvem', 'Lambrin WPC', 'Lambrin Interior')">Cotizar por WhatsApp</button>
+            <button type="button" class="btn-cotizar" onclick="openWaModal('Nuvem', 'Lambrin WPC', 'Lambrin Interior')">{i18n('modal_title')}</button>
           </div>
         </div>
       </div>
@@ -1018,7 +1012,7 @@
         <div class="product-info">
           <div class="product-name">Ouro Preto</div>
           <div class="product-actions">
-            <button type="button" class="btn-cotizar" onclick="openWaModal('Ouro Preto', 'Lambrin WPC', 'Lambrin Interior')">Cotizar por WhatsApp</button>
+            <button type="button" class="btn-cotizar" onclick="openWaModal('Ouro Preto', 'Lambrin WPC', 'Lambrin Interior')">{i18n('modal_title')}</button>
           </div>
         </div>
       </div>
@@ -1029,7 +1023,7 @@
         <div class="product-info">
           <div class="product-name">Ribeira</div>
           <div class="product-actions">
-            <button type="button" class="btn-cotizar" onclick="openWaModal('Ribeira', 'Lambrin WPC', 'Lambrin Interior')">Cotizar por WhatsApp</button>
+            <button type="button" class="btn-cotizar" onclick="openWaModal('Ribeira', 'Lambrin WPC', 'Lambrin Interior')">{i18n('modal_title')}</button>
           </div>
         </div>
       </div>
@@ -1040,7 +1034,7 @@
         <div class="product-info">
           <div class="product-name">Rodeiro</div>
           <div class="product-actions">
-            <button type="button" class="btn-cotizar" onclick="openWaModal('Rodeiro', 'Lambrin WPC', 'Lambrin Interior')">Cotizar por WhatsApp</button>
+            <button type="button" class="btn-cotizar" onclick="openWaModal('Rodeiro', 'Lambrin WPC', 'Lambrin Interior')">{i18n('modal_title')}</button>
           </div>
         </div>
       </div>
@@ -1051,7 +1045,7 @@
         <div class="product-info">
           <div class="product-name">Río</div>
           <div class="product-actions">
-            <button type="button" class="btn-cotizar" onclick="openWaModal('Río', 'Lambrin WPC', 'Lambrin Interior')">Cotizar por WhatsApp</button>
+            <button type="button" class="btn-cotizar" onclick="openWaModal('Río', 'Lambrin WPC', 'Lambrin Interior')">{i18n('modal_title')}</button>
           </div>
         </div>
       </div>
@@ -1062,7 +1056,7 @@
         <div class="product-info">
           <div class="product-name">Sabeiro</div>
           <div class="product-actions">
-            <button type="button" class="btn-cotizar" onclick="openWaModal('Sabeiro', 'Lambrin WPC', 'Lambrin Interior')">Cotizar por WhatsApp</button>
+            <button type="button" class="btn-cotizar" onclick="openWaModal('Sabeiro', 'Lambrin WPC', 'Lambrin Interior')">{i18n('modal_title')}</button>
           </div>
         </div>
       </div>
@@ -1073,7 +1067,7 @@
         <div class="product-info">
           <div class="product-name">Sao Paulo</div>
           <div class="product-actions">
-            <button type="button" class="btn-cotizar" onclick="openWaModal('Sao Paulo', 'Lambrin WPC', 'Lambrin Interior')">Cotizar por WhatsApp</button>
+            <button type="button" class="btn-cotizar" onclick="openWaModal('Sao Paulo', 'Lambrin WPC', 'Lambrin Interior')">{i18n('modal_title')}</button>
           </div>
         </div>
       </div>
@@ -1084,7 +1078,7 @@
         <div class="product-info">
           <div class="product-name">Sonho</div>
           <div class="product-actions">
-            <button type="button" class="btn-cotizar" onclick="openWaModal('Sonho', 'Lambrin WPC', 'Lambrin Interior')">Cotizar por WhatsApp</button>
+            <button type="button" class="btn-cotizar" onclick="openWaModal('Sonho', 'Lambrin WPC', 'Lambrin Interior')">{i18n('modal_title')}</button>
           </div>
         </div>
       </div>
@@ -1095,7 +1089,7 @@
         <div class="product-info">
           <div class="product-name">Teak Aracaju</div>
           <div class="product-actions">
-            <button type="button" class="btn-cotizar" onclick="openWaModal('Teak Aracaju', 'Lambrin WPC', 'Lambrin Interior')">Cotizar por WhatsApp</button>
+            <button type="button" class="btn-cotizar" onclick="openWaModal('Teak Aracaju', 'Lambrin WPC', 'Lambrin Interior')">{i18n('modal_title')}</button>
           </div>
         </div>
       </div>
@@ -1104,7 +1098,7 @@
   <section class="subcat-section reveal" id="22-lambrin-exterior">
     <div class="subcat-header">
       <h3>Lambrin Exterior</h3>
-      <span class="subcat-count">6 productos</span>
+      <span class="subcat-count">6 <span data-i18n="filter_count_unit" data-es="productos" data-en="products">productos</span></span>
       <div class="subcat-divider"></div>
     </div>
     <div class="specs-bar reveal">
@@ -1121,7 +1115,7 @@
         <div class="product-info">
           <div class="product-name">CHARCOAL</div>
           <div class="product-actions">
-            <button type="button" class="btn-cotizar" onclick="openWaModal('CHARCOAL', 'Lambrin WPC', 'Lambrin Exterior')">Cotizar por WhatsApp</button>
+            <button type="button" class="btn-cotizar" onclick="openWaModal('CHARCOAL', 'Lambrin WPC', 'Lambrin Exterior')">{i18n('modal_title')}</button>
           </div>
         </div>
       </div>
@@ -1132,7 +1126,7 @@
         <div class="product-info">
           <div class="product-name">DARK BLACK</div>
           <div class="product-actions">
-            <button type="button" class="btn-cotizar" onclick="openWaModal('DARK BLACK', 'Lambrin WPC', 'Lambrin Exterior')">Cotizar por WhatsApp</button>
+            <button type="button" class="btn-cotizar" onclick="openWaModal('DARK BLACK', 'Lambrin WPC', 'Lambrin Exterior')">{i18n('modal_title')}</button>
           </div>
         </div>
       </div>
@@ -1143,7 +1137,7 @@
         <div class="product-info">
           <div class="product-name">Esquinero</div>
           <div class="product-actions">
-            <button type="button" class="btn-cotizar" onclick="openWaModal('Esquinero', 'Lambrin WPC', 'Lambrin Exterior')">Cotizar por WhatsApp</button>
+            <button type="button" class="btn-cotizar" onclick="openWaModal('Esquinero', 'Lambrin WPC', 'Lambrin Exterior')">{i18n('modal_title')}</button>
           </div>
         </div>
       </div>
@@ -1154,7 +1148,7 @@
         <div class="product-info">
           <div class="product-name">REDWOOD</div>
           <div class="product-actions">
-            <button type="button" class="btn-cotizar" onclick="openWaModal('REDWOOD', 'Lambrin WPC', 'Lambrin Exterior')">Cotizar por WhatsApp</button>
+            <button type="button" class="btn-cotizar" onclick="openWaModal('REDWOOD', 'Lambrin WPC', 'Lambrin Exterior')">{i18n('modal_title')}</button>
           </div>
         </div>
       </div>
@@ -1165,7 +1159,7 @@
         <div class="product-info">
           <div class="product-name">SLIVER GRAY</div>
           <div class="product-actions">
-            <button type="button" class="btn-cotizar" onclick="openWaModal('SLIVER GRAY', 'Lambrin WPC', 'Lambrin Exterior')">Cotizar por WhatsApp</button>
+            <button type="button" class="btn-cotizar" onclick="openWaModal('SLIVER GRAY', 'Lambrin WPC', 'Lambrin Exterior')">{i18n('modal_title')}</button>
           </div>
         </div>
       </div>
@@ -1176,7 +1170,7 @@
         <div class="product-info">
           <div class="product-name">TEAK</div>
           <div class="product-actions">
-            <button type="button" class="btn-cotizar" onclick="openWaModal('TEAK', 'Lambrin WPC', 'Lambrin Exterior')">Cotizar por WhatsApp</button>
+            <button type="button" class="btn-cotizar" onclick="openWaModal('TEAK', 'Lambrin WPC', 'Lambrin Exterior')">{i18n('modal_title')}</button>
           </div>
         </div>
       </div>
@@ -1185,7 +1179,7 @@
   <section class="subcat-section reveal" id="23-desigual">
     <div class="subcat-header">
       <h3>Desigual</h3>
-      <span class="subcat-count">5 productos</span>
+      <span class="subcat-count">5 <span data-i18n="filter_count_unit" data-es="productos" data-en="products">productos</span></span>
       <div class="subcat-divider"></div>
     </div>
     <div class="specs-bar reveal">
@@ -1202,7 +1196,7 @@
         <div class="product-info">
           <div class="product-name">Parota</div>
           <div class="product-actions">
-            <button type="button" class="btn-cotizar" onclick="openWaModal('Parota', 'Lambrin WPC', 'Desigual')">Cotizar por WhatsApp</button>
+            <button type="button" class="btn-cotizar" onclick="openWaModal('Parota', 'Lambrin WPC', 'Desigual')">{i18n('modal_title')}</button>
           </div>
         </div>
       </div>
@@ -1211,7 +1205,7 @@
   <section class="subcat-section reveal" id="24-media-luna">
     <div class="subcat-header">
       <h3>Media luna</h3>
-      <span class="subcat-count">5 productos</span>
+      <span class="subcat-count">5 <span data-i18n="filter_count_unit" data-es="productos" data-en="products">productos</span></span>
       <div class="subcat-divider"></div>
     </div>
     <div class="specs-bar reveal">
@@ -1228,7 +1222,7 @@
         <div class="product-info">
           <div class="product-name">azeituna</div>
           <div class="product-actions">
-            <button type="button" class="btn-cotizar" onclick="openWaModal('azeituna', 'Lambrin WPC', 'Media luna')">Cotizar por WhatsApp</button>
+            <button type="button" class="btn-cotizar" onclick="openWaModal('azeituna', 'Lambrin WPC', 'Media luna')">{i18n('modal_title')}</button>
           </div>
         </div>
       </div>
@@ -1237,7 +1231,7 @@
   <section class="subcat-section reveal" id="25-media-luna-ps">
     <div class="subcat-header">
       <h3>Media luna PS</h3>
-      <span class="subcat-count">4 productos</span>
+      <span class="subcat-count">4 <span data-i18n="filter_count_unit" data-es="productos" data-en="products">productos</span></span>
       <div class="subcat-divider"></div>
     </div>
     <div class="specs-bar reveal">
@@ -1254,7 +1248,7 @@
         <div class="product-info">
           <div class="product-name">AURELI</div>
           <div class="product-actions">
-            <button type="button" class="btn-cotizar" onclick="openWaModal('AURELI', 'Lambrin WPC', 'Media luna PS')">Cotizar por WhatsApp</button>
+            <button type="button" class="btn-cotizar" onclick="openWaModal('AURELI', 'Lambrin WPC', 'Media luna PS')">{i18n('modal_title')}</button>
           </div>
         </div>
       </div>
@@ -1265,7 +1259,7 @@
         <div class="product-info">
           <div class="product-name">CRESSIDA</div>
           <div class="product-actions">
-            <button type="button" class="btn-cotizar" onclick="openWaModal('CRESSIDA', 'Lambrin WPC', 'Media luna PS')">Cotizar por WhatsApp</button>
+            <button type="button" class="btn-cotizar" onclick="openWaModal('CRESSIDA', 'Lambrin WPC', 'Media luna PS')">{i18n('modal_title')}</button>
           </div>
         </div>
       </div>
@@ -1276,7 +1270,7 @@
         <div class="product-info">
           <div class="product-name">ELARA</div>
           <div class="product-actions">
-            <button type="button" class="btn-cotizar" onclick="openWaModal('ELARA', 'Lambrin WPC', 'Media luna PS')">Cotizar por WhatsApp</button>
+            <button type="button" class="btn-cotizar" onclick="openWaModal('ELARA', 'Lambrin WPC', 'Media luna PS')">{i18n('modal_title')}</button>
           </div>
         </div>
       </div>
@@ -1287,7 +1281,7 @@
         <div class="product-info">
           <div class="product-name">GILDARA</div>
           <div class="product-actions">
-            <button type="button" class="btn-cotizar" onclick="openWaModal('GILDARA', 'Lambrin WPC', 'Media luna PS')">Cotizar por WhatsApp</button>
+            <button type="button" class="btn-cotizar" onclick="openWaModal('GILDARA', 'Lambrin WPC', 'Media luna PS')">{i18n('modal_title')}</button>
           </div>
         </div>
       </div>
@@ -1301,19 +1295,19 @@
 
   <section class="section-wrap" style="padding-top: 1rem;">
     <div style="text-align: center;">
-      <a href="index.html" class="btn-back">← Volver al Inicio</a>
-      <a href="contacto.html" class="btn-outline">Contactar</a>
+      <a href="index.html" class="btn-back"><span data-i18n="cat_back_home" data-es="← Volver al Inicio" data-en="← Back to Home">← Volver al Inicio</span></a>
+      <a href="contacto.html" class="btn-outline"><span data-i18n="cat_contact" data-es="Contactar" data-en="Contact">Contactar</span></a>
     </div>
   </section>
 
   <!-- CTA FINAL DE CATEGORÍA -->
   <section class="section-wrap cta-final-section reveal" style="padding-top: 2rem; padding-bottom: 2rem;">
     <div class="cta-final-box">
-      <h2>¿Listo para transformar tu espacio con Lambrin WPC?</h2>
-      <p>Solicita tu cotización gratis. Respondemos en menos de 24 h y enviamos a Nogales, Sonora y Arizona.</p>
+      <h2><span data-i18n="cat_cta_final_title" data-es="¿Listo para transformar tu espacio con Lambrin WPC?" data-en="Ready to transform your space with Lambrin WPC?">¿Listo para transformar tu espacio con Lambrin WPC?</span></h2>
+      <p><span data-i18n="cat_cta_final_subtitle" data-i18n-html="true" data-es="Solicita tu cotización gratis. Respondemos en menos de 24 h y enviamos a Nogales, Sonora y Arizona." data-en="Request your free quote. We respond in less than 24 hours and ship to Nogales, Sonora & Arizona.">Solicita tu cotización gratis. Respondemos en menos de 24 h y enviamos a Nogales, Sonora y Arizona.</span></p>
       <div class="hero-cat-actions" style="justify-content: center;">
-        <a href="https://wa.me/15208392877?text=Hola%20ADIS%2C%20vi%20el%20catalogo%20de%20Lambrin%20WPC%20y%20quiero%20asesoria%20para%20elegir%20el%20mejor%20producto%20para%20mi%20proyecto." class="btn-primary btn-wa" target="_blank" onclick="gtag('event','whatsapp_click',{'location':'cta_final_category','category':'Lambrin WPC'})">💬 Cotizar por WhatsApp</a>
-        <a href="contacto.html" class="btn-secondary">📋 Llenar formulario</a>
+        <a href="https://wa.me/15208392877?text=Hola%20ADIS%2C%20vi%20el%20catalogo%20de%20Lambrin%20WPC%20y%20quiero%20asesoria%20para%20elegir%20el%20mejor%20producto%20para%20mi%20proyecto." class="btn-primary btn-wa" target="_blank" onclick="gtag('event','whatsapp_click',{'location':'cta_final_category','category':'Lambrin WPC'})"><span data-i18n="sticky_quote_category" data-es="💬 Cotizar" data-en="💬 Quote">💬 Cotizar</span> Lambrin WPC</a>
+        <a href="contacto.html" class="btn-secondary"><span data-i18n="cat_cta_final_form" data-es="📋 Llenar formulario" data-en="📋 Fill form">📋 Llenar formulario</span></a>
       </div>
     </div>
   </section>
@@ -1322,52 +1316,52 @@
   <!-- TESTIMONIOS -->
   <section class="section-wrap reveal" style="padding-top: 2rem;">
     <div class="section-header">
-      <h2>Testimonios de Clientes</h2>
+      <h2><span data-i18n="testimonials_title" data-es="Testimonios de Clientes" data-en="Customer Testimonials">Testimonios de Clientes</span></h2>
       <div class="divider"></div>
-      <p>¿Ya usaste nuestros productos? Comparte tu experiencia y ayuda a otros a decidirse.</p>
+      <p><span data-i18n="testimonials_subtitle" data-i18n-html="true" data-es="¿Ya usaste nuestros productos? Comparte tu experiencia y ayuda a otros a decidirse." data-en="Have you used our products? Share your experience and help others decide.">¿Ya usaste nuestros productos? Comparte tu experiencia y ayuda a otros a decidirse.</span></p>
     </div>
     <div style="max-width: 1100px; margin: 0 auto; padding: 0 2rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin-bottom: 3rem;">
       <div style="background: rgba(42,42,42,0.7); backdrop-filter: blur(10px); border: 1px solid rgba(197,160,89,0.2); border-radius: 12px; padding: 1.8rem; position: relative;">
         <div style="font-size: 3rem; color: var(--gold); opacity: 0.3; position: absolute; top: 0.5rem; right: 1rem; font-family: Georgia, serif;">"</div>
-        <p style="font-size: 0.9rem; color: rgba(245,245,245,0.8); line-height: 1.7; margin-bottom: 1rem; font-style: italic;">Excelente calidad en las placas PVC tipo espejo. Transformaron completamente mi sala de estar. La instalación fue súper rápida y el acabado se ve de lujo.</p>
+        <p style="font-size: 0.9rem; color: rgba(245,245,245,0.8); line-height: 1.7; margin-bottom: 1rem; font-style: italic;"><span data-i18n="testimonial_maria_text" data-i18n-html="true" data-es="Excelente calidad en las placas PVC tipo espejo. Transformaron completamente mi sala de estar. La instalación fue súper rápida y el acabado se ve de lujo." data-en="Excellent quality in the mirror-finish PVC panels. They completely transformed my living room. Installation was super fast and the finish looks luxurious.">Excelente calidad en las placas PVC tipo espejo. Transformaron completamente mi sala de estar. La instalación fue súper rápida y el acabado se ve de lujo.</span></p>
         <div style="display: flex; align-items: center; gap: 0.8rem;">
           <div style="width: 40px; height: 40px; border-radius: 50%; background: var(--gold); display: flex; align-items: center; justify-content: center; color: var(--black); font-weight: 700; font-size: 0.9rem;">MG</div>
           <div>
-            <div style="font-size: 0.85rem; color: var(--white); font-weight: 600;">María G.</div>
-            <div style="font-size: 0.75rem; color: var(--gold);">&#11088;&#11088;&#11088;&#11088;&#11088; — Placas PVC, Nogales</div>
+            <div style="font-size: 0.85rem; color: var(--white); font-weight: 600;"><span data-i18n="testimonial_maria_name" data-es="María G." data-en="María G.">María G.</span></div>
+            <div style="font-size: 0.75rem; color: var(--gold);">&#11088;&#11088;&#11088;&#11088;&#11088; — <span data-i18n="testimonial_maria_meta" data-es="Placas PVC, Nogales" data-en="PVC Panels, Nogales">Placas PVC, Nogales</span></div>
           </div>
         </div>
       </div>
       <div style="background: rgba(42,42,42,0.7); backdrop-filter: blur(10px); border: 1px solid rgba(197,160,89,0.2); border-radius: 12px; padding: 1.8rem; position: relative;">
         <div style="font-size: 3rem; color: var(--gold); opacity: 0.3; position: absolute; top: 0.5rem; right: 1rem; font-family: Georgia, serif;">"</div>
-        <p style="font-size: 0.9rem; color: rgba(245,245,245,0.8); line-height: 1.7; margin-bottom: 1rem; font-style: italic;">Compré el lambrín WPC para el exterior de mi consultorio y quedó espectacular. Resiste perfectamente el sol y la lluvia. 100% recomendado.</p>
+        <p style="font-size: 0.9rem; color: rgba(245,245,245,0.8); line-height: 1.7; margin-bottom: 1rem; font-style: italic;"><span data-i18n="testimonial_carlos_text" data-i18n-html="true" data-es="Compré el lambrín WPC para el exterior de mi consultorio y quedó espectacular. Resiste perfectamente el sol y la lluvia. 100% recomendado." data-en="I bought WPC slats for the exterior of my office and it looks spectacular. It withstands sun and rain perfectly. 100% recommended.">Compré el lambrín WPC para el exterior de mi consultorio y quedó espectacular. Resiste perfectamente el sol y la lluvia. 100% recomendado.</span></p>
         <div style="display: flex; align-items: center; gap: 0.8rem;">
           <div style="width: 40px; height: 40px; border-radius: 50%; background: var(--gold); display: flex; align-items: center; justify-content: center; color: var(--black); font-weight: 700; font-size: 0.9rem;">CR</div>
           <div>
-            <div style="font-size: 0.85rem; color: var(--white); font-weight: 600;">Dr. Carlos R.</div>
-            <div style="font-size: 0.75rem; color: var(--gold);">&#11088;&#11088;&#11088;&#11088;&#11088; — Lambrín WPC, Rio Rico</div>
+            <div style="font-size: 0.85rem; color: var(--white); font-weight: 600;"><span data-i18n="testimonial_carlos_name" data-es="Dr. Carlos R." data-en="Dr. Carlos R.">Dr. Carlos R.</span></div>
+            <div style="font-size: 0.75rem; color: var(--gold);">&#11088;&#11088;&#11088;&#11088;&#11088; — <span data-i18n="testimonial_carlos_meta" data-es="Lambrín WPC, Rio Rico" data-en="WPC Slats, Rio Rico">Lambrín WPC, Rio Rico</span></div>
           </div>
         </div>
       </div>
       <div style="background: rgba(42,42,42,0.7); backdrop-filter: blur(10px); border: 1px solid rgba(197,160,89,0.2); border-radius: 12px; padding: 1.8rem; position: relative;">
         <div style="font-size: 3rem; color: var(--gold); opacity: 0.3; position: absolute; top: 0.5rem; right: 1rem; font-family: Georgia, serif;">"</div>
-        <p style="font-size: 0.9rem; color: rgba(245,245,245,0.8); line-height: 1.7; margin-bottom: 1rem; font-style: italic;">El equipo de ADIS me ayudó a elegir los pisos SPC para toda mi casa. Me dieron asesoría de primera y el precio fue muy competitivo. Quedé encantada.</p>
+        <p style="font-size: 0.9rem; color: rgba(245,245,245,0.8); line-height: 1.7; margin-bottom: 1rem; font-style: italic;"><span data-i18n="testimonial_lopez_text" data-i18n-html="true" data-es="El equipo de ADIS me ayudó a elegir los pisos SPC para toda mi casa. Me dieron asesoría de primera y el precio fue muy competitivo. Quedé encantada." data-en="The ADIS team helped me choose SPC flooring for my entire house. They gave me first-class advice and the price was very competitive. I was delighted.">El equipo de ADIS me ayudó a elegir los pisos SPC para toda mi casa. Me dieron asesoría de primera y el precio fue muy competitivo. Quedé encantada.</span></p>
         <div style="display: flex; align-items: center; gap: 0.8rem;">
           <div style="width: 40px; height: 40px; border-radius: 50%; background: var(--gold); display: flex; align-items: center; justify-content: center; color: var(--black); font-weight: 700; font-size: 0.9rem;">FL</div>
           <div>
-            <div style="font-size: 0.85rem; color: var(--white); font-weight: 600;">Familia López</div>
-            <div style="font-size: 0.75rem; color: var(--gold);">&#11088;&#11088;&#11088;&#11088;&#11088; — Pisos SPC, Nogales</div>
+            <div style="font-size: 0.85rem; color: var(--white); font-weight: 600;"><span data-i18n="testimonial_lopez_name" data-es="Familia López" data-en="López Family">Familia López</span></div>
+            <div style="font-size: 0.75rem; color: var(--gold);">&#11088;&#11088;&#11088;&#11088;&#11088; — <span data-i18n="testimonial_lopez_meta" data-es="Pisos SPC, Nogales" data-en="SPC Flooring, Nogales">Pisos SPC, Nogales</span></div>
           </div>
         </div>
       </div>
       <div style="background: rgba(42,42,42,0.7); backdrop-filter: blur(10px); border: 1px solid rgba(197,160,89,0.2); border-radius: 12px; padding: 1.8rem; position: relative;">
         <div style="font-size: 3rem; color: var(--gold); opacity: 0.3; position: absolute; top: 0.5rem; right: 1rem; font-family: Georgia, serif;">"</div>
-        <p style="font-size: 0.9rem; color: rgba(245,245,245,0.8); line-height: 1.7; margin-bottom: 1rem; font-style: italic;">Excelente servicio desde Tucson. Envían materiales a Arizona y la atención por WhatsApp fue muy rápida. El cladding para mi fachada quedó impecable.</p>
+        <p style="font-size: 0.9rem; color: rgba(245,245,245,0.8); line-height: 1.7; margin-bottom: 1rem; font-style: italic;"><span data-i18n="testimonial_roberto_text" data-i18n-html="true" data-es="Excelente servicio desde Tucson. Envían materiales a Arizona y la atención por WhatsApp fue muy rápida. El cladding para mi fachada quedó impecable." data-en="Excellent service from Tucson. They ship materials to Arizona and WhatsApp support was very fast. The cladding for my facade turned out impeccable.">Excelente servicio desde Tucson. Envían materiales a Arizona y la atención por WhatsApp fue muy rápida. El cladding para mi fachada quedó impecable.</span></p>
         <div style="display: flex; align-items: center; gap: 0.8rem;">
           <div style="width: 40px; height: 40px; border-radius: 50%; background: var(--gold); display: flex; align-items: center; justify-content: center; color: var(--black); font-weight: 700; font-size: 0.9rem;">RM</div>
           <div>
-            <div style="font-size: 0.85rem; color: var(--white); font-weight: 600;">Roberto M.</div>
-            <div style="font-size: 0.75rem; color: var(--gold);">&#11088;&#11088;&#11088;&#11088;&#11088; — Cladding, Tucson AZ</div>
+            <div style="font-size: 0.85rem; color: var(--white); font-weight: 600;"><span data-i18n="testimonial_roberto_name" data-es="Roberto M." data-en="Roberto M.">Roberto M.</span></div>
+            <div style="font-size: 0.75rem; color: var(--gold);">&#11088;&#11088;&#11088;&#11088;&#11088; — <span data-i18n="testimonial_roberto_meta" data-es="Cladding, Tucson AZ" data-en="Cladding, Tucson AZ">Cladding, Tucson AZ</span></div>
           </div>
         </div>
       </div>
@@ -1383,11 +1377,11 @@
         <input type="text" id="tProducto" placeholder="Producto o categoría que compraste (opcional)"
           style="padding: 0.9rem 1.2rem; background: rgba(42,42,42,0.8); border: 1px solid rgba(197,160,89,0.3); border-radius: 8px; color: var(--white); font-family: 'Montserrat', sans-serif; font-size: 0.9rem; backdrop-filter: blur(8px); transition: all 0.3s;"
           onfocus="this.style.borderColor='var(--gold)';this.style.boxShadow='0 0 15px rgba(197,160,89,0.15)'" onblur="this.style.borderColor='rgba(197,160,89,0.3)';this.style.boxShadow='none'">
-        <button type="submit" class="btn-primary" style="align-self: center; margin-top: 0.5rem;">&#128233; Enviar Testimonio</button>
+        <button type="submit" class="btn-primary" style="align-self: center; margin-top: 0.5rem;">&#128233; <span data-i18n="testimonials_send" data-es="📧 Enviar Testimonio" data-en="📧 Send Testimonial">📧 Enviar Testimonio</span></button>
       </form>
       <div style="text-align: center; margin-top: 1.2rem; font-size: 0.8rem; color: rgba(245,245,245,0.5); line-height: 1.6;">
-        Los testimonios son revisados antes de publicarse.<br>
-        También puedes enviarlos directamente por 
+        <span data-i18n="testimonials_review" data-i18n-html="true" data-es="Los testimonios son revisados antes de publicarse." data-en="Testimonials are reviewed before being published.">Los testimonios son revisados antes de publicarse.</span><br>
+        <span data-i18n="testimonials_whatsapp" data-i18n-html="true" data-es="También puedes enviarlos directamente por" data-en="You can also send them directly via">También puedes enviarlos directamente por</span>
         <a href="https://wa.me/15208392877?text=Hola%20ADIS,%20quiero%20dejar%20un%20testimonio" target="_blank" style="color: var(--gold); text-decoration: none; font-weight: 600;">WhatsApp &#128172;</a>
       </div>
     </div>
@@ -1413,27 +1407,27 @@
   <div class="wa-modal" id="waModal" onclick="closeWaModal(event)">
     <div class="wa-modal-box" onclick="event.stopPropagation()">
       <button class="wa-modal-close" onclick="closeWaModal()">&#10005;</button>
-      <h3>Cotizar por WhatsApp</h3>
-      <p class="wa-modal-subtitle">Completa tus datos y te responderemos con información y asesoría.</p>
+      <h3><span data-i18n="modal_title" data-es="Cotizar por WhatsApp" data-en="Quote via WhatsApp">Cotizar por WhatsApp</span></h3>
+      <p class="wa-modal-subtitle"><span data-i18n="modal_subtitle" data-es="Completa tus datos y te responderemos con información y asesoría." data-en="Fill in your details and we will respond with information and advice.">Completa tus datos y te responderemos con información y asesoría.</span></p>
       <form id="waModalForm" onsubmit="sendWaModal(event)">
         <input type="hidden" id="waModalProduct" value="">
         <input type="hidden" id="waModalCategory" value="">
         <input type="hidden" id="waModalSubcategory" value="">
         <div class="wa-modal-field">
-          <label for="waModalNombre">Nombre *</label>
+          <label for="waModalNombre"><span data-i18n="modal_name" data-es="Nombre *" data-en="Name *">Nombre *</span></label>
           <input type="text" id="waModalNombre" placeholder="Tu nombre" required>
         </div>
         <div class="wa-modal-field">
-          <label for="waModalCiudad">Ciudad / Ubicación de la obra *</label>
+          <label for="waModalCiudad"><span data-i18n="modal_city" data-es="Ciudad / Ubicación de la obra *" data-en="City / Project location *">Ciudad / Ubicación de la obra *</span></label>
           <input type="text" id="waModalCiudad" placeholder="Ej. Nogales, Sonora" required>
         </div>
         <div class="wa-modal-row">
           <div class="wa-modal-field">
-            <label for="waModalMetros">m2 aproximados</label>
+            <label for="waModalMetros"><span data-i18n="modal_sqm" data-es="m² aproximados" data-en="Approx. m²">m² aproximados</span></label>
             <input type="number" id="waModalMetros" placeholder="Ej. 25" min="1" step="0.1">
           </div>
           <div class="wa-modal-field">
-            <label for="waModalUso">Uso</label>
+            <label for="waModalUso"><span data-i18n="modal_use" data-es="Uso" data-en="Use">Uso</span></label>
             <select id="waModalUso">
               <option value="Residencial">Residencial</option>
               <option value="Comercial">Comercial</option>
@@ -1442,11 +1436,11 @@
           </div>
         </div>
         <div class="wa-modal-field">
-          <label for="waModalComentario">Comentario (opcional)</label>
+          <label for="waModalComentario"><span data-i18n="modal_comment" data-es="Comentario (opcional)" data-en="Comment (optional)">Comentario (opcional)</span></label>
           <textarea id="waModalComentario" rows="3" placeholder="¿Alguna duda o requerimiento especial?"></textarea>
         </div>
         <div class="wa-modal-product" id="waModalProductLabel"></div>
-        <button type="submit" class="wa-modal-submit">Enviar a WhatsApp</button>
+        <button type="submit" class="wa-modal-submit"><span data-i18n="modal_submit" data-es="Enviar a WhatsApp" data-en="Send to WhatsApp">Enviar a WhatsApp</span></button>
       </form>
     </div>
   </div>
@@ -1481,21 +1475,21 @@
       var metros = document.getElementById('waModalMetros').value.trim();
       var uso = document.getElementById('waModalUso').value;
       var comentario = document.getElementById('waModalComentario').value.trim();
-      var msg = `Hola ADIS, soy ${nombre || 'un cliente interesado'}. Me interesa cotizar:
-Producto: ${product}
-Categoria: ${category}`;
-      if (subcategory) msg += `
-Subcategoria: ${subcategory}`;
-      if (ciudad) msg += `
-Ubicacion de la obra: ${ciudad}`;
-      if (metros) msg += `
-Metros cuadrados aproximados: ${metros}`;
-      msg += `
-Uso: ${uso}`;
-      if (comentario) msg += `
-Comentario: ${comentario}`;
-      msg += `
-Favor de contactarme para mas detalles. ¡Gracias!`;
+      var msg = 'Hola ADIS, soy ' + (nombre || 'un cliente interesado') + '. Me interesa cotizar:
+Producto: ' + product + '
+Categoria: ' + category;
+      if (subcategory) msg += '
+Subcategoria: ' + subcategory;
+      if (ciudad) msg += '
+Ubicacion de la obra: ' + ciudad;
+      if (metros) msg += '
+Metros cuadrados aproximados: ' + metros;
+      msg += '
+Uso: ' + uso;
+      if (comentario) msg += '
+Comentario: ' + comentario;
+      msg += '
+Favor de contactarme para mas detalles. ¡Gracias!';
       window.open('https://wa.me/' + phone + '?text=' + encodeURIComponent(msg), '_blank');
       closeWaModal();
       e.target.reset();
@@ -1550,7 +1544,7 @@ Favor de contactarme para mas detalles. ¡Gracias!`;
           const visibleCards = sec.querySelectorAll('.product-card:not([style*="display: none"])');
           sec.style.display = visibleCards.length ? '' : 'none';
         });
-        if (countEl) countEl.textContent = visible + ' producto' + (visible !== 1 ? 's' : '');
+        if (countEl) countEl.innerHTML = visible + ' <span data-i18n="filter_count_unit" data-es="productos" data-en="products">' + (visible !== 1 ? 'productos' : 'producto') + '</span>';
       }
       search.addEventListener('input', filter);
       chips.forEach(function(chip) {
@@ -1567,7 +1561,7 @@ Favor de contactarme para mas detalles. ¡Gracias!`;
     <div class="footer-logo"><img src="LOGO ADIS.png" alt="ADIS Logo"></div>
     <div class="footer-info">
       <strong>ADI&#39;S DISEÑO & REMODELACIÓN</strong><br>
-      Creando espacios, reinventando hogares.<br>
+      <span data-i18n="footer_slogan" data-es="Creando espacios, reinventando hogares." data-en="Creating spaces, reinventing homes.">Creando espacios, reinventando hogares.</span><br>
       Nogales, Sonora · Rio Rico, AZ<br>
       <a href="tel:+526311204943">Tel. MX: +52 631-120-4943</a> · <a href="tel:+15208392877">Tel. USA: +1 (520) 839-2877</a><br>
       <a href="mailto:adis.remodelacion@gmail.com">adis.remodelacion@gmail.com</a>
@@ -1576,29 +1570,29 @@ Favor de contactarme para mas detalles. ¡Gracias!`;
       <a href="https://wa.me/15208392877?text=Hola%20ADIS,%20vi%20el%20catálogo%20y%20me%20interesa%20obtener%20información%20sobre%20sus%20productos." target="_blank" title="WhatsApp">&#128172;</a>
       <a href="https://www.facebook.com/p/Adis-Dise%C3%B1o-Remodelaci%C3%B3n-61579849591594/" target="_blank" title="Facebook">&#128220;</a>
     </div>
-    <div class="copyright">© 2026 ADIS DISEÑO & REMODELACIÓN. TODOS LOS DERECHOS RESERVADOS.</div>
+    <div class="copyright"><span data-i18n="footer_copyright" data-es="© 2026 ADIS DISEÑO & REMODELACIÓN. TODOS LOS DERECHOS RESERVADOS." data-en="© 2026 ADIS DESIGN & REMODELING. ALL RIGHTS RESERVED.">© 2026 ADIS DISEÑO & REMODELACIÓN. TODOS LOS DERECHOS RESERVADOS.</span></div>
   </footer>
 
   <!-- MOBILE BOTTOM NAV -->
   <nav class="mobile-bottom-nav">
-    <a href="index.html"><span>&#127968;</span><span>Inicio</span></a>
-    <a href="index.html#categorias"><span>&#128194;</span><span>Catálogo</span></a>
-    <a href="proyectos.html"><span>&#128444;</span><span>Proyectos</span></a>
-    <a href="contacto.html"><span>&#128222;</span><span>Contacto</span></a>
+    <a href="index.html"><span>&#127968;</span><span><span data-i18n="mobile_nav_home" data-es="Inicio" data-en="Home">Inicio</span></span></a>
+    <a href="index.html#categorias"><span>&#128194;</span><span><span data-i18n="mobile_nav_catalog" data-es="Catálogo" data-en="Catalog">Catálogo</span></span></a>
+    <a href="proyectos.html"><span>&#128444;</span><span><span data-i18n="mobile_nav_projects" data-es="Proyectos" data-en="Projects">Proyectos</span></span></a>
+    <a href="contacto.html"><span>&#128222;</span><span><span data-i18n="mobile_nav_contact" data-es="Contacto" data-en="Contact">Contacto</span></span></a>
   </nav>
 
-  <a href="https://wa.me/15208392877?text=Hola%20ADIS,%20vi%20el%20catálogo%20y%20me%20interesa%20obtener%20información%20sobre%20sus%20productos." class="whatsapp-float" target="_blank" title="Contáctanos por WhatsApp" aria-label="WhatsApp">
+  <a href="https://wa.me/15208392877?text=Hola%20ADIS,%20vi%20el%20catálogo%20y%20me%20interesa%20obtener%20información%20sobre%20sus%20productos." class="whatsapp-float" target="_blank" title="Cotiza gratis por WhatsApp" aria-label="WhatsApp">
     <svg viewBox="0 0 24 24" width="32" height="32" fill="white" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.008-.57-.008-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-    <span class="wa-tooltip">Cotiza gratis por WhatsApp</span>
+    <span class="wa-tooltip"><span data-i18n="wa_tooltip" data-es="Cotiza gratis por WhatsApp" data-en="Free quote via WhatsApp">Cotiza gratis por WhatsApp</span></span>
   </a>
 
-  <button class="chatbot-float" onclick="toggleChat()" title="Asistente Virtual">&#129302;<span class="chatbot-badge" id="chatBadge">0</span></button>
+  <button class="chatbot-float" onclick="toggleChat()" title="Asistente ADIS">&#129302;<span class="chatbot-badge" id="chatBadge">0</span></button>
   <div class="chatbot-window" id="chatbotWindow">
     <div class="chatbot-header">
-      <h4>&#129302; Asistente ADIS</h4>
+      <h4>&#129302; <span data-i18n="chatbot_title" data-es="Asistente ADIS" data-en="ADIS Assistant">Asistente ADIS</span></h4>
       <div class="chat-header-actions">
         <button class="chat-clear" onclick="clearAllChat()" title="Nueva conversación">&#128465;</button>
-        <button class="chatbot-close" onclick="toggleChat()">&#10005;</button>
+        <button class="chatbot-close" onclick="toggleChat()" title="Cerrar">&#10005;</button>
       </div>
     </div>
     <div class="chatbot-body" id="chatbotBody"></div>
