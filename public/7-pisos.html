@@ -29,6 +29,57 @@
     gtag('config', 'G-6DL4217NSC');
   </script>
 
+
+  <!-- Google Translate -->
+  <script>
+    (function() {
+      window._adisLang = 'es';
+      function setTranslateCookie(lang) {
+        var domain = window.location.hostname;
+        var value = lang === 'en' ? '/es/en' : '/es/es';
+        document.cookie = 'googtrans=' + value + '; path=/; domain=.' + domain;
+        document.cookie = 'googtrans=' + value + '; path=/; domain=' + domain;
+      }
+      function getTranslateCookie() {
+        var match = document.cookie.match(/googtrans=([^;]+)/);
+        return match ? match[1] : '/es/es';
+      }
+      function updateLangButton() {
+        var btn = document.getElementById('translateToggle');
+        if (!btn) return;
+        var cookie = getTranslateCookie();
+        var isEn = cookie.indexOf('/en') !== -1;
+        btn.textContent = isEn ? 'ES' : 'EN';
+        btn.setAttribute('aria-label', isEn ? 'Cambiar a español' : 'Switch to English');
+        btn.title = isEn ? 'Cambiar a español' : 'Switch to English';
+      }
+      window.adisToggleLanguage = function() {
+        var cookie = getTranslateCookie();
+        var toEn = cookie.indexOf('/en') === -1;
+        setTranslateCookie(toEn ? 'en' : 'es');
+        if (typeof gtag === 'function') {
+          gtag('event', 'cambiar_idioma', { idioma: toEn ? 'en' : 'es', location: 'translate_toggle' });
+        }
+        window.location.reload();
+      };
+      window.adisInitTranslate = function() {
+        updateLangButton();
+      };
+      document.addEventListener('DOMContentLoaded', window.adisInitTranslate);
+    })();
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({
+        pageLanguage: 'es',
+        includedLanguages: 'en,es',
+        layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+        autoDisplay: false
+      }, 'google_translate_element');
+    }
+  </script>
+  <script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <div id="google_translate_element" style="display:none; visibility:hidden;"></div>
+  <button id="translateToggle" class="translate-toggle" onclick="adisToggleLanguage()" aria-label="Switch to English" title="Switch to English">EN</button>
+  <!-- End Google Translate -->
 <script type="application/ld+json">{
   "@context": "https://schema.org",
   "@type": [
@@ -56,6 +107,7 @@
     "latitude": "31.3014",
     "longitude": "-110.9386"
   },
+  "hasMap": "https://maps.app.goo.gl/Q3raWUzhCj2rvhjm8",
   "openingHoursSpecification": [
     {
       "@type": "OpeningHoursSpecification",
@@ -79,7 +131,62 @@
   "sameAs": [
     "https://www.facebook.com/p/Adis-Dise%C3%B1o-Remodelaci%C3%B3n-61579849591594/"
   ],
-  "priceRange": "$"
+  "priceRange": "$$",
+  "paymentAccepted": "Efectivo, tarjeta, transferencia",
+  "currenciesAccepted": "MXN, USD",
+  "areaServed": [
+    {
+      "@type": "City",
+      "name": "Heroica Nogales",
+      "addressCountry": "MX"
+    },
+    {
+      "@type": "City",
+      "name": "Nogales",
+      "addressCountry": "US"
+    },
+    {
+      "@type": "City",
+      "name": "Rio Rico",
+      "addressCountry": "US"
+    },
+    {
+      "@type": "City",
+      "name": "Tucson",
+      "addressCountry": "US"
+    },
+    {
+      "@type": "City",
+      "name": "Phoenix",
+      "addressCountry": "US"
+    },
+    {
+      "@type": "City",
+      "name": "León",
+      "addressCountry": "MX"
+    }
+  ],
+  "contactPoint": [
+    {
+      "@type": "ContactPoint",
+      "telephone": "+52 631-120-4943",
+      "contactType": "sales",
+      "areaServed": "MX",
+      "availableLanguage": [
+        "Spanish"
+      ]
+    },
+    {
+      "@type": "ContactPoint",
+      "telephone": "+1 (520) 839-2877",
+      "contactType": "sales",
+      "areaServed": "US",
+      "availableLanguage": [
+        "Spanish",
+        "English"
+      ]
+    }
+  ]
 }</script>
 <script type="application/ld+json">{
   "@context": "https://schema.org",
@@ -1280,11 +1387,22 @@
       <h1>Pisos</h1>
       <p>Explora nuestra línea de pisos con 78 productos disponibles. Solicita tu cotización.</p>
       <div class="hero-cat-actions">
-        <a href="https://wa.me/15208392877?text=Hola%20ADIS%2C%20vi%20el%20catalogo%20de%20Pisos%20y%20quiero%20asesoria%20para%20elegir%20el%20mejor%20producto%20para%20mi%20proyecto." class="btn-primary" target="_blank">Asesoria por WhatsApp</a>
-        <a href="catalogos/pdf/catalogo_pisos.pdf" class="btn-outline" download>Descargar catalogo PDF</a>
+        <a href="https://wa.me/15208392877?text=Hola%20ADIS%2C%20vi%20el%20catalogo%20de%20Pisos%20y%20quiero%20asesoria%20para%20elegir%20el%20mejor%20producto%20para%20mi%20proyecto." class="btn-primary btn-wa" target="_blank" onclick="gtag('event','whatsapp_click',{'location':'hero_category','category':'Pisos'})">💬 Cotizar gratis por WhatsApp</a>
+        <a href="tel:+526311204943" class="btn-outline" onclick="gtag('event','contacto_click',{'tipo':'tel_mx','location':'hero_category'})">📞 Llamar</a>
+        <a href="catalogos/pdf/catalogo_pisos.pdf" class="btn-outline" download onclick="gtag('event','pdf_download',{'category':'Pisos'})">📥 Descargar catálogo PDF</a>
       </div>
     </div>
   </section>
+
+  <!-- STICKY CTA: visible en móvil para convertir tráfico directo -->
+  <div class="sticky-cta-bar visible" id="catStickyCta">
+    <a href="https://wa.me/15208392877?text=Hola%20ADIS%2C%20vi%20el%20catalogo%20de%20Pisos%20y%20quiero%20asesoria%20para%20elegir%20el%20mejor%20producto%20para%20mi%20proyecto." class="sticky-cta-wa" target="_blank" onclick="gtag('event','whatsapp_click',{'location':'sticky_bar_category','category':'Pisos'})">
+      <span>💬</span> Cotizar Pisos
+    </a>
+    <a href="tel:+526311204943" class="sticky-cta-call" onclick="gtag('event','contacto_click',{'tipo':'tel_mx','location':'sticky_bar_category'})">
+      <span>📞</span> Llamar
+    </a>
+  </div>
 
   <div class="subcat-nav">
     <a href="#71-laminado">Laminado</a>
@@ -2235,6 +2353,18 @@
     </div>
   </section>
 
+  <!-- CTA FINAL DE CATEGORÍA -->
+  <section class="section-wrap cta-final-section reveal" style="padding-top: 2rem; padding-bottom: 2rem;">
+    <div class="cta-final-box">
+      <h2>¿Listo para transformar tu espacio con Pisos?</h2>
+      <p>Solicita tu cotización gratis. Respondemos en menos de 24 h y enviamos a Nogales, Sonora y Arizona.</p>
+      <div class="hero-cat-actions" style="justify-content: center;">
+        <a href="https://wa.me/15208392877?text=Hola%20ADIS%2C%20vi%20el%20catalogo%20de%20Pisos%20y%20quiero%20asesoria%20para%20elegir%20el%20mejor%20producto%20para%20mi%20proyecto." class="btn-primary btn-wa" target="_blank" onclick="gtag('event','whatsapp_click',{'location':'cta_final_category','category':'Pisos'})">💬 Cotizar por WhatsApp</a>
+        <a href="contacto.html" class="btn-secondary">📋 Llenar formulario</a>
+      </div>
+    </div>
+  </section>
+
 
   <!-- TESTIMONIOS -->
   <section class="section-wrap reveal" style="padding-top: 2rem;">
@@ -2274,6 +2404,17 @@
           <div>
             <div style="font-size: 0.85rem; color: var(--white); font-weight: 600;">Familia López</div>
             <div style="font-size: 0.75rem; color: var(--gold);">&#11088;&#11088;&#11088;&#11088;&#11088; — Pisos SPC, Nogales</div>
+          </div>
+        </div>
+      </div>
+      <div style="background: rgba(42,42,42,0.7); backdrop-filter: blur(10px); border: 1px solid rgba(197,160,89,0.2); border-radius: 12px; padding: 1.8rem; position: relative;">
+        <div style="font-size: 3rem; color: var(--gold); opacity: 0.3; position: absolute; top: 0.5rem; right: 1rem; font-family: Georgia, serif;">"</div>
+        <p style="font-size: 0.9rem; color: rgba(245,245,245,0.8); line-height: 1.7; margin-bottom: 1rem; font-style: italic;">Excelente servicio desde Tucson. Envían materiales a Arizona y la atención por WhatsApp fue muy rápida. El cladding para mi fachada quedó impecable.</p>
+        <div style="display: flex; align-items: center; gap: 0.8rem;">
+          <div style="width: 40px; height: 40px; border-radius: 50%; background: var(--gold); display: flex; align-items: center; justify-content: center; color: var(--black); font-weight: 700; font-size: 0.9rem;">RM</div>
+          <div>
+            <div style="font-size: 0.85rem; color: var(--white); font-weight: 600;">Roberto M.</div>
+            <div style="font-size: 0.75rem; color: var(--gold);">&#11088;&#11088;&#11088;&#11088;&#11088; — Cladding, Tucson AZ</div>
           </div>
         </div>
       </div>
@@ -2495,7 +2636,7 @@ Favor de contactarme para mas detalles. ¡Gracias!`;
 
   <a href="https://wa.me/15208392877?text=Hola%20ADIS,%20vi%20el%20catálogo%20y%20me%20interesa%20obtener%20información%20sobre%20sus%20productos." class="whatsapp-float" target="_blank" title="Contáctanos por WhatsApp" aria-label="WhatsApp">
     <svg viewBox="0 0 24 24" width="32" height="32" fill="white" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.008-.57-.008-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-    <span class="wa-tooltip">¿Dudas? Escribenos</span>
+    <span class="wa-tooltip">Cotiza gratis por WhatsApp</span>
   </a>
 
   <button class="chatbot-float" onclick="toggleChat()" title="Asistente Virtual">&#129302;<span class="chatbot-badge" id="chatBadge">0</span></button>

@@ -30,7 +30,9 @@ CONTACTO = {
     'direccion': 'C. Alfonso Acosta 16 Local 3, Col. 5 de Mayo, 84000 Heroica Nogales, Sonora',
     'maps_url': 'https://maps.app.goo.gl/Q3raWUzhCj2rvhjm8',
     'horarios': 'Martes a domingo 10:00-19:00',
-    'facebook': 'https://www.facebook.com/p/Adis-Dise%C3%B1o-Remodelaci%C3%B3n-61579849591594/'
+    'facebook': 'https://www.facebook.com/p/Adis-Dise%C3%B1o-Remodelaci%C3%B3n-61579849591594/',
+    # Reemplaza por el enlace de tu perfil de Google Business Profile cuando lo tengas.
+    'google_business_url': ''
 }
 
 # ========== CONFIGURACIÓN DEL SITIO ==========
@@ -138,6 +140,61 @@ def fb_pixel_script():
     <img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id={FB_PIXEL_ID}&ev=PageView&noscript=1"/>
   </noscript>
   <!-- End Meta Pixel Code -->'''
+
+
+def translate_script():
+    """Google Translate widget invisible controlado por un botón toggle ES/EN."""
+    return '''
+  <!-- Google Translate -->
+  <script>
+    (function() {
+      window._adisLang = 'es';
+      function setTranslateCookie(lang) {
+        var domain = window.location.hostname;
+        var value = lang === 'en' ? '/es/en' : '/es/es';
+        document.cookie = 'googtrans=' + value + '; path=/; domain=.' + domain;
+        document.cookie = 'googtrans=' + value + '; path=/; domain=' + domain;
+      }
+      function getTranslateCookie() {
+        var match = document.cookie.match(/googtrans=([^;]+)/);
+        return match ? match[1] : '/es/es';
+      }
+      function updateLangButton() {
+        var btn = document.getElementById('translateToggle');
+        if (!btn) return;
+        var cookie = getTranslateCookie();
+        var isEn = cookie.indexOf('/en') !== -1;
+        btn.textContent = isEn ? 'ES' : 'EN';
+        btn.setAttribute('aria-label', isEn ? 'Cambiar a español' : 'Switch to English');
+        btn.title = isEn ? 'Cambiar a español' : 'Switch to English';
+      }
+      window.adisToggleLanguage = function() {
+        var cookie = getTranslateCookie();
+        var toEn = cookie.indexOf('/en') === -1;
+        setTranslateCookie(toEn ? 'en' : 'es');
+        if (typeof gtag === 'function') {
+          gtag('event', 'cambiar_idioma', { idioma: toEn ? 'en' : 'es', location: 'translate_toggle' });
+        }
+        window.location.reload();
+      };
+      window.adisInitTranslate = function() {
+        updateLangButton();
+      };
+      document.addEventListener('DOMContentLoaded', window.adisInitTranslate);
+    })();
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({
+        pageLanguage: 'es',
+        includedLanguages: 'en,es',
+        layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+        autoDisplay: false
+      }, 'google_translate_element');
+    }
+  </script>
+  <script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <div id="google_translate_element" style="display:none; visibility:hidden;"></div>
+  <button id="translateToggle" class="translate-toggle" onclick="adisToggleLanguage()" aria-label="Switch to English" title="Switch to English">EN</button>
+  <!-- End Google Translate -->'''
 
 
 def tracking_script():
@@ -703,6 +760,28 @@ nav.desktop-nav a:hover::after { width: 100%; }
 }
 .whatsapp-float:hover .wa-tooltip { opacity: 1; visibility: visible; transform: translateY(-50%) translateX(0); }
 
+/* BOTÓN TRADUCTOR */
+.translate-toggle {
+  position: fixed; bottom: 95px; right: 25px; z-index: 9999;
+  width: 50px; height: 50px; background: var(--gold);
+  border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 4px 20px rgba(197,160,89,0.4);
+  border: none; color: var(--black); font-weight: 800; font-size: 0.85rem;
+  cursor: pointer; transition: transform 0.3s, box-shadow 0.3s;
+  font-family: 'Montserrat', sans-serif;
+}
+.translate-toggle:hover { transform: scale(1.1); box-shadow: 0 6px 30px rgba(197,160,89,0.6); }
+body { top: 0 !important; }
+.goog-te-banner-frame { display: none !important; }
+.goog-te-balloon-frame { display: none !important; }
+.skiptranslate { display: none !important; }
+#goog-gt-tt, #goog-gt-tt * { display: none !important; }
+.goog-text-highlight { background-color: transparent !important; box-shadow: none !important; }
+
+@media (max-width: 768px) {
+  .translate-toggle { width: 44px; height: 44px; font-size: 0.75rem; bottom: 85px; right: 18px; }
+}
+
 /* MODAL COTIZAR POR WHATSAPP */
 .wa-modal {
   position: fixed; inset: 0; z-index: 10000; background: rgba(15,15,15,0.92);
@@ -758,6 +837,54 @@ nav.desktop-nav a:hover::after { width: 100%; }
 .sticky-cta-wa:hover { background: #1ebe57; transform: translateY(-2px); }
 .sticky-cta-pdf { background: rgba(197,160,89,0.15); color: var(--gold-light); border: 1px solid rgba(197,160,89,0.3); }
 .sticky-cta-pdf:hover { background: rgba(197,160,89,0.25); }
+
+/* CTA FINAL DE CATEGORÍA */
+.cta-final-section { padding: 2rem; }
+.cta-final-box {
+  max-width: 900px; margin: 0 auto;
+  background: linear-gradient(145deg, rgba(26,26,26,0.95) 0%, rgba(15,15,15,0.95) 100%);
+  border: 1px solid rgba(197,160,89,0.2); border-radius: 18px;
+  padding: 2.5rem 2rem; text-align: center;
+}
+.cta-final-box h2 { font-family: 'Playfair Display', serif; color: var(--gold-light); font-size: 1.7rem; margin-bottom: 0.8rem; }
+.cta-final-box p { color: rgba(245,245,245,0.75); margin-bottom: 1.5rem; }
+
+/* PRECIOS ORIENTATIVOS */
+.prices-section { background: linear-gradient(180deg, rgba(15,15,15,0.95) 0%, rgba(26,26,26,0.9) 100%); }
+.prices-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.2rem;
+  max-width: 1100px; margin: 0 auto 2rem;
+}
+.price-card {
+  background: rgba(42,42,42,0.6); border: 1px solid rgba(197,160,89,0.12);
+  border-radius: 12px; padding: 1.5rem 1rem; text-align: center; transition: all 0.3s;
+}
+.price-card:hover { border-color: var(--gold); transform: translateY(-3px); }
+.price-card h4 { color: var(--gold-light); font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.6rem; }
+.price-range { font-size: 1.3rem; font-weight: 800; color: var(--white); margin-bottom: 0.5rem; }
+.price-range span { font-size: 0.75rem; font-weight: 600; color: var(--gold); display: block; }
+.price-card p { font-size: 0.8rem; color: rgba(245,245,245,0.6); }
+
+/* VIDEOS HOME */
+.video-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; max-width: 1100px; margin: 0 auto; }
+.video-card { background: rgba(42,42,42,0.5); border-radius: 12px; overflow: hidden; border: 1px solid rgba(197,160,89,0.15); }
+.video-card video { width: 100%; display: block; aspect-ratio: 16/9; object-fit: cover; }
+.video-card-caption { padding: 0.8rem; text-align: center; font-size: 0.8rem; color: var(--gold-light); font-weight: 600; }
+
+/* ARIZONA SECTION */
+.arizona-section { background: linear-gradient(180deg, rgba(26,26,26,0.95) 0%, rgba(15,15,26,0.95) 100%); }
+.arizonaz-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1.2rem;
+  max-width: 1000px; margin: 0 auto;
+}
+.arizona-card {
+  background: rgba(42,42,42,0.5); border: 1px solid rgba(197,160,89,0.12);
+  border-radius: 12px; padding: 1.5rem 1rem; text-align: center; transition: all 0.3s;
+}
+.arizona-card:hover { border-color: var(--gold); transform: translateY(-4px); }
+.arizona-card span { font-size: 2rem; display: block; margin-bottom: 0.5rem; }
+.arizona-card h3 { color: var(--gold-light); font-size: 1rem; margin-bottom: 0.4rem; }
+.arizona-card p { font-size: 0.8rem; color: rgba(245,245,245,0.6); }
 
 /* SECCIONES GENERALES */
 .section-wrap {
@@ -2275,8 +2402,10 @@ footer {
   .spotlight-box { padding-top: 10vh; }
   .desktop-nav { display: none; }
   .menu-btn { display: block; }
-  .hero-home { min-height: auto; padding: 5rem 1rem 2rem; }
-  .hero-home h1 { font-size: clamp(1.8rem, 8vw, 2.4rem); }
+  .hero-home { min-height: auto; padding: 4.5rem 1rem 1.5rem; }
+  .hero-home h1 { font-size: clamp(1.7rem, 7.5vw, 2.2rem); }
+  .hero-content { padding: 1rem 0; }
+  .hero-content img { height: 80px; margin-bottom: 1rem; }
   .hero-content img { height: 90px; margin-bottom: 1.2rem; }
   .hero-badge { font-size: 0.6rem; padding: 0.4rem 1rem; margin-bottom: 1rem; }
   .hero-home p { font-size: 0.95rem; margin-bottom: 1.5rem; }
@@ -2319,10 +2448,12 @@ footer {
   .filter-chip { padding: 0.5rem 0.8rem; font-size: 0.75rem; }
   .logo img { height: 45px; }
   .mobile-bottom-nav { padding: 0.7rem 0 0.9rem; }
-  .mobile-bottom-nav a { font-size: 0.7rem; gap: 0.3rem; min-height: 44px; }
+  .mobile-bottom-nav a { font-size: 0.7rem; gap: 0.3rem; min-height: 48px; padding: 0.4rem 0; }
   .mobile-bottom-nav a span:first-child { font-size: 1.3rem; }
-  body { padding-bottom: 76px; }
+  body { padding-bottom: 130px; }
   .hero-actions { flex-direction: column; align-items: center; }
+  .translate-toggle { bottom: 140px; }
+  .whatsapp-float { bottom: 200px; }
   .hero-actions .btn-primary, .hero-actions .btn-secondary { width: 100%; max-width: 320px; }
   .contact-layout { grid-template-columns: 1fr; gap: 2rem; }
   .contact-form-panel, .contact-info-panel { padding: 1.5rem; }
@@ -2497,7 +2628,7 @@ PARTICLES_JS = '''(function() {
   if (!canvas) return;
   const ctx = canvas.getContext('2d');
   let w, h, particles = [];
-  const COUNT = 70;
+  const COUNT = window.innerWidth < 768 ? 30 : 70;
   const CONNECT_DIST = 140;
   const COLOR = 'rgba(197, 160, 89, ';
   function resize() {
@@ -2586,7 +2717,7 @@ def json_ld(data):
 
 
 def organization_schema():
-    """Schema.org de Organization + LocalBusiness para ADIS."""
+    """Schema.org de Organization + LocalBusiness para ADIS. Refuerza SEO local MX/AZ."""
     return json_ld({
         "@context": "https://schema.org",
         "@type": ["Organization", "LocalBusiness"],
@@ -2611,6 +2742,7 @@ def organization_schema():
             "latitude": "31.3014",
             "longitude": "-110.9386"
         },
+        "hasMap": CONTACTO.get("maps_url", ""),
         "openingHoursSpecification": [
             {
                 "@type": "OpeningHoursSpecification",
@@ -2628,7 +2760,33 @@ def organization_schema():
         "sameAs": [
             CONTACTO["facebook"]
         ],
-        "priceRange": "$"
+        "priceRange": "$$",
+        "paymentAccepted": "Efectivo, tarjeta, transferencia",
+        "currenciesAccepted": "MXN, USD",
+        "areaServed": [
+            {"@type": "City", "name": "Heroica Nogales", "addressCountry": "MX"},
+            {"@type": "City", "name": "Nogales", "addressCountry": "US"},
+            {"@type": "City", "name": "Rio Rico", "addressCountry": "US"},
+            {"@type": "City", "name": "Tucson", "addressCountry": "US"},
+            {"@type": "City", "name": "Phoenix", "addressCountry": "US"},
+            {"@type": "City", "name": "León", "addressCountry": "MX"}
+        ],
+        "contactPoint": [
+            {
+                "@type": "ContactPoint",
+                "telephone": CONTACTO["tel_mx"],
+                "contactType": "sales",
+                "areaServed": "MX",
+                "availableLanguage": ["Spanish"]
+            },
+            {
+                "@type": "ContactPoint",
+                "telephone": CONTACTO["tel_usa"],
+                "contactType": "sales",
+                "areaServed": "US",
+                "availableLanguage": ["Spanish", "English"]
+            }
+        ]
     })
 
 
@@ -4383,7 +4541,7 @@ def generate_footer():
 
   <a href="https://wa.me/{CONTACTO['whatsapp']}?text={CONTACTO["whatsapp_msg"].replace(' ', '%20')}" class="whatsapp-float" target="_blank" title="Contáctanos por WhatsApp" aria-label="WhatsApp">
     <svg viewBox="0 0 24 24" width="32" height="32" fill="white" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.008-.57-.008-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-    <span class="wa-tooltip">¿Dudas? Escribenos</span>
+    <span class="wa-tooltip">Cotiza gratis por WhatsApp</span>
   </a>
 
   <button class="chatbot-float" onclick="toggleChat()" title="Asistente Virtual">&#129302;<span class="chatbot-badge" id="chatBadge">0</span></button>
@@ -4403,8 +4561,8 @@ def generate_footer():
 
 
 def generate_index(categories):
-    meta_desc = "Recubrimientos en Nogales, Sonora: placas PVC, lambrín WPC, paneles 3D, plafón, pisos, zacate y cladding. Cotiza gratis con ADIS Diseño & Remodelación. Enviamos a Nogales, Sonora y Arizona."
-    meta_keywords = "recubrimientos Nogales, paneles PVC Sonora, remodelación Nogales Sonora, lambrín WPC Nogales, plafón PVC, pisos Nogales, zacate sintético, cladding, ADIS"
+    meta_desc = "Recubrimientos en Nogales, Sonora y Arizona: placas PVC, lambrín WPC, paneles 3D, plafón, pisos, zacate y cladding. Cotiza gratis con ADIS Diseño & Remodelación. Enviamos a Nogales, Tucson, Phoenix y Rio Rico."
+    meta_keywords = "recubrimientos Nogales, paneles PVC Sonora, remodelación Nogales Sonora, wall panels Nogales AZ, remodeling materials Arizona, lambrín WPC Nogales, plafón PVC, pisos Nogales, zacate sintético, cladding, ADIS"
 
     STAR_CATEGORIES = {'Lambrin WPC', 'Placas PVC'}
     
@@ -4511,29 +4669,69 @@ def generate_index(categories):
 
     pdf_url = "catalogos/pdf/catalogo_premium.pdf"
 
+    # Videos destacados para home
+    media_dir = OUTPUT_DIR / 'media'
+    try:
+        home_videos = sorted([f for f in os.listdir(media_dir) if f.lower().endswith(('.mp4', '.mov', '.webm'))])[:3]
+    except (OSError, PermissionError):
+        home_videos = []
+    videos_home_html = ''
+    if home_videos:
+        vcards = ''
+        for vid in home_videos:
+            name = Path(vid).stem.replace('-', ' ').replace('_', ' ').title()
+            vcards += f'''      <div class="video-card reveal">
+        <video class="auto-video" muted loop playsinline poster="media/proyecto-01.jpg">
+          <source src="media/{vid}" type="video/mp4">
+        </video>
+        <div class="video-card-caption">{name}</div>
+      </div>
+'''
+        videos_home_html = f'''  <!-- VIDEOS DE PROYECTOS -->
+  <section class="section-wrap videos-home-section reveal" id="videos">
+    <div class="section-header">
+      <h2>🎬 Proyectos en video</h2>
+      <div class="divider"></div>
+      <p>Remodelaciones reales que muestran el antes y después de nuestros materiales.</p>
+    </div>
+    <div class="video-grid">
+{vcards}    </div>
+    <div style="text-align: center; margin-top: 2rem;">
+      <a href="proyectos.html" class="btn-outline">Ver más proyectos</a>
+    </div>
+  </section>
+'''
+
     html = f'''<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
   <link rel="icon" type="image/png" href="LOGO ADIS.png">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Recubrimientos en Nogales, Sonora | ADIS Diseño & Remodelación</title>
+  <title>Recubrimientos en Nogales, Sonora · Arizona | ADIS Diseño & Remodelación</title>
   <meta name="description" content="{meta_desc}">
   <meta name="keywords" content="{meta_keywords}">
-  <meta property="og:title" content="Recubrimientos en Nogales, Sonora | ADIS Diseño & Remodelación">
+  <meta name="geo.region" content="MX-SON">
+  <meta name="geo.placename" content="Heroica Nogales, Sonora, México">
+  <meta name="geo.position" content="31.3014;-110.9386">
+  <meta name="ICBM" content="31.3014, -110.9386">
+  <meta property="og:title" content="Recubrimientos en Nogales, Sonora · Arizona | ADIS Diseño & Remodelación">
   <meta property="og:description" content="{meta_desc}">
   <meta property="og:image" content="{SITE_URL}LOGO%20ADIS.png">
   <meta property="og:url" content="{SITE_URL}">
   <meta property="og:type" content="website">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Recubrimientos en Nogales, Sonora | ADIS Diseño & Remodelación">
+  <meta name="twitter:title" content="Recubrimientos en Nogales, Sonora · Arizona | ADIS Diseño & Remodelación">
   <meta name="twitter:description" content="{meta_desc}">
   <meta name="twitter:image" content="{SITE_URL}LOGO%20ADIS.png">
   <link rel="canonical" href="{SITE_URL}">
+  <link rel="alternate" hreflang="es" href="{SITE_URL}">
+  <link rel="alternate" hreflang="en" href="{SITE_URL}?hl=en">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 {ga_script()}
 {fb_pixel_script()}
+{translate_script()}
 {organization_schema()}
 {website_schema()}
 </head>
@@ -4611,6 +4809,28 @@ def generate_index(categories):
     </div>
   </section>
 
+  <!-- PRECIOS ORIENTATIVOS -->
+  <section class="section-wrap prices-section reveal" id="precios">
+    <div class="section-header">
+      <h2>Precios orientativos</h2>
+      <div class="divider"></div>
+      <p>Conoce rangos aproximados por categoría. El precio final depende del modelo, acabado y metros de tu proyecto.</p>
+    </div>
+    <div class="prices-grid">
+      <div class="price-card"><h4>Placas PVC</h4><div class="price-range">$850 – $1,400 <span>MXN/pz</span></div><p>Tipo madera, mármol y espejo.</p></div>
+      <div class="price-card"><h4>Lambrín WPC</h4><div class="price-range">$1,200 – $2,100 <span>MXN/caja</span></div><p>Interior y exterior, acabado madera real.</p></div>
+      <div class="price-card"><h4>Revestimiento Flexible</h4><div class="price-range">$650 – $1,100 <span>MXN/pz</span></div><p>Concreto, piedra y madera flexible.</p></div>
+      <div class="price-card"><h4>Plafón PVC</h4><div class="price-range">$180 – $350 <span>MXN/pz</span></div><p>Laminado y wood style.</p></div>
+      <div class="price-card"><h4>Paneles 3D</h4><div class="price-range">$280 – $550 <span>MXN/pz</span></div><p>Texturas decorativas en relieve.</p></div>
+      <div class="price-card"><h4>Pisos</h4><div class="price-range">$900 – $2,500 <span>MXN/caja</span></div><p>Laminado, WPC, SPC y deck.</p></div>
+      <div class="price-card"><h4>Zacate Sintético</h4><div class="price-range">$220 – $480 <span>MXN/m²</span></div><p>Pasto artificial para exteriores.</p></div>
+      <div class="price-card"><h4>Cladding</h4><div class="price-range">$550 – $1,050 <span>MXN/pz</span></div><p>Placas tipo piedra para fachadas.</p></div>
+    </div>
+    <div style="text-align: center; margin-top: 2rem;">
+      <a href="{whatsapp_url(CONTACTO['whatsapp'], 'Hola ADIS, vi sus precios orientativos y quiero una cotizacion personalizada.')}" class="btn-primary btn-wa" target="_blank" onclick="gtag('event','whatsapp_click',{{'location':'precios_home'}})">💬 Pedir cotización exacta</a>
+    </div>
+  </section>
+
   <!-- NOSOTROS -->
   <section class="section-wrap-alt reveal" id="nosotros">
     <div class="section-header">
@@ -4677,6 +4897,24 @@ def generate_index(categories):
     </div>
   </section>
 
+  <!-- SERVICIO EN ARIZONA -->
+  <section class="section-wrap arizona-section reveal" id="arizona">
+    <div class="section-header">
+      <h2>Servimos en Arizona</h2>
+      <div class="divider"></div>
+      <p>Enviamos materiales de remodelación a Nogales AZ, Rio Rico, Tucson y Phoenix. Atención en español y cotizaciones en USD/MXN.</p>
+    </div>
+    <div class="arizonaz-grid">
+      <div class="arizona-card"><span>🇺🇸</span><h3>Nogales, AZ</h3><p>Showroom fronterizo y entregas coordinadas.</p></div>
+      <div class="arizona-card"><span>🇺🇸</span><h3>Rio Rico, AZ</h3><p>Envíos directos para proyectos residenciales.</p></div>
+      <div class="arizona-card"><span>🇺🇸</span><h3>Tucson, AZ</h3><p>Materiales para remodelación de interiores y exteriores.</p></div>
+      <div class="arizona-card"><span>🇺🇸</span><h3>Phoenix, AZ</h3><p>Cotizaciones y envíos para proyectos grandes.</p></div>
+    </div>
+    <div style="text-align: center; margin-top: 2rem;">
+      <a href="{whatsapp_url(CONTACTO['whatsapp'], 'Hola ADIS, estoy en Arizona y quiero cotizar materiales de remodelacion.')}" class="btn-primary btn-wa" target="_blank" onclick="gtag('event','whatsapp_click',{{'location':'arizona_home'}})">💬 Cotizar desde Arizona</a>
+    </div>
+  </section>
+
   <!-- CATÁLOGO -->
   <section class="section-wrap reveal" id="categorias">
     <div class="section-header">
@@ -4708,6 +4946,8 @@ def generate_index(categories):
 {downloads_html}    </div>
   </section>
 
+{videos_home_html}
+
 {generate_testimonios()}
 
 {modal_cotizar_html()}
@@ -4721,30 +4961,37 @@ def generate_index(categories):
 
 
 def generate_contacto():
-    meta_desc = "Cotiza recubrimientos en Nogales, Sonora. Contacta a ADIS Diseño & Remodelación por WhatsApp, teléfono o email. Placas PVC, lambrín WPC, paneles 3D, plafón, pisos y más."
+    meta_desc = "Cotiza recubrimientos en Nogales, Sonora y Arizona. Contacta a ADIS Diseño & Remodelación por WhatsApp, teléfono o email. Placas PVC, lambrín WPC, paneles 3D, plafón, pisos y más. Enviamos a Tucson, Phoenix y Rio Rico."
     html = f'''<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
   <link rel="icon" type="image/png" href="LOGO ADIS.png">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cotizar Recubrimientos Nogales Sonora | Contacto ADIS</title>
+  <title>Cotizar Recubrimientos Nogales Sonora · Arizona | Contacto ADIS</title>
   <meta name="description" content="{meta_desc}">
-  <meta name="keywords" content="cotizar recubrimientos Nogales, contacto ADIS, paneles PVC Sonora, remodelación Nogales Sonora, WhatsApp ADIS">
-  <meta property="og:title" content="Cotizar Recubrimientos Nogales Sonora | Contacto ADIS">
+  <meta name="keywords" content="cotizar recubrimientos Nogales, contacto ADIS, paneles PVC Sonora, wall panels Nogales AZ, remodeling materials Arizona, WhatsApp ADIS">
+  <meta name="geo.region" content="MX-SON">
+  <meta name="geo.placename" content="Heroica Nogales, Sonora, México">
+  <meta name="geo.position" content="31.3014;-110.9386">
+  <meta name="ICBM" content="31.3014, -110.9386">
+  <meta property="og:title" content="Cotizar Recubrimientos Nogales Sonora · Arizona | Contacto ADIS">
   <meta property="og:description" content="{meta_desc}">
   <meta property="og:image" content="{SITE_URL}LOGO%20ADIS.png">
   <meta property="og:url" content="{SITE_URL}contacto.html">
   <meta property="og:type" content="website">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Cotizar Recubrimientos Nogales Sonora | Contacto ADIS">
+  <meta name="twitter:title" content="Cotizar Recubrimientos Nogales Sonora · Arizona | Contacto ADIS">
   <meta name="twitter:description" content="{meta_desc}">
   <meta name="twitter:image" content="{SITE_URL}LOGO%20ADIS.png">
   <link rel="canonical" href="{SITE_URL}contacto.html">
+  <link rel="alternate" hreflang="es" href="{SITE_URL}contacto.html">
+  <link rel="alternate" hreflang="en" href="{SITE_URL}contacto.html?hl=en">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 {ga_script()}
 {fb_pixel_script()}
+{translate_script()}
 {organization_schema()}
 {breadcrumb_schema([('Inicio', SITE_URL), ('Contacto', f'{SITE_URL}contacto.html')])}
 </head>
@@ -5151,6 +5398,7 @@ def generate_category_page(cat, categories):
   <link rel="stylesheet" href="style.css">
 {ga_script()}
 {fb_pixel_script()}
+{translate_script()}
 {organization_schema()}
 {breadcrumb_html}
 {product_schemas_html}</head>
@@ -5165,11 +5413,22 @@ def generate_category_page(cat, categories):
       <h1>{cat["name"]}</h1>
       <p>Explora nuestra línea de {cat["name"].lower()} con {cat["total_products"]} productos disponibles. Solicita tu cotización.</p>
       <div class="hero-cat-actions">
-        <a href="{wa_hero_url}" class="btn-primary" target="_blank">Asesoria por WhatsApp</a>
-        <a href="{pdf_url}" class="btn-outline" download>Descargar catalogo PDF</a>
+        <a href="{wa_hero_url}" class="btn-primary btn-wa" target="_blank" onclick="gtag('event','whatsapp_click',{{'location':'hero_category','category':'{cat['name']}'}})">💬 Cotizar gratis por WhatsApp</a>
+        <a href="tel:{CONTACTO['tel_mx_link']}" class="btn-outline" onclick="gtag('event','contacto_click',{{'tipo':'tel_mx','location':'hero_category'}})">📞 Llamar</a>
+        <a href="{pdf_url}" class="btn-outline" download onclick="gtag('event','pdf_download',{{'category':'{cat['name']}'}})">📥 Descargar catálogo PDF</a>
       </div>
     </div>
   </section>
+
+  <!-- STICKY CTA: visible en móvil para convertir tráfico directo -->
+  <div class="sticky-cta-bar visible" id="catStickyCta">
+    <a href="{wa_hero_url}" class="sticky-cta-wa" target="_blank" onclick="gtag('event','whatsapp_click',{{'location':'sticky_bar_category','category':'{cat['name']}'}})">
+      <span>💬</span> Cotizar {cat['name']}
+    </a>
+    <a href="tel:{CONTACTO['tel_mx_link']}" class="sticky-cta-call" onclick="gtag('event','contacto_click',{{'tipo':'tel_mx','location':'sticky_bar_category'}})">
+      <span>📞</span> Llamar
+    </a>
+  </div>
 
 {subcat_nav_html}{real_sheets_html}
 {category_filters_html(cat)}
@@ -5179,6 +5438,18 @@ def generate_category_page(cat, categories):
     <div style="text-align: center;">
       <a href="index.html" class="btn-back">← Volver al Inicio</a>
       <a href="contacto.html" class="btn-outline">Contactar</a>
+    </div>
+  </section>
+
+  <!-- CTA FINAL DE CATEGORÍA -->
+  <section class="section-wrap cta-final-section reveal" style="padding-top: 2rem; padding-bottom: 2rem;">
+    <div class="cta-final-box">
+      <h2>¿Listo para transformar tu espacio con {cat['name']}?</h2>
+      <p>Solicita tu cotización gratis. Respondemos en menos de 24 h y enviamos a Nogales, Sonora y Arizona.</p>
+      <div class="hero-cat-actions" style="justify-content: center;">
+        <a href="{wa_hero_url}" class="btn-primary btn-wa" target="_blank" onclick="gtag('event','whatsapp_click',{{'location':'cta_final_category','category':'{cat['name']}'}})">💬 Cotizar por WhatsApp</a>
+        <a href="contacto.html" class="btn-secondary">📋 Llenar formulario</a>
+      </div>
     </div>
   </section>
 
@@ -5559,6 +5830,17 @@ def generate_testimonios():
           </div>
         </div>
       </div>
+      <div style="background: rgba(42,42,42,0.7); backdrop-filter: blur(10px); border: 1px solid rgba(197,160,89,0.2); border-radius: 12px; padding: 1.8rem; position: relative;">
+        <div style="font-size: 3rem; color: var(--gold); opacity: 0.3; position: absolute; top: 0.5rem; right: 1rem; font-family: Georgia, serif;">"</div>
+        <p style="font-size: 0.9rem; color: rgba(245,245,245,0.8); line-height: 1.7; margin-bottom: 1rem; font-style: italic;">Excelente servicio desde Tucson. Envían materiales a Arizona y la atención por WhatsApp fue muy rápida. El cladding para mi fachada quedó impecable.</p>
+        <div style="display: flex; align-items: center; gap: 0.8rem;">
+          <div style="width: 40px; height: 40px; border-radius: 50%; background: var(--gold); display: flex; align-items: center; justify-content: center; color: var(--black); font-weight: 700; font-size: 0.9rem;">RM</div>
+          <div>
+            <div style="font-size: 0.85rem; color: var(--white); font-weight: 600;">Roberto M.</div>
+            <div style="font-size: 0.75rem; color: var(--gold);">&#11088;&#11088;&#11088;&#11088;&#11088; — Cladding, Tucson AZ</div>
+          </div>
+        </div>
+      </div>
     </div>
     <div style="max-width: 600px; margin: 0 auto; padding: 0 1rem;">
       <form id="testimonioForm" onsubmit="enviarTestimonio(event)" style="display: flex; flex-direction: column; gap: 1rem;">
@@ -5778,6 +6060,7 @@ def generate_sabias_que():
   <link rel="stylesheet" href="style.css">
 {ga_script()}
 {fb_pixel_script()}
+{translate_script()}
 {organization_schema()}
 {breadcrumb_schema([('Inicio', SITE_URL), ('¿Sabías que?', f'{SITE_URL}sabias-que.html'), (cat_name, page_url)])}
 {faq_schema_html}</head>
@@ -5871,6 +6154,7 @@ function sqToggle(el) {{
   <link rel="stylesheet" href="style.css">
 {ga_script()}
 {fb_pixel_script()}
+{translate_script()}
 {organization_schema()}
 {breadcrumb_schema([('Inicio', SITE_URL), ('¿Sabías que?', f'{SITE_URL}sabias-que.html')])}
 </head>
@@ -6041,6 +6325,7 @@ def generate_proyectos():
   <link rel="stylesheet" href="style.css">
 {ga_script()}
 {fb_pixel_script()}
+{translate_script()}
 {organization_schema()}
 {breadcrumb_schema([('Inicio', SITE_URL), ('Proyectos', f'{SITE_URL}proyectos.html')])}
   <style>
@@ -6066,8 +6351,22 @@ def generate_proyectos():
 
   <section class="hero-cat">
     <h1>Proyectos Reales</h1>
-    <p>Transformaciones que hablan por sí solas. Conoce nuestro trabajo.</p>
+    <p>Transformaciones que hablan por sí solas. Conoce nuestro trabajo en Nogales, Sonora y Arizona.</p>
+    <div class="hero-cat-actions" style="justify-content: center; margin-top: 1.5rem;">
+      <a href="{whatsapp_url(CONTACTO['whatsapp'], 'Hola ADIS, vi sus proyectos y quiero cotizar una remodelacion.')}" class="btn-primary btn-wa" target="_blank" onclick="gtag('event','whatsapp_click',{{'location':'hero_proyectos'}})">💬 Cotizar mi proyecto</a>
+      <a href="contacto.html" class="btn-secondary">📋 Enviar formulario</a>
+    </div>
   </section>
+
+  <!-- STICKY CTA: visible en móvil -->
+  <div class="sticky-cta-bar visible" id="proyectosStickyCta">
+    <a href="{whatsapp_url(CONTACTO['whatsapp'], 'Hola ADIS, vi sus proyectos y quiero cotizar una remodelacion.')}" class="sticky-cta-wa" target="_blank" onclick="gtag('event','whatsapp_click',{{'location':'sticky_bar_proyectos'}})">
+      <span>💬</span> Cotizar proyecto
+    </a>
+    <a href="tel:{CONTACTO['tel_mx_link']}" class="sticky-cta-call" onclick="gtag('event','contacto_click',{{'tipo':'tel_mx','location':'sticky_bar_proyectos'}})">
+      <span>📞</span> Llamar
+    </a>
+  </div>
 
 {ba_sections}{gallery_section}{video_section}
   <section class="section-wrap" style="padding-top: 1rem;">

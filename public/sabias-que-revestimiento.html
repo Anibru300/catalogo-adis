@@ -28,6 +28,57 @@
     gtag('config', 'G-6DL4217NSC');
   </script>
 
+
+  <!-- Google Translate -->
+  <script>
+    (function() {
+      window._adisLang = 'es';
+      function setTranslateCookie(lang) {
+        var domain = window.location.hostname;
+        var value = lang === 'en' ? '/es/en' : '/es/es';
+        document.cookie = 'googtrans=' + value + '; path=/; domain=.' + domain;
+        document.cookie = 'googtrans=' + value + '; path=/; domain=' + domain;
+      }
+      function getTranslateCookie() {
+        var match = document.cookie.match(/googtrans=([^;]+)/);
+        return match ? match[1] : '/es/es';
+      }
+      function updateLangButton() {
+        var btn = document.getElementById('translateToggle');
+        if (!btn) return;
+        var cookie = getTranslateCookie();
+        var isEn = cookie.indexOf('/en') !== -1;
+        btn.textContent = isEn ? 'ES' : 'EN';
+        btn.setAttribute('aria-label', isEn ? 'Cambiar a español' : 'Switch to English');
+        btn.title = isEn ? 'Cambiar a español' : 'Switch to English';
+      }
+      window.adisToggleLanguage = function() {
+        var cookie = getTranslateCookie();
+        var toEn = cookie.indexOf('/en') === -1;
+        setTranslateCookie(toEn ? 'en' : 'es');
+        if (typeof gtag === 'function') {
+          gtag('event', 'cambiar_idioma', { idioma: toEn ? 'en' : 'es', location: 'translate_toggle' });
+        }
+        window.location.reload();
+      };
+      window.adisInitTranslate = function() {
+        updateLangButton();
+      };
+      document.addEventListener('DOMContentLoaded', window.adisInitTranslate);
+    })();
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({
+        pageLanguage: 'es',
+        includedLanguages: 'en,es',
+        layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+        autoDisplay: false
+      }, 'google_translate_element');
+    }
+  </script>
+  <script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <div id="google_translate_element" style="display:none; visibility:hidden;"></div>
+  <button id="translateToggle" class="translate-toggle" onclick="adisToggleLanguage()" aria-label="Switch to English" title="Switch to English">EN</button>
+  <!-- End Google Translate -->
 <script type="application/ld+json">{
   "@context": "https://schema.org",
   "@type": [
@@ -55,6 +106,7 @@
     "latitude": "31.3014",
     "longitude": "-110.9386"
   },
+  "hasMap": "https://maps.app.goo.gl/Q3raWUzhCj2rvhjm8",
   "openingHoursSpecification": [
     {
       "@type": "OpeningHoursSpecification",
@@ -78,7 +130,62 @@
   "sameAs": [
     "https://www.facebook.com/p/Adis-Dise%C3%B1o-Remodelaci%C3%B3n-61579849591594/"
   ],
-  "priceRange": "$"
+  "priceRange": "$$",
+  "paymentAccepted": "Efectivo, tarjeta, transferencia",
+  "currenciesAccepted": "MXN, USD",
+  "areaServed": [
+    {
+      "@type": "City",
+      "name": "Heroica Nogales",
+      "addressCountry": "MX"
+    },
+    {
+      "@type": "City",
+      "name": "Nogales",
+      "addressCountry": "US"
+    },
+    {
+      "@type": "City",
+      "name": "Rio Rico",
+      "addressCountry": "US"
+    },
+    {
+      "@type": "City",
+      "name": "Tucson",
+      "addressCountry": "US"
+    },
+    {
+      "@type": "City",
+      "name": "Phoenix",
+      "addressCountry": "US"
+    },
+    {
+      "@type": "City",
+      "name": "León",
+      "addressCountry": "MX"
+    }
+  ],
+  "contactPoint": [
+    {
+      "@type": "ContactPoint",
+      "telephone": "+52 631-120-4943",
+      "contactType": "sales",
+      "areaServed": "MX",
+      "availableLanguage": [
+        "Spanish"
+      ]
+    },
+    {
+      "@type": "ContactPoint",
+      "telephone": "+1 (520) 839-2877",
+      "contactType": "sales",
+      "areaServed": "US",
+      "availableLanguage": [
+        "Spanish",
+        "English"
+      ]
+    }
+  ]
 }</script>
 <script type="application/ld+json">{
   "@context": "https://schema.org",
@@ -343,7 +450,7 @@
 
   <a href="https://wa.me/15208392877?text=Hola%20ADIS,%20vi%20el%20catálogo%20y%20me%20interesa%20obtener%20información%20sobre%20sus%20productos." class="whatsapp-float" target="_blank" title="Contáctanos por WhatsApp" aria-label="WhatsApp">
     <svg viewBox="0 0 24 24" width="32" height="32" fill="white" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.008-.57-.008-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-    <span class="wa-tooltip">¿Dudas? Escribenos</span>
+    <span class="wa-tooltip">Cotiza gratis por WhatsApp</span>
   </a>
 
   <button class="chatbot-float" onclick="toggleChat()" title="Asistente Virtual">&#129302;<span class="chatbot-badge" id="chatBadge">0</span></button>
