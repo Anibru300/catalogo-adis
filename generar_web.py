@@ -55,7 +55,7 @@ TRANSLATIONS = {
 
     # Hero home
     'hero_badge': {'es': 'Catálogo 2025 — 2026', 'en': '2025 — 2026 Catalog'},
-    'hero_title': {'es': 'Recubrimientos PVC, WPC y paneles 3D en <em>Nogales, Sonora</em>', 'en': 'PVC, WPC & 3D Wall Panels in <em>Nogales, Sonora</em>'},
+    'hero_title': {'es': 'Recubrimientos PVC, WPC y paneles 3D en <em>Tucson, Arizona</em>, Nogales Sonora y Nogales Arizona', 'en': 'PVC, WPC & 3D Wall Panels in <em>Tucson, Arizona</em>, Nogales Sonora & Nogales Arizona'},
     'hero_subtitle': {'es': 'Transforma tu hogar o negocio con placas PVC, lambrín WPC, plafón, pisos, zacate sintético y cladding. Enviamos a Nogales, Sonora y Arizona. Cotiza gratis hoy.', 'en': 'Transform your home or business with PVC panels, WPC slats, PVC ceilings, flooring, synthetic grass and cladding. We ship to Nogales, Sonora & Arizona. Get a free quote today.'},
     'cta_quote_whatsapp': {'es': 'Cotizar gratis por WhatsApp', 'en': 'Free quote via WhatsApp'},
     'cta_view_catalog': {'es': 'Ver catálogo', 'en': 'View catalog'},
