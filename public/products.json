@@ -2752,42 +2752,6 @@
         }
       ]
     },
-    "vigas": {
-      "name": "VIGAS PVCWPCPU",
-      "slug": "vigas",
-      "curiosos": [
-        {
-          "title": "De la madera de verdad a la \"madera eterna\"",
-          "content": "Las vigas decorativas de PVC, WPC y PU surgieron como respuesta a un problema milenario: las vigas de madera natural son bellas pero exigen un tributo constante. Termitas, humedad, deformación, pudrición, pintura descascarada — cada año, millones de dólares se invierten en mantener vigas de madera que, tarde o temprano, sucumben. En la década de 2000, la tecnología de compuestos de polímero alcanzó la madurez suficiente para replicar no solo la apariencia, sino la textura táctil de la madera real. Hoy, una viga WPC o PU puede confundir incluso a un carpintero experimentado... hasta que le dicen que lleva 10 años instalada sin una sola gota de barniz."
-        },
-        {
-          "title": "La viga de 2.81 kg que soporta el peso de la tradición",
-          "content": "La viga PU de 2,900 x 152 x 75 mm pesa solo 2.81 kilogramos. Para ponerlo en perspectiva: una viga de madera real de las mismas dimensiones pesaría aproximadamente 12-15 kg. Eso significa que puedes levantar una viga PU con un solo dedo, mientras que la de madera requiere dos personas. Este 80% de reducción de peso revolucionó la decoración de techos, permitiendo instalar vigas decorativas en estructuras que nunca podrían soportar el peso de la madera natural."
-        }
-      ],
-      "faqs": [
-        {
-          "q": "¿Las vigas son estructurales? ¿Pueden sostener mi techo?",
-          "a": "No. Las vigas WPC, PU y PVC son estrictamente decorativas. No están diseñadas para soportar cargas estructurales, peso de techos, ni para usarse como elemento de construcción portante. Se fijan al techo existente (los, tablaroco, plafón) con tornillos o adhesivo, pero su función es puramente estética. Si necesitas vigas estructurales, debes consultar con un ingeniero civil."
-        },
-        {
-          "q": "¿Cuál es la diferencia entre WPC, PU y PVC?",
-          "a": "| Material | Qué es | Mejor para | |-|--|| | WPC | Wood Plastic Composite. Mezcla de polímero con fibra de madera. | Perfil más realista, garantía más larga (15 años) | | PU | Poliuretano. Material espumado de ultra bajo peso. | Techos frágiles donde el peso es crítico | | PVC | Policloruro de vinilo. Polímero rígido. | Mejor precio, buena durabilidad, resistente al fuego |  En resumen: WPC = máximo realismo y garantía. PU = peso mínimo. PVC = mejor relación precio-beneficio."
-        },
-        {
-          "q": "¿Puedo instalarlas yo solo o necesito profesional?",
-          "a": "Las vigas WPC y PVC Perfil pueden instalarse por una persona con experiencia básica en bricolaje, aunque se recomienda ser dos personas por seguridad al trabajar en alturas. Las vigas PU son tan ligeras que una sola persona puede manejarlas fácilmente. Lo más importante es: 1. Localizar los travesaños del techo para anclar correctamente 2. Usar nivel láser para alineación perfecta 3. Usar escalera o andamio seguro  Si no te sientes cómodo trabajando en techos, ADIS te puede recomendar instaladores certificados en Nogales y Tucson."
-        },
-        {
-          "q": "¿Se ven como madera real o se nota que son plástico?",
-          "a": "Las vigas WPC tienen el realismo más convincente gracias al composite de fibra de madera real en su composición. A una distancia de uso normal (1.5-3 metros), la mayoría de las personas no distingue la diferencia. Las vigas PU tienen un acabado ligeramente más \"uniforme\" que puede delatar su naturaleza sintética a distancia muy cercana, pero el efecto general es de alta calidad. La clave está en la instalación: una viga bien instalada, alineada y con tapa decorativa se ve profesional y elegante."
-        },
-        {
-          "q": "¿Cuántas vigas necesito para mi techo?",
-          "a": "Depende del efecto deseado:  - Efecto sutil: 3-4 vigas transversales en una sala de 4x5 metros. - Efecto cabaña completo: Vigas cada 60-80 cm, cubriendo todo el techo. - Acento focal: 1-3 vigas sobre un área específica (comedor, TV, barra).  Regla práctica: Vigas transversales cada 80-100 cm crean un ritmo agradable sin abrumar. Para un cálculo exacto, acércate a ADIS con las dimensiones de tu espacio y te hacemos un diseño sin costo."
-        }
-      ]
-    },
     "pisos": {
       "name": "PISOS",
       "slug": "pisos",
@@ -2929,6 +2893,42 @@
         {
           "q": "¿Puedo combinar diferentes tipos de cladding en la misma fachada?",
           "a": "Respuesta: ¡Absolutamente! De hecho, es una de las tendencias de diseño más impactantes. Algunas combinaciones que hemos ejecutado en proyectos de Nogales y Tucson con excelentes resultados: (1) Cladding WPC Teak en la parte inferior de la fachada + Placas PU tipo piedra en la parte superior = look moderno y cálido. (2) Placas PU laja volcánica en el muro de entrada + Cladding WPC Stone Gray en laterales = contraste textural espectacular. (3) Revestimiento flexible en la fachada principal + Placas PU en muros de acento interiores = coherencia exterior-interior. En ADIS ofrecemos asesoría de diseño gratuita para ayudarte a combinar texturas y colores. Podemos crear renders 3D de tu fachada con las diferentes opciones antes de que tomes una decisión."
+        }
+      ]
+    },
+    "vigas": {
+      "name": "VIGAS PVC",
+      "slug": "vigas",
+      "curiosos": [
+        {
+          "title": "De la madera de verdad a la \"madera eterna\"",
+          "content": "Las vigas decorativas de PVC, WPC y PU surgieron como respuesta a un problema milenario: las vigas de madera natural son bellas pero exigen un tributo constante. Termitas, humedad, deformación, pudrición, pintura descascarada — cada año, millones de dólares se invierten en mantener vigas de madera que, tarde o temprano, sucumben. En la década de 2000, la tecnología de compuestos de polímero alcanzó la madurez suficiente para replicar no solo la apariencia, sino la textura táctil de la madera real. Hoy, una viga WPC o PU puede confundir incluso a un carpintero experimentado... hasta que le dicen que lleva 10 años instalada sin una sola gota de barniz."
+        },
+        {
+          "title": "La viga de 2.81 kg que soporta el peso de la tradición",
+          "content": "La viga PU de 2,900 x 152 x 75 mm pesa solo 2.81 kilogramos. Para ponerlo en perspectiva: una viga de madera real de las mismas dimensiones pesaría aproximadamente 12-15 kg. Eso significa que puedes levantar una viga PU con un solo dedo, mientras que la de madera requiere dos personas. Este 80% de reducción de peso revolucionó la decoración de techos, permitiendo instalar vigas decorativas en estructuras que nunca podrían soportar el peso de la madera natural."
+        }
+      ],
+      "faqs": [
+        {
+          "q": "¿Las vigas son estructurales? ¿Pueden sostener mi techo?",
+          "a": "No. Las vigas WPC, PU y PVC son estrictamente decorativas. No están diseñadas para soportar cargas estructurales, peso de techos, ni para usarse como elemento de construcción portante. Se fijan al techo existente (los, tablaroco, plafón) con tornillos o adhesivo, pero su función es puramente estética. Si necesitas vigas estructurales, debes consultar con un ingeniero civil."
+        },
+        {
+          "q": "¿Cuál es la diferencia entre WPC, PU y PVC?",
+          "a": "| Material | Qué es | Mejor para | |-|--|| | WPC | Wood Plastic Composite. Mezcla de polímero con fibra de madera. | Perfil más realista, garantía más larga (15 años) | | PU | Poliuretano. Material espumado de ultra bajo peso. | Techos frágiles donde el peso es crítico | | PVC | Policloruro de vinilo. Polímero rígido. | Mejor precio, buena durabilidad, resistente al fuego |  En resumen: WPC = máximo realismo y garantía. PU = peso mínimo. PVC = mejor relación precio-beneficio."
+        },
+        {
+          "q": "¿Puedo instalarlas yo solo o necesito profesional?",
+          "a": "Las vigas WPC y PVC Perfil pueden instalarse por una persona con experiencia básica en bricolaje, aunque se recomienda ser dos personas por seguridad al trabajar en alturas. Las vigas PU son tan ligeras que una sola persona puede manejarlas fácilmente. Lo más importante es: 1. Localizar los travesaños del techo para anclar correctamente 2. Usar nivel láser para alineación perfecta 3. Usar escalera o andamio seguro  Si no te sientes cómodo trabajando en techos, ADIS te puede recomendar instaladores certificados en Nogales y Tucson."
+        },
+        {
+          "q": "¿Se ven como madera real o se nota que son plástico?",
+          "a": "Las vigas WPC tienen el realismo más convincente gracias al composite de fibra de madera real en su composición. A una distancia de uso normal (1.5-3 metros), la mayoría de las personas no distingue la diferencia. Las vigas PU tienen un acabado ligeramente más \"uniforme\" que puede delatar su naturaleza sintética a distancia muy cercana, pero el efecto general es de alta calidad. La clave está en la instalación: una viga bien instalada, alineada y con tapa decorativa se ve profesional y elegante."
+        },
+        {
+          "q": "¿Cuántas vigas necesito para mi techo?",
+          "a": "Depende del efecto deseado:  - Efecto sutil: 3-4 vigas transversales en una sala de 4x5 metros. - Efecto cabaña completo: Vigas cada 60-80 cm, cubriendo todo el techo. - Acento focal: 1-3 vigas sobre un área específica (comedor, TV, barra).  Regla práctica: Vigas transversales cada 80-100 cm crean un ritmo agradable sin abrumar. Para un cálculo exacto, acércate a ADIS con las dimensiones de tu espacio y te hacemos un diseño sin costo."
         }
       ]
     }

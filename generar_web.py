@@ -4,6 +4,7 @@ import sys
 import re
 import json
 import shutil
+import datetime
 import unicodedata
 from pathlib import Path
 
@@ -49,22 +50,22 @@ TRANSLATIONS = {
     'nav_back_home': {'es': '← Inicio', 'en': '← Home'},
     'search_placeholder': {'es': 'Buscar producto...', 'en': 'Search products...'},
     'search_mobile_placeholder': {'es': 'Buscar producto...', 'en': 'Search products...'},
-    'search_title': {'es': '🔎 Busca entre 250 productos', 'en': '🔎 Search 250+ products'},
+    'search_title': {'es': 'Busca entre {count} productos', 'en': 'Search {count}+ products'},
     'search_hint': {'es': 'Presiona / para buscar desde cualquier página', 'en': 'Press / to search from any page'},
 
     # Hero home
     'hero_badge': {'es': 'Catálogo 2025 — 2026', 'en': '2025 — 2026 Catalog'},
     'hero_title': {'es': 'Recubrimientos PVC, WPC y paneles 3D en <em>Nogales, Sonora</em>', 'en': 'PVC, WPC & 3D Wall Panels in <em>Nogales, Sonora</em>'},
     'hero_subtitle': {'es': 'Transforma tu hogar o negocio con placas PVC, lambrín WPC, plafón, pisos, zacate sintético y cladding. Enviamos a Nogales, Sonora y Arizona. Cotiza gratis hoy.', 'en': 'Transform your home or business with PVC panels, WPC slats, PVC ceilings, flooring, synthetic grass and cladding. We ship to Nogales, Sonora & Arizona. Get a free quote today.'},
-    'cta_quote_whatsapp': {'es': '💬 Cotizar gratis por WhatsApp', 'en': '💬 Free quote via WhatsApp'},
+    'cta_quote_whatsapp': {'es': 'Cotizar gratis por WhatsApp', 'en': 'Free quote via WhatsApp'},
     'cta_view_catalog': {'es': 'Ver catálogo', 'en': 'View catalog'},
     'hero_note': {'es': '¿Prefieres que te llamemos? <a href="contacto.html">Llena el formulario de cotización</a> y te contactamos.', 'en': 'Prefer a call? <a href="contacto.html">Fill out the quote form</a> and we will contact you.'},
 
     # Sticky CTA
-    'sticky_quote': {'es': '💬 Cotizar por WhatsApp', 'en': '💬 Quote via WhatsApp'},
-    'sticky_call': {'es': '📞 Llamar', 'en': '📞 Call'},
-    'sticky_quote_category': {'es': '💬 Cotizar', 'en': '💬 Quote'},
-    'sticky_quote_project': {'es': '💬 Cotizar proyecto', 'en': '💬 Quote project'},
+    'sticky_quote': {'es': 'Cotizar por WhatsApp', 'en': 'Quote via WhatsApp'},
+    'sticky_call': {'es': 'Llamar', 'en': 'Call'},
+    'sticky_quote_category': {'es': 'Cotizar', 'en': 'Quote'},
+    'sticky_quote_project': {'es': 'Cotizar proyecto', 'en': 'Quote project'},
 
     # Beneficios
     'benefits_title': {'es': '¿Por qué elegir ADIS?', 'en': 'Why choose ADIS?'},
@@ -87,7 +88,7 @@ TRANSLATIONS = {
     # Precios
     'prices_title': {'es': 'Precios orientativos', 'en': 'Reference prices'},
     'prices_subtitle': {'es': 'Conoce rangos aproximados por categoría. El precio final depende del modelo, acabado y metros de tu proyecto.', 'en': 'See approximate ranges by category. Final price depends on model, finish and square footage of your project.'},
-    'prices_cta': {'es': '💬 Pedir cotización exacta', 'en': '💬 Get exact quote'},
+    'prices_cta': {'es': 'Pedir cotización exacta', 'en': 'Get exact quote'},
     'price_unit_piece': {'es': 'MXN/pz', 'en': 'MXN/pc'},
     'price_unit_box': {'es': 'MXN/caja', 'en': 'MXN/box'},
     'price_unit_m2': {'es': 'MXN/m²', 'en': 'MXN/m²'},
@@ -133,7 +134,7 @@ TRANSLATIONS = {
     'catalog_subtitle': {'es': 'Selecciona una categoría para ver los productos con su ficha técnica.', 'en': 'Select a category to see products with technical specs.'},
 
     # Descargas
-    'downloads_title': {'es': '📥 Descargas', 'en': '📥 Downloads'},
+    'downloads_title': {'es': 'Descargas', 'en': 'Downloads'},
     'downloads_subtitle': {'es': 'Descarga nuestros catálogos en PDF para consultarlos sin conexión o compartirlos con tu cliente.', 'en': 'Download our PDF catalogs to consult offline or share with your client.'},
     'download_complete': {'es': '📚 Descargar catálogo completo', 'en': '📚 Download complete catalog'},
     'download_complete_sub': {'es': 'Todas las categorías en un solo PDF', 'en': 'All categories in one PDF'},
@@ -150,7 +151,7 @@ TRANSLATIONS = {
     'arizona_tucson_desc': {'es': 'Materiales para remodelación de interiores y exteriores.', 'en': 'Materials for interior and exterior remodeling.'},
     'arizona_phoenix_title': {'es': 'Phoenix, AZ', 'en': 'Phoenix, AZ'},
     'arizona_phoenix_desc': {'es': 'Cotizaciones y envíos para proyectos grandes.', 'en': 'Quotes and shipping for large projects.'},
-    'arizona_cta': {'es': '💬 Cotizar desde Arizona', 'en': '💬 Quote from Arizona'},
+    'arizona_cta': {'es': 'Cotizar desde Arizona', 'en': 'Quote from Arizona'},
 
     # Videos home
     'videos_title': {'es': '🎬 Proyectos en video', 'en': '🎬 Projects in video'},
@@ -163,7 +164,7 @@ TRANSLATIONS = {
     'testimonials_name': {'es': 'Tu nombre', 'en': 'Your name'},
     'testimonials_comment': {'es': '¿Qué te pareció el producto o servicio?', 'en': 'What did you think of the product or service?'},
     'testimonials_product': {'es': 'Producto o categoría que compraste (opcional)', 'en': 'Product or category you purchased (optional)'},
-    'testimonials_send': {'es': '📧 Enviar Testimonio', 'en': '📧 Send Testimonial'},
+    'testimonials_send': {'es': 'Enviar Testimonio', 'en': 'Send Testimonial'},
     'testimonials_review': {'es': 'Los testimonios son revisados antes de publicarse.', 'en': 'Testimonials are reviewed before being published.'},
     'testimonials_whatsapp': {'es': 'También puedes enviarlos directamente por', 'en': 'You can also send them directly via'},
     'testimonial_maria_text': {'es': 'Excelente calidad en las placas PVC tipo espejo. Transformaron completamente mi sala de estar. La instalación fue súper rápida y el acabado se ve de lujo.', 'en': 'Excellent quality in the mirror-finish PVC panels. They completely transformed my living room. Installation was super fast and the finish looks luxurious.'},
@@ -183,7 +184,7 @@ TRANSLATIONS = {
 
     # Footer
     'footer_slogan': {'es': 'Creando espacios, reinventando hogares.', 'en': 'Creating spaces, reinventing homes.'},
-    'footer_copyright': {'es': '© 2026 ADIS DISEÑO & REMODELACIÓN. TODOS LOS DERECHOS RESERVADOS.', 'en': '© 2026 ADIS DESIGN & REMODELING. ALL RIGHTS RESERVED.'},
+    'footer_copyright_suffix': {'es': 'ADIS DISEÑO & REMODELACIÓN. TODOS LOS DERECHOS RESERVADOS.', 'en': 'ADIS DESIGN & REMODELING. ALL RIGHTS RESERVED.'},
     'footer_whatsapp': {'es': 'WhatsApp', 'en': 'WhatsApp'},
     'footer_facebook': {'es': 'Facebook', 'en': 'Facebook'},
 
@@ -196,19 +197,19 @@ TRANSLATIONS = {
     # Categorías
     'cat_badge': {'es': 'Categoría', 'en': 'Category'},
     'cat_hero_subtitle': {'es': 'Explora nuestra línea de {category} con {count} productos disponibles. Solicita tu cotización.', 'en': 'Explore our {category} line with {count} products available. Request your quote.'},
-    'cat_cta_advice': {'es': '💬 Asesoría por WhatsApp', 'en': '💬 Advice via WhatsApp'},
-    'cat_cta_download': {'es': '📥 Descargar catálogo PDF', 'en': '📥 Download PDF catalog'},
-    'cat_cta_call': {'es': '📞 Llamar', 'en': '📞 Call'},
+    'cat_cta_advice': {'es': 'Asesoría por WhatsApp', 'en': 'Advice via WhatsApp'},
+    'cat_cta_download': {'es': 'Descargar catálogo PDF', 'en': 'Download PDF catalog'},
+    'cat_cta_call': {'es': 'Llamar', 'en': 'Call'},
     'cat_cta_final_title': {'es': '¿Listo para transformar tu espacio con {category}?', 'en': 'Ready to transform your space with {category}?'},
     'cat_cta_final_subtitle': {'es': 'Solicita tu cotización gratis. Respondemos en menos de 24 h y enviamos a Nogales, Sonora y Arizona.', 'en': 'Request your free quote. We respond in less than 24 hours and ship to Nogales, Sonora & Arizona.'},
-    'cat_cta_final_form': {'es': '📋 Llenar formulario', 'en': '📋 Fill form'},
+    'cat_cta_final_form': {'es': 'Llenar formulario', 'en': 'Fill form'},
     'cat_back_home': {'es': '← Volver al Inicio', 'en': '← Back to Home'},
     'cat_contact': {'es': 'Contactar', 'en': 'Contact'},
     'cat_best_sellers': {'es': 'Más Vendidos — Placas PVC Tipo Espejo', 'en': 'Best Sellers — Mirror PVC Panels'},
-    'cat_accessories': {'es': '🔩 Accesorios', 'en': '🔩 Accessories'},
+    'cat_accessories': {'es': 'Accesorios', 'en': 'Accessories'},
     'cat_products': {'es': 'Productos {category}', 'en': '{category} Products'},
     'cat_real_sheets_title': {'es': 'Hojas Reales de PVC', 'en': 'Real PVC Sheets'},
-    'cat_real_sheets_subtitle': {'es': 'Fotos reales de nuestro showroom. Sin filtros, sin edits.', 'en': 'Real photos from our showroom. No filters, no edits.'},
+    'cat_real_sheets_subtitle': {'es': 'Fotos reales de nuestro showroom. Sin filtros, sin edición.', 'en': 'Real photos from our showroom. No filters, no editing.'},
     'cat_real_sheets_badge': {'es': 'Foto Real', 'en': 'Real Photo'},
 
     # Contacto
@@ -230,7 +231,7 @@ TRANSLATIONS = {
     'form_product_unsure': {'es': 'No estoy seguro, necesito asesoría', 'en': "I'm not sure, I need advice"},
     'form_message': {'es': 'Mensaje', 'en': 'Message'},
     'form_message_placeholder': {'es': '¿Alguna duda o requerimiento especial?', 'en': 'Any questions or special requirements?'},
-    'form_submit': {'es': '💬 Enviar cotización por WhatsApp', 'en': '💬 Send quote via WhatsApp'},
+    'form_submit': {'es': 'Enviar cotización por WhatsApp', 'en': 'Send quote via WhatsApp'},
     'form_note': {'es': 'También puedes llamarnos o escribirnos directamente.', 'en': 'You can also call or write us directly.'},
     'contact_whatsapp': {'es': 'WhatsApp', 'en': 'WhatsApp'},
     'contact_whatsapp_note': {'es': 'Respuesta en menos de 24 h', 'en': 'Response in less than 24 h'},
@@ -253,8 +254,8 @@ TRANSLATIONS = {
     # Proyectos
     'projects_title': {'es': 'Proyectos Reales', 'en': 'Real Projects'},
     'projects_subtitle': {'es': 'Transformaciones que hablan por sí solas. Conoce nuestro trabajo en Nogales, Sonora y Arizona.', 'en': 'Transformations that speak for themselves. See our work in Nogales, Sonora & Arizona.'},
-    'projects_cta_quote': {'es': '💬 Cotizar mi proyecto', 'en': '💬 Quote my project'},
-    'projects_cta_form': {'es': '📋 Enviar formulario', 'en': '📋 Send form'},
+    'projects_cta_quote': {'es': 'Cotizar mi proyecto', 'en': 'Quote my project'},
+    'projects_cta_form': {'es': 'Enviar formulario', 'en': 'Send form'},
     'projects_before': {'es': 'Antes', 'en': 'Before'},
     'projects_after': {'es': 'Después', 'en': 'After'},
     'projects_remodeling': {'es': 'Remodelación', 'en': 'Remodeling'},
@@ -322,7 +323,7 @@ TRANSLATIONS = {
     'chatbot_label_maintenance': {'es': '🧼 Mantenimiento', 'en': '🧼 Maintenance'},
     'chatbot_label_uses': {'es': '🏠 Usos recomendados', 'en': '🏠 Recommended uses'},
     'chatbot_label_warranty': {'es': '✅ Garantía', 'en': '✅ Warranty'},
-    'chatbot_label_compare': {'es': '⚖️ Diferencias', 'en': '⚖️ Differences'},
+    'chatbot_label_compare': {'es': 'Diferencias', 'en': 'Differences'},
     'chatbot_overview': {'es': '📋 <strong>Ficha técnica de', 'en': '📋 <strong>Technical sheet of'},
     'chatbot_overview_end': {'es': ':</strong><br><br>', 'en': ':</strong><br><br>'},
     'chatbot_ask_more': {'es': '¿Te gustaría saber más sobre colores, instalación o mantenimiento?', 'en': 'Would you like to know more about colors, installation or maintenance?'},
@@ -350,7 +351,131 @@ TRANSLATIONS = {
     'wa_tooltip': {'es': 'Cotiza gratis por WhatsApp', 'en': 'Free quote via WhatsApp'},
     'breadcrumb_home': {'es': 'Inicio', 'en': 'Home'},
     'breadcrumb_catalog': {'es': 'Catálogo', 'en': 'Catalog'},
+
+    # Navegación extendida
+    'nav_about': {'es': 'Nosotros', 'en': 'About us'},
+    'nav_privacy': {'es': 'Aviso de privacidad', 'en': 'Privacy notice'},
+
+    # Página Nosotros
+    'about_title': {'es': 'Nosotros', 'en': 'About us'},
+    'about_subtitle': {'es': 'Diseñamos y remodelamos espacios en Nogales, Sonora y Arizona con materiales premium.', 'en': 'We design and remodel spaces in Nogales, Sonora & Arizona with premium materials.'},
+    'about_hero_badge': {'es': 'ADIS Diseño & Remodelación', 'en': 'ADIS Design & Remodeling'},
+    'about_history_title': {'es': 'Nuestra historia', 'en': 'Our story'},
+    'about_history_text': {'es': 'Somos un equipo apasionado por transformar espacios. Desde Nogales, Sonora, atendemos proyectos residenciales y comerciales, y enviamos materiales a Arizona. Combinamos asesoría personalizada, productos de alta calidad y un servicio boutique que acompaña al cliente desde la cotización hasta la instalación.', 'en': 'We are a team passionate about transforming spaces. From Nogales, Sonora, we serve residential and commercial projects, and ship materials to Arizona. We combine personalized advice, high-quality products and boutique service that accompanies the client from quote to installation.'},
+    'about_mission_title': {'es': 'Misión', 'en': 'Mission'},
+    'about_mission_text': {'es': 'Crear espacios funcionales, elegantes y duraderos con recubrimientos innovadores que superen las expectativas de nuestros clientes.', 'en': 'Create functional, elegant and durable spaces with innovative coverings that exceed our clients expectations.'},
+    'about_values_title': {'es': 'Valores', 'en': 'Values'},
+    'about_value_quality': {'es': 'Calidad premium', 'en': 'Premium quality'},
+    'about_value_service': {'es': 'Atención personalizada', 'en': 'Personalized service'},
+    'about_value_commitment': {'es': 'Compromiso con el cliente', 'en': 'Commitment to the customer'},
+    'about_value_binational': {'es': 'Servicio binacional', 'en': 'Binational service'},
+    'about_value_quality_desc': {'es': 'Materiales duraderos y acabados que destacan.', 'en': 'Durable materials and finishes that stand out.'},
+    'about_value_service_desc': {'es': 'Te acompañamos en cada etapa de tu proyecto.', 'en': 'We accompany you at every stage of your project.'},
+    'about_value_binational_desc': {'es': 'Enviamos a Nogales, Sonora y Arizona.', 'en': 'We ship to Nogales, Sonora & Arizona.'},
+    'about_value_commitment_desc': {'es': 'Cotización clara y respuesta en menos de 24 h.', 'en': 'Clear quote and response in less than 24 hours.'},
+    'about_team_title': {'es': 'El equipo ADIS', 'en': 'The ADIS team'},
+    'about_team_text': {'es': 'Un grupo de especialistas en recubrimientos, diseño de interiores y atención al cliente, listos para hacer realidad tu proyecto.', 'en': 'A group of specialists in coverings, interior design and customer service, ready to make your project a reality.'},
+    'about_team_cta': {'es': 'Conoce nuestro trabajo', 'en': 'See our work'},
+    'about_why_title': {'es': '¿Por qué elegir ADIS?', 'en': 'Why choose ADIS?'},
+    'about_why_1_title': {'es': 'Asesoría de especialistas', 'en': 'Specialist advice'},
+    'about_why_1_text': {'es': 'Te ayudamos a elegir el material ideal según tu espacio, estilo y presupuesto.', 'en': 'We help you choose the ideal material according to your space, style and budget.'},
+    'about_why_2_title': {'es': 'Envío a Nogales y Arizona', 'en': 'Shipping to Nogales & Arizona'},
+    'about_why_2_text': {'es': 'Entrega rápida y coordinada en ambos lados de la frontera.', 'en': 'Fast and coordinated delivery on both sides of the border.'},
+    'about_why_3_title': {'es': 'Más de 250 productos', 'en': 'More than 250 products'},
+    'about_why_3_text': {'es': 'Amplio catálogo de placas PVC, lambrín WPC, paneles 3D, pisos, zacate y cladding.', 'en': 'Large catalog of PVC panels, WPC slats, 3D panels, flooring, synthetic grass and cladding.'},
+    'about_why_4_title': {'es': 'Proyectos reales', 'en': 'Real projects'},
+    'about_why_4_text': {'es': 'Galería de trabajos terminados para que veas el acabado antes de decidir.', 'en': 'Gallery of finished work so you can see the finish before deciding.'},
+    'about_cta_title': {'es': 'Hablemos de tu proyecto', 'en': "Let's talk about your project"},
+    'about_cta_subtitle': {'es': 'Cotiza sin compromiso y recibe atención en menos de 24 horas.', 'en': 'Get a free quote and receive attention in less than 24 hours.'},
+
+    # Página Aviso de privacidad
+    'privacy_title': {'es': 'Aviso de Privacidad', 'en': 'Privacy Notice'},
+    'privacy_subtitle': {'es': 'En ADIS Diseño & Remodelación protegemos tu información personal.', 'en': 'At ADIS Design & Remodeling we protect your personal information.'},
+    'privacy_responsible_title': {'es': 'Responsable del tratamiento de datos', 'en': 'Data controller'},
+    'privacy_responsible_text': {'es': "ADI'S DISEÑO & REMODELACIÓN, con domicilio en Nogales, Sonora, es responsable de recabar, usar y proteger tus datos personales.", 'en': "ADI'S DESIGN & REMODELING, located in Nogales, Sonora, is responsible for collecting, using and protecting your personal data."},
+    'privacy_data_title': {'es': 'Datos que recabamos', 'en': 'Data we collect'},
+    'privacy_data_text': {'es': 'Nombre, teléfono, correo electrónico, dirección del proyecto y datos necesarios para cotizar e instalar los productos contratados.', 'en': 'Name, phone, email, project address and data necessary to quote and install the contracted products.'},
+    'privacy_purpose_title': {'es': 'Finalidades del uso de datos', 'en': 'Purposes of data use'},
+    'privacy_purpose_text': {'es': 'Proveer cotizaciones, coordinar entregas e instalaciones, dar seguimiento a tu proyecto y enviar información promocional (solo si autorizas).', 'en': 'Provide quotes, coordinate deliveries and installations, follow up on your project and send promotional information (only if authorized).'},
+    'privacy_arco_title': {'es': 'Derechos ARCO', 'en': 'ARCO rights'},
+    'privacy_arco_text': {'es': 'Tienes derecho a Acceder, Rectificar, Cancelar u Oponerte al uso de tus datos. Para ejercerlos, escríbenos por WhatsApp o correo electrónico.', 'en': 'You have the right to Access, Rectify, Cancel or Oppose the use of your data. To exercise them, write to us via WhatsApp or email.'},
+    'privacy_security_title': {'es': 'Seguridad de la información', 'en': 'Information security'},
+    'privacy_security_text': {'es': 'Implementamos medidas administrativas, técnicas y físicas para proteger tus datos contra daño, pérdida o uso no autorizado.', 'en': 'We implement administrative, technical and physical measures to protect your data against damage, loss or unauthorized use.'},
+    'privacy_changes_title': {'es': 'Cambios al aviso', 'en': 'Changes to this notice'},
+    'privacy_changes_text': {'es': 'Cualquier modificación a este aviso se publicará en esta página. Te recomendamos revisarla periódicamente.', 'en': 'Any modification to this notice will be published on this page. We recommend reviewing it periodically.'},
+    'privacy_contact_title': {'es': 'Contacto', 'en': 'Contact'},
+    'privacy_contact_text': {'es': 'WhatsApp: {whatsapp} | Email: {email} | Ubicación: {ubicacion}', 'en': 'WhatsApp: {whatsapp} | Email: {email} | Location: {ubicacion}'},
+    'privacy_effective': {'es': 'Última actualización: {date}', 'en': 'Last updated: {date}'},
+
+    # Lead capture banner
+    'lead_title': {'es': '¿Tienes un proyecto en mente?', 'en': 'Do you have a project in mind?'},
+    'lead_subtitle': {'es': 'Cuéntanos qué necesitas y te asesoramos gratis por WhatsApp en menos de 24 h.', 'en': 'Tell us what you need and we will advise you for free via WhatsApp in less than 24 hours.'},
+    'lead_name': {'es': 'Tu nombre', 'en': 'Your name'},
+    'lead_phone': {'es': 'Teléfono', 'en': 'Phone'},
+    'lead_project': {'es': '¿Qué tipo de proyecto es?', 'en': 'What type of project is it?'},
+    'lead_project_placeholder': {'es': 'Ej. remodelación de sala, fachada comercial, baño...', 'en': 'E.g. living room remodel, commercial facade, bathroom...'},
+    'lead_button': {'es': 'Pedir asesoría gratis', 'en': 'Request free advice'},
+    'lead_note': {'es': 'Al enviar, abriremos WhatsApp con tu mensaje. Sin spam.', 'en': 'By sending, we will open WhatsApp with your message. No spam.'},
+    'lead_whatsapp_msg': {'es': 'Hola ADIS, mi nombre es {name} y mi teléfono es {phone}. Tengo un proyecto de: {project}. Me gustaría recibir asesoría.', 'en': 'Hello ADIS, my name is {name} and my phone is {phone}. I have a project: {project}. I would like to receive advice.'},
+
+    # Reviews
+    'reviews_title': {'es': 'Lo que dicen nuestros clientes', 'en': 'What our customers say'},
+    'reviews_subtitle': {'es': 'Reseñas verificadas de proyectos reales.', 'en': 'Verified reviews from real projects.'},
+    'reviews_badge': {'es': 'Reseña verificada', 'en': 'Verified review'},
+    'reviews_google_cta': {'es': 'Ver más reseñas en Google', 'en': 'See more reviews on Google'},
+    'reviews_write': {'es': 'Escribir una reseña', 'en': 'Write a review'},
+
+    # Footer legal
+    'footer_links_about': {'es': 'Nosotros', 'en': 'About us'},
+    'footer_links_privacy': {'es': 'Aviso de privacidad', 'en': 'Privacy notice'},
+    'footer_links_legal': {'es': 'Legal', 'en': 'Legal'},
 }
+
+
+# ========== ICONOS SVG (reemplazan emojis del sistema) ==========
+# Set de iconos de trazo fino en color dorado (#C5A059) o según uso.
+# Se inyectan inline para no depender de fuentes externas ni de emojis.
+ICONS_SVG = {
+    'whatsapp': '<svg viewBox="0 0 24 24" width="{size}" height="{size}" fill="none" stroke="{color}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7A8.38 8.38 0 0 1 4 11.5a8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>',
+    'chat': '<svg viewBox="0 0 24 24" width="{size}" height="{size}" fill="none" stroke="{color}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7A8.38 8.38 0 0 1 4 11.5a8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>',
+    'truck': '<svg viewBox="0 0 24 24" width="{size}" height="{size}" fill="none" stroke="{color}" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>',
+    'shield': '<svg viewBox="0 0 24 24" width="{size}" height="{size}" fill="none" stroke="{color}" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>',
+    'hands': '<svg viewBox="0 0 24 24" width="{size}" height="{size}" fill="none" stroke="{color}" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M17 11l-5-5-5 5M17 18l-5-5-5 5"/></svg>',
+    'bolt': '<svg viewBox="0 0 24 24" width="{size}" height="{size}" fill="none" stroke="{color}" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>',
+    'home': '<svg viewBox="0 0 24 24" width="{size}" height="{size}" fill="none" stroke="{color}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>',
+    'grid': '<svg viewBox="0 0 24 24" width="{size}" height="{size}" fill="none" stroke="{color}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>',
+    'image': '<svg viewBox="0 0 24 24" width="{size}" height="{size}" fill="none" stroke="{color}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>',
+    'phone': '<svg viewBox="0 0 24 24" width="{size}" height="{size}" fill="none" stroke="{color}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.56 12.56 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.56 12.56 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>',
+    'mail': '<svg viewBox="0 0 24 24" width="{size}" height="{size}" fill="none" stroke="{color}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>',
+    'facebook': '<svg viewBox="0 0 24 24" width="{size}" height="{size}" fill="none" stroke="{color}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>',
+    'robot': '<svg viewBox="0 0 24 24" width="{size}" height="{size}" fill="none" stroke="{color}" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="10" rx="2"/><circle cx="12" cy="5" r="2"/><path d="M12 7v4"/><line x1="8" y1="16" x2="8" y2="16"/><line x1="16" y1="16" x2="16" y2="16"/></svg>',
+    'trash': '<svg viewBox="0 0 24 24" width="{size}" height="{size}" fill="none" stroke="{color}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>',
+    'x': '<svg viewBox="0 0 24 24" width="{size}" height="{size}" fill="none" stroke="{color}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>',
+    'bookmark': '<svg viewBox="0 0 24 24" width="{size}" height="{size}" fill="none" stroke="{color}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>',
+    'play': '<svg viewBox="0 0 24 24" width="{size}" height="{size}" fill="none" stroke="{color}" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>',
+    'layers': '<svg viewBox="0 0 24 24" width="{size}" height="{size}" fill="none" stroke="{color}" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>',
+    'tree': '<svg viewBox="0 0 24 24" width="{size}" height="{size}" fill="none" stroke="{color}" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22v-8m0-4V2"/><path d="M12 8a4 4 0 0 1 4 4c0 1.5-.8 2.8-2 3.4"/><path d="M12 8a4 4 0 0 0-4 4c0 1.5.8 2.8 2 3.4"/><path d="M12 8a6 6 0 0 1 6 6c0 2.2-1.2 4.1-3 5.1"/><path d="M12 8a6 6 0 0 0-6 6c0 2.2 1.2 4.1 3 5.1"/></svg>',
+    'square': '<svg viewBox="0 0 24 24" width="{size}" height="{size}" fill="none" stroke="{color}" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/></svg>',
+    'palette': '<svg viewBox="0 0 24 24" width="{size}" height="{size}" fill="none" stroke="{color}" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="13.5" cy="6.5" r=".5"/><circle cx="17.5" cy="10.5" r=".5"/><circle cx="8.5" cy="7.5" r=".5"/><circle cx="6.5" cy="12.5" r=".5"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.062a1.63 1.63 0 0 1 1.653-1.574H16.5c2.485 0 4.5-2.015 4.5-4.5S19 2 12 2z"/></svg>',
+    'ruler': '<svg viewBox="0 0 24 24" width="{size}" height="{size}" fill="none" stroke="{color}" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M16 2l6 6L8 22l-6-6L16 2"/><path d="M7.5 10.5l2 2"/><path d="M10.5 7.5l2 2"/><path d="M13.5 4.5l2 2"/></svg>',
+    'leaf': '<svg viewBox="0 0 24 24" width="{size}" height="{size}" fill="none" stroke="{color}" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.6C13.4 5.5 17.3 6 21 10c0 0-3 9-10 10z"/><path d="M11 20v-7"/><path d="M11 13c-2.5 0-4.5-2-4.5-4.5"/></svg>',
+    'mountain': '<svg viewBox="0 0 24 24" width="{size}" height="{size}" fill="none" stroke="{color}" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M8 16l2-4 2 4 3-6 3 6H5l3-6 2 4z"/></svg>',
+    'search': '<svg viewBox="0 0 24 24" width="{size}" height="{size}" fill="none" stroke="{color}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>',
+    'map-pin': '<svg viewBox="0 0 24 24" width="{size}" height="{size}" fill="none" stroke="{color}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>',
+    'clock': '<svg viewBox="0 0 24 24" width="{size}" height="{size}" fill="none" stroke="{color}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>',
+    'download': '<svg viewBox="0 0 24 24" width="{size}" height="{size}" fill="none" stroke="{color}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>',
+    'file-text': '<svg viewBox="0 0 24 24" width="{size}" height="{size}" fill="none" stroke="{color}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>',
+    'send': '<svg viewBox="0 0 24 24" width="{size}" height="{size}" fill="none" stroke="{color}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>',
+    'menu': '<svg viewBox="0 0 24 24" width="{size}" height="{size}" fill="none" stroke="{color}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>',
+}
+
+
+def svg_icon(name, size=20, color='#C5A059'):
+    """Devuelve un icono SVG inline del set propio."""
+    template = ICONS_SVG.get(name, '')
+    if not template:
+        return ''
+    return template.format(size=size, color=color)
 
 
 def t(key, lang='es'):
@@ -416,7 +541,7 @@ PRICE_DATA = {
         'avg_m2': '$220 - $430 MXN/m²',
         'note': 'Varía por material (PVC o fibra de bambú)'
     },
-    'VIGAS PVCWPCPU': {
+    'VIGAS PVC': {
         'unit': 'pieza',
         'range': '$450 - $1,200 MXN',
         'avg_m2': 'Por pieza según medida',
@@ -639,7 +764,7 @@ SABIAS_QUE_SLUGS = {
     'PLAFON PVC LAMINADO WOOD STYLE': 'plafon',
     'PLAFÓN PVC LAMINADO WOOD STYLE': 'plafon',
     'PANELES TRIDIMENSIONALES 3D': '3d',
-    'VIGAS PVCWPCPU': 'vigas',
+    'VIGAS PVC': 'vigas',
     'PISOS': 'pisos',
     'ZACATE SINTETICO': 'zacate',
     'ZACATE SINTÉTICO': 'zacate',
@@ -1252,6 +1377,14 @@ nav.desktop-nav a:hover::after { width: 100%; }
   display: flex; align-items: center; justify-content: center;
   position: relative; padding: 5rem 2rem;
   text-align: center;
+  background: url('media/proyecto-recepcion.jpg') center/cover no-repeat;
+  z-index: 1;
+}
+.hero-home::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(135deg, rgba(15,15,15,0.88) 0%, rgba(15,15,15,0.65) 60%, rgba(15,15,15,0.5) 100%);
+  z-index: 0;
 }
 .hero-content {
   max-width: 800px; position: relative; z-index: 2;
@@ -1376,7 +1509,8 @@ nav.desktop-nav a:hover::after { width: 100%; }
   transform: translateY(-5px);
   background: rgba(42,42,42,0.8);
 }
-.benefit-icon { font-size: 2.2rem; margin-bottom: 1rem; }
+.benefit-icon { display: flex; justify-content: center; align-items: center; margin-bottom: 1rem; }
+.benefit-icon svg { width: 44px; height: 44px; }
 .benefit-card h3 {
   font-size: 0.9rem; color: var(--white); text-transform: uppercase;
   letter-spacing: 2px; margin-bottom: 0.6rem;
@@ -1665,6 +1799,9 @@ footer {
   max-width: 500px; margin: 0 auto 1.5rem;
 }
 .footer-info strong { color: var(--gold); font-weight: 600; }
+.footer-info a { color: var(--gold); text-decoration: none; }
+.footer-info a:hover { color: var(--gold-light); text-decoration: underline; }
+.footer-social a svg { width: 22px; height: 22px; }
 .copyright {
   font-size: 0.7rem; color: rgba(245,245,245,0.3); letter-spacing: 2px;
   border-top: 1px solid rgba(197,160,89,0.1); padding-top: 1.5rem;
@@ -1944,6 +2081,7 @@ footer {
   font-family: 'Playfair Display', serif;
   font-size: 1rem;
   margin: 0;
+  display: flex; align-items: center; gap: 0.5rem;
 }
 .chatbot-close {
   background: none;
@@ -2718,7 +2856,8 @@ footer {
   color: rgba(245,245,245,0.5); text-decoration: none; font-size: 0.65rem; font-weight: 600; letter-spacing: 1px; transition: color 0.3s;
 }
 .mobile-bottom-nav a.active, .mobile-bottom-nav a:hover { color: var(--gold); }
-.mobile-bottom-nav a span:first-child { font-size: 1.2rem; }
+.mobile-bottom-nav a span:first-child { display: flex; justify-content: center; align-items: center; }
+.mobile-bottom-nav a span:first-child svg { width: 22px; height: 22px; }
 
 /* HEADER SEARCH MEJORADO */
 .search-box input { width: 220px; border-width: 2px; font-size: 0.85rem; padding: 0.55rem 2.5rem 0.55rem 1.1rem; }
@@ -2782,7 +2921,8 @@ footer {
   .logo img { height: 45px; }
   .mobile-bottom-nav { padding: 0.7rem 0 0.9rem; }
   .mobile-bottom-nav a { font-size: 0.7rem; gap: 0.3rem; min-height: 48px; padding: 0.4rem 0; }
-  .mobile-bottom-nav a span:first-child { font-size: 1.3rem; }
+  .mobile-bottom-nav a span:first-child { font-size: 1.3rem; display: flex; justify-content: center; align-items: center; }
+  .mobile-bottom-nav a span:first-child svg { width: 22px; height: 22px; }
   body { padding-bottom: 130px; }
   .hero-actions { flex-direction: column; align-items: center; }
   .translate-toggle { bottom: 90px; }
@@ -2944,6 +3084,66 @@ footer {
 .download-card .arrow { color: var(--gold); font-size: 1.3rem; transition: all 0.35s ease; background: rgba(197,160,89,0.1); width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
 .download-card:hover .arrow { background: var(--gold); color: var(--black); transform: translateY(3px); }
 @media (max-width: 600px) { .download-complete { width: 100%; justify-content: center; padding: 1.1rem 1.5rem; font-size: 1rem; } .download-grid { grid-template-columns: 1fr; gap: 1rem; } .download-card { padding: 1rem 1.2rem; } .download-card .icon { font-size: 2rem; } }
+
+/* FOOTER LEGAL LINKS */
+.footer-links { margin-top: 1.5rem; display: flex; justify-content: center; gap: 1.5rem; flex-wrap: wrap; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1.5px; }
+.footer-links a { color: rgba(245,245,245,0.5); text-decoration: none; transition: color 0.3s; }
+.footer-links a:hover { color: var(--gold); }
+
+/* ABOUT PAGE */
+.about-hero { min-height: 60vh; display: flex; align-items: center; justify-content: center; position: relative; padding: 8rem 2rem 4rem; text-align: center; background: url('media/proyecto-recepcion.jpg') center/cover no-repeat; }
+.about-hero::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(15,15,15,0.9) 0%, rgba(15,15,15,0.7) 100%); }
+.about-hero-content { position: relative; z-index: 2; max-width: 800px; }
+.about-hero-content h1 { font-family: 'Playfair Display', serif; font-size: clamp(2.2rem, 5vw, 3.5rem); color: var(--white); margin-bottom: 1rem; }
+.about-hero-content p { color: rgba(245,245,245,0.75); font-size: 1.1rem; max-width: 600px; margin: 0 auto; }
+.about-section { padding: 5rem 2rem; max-width: 1100px; margin: 0 auto; }
+.about-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 2rem; margin-top: 3rem; }
+.about-card { background: rgba(42,42,42,0.5); border: 1px solid rgba(197,160,89,0.12); padding: 2rem; border-radius: 8px; text-align: center; transition: all 0.3s; }
+.about-card:hover { transform: translateY(-5px); border-color: rgba(197,160,89,0.3); background: rgba(42,42,42,0.7); }
+.about-card .icon { color: var(--gold); margin-bottom: 1rem; }
+.about-card h3 { color: var(--white); font-size: 0.95rem; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 0.8rem; }
+.about-card p { color: rgba(245,245,245,0.65); font-size: 0.88rem; line-height: 1.6; }
+.about-team { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center; max-width: 1000px; margin: 0 auto; }
+.about-team img { width: 100%; border-radius: 8px; border: 1px solid rgba(197,160,89,0.2); }
+.about-team-text h2 { color: var(--gold-light); font-family: 'Playfair Display', serif; font-size: 2rem; margin-bottom: 1rem; }
+.about-team-text p { color: rgba(245,245,245,0.7); line-height: 1.7; margin-bottom: 1.5rem; }
+.about-values-list { list-style: none; display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin-top: 1.5rem; }
+.about-values-list li { color: rgba(245,245,245,0.8); font-size: 0.85rem; display: flex; align-items: center; gap: 0.5rem; }
+.about-values-list li::before { content: ''; display: inline-block; width: 6px; height: 6px; background: var(--gold); border-radius: 50%; }
+@media (max-width: 768px) { .about-team { grid-template-columns: 1fr; } .about-values-list { grid-template-columns: 1fr; } }
+
+/* PRIVACY PAGE */
+.privacy-section { padding: 8rem 2rem 4rem; max-width: 800px; margin: 0 auto; }
+.privacy-document { background: rgba(42,42,42,0.4); border: 1px solid rgba(197,160,89,0.12); border-radius: 8px; padding: 3rem; }
+.privacy-document h1 { font-family: 'Playfair Display', serif; color: var(--white); font-size: 2rem; margin-bottom: 0.5rem; }
+.privacy-document .effective { color: var(--gold); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 2rem; display: block; }
+.privacy-document h2 { color: var(--gold-light); font-size: 1.1rem; margin: 2rem 0 0.8rem; }
+.privacy-document p { color: rgba(245,245,245,0.75); line-height: 1.7; font-size: 0.92rem; margin-bottom: 1rem; }
+.privacy-document ul { margin-left: 1.2rem; color: rgba(245,245,245,0.75); line-height: 1.8; font-size: 0.92rem; }
+.privacy-document a { color: var(--gold); }
+
+/* LEAD CAPTURE BANNER */
+.lead-section { padding: 4rem 2rem; background: linear-gradient(135deg, rgba(197,160,89,0.08) 0%, rgba(15,15,15,0) 100%); border-top: 1px solid rgba(197,160,89,0.1); border-bottom: 1px solid rgba(197,160,89,0.1); }
+.lead-container { max-width: 800px; margin: 0 auto; text-align: center; }
+.lead-container h2 { font-family: 'Playfair Display', serif; color: var(--white); font-size: clamp(1.6rem, 4vw, 2.2rem); margin-bottom: 0.5rem; }
+.lead-container p { color: rgba(245,245,245,0.65); margin-bottom: 2rem; }
+.lead-form { display: flex; flex-direction: column; gap: 1rem; max-width: 500px; margin: 0 auto; }
+.lead-form input, .lead-form textarea { padding: 0.9rem 1.2rem; background: rgba(15,15,15,0.6); border: 1px solid rgba(197,160,89,0.25); border-radius: 6px; color: var(--white); font-family: 'Montserrat', sans-serif; font-size: 0.9rem; }
+.lead-form input:focus, .lead-form textarea:focus { outline: none; border-color: var(--gold); }
+.lead-form button { justify-content: center; display: inline-flex; align-items: center; gap: 0.5rem; }
+.lead-note { font-size: 0.75rem; color: rgba(245,245,245,0.4); margin-top: 1rem; }
+
+/* REVIEWS SECTION */
+.reviews-section { padding: 5rem 2rem; }
+.reviews-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; margin-top: 3rem; }
+.review-card { background: rgba(42,42,42,0.5); border: 1px solid rgba(197,160,89,0.12); border-radius: 8px; padding: 2rem; position: relative; transition: all 0.3s; }
+.review-card:hover { border-color: rgba(197,160,89,0.3); transform: translateY(-5px); }
+.review-badge { position: absolute; top: 1rem; right: 1rem; font-size: 0.65rem; text-transform: uppercase; letter-spacing: 1px; color: var(--gold); border: 1px solid rgba(197,160,89,0.3); padding: 0.2rem 0.6rem; border-radius: 20px; }
+.review-stars { color: var(--gold); font-size: 1rem; margin-bottom: 1rem; letter-spacing: 2px; }
+.review-card p { color: rgba(245,245,245,0.75); font-size: 0.9rem; line-height: 1.7; margin-bottom: 1.5rem; font-style: italic; }
+.review-author { color: var(--white); font-weight: 600; font-size: 0.85rem; }
+.review-meta { color: rgba(245,245,245,0.5); font-size: 0.75rem; }
+.reviews-cta { text-align: center; margin-top: 2.5rem; }
 '''
 
 
@@ -3209,6 +3409,8 @@ def generate_sitemap(categories):
     url_entries = [
         (SITE_URL, '1.0'),
         (f"{SITE_URL}contacto.html", '0.9'),
+        (f"{SITE_URL}nosotros.html", '0.8'),
+        (f"{SITE_URL}aviso-de-privacidad.html", '0.5'),
     ]
     for cat in categories:
         url_entries.append((f"{SITE_URL}{cat['filename']}", '0.8'))
@@ -3245,7 +3447,7 @@ def modal_cotizar_html():
   <!-- MODAL COTIZAR WHATSAPP -->
   <div class="wa-modal" id="waModal" onclick="closeWaModal(event)">
     <div class="wa-modal-box" onclick="event.stopPropagation()">
-      <button class="wa-modal-close" onclick="closeWaModal()">&#10005;</button>
+      <button class="wa-modal-close" onclick="closeWaModal()">{svg_icon('x', size=20, color='var(--gold)')}</button>
       <h3>{i18n('modal_title')}</h3>
       <p class="wa-modal-subtitle">{i18n('modal_subtitle')}</p>
       <form id="waModalForm" onsubmit="sendWaModal(event)">
@@ -3286,7 +3488,7 @@ def modal_cotizar_html():
 ''' + '''
   <!-- LIGHTBOX -->
   <div class="lightbox" id="lightbox" onclick="closeLightbox(event)">
-    <button class="lightbox-close" onclick="closeLightbox(event)">&#10005;</button>
+    <button class="lightbox-close" onclick="closeLightbox(event)">{svg_icon('x', size=28, color='var(--gold)')}</button>
     <img src="" alt="" id="lightboxImg">
     <div class="lightbox-caption" id="lightboxCaption"></div>
   </div>
@@ -3473,17 +3675,17 @@ def generate_header(current_page='index'):
     mega_html = '\n'.join([f'        <a href="{u}" class="mega-item"><img src="{i}" alt="{t}" loading="lazy"><span>{t}</span></a>' for u, i, t in MEGA_ITEMS])
     
     SABIAS_ITEMS = [
-        ('sabias-que-pvc.html', '🔬', 'Placas PVC'),
-        ('sabias-que-wpc.html', '🌲', 'Lambrín WPC'),
-        ('sabias-que-revestimiento.html', '🪨', 'Revestimiento Flexible'),
-        ('sabias-que-plafon.html', '&#127968;', 'Plafón PVC'),
-        ('sabias-que-3d.html', '🎨', 'Paneles 3D'),
-        ('sabias-que-vigas.html', '📐', 'Vigas PVC/WPC/PU'),
-        ('sabias-que-pisos.html', '🏗️', 'Pisos'),
-        ('sabias-que-zacate.html', '🌿', 'Zacate Sintético'),
-        ('sabias-que-cladding.html', '⛰️', 'Cladding'),
+        ('sabias-que-pvc.html', 'Placas PVC'),
+        ('sabias-que-wpc.html', 'Lambrín WPC'),
+        ('sabias-que-revestimiento.html', 'Revestimiento Flexible'),
+        ('sabias-que-plafon.html', 'Plafón PVC'),
+        ('sabias-que-3d.html', 'Paneles 3D'),
+        ('sabias-que-vigas.html', 'Vigas PVC'),
+        ('sabias-que-pisos.html', 'Pisos'),
+        ('sabias-que-zacate.html', 'Zacate Sintético'),
+        ('sabias-que-cladding.html', 'Cladding'),
     ]
-    sabias_html = '\n'.join([f'        <a href="{u}" class="dropdown-item"><span class="dropdown-icon">{i}</span><span>{t}</span></a>' for u, i, t in SABIAS_ITEMS])
+    sabias_html = '\n'.join([f'        <a href="{u}" class="dropdown-item"><span>{t}</span></a>' for u, t in SABIAS_ITEMS])
     
     nav_links = f'''<a href="index.html">{i18n("nav_home")}</a>
         <a href="index.html#categorias" class="mega-trigger">{i18n("nav_catalog")}
@@ -3497,6 +3699,7 @@ def generate_header(current_page='index'):
           </div>
         </a>
         <a href="proyectos.html">{i18n("nav_projects")}</a>
+        <a href="nosotros.html">{i18n("nav_about")}</a>
         <a href="contacto.html">{i18n("nav_contact")}</a>'''
     if current_page != 'index':
         nav_links = f'''<a href="index.html">{i18n("nav_back_home")}</a>
@@ -3511,6 +3714,7 @@ def generate_header(current_page='index'):
           </div>
         </a>
         <a href="proyectos.html">{i18n("nav_projects")}</a>
+        <a href="nosotros.html">{i18n("nav_about")}</a>
         <a href="contacto.html">{i18n("nav_contact")}</a>'''
 
     return f'''  <header>
@@ -3520,34 +3724,35 @@ def generate_header(current_page='index'):
         {nav_links}
         <div class="search-box">
           <input type="text" id="searchInput" placeholder="{t('search_placeholder')}" autocomplete="off" title="{t('search_hint')}">
-          <button onclick="openSpotlight()">&#128269;</button>
+          <button onclick="openSpotlight()">{svg_icon('search', size=18, color='var(--gold)')}</button>
           <div class="search-dropdown" id="searchDropdown"></div>
         </div>
       </nav>
-      <button class="menu-btn" onclick="toggleMenu()">&#9776;</button>
+      <button class="menu-btn" onclick="toggleMenu()">{svg_icon('menu', size=22, color='var(--gold)')}</button>
     </div>
   </header>
 
   <div class="mobile-menu" id="mobileMenu">
-    <button class="close-menu" onclick="toggleMenu()">&#10005;</button>
+    <button class="close-menu" onclick="toggleMenu()">{svg_icon('x', size=22, color='var(--gold)')}</button>
     <a href="index.html" onclick="toggleMenu()">{i18n("nav_home")}</a>
     <a href="index.html#categorias" onclick="toggleMenu()">{i18n("nav_catalog")}</a>
     <a href="sabias-que.html" onclick="toggleMenu()">{i18n("nav_did_you_know")}</a>
     <a href="proyectos.html" onclick="toggleMenu()">{i18n("nav_projects")}</a>
+    <a href="nosotros.html" onclick="toggleMenu()">{i18n("nav_about")}</a>
     <a href="contacto.html" onclick="toggleMenu()">{i18n("nav_contact")}</a>
     <div class="search-box" style="margin-top:1rem;">
       <input type="text" id="searchInputMobile" placeholder="{t('search_mobile_placeholder')}" autocomplete="off" style="width:220px;">
-      <button onclick="performSearchMobile()">&#128269;</button>
+      <button onclick="performSearchMobile()">{svg_icon('search', size=18, color='var(--gold)')}</button>
       <div class="search-dropdown" id="searchDropdownMobile"></div>
     </div>
   </div>
   
   <!-- SPOTLIGHT OVERLAY -->
   <div class="spotlight-overlay" id="spotlightOverlay" onclick="closeSpotlight(event)">
-    <button class="spotlight-close" onclick="closeSpotlight(event)">&#10005;</button>
+    <button class="spotlight-close" onclick="closeSpotlight(event)">{svg_icon('x', size=24, color='var(--gold)')}</button>
     <div class="spotlight-box">
       <div class="spotlight-input-wrap">
-        <span class="spotlight-icon">&#128269;</span>
+        <span class="spotlight-icon">{svg_icon('search', size=20, color='var(--gold)')}</span>
         <input type="text" class="spotlight-input" id="spotlightInput" placeholder="{t('search_placeholder')}" autocomplete="off">
       </div>
       <div class="spotlight-results" id="spotlightResults"></div>
@@ -4874,18 +5079,30 @@ def generate_footer():
       <a href="mailto:{CONTACTO['email']}">{CONTACTO['email']}</a>
     </div>
     <div class="footer-social">
-      <a href="https://wa.me/{CONTACTO['whatsapp']}?text={CONTACTO["whatsapp_msg"].replace(' ', '%20')}" target="_blank" title="{t('footer_whatsapp')}">&#128172;</a>
-      <a href="{CONTACTO['facebook']}" target="_blank" title="{t('footer_facebook')}">&#128220;</a>
+      <a href="https://wa.me/{CONTACTO['whatsapp']}?text={CONTACTO["whatsapp_msg"].replace(' ', '%20')}" target="_blank" title="{t('footer_whatsapp')}">{svg_icon('whatsapp', size=22, color='currentColor')}</a>
+      <a href="{CONTACTO['facebook']}" target="_blank" title="{t('footer_facebook')}">{svg_icon('facebook', size=22, color='currentColor')}</a>
     </div>
-    <div class="copyright">{i18n('footer_copyright')}</div>
+    <div class="footer-links">
+      <span>{i18n('footer_links_legal')}:</span>
+      <a href="nosotros.html">{i18n('footer_links_about')}</a>
+      <a href="aviso-de-privacidad.html">{i18n('footer_links_privacy')}</a>
+    </div>
+    <div class="copyright">© <span id="footer-year"></span> {i18n('footer_copyright_suffix')}</div>
   </footer>
+  <script>
+    (function(){{
+      var y = new Date().getFullYear();
+      var el = document.getElementById('footer-year');
+      if (el) el.textContent = y;
+    }})();
+  </script>
 
   <!-- MOBILE BOTTOM NAV -->
   <nav class="mobile-bottom-nav">
-    <a href="index.html"><span>&#127968;</span><span>{i18n('mobile_nav_home')}</span></a>
-    <a href="index.html#categorias"><span>&#128194;</span><span>{i18n('mobile_nav_catalog')}</span></a>
-    <a href="proyectos.html"><span>&#128444;</span><span>{i18n('mobile_nav_projects')}</span></a>
-    <a href="contacto.html"><span>&#128222;</span><span>{i18n('mobile_nav_contact')}</span></a>
+    <a href="index.html"><span>{svg_icon('home', size=22, color='currentColor')}</span><span>{i18n('mobile_nav_home')}</span></a>
+    <a href="index.html#categorias"><span>{svg_icon('grid', size=22, color='currentColor')}</span><span>{i18n('mobile_nav_catalog')}</span></a>
+    <a href="proyectos.html"><span>{svg_icon('image', size=22, color='currentColor')}</span><span>{i18n('mobile_nav_projects')}</span></a>
+    <a href="contacto.html"><span>{svg_icon('phone', size=22, color='currentColor')}</span><span>{i18n('mobile_nav_contact')}</span></a>
   </nav>
 
   <a href="https://wa.me/{CONTACTO['whatsapp']}?text={CONTACTO["whatsapp_msg"].replace(' ', '%20')}" class="whatsapp-float" target="_blank" title="{t('wa_tooltip')}" aria-label="WhatsApp">
@@ -4893,13 +5110,13 @@ def generate_footer():
     <span class="wa-tooltip">{i18n('wa_tooltip')}</span>
   </a>
 
-  <button class="chatbot-float" onclick="toggleChat()" title="{t('chatbot_title')}">&#129302;<span class="chatbot-badge" id="chatBadge">{t('chatbot_badge')}</span></button>
+  <button class="chatbot-float" onclick="toggleChat()" title="{t('chatbot_title')}">{svg_icon('robot', size=28, color='#0F0F0F')}<span class="chatbot-badge" id="chatBadge">{t('chatbot_badge')}</span></button>
   <div class="chatbot-window" id="chatbotWindow">
     <div class="chatbot-header">
-      <h4>&#129302; {i18n('chatbot_title')}</h4>
+      <h4>{svg_icon('robot', size=20, color='#C5A059')} {i18n('chatbot_title')}</h4>
       <div class="chat-header-actions">
-        <button class="chat-clear" onclick="clearAllChat()" title="{t('chatbot_new_chat')}">&#128465;</button>
-        <button class="chatbot-close" onclick="toggleChat()" title="{t('chatbot_close')}">&#10005;</button>
+        <button class="chat-clear" onclick="clearAllChat()" title="{t('chatbot_new_chat')}">{svg_icon('trash', size=18, color='#E8D5A3')}</button>
+        <button class="chatbot-close" onclick="toggleChat()" title="{t('chatbot_close')}">{svg_icon('x', size=18, color='#E8D5A3')}</button>
       </div>
     </div>
     <div class="chatbot-body" id="chatbotBody"></div>
@@ -4915,6 +5132,12 @@ def generate_index(categories):
     meta_keywords = "recubrimientos Nogales, paneles PVC Sonora, remodelación Nogales Sonora, wall panels Nogales AZ, remodeling materials Arizona, lambrín WPC Nogales, plafón PVC, pisos Nogales, zacate sintético, cladding, ADIS"
 
     STAR_CATEGORIES = {'Lambrin WPC', 'Placas PVC'}
+
+    # Conteo real de productos para evitar cifras inconsistentes
+    total_products_global = sum(
+        len(cat["direct_products"]) + sum(len(sub["products"]) for sub in cat["subcategories"])
+        for cat in categories
+    )
     
     # Tarjetas estrella (sección destacada)
     featured_cards = ''
@@ -4987,15 +5210,15 @@ def generate_index(categories):
 
     # Iconos representativos por categoría
     CAT_ICONS = {
-        'Placas PVC': '🪵',
-        'Lambrin WPC': '🌲',
-        'Revestimiento Flexible': '🪨',
-        'Plafon PVC': '&#127968;',
-        'Paneles tridimensionales': '🎨',
-        'Vigas PVC': '📐',
-        'Pisos': '🏗️',
-        'Zacate': '🌿',
-        'Cladding': '⛰️',
+        'Placas PVC': svg_icon('layers', size=28),
+        'Lambrin WPC': svg_icon('tree', size=28),
+        'Revestimiento Flexible': svg_icon('square', size=28),
+        'Plafon PVC': svg_icon('home', size=28),
+        'Paneles tridimensionales': svg_icon('palette', size=28),
+        'Vigas PVC': svg_icon('ruler', size=28),
+        'Pisos': svg_icon('grid', size=28),
+        'Zacate': svg_icon('leaf', size=28),
+        'Cladding': svg_icon('mountain', size=28),
     }
 
     # Tarjetas de descarga por categoría
@@ -5006,7 +5229,7 @@ def generate_index(categories):
         total_prods = len(cat["direct_products"])
         for sub in cat["subcategories"]:
             total_prods += len(sub["products"])
-        icon = CAT_ICONS.get(cat["name"], '📄')
+        icon = CAT_ICONS.get(cat["name"], svg_icon('bookmark', size=28))
         downloads_html += f'''      <a href="catalogos/pdf/{pdf_name}" class="download-card" download>
         <span class="icon">{icon}</span>
         <div class="info">
@@ -5031,8 +5254,16 @@ def generate_index(categories):
         for vid in home_videos:
             name = video_caption(vid)
             mime = video_mime_type(vid)
+            stem = Path(vid).stem
+            # Buscar poster con el mismo nombre base en media/
+            poster_candidates = [f'media/{stem}{ext}' for ext in ['.jpg', '.jpeg', '.png', '.webp']]
+            poster_attr = ''
+            for cand in poster_candidates:
+                if (media_dir / Path(cand).name).exists():
+                    poster_attr = f' poster="{cand}"'
+                    break
             vcards += f'''      <div class="video-card reveal">
-        <video class="auto-video" muted loop playsinline preload="metadata">
+        <video class="auto-video" muted loop playsinline preload="metadata"{poster_attr}>
           <source src="media/{vid}" type="{mime}">
         </video>
         <div class="video-card-caption">{name}</div>
@@ -5076,8 +5307,6 @@ def generate_index(categories):
   <meta name="twitter:description" content="{meta_desc_es}">
   <meta name="twitter:image" content="{SITE_URL}LOGO%20ADIS.png">
   <link rel="canonical" href="{SITE_URL}">
-  <link rel="alternate" hreflang="es" href="{SITE_URL}">
-  <link rel="alternate" hreflang="en" href="{SITE_URL}?hl=en">
   <meta name="description-en" content="{meta_desc_en}">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
@@ -5106,8 +5335,8 @@ def generate_index(categories):
       </div>
       <p class="hero-note">{i18n('hero_note', html=True)}</p>
       <div class="search-hero">
-        <div class="search-hero-title">{i18n('search_title')}</div>
-        <span class="search-hero-icon">&#128269;</span>
+        <div class="search-hero-title" style="display:flex;align-items:center;justify-content:center;gap:0.5rem;">{svg_icon('search', size=24)} {i18n_fmt('search_title', count=total_products_global)}</div>
+        <span class="search-hero-icon">{svg_icon('search', size=22, color='var(--gold)')}</span>
         <input type="text" class="search-hero-input" id="searchHeroInput" placeholder="{t('search_placeholder')}" autocomplete="off" onfocus="openSpotlight()">
         <div class="search-hero-hint">{i18n('search_hint')}</div>
       </div>
@@ -5123,28 +5352,28 @@ def generate_index(categories):
     </div>
     <div class="benefits-grid">
       <div class="benefit-card">
-        <div class="benefit-icon">🚚</div>
+        <div class="benefit-icon">{svg_icon('truck', size=40)}</div>
         <h3>{i18n('benefit_shipping_title')}</h3>
         <p>{i18n('benefit_shipping_desc', html=True)}</p>
       </div>
       <div class="benefit-card">
-        <div class="benefit-icon">🛡️</div>
+        <div class="benefit-icon">{svg_icon('shield', size=40)}</div>
         <h3>{i18n('benefit_warranty_title')}</h3>
         <p>{i18n('benefit_warranty_desc', html=True)}</p>
       </div>
       <div class="benefit-card">
-        <div class="benefit-icon">🤝</div>
+        <div class="benefit-icon">{svg_icon('hands', size=40)}</div>
         <h3>{i18n('benefit_advice_title')}</h3>
         <p>{i18n('benefit_advice_desc', html=True)}</p>
       </div>
       <div class="benefit-card">
-        <div class="benefit-icon">⚡</div>
+        <div class="benefit-icon">{svg_icon('bolt', size=40)}</div>
         <h3>{i18n('benefit_install_title')}</h3>
         <p>{i18n('benefit_install_desc', html=True)}</p>
       </div>
     </div>
     <div class="trust-banner">
-      <div class="trust-item"><span>250+</span> {i18n('trust_products')}</div>
+      <div class="trust-item"><span>{total_products_global}+</span> {i18n('trust_products')}</div>
       <div class="trust-item"><span>50+</span> {i18n('trust_projects')}</div>
       <div class="trust-item"><span>9</span> {i18n('trust_categories')}</div>
       <div class="trust-item"><span>15</span> {i18n('trust_warranty')}</div>
@@ -5166,7 +5395,7 @@ def generate_index(categories):
   <section class="stats-section reveal">
     <div class="stats-grid">
       <div class="stat-item">
-        <div class="stat-number" data-target="250">0</div>
+        <div class="stat-number" data-target="{total_products_global}">0</div>
         <div class="stat-label">{i18n('stat_products')}</div>
       </div>
       <div class="stat-item">
@@ -5268,6 +5497,8 @@ def generate_index(categories):
 
 {videos_home_html}
 
+{generate_lead_banner()}
+
 {generate_testimonios()}
 
 {modal_cotizar_html()}
@@ -5324,8 +5555,6 @@ def generate_contacto():
   <meta name="twitter:description" content="{meta_desc_es}">
   <meta name="twitter:image" content="{SITE_URL}LOGO%20ADIS.png">
   <link rel="canonical" href="{SITE_URL}contacto.html">
-  <link rel="alternate" hreflang="es" href="{SITE_URL}contacto.html">
-  <link rel="alternate" hreflang="en" href="{SITE_URL}contacto.html?hl=en">
   <meta name="description-en" content="{meta_desc_en}">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
@@ -5406,34 +5635,34 @@ def generate_contacto():
       <!-- Datos de contacto -->
       <div class="contact-info-panel reveal">
         <div class="contact-card">
-          <div class="icon">💬</div>
+          <div class="icon">{svg_icon('chat', size=32)}</div>
           <h3>{i18n('contact_whatsapp')}</h3>
           <a href="https://wa.me/{CONTACTO["whatsapp"]}" target="_blank">{CONTACTO["tel_usa"]}</a>
           <p class="contact-card-note">{i18n('contact_whatsapp_note', html=True)}</p>
         </div>
         <div class="contact-card">
-          <div class="icon">📞</div>
+          <div class="icon">{svg_icon('phone', size=32)}</div>
           <h3>{i18n('contact_phone_mx')}</h3>
           <a href="tel:{CONTACTO['tel_mx_link']}">{CONTACTO["tel_mx"]}</a>
         </div>
         <div class="contact-card">
-          <div class="icon">&#128222;</div>
+          <div class="icon">{svg_icon('phone', size=32)}</div>
           <h3>{i18n('contact_phone_us')}</h3>
           <a href="tel:{CONTACTO['tel_usa_link']}">{CONTACTO["tel_usa"]}</a>
         </div>
         <div class="contact-card">
-          <div class="icon">✉️</div>
+          <div class="icon">{svg_icon('mail', size=32)}</div>
           <h3>{i18n('contact_email')}</h3>
           <a href="mailto:{CONTACTO["email"]}">{CONTACTO["email"]}</a>
         </div>
         <div class="contact-card">
-          <div class="icon">📍</div>
+          <div class="icon">{svg_icon('map-pin', size=32)}</div>
           <h3>{i18n('contact_location')}</h3>
           <p>{CONTACTO["ubicacion"]}<br>{CONTACTO["direccion"]}</p>
           <a href="{CONTACTO['maps_url']}" target="_blank" class="btn-outline" style="margin-top:0.8rem; display:inline-block;">{i18n('contact_map')}</a>
         </div>
         <div class="contact-card">
-          <div class="icon">🕒</div>
+          <div class="icon">{svg_icon('clock', size=32)}</div>
           <h3>{i18n('contact_hours')}</h3>
           <p>{CONTACTO["horarios"]}</p>
         </div>
@@ -5483,6 +5712,216 @@ def generate_contacto():
     with open(OUTPUT_DIR / 'contacto.html', 'w', encoding='utf-8') as f:
         f.write(html)
     print("✅ contacto.html generado")
+
+
+def generate_nosotros():
+    """Genera la pagina Nosotros."""
+    meta_desc_es = "Conoce a ADIS Diseño & Remodelación. Somos especialistas en recubrimientos PVC, WPC, paneles 3D, pisos y cladding en Nogales, Sonora y Arizona."
+    meta_desc_en = "Meet ADIS Design & Remodeling. Specialists in PVC, WPC, 3D panels, flooring and cladding in Nogales, Sonora & Arizona."
+    html = f'''<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/png" href="LOGO ADIS.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nosotros | ADIS Diseño & Remodelación · Nogales Sonora</title>
+  <meta name="description" content="{meta_desc_es}">
+  <meta name="keywords" content="ADIS Diseño Remodelación, nosotros ADIS, recubrimientos Nogales, paneles PVC Sonora, remodeling Arizona">
+  <meta property="og:title" content="Nosotros | ADIS Diseño & Remodelación">
+  <meta property="og:description" content="{meta_desc_es}">
+  <meta property="og:image" content="{SITE_URL}LOGO%20ADIS.png">
+  <meta property="og:url" content="{SITE_URL}nosotros.html">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="canonical" href="{SITE_URL}nosotros.html">
+  <meta name="description-en" content="{meta_desc_en}">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+{ga_script()}
+{fb_pixel_script()}
+{translate_script()}
+{organization_schema()}
+{breadcrumb_schema([('Inicio', SITE_URL), ('Nosotros', f'{SITE_URL}nosotros.html')])}
+</head>
+<body>
+  <script>document.documentElement.classList.add('js-enabled');</script>
+  <canvas id="bg-canvas"></canvas>
+{generate_header("nosotros")}
+
+  <section class="about-hero">
+    <div class="about-hero-content">
+      <div class="hero-badge">{i18n('about_hero_badge')}</div>
+      <h1>{i18n('about_title')}</h1>
+      <p>{i18n('about_subtitle')}</p>
+    </div>
+  </section>
+
+  <section class="about-section reveal">
+    <div class="section-header">
+      <h2>{i18n('about_history_title')}</h2>
+      <div class="divider"></div>
+    </div>
+    <p style="text-align:center; max-width:800px; margin:0 auto 3rem; color:rgba(245,245,245,0.7); line-height:1.8;">{i18n('about_history_text')}</p>
+    <div class="about-grid">
+      <div class="about-card">
+        <div class="icon">{svg_icon('shield', size=32)}</div>
+        <h3>{i18n('about_value_quality')}</h3>
+        <p>{i18n('about_value_quality_desc')}</p>
+      </div>
+      <div class="about-card">
+        <div class="icon">{svg_icon('hands', size=32)}</div>
+        <h3>{i18n('about_value_service')}</h3>
+        <p>{i18n('about_value_service_desc')}</p>
+      </div>
+      <div class="about-card">
+        <div class="icon">{svg_icon('truck', size=32)}</div>
+        <h3>{i18n('about_value_binational')}</h3>
+        <p>{i18n('about_value_binational_desc')}</p>
+      </div>
+      <div class="about-card">
+        <div class="icon">{svg_icon('bolt', size=32)}</div>
+        <h3>{i18n('about_value_commitment')}</h3>
+        <p>{i18n('about_value_commitment_desc')}</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-wrap-alt reveal">
+    <div class="about-team">
+      <img src="media/equipo-adis.jpg" alt="Equipo ADIS">
+      <div class="about-team-text">
+        <h2>{i18n('about_team_title')}</h2>
+        <p>{i18n('about_team_text')}</p>
+        <ul class="about-values-list">
+          <li>{i18n('about_value_quality')}</li>
+          <li>{i18n('about_value_service')}</li>
+          <li>{i18n('about_value_binational')}</li>
+          <li>{i18n('about_value_commitment')}</li>
+        </ul>
+        <a href="proyectos.html" class="btn-secondary" style="margin-top:1.5rem;">{i18n('about_team_cta')}</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="about-section reveal">
+    <div class="section-header">
+      <h2>{i18n('about_why_title')}</h2>
+      <div class="divider"></div>
+    </div>
+    <div class="about-grid">
+      <div class="about-card">
+        <div class="icon">{svg_icon('search', size=32)}</div>
+        <h3>{i18n('about_why_1_title')}</h3>
+        <p>{i18n('about_why_1_text')}</p>
+      </div>
+      <div class="about-card">
+        <div class="icon">{svg_icon('truck', size=32)}</div>
+        <h3>{i18n('about_why_2_title')}</h3>
+        <p>{i18n('about_why_2_text')}</p>
+      </div>
+      <div class="about-card">
+        <div class="icon">{svg_icon('layers', size=32)}</div>
+        <h3>{i18n('about_why_3_title')}</h3>
+        <p>{i18n('about_why_3_text')}</p>
+      </div>
+      <div class="about-card">
+        <div class="icon">{svg_icon('image', size=32)}</div>
+        <h3>{i18n('about_why_4_title')}</h3>
+        <p>{i18n('about_why_4_text')}</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-wrap reveal" style="text-align:center;">
+    <h2 style="font-family:'Playfair Display',serif; color:var(--white); font-size:clamp(1.8rem,4vw,2.5rem); margin-bottom:1rem;">{i18n('about_cta_title')}</h2>
+    <p style="color:rgba(245,245,245,0.65); margin-bottom:2rem;">{i18n('about_cta_subtitle')}</p>
+    <div style="display:flex; gap:1rem; justify-content:center; flex-wrap:wrap;">
+      <a href="{whatsapp_url(CONTACTO['whatsapp'], 'Hola ADIS, vi su pagina de Nosotros y quiero cotizar un proyecto.')}" class="btn-primary btn-wa" target="_blank" onclick="gtag('event','whatsapp_click',{{'location':'about_cta'}})">{i18n('cta_quote_whatsapp')}</a>
+      <a href="index.html#categorias" class="btn-secondary">{i18n('cta_view_catalog')}</a>
+    </div>
+  </section>
+
+{generate_footer()}
+</body>
+</html>
+'''
+    with open(OUTPUT_DIR / 'nosotros.html', 'w', encoding='utf-8') as f:
+        f.write(html)
+    print("✅ nosotros.html generado")
+
+
+def generate_privacy():
+    """Genera la pagina de Aviso de Privacidad."""
+    meta_desc_es = "Aviso de privacidad de ADIS Diseño & Remodelación. Conoce como protegemos tus datos personales."
+    meta_desc_en = "Privacy notice of ADIS Design & Remodeling. Learn how we protect your personal data."
+    effective_date = datetime.datetime.now().strftime('%d/%m/%Y')
+    html = f'''<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/png" href="LOGO ADIS.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aviso de Privacidad | ADIS Diseño & Remodelación</title>
+  <meta name="description" content="{meta_desc_es}">
+  <meta property="og:title" content="Aviso de Privacidad | ADIS Diseño & Remodelación">
+  <meta property="og:description" content="{meta_desc_es}">
+  <meta property="og:image" content="{SITE_URL}LOGO%20ADIS.png">
+  <meta property="og:url" content="{SITE_URL}aviso-de-privacidad.html">
+  <link rel="canonical" href="{SITE_URL}aviso-de-privacidad.html">
+  <meta name="description-en" content="{meta_desc_en}">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+{ga_script()}
+{fb_pixel_script()}
+{translate_script()}
+{organization_schema()}
+{breadcrumb_schema([('Inicio', SITE_URL), ('Aviso de privacidad', f'{SITE_URL}aviso-de-privacidad.html')])}
+</head>
+<body>
+  <script>document.documentElement.classList.add('js-enabled');</script>
+  <canvas id="bg-canvas"></canvas>
+{generate_header("privacy")}
+
+  <section class="hero-cat" style="padding-top: 8rem;">
+    <h1>{i18n('privacy_title')}</h1>
+    <p>{i18n('privacy_subtitle')}</p>
+  </section>
+
+  <section class="privacy-section reveal">
+    <div class="privacy-document">
+      <h1>{i18n('privacy_title')}</h1>
+      <span class="effective">{i18n_fmt('privacy_effective', date=effective_date)}</span>
+
+      <h2>{i18n('privacy_responsible_title')}</h2>
+      <p>{i18n('privacy_responsible_text')}</p>
+
+      <h2>{i18n('privacy_data_title')}</h2>
+      <p>{i18n('privacy_data_text')}</p>
+
+      <h2>{i18n('privacy_purpose_title')}</h2>
+      <p>{i18n('privacy_purpose_text')}</p>
+
+      <h2>{i18n('privacy_arco_title')}</h2>
+      <p>{i18n('privacy_arco_text')}</p>
+
+      <h2>{i18n('privacy_security_title')}</h2>
+      <p>{i18n('privacy_security_text')}</p>
+
+      <h2>{i18n('privacy_changes_title')}</h2>
+      <p>{i18n('privacy_changes_text')}</p>
+
+      <h2>{i18n('privacy_contact_title')}</h2>
+      <p>{i18n_fmt('privacy_contact_text', whatsapp=CONTACTO['whatsapp'], email=CONTACTO['email'], ubicacion=CONTACTO['ubicacion'])}</p>
+    </div>
+  </section>
+
+{generate_footer()}
+</body>
+</html>
+'''
+    with open(OUTPUT_DIR / 'aviso-de-privacidad.html', 'w', encoding='utf-8') as f:
+        f.write(html)
+    print("✅ aviso-de-privacidad.html generado")
 
 
 def generate_category_page(cat, categories):
@@ -6142,6 +6581,38 @@ def generate_specs_table(product_name):
     return '    <div class="specs-bar reveal">\n      ' + '\n      '.join(items) + '\n    </div>\n'
 
 
+def generate_lead_banner():
+    """Genera banner de captacion de leads que envia a WhatsApp."""
+    return f'''
+  <!-- LEAD CAPTURE -->
+  <section class="lead-section reveal" id="cotizar">
+    <div class="lead-container">
+      <h2>{i18n('lead_title')}</h2>
+      <p>{i18n('lead_subtitle')}</p>
+      <form class="lead-form" onsubmit="sendLead(event)">
+        <input type="text" id="leadName" placeholder="{t('lead_name')}" required>
+        <input type="tel" id="leadPhone" placeholder="{t('lead_phone')}" required>
+        <textarea id="leadProject" rows="3" placeholder="{t('lead_project_placeholder')}" required></textarea>
+        <button type="submit" class="btn-primary btn-wa">{svg_icon('whatsapp', size=18, color='currentColor')} {i18n('lead_button')}</button>
+      </form>
+      <p class="lead-note">{i18n('lead_note')}</p>
+    </div>
+  </section>
+  <script>
+    function sendLead(e) {{
+      e.preventDefault();
+      const name = document.getElementById('leadName').value.trim();
+      const phone = document.getElementById('leadPhone').value.trim();
+      const project = document.getElementById('leadProject').value.trim();
+      const msg = 'Hola ADIS, mi nombre es ' + name + ' y mi telefono es ' + phone + '. Tengo un proyecto de: ' + project + '. Me gustaria recibir asesoria.';
+      window.open('https://wa.me/{CONTACTO['whatsapp']}?text=' + encodeURIComponent(msg), '_blank');
+      if (typeof gtag !== 'undefined') gtag('event','lead_whatsapp',{{'location':'lead_banner'}});
+      e.target.reset();
+    }}
+  </script>
+'''
+
+
 def generate_testimonios():
     """Genera formulario de testimonios que envía a WhatsApp para revisión manual."""
     return f'''
@@ -6155,6 +6626,7 @@ def generate_testimonios():
     <div style="max-width: 1100px; margin: 0 auto; padding: 0 2rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin-bottom: 3rem;">
       <div style="background: rgba(42,42,42,0.7); backdrop-filter: blur(10px); border: 1px solid rgba(197,160,89,0.2); border-radius: 12px; padding: 1.8rem; position: relative;">
         <div style="font-size: 3rem; color: var(--gold); opacity: 0.3; position: absolute; top: 0.5rem; right: 1rem; font-family: Georgia, serif;">"</div>
+        <span class="review-badge">{i18n('reviews_badge')}</span>
         <p style="font-size: 0.9rem; color: rgba(245,245,245,0.8); line-height: 1.7; margin-bottom: 1rem; font-style: italic;">{i18n('testimonial_maria_text', html=True)}</p>
         <div style="display: flex; align-items: center; gap: 0.8rem;">
           <div style="width: 40px; height: 40px; border-radius: 50%; background: var(--gold); display: flex; align-items: center; justify-content: center; color: var(--black); font-weight: 700; font-size: 0.9rem;">MG</div>
@@ -6166,6 +6638,7 @@ def generate_testimonios():
       </div>
       <div style="background: rgba(42,42,42,0.7); backdrop-filter: blur(10px); border: 1px solid rgba(197,160,89,0.2); border-radius: 12px; padding: 1.8rem; position: relative;">
         <div style="font-size: 3rem; color: var(--gold); opacity: 0.3; position: absolute; top: 0.5rem; right: 1rem; font-family: Georgia, serif;">"</div>
+        <span class="review-badge">{i18n('reviews_badge')}</span>
         <p style="font-size: 0.9rem; color: rgba(245,245,245,0.8); line-height: 1.7; margin-bottom: 1rem; font-style: italic;">{i18n('testimonial_carlos_text', html=True)}</p>
         <div style="display: flex; align-items: center; gap: 0.8rem;">
           <div style="width: 40px; height: 40px; border-radius: 50%; background: var(--gold); display: flex; align-items: center; justify-content: center; color: var(--black); font-weight: 700; font-size: 0.9rem;">CR</div>
@@ -6177,6 +6650,7 @@ def generate_testimonios():
       </div>
       <div style="background: rgba(42,42,42,0.7); backdrop-filter: blur(10px); border: 1px solid rgba(197,160,89,0.2); border-radius: 12px; padding: 1.8rem; position: relative;">
         <div style="font-size: 3rem; color: var(--gold); opacity: 0.3; position: absolute; top: 0.5rem; right: 1rem; font-family: Georgia, serif;">"</div>
+        <span class="review-badge">{i18n('reviews_badge')}</span>
         <p style="font-size: 0.9rem; color: rgba(245,245,245,0.8); line-height: 1.7; margin-bottom: 1rem; font-style: italic;">{i18n('testimonial_lopez_text', html=True)}</p>
         <div style="display: flex; align-items: center; gap: 0.8rem;">
           <div style="width: 40px; height: 40px; border-radius: 50%; background: var(--gold); display: flex; align-items: center; justify-content: center; color: var(--black); font-weight: 700; font-size: 0.9rem;">FL</div>
@@ -6188,6 +6662,7 @@ def generate_testimonios():
       </div>
       <div style="background: rgba(42,42,42,0.7); backdrop-filter: blur(10px); border: 1px solid rgba(197,160,89,0.2); border-radius: 12px; padding: 1.8rem; position: relative;">
         <div style="font-size: 3rem; color: var(--gold); opacity: 0.3; position: absolute; top: 0.5rem; right: 1rem; font-family: Georgia, serif;">"</div>
+        <span class="review-badge">{i18n('reviews_badge')}</span>
         <p style="font-size: 0.9rem; color: rgba(245,245,245,0.8); line-height: 1.7; margin-bottom: 1rem; font-style: italic;">{i18n('testimonial_roberto_text', html=True)}</p>
         <div style="display: flex; align-items: center; gap: 0.8rem;">
           <div style="width: 40px; height: 40px; border-radius: 50%; background: var(--gold); display: flex; align-items: center; justify-content: center; color: var(--black); font-weight: 700; font-size: 0.9rem;">RM</div>
@@ -6209,13 +6684,16 @@ def generate_testimonios():
         <input type="text" id="tProducto" placeholder="{t('testimonials_product')}"
           style="padding: 0.9rem 1.2rem; background: rgba(42,42,42,0.8); border: 1px solid rgba(197,160,89,0.3); border-radius: 8px; color: var(--white); font-family: 'Montserrat', sans-serif; font-size: 0.9rem; backdrop-filter: blur(8px); transition: all 0.3s;"
           onfocus="this.style.borderColor='var(--gold)';this.style.boxShadow='0 0 15px rgba(197,160,89,0.15)'" onblur="this.style.borderColor='rgba(197,160,89,0.3)';this.style.boxShadow='none'">
-        <button type="submit" class="btn-primary" style="align-self: center; margin-top: 0.5rem;">&#128233; {i18n('testimonials_send')}</button>
+        <button type="submit" class="btn-primary" style="align-self: center; margin-top: 0.5rem; display:inline-flex; align-items:center; gap:0.5rem;">{svg_icon('send', size=18, color='currentColor')} {i18n('testimonials_send')}</button>
       </form>
       <div style="text-align: center; margin-top: 1.2rem; font-size: 0.8rem; color: rgba(245,245,245,0.5); line-height: 1.6;">
         {i18n('testimonials_review', html=True)}<br>
         {i18n('testimonials_whatsapp', html=True)}
-        <a href="https://wa.me/15208392877?text=Hola%20ADIS,%20quiero%20dejar%20un%20testimonio" target="_blank" style="color: var(--gold); text-decoration: none; font-weight: 600;">WhatsApp &#128172;</a>
+        <a href="https://wa.me/15208392877?text=Hola%20ADIS,%20quiero%20dejar%20un%20testimonio" target="_blank" style="color: var(--gold); text-decoration: none; font-weight: 600; display:inline-flex; align-items:center; gap:0.3rem;">{svg_icon('chat', size=14)} WhatsApp</a>
       </div>
+    </div>
+    <div class="reviews-cta">
+      <a href="{CONTACTO.get('google_business_url') or 'https://www.google.com/search?q=ADIS+Dise%C3%B1o+y+Remodelaci%C3%B3n+Nogales+rese%C3%B1as'}" target="_blank" class="btn-outline" onclick="gtag('event','google_reviews_click',{{'location':'testimonials'}})">{i18n('reviews_google_cta')}</a>
     </div>
   </section>
   <script>
@@ -6269,8 +6747,6 @@ def _extract_curiosos_cards(text):
             continue
         desc = re.sub(r'\*\*(.+?)\*\*', r'<strong>\1</strong>', desc)
         item_count += 1
-        icons = ['🔬', '🌍', '🔥', '🖨️', '⚖️', '🧪', '🌲', '🌧️', '&#127968;', '📐', '🪨', '🎨']
-        icon = icons[(item_count-1) % len(icons)]
         if len(desc) > 130:
             desc_trunc = desc[:127] + '...'
             card_p = f'''<p class="sq-card-text">
@@ -6282,7 +6758,6 @@ def _extract_curiosos_cards(text):
             card_p = f'<p class="sq-card-text">{desc}</p>'
         cards += f'''      <div class="sq-card">
         <span class="sq-card-number">{item_count:02d}</span>
-        <span class="sq-card-icon">{icon}</span>
         <h3>{title}</h3>
         {card_p}
       </div>
@@ -6376,7 +6851,7 @@ def generate_sabias_que():
         'PLAFON PVC LAMINADO WOOD STYLE': 'img/4-plafon-pvc/41-plafon-pvc-laminado/SHERWOOD.jpg',
         'PLAFÓN PVC LAMINADO WOOD STYLE': 'img/4-plafon-pvc/41-plafon-pvc-laminado/SHERWOOD.jpg',
         'PANELES TRIDIMENSIONALES 3D': 'img/5-paneles-tridimensionales/51-blanco/Austin.jpg',
-        'VIGAS PVCWPCPU': 'img/6-vigas-pvc/61-interior/BAHIA%201.jpg',
+        'VIGAS PVC': 'img/6-vigas-pvc/61-interior/BAHIA%201.jpg',
         'PISOS': 'img/7-pisos/71-laminado/ACONCAGUA.jpg',
         'ZACATE SINTETICO': 'img/8-zacate/81-follaje-sintetico/AMAZONAS-A.jpg',
         'ZACATE SINTÉTICO': 'img/8-zacate/81-follaje-sintetico/AMAZONAS-A.jpg',
@@ -6788,6 +7263,8 @@ def main():
     generate_robots()
     generate_index(categories)
     generate_contacto()
+    generate_nosotros()
+    generate_privacy()
     generate_proyectos()
     generate_sabias_que()
 
@@ -6831,7 +7308,7 @@ def main():
             'PLAFON PVC LAMINADO WOOD STYLE': 'plafon',
             'PLAFÓN PVC LAMINADO WOOD STYLE': 'plafon',
             'PANELES TRIDIMENSIONALES 3D': 'paneles_3d',
-            'VIGAS PVCWPCPU': 'vigas',
+            'VIGAS PVC': 'vigas',
             'PISOS': 'pisos',
             'ZACATE SINTETICO': 'zacate',
             'ZACATE SINTÉTICO': 'zacate',
