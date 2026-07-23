@@ -1377,7 +1377,7 @@ nav.desktop-nav a:hover::after { width: 100%; }
   display: flex; align-items: center; justify-content: center;
   position: relative; padding: 5rem 2rem;
   text-align: center;
-  background: url('media/proyecto-recepcion.jpg') center/cover no-repeat;
+  background: url('media/despues 2.jpeg') center/cover no-repeat;
   z-index: 1;
 }
 .hero-home::before {
