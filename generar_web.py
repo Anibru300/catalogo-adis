@@ -7,6 +7,13 @@ import shutil
 import datetime
 import unicodedata
 from pathlib import Path
+from urllib.parse import quote
+
+try:
+    from PIL import Image
+    HAS_PIL = True
+except Exception:
+    HAS_PIL = False
 
 # Forzar UTF-8 en stdout para evitar errores de codificación
 if hasattr(sys.stdout, 'reconfigure'):
@@ -786,6 +793,45 @@ def _copy_if_needed(src, dst):
     return False
 
 
+def _webp_path_for(dst_path):
+    """Devuelve rutas WebP full y 600w para una imagen destino."""
+    p = Path(dst_path)
+    webp = p.with_suffix('.webp')
+    webp600 = p.parent / (p.stem + '-600w.webp')
+    return webp, webp600
+
+
+def _ensure_webp(src_path, dst_path, max_width=None):
+    """Genera una versión WebP de src_path en dst_path. Retorna True si se generó."""
+    if not HAS_PIL:
+        return False
+    try:
+        with Image.open(src_path) as im:
+            im = im.convert('RGB')
+            if max_width and im.width > max_width:
+                ratio = max_width / im.width
+                new_size = (max_width, int(im.height * ratio))
+                im = im.resize(new_size, Image.LANCZOS)
+            dst_path.parent.mkdir(parents=True, exist_ok=True)
+            im.save(dst_path, 'WEBP', quality=85, method=6)
+            return True
+    except Exception as e:
+        print(f"  [WEBP] Error generando {dst_path}: {e}")
+        return False
+
+
+def _generate_image_variants(src, dst):
+    """Copia imagen y genera variantes WebP si Pillow está disponible."""
+    copied = _copy_if_needed(src, dst)
+    if HAS_PIL:
+        webp, webp600 = _webp_path_for(dst)
+        if copied or not webp.exists():
+            _ensure_webp(src, webp)
+        if copied or not webp600.exists():
+            _ensure_webp(src, webp600, max_width=600)
+    return copied
+
+
 def md_to_html(text):
     """Convierte Markdown básico a HTML."""
     if not text:
@@ -992,6 +1038,7 @@ def sync_images(categories):
     img_dir.mkdir(parents=True, exist_ok=True)
     
     total = 0
+    webp_total = 0
     errors = []
     expected = set()
     for cat in categories:
@@ -1006,8 +1053,12 @@ def sync_images(categories):
             if not src.exists():
                 errors.append(f"  [ERROR] No existe: {src}")
                 continue
-            if _copy_if_needed(src, dst):
+            copied = _generate_image_variants(src, dst)
+            if copied:
                 total += 1
+            webp, webp600 = _webp_path_for(dst)
+            if webp.exists():
+                webp_total += 1
         
         # Copiar productos de subcategorias
         for sub in cat["subcategories"]:
@@ -1020,14 +1071,19 @@ def sync_images(categories):
                 if not src.exists():
                     errors.append(f"  [ERROR] No existe: {src}")
                     continue
-                if _copy_if_needed(src, dst):
+                copied = _generate_image_variants(src, dst)
+                if copied:
                     total += 1
+                webp, webp600 = _webp_path_for(dst)
+                if webp.exists():
+                    webp_total += 1
     
     if errors:
         print(f"ADVERTENCIA: {len(errors)} imagenes no se pudieron copiar:")
         for e in errors[:10]:
             print(e)
     print(f"Imagenes sincronizadas: {total} nuevas/actualizadas en {img_dir}")
+    print(f"Variantes WebP listas: {webp_total}")
 
 
 def get_products(folder_path):
@@ -1651,6 +1707,25 @@ nav.desktop-nav a:hover::after { width: 100%; }
   font-size: 0.9rem; color: rgba(245,245,245,0.8); line-height: 1.6;
   max-width: 400px;
 }
+
+/* BREADCRUMBS */
+.breadcrumbs {
+  padding: 6.5rem 2rem 0;
+  font-size: 0.75rem;
+  color: rgba(245,245,245,0.5);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.breadcrumbs a {
+  color: rgba(245,245,245,0.6);
+  text-decoration: none;
+  transition: color 0.3s;
+}
+.breadcrumbs a:hover { color: var(--gold); }
+.breadcrumbs span { color: var(--gold); margin: 0 0.4rem; }
+@media (max-width: 768px) { .breadcrumbs { padding-top: 5.5rem; } }
 
 /* HERO CATEGORIA ESTRELLA */
 .hero-star-badge {
@@ -2831,13 +2906,13 @@ footer {
 .spotlight-item-cat { color: rgba(245,245,245,0.5); font-size: 0.8rem; }
 
 /* BREADCRUMBS */
-.breadcrumbs {
+.breadcrumbs-page {
   display: flex; align-items: center; gap: 0.5rem; justify-content: center;
   padding: 1rem 2rem; flex-wrap: wrap; font-size: 0.75rem; color: rgba(245,245,245,0.5); text-transform: uppercase; letter-spacing: 1px;
 }
-.breadcrumbs a { color: var(--gold); text-decoration: none; transition: opacity 0.3s; }
-.breadcrumbs a:hover { opacity: 0.7; }
-.breadcrumbs span { color: rgba(245,245,245,0.3); }
+.breadcrumbs-page a { color: var(--gold); text-decoration: none; transition: opacity 0.3s; }
+.breadcrumbs-page a:hover { opacity: 0.7; }
+.breadcrumbs-page span { color: rgba(245,245,245,0.3); }
 
 /* CAT NAV (prev/next) */
 .cat-nav { display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto; padding: 0 2rem 3rem; gap: 1rem; }
@@ -3147,12 +3222,31 @@ footer {
 '''
 
 
+def minify_css(css):
+    """Minifica CSS básico usando stdlib."""
+    css = re.sub(r'/\*.*?\*/', '', css, flags=re.DOTALL)
+    css = re.sub(r'\s+', ' ', css)
+    css = re.sub(r'\s*([{}:;,])\s*', r'\1', css)
+    css = re.sub(r';}', '}', css)
+    return css.strip()
+
+
+def minify_html(html):
+    """Minifica HTML conservando scripts y contenido inline."""
+    # Eliminar comentarios HTML excepto condicionales
+    html = re.sub(r'<!--(?!\[if).*?-->', '', html, flags=re.DOTALL | re.IGNORECASE)
+    # Reducir espacios entre tags
+    html = re.sub(r'>\s+<', '><', html)
+    return html.strip()
+
+
 def generate_style():
     """Escribe el CSS completo en style.css."""
     css_path = OUTPUT_DIR / 'style.css'
+    css_min = minify_css(CSS.strip())
     with open(css_path, 'w', encoding='utf-8') as f:
-        f.write(CSS.strip())
-    print(f"  style.css generado ({len(CSS):,} caracteres)")
+        f.write(css_min)
+    print(f"  style.css generado ({len(css_min):,} caracteres)")
 
 
 # ========== PARTICLES JS ==========
@@ -3245,8 +3339,47 @@ def build_whatsapp_message(product, category, subcategory=None, nombre='', ciuda
 
 # ========== SCHEMA.ORG / SEO ==========
 def json_ld(data):
-    """Envuelve un diccionario en un script JSON-LD."""
-    return f'<script type="application/ld+json">{json.dumps(data, ensure_ascii=False, indent=2)}</script>'
+    """Envuelve un diccionario en un script JSON-LD compacto."""
+    return f'<script type="application/ld+json">{json.dumps(data, ensure_ascii=False, separators=(",", ":"))}</script>'
+
+
+def head_common():
+    """Bloque de performance y OG base común a todas las paginas."""
+    return f'''<meta name="theme-color" content="#0F0F0F">
+  <meta property="og:site_name" content="ADIS Diseño & Remodelación">
+  <meta property="og:locale" content="es_MX">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://www.googletagmanager.com">
+  <link rel="preload" href="style.css" as="style">
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&family=Playfair+Display:wght@400;700&display=swap" as="style">'''
+
+
+def og_image_tags(image_url):
+    """Devuelve OG/Twitter image tags con URL absoluta y dimensiones por defecto."""
+    return f'''<meta property="og:image" content="{image_url}">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:image" content="{image_url}">
+  <meta name="twitter:card" content="summary_large_image">'''
+
+
+def breadcrumb_html(items):
+    """Genera breadcrumbs visuales a partir de lista de (nombre, url).
+    El ultimo elemento se muestra sin enlace.
+    """
+    if not items:
+        return ''
+    parts = []
+    for i, (name, url) in enumerate(items):
+        if i == len(items) - 1 or not url:
+            parts.append(f'<span>{name}</span>')
+        else:
+            parts.append(f'<a href="{url}">{name}</a>')
+    return f'''  <nav class="breadcrumbs breadcrumbs-page" aria-label="Breadcrumb">
+    {' <span>/</span> '.join(parts)}
+  </nav>
+''' if parts else ''
 
 
 def organization_schema():
@@ -3629,6 +3762,25 @@ def category_filters_js():
   </script>'''
 
 
+def webp_srcset(img_path):
+    """Devuelve rutas WebP para una imagen relativa si existen."""
+    p = Path(img_path)
+    webp = p.with_suffix('.webp').as_posix()
+    webp600 = (p.parent / (p.stem + '-600w.webp')).as_posix()
+    return webp, webp600
+
+
+def picture_tag(img_path, alt, loading='lazy', onclick=None):
+    """Genera un tag <picture> con fallback WebP."""
+    webp_path, webp600 = webp_srcset(img_path)
+    attrs = f' onclick="{onclick}"' if onclick else ''
+    return f'''<picture>
+            <source srcset="{webp_path}" type="image/webp">
+            <source srcset="{webp600}" media="(max-width: 600px)" type="image/webp">
+            <img src="{img_path}" alt="{alt}" loading="{loading}"{attrs}>
+          </picture>'''
+
+
 def product_card_html(prod_file, cat, sub=None):
     """Genera tarjeta de producto con CTA unificado a WhatsApp via modal."""
     prod_name = os.path.splitext(prod_file)[0]
@@ -3637,6 +3789,7 @@ def product_card_html(prod_file, cat, sub=None):
         sub_slug=sub["slug"] if sub else "",
         prod_file=prod_file
     ) if sub else "img/{cat_slug}/{prod_file}".format(cat_slug=cat["slug"], prod_file=prod_file)
+    webp_path, webp600 = webp_srcset(img_path)
     sub_name = sub["name"] if sub else None
     sub_arg = "'" + sub_name + "'" if sub_name else "null"
     cat_name = cat["name"]
@@ -3646,7 +3799,7 @@ def product_card_html(prod_file, cat, sub=None):
     button_html = f'<button type="button" class="btn-cotizar" onclick="openWaModal(\'{prod_name}\', \'{cat_name}\', {sub_arg})">{i18n("modal_title")}</button>'
     return f'''      <div class="product-card reveal" data-name="{prod_name_lower}" data-category="{cat_name}" data-subcategory="{sub_name_lower}" data-keywords="{keywords}">
         <div class="product-gallery" onclick="openLightbox('{img_path}', '{prod_name}')">
-          <img src="{img_path}" alt="{prod_name}" loading="lazy">
+          {picture_tag(img_path, prod_name)}
         </div>
         <div class="product-info">
           <div class="product-name">{prod_name}</div>
@@ -5290,6 +5443,7 @@ def generate_index(categories):
   <meta charset="UTF-8">
   <link rel="icon" type="image/png" href="LOGO ADIS.png">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  {head_common()}
   <title>Recubrimientos en Nogales, Sonora · Arizona | ADIS Diseño & Remodelación</title>
   <meta name="description" content="{meta_desc_es}">
   <meta name="keywords" content="{meta_keywords}">
@@ -5525,7 +5679,7 @@ def generate_index(categories):
 </html>
 '''
     with open(OUTPUT_DIR / 'index.html', 'w', encoding='utf-8') as f:
-        f.write(html)
+        f.write(minify_html(html))
     print("✅ index.html generado")
 
 
@@ -5538,6 +5692,7 @@ def generate_contacto():
   <meta charset="UTF-8">
   <link rel="icon" type="image/png" href="LOGO ADIS.png">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  {head_common()}
   <title>Cotizar Recubrimientos Nogales Sonora · Arizona | Contacto ADIS</title>
   <meta name="description" content="{meta_desc_es}">
   <meta name="keywords" content="cotizar recubrimientos Nogales, contacto ADIS, paneles PVC Sonora, wall panels Nogales AZ, remodeling materials Arizona, WhatsApp ADIS">
@@ -5568,6 +5723,7 @@ def generate_contacto():
   <script>document.documentElement.classList.add('js-enabled');</script>
   <canvas id="bg-canvas"></canvas>
 {generate_header("contacto")}
+{breadcrumb_html([('Inicio', 'index.html'), ('Contacto', '')])}
 
   <section class="hero-cat" style="padding-top: 8rem;">
     <h1>{i18n('contact_title', html=True)}</h1>
@@ -5710,7 +5866,7 @@ def generate_contacto():
 </html>
 '''
     with open(OUTPUT_DIR / 'contacto.html', 'w', encoding='utf-8') as f:
-        f.write(html)
+        f.write(minify_html(html))
     print("✅ contacto.html generado")
 
 
@@ -5724,15 +5880,17 @@ def generate_nosotros():
   <meta charset="UTF-8">
   <link rel="icon" type="image/png" href="LOGO ADIS.png">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  {head_common()}
   <title>Nosotros | ADIS Diseño & Remodelación · Nogales Sonora</title>
   <meta name="description" content="{meta_desc_es}">
   <meta name="keywords" content="ADIS Diseño Remodelación, nosotros ADIS, recubrimientos Nogales, paneles PVC Sonora, remodeling Arizona">
   <meta property="og:title" content="Nosotros | ADIS Diseño & Remodelación">
   <meta property="og:description" content="{meta_desc_es}">
-  <meta property="og:image" content="{SITE_URL}LOGO%20ADIS.png">
+  {og_image_tags(f'{SITE_URL}LOGO%20ADIS.png')}
   <meta property="og:url" content="{SITE_URL}nosotros.html">
   <meta property="og:type" content="website">
-  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Nosotros | ADIS Diseño & Remodelación">
+  <meta name="twitter:description" content="{meta_desc_es}">
   <link rel="canonical" href="{SITE_URL}nosotros.html">
   <meta name="description-en" content="{meta_desc_en}">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
@@ -5747,6 +5905,7 @@ def generate_nosotros():
   <script>document.documentElement.classList.add('js-enabled');</script>
   <canvas id="bg-canvas"></canvas>
 {generate_header("nosotros")}
+{breadcrumb_html([('Inicio', 'index.html'), ('Nosotros', '')])}
 
   <section class="about-hero">
     <div class="about-hero-content">
@@ -5846,7 +6005,7 @@ def generate_nosotros():
 </html>
 '''
     with open(OUTPUT_DIR / 'nosotros.html', 'w', encoding='utf-8') as f:
-        f.write(html)
+        f.write(minify_html(html))
     print("✅ nosotros.html generado")
 
 
@@ -5861,12 +6020,17 @@ def generate_privacy():
   <meta charset="UTF-8">
   <link rel="icon" type="image/png" href="LOGO ADIS.png">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  {head_common()}
   <title>Aviso de Privacidad | ADIS Diseño & Remodelación</title>
   <meta name="description" content="{meta_desc_es}">
+  <meta name="keywords" content="aviso de privacidad ADIS, proteccion de datos, privacidad Nogales, privacy notice">
   <meta property="og:title" content="Aviso de Privacidad | ADIS Diseño & Remodelación">
   <meta property="og:description" content="{meta_desc_es}">
-  <meta property="og:image" content="{SITE_URL}LOGO%20ADIS.png">
+  {og_image_tags(f'{SITE_URL}LOGO%20ADIS.png')}
   <meta property="og:url" content="{SITE_URL}aviso-de-privacidad.html">
+  <meta property="og:type" content="website">
+  <meta name="twitter:title" content="Aviso de Privacidad | ADIS Diseño & Remodelación">
+  <meta name="twitter:description" content="{meta_desc_es}">
   <link rel="canonical" href="{SITE_URL}aviso-de-privacidad.html">
   <meta name="description-en" content="{meta_desc_en}">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
@@ -5881,6 +6045,7 @@ def generate_privacy():
   <script>document.documentElement.classList.add('js-enabled');</script>
   <canvas id="bg-canvas"></canvas>
 {generate_header("privacy")}
+{breadcrumb_html([('Inicio', 'index.html'), ('Aviso de privacidad', '')])}
 
   <section class="hero-cat" style="padding-top: 8rem;">
     <h1>{i18n('privacy_title')}</h1>
@@ -5920,7 +6085,7 @@ def generate_privacy():
 </html>
 '''
     with open(OUTPUT_DIR / 'aviso-de-privacidad.html', 'w', encoding='utf-8') as f:
-        f.write(html)
+        f.write(minify_html(html))
     print("✅ aviso-de-privacidad.html generado")
 
 
@@ -5954,6 +6119,7 @@ def generate_category_page(cat, categories):
         hero_bg = f'img/{cat["slug"]}/{cat["subcategories"][0]["slug"]}/{cat["subcategories"][0]["products"][0]}'
     elif cat["direct_products"]:
         hero_bg = f'img/{cat["slug"]}/{cat["direct_products"][0]}'
+    hero_bg_quoted = quote(hero_bg, safe='/') if hero_bg else ''
 
     # Reordenar subcategorías: Placas PVC debe tener tipo espejo primero
     subs = list(cat["subcategories"])
@@ -6100,7 +6266,7 @@ def generate_category_page(cat, categories):
             gallery_items = ''
             for img in real_imgs:
                 gallery_items += f'''      <div class="real-sheets-item" onclick="openLightbox('media/{img}', '{t("cat_real_sheets_title")}')">
-        <img src="media/{img}" alt="{t("cat_real_sheets_title")}" loading="lazy">
+        {picture_tag(f'media/{img}', t('cat_real_sheets_title'))}
         <span class="real-sheets-badge">{i18n('cat_real_sheets_badge')}</span>
       </div>
 '''
@@ -6160,18 +6326,19 @@ def generate_category_page(cat, categories):
   <meta charset="UTF-8">
   <link rel="icon" type="image/png" href="LOGO ADIS.png">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  {head_common()}
   <title>{cat_title}</title>
   <meta name="description" content="{cat_desc}">
   <meta name="keywords" content="{cat['name'].lower()} Nogales, {cat['name'].lower()} Sonora, recubrimientos Nogales, ADIS {cat['name'].lower()}, cotizar {cat['name'].lower()}">
   <meta property="og:title" content="{cat_title}">
   <meta property="og:description" content="{cat_desc}">
-  <meta property="og:image" content="{SITE_URL}{hero_bg}">
+  <meta property="og:image" content="{SITE_URL}{hero_bg_quoted}">
   <meta property="og:url" content="{SITE_URL}{cat["filename"]}">
   <meta property="og:type" content="website">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="{cat_title}">
   <meta name="twitter:description" content="{cat_desc}">
-  <meta name="twitter:image" content="{SITE_URL}{hero_bg}">
+  <meta name="twitter:image" content="{SITE_URL}{hero_bg_quoted}">
   <link rel="canonical" href="{SITE_URL}{cat["filename"]}">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
@@ -6231,7 +6398,7 @@ def generate_category_page(cat, categories):
 '''
     filepath = OUTPUT_DIR / cat["filename"]
     with open(filepath, 'w', encoding='utf-8') as f:
-        f.write(html)
+        f.write(minify_html(html))
     print(f'{cat["filename"]} generado')
 
 
@@ -6320,6 +6487,10 @@ def sync_media():
             continue
         mapping[fpath] = dst_name
         expected_names.add(dst_name.lower())
+        if HAS_PIL and dst_name.lower().endswith(img_exts):
+            p = Path(dst_name)
+            expected_names.add(p.with_suffix('.webp').name.lower())
+            expected_names.add((p.parent / (p.stem + '-600w.webp')).name.lower())
     
     # Eliminar archivos huérfanos en media/ (ya no tienen fuente en el mapeo actual)
     removed = 0
@@ -6332,19 +6503,28 @@ def sync_media():
                 pass
     
     copied = 0
+    webp_total = 0
     errors = []
     for src_path, dst_name in mapping.items():
         if not src_path.exists():
             errors.append(f"  [ERROR] No existe: {src_path}")
             continue
         dst = media_dir / dst_name
-        if _copy_if_needed(src_path, dst):
+        if dst_name.lower().endswith(img_exts):
+            file_copied = _generate_image_variants(src_path, dst)
+            if webp_path_for := _webp_path_for(dst):
+                if webp_path_for[0].exists():
+                    webp_total += 1
+        else:
+            file_copied = _copy_if_needed(src_path, dst)
+        if file_copied:
             copied += 1
     if errors:
         print(f"ADVERTENCIA: {len(errors)} archivos de media no se pudieron copiar:")
         for e in errors[:10]:
             print(e)
     print(f"Media sincronizada: {copied} copiados, {removed} huérfanos eliminados ({auto_img} imgs + {auto_pvc} pvc + {auto_vid} vids)")
+    print(f"Media WebP listas: {webp_total}")
 
 
 # Datos extraídos de fichas técnicas
@@ -6875,6 +7055,7 @@ def generate_sabias_que():
   <meta charset="UTF-8">
   <link rel="icon" type="image/png" href="LOGO ADIS.png">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  {head_common()}
   <title>{cat_name} — ¿Sabías que? | ADIS Diseño & Remodelación</title>
   <meta name="description" content="Datos curiosos y preguntas frecuentes sobre {cat_name}.">
   <meta property="og:title" content="{cat_name} — ¿Sabías que? | ADIS">
@@ -6899,6 +7080,7 @@ def generate_sabias_que():
   <script>document.documentElement.classList.add('js-enabled');</script>
   <canvas id="bg-canvas"></canvas>
 {generate_header("sabias-que")}
+{breadcrumb_html([('Inicio', 'index.html'), ('¿Sabías que?', 'sabias-que.html'), (cat_name, '')])}
 
   <section class="sq-hero">
     <h1>{i18n('sq_title')}</h1>
@@ -6946,7 +7128,7 @@ function sqToggle(el) {{
 </html>
 '''
         with open(OUTPUT_DIR / f'sabias-que-{slug}.html', 'w', encoding='utf-8') as f:
-            f.write(page_html)
+            f.write(minify_html(page_html))
         print(f"✅ sabias-que-{slug}.html generado ({cat_name})")
     
     # Generar pagina indice
@@ -6969,6 +7151,7 @@ function sqToggle(el) {{
   <meta charset="UTF-8">
   <link rel="icon" type="image/png" href="LOGO ADIS.png">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  {head_common()}
   <title>¿Sabías que? | ADIS Diseño & Remodelación</title>
   <meta name="description" content="Datos curiosos, FAQs y consejos sobre nuestros productos: PVC, WPC, paneles 3D, pisos, zacate y cladding.">
   <meta property="og:title" content="¿Sabías que? | ADIS">
@@ -6993,6 +7176,7 @@ function sqToggle(el) {{
   <script>document.documentElement.classList.add('js-enabled');</script>
   <canvas id="bg-canvas"></canvas>
 {generate_header("sabias-que")}
+{breadcrumb_html([('Inicio', 'index.html'), ('¿Sabías que?', '')])}
 
   <section class="sq-hero">
     <h1>{i18n('sq_title')}</h1>
@@ -7009,7 +7193,7 @@ function sqToggle(el) {{
 </html>
 '''
     with open(OUTPUT_DIR / 'sabias-que.html', 'w', encoding='utf-8') as f:
-        f.write(index_html)
+        f.write(minify_html(index_html))
     print("✅ sabias-que.html (indice) generado")
 
 
@@ -7064,11 +7248,11 @@ def generate_proyectos():
     <div class="carousel-wrap">
       <div class="carousel" id="carousel-ba-{i}">
         <div class="carousel-slide">
-          <img src="media/{antes}" alt="{t("projects_before")}" loading="lazy" onclick="openLightbox('media/{antes}', '{t("projects_before")} - {label}')">
+          {picture_tag(f'media/{antes}', t('projects_before'), onclick=f"openLightbox('media/{antes}', '{t('projects_before')} - {label}')")}
           <div class="carousel-label" style="background: rgba(197,160,89,0.2);">{i18n('projects_before')}</div>
         </div>
         <div class="carousel-slide">
-          <img src="media/{despues}" alt="{t("projects_after")}" loading="lazy" onclick="openLightbox('media/{despues}', '{t("projects_after")} - {label}')">
+          {picture_tag(f'media/{despues}', t('projects_after'), onclick=f"openLightbox('media/{despues}', '{t('projects_after')} - {label}')")}
           <div class="carousel-label" style="background: var(--gold); color: var(--black);">{i18n('projects_after')}</div>
         </div>
       </div>
@@ -7087,7 +7271,7 @@ def generate_proyectos():
         for img in loose_images:
             name = Path(img).stem.replace('-', ' ').replace('_', ' ').title()
             slides += f'''        <div class="carousel-slide">
-          <img src="media/{img}" alt="{name}" loading="lazy" onclick="openLightbox('media/{img}', '{name}')">
+          {picture_tag(f'media/{img}', name, onclick=f"openLightbox('media/{img}', '{name}')")}
         </div>
 '''
         gallery_section = f'''  <section class="section-wrap-alt reveal">
@@ -7141,14 +7325,17 @@ def generate_proyectos():
   <meta charset="UTF-8">
   <link rel="icon" type="image/png" href="LOGO ADIS.png">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  {head_common()}
   <title>Proyectos Reales | ADIS Diseño & Remodelación</title>
   <meta name="description" content="Galería de proyectos reales de ADIS Diseño & Remodelación. Antes y después, remodelaciones de interiores y exteriores.">
+  <meta name="keywords" content="proyectos ADIS, antes y despues, remodelaciones Nogales, remodelaciones Arizona, placas PVC instaladas, lambrin WPC">
   <meta property="og:title" content="Proyectos Reales | ADIS Diseño & Remodelación">
   <meta property="og:description" content="Galería de proyectos reales de ADIS Diseño & Remodelación. Antes y después, remodelaciones de interiores y exteriores.">
-  <meta property="og:image" content="media/despues.jpg">
+  {og_image_tags(f'{SITE_URL}media/despues.jpg')}
   <meta property="og:url" content="{SITE_URL}proyectos.html">
   <meta property="og:type" content="website">
-  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Proyectos Reales | ADIS Diseño & Remodelación">
+  <meta name="twitter:description" content="Galería de proyectos reales de ADIS Diseño & Remodelación. Antes y después, remodelaciones de interiores y exteriores.">
   <meta name="twitter:title" content="Proyectos Reales | ADIS Diseño & Remodelación">
   <meta name="twitter:description" content="Galería de proyectos reales de ADIS Diseño & Remodelación. Antes y después, remodelaciones de interiores y exteriores.">
   <meta name="twitter:image" content="{SITE_URL}media/despues.jpg">
@@ -7180,6 +7367,7 @@ def generate_proyectos():
   <script>document.documentElement.classList.add('js-enabled');</script>
   <canvas id="bg-canvas"></canvas>
 {generate_header("proyectos")}
+{breadcrumb_html([('Inicio', 'index.html'), ('Proyectos', '')])}
 
   <section class="hero-cat">
     <h1>{i18n('projects_title')}</h1>
@@ -7232,10 +7420,7 @@ def generate_proyectos():
 </html>
 '''
     with open(OUTPUT_DIR / 'proyectos.html', 'w', encoding='utf-8') as f:
-        f.write(html)
-    print("proyectos.html generado (carruseles)")
-    with open(OUTPUT_DIR / 'proyectos.html', 'w', encoding='utf-8') as f:
-        f.write(html)
+        f.write(minify_html(html))
     print("proyectos.html generado")
 
 
