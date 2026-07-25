@@ -795,11 +795,13 @@ def translate_script(page_file='index.html'):
         }}
       }};
       document.addEventListener('DOMContentLoaded', function() {{
-        // Respeta la preferencia guardada; por defecto el idioma de esta página.
-        adisSetLang(localStorage.getItem('adis_lang') || '{CUR_LANG}');
+        // La URL manda: esta página es '{CUR_LANG}'. Se sincroniza localStorage
+        // para que chatbot y buscador usen el mismo idioma de la página.
+        adisSetLang('{CUR_LANG}');
       }});
     }})();
   </script>
+  <link rel="prefetch" href="{link}" as="document">
   <a id="translateToggle" class="translate-toggle" href="{link}" hreflang="{'es' if CUR_LANG == 'en' else 'en'}" aria-label="{aria}" title="{aria}">{label}</a>
   <!-- End ADIS i18n Toggle -->
 '''
