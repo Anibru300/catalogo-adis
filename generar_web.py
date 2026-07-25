@@ -8270,6 +8270,7 @@ def generate_proyectos():
     ba_sections = ''
     for i, (antes, despues) in enumerate(ba_pairs, 1):
         label = f'{t("projects_remodeling")} {i}' if len(ba_pairs) > 1 else t("projects_beforeafter_title")
+        antes_url, despues_url = p(f'media/{antes}'), p(f'media/{despues}')
         ba_sections += f'''  <section class="section-wrap reveal">
     <div class="section-header">
       <h2>{label}</h2>
@@ -8279,11 +8280,11 @@ def generate_proyectos():
     <div class="carousel-wrap">
       <div class="carousel" id="carousel-ba-{i}">
         <div class="carousel-slide">
-          {picture_tag(f'media/{antes}', t('projects_before'), onclick=f"openLightbox('media/{antes}', '{t('projects_before')} - {label}')")}
+          {picture_tag(f'media/{antes}', t('projects_before'), onclick=f"openLightbox('{antes_url}', '{t('projects_before')} - {label}')")}
           <div class="carousel-label" style="background: rgba(197,160,89,0.2);">{i18n('projects_before')}</div>
         </div>
         <div class="carousel-slide">
-          {picture_tag(f'media/{despues}', t('projects_after'), onclick=f"openLightbox('media/{despues}', '{t('projects_after')} - {label}')")}
+          {picture_tag(f'media/{despues}', t('projects_after'), onclick=f"openLightbox('{despues_url}', '{t('projects_after')} - {label}')")}
           <div class="carousel-label" style="background: var(--gold); color: var(--black);">{i18n('projects_after')}</div>
         </div>
       </div>
@@ -8301,8 +8302,9 @@ def generate_proyectos():
         slides = ''
         for img in loose_images:
             name = Path(img).stem.replace('-', ' ').replace('_', ' ').title()
+            img_url = p(f'media/{img}')
             slides += f'''        <div class="carousel-slide">
-          {picture_tag(f'media/{img}', name, onclick=f"openLightbox('media/{img}', '{name}')")}
+          {picture_tag(f'media/{img}', name, onclick=f"openLightbox('{img_url}', '{name}')")}
         </div>
 '''
         gallery_section = f'''  <section class="section-wrap-alt reveal">
@@ -8326,7 +8328,7 @@ def generate_proyectos():
         name = video_caption(vid)
         mime = video_mime_type(vid)
         poster = loose_images[0] if loose_images else (images[0] if images else '')
-        poster_attr = f' poster="media/{poster}"' if poster else ''
+        poster_attr = f' poster="{p("media/" + poster)}"' if poster else ''
         videos_html += f'''      <div class="video-card reveal">
         <video class="auto-video" muted loop playsinline{poster_attr}>
           <source src="{p('media/' + vid)}" type="{mime}">
