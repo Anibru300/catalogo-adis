@@ -547,11 +547,9 @@ def t(key, lang=None):
 
 
 def _prefix_links(html_text):
-    """Prefija links relativos a .html dentro de textos traducidos (para /en/)."""
-    if not CUR_PREFIX:
-        return html_text
-    return re.sub(r'href="([a-zA-Z0-9][^"]*?\.html[^"]*)"',
-                  lambda m: 'href="' + CUR_PREFIX + m.group(1) + '"', html_text)
+    """Los links .html dentro de traducciones ya resuelven al idioma correcto
+    (mismo directorio en /en/); no requieren prefijo."""
+    return html_text
 
 
 def i18n(key, html=False):
@@ -593,10 +591,15 @@ def set_lang(lang):
 
 
 def p(path):
-    """Prefija una ruta relativa según el idioma de generación."""
+    """Prefija una ruta relativa según el idioma de generación.
+    Los assets (img, css, media, pdf, json) viven en raíz -> llevan '../' en /en/.
+    Los links a páginas .html NO llevan prefijo: en /en/ apuntan a la versión EN
+    (mismo directorio), manteniendo al usuario en su idioma al navegar."""
     if not path or path.startswith(('http', 'mailto:', 'tel:', '#', 'data:')):
         return path
-    return CUR_PREFIX + path
+    if CUR_PREFIX and not path.split('#')[0].endswith('.html'):
+        return CUR_PREFIX + path
+    return path
 
 
 def hreflang_tags(es_path):
@@ -4426,7 +4429,7 @@ def generate_footer():
   'marble_designs_title': {es: '🎨 Diseños disponibles:', en: '🎨 Available designs:'},
   'marble_designs': {es: 'Carrara, Carrara Oscuro, Aurora Dorada, Onix, Cuarzo, Opalo, Perla, Topacio, Grafito, Jaspe, Agata, Arena, Obsidiana y más.', en: 'Carrara, Dark Carrara, Golden Aurora, Onyx, Quartz, Opal, Pearl, Topaz, Graphite, Jasper, Agate, Sand, Obsidian and more.'},
   'marble_tip': {es: '💡 Consejo: Para instalación en espejos se requiere perfil de aluminio obligatoriamente.', en: '💡 Tip: Aluminum profiles are mandatory for mirror installation.'},
-  'research_source': {es: '📚 Sacado de <a href="' + ADIS_PREFIX + 'sabias-que.html" style="color:#C5A059">¿Sabías que?</a>', en: '📚 From <a href="' + ADIS_PREFIX + 'sabias-que.html" style="color:#C5A059">Did you know?</a>'},
+  'research_source': {es: '📚 Sacado de <a href="sabias-que.html" style="color:#C5A059">¿Sabías que?</a>', en: '📚 From <a href="sabias-que.html" style="color:#C5A059">Did you know?</a>'},
   'more_curiosities': {es: 'Más datos curiosos', en: 'More curious facts'},
   'curious_facts': {es: 'Ver datos curiosos', en: 'View curious facts'},
   'wa_general': {es: 'Hola ADIS, tengo una pregunta', en: 'Hello ADIS, I have a question'},
@@ -4953,11 +4956,11 @@ def generate_footer():
         return `<div class="chat-product-card">
           <img src="${ADIS_PREFIX + m.thumb}" alt="${(getLang()==='en' && m.name_en) ? m.name_en : m.name}" loading="lazy">
           <div class="chat-product-info">
-            <a href="${ADIS_PREFIX + m.url}" target="_blank">${(getLang()==='en' && m.name_en) ? m.name_en : m.name}</a>
+            <a href="${m.url}" target="_blank">${(getLang()==='en' && m.name_en) ? m.name_en : m.name}</a>
             <div class="chat-product-cat">${m.category}${m.subcategory ? ' / ' + m.subcategory : ''}</div>
             ${priceTag}
             <div class="chat-product-actions">
-              <a href="${ADIS_PREFIX + m.url}" class="primary" target="_blank">${ct('view_product')}</a>
+              <a href="${m.url}" class="primary" target="_blank">${ct('view_product')}</a>
               <a href="https://wa.me/15208392877?text=${waText}" class="secondary" target="_blank">${ct('quote')}</a>
             </div>
           </div>
@@ -5936,7 +5939,7 @@ def generate_footer():
         const dCat = (getLang() === 'en' && p.category_en) ? p.category_en : p.category;
         const dSub = (getLang() === 'en' && p.subcategory_en) ? p.subcategory_en : p.subcategory;
         const waText = encodeURIComponent((getLang() === 'en' ? 'Hello ADIS, I saw the ' : 'Hola ADIS, vi el ') + dName + (getLang() === 'en' ? ' in the catalog and I am interested in a quote' : ' en el catálogo y me interesa cotizar'));
-        return `<a href="${ADIS_PREFIX + p.url}" class="search-item" onclick="closeSpotlight && closeSpotlight();">
+        return `<a href="${p.url}" class="search-item" onclick="closeSpotlight && closeSpotlight();">
           <img src="${ADIS_PREFIX + p.thumb}" alt="${dName}" loading="lazy" onerror="this.style.display='none'">
           <div class="search-item-info">
             <span class="search-item-name">${highlight(dName, term)}</span>
