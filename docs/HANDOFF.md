@@ -9,10 +9,31 @@
 - **Sitio en vivo**: `https://anibru300.github.io/catalogo-adis/`
 - **Generador principal**: `generar_web.py` (Python 3.13 en `C:\Users\Carlos\AppData\Local\Programs\Python\Python313\python`).
 - **Salida**: carpeta `public/` (GitHub Pages sirve desde `public/`).
-- **Último commit local**: `1486784` — "Agrega handoff doc con estado y pendientes".
-- **Push pendiente**: Sí. El commit aún no se ha empujado a GitHub.
+- **Último commit local**: `741fe36` — "fix: corrige JS roto en modal de cotizacion WhatsApp (escapes \n)".
+- **Push pendiente**: No (al día con `main`).
 - **Kimi CLI**: actualizado a `v1.49.0` (el ejecutable en uso se reemplazará al reiniciar la terminal).
 - **Modelo por defecto de Kimi**: cambiado a `kimi-code/k3` (1,048,576 tokens de contexto) en `C:\Users\Carlos\.kimi\config.toml`.
+- **Dominio canonical**: `SITE_URL` corregido a punycode `https://xn--adis-diseo-19a.com/` (antes tenía ñ literal, inválida en URLs).
+
+## Versión /en/ con hreflang (2026-07-24) ✅
+
+El sitio se genera **dos veces** desde `main()` en `generar_web.py`:
+- `set_lang('es')` → `public/` (raíz)
+- `set_lang('en')` → `public/en/` (24 páginas espejo en inglés)
+
+Infraestructura clave:
+- `CUR_LANG` / `CUR_PREFIX` globales; `set_lang()`, `p(path)` (prefijo `../`), `out_dir()`, `page_url()`, `hreflang_tags()`, `html_lang()`, `og_locale()`.
+- `t(key)` usa `CUR_LANG` por defecto; `i18n()`/`i18n_fmt()` emiten el texto default según idioma (mantienen `data-es`/`data-en` para el swap JS) y `_prefix_links()` arregla links `.html` dentro de traducciones.
+- Toggle ES/EN ahora es un `<a>` que navega a la página contraparte real (`en/xxx.html` ↔ `../xxx.html`); el swap JS queda como respaldo vía `adisSetLang()`.
+- Cada página tiene canonical por idioma + 3 `link rel="alternate" hreflang` (es, en, x-default) + `og:locale` es_MX/en_US con alternate.
+- `sitemap.xml`: 48 URLs con `xhtml:link` alternates bidireccionales.
+- Archivos de traducción nuevos en raíz del proyecto:
+  - `traducciones_productos.json` — categories/subcategories/names (237 productos) ES→EN.
+  - `investigacion_data_en.json` — FAQs/curiosos/comparativas/ventas de las 9 categorías en inglés.
+- `products.json` ahora incluye `name_en`, `category_en`, `subcategory_en` y bloque `research_en`; el chatbot/buscador los usan según idioma (`ADIS_PREFIX` y `ADIS_DEFAULT_LANG` se inyectan en build).
+- `CAT_SEO` es bilingüe; `RESEARCH_CAT_EN` traduce nombres de categorías de investigación.
+
+Al modificar plantillas: mantener `p()` en toda ruta relativa (href/src/fetch/background-image) y `t()`/`i18n()` en todo texto visible.
 
 ## Qué se arregló en la sesión anterior
 

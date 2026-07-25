@@ -466,6 +466,28 @@ TRANSLATIONS = {
     'footer_links_about': {'es': 'Nosotros', 'en': 'About us'},
     'footer_links_privacy': {'es': 'Aviso de privacidad', 'en': 'Privacy notice'},
     'footer_links_legal': {'es': 'Legal', 'en': 'Legal'},
+
+    # Títulos de página (SEO)
+    'title_index': {'es': 'Recubrimientos en Nogales, Sonora · Arizona | ADIS Diseño & Remodelación', 'en': 'Wall Coverings in Nogales, Sonora · Arizona | ADIS Design & Remodeling'},
+    'title_contacto': {'es': 'Cotizar Recubrimientos Nogales Sonora · Arizona | Contacto ADIS', 'en': 'Quote Wall Coverings Nogales Sonora · Arizona | Contact ADIS'},
+    'title_nosotros': {'es': 'Nosotros | ADIS Diseño & Remodelación · Nogales Sonora', 'en': 'About Us | ADIS Design & Remodeling · Nogales Sonora'},
+    'title_privacidad': {'es': 'Aviso de Privacidad | ADIS Diseño & Remodelación', 'en': 'Privacy Notice | ADIS Design & Remodeling'},
+    'title_sabias': {'es': '¿Sabías que? | ADIS Diseño & Remodelación', 'en': 'Did You Know? | ADIS Design & Remodeling'},
+    'title_proyectos': {'es': 'Proyectos Reales | ADIS Diseño & Remodelación', 'en': 'Real Projects | ADIS Design & Remodeling'},
+    'sabias_meta_desc': {'es': 'Datos curiosos, FAQs y consejos sobre nuestros productos: PVC, WPC, paneles 3D, pisos, zacate y cladding.', 'en': 'Fun facts, FAQs and tips about our products: PVC, WPC, 3D panels, flooring, artificial grass and cladding.'},
+    'sabias_slug_desc': {'es': 'Datos curiosos y preguntas frecuentes sobre {cat}.', 'en': 'Fun facts and frequently asked questions about {cat}.'},
+    'sabias_slug_title': {'es': '{cat} — ¿Sabías que? | ADIS Diseño & Remodelación', 'en': '{cat} — Did You Know? | ADIS Design & Remodeling'},
+    'proyectos_meta_desc': {'es': 'Galería de proyectos reales de ADIS Diseño & Remodelación. Antes y después, remodelaciones de interiores y exteriores.', 'en': 'Gallery of real projects by ADIS Design & Remodeling. Before and after, interior and exterior remodels.'},
+
+    # Breadcrumbs
+    'bc_home': {'es': 'Inicio', 'en': 'Home'},
+    'bc_sabias': {'es': '¿Sabías que?', 'en': 'Did You Know?'},
+    'bc_catalog': {'es': 'Catálogo', 'en': 'Catalog'},
+
+    # Secciones de investigación
+    'research_curiosos_sub': {'es': 'Datos curiosos sobre este material', 'en': 'Fun facts about this material'},
+    'research_faqs_title': {'es': 'Preguntas Frecuentes', 'en': 'Frequently Asked Questions'},
+    'research_faqs_sub': {'es': 'Respuestas a las dudas más comunes', 'en': 'Answers to the most common questions'},
 }
 
 
@@ -515,10 +537,21 @@ def svg_icon(name, size=20, color='#C5A059'):
     return template.format(size=size, color=color)
 
 
-def t(key, lang='es'):
-    """Devuelve la traducción de una clave. Fallback a español y luego a la clave."""
+def t(key, lang=None):
+    """Devuelve la traducción de una clave. Fallback a español y luego a la clave.
+    Si lang es None, usa el idioma de generación actual (CUR_LANG)."""
+    if lang is None:
+        lang = CUR_LANG
     entry = TRANSLATIONS.get(key, {})
     return entry.get(lang, entry.get('es', key))
+
+
+def _prefix_links(html_text):
+    """Prefija links relativos a .html dentro de textos traducidos (para /en/)."""
+    if not CUR_PREFIX:
+        return html_text
+    return re.sub(r'href="([a-zA-Z0-9][^"]*?\.html[^"]*)"',
+                  lambda m: 'href="' + CUR_PREFIX + m.group(1) + '"', html_text)
 
 
 def i18n(key, html=False):
@@ -528,7 +561,7 @@ def i18n(key, html=False):
     esc_es = t(key, 'es').replace('"', '&quot;')
     esc_en = t(key, 'en').replace('"', '&quot;')
     html_attr = ' data-i18n-html="true"' if html else ''
-    return f'<span data-i18n="{key}"{html_attr} data-es="{esc_es}" data-en="{esc_en}">{t(key, "es")}</span>'
+    return f'<span data-i18n="{key}"{html_attr} data-es="{esc_es}" data-en="{esc_en}">{_prefix_links(t(key))}</span>'
 
 
 def i18n_fmt(key, html=False, **kwargs):
@@ -538,12 +571,93 @@ def i18n_fmt(key, html=False, **kwargs):
     esc_es = es.replace('"', '&quot;')
     esc_en = en.replace('"', '&quot;')
     html_attr = ' data-i18n-html="true"' if html else ''
-    return f'<span data-i18n="{key}"{html_attr} data-es="{esc_es}" data-en="{esc_en}">{es}</span>'
+    default = es if CUR_LANG == 'es' else en
+    return f'<span data-i18n="{key}"{html_attr} data-es="{esc_es}" data-en="{esc_en}">{_prefix_links(default)}</span>'
 
 
 # ========== CONFIGURACIÓN DEL SITIO ==========
-# URL base del sitio. Cambia cuando conectes un dominio propio.
-SITE_URL = 'https://adis-diseño.com/'
+# URL base del sitio (punycode del dominio adis-diseño.com).
+SITE_URL = 'https://xn--adis-diseo-19a.com/'
+
+# ========== CONTEXTO DE IDIOMA (BUILD TIME) ==========
+# El sitio se genera dos veces: ES en public/ y EN en public/en/.
+CUR_LANG = 'es'
+CUR_PREFIX = ''  # '../' cuando se genera la versión EN en /en/
+
+
+def set_lang(lang):
+    """Establece el idioma de generación actual ('es' o 'en')."""
+    global CUR_LANG, CUR_PREFIX
+    CUR_LANG = lang
+    CUR_PREFIX = '../' if lang == 'en' else ''
+
+
+def p(path):
+    """Prefija una ruta relativa según el idioma de generación."""
+    if not path or path.startswith(('http', 'mailto:', 'tel:', '#', 'data:')):
+        return path
+    return CUR_PREFIX + path
+
+
+def hreflang_tags(es_path):
+    """Genera los link rel=alternate hreflang para el par ES/EN de una página."""
+    es_url = SITE_URL + es_path
+    en_url = SITE_URL + 'en/' + es_path
+    return (f'  <link rel="alternate" hreflang="es" href="{es_url}">\n'
+            f'  <link rel="alternate" hreflang="en" href="{en_url}">\n'
+            f'  <link rel="alternate" hreflang="x-default" href="{es_url}">')
+
+
+def out_dir():
+    """Directorio de salida según idioma: public/ (es) o public/en/ (en)."""
+    return OUTPUT_DIR if CUR_LANG == 'es' else OUTPUT_DIR / 'en'
+
+
+def page_url(es_path):
+    """URL canonical de la página actual según el idioma de generación."""
+    if CUR_LANG == 'en':
+        return SITE_URL + 'en/' + es_path
+    return SITE_URL + es_path
+
+
+def html_lang():
+    return 'en' if CUR_LANG == 'en' else 'es'
+
+
+# ========== TRADUCCIONES DE CATÁLOGO (categorías, subcategorías, productos) ==========
+try:
+    with open(BASE_DIR / 'traducciones_productos.json', encoding='utf-8') as _f:
+        _CAT_TR = json.load(_f)
+except Exception:
+    _CAT_TR = {}
+
+
+def cat_display(name):
+    """Nombre de categoría según idioma de generación (fallback ES)."""
+    if CUR_LANG == 'en':
+        return _CAT_TR.get('categories', {}).get(name, name)
+    return name
+
+
+def subcat_display(name):
+    """Nombre de subcategoría según idioma de generación (fallback ES)."""
+    if CUR_LANG == 'en':
+        return _CAT_TR.get('subcategories', {}).get(name, name)
+    return name
+
+
+def product_display(name):
+    """Nombre de producto según idioma de generación (fallback ES)."""
+    if CUR_LANG == 'en':
+        return _CAT_TR.get('names', {}).get(name, name)
+    return name
+
+
+def og_locale():
+    """Meta og:locale + alternate según idioma de generación."""
+    if CUR_LANG == 'en':
+        return '  <meta property="og:locale" content="en_US">\n  <meta property="og:locale:alternate" content="es_MX">'
+    return '  <meta property="og:locale" content="es_MX">\n  <meta property="og:locale:alternate" content="en_US">'
 
 # ========== PRECIOS REFERENCIALES POR CATEGORÍA ==========
 # Rangos de precios en MXN. Se usan en el chatbot como referencia.
@@ -648,51 +762,45 @@ def fb_pixel_script():
   <!-- End Meta Pixel Code -->'''
 
 
-def translate_script():
-    """Toggle manual ES/EN basado en diccionario data-i18n. Alta calidad, sin Google Translate."""
-    return '''
+def translate_script(page_file='index.html'):
+    """Toggle ES/EN: navega a la página contraparte real (/en/ o raíz).
+    Mantiene el swap JS data-i18n como respaldo para contenido dinámico."""
+    if CUR_LANG == 'en':
+        link = '../' + page_file
+        label, aria = 'ES', 'Cambiar a español'
+    else:
+        link = 'en/' + page_file
+        label, aria = 'EN', 'Switch to English'
+    return f'''
   <!-- ADIS i18n Toggle -->
   <script>
-    (function() {
-      function escapeHtml(str) {
-        return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-      }
-      function unescapeHtml(str) {
+    (function() {{
+      function unescapeHtml(str) {{
         return str.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&');
-      }
-      function setLang(lang) {
+      }}
+      window.adisSetLang = function(lang) {{
         localStorage.setItem('adis_lang', lang);
-        document.documentElement.setAttribute('lang', lang === 'en' ? 'en' : 'es');
-        document.querySelectorAll('[data-i18n]').forEach(function(el) {
+        document.querySelectorAll('[data-i18n]').forEach(function(el) {{
           var raw = el.getAttribute('data-' + lang);
           if (raw === null) return;
           var text = unescapeHtml(raw);
-          if (el.hasAttribute('data-i18n-html')) {
+          if (el.hasAttribute('data-i18n-html')) {{
             el.innerHTML = text;
-          } else {
+          }} else {{
             el.textContent = text;
-          }
-        });
-        var btn = document.getElementById('translateToggle');
-        if (btn) {
-          btn.textContent = lang === 'en' ? 'ES' : 'EN';
-          btn.setAttribute('aria-label', lang === 'en' ? 'Cambiar a español' : 'Switch to English');
-          btn.title = lang === 'en' ? 'Cambiar a español' : 'Switch to English';
-        }
-        if (typeof gtag === 'function') {
-          gtag('event', 'cambiar_idioma', { idioma: lang, location: 'translate_toggle' });
-        }
-      }
-      window.adisToggleLanguage = function() {
-        var current = localStorage.getItem('adis_lang') || 'es';
-        setLang(current === 'en' ? 'es' : 'en');
-      };
-      document.addEventListener('DOMContentLoaded', function() {
-        setLang(localStorage.getItem('adis_lang') || 'es');
-      });
-    })();
+          }}
+        }});
+        if (typeof gtag === 'function') {{
+          gtag('event', 'cambiar_idioma', {{ idioma: lang, location: 'translate_toggle' }});
+        }}
+      }};
+      document.addEventListener('DOMContentLoaded', function() {{
+        // Respeta la preferencia guardada; por defecto el idioma de esta página.
+        adisSetLang(localStorage.getItem('adis_lang') || '{CUR_LANG}');
+      }});
+    }})();
   </script>
-  <button id="translateToggle" class="translate-toggle" onclick="adisToggleLanguage()" aria-label="Switch to English" title="Switch to English">EN</button>
+  <a id="translateToggle" class="translate-toggle" href="{link}" hreflang="{'es' if CUR_LANG == 'en' else 'en'}" aria-label="{aria}" title="{aria}">{label}</a>
   <!-- End ADIS i18n Toggle -->
 '''
 
@@ -792,6 +900,43 @@ try:
         RESEARCH_DATA = json.load(f)
 except Exception:
     RESEARCH_DATA = {}
+
+# Versión en inglés (mismas claves de categoría, campos traducidos)
+try:
+    with open(BASE_DIR / 'investigacion_data_en.json', 'r', encoding='utf-8') as f:
+        RESEARCH_DATA_EN = json.load(f)
+except Exception:
+    RESEARCH_DATA_EN = {}
+
+
+# Nombres EN de las categorías de investigación (claves de RESEARCH_DATA)
+RESEARCH_CAT_EN = {
+    'PLACAS PVC': 'PVC Panels',
+    'LAMBRIN WPC': 'WPC Fluted Wall Panels',
+    'REVESTIMIENTO FLEXIBLE': 'Flexible Stone Veneer',
+    'PLAFON PVC LAMINADO WOOD STYLE': 'PVC Ceiling Panels',
+    'PLAFÓN PVC LAMINADO WOOD STYLE': 'PVC Ceiling Panels',
+    'PANELES TRIDIMENSIONALES 3D': '3D Wall Panels',
+    'PISOS': 'Flooring',
+    'ZACATE SINTETICO': 'Artificial Grass',
+    'ZACATE SINTÉTICO': 'Artificial Grass',
+    'CLADDING  PLACAS TIPO PIEDRA': 'Stone-look Cladding',
+    'VIGAS PVC': 'PVC Beams',
+}
+
+
+def research_cat_display(cat_key):
+    """Nombre visible de una categoría de investigación según idioma."""
+    if CUR_LANG == 'en':
+        return RESEARCH_CAT_EN.get(cat_key, cat_key.title())
+    return cat_key.title()
+
+
+def research_data(cat_key):
+    """Datos de investigación de una categoría según idioma de generación."""
+    if CUR_LANG == 'en':
+        return RESEARCH_DATA_EN.get(cat_key) or RESEARCH_DATA.get(cat_key, {})
+    return RESEARCH_DATA.get(cat_key, {})
 
 # Slugs para paginas de sabias-que (deben coincidir con generate_sabias_que)
 SABIAS_QUE_SLUGS = {
@@ -910,17 +1055,17 @@ def generate_research_html(cat_name):
     if not research_key:
         return ''
     
-    data = RESEARCH_DATA[research_key]
+    data = research_data(research_key)
     html_parts = []
     
     # Datos curiosos
     if data.get('curiosos'):
-        html_parts.append('''
+        html_parts.append(f'''
   <section class="research-section">
     <div class="section-header">
-      <h2>¿Sabías que?</h2>
+      <h2>{t('bc_sabias')}</h2>
       <div class="divider"></div>
-      <p>Datos curiosos sobre este material</p>
+      <p>{t('research_curiosos_sub')}</p>
     </div>
     <div class="research-content">
 ''')
@@ -937,12 +1082,12 @@ def generate_research_html(cat_name):
     
     # FAQs
     if data.get('faqs'):
-        html_parts.append('''
+        html_parts.append(f'''
   <section class="research-section">
     <div class="section-header">
-      <h2>Preguntas Frecuentes</h2>
+      <h2>{t('research_faqs_title')}</h2>
       <div class="divider"></div>
-      <p>Respuestas a las dudas más comunes</p>
+      <p>{t('research_faqs_sub')}</p>
     </div>
     <div class="research-faqs">
 ''')
@@ -1317,7 +1462,7 @@ nav.desktop-nav a:hover::after { width: 100%; }
   box-shadow: 0 4px 20px rgba(197,160,89,0.4);
   border: none; color: var(--black); font-weight: 800; font-size: 0.85rem;
   cursor: pointer; transition: transform 0.3s, box-shadow 0.3s;
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Montserrat', sans-serif; text-decoration: none;
 }
 .translate-toggle:hover { transform: scale(1.1); box-shadow: 0 6px 30px rgba(197,160,89,0.6); }
 [data-i18n] { display: inline; }
@@ -3377,11 +3522,11 @@ def head_common():
     """Bloque de performance y OG base común a todas las paginas."""
     return f'''<meta name="theme-color" content="#0F0F0F">
   <meta property="og:site_name" content="ADIS Diseño & Remodelación">
-  <meta property="og:locale" content="es_MX">
+{og_locale()}
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preconnect" href="https://www.googletagmanager.com">
-  <link rel="preload" href="style.css" as="style">
+  <link rel="preload" href="{p('style.css')}" as="style">
   <link rel="preload" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&family=Playfair+Display:wght@400;700&display=swap" as="style">'''
 
 
@@ -3584,9 +3729,20 @@ def generate_sitemap(categories):
         url_entries.append((f"{SITE_URL}sabias-que-{sq_slug}.html", '0.5'))
 
     xml = '<?xml version="1.0" encoding="UTF-8"?>\n'
-    xml += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+    xml += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n'
     for url, priority in url_entries:
-        xml += f'  <url><loc>{url}</loc><lastmod>{today}</lastmod><changefreq>weekly</changefreq><priority>{priority}</priority></url>\n'
+        path = url.replace(SITE_URL, '')
+        en_url = f"{SITE_URL}en/{path}"
+        xml += (f'  <url><loc>{url}</loc>'
+                f'<xhtml:link rel="alternate" hreflang="es" href="{url}"/>'
+                f'<xhtml:link rel="alternate" hreflang="en" href="{en_url}"/>'
+                f'<xhtml:link rel="alternate" hreflang="x-default" href="{url}"/>'
+                f'<lastmod>{today}</lastmod><changefreq>weekly</changefreq><priority>{priority}</priority></url>\n')
+        xml += (f'  <url><loc>{en_url}</loc>'
+                f'<xhtml:link rel="alternate" hreflang="es" href="{url}"/>'
+                f'<xhtml:link rel="alternate" hreflang="en" href="{en_url}"/>'
+                f'<xhtml:link rel="alternate" hreflang="x-default" href="{url}"/>'
+                f'<lastmod>{today}</lastmod><changefreq>weekly</changefreq><priority>{priority}</priority></url>\n')
     xml += '</urlset>'
 
     sitemap_path = OUTPUT_DIR / 'sitemap.xml'
@@ -3805,9 +3961,9 @@ def picture_tag(img_path, alt, loading='lazy', onclick=None):
     webp_path, webp600 = webp_srcset(img_path)
     attrs = f' onclick="{onclick}"' if onclick else ''
     return f'''<picture>
-            <source srcset="{webp_path}" type="image/webp">
-            <source srcset="{webp600}" media="(max-width: 600px)" type="image/webp">
-            <img src="{img_path}" alt="{alt}" loading="{loading}"{attrs}>
+            <source srcset="{p(webp_path)}" type="image/webp">
+            <source srcset="{p(webp600)}" media="(max-width: 600px)" type="image/webp">
+            <img src="{p(img_path)}" alt="{alt}" loading="{loading}"{attrs}>
           </picture>'''
 
 
@@ -3823,16 +3979,19 @@ def product_card_html(prod_file, cat, sub=None):
     sub_name = sub["name"] if sub else None
     sub_arg = "'" + sub_name + "'" if sub_name else "null"
     cat_name = cat["name"]
+    prod_name_disp = product_display(prod_name)
+    cat_name_disp = cat_display(cat_name)
+    sub_name_disp = subcat_display(sub_name) if sub_name else None
     prod_name_lower = prod_name.lower()
     sub_name_lower = sub_name.lower() if sub_name else 'general'
     keywords = ' '.join(_extract_keywords(prod_name))
-    button_html = f'<button type="button" class="btn-cotizar" onclick="openWaModal(\'{prod_name}\', \'{cat_name}\', {sub_arg})">{i18n("modal_title")}</button>'
-    return f'''      <div class="product-card reveal" data-name="{prod_name_lower}" data-category="{cat_name}" data-subcategory="{sub_name_lower}" data-keywords="{keywords}">
-        <div class="product-gallery" onclick="openLightbox('{img_path}', '{prod_name}')">
-          {picture_tag(img_path, prod_name)}
+    button_html = f'<button type="button" class="btn-cotizar" onclick="openWaModal(\'{prod_name_disp}\', \'{cat_name_disp}\', {sub_arg})">{i18n("modal_title")}</button>'
+    return f'''      <div class="product-card reveal" data-name="{prod_name_lower}" data-category="{cat_name_disp}" data-subcategory="{sub_name_lower}" data-keywords="{keywords}">
+        <div class="product-gallery" onclick="openLightbox('{p(img_path)}', '{prod_name_disp}')">
+          {picture_tag(img_path, prod_name_disp)}
         </div>
         <div class="product-info">
-          <div class="product-name">{prod_name}</div>
+          <div class="product-name">{prod_name_disp}</div>
           <div class="product-actions">
             {button_html}
           </div>
@@ -3855,7 +4014,7 @@ def generate_header(current_page='index'):
         ('8-zacate.html', 'img/8-zacate/81-follaje-sintetico/AMAZONAS-A.jpg', 'menu_zacate'),
         ('9-cladding.html', 'img/9-cladding/91-placa-tipo-roca/BLACK.jpg', 'menu_cladding'),
     ]
-    mega_html = '\n'.join([f'        <a href="{u}" class="mega-item"><img src="{i}" alt="{t(k)}" loading="lazy"><span>{i18n(k)}</span></a>' for u, i, k in MEGA_ITEMS])
+    mega_html = '\n'.join([f'        <a href="{p(u)}" class="mega-item"><img src="{p(i)}" alt="{t(k)}" loading="lazy"><span>{i18n(k)}</span></a>' for u, i, k in MEGA_ITEMS])
     
     SABIAS_ITEMS = [
         ('sabias-que-pvc.html', 'menu_placas_pvc'),
@@ -3868,41 +4027,41 @@ def generate_header(current_page='index'):
         ('sabias-que-zacate.html', 'menu_zacate'),
         ('sabias-que-cladding.html', 'menu_cladding'),
     ]
-    sabias_html = '\n'.join([f'        <a href="{u}" class="dropdown-item"><span>{i18n(k)}</span></a>' for u, k in SABIAS_ITEMS])
+    sabias_html = '\n'.join([f'        <a href="{p(u)}" class="dropdown-item"><span>{i18n(k)}</span></a>' for u, k in SABIAS_ITEMS])
     
-    nav_links = f'''<a href="index.html">{i18n("nav_home")}</a>
-        <a href="index.html#categorias" class="mega-trigger">{i18n("nav_catalog")}
+    nav_links = f'''<a href="{p('index.html')}">{i18n("nav_home")}</a>
+        <a href="{p('index.html#categorias')}" class="mega-trigger">{i18n("nav_catalog")}
           <div class="mega-menu">
 {mega_html}
           </div>
         </a>
-        <a href="sabias-que.html" class="mega-trigger">{i18n("nav_did_you_know")}
+        <a href="{p('sabias-que.html')}" class="mega-trigger">{i18n("nav_did_you_know")}
           <div class="nav-dropdown">
 {sabias_html}
           </div>
         </a>
-        <a href="proyectos.html">{i18n("nav_projects")}</a>
-        <a href="nosotros.html">{i18n("nav_about")}</a>
-        <a href="contacto.html">{i18n("nav_contact")}</a>'''
+        <a href="{p('proyectos.html')}">{i18n("nav_projects")}</a>
+        <a href="{p('nosotros.html')}">{i18n("nav_about")}</a>
+        <a href="{p('contacto.html')}">{i18n("nav_contact")}</a>'''
     if current_page != 'index':
-        nav_links = f'''<a href="index.html">{i18n("nav_back_home")}</a>
-        <a href="index.html#categorias" class="mega-trigger">{i18n("nav_catalog")}
+        nav_links = f'''<a href="{p('index.html')}">{i18n("nav_back_home")}</a>
+        <a href="{p('index.html#categorias')}" class="mega-trigger">{i18n("nav_catalog")}
           <div class="mega-menu">
 {mega_html}
           </div>
         </a>
-        <a href="sabias-que.html" class="mega-trigger">{i18n("nav_did_you_know")}
+        <a href="{p('sabias-que.html')}" class="mega-trigger">{i18n("nav_did_you_know")}
           <div class="nav-dropdown">
 {sabias_html}
           </div>
         </a>
-        <a href="proyectos.html">{i18n("nav_projects")}</a>
-        <a href="nosotros.html">{i18n("nav_about")}</a>
-        <a href="contacto.html">{i18n("nav_contact")}</a>'''
+        <a href="{p('proyectos.html')}">{i18n("nav_projects")}</a>
+        <a href="{p('nosotros.html')}">{i18n("nav_about")}</a>
+        <a href="{p('contacto.html')}">{i18n("nav_contact")}</a>'''
 
     return f'''  <header>
     <div class="header-inner">
-      <a href="index.html" class="logo"><img src="LOGO ADIS.png" alt="ADIS Logo"></a>
+      <a href="{p('index.html')}" class="logo"><img src="{p('LOGO ADIS.png')}" alt="ADIS Logo"></a>
       <nav class="desktop-nav">
         {nav_links}
         <div class="search-box">
@@ -3917,12 +4076,12 @@ def generate_header(current_page='index'):
 
   <div class="mobile-menu" id="mobileMenu">
     <button class="close-menu" onclick="toggleMenu()">{svg_icon('x', size=22, color='var(--gold)')}</button>
-    <a href="index.html" onclick="toggleMenu()">{i18n("nav_home")}</a>
-    <a href="index.html#categorias" onclick="toggleMenu()">{i18n("nav_catalog")}</a>
-    <a href="sabias-que.html" onclick="toggleMenu()">{i18n("nav_did_you_know")}</a>
-    <a href="proyectos.html" onclick="toggleMenu()">{i18n("nav_projects")}</a>
-    <a href="nosotros.html" onclick="toggleMenu()">{i18n("nav_about")}</a>
-    <a href="contacto.html" onclick="toggleMenu()">{i18n("nav_contact")}</a>
+    <a href="{p('index.html')}" onclick="toggleMenu()">{i18n("nav_home")}</a>
+    <a href="{p('index.html#categorias')}" onclick="toggleMenu()">{i18n("nav_catalog")}</a>
+    <a href="{p('sabias-que.html')}" onclick="toggleMenu()">{i18n("nav_did_you_know")}</a>
+    <a href="{p('proyectos.html')}" onclick="toggleMenu()">{i18n("nav_projects")}</a>
+    <a href="{p('nosotros.html')}" onclick="toggleMenu()">{i18n("nav_about")}</a>
+    <a href="{p('contacto.html')}" onclick="toggleMenu()">{i18n("nav_contact")}</a>
     <div class="search-box" style="margin-top:1rem;">
       <input type="text" id="searchInputMobile" placeholder="{t('search_mobile_placeholder')}" autocomplete="off" style="width:220px;">
       <button onclick="performSearchMobile()">{svg_icon('search', size=18, color='var(--gold)')}</button>
@@ -3947,6 +4106,8 @@ def generate_header(current_page='index'):
 def generate_footer():
     chatbot_js = '''
   <script>
+    var ADIS_PREFIX = '__ADIS_PREFIX__';
+    var ADIS_DEFAULT_LANG = '__ADIS_LANG__';
     function toggleMenu() { document.getElementById('mobileMenu').classList.toggle('active'); }
     
     // Scroll reveal
@@ -4263,7 +4424,7 @@ def generate_footer():
   'marble_designs_title': {es: '🎨 Diseños disponibles:', en: '🎨 Available designs:'},
   'marble_designs': {es: 'Carrara, Carrara Oscuro, Aurora Dorada, Onix, Cuarzo, Opalo, Perla, Topacio, Grafito, Jaspe, Agata, Arena, Obsidiana y más.', en: 'Carrara, Dark Carrara, Golden Aurora, Onyx, Quartz, Opal, Pearl, Topaz, Graphite, Jasper, Agate, Sand, Obsidian and more.'},
   'marble_tip': {es: '💡 Consejo: Para instalación en espejos se requiere perfil de aluminio obligatoriamente.', en: '💡 Tip: Aluminum profiles are mandatory for mirror installation.'},
-  'research_source': {es: '📚 Sacado de <a href="sabias-que.html" style="color:#C5A059">¿Sabías que?</a>', en: '📚 From <a href="sabias-que.html" style="color:#C5A059">Did you know?</a>'},
+  'research_source': {es: '📚 Sacado de <a href="' + ADIS_PREFIX + 'sabias-que.html" style="color:#C5A059">¿Sabías que?</a>', en: '📚 From <a href="' + ADIS_PREFIX + 'sabias-que.html" style="color:#C5A059">Did you know?</a>'},
   'more_curiosities': {es: 'Más datos curiosos', en: 'More curious facts'},
   'curious_facts': {es: 'Ver datos curiosos', en: 'View curious facts'},
   'wa_general': {es: 'Hola ADIS, tengo una pregunta', en: 'Hello ADIS, I have a question'},
@@ -4311,7 +4472,7 @@ def generate_footer():
   'response_thanks_subject': {es: '¡Con mucho gusto! 😊🙌 Estoy aquí para lo que necesites. Si tienes más dudas, escríbenos por WhatsApp al <strong>{whatsapp}</strong> o visítanos en el showroom. ¡Que tengas un excelente día!', en: 'Gladly! 😊🙌 I am here for whatever you need. If you have more questions, write to us on WhatsApp at <strong>{whatsapp}</strong> or visit our showroom. Have a great day!'},
 };
 
-      function getLang() { return localStorage.getItem('adis_lang') || 'es'; }
+      function getLang() { return localStorage.getItem('adis_lang') || ADIS_DEFAULT_LANG; }
       function ct(key, vars) {
         const dict = CHATBOT_I18N[key];
         const lang = getLang();
@@ -4788,13 +4949,13 @@ def generate_footer():
         const waText = encodeURIComponent(ct('wa_product_interest', {name: m.name}));
         const priceTag = m.price ? `<div style="color:var(--gold);font-size:0.75rem;font-weight:600;margin-top:0.25rem;">💰 ${m.price} <span style="opacity:0.7;font-weight:400;">${ct('product_price_label')} ${m.price_unit || 'pieza'}</span></div>` : '';
         return `<div class="chat-product-card">
-          <img src="${m.thumb}" alt="${m.name}" loading="lazy">
+          <img src="${ADIS_PREFIX + m.thumb}" alt="${(getLang()==='en' && m.name_en) ? m.name_en : m.name}" loading="lazy">
           <div class="chat-product-info">
-            <a href="${m.url}" target="_blank">${m.name}</a>
+            <a href="${ADIS_PREFIX + m.url}" target="_blank">${(getLang()==='en' && m.name_en) ? m.name_en : m.name}</a>
             <div class="chat-product-cat">${m.category}${m.subcategory ? ' / ' + m.subcategory : ''}</div>
             ${priceTag}
             <div class="chat-product-actions">
-              <a href="${m.url}" class="primary" target="_blank">${ct('view_product')}</a>
+              <a href="${ADIS_PREFIX + m.url}" class="primary" target="_blank">${ct('view_product')}</a>
               <a href="https://wa.me/15208392877?text=${waText}" class="secondary" target="_blank">${ct('quote')}</a>
             </div>
           </div>
@@ -4808,7 +4969,7 @@ def generate_footer():
         const shortTerms = q.split(/\\s+/).filter(t => t.length >= 3);
         return allProducts.map(p => {
           if (excludeIds && excludeIds.includes(p.name)) return { p, score: 0 };
-          const text = normalizeQuery(p.name + ' ' + p.category + ' ' + (p.subcategory || ''));
+          const text = normalizeQuery(p.name + ' ' + p.category + ' ' + (p.subcategory || '') + ' ' + (p.name_en || '') + ' ' + (p.category_en || '') + ' ' + (p.subcategory_en || ''));
           let score = 0;
           for (let t of terms) {
             if (text.includes(t)) score += 1;
@@ -5214,7 +5375,7 @@ def generate_footer():
             chatContext.lastIntent = 'producto';
             saveContext();
             return { 
-              text: 'Aquí tienes más información de <strong>' + p.name + '</strong>:<br><br>' + formatProductCard(p),
+              text: (getLang()==='en' ? 'Here is more information about <strong>' : 'Aquí tienes más información de <strong>') + ((getLang()==='en' && p.name_en) ? p.name_en : p.name) + '</strong>:<br><br>' + formatProductCard(p),
               suggestions: ['Cotizar este producto', 'Ver productos similares', 'Hablar con asesor']
             };
           }
@@ -5708,11 +5869,11 @@ def generate_footer():
       };
       
       // Cargar productos y datos de investigación
-      fetch('products.json')
+      fetch(ADIS_PREFIX + 'products.json')
         .then(r => r.json())
         .then(data => { 
           allProducts = data.products || [];
-          researchData = data.research || {};
+          researchData = (getLang() === 'en' && data.research_en && Object.keys(data.research_en).length) ? data.research_en : (data.research || {});
           // Compartir productos con el buscador global
           window.__adisProducts = allProducts;
           if (typeof window.__initAdisSearch === 'function') window.__initAdisSearch();
@@ -5728,7 +5889,7 @@ def generate_footer():
       let searchProducts = [];
       let searchTimeout = null;
       
-      function getLang() { return localStorage.getItem('adis_lang') || 'es'; }
+      function getLang() { return localStorage.getItem('adis_lang') || ADIS_DEFAULT_LANG; }
       function t(key) {
         const dict = {
           search_start_typing: { es: 'Escribe para buscar productos...', en: 'Type to search products...' },
@@ -5757,7 +5918,7 @@ def generate_footer():
         const normTerm = normalize(term);
         const terms = normTerm.split(/\\s+/).filter(Boolean);
         return searchProducts.map(p => {
-          const text = normalize(p.name + ' ' + p.category + ' ' + (p.subcategory || ''));
+          const text = normalize(p.name + ' ' + p.category + ' ' + (p.subcategory || '') + ' ' + (p.name_en || '') + ' ' + (p.category_en || '') + ' ' + (p.subcategory_en || ''));
           let score = 0;
           for (let t of terms) {
             if (text.includes(t)) score += 1;
@@ -5769,12 +5930,15 @@ def generate_footer():
       }
       
       function productItem(p, term) {
-        const waText = encodeURIComponent('Hola ADIS, vi el ' + p.name + ' en el catálogo y me interesa cotizar');
-        return `<a href="${p.url}" class="search-item" onclick="closeSpotlight && closeSpotlight();">
-          <img src="${p.thumb}" alt="${p.name}" loading="lazy" onerror="this.style.display='none'">
+        const dName = (getLang() === 'en' && p.name_en) ? p.name_en : p.name;
+        const dCat = (getLang() === 'en' && p.category_en) ? p.category_en : p.category;
+        const dSub = (getLang() === 'en' && p.subcategory_en) ? p.subcategory_en : p.subcategory;
+        const waText = encodeURIComponent((getLang() === 'en' ? 'Hello ADIS, I saw the ' : 'Hola ADIS, vi el ') + dName + (getLang() === 'en' ? ' in the catalog and I am interested in a quote' : ' en el catálogo y me interesa cotizar'));
+        return `<a href="${ADIS_PREFIX + p.url}" class="search-item" onclick="closeSpotlight && closeSpotlight();">
+          <img src="${ADIS_PREFIX + p.thumb}" alt="${dName}" loading="lazy" onerror="this.style.display='none'">
           <div class="search-item-info">
-            <span class="search-item-name">${highlight(p.name, term)}</span>
-            <span class="search-item-cat">${p.category}${p.subcategory ? ' / ' + p.subcategory : ''}</span>
+            <span class="search-item-name">${highlight(dName, term)}</span>
+            <span class="search-item-cat">${dCat}${dSub ? ' / ' + dSub : ''}</span>
           </div>
         </a>`;
       }
@@ -5912,7 +6076,7 @@ def generate_footer():
       // Si no, intentar cargar directamente
       else if (!window.__adisProductsLoading) {
         window.__adisProductsLoading = true;
-        fetch('products.json')
+        fetch(ADIS_PREFIX + 'products.json')
           .then(r => r.json())
           .then(data => { window.__adisProducts = data.products || []; __initAdisSearch(); })
           .catch(() => { window.__adisProducts = []; __initAdisSearch(); });
@@ -5922,7 +6086,7 @@ def generate_footer():
   </script>
 '''
     return f"""  <footer>
-    <div class="footer-logo"><img src="LOGO ADIS.png" alt="ADIS Logo"></div>
+    <div class="footer-logo"><img src="{p('LOGO ADIS.png')}" alt="ADIS Logo"></div>
     <div class="footer-info">
       <strong>ADI&#39;S DISEÑO & REMODELACIÓN</strong><br>
       {i18n('footer_slogan')}<br>
@@ -5936,8 +6100,8 @@ def generate_footer():
     </div>
     <div class="footer-links">
       <span>{i18n('footer_links_legal')}:</span>
-      <a href="nosotros.html">{i18n('footer_links_about')}</a>
-      <a href="aviso-de-privacidad.html">{i18n('footer_links_privacy')}</a>
+      <a href="{p('nosotros.html')}">{i18n('footer_links_about')}</a>
+      <a href="{p('aviso-de-privacidad.html')}">{i18n('footer_links_privacy')}</a>
     </div>
     <div class="copyright">© <span id="footer-year"></span> {i18n('footer_copyright_suffix')}</div>
   </footer>
@@ -5951,10 +6115,10 @@ def generate_footer():
 
   <!-- MOBILE BOTTOM NAV -->
   <nav class="mobile-bottom-nav">
-    <a href="index.html"><span>{svg_icon('home', size=22, color='currentColor')}</span><span>{i18n('mobile_nav_home')}</span></a>
-    <a href="index.html#categorias"><span>{svg_icon('grid', size=22, color='currentColor')}</span><span>{i18n('mobile_nav_catalog')}</span></a>
-    <a href="proyectos.html"><span>{svg_icon('image', size=22, color='currentColor')}</span><span>{i18n('mobile_nav_projects')}</span></a>
-    <a href="contacto.html"><span>{svg_icon('phone', size=22, color='currentColor')}</span><span>{i18n('mobile_nav_contact')}</span></a>
+    <a href="{p('index.html')}"><span>{svg_icon('home', size=22, color='currentColor')}</span><span>{i18n('mobile_nav_home')}</span></a>
+    <a href="{p('index.html#categorias')}"><span>{svg_icon('grid', size=22, color='currentColor')}</span><span>{i18n('mobile_nav_catalog')}</span></a>
+    <a href="{p('proyectos.html')}"><span>{svg_icon('image', size=22, color='currentColor')}</span><span>{i18n('mobile_nav_projects')}</span></a>
+    <a href="{p('contacto.html')}"><span>{svg_icon('phone', size=22, color='currentColor')}</span><span>{i18n('mobile_nav_contact')}</span></a>
   </nav>
 
   <a href="https://wa.me/{CONTACTO['whatsapp']}?text={CONTACTO["whatsapp_msg"].replace(' ', '%20')}" class="whatsapp-float" target="_blank" title="{t('wa_tooltip')}" aria-label="WhatsApp">
@@ -5975,7 +6139,7 @@ def generate_footer():
   </div>
 
 
-{chatbot_js}"""
+{chatbot_js.replace('__ADIS_PREFIX__', CUR_PREFIX).replace('__ADIS_LANG__', CUR_LANG)}"""
 
 
 def generate_index(categories):
@@ -6015,11 +6179,11 @@ def generate_index(categories):
             elif cat["name"] == 'Placas PVC':
                 desc_key = 'featured_pvc_desc'
             
-            featured_cards += f'''      <a href="{cat["filename"]}" class="featured-card reveal">
-        <img src="{thumb_src}" alt="{cat["name"]}" loading="lazy">
+            featured_cards += f'''      <a href="{p(cat["filename"])}" class="featured-card reveal">
+        <img src="{p(thumb_src)}" alt="{cat_display(cat["name"])}" loading="lazy">
         <div class="featured-card-overlay">
           <div class="star-label">&#11088; {i18n('featured_star_label')}</div>
-          <h3>{cat["name"]}</h3>
+          <h3>{cat_display(cat["name"])}</h3>
           <p>{i18n(desc_key, html=True)}</p>
         </div>
       </a>
@@ -6028,32 +6192,32 @@ def generate_index(categories):
         star_badge = f'<div class="star-badge">&#11088; {i18n("featured_star_badge")}</div>' if is_star else ''
         featured_class = ' featured' if is_star else ''
         
-        cat_cards += f'''      <a href="{cat["filename"]}" class="cat-card reveal{featured_class}">
-        {star_badge}<img src="{thumb_src}" alt="{cat["name"]}" loading="lazy">
+        cat_cards += f'''      <a href="{p(cat["filename"])}" class="cat-card reveal{featured_class}">
+        {star_badge}<img src="{p(thumb_src)}" alt="{cat_display(cat["name"])}" loading="lazy">
         <div class="cat-card-overlay">
           <div class="cat-arrow">→</div>
-          <h3>{cat["name"]}</h3>
+          <h3>{cat_display(cat["name"])}</h3>
           <span>{total_prods} {i18n('trust_products')}</span>
         </div>
       </a>
 '''
 
-    info_cards = f'''      <a href="1-placas-pvc.html" class="info-card">
+    info_cards = f'''      <a href="{p('1-placas-pvc.html')}" class="info-card">
         <div class="icon">✦</div>
         <h3>{i18n('info_pvc_title')}</h3>
         <p>{i18n('info_pvc_desc', html=True)}</p>
       </a>
-      <a href="2-lambrin-wpc.html" class="info-card">
+      <a href="{p('2-lambrin-wpc.html')}" class="info-card">
         <div class="icon">◈</div>
         <h3>{i18n('info_wpc_title')}</h3>
         <p>{i18n('info_wpc_desc', html=True)}</p>
       </a>
-      <a href="7-pisos.html" class="info-card">
+      <a href="{p('7-pisos.html')}" class="info-card">
         <div class="icon">◉</div>
         <h3>{i18n('info_flooring_title')}</h3>
         <p>{i18n('info_flooring_desc', html=True)}</p>
       </a>
-      <a href="5-paneles-tridimensionales.html" class="info-card">
+      <a href="{p('5-paneles-tridimensionales.html')}" class="info-card">
         <div class="icon">✚</div>
         <h3>{i18n('info_cladding_title')}</h3>
         <p>{i18n('info_cladding_desc', html=True)}</p>
@@ -6082,7 +6246,7 @@ def generate_index(categories):
         for sub in cat["subcategories"]:
             total_prods += len(sub["products"])
         icon = CAT_ICONS.get(cat["name"], svg_icon('bookmark', size=28))
-        downloads_html += f'''      <a href="catalogos/pdf/{pdf_name}" class="download-card" download>
+        downloads_html += f'''      <a href="{p('catalogos/pdf/' + pdf_name)}" class="download-card" download>
         <span class="icon">{icon}</span>
         <div class="info">
           <h4>{cat["name"]}</h4>
@@ -6116,7 +6280,7 @@ def generate_index(categories):
                     break
             vcards += f'''      <div class="video-card reveal">
         <video class="auto-video" muted loop playsinline preload="metadata"{poster_attr}>
-          <source src="media/{vid}" type="{mime}">
+          <source src="{p('media/' + vid)}" type="{mime}">
         </video>
         <div class="video-card-caption">{name}</div>
       </div>
@@ -6131,41 +6295,41 @@ def generate_index(categories):
     <div class="video-grid">
 {vcards}    </div>
     <div style="text-align: center; margin-top: 2rem;">
-      <a href="proyectos.html" class="btn-outline">{i18n('videos_more')}</a>
+      <a href="{p('proyectos.html')}" class="btn-outline">{i18n('videos_more')}</a>
     </div>
   </section>
 '''
 
     html = f'''<!DOCTYPE html>
-<html lang="es">
+<html lang="{html_lang()}">
 <head>
   <meta charset="UTF-8">
-  <link rel="icon" type="image/png" href="LOGO ADIS.png">
+  <link rel="icon" type="image/png" href="{p('LOGO ADIS.png')}">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   {head_common()}
-  <title>Recubrimientos en Nogales, Sonora · Arizona | ADIS Diseño & Remodelación</title>
-  <meta name="description" content="{meta_desc_es}">
+  <title>{t('title_index')}</title>
+  <meta name="description" content="{(meta_desc_en if CUR_LANG == 'en' else meta_desc_es)}">
   <meta name="keywords" content="{meta_keywords}">
   <meta name="geo.region" content="MX-SON">
   <meta name="geo.placename" content="Heroica Nogales, Sonora, México">
   <meta name="geo.position" content="31.3014;-110.9386">
   <meta name="ICBM" content="31.3014, -110.9386">
-  <meta property="og:title" content="Recubrimientos en Nogales, Sonora · Arizona | ADIS Diseño & Remodelación">
-  <meta property="og:description" content="{meta_desc_es}">
+  <meta property="og:title" content="{t('title_index')}">
+  <meta property="og:description" content="{(meta_desc_en if CUR_LANG == 'en' else meta_desc_es)}">
   <meta property="og:image" content="{SITE_URL}LOGO%20ADIS.png">
-  <meta property="og:url" content="{SITE_URL}">
+  <meta property="og:url" content="{page_url('index.html')}">
   <meta property="og:type" content="website">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Recubrimientos en Nogales, Sonora · Arizona | ADIS Diseño & Remodelación">
-  <meta name="twitter:description" content="{meta_desc_es}">
+  <meta name="twitter:title" content="{t('title_index')}">
+  <meta name="twitter:description" content="{(meta_desc_en if CUR_LANG == 'en' else meta_desc_es)}">
   <meta name="twitter:image" content="{SITE_URL}LOGO%20ADIS.png">
-  <link rel="canonical" href="{SITE_URL}">
-  <meta name="description-en" content="{meta_desc_en}">
+  <link rel="canonical" href="{page_url('index.html')}">
+  {hreflang_tags('index.html')}
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="{p('style.css')}">
 {ga_script()}
 {fb_pixel_script()}
-{translate_script()}
+{translate_script('index.html')}
 {organization_schema()}
 {website_schema()}
 </head>
@@ -6178,7 +6342,7 @@ def generate_index(categories):
   <!-- INICIO -->
   <section class="hero-home" id="inicio">
     <div class="hero-content">
-      <img src="LOGO ADIS.png" alt="ADIS Logo">
+      <img src="{p('LOGO ADIS.png')}" alt="ADIS Logo">
       <div class="hero-badge">{i18n('hero_badge')}</div>
       <h1>{i18n('hero_title', html=True)}</h1>
       <p>{i18n('hero_subtitle', html=True)}</p>
@@ -6282,7 +6446,7 @@ def generate_index(categories):
     <div class="featured-product-wrap">
       <div class="featured-product-image">
         <span class="featured-product-badge">{i18n('featured_marble_title')}</span>
-        <img src="img/1-placas-pvc/Carrara%20Oscuro.jpg" alt="{t('featured_marble_title')}" loading="lazy">
+        <img src="{p('img/1-placas-pvc/Carrara%20Oscuro.jpg')}" alt="{t('featured_marble_title')}" loading="lazy">
       </div>
       <div class="featured-product-content">
         <h3>{i18n('featured_marble_title')}</h3>
@@ -6294,7 +6458,7 @@ def generate_index(categories):
           <li>{i18n('featured_marble_bullet3', html=True)}</li>
           <li>{i18n('featured_marble_bullet4', html=True)}</li>
         </ul>
-        <a href="1-placas-pvc.html" class="featured-product-cta">{i18n('featured_marble_cta')}</a>
+        <a href="{p('1-placas-pvc.html')}" class="featured-product-cta">{i18n('featured_marble_cta')}</a>
       </div>
     </div>
   </section>
@@ -6336,7 +6500,7 @@ def generate_index(categories):
       <p class="downloads-lead">{i18n('downloads_subtitle', html=True)}</p>
     </div>
     <div class="downloads-main">
-      <a href="catalogos/pdf/catalogo_premium.pdf" class="download-complete" download>
+      <a href="{p('catalogos/pdf/catalogo_premium.pdf')}" class="download-complete" download>
         <span class="icon">📚</span>
         <div>
           <div>{i18n('download_complete')}</div>
@@ -6377,7 +6541,7 @@ def generate_index(categories):
 </body>
 </html>
 '''
-    with open(OUTPUT_DIR / 'index.html', 'w', encoding='utf-8') as f:
+    with open(out_dir() / 'index.html', 'w', encoding='utf-8') as f:
         f.write(minify_html(html))
     print("✅ index.html generado")
 
@@ -6386,43 +6550,43 @@ def generate_contacto():
     meta_desc_es = "Cotiza recubrimientos en Nogales, Sonora y Arizona. Contacta a ADIS Diseño & Remodelación por WhatsApp, teléfono o email. Placas PVC, lambrín WPC, paneles 3D, plafón, pisos y más. Enviamos a Tucson, Phoenix y Rio Rico."
     meta_desc_en = "Quote wall coverings in Nogales, Sonora & Arizona. Contact ADIS Design & Remodeling via WhatsApp, phone or email. PVC panels, WPC slats, 3D panels, PVC ceilings, flooring and more. We ship to Tucson, Phoenix and Rio Rico."
     html = f'''<!DOCTYPE html>
-<html lang="es">
+<html lang="{html_lang()}">
 <head>
   <meta charset="UTF-8">
-  <link rel="icon" type="image/png" href="LOGO ADIS.png">
+  <link rel="icon" type="image/png" href="{p('LOGO ADIS.png')}">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   {head_common()}
-  <title>Cotizar Recubrimientos Nogales Sonora · Arizona | Contacto ADIS</title>
-  <meta name="description" content="{meta_desc_es}">
+  <title>{t('title_contacto')}</title>
+  <meta name="description" content="{(meta_desc_en if CUR_LANG == 'en' else meta_desc_es)}">
   <meta name="keywords" content="cotizar recubrimientos Nogales, contacto ADIS, paneles PVC Sonora, wall panels Nogales AZ, remodeling materials Arizona, WhatsApp ADIS">
   <meta name="geo.region" content="MX-SON">
   <meta name="geo.placename" content="Heroica Nogales, Sonora, México">
   <meta name="geo.position" content="31.3014;-110.9386">
   <meta name="ICBM" content="31.3014, -110.9386">
   <meta property="og:title" content="Cotizar Recubrimientos Nogales Sonora · Arizona | Contacto ADIS">
-  <meta property="og:description" content="{meta_desc_es}">
+  <meta property="og:description" content="{(meta_desc_en if CUR_LANG == 'en' else meta_desc_es)}">
   <meta property="og:image" content="{SITE_URL}LOGO%20ADIS.png">
-  <meta property="og:url" content="{SITE_URL}contacto.html">
+  <meta property="og:url" content="{page_url('contacto.html')}">
   <meta property="og:type" content="website">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Cotizar Recubrimientos Nogales Sonora · Arizona | Contacto ADIS">
-  <meta name="twitter:description" content="{meta_desc_es}">
+  <meta name="twitter:description" content="{(meta_desc_en if CUR_LANG == 'en' else meta_desc_es)}">
   <meta name="twitter:image" content="{SITE_URL}LOGO%20ADIS.png">
-  <link rel="canonical" href="{SITE_URL}contacto.html">
-  <meta name="description-en" content="{meta_desc_en}">
+  <link rel="canonical" href="{page_url('contacto.html')}">
+  {hreflang_tags('contacto.html')}
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="{p('style.css')}">
 {ga_script()}
 {fb_pixel_script()}
-{translate_script()}
+{translate_script('contacto.html')}
 {organization_schema()}
-{breadcrumb_schema([('Inicio', SITE_URL), ('Contacto', f'{SITE_URL}contacto.html')])}
+{breadcrumb_schema([(t('bc_home'), SITE_URL), (t('nav_contact'), page_url('contacto.html'))])}
 </head>
 <body>
   <script>document.documentElement.classList.add('js-enabled');</script>
   <canvas id="bg-canvas"></canvas>
 {generate_header("contacto")}
-{breadcrumb_html([('Inicio', 'index.html'), ('Contacto', '')])}
+{breadcrumb_html([(t('bc_home'), p('index.html')), (t('nav_contact'), '')])}
 
   <section class="hero-cat" style="padding-top: 8rem;">
     <h1>{i18n('contact_title', html=True)}</h1>
@@ -6530,7 +6694,7 @@ def generate_contacto():
       </div>
     </div>
     <div style="text-align: center; margin-top: 2rem;">
-      <a href="index.html" class="btn-back">{i18n('contact_back_home')}</a>
+      <a href="{p('index.html')}" class="btn-back">{i18n('contact_back_home')}</a>
     </div>
   </section>
 
@@ -6564,7 +6728,7 @@ def generate_contacto():
 </body>
 </html>
 '''
-    with open(OUTPUT_DIR / 'contacto.html', 'w', encoding='utf-8') as f:
+    with open(out_dir() / 'contacto.html', 'w', encoding='utf-8') as f:
         f.write(minify_html(html))
     print("✅ contacto.html generado")
 
@@ -6574,37 +6738,37 @@ def generate_nosotros():
     meta_desc_es = "Conoce a ADIS Diseño & Remodelación. Somos especialistas en recubrimientos PVC, WPC, paneles 3D, pisos y cladding en Nogales, Sonora y Arizona."
     meta_desc_en = "Meet ADIS Design & Remodeling. Specialists in PVC, WPC, 3D panels, flooring and cladding in Nogales, Sonora & Arizona."
     html = f'''<!DOCTYPE html>
-<html lang="es">
+<html lang="{html_lang()}">
 <head>
   <meta charset="UTF-8">
-  <link rel="icon" type="image/png" href="LOGO ADIS.png">
+  <link rel="icon" type="image/png" href="{p('LOGO ADIS.png')}">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   {head_common()}
-  <title>Nosotros | ADIS Diseño & Remodelación · Nogales Sonora</title>
-  <meta name="description" content="{meta_desc_es}">
+  <title>{t('title_nosotros')}</title>
+  <meta name="description" content="{(meta_desc_en if CUR_LANG == 'en' else meta_desc_es)}">
   <meta name="keywords" content="ADIS Diseño Remodelación, nosotros ADIS, recubrimientos Nogales, paneles PVC Sonora, remodeling Arizona">
-  <meta property="og:title" content="Nosotros | ADIS Diseño & Remodelación">
-  <meta property="og:description" content="{meta_desc_es}">
+  <meta property="og:title" content="{t('title_nosotros')}">
+  <meta property="og:description" content="{(meta_desc_en if CUR_LANG == 'en' else meta_desc_es)}">
   {og_image_tags(f'{SITE_URL}LOGO%20ADIS.png')}
-  <meta property="og:url" content="{SITE_URL}nosotros.html">
+  <meta property="og:url" content="{page_url('nosotros.html')}">
   <meta property="og:type" content="website">
-  <meta name="twitter:title" content="Nosotros | ADIS Diseño & Remodelación">
-  <meta name="twitter:description" content="{meta_desc_es}">
-  <link rel="canonical" href="{SITE_URL}nosotros.html">
-  <meta name="description-en" content="{meta_desc_en}">
+  <meta name="twitter:title" content="{t('title_nosotros')}">
+  <meta name="twitter:description" content="{(meta_desc_en if CUR_LANG == 'en' else meta_desc_es)}">
+  <link rel="canonical" href="{page_url('nosotros.html')}">
+  {hreflang_tags('nosotros.html')}
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="{p('style.css')}">
 {ga_script()}
 {fb_pixel_script()}
-{translate_script()}
+{translate_script('nosotros.html')}
 {organization_schema()}
-{breadcrumb_schema([('Inicio', SITE_URL), ('Nosotros', f'{SITE_URL}nosotros.html')])}
+{breadcrumb_schema([(t('bc_home'), SITE_URL), (t('nav_about'), page_url('nosotros.html'))])}
 </head>
 <body>
   <script>document.documentElement.classList.add('js-enabled');</script>
   <canvas id="bg-canvas"></canvas>
 {generate_header("nosotros")}
-{breadcrumb_html([('Inicio', 'index.html'), ('Nosotros', '')])}
+{breadcrumb_html([(t('bc_home'), p('index.html')), (t('nav_about'), '')])}
 
   <section class="about-hero">
     <div class="about-hero-content">
@@ -6646,7 +6810,7 @@ def generate_nosotros():
 
   <section class="section-wrap-alt reveal">
     <div class="about-team">
-      <img src="media/equipo-adis.jpg" alt="Equipo ADIS">
+      <img src="{p('media/equipo-adis.jpg')}" alt="Equipo ADIS">
       <div class="about-team-text">
         <h2>{i18n('about_team_title')}</h2>
         <p>{i18n('about_team_text')}</p>
@@ -6656,7 +6820,7 @@ def generate_nosotros():
           <li>{i18n('about_value_binational')}</li>
           <li>{i18n('about_value_commitment')}</li>
         </ul>
-        <a href="proyectos.html" class="btn-secondary" style="margin-top:1.5rem;">{i18n('about_team_cta')}</a>
+        <a href="{p('proyectos.html')}" class="btn-secondary" style="margin-top:1.5rem;">{i18n('about_team_cta')}</a>
       </div>
     </div>
   </section>
@@ -6695,7 +6859,7 @@ def generate_nosotros():
     <p style="color:rgba(245,245,245,0.65); margin-bottom:2rem;">{i18n('about_cta_subtitle')}</p>
     <div style="display:flex; gap:1rem; justify-content:center; flex-wrap:wrap;">
       <a href="{whatsapp_url(CONTACTO['whatsapp'], 'Hola ADIS, vi su pagina de Nosotros y quiero cotizar un proyecto.')}" class="btn-primary btn-wa" target="_blank" onclick="gtag('event','whatsapp_click',{{'location':'about_cta'}})">{i18n('cta_quote_whatsapp')}</a>
-      <a href="index.html#categorias" class="btn-secondary">{i18n('cta_view_catalog')}</a>
+      <a href="{p('index.html#categorias')}" class="btn-secondary">{i18n('cta_view_catalog')}</a>
     </div>
   </section>
 
@@ -6703,7 +6867,7 @@ def generate_nosotros():
 </body>
 </html>
 '''
-    with open(OUTPUT_DIR / 'nosotros.html', 'w', encoding='utf-8') as f:
+    with open(out_dir() / 'nosotros.html', 'w', encoding='utf-8') as f:
         f.write(minify_html(html))
     print("✅ nosotros.html generado")
 
@@ -6714,37 +6878,37 @@ def generate_privacy():
     meta_desc_en = "Privacy notice of ADIS Design & Remodeling. Learn how we protect your personal data."
     effective_date = datetime.datetime.now().strftime('%d/%m/%Y')
     html = f'''<!DOCTYPE html>
-<html lang="es">
+<html lang="{html_lang()}">
 <head>
   <meta charset="UTF-8">
-  <link rel="icon" type="image/png" href="LOGO ADIS.png">
+  <link rel="icon" type="image/png" href="{p('LOGO ADIS.png')}">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   {head_common()}
-  <title>Aviso de Privacidad | ADIS Diseño & Remodelación</title>
-  <meta name="description" content="{meta_desc_es}">
+  <title>{t('title_privacidad')}</title>
+  <meta name="description" content="{(meta_desc_en if CUR_LANG == 'en' else meta_desc_es)}">
   <meta name="keywords" content="aviso de privacidad ADIS, proteccion de datos, privacidad Nogales, privacy notice">
-  <meta property="og:title" content="Aviso de Privacidad | ADIS Diseño & Remodelación">
-  <meta property="og:description" content="{meta_desc_es}">
+  <meta property="og:title" content="{t('title_privacidad')}">
+  <meta property="og:description" content="{(meta_desc_en if CUR_LANG == 'en' else meta_desc_es)}">
   {og_image_tags(f'{SITE_URL}LOGO%20ADIS.png')}
-  <meta property="og:url" content="{SITE_URL}aviso-de-privacidad.html">
+  <meta property="og:url" content="{page_url('aviso-de-privacidad.html')}">
   <meta property="og:type" content="website">
-  <meta name="twitter:title" content="Aviso de Privacidad | ADIS Diseño & Remodelación">
-  <meta name="twitter:description" content="{meta_desc_es}">
-  <link rel="canonical" href="{SITE_URL}aviso-de-privacidad.html">
-  <meta name="description-en" content="{meta_desc_en}">
+  <meta name="twitter:title" content="{t('title_privacidad')}">
+  <meta name="twitter:description" content="{(meta_desc_en if CUR_LANG == 'en' else meta_desc_es)}">
+  <link rel="canonical" href="{page_url('aviso-de-privacidad.html')}">
+  {hreflang_tags('aviso-de-privacidad.html')}
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="{p('style.css')}">
 {ga_script()}
 {fb_pixel_script()}
-{translate_script()}
+{translate_script('aviso-de-privacidad.html')}
 {organization_schema()}
-{breadcrumb_schema([('Inicio', SITE_URL), ('Aviso de privacidad', f'{SITE_URL}aviso-de-privacidad.html')])}
+{breadcrumb_schema([(t('bc_home'), SITE_URL), (t('footer_links_privacy'), page_url('aviso-de-privacidad.html'))])}
 </head>
 <body>
   <script>document.documentElement.classList.add('js-enabled');</script>
   <canvas id="bg-canvas"></canvas>
 {generate_header("privacy")}
-{breadcrumb_html([('Inicio', 'index.html'), ('Aviso de privacidad', '')])}
+{breadcrumb_html([(t('bc_home'), p('index.html')), (t('footer_links_privacy'), '')])}
 
   <section class="hero-cat" style="padding-top: 8rem;">
     <h1>{i18n('privacy_title')}</h1>
@@ -6783,7 +6947,7 @@ def generate_privacy():
 </body>
 </html>
 '''
-    with open(OUTPUT_DIR / 'aviso-de-privacidad.html', 'w', encoding='utf-8') as f:
+    with open(out_dir() / 'aviso-de-privacidad.html', 'w', encoding='utf-8') as f:
         f.write(minify_html(html))
     print("✅ aviso-de-privacidad.html generado")
 
@@ -6801,14 +6965,14 @@ def generate_category_page(cat, categories):
     if prev_cat or next_cat:
         nav_parts = []
         if prev_cat:
-            nav_parts.append(f'<a href="{prev_cat["filename"]}" class="cat-nav-btn">← {prev_cat["name"]}</a>')
+            nav_parts.append(f'<a href="{p(prev_cat["filename"])}" class="cat-nav-btn">← {cat_display(prev_cat["name"])}</a>')
         if next_cat:
-            nav_parts.append(f'<a href="{next_cat["filename"]}" class="cat-nav-btn next">{next_cat["name"]} →</a>')
+            nav_parts.append(f'<a href="{p(next_cat["filename"])}" class="cat-nav-btn next">{cat_display(next_cat["name"])} →</a>')
         cat_nav_html = '  <div class="cat-nav">\n    ' + '\n    '.join(nav_parts) + '\n  </div>\n'
 
     # Breadcrumbs
     breadcrumbs_html = f'''  <div class="breadcrumbs">
-    <a href="index.html">{i18n('breadcrumb_home')}</a> <span>/</span> <a href="index.html#categorias">{i18n('breadcrumb_catalog')}</a> <span>/</span> <span style="color:var(--gold);">{cat["name"]}</span>
+    <a href="{p('index.html')}">{i18n('breadcrumb_home')}</a> <span>/</span> <a href="{p('index.html#categorias')}">{i18n('breadcrumb_catalog')}</a> <span>/</span> <span style="color:var(--gold);">{cat_display(cat["name"])}</span>
   </div>
 '''
 
@@ -6831,7 +6995,7 @@ def generate_category_page(cat, categories):
         if sub["products"]:
             sub_slug = sub["slug"]
             sub_name = sub["name"]
-            subcat_nav_links += f'<a href="#{sub_slug}">{sub_name}</a>' + '\n    '
+            subcat_nav_links += f'<a href="#{sub_slug}">{subcat_display(sub_name)}</a>' + '\n    '
     subcat_nav_html = f'''  <div class="subcat-nav">
     {subcat_nav_links}</div>
 ''' if subcat_nav_links else ''
@@ -6901,7 +7065,7 @@ def generate_category_page(cat, categories):
 
         sections_html += f'''  <section class="subcat-section reveal" id="{sub["slug"]}">
     <div class="subcat-header">
-      <h3>{sub["name"]}</h3>
+      <h3>{subcat_display(sub["name"])}</h3>
       <span class="subcat-count">{len(sub["products"])} <span data-i18n="filter_count_unit" data-es="productos" data-en="products">productos</span></span>
       <div class="subcat-divider"></div>
     </div>
@@ -6944,7 +7108,7 @@ def generate_category_page(cat, categories):
 
         sections_html += f'''  <section class="subcat-section reveal">
     <div class="subcat-header">
-      <h3>{i18n_fmt('cat_products', category=cat["name"])}</h3>
+      <h3>{i18n_fmt('cat_products', category=cat_display(cat["name"]))}</h3>
       <span class="subcat-count">{len(cat["direct_products"])} <span data-i18n="filter_count_unit" data-es="productos" data-en="products">productos</span></span>
       <div class="subcat-divider"></div>
     </div>
@@ -6964,7 +7128,7 @@ def generate_category_page(cat, categories):
         if real_imgs:
             gallery_items = ''
             for img in real_imgs:
-                gallery_items += f'''      <div class="real-sheets-item" onclick="openLightbox('media/{img}', '{t("cat_real_sheets_title")}')">
+                gallery_items += f'''      <div class="real-sheets-item" onclick="openLightbox('{p('media/' + img)}', '{t("cat_real_sheets_title")}')">
         {picture_tag(f'media/{img}', t('cat_real_sheets_title'))}
         <span class="real-sheets-badge">{i18n('cat_real_sheets_badge')}</span>
       </div>
@@ -6980,7 +7144,10 @@ def generate_category_page(cat, categories):
   </section>
 '''
 
-    wa_hero_url = whatsapp_url(CONTACTO["whatsapp"], "Hola ADIS, vi el catalogo de " + cat["name"] + " y quiero asesoria para elegir el mejor producto para mi proyecto.")
+    if CUR_LANG == 'en':
+        wa_hero_url = whatsapp_url(CONTACTO["whatsapp"], "Hello ADIS, I saw the " + cat_display(cat["name"]) + " catalog and I would like advice to choose the best product for my project.")
+    else:
+        wa_hero_url = whatsapp_url(CONTACTO["whatsapp"], "Hola ADIS, vi el catalogo de " + cat["name"] + " y quiero asesoria para elegir el mejor producto para mi proyecto.")
     cat_slug_pdf = cat["name"].lower().replace(' ', '-').replace('ñ','n').replace('á','a').replace('é','e').replace('í','i').replace('ó','o').replace('ú','u')
     pdf_url = f"catalogos/pdf/catalogo_{cat_slug_pdf}.pdf"
 
@@ -6999,31 +7166,56 @@ def generate_category_page(cat, categories):
         product_schemas_html += product_schema(prod_name, cat["name"], None, img_url, prod_url) + '\n'
 
     breadcrumb_html = breadcrumb_schema([
-        ("Inicio", SITE_URL),
-        ("Catálogo", f"{SITE_URL}index.html#categorias"),
-        (cat["name"], f"{SITE_URL}{cat['filename']}")
+        (t('bc_home'), SITE_URL),
+        (t('bc_catalog'), f"{SITE_URL}index.html#categorias"),
+        (cat_display(cat["name"]), page_url(cat['filename']))
     ])
 
     # SEO por categoría con foco local Nogales/Sonora
     CAT_SEO = {
-        'Placas PVC': ('Placas PVC en Nogales, Sonora | ADIS Catálogo', 'Placas PVC tipo madera, mármol y espejo en Nogales, Sonora. Más de {n} modelos. Cotiza instalación con ADIS Diseño & Remodelación. Enviamos a Sonora y Arizona.'),
-        'Lambrin WPC': ('Lambrín WPC en Nogales, Sonora | ADIS Catálogo', 'Lambrín WPC interior y exterior en Nogales, Sonora. Acabado de madera real sin mantenimiento. Cotiza con ADIS. Envíos a Sonora y Arizona.'),
-        'Revestimiento Flexible': ('Revestimiento Flexible en Nogales, Sonora | ADIS', 'Revestimiento flexible tipo concreto, piedra y madera en Nogales, Sonora. Ligero, flexible y fácil de instalar. Cotiza con ADIS.'),
-        'Plafon PVC': ('Plafón PVC en Nogales, Sonora | ADIS Catálogo', 'Plafón PVC laminado y wood style para techos en Nogales, Sonora. Impermeable y de fácil instalación. Cotiza con ADIS.'),
-        'Paneles tridimensionales': ('Paneles 3D en Nogales, Sonora | ADIS Catálogo', 'Paneles decorativos 3D en Nogales, Sonora. Texturas modernas para muros de acento. Cotiza con ADIS Diseño & Remodelación.'),
-        'Vigas PVC': ('Vigas Decorativas PVC/WPC/PU en Nogales | ADIS', 'Vigas decorativas de PVC, WPC y PU en Nogales, Sonora. Imitación madera real sin mantenimiento. Cotiza con ADIS.'),
-        'Pisos': ('Pisos Laminados, WPC y SPC en Nogales, Sonora | ADIS', 'Pisos laminados, WPC, SPC y deck sintético en Nogales, Sonora. Resistentes al agua y fáciles de instalar. Cotiza con ADIS.'),
-        'Zacate': ('Zacate Sintético en Nogales, Sonora | ADIS Catálogo', 'Pasto artificial y zacate sintético en Nogales, Sonora. Para jardín, terraza y negocio. Cotiza con ADIS.'),
-        'Cladding': ('Cladding Tipo Piedra en Nogales, Sonora | ADIS', 'Cladding y placas tipo piedra en Nogales, Sonora. Revestimiento ligero para fachadas y muros. Cotiza con ADIS.'),
+        'Placas PVC': {
+            'es': ('Placas PVC en Nogales, Sonora | ADIS Catálogo', 'Placas PVC tipo madera, mármol y espejo en Nogales, Sonora. Más de {n} modelos. Cotiza instalación con ADIS Diseño & Remodelación. Enviamos a Sonora y Arizona.'),
+            'en': ('PVC Panels in Nogales, Sonora | ADIS Catalog', 'Wood-look, marble and mirror PVC panels in Nogales, Sonora. Over {n} models. Get an installation quote with ADIS Design & Remodeling. We ship to Sonora and Arizona.')},
+        'Lambrin WPC': {
+            'es': ('Lambrín WPC en Nogales, Sonora | ADIS Catálogo', 'Lambrín WPC interior y exterior en Nogales, Sonora. Acabado de madera real sin mantenimiento. Cotiza con ADIS. Envíos a Sonora y Arizona.'),
+            'en': ('WPC Fluted Wall Panels in Nogales, Sonora | ADIS Catalog', 'Interior and exterior WPC fluted wall panels in Nogales, Sonora. Real wood look without maintenance. Quote with ADIS. Shipping to Sonora and Arizona.')},
+        'Revestimiento Flexible': {
+            'es': ('Revestimiento Flexible en Nogales, Sonora | ADIS', 'Revestimiento flexible tipo concreto, piedra y madera en Nogales, Sonora. Ligero, flexible y fácil de instalar. Cotiza con ADIS.'),
+            'en': ('Flexible Stone Veneer in Nogales, Sonora | ADIS', 'Flexible veneer in concrete, stone and wood looks in Nogales, Sonora. Lightweight, flexible and easy to install. Quote with ADIS.')},
+        'Plafon PVC': {
+            'es': ('Plafón PVC en Nogales, Sonora | ADIS Catálogo', 'Plafón PVC laminado y wood style para techos en Nogales, Sonora. Impermeable y de fácil instalación. Cotiza con ADIS.'),
+            'en': ('PVC Ceiling Panels in Nogales, Sonora | ADIS Catalog', 'Laminated and wood-style PVC ceiling panels in Nogales, Sonora. Waterproof and easy to install. Quote with ADIS.')},
+        'Paneles tridimensionales': {
+            'es': ('Paneles 3D en Nogales, Sonora | ADIS Catálogo', 'Paneles decorativos 3D en Nogales, Sonora. Texturas modernas para muros de acento. Cotiza con ADIS Diseño & Remodelación.'),
+            'en': ('3D Wall Panels in Nogales, Sonora | ADIS Catalog', 'Decorative 3D wall panels in Nogales, Sonora. Modern textures for accent walls. Quote with ADIS Design & Remodeling.')},
+        'Vigas PVC': {
+            'es': ('Vigas Decorativas PVC/WPC/PU en Nogales | ADIS', 'Vigas decorativas de PVC, WPC y PU en Nogales, Sonora. Imitación madera real sin mantenimiento. Cotiza con ADIS.'),
+            'en': ('Decorative PVC/WPC/PU Beams in Nogales | ADIS', 'Decorative PVC, WPC and PU beams in Nogales, Sonora. Real wood look without maintenance. Quote with ADIS.')},
+        'Pisos': {
+            'es': ('Pisos Laminados, WPC y SPC en Nogales, Sonora | ADIS', 'Pisos laminados, WPC, SPC y deck sintético en Nogales, Sonora. Resistentes al agua y fáciles de instalar. Cotiza con ADIS.'),
+            'en': ('Laminate, WPC and SPC Flooring in Nogales, Sonora | ADIS', 'Laminate, WPC, SPC and synthetic deck flooring in Nogales, Sonora. Water resistant and easy to install. Quote with ADIS.')},
+        'Zacate': {
+            'es': ('Zacate Sintético en Nogales, Sonora | ADIS Catálogo', 'Pasto artificial y zacate sintético en Nogales, Sonora. Para jardín, terraza y negocio. Cotiza con ADIS.'),
+            'en': ('Artificial Grass in Nogales, Sonora | ADIS Catalog', 'Artificial grass and synthetic turf in Nogales, Sonora. For garden, terrace and business. Quote with ADIS.')},
+        'Cladding': {
+            'es': ('Cladding Tipo Piedra en Nogales, Sonora | ADIS', 'Cladding y placas tipo piedra en Nogales, Sonora. Revestimiento ligero para fachadas y muros. Cotiza con ADIS.'),
+            'en': ('Stone-Look Cladding in Nogales, Sonora | ADIS', 'Stone-look cladding and panels in Nogales, Sonora. Lightweight veneer for facades and walls. Quote with ADIS.')},
     }
-    cat_title, cat_desc_template = CAT_SEO.get(cat['name'], (f"{cat['name']} en Nogales, Sonora | ADIS Catálogo", f"{cat['name']} en Nogales, Sonora. Explora {cat['total_products']} productos y solicita tu cotización con ADIS Diseño & Remodelación."))
+    cat_name_disp = cat_display(cat['name'])
+    seo_entry = CAT_SEO.get(cat['name'], {}).get(CUR_LANG) or CAT_SEO.get(cat['name'], {}).get('es')
+    if seo_entry:
+        cat_title, cat_desc_template = seo_entry
+    elif CUR_LANG == 'en':
+        cat_title, cat_desc_template = (f"{cat_name_disp} in Nogales, Sonora | ADIS Catalog", f"{cat_name_disp} in Nogales, Sonora. Explore {cat['total_products']} products and request your quote with ADIS Design & Remodeling.")
+    else:
+        cat_title, cat_desc_template = (f"{cat['name']} en Nogales, Sonora | ADIS Catálogo", f"{cat['name']} en Nogales, Sonora. Explora {cat['total_products']} productos y solicita tu cotización con ADIS Diseño & Remodelación.")
     cat_desc = cat_desc_template.format(n=cat['total_products'])
 
     html = f'''<!DOCTYPE html>
-<html lang="es">
+<html lang="{html_lang()}">
 <head>
   <meta charset="UTF-8">
-  <link rel="icon" type="image/png" href="LOGO ADIS.png">
+  <link rel="icon" type="image/png" href="{p('LOGO ADIS.png')}">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   {head_common()}
   <title>{cat_title}</title>
@@ -7032,18 +7224,19 @@ def generate_category_page(cat, categories):
   <meta property="og:title" content="{cat_title}">
   <meta property="og:description" content="{cat_desc}">
   <meta property="og:image" content="{SITE_URL}{hero_bg_quoted}">
-  <meta property="og:url" content="{SITE_URL}{cat["filename"]}">
+  <meta property="og:url" content="{page_url(cat["filename"])}">
   <meta property="og:type" content="website">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="{cat_title}">
   <meta name="twitter:description" content="{cat_desc}">
   <meta name="twitter:image" content="{SITE_URL}{hero_bg_quoted}">
-  <link rel="canonical" href="{SITE_URL}{cat["filename"]}">
+  <link rel="canonical" href="{page_url(cat["filename"])}">
+  {hreflang_tags(cat["filename"])}
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="{p('style.css')}">
 {ga_script()}
 {fb_pixel_script()}
-{translate_script()}
+{translate_script(cat["filename"])}
 {organization_schema()}
 {breadcrumb_html}
 {product_schemas_html}</head>
@@ -7052,15 +7245,15 @@ def generate_category_page(cat, categories):
   <canvas id="bg-canvas"></canvas>
 {generate_header(cat["slug"])}
 {breadcrumbs_html}
-  <section class="hero-cat-bg" style="background-image: url('{hero_bg}');">
+  <section class="hero-cat-bg" style="background-image: url('{p(hero_bg)}');">
     <div class="hero-cat-content">
       {'<div class="hero-star-badge">&#11088; ' + i18n('featured_star_label') + '</div>' if cat["name"] in ("Lambrin WPC", "Placas PVC") else '<div class="hero-cat-badge">' + i18n('cat_badge') + '</div>'}
-      <h1>{cat["name"]}</h1>
-      <p>{i18n_fmt('cat_hero_subtitle', category=cat["name"], count=cat["total_products"])}</p>
+      <h1>{cat_display(cat["name"])}</h1>
+      <p>{i18n_fmt('cat_hero_subtitle', category=cat_display(cat["name"]), count=cat["total_products"])}</p>
       <div class="hero-cat-actions">
         <a href="{wa_hero_url}" class="btn-primary btn-wa" target="_blank" onclick="gtag('event','whatsapp_click',{{'location':'hero_category','category':'{cat['name']}'}})">{i18n('cta_quote_whatsapp')}</a>
         <a href="tel:{CONTACTO['tel_mx_link']}" class="btn-outline" onclick="gtag('event','contacto_click',{{'tipo':'tel_mx','location':'hero_category'}})">{i18n('cat_cta_call')}</a>
-        <a href="{pdf_url}" class="btn-outline" download onclick="gtag('event','pdf_download',{{'category':'{cat['name']}'}})">{i18n('cat_cta_download')}</a>
+        <a href="{p(pdf_url)}" class="btn-outline" download onclick="gtag('event','pdf_download',{{'category':'{cat['name']}'}})">{i18n('cat_cta_download')}</a>
       </div>
     </div>
   </section>
@@ -7071,19 +7264,19 @@ def generate_category_page(cat, categories):
 {cat_nav_html}
   <section class="section-wrap" style="padding-top: 1rem;">
     <div style="text-align: center;">
-      <a href="index.html" class="btn-back">{i18n('cat_back_home')}</a>
-      <a href="contacto.html" class="btn-outline">{i18n('cat_contact')}</a>
+      <a href="{p('index.html')}" class="btn-back">{i18n('cat_back_home')}</a>
+      <a href="{p('contacto.html')}" class="btn-outline">{i18n('cat_contact')}</a>
     </div>
   </section>
 
   <!-- CTA FINAL DE CATEGORÍA -->
   <section class="section-wrap cta-final-section reveal" style="padding-top: 2rem; padding-bottom: 2rem;">
     <div class="cta-final-box">
-      <h2>{i18n_fmt('cat_cta_final_title', category=cat['name'])}</h2>
+      <h2>{i18n_fmt('cat_cta_final_title', category=cat_display(cat['name']))}</h2>
       <p>{i18n('cat_cta_final_subtitle', html=True)}</p>
       <div class="hero-cat-actions" style="justify-content: center;">
-        <a href="{wa_hero_url}" class="btn-primary btn-wa" target="_blank" onclick="gtag('event','whatsapp_click',{{'location':'cta_final_category','category':'{cat['name']}'}})">{i18n('sticky_quote_category')} {cat['name']}</a>
-        <a href="contacto.html" class="btn-secondary">{i18n('cat_cta_final_form')}</a>
+        <a href="{wa_hero_url}" class="btn-primary btn-wa" target="_blank" onclick="gtag('event','whatsapp_click',{{'location':'cta_final_category','category':'{cat['name']}'}})">{i18n('sticky_quote_category')} {cat_display(cat['name'])}</a>
+        <a href="{p('contacto.html')}" class="btn-secondary">{i18n('cat_cta_final_form')}</a>
       </div>
     </div>
   </section>
@@ -7095,7 +7288,7 @@ def generate_category_page(cat, categories):
 </body>
 </html>
 '''
-    filepath = OUTPUT_DIR / cat["filename"]
+    filepath = out_dir() / cat["filename"]
     with open(filepath, 'w', encoding='utf-8') as f:
         f.write(minify_html(html))
     print(f'{cat["filename"]} generado')
@@ -7631,7 +7824,7 @@ def _extract_curiosos_cards(text):
             card_p = f'''<p class="sq-card-text">
       <span class="sq-short">{desc_trunc}</span>
       <span class="sq-full" style="display:none">{desc}</span>
-      <span class="sq-card-readmore" onclick="sqToggle(this)">Leer más</span>
+      <span class="sq-card-readmore" onclick="sqToggle(this)">{t('sq_card_readmore')}</span>
     </p>'''
         else:
             card_p = f'<p class="sq-card-text">{desc}</p>'
@@ -7738,7 +7931,9 @@ def generate_sabias_que():
     }
     
     # Generar paginas individuales
-    for cat_name, data in RESEARCH_DATA.items():
+    for cat_name in RESEARCH_DATA.keys():
+        data = research_data(cat_name)
+        cat_name_disp = research_cat_display(cat_name)
         slug = SABIAS_QUE_SLUGS.get(cat_name, 'otros')
         cat_img = cat_images.get(cat_name, 'LOGO%20ADIS.png')
         
@@ -7746,54 +7941,56 @@ def generate_sabias_que():
         faqs_html = _extract_faqs_html(data['faqs']) if data.get('faqs') else ''
         faqs_data = _extract_faqs_data(data['faqs']) if data.get('faqs') else []
         faq_schema_html = faqpage_schema([(f['q'], f['a']) for f in faqs_data]) if faqs_data else ''
-        page_url = f"{SITE_URL}sabias-que-{slug}.html"
+        sq_filename = f"sabias-que-{slug}.html"
+        sq_url = page_url(sq_filename)
         
         page_html = f'''<!DOCTYPE html>
-<html lang="es">
+<html lang="{html_lang()}">
 <head>
   <meta charset="UTF-8">
-  <link rel="icon" type="image/png" href="LOGO ADIS.png">
+  <link rel="icon" type="image/png" href="{p('LOGO ADIS.png')}">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   {head_common()}
-  <title>{cat_name} — ¿Sabías que? | ADIS Diseño & Remodelación</title>
-  <meta name="description" content="Datos curiosos y preguntas frecuentes sobre {cat_name}.">
-  <meta property="og:title" content="{cat_name} — ¿Sabías que? | ADIS">
-  <meta property="og:description" content="Datos curiosos y preguntas frecuentes sobre {cat_name}.">
+  <title>{t('sabias_slug_title').format(cat=cat_name_disp)}</title>
+  <meta name="description" content="{t('sabias_slug_desc').format(cat=cat_name_disp)}">
+  <meta property="og:title" content="{t('sabias_slug_title').format(cat=cat_name_disp)}">
+  <meta property="og:description" content="{t('sabias_slug_desc').format(cat=cat_name_disp)}">
   <meta property="og:image" content="{SITE_URL}{cat_img}">
-  <meta property="og:url" content="{page_url}">
+  <meta property="og:url" content="{page_url(sq_filename)}">
   <meta property="og:type" content="website">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="{cat_name} — ¿Sabías que? | ADIS">
-  <meta name="twitter:description" content="Datos curiosos y preguntas frecuentes sobre {cat_name}.">
+  <meta name="twitter:title" content="{t('sabias_slug_title').format(cat=cat_name_disp)}">
+  <meta name="twitter:description" content="{t('sabias_slug_desc').format(cat=cat_name_disp)}">
   <meta name="twitter:image" content="{SITE_URL}{cat_img}">
-  <link rel="canonical" href="{page_url}">
+  <link rel="canonical" href="{page_url(sq_filename)}">
+  {hreflang_tags(sq_filename)}
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="{p('style.css')}">
 {ga_script()}
 {fb_pixel_script()}
-{translate_script()}
+{translate_script(sq_filename)}
 {organization_schema()}
-{breadcrumb_schema([('Inicio', SITE_URL), ('¿Sabías que?', f'{SITE_URL}sabias-que.html'), (cat_name, page_url)])}
+{breadcrumb_schema([(t('bc_home'), SITE_URL), (t('bc_sabias'), f'{SITE_URL}sabias-que.html'), (cat_name_disp, sq_url)])}
 {faq_schema_html}</head>
 <body>
   <script>document.documentElement.classList.add('js-enabled');</script>
   <canvas id="bg-canvas"></canvas>
 {generate_header("sabias-que")}
-{breadcrumb_html([('Inicio', 'index.html'), ('¿Sabías que?', 'sabias-que.html'), (cat_name, '')])}
+{breadcrumb_html([(t('bc_home'), p('index.html')), (t('bc_sabias'), p('sabias-que.html')), (cat_name_disp, '')])}
 
   <section class="sq-hero">
     <h1>{i18n('sq_title')}</h1>
-    <p>{i18n_fmt('sq_subtitle_known', category=cat_name, html=True)}</p>
+    <p>{i18n_fmt('sq_subtitle_known', category=cat_name_disp, html=True)}</p>
   </section>
 
   <div style="max-width:1100px;margin:0 auto;padding:0 1.5rem;">
-    <a href="sabias-que.html" style="display:inline-flex;align-items:center;gap:0.4rem;color:var(--gold);text-decoration:none;font-size:0.85rem;margin-bottom:1rem;">{i18n('sq_back_index')}</a>
+    <a href="{p('sabias-que.html')}" style="display:inline-flex;align-items:center;gap:0.4rem;color:var(--gold);text-decoration:none;font-size:0.85rem;margin-bottom:1rem;">{i18n('sq_back_index')}</a>
   </div>
 
   <div class="sq-content" style="padding-top:0;">
-    <div class="sq-cat-hero" style="background-image: url('{cat_img}');">
+    <div class="sq-cat-hero" style="background-image: url('{p(cat_img)}');">
       <div class="sq-cat-overlay">
-        <h2>{cat_name}</h2>
+        <h2>{cat_name_disp}</h2>
       </div>
     </div>
     <div class="section-header" style="margin:2rem 0 1.5rem;">
@@ -7826,56 +8023,57 @@ function sqToggle(el) {{
 </body>
 </html>
 '''
-        with open(OUTPUT_DIR / f'sabias-que-{slug}.html', 'w', encoding='utf-8') as f:
+        with open(out_dir() / f'sabias-que-{slug}.html', 'w', encoding='utf-8') as f:
             f.write(minify_html(page_html))
-        print(f"✅ sabias-que-{slug}.html generado ({cat_name})")
+        print(f"✅ sabias-que-{slug}.html generado ({cat_name_disp}) [{CUR_LANG}]")
     
     # Generar pagina indice
     index_cards = ''
     for cat_name in RESEARCH_DATA.keys():
         slug = SABIAS_QUE_SLUGS.get(cat_name, 'otros')
         cat_img = cat_images.get(cat_name, 'LOGO%20ADIS.png')
-        index_cards += f'''    <a href="sabias-que-{slug}.html" class="sq-index-card">
-      <div class="sq-index-img" style="background-image:url('{cat_img}');"></div>
+        index_cards += f'''    <a href="{p('sabias-que-' + slug + '.html')}" class="sq-index-card">
+      <div class="sq-index-img" style="background-image:url('{p(cat_img)}');"></div>
       <div class="sq-index-info">
-        <h3>{cat_name}</h3>
+        <h3>{research_cat_display(cat_name)}</h3>
         <span>{i18n('sq_see_more')}</span>
       </div>
     </a>
 '''
     
     index_html = f'''<!DOCTYPE html>
-<html lang="es">
+<html lang="{html_lang()}">
 <head>
   <meta charset="UTF-8">
-  <link rel="icon" type="image/png" href="LOGO ADIS.png">
+  <link rel="icon" type="image/png" href="{p('LOGO ADIS.png')}">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   {head_common()}
-  <title>¿Sabías que? | ADIS Diseño & Remodelación</title>
-  <meta name="description" content="Datos curiosos, FAQs y consejos sobre nuestros productos: PVC, WPC, paneles 3D, pisos, zacate y cladding.">
-  <meta property="og:title" content="¿Sabías que? | ADIS">
-  <meta property="og:description" content="Descubre datos sorprendentes sobre nuestros materiales de construcción.">
+  <title>{t('title_sabias')}</title>
+  <meta name="description" content="{t('sabias_meta_desc')}">
+  <meta property="og:title" content="{t('title_sabias')}">
+  <meta property="og:description" content="{t('sabias_meta_desc')}">
   <meta property="og:image" content="{SITE_URL}LOGO%20ADIS.png">
-  <meta property="og:url" content="{SITE_URL}sabias-que.html">
+  <meta property="og:url" content="{page_url('sabias-que.html')}">
   <meta property="og:type" content="website">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="¿Sabías que? | ADIS">
-  <meta name="twitter:description" content="Descubre datos sorprendentes sobre nuestros materiales de construcción.">
+  <meta name="twitter:title" content="{t('title_sabias')}">
+  <meta name="twitter:description" content="{t('sabias_meta_desc')}">
   <meta name="twitter:image" content="{SITE_URL}LOGO%20ADIS.png">
-  <link rel="canonical" href="{SITE_URL}sabias-que.html">
+  <link rel="canonical" href="{page_url('sabias-que.html')}">
+  {hreflang_tags('sabias-que.html')}
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="{p('style.css')}">
 {ga_script()}
 {fb_pixel_script()}
-{translate_script()}
+{translate_script('sabias-que.html')}
 {organization_schema()}
-{breadcrumb_schema([('Inicio', SITE_URL), ('¿Sabías que?', f'{SITE_URL}sabias-que.html')])}
+{breadcrumb_schema([(t('bc_home'), SITE_URL), (t('bc_sabias'), page_url('sabias-que.html'))])}
 </head>
 <body>
   <script>document.documentElement.classList.add('js-enabled');</script>
   <canvas id="bg-canvas"></canvas>
 {generate_header("sabias-que")}
-{breadcrumb_html([('Inicio', 'index.html'), ('¿Sabías que?', '')])}
+{breadcrumb_html([(t('bc_home'), p('index.html')), (t('bc_sabias'), '')])}
 
   <section class="sq-hero">
     <h1>{i18n('sq_title')}</h1>
@@ -7891,7 +8089,7 @@ function sqToggle(el) {{
 </body>
 </html>
 '''
-    with open(OUTPUT_DIR / 'sabias-que.html', 'w', encoding='utf-8') as f:
+    with open(out_dir() / 'sabias-que.html', 'w', encoding='utf-8') as f:
         f.write(minify_html(index_html))
     print("✅ sabias-que.html (indice) generado")
 
@@ -7997,7 +8195,7 @@ def generate_proyectos():
         poster_attr = f' poster="media/{poster}"' if poster else ''
         videos_html += f'''      <div class="video-card reveal">
         <video class="auto-video" muted loop playsinline{poster_attr}>
-          <source src="media/{vid}" type="{mime}">
+          <source src="{p('media/' + vid)}" type="{mime}">
         </video>
         <div class="product-info">
           <div class="product-name">{name}</div>
@@ -8019,33 +8217,34 @@ def generate_proyectos():
 '''
     
     html = f'''<!DOCTYPE html>
-<html lang="es">
+<html lang="{html_lang()}">
 <head>
   <meta charset="UTF-8">
-  <link rel="icon" type="image/png" href="LOGO ADIS.png">
+  <link rel="icon" type="image/png" href="{p('LOGO ADIS.png')}">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   {head_common()}
-  <title>Proyectos Reales | ADIS Diseño & Remodelación</title>
-  <meta name="description" content="Galería de proyectos reales de ADIS Diseño & Remodelación. Antes y después, remodelaciones de interiores y exteriores.">
+  <title>{t('title_proyectos')}</title>
+  <meta name="description" content="{t('proyectos_meta_desc')}">
   <meta name="keywords" content="proyectos ADIS, antes y despues, remodelaciones Nogales, remodelaciones Arizona, placas PVC instaladas, lambrin WPC">
-  <meta property="og:title" content="Proyectos Reales | ADIS Diseño & Remodelación">
-  <meta property="og:description" content="Galería de proyectos reales de ADIS Diseño & Remodelación. Antes y después, remodelaciones de interiores y exteriores.">
+  <meta property="og:title" content="{t('title_proyectos')}">
+  <meta property="og:description" content="{t('proyectos_meta_desc')}">
   {og_image_tags(f'{SITE_URL}media/despues.jpg')}
-  <meta property="og:url" content="{SITE_URL}proyectos.html">
+  <meta property="og:url" content="{page_url('proyectos.html')}">
   <meta property="og:type" content="website">
-  <meta name="twitter:title" content="Proyectos Reales | ADIS Diseño & Remodelación">
-  <meta name="twitter:description" content="Galería de proyectos reales de ADIS Diseño & Remodelación. Antes y después, remodelaciones de interiores y exteriores.">
-  <meta name="twitter:title" content="Proyectos Reales | ADIS Diseño & Remodelación">
-  <meta name="twitter:description" content="Galería de proyectos reales de ADIS Diseño & Remodelación. Antes y después, remodelaciones de interiores y exteriores.">
+  <meta name="twitter:title" content="{t('title_proyectos')}">
+  <meta name="twitter:description" content="{t('proyectos_meta_desc')}">
+  <meta name="twitter:title" content="{t('title_proyectos')}">
+  <meta name="twitter:description" content="{t('proyectos_meta_desc')}">
   <meta name="twitter:image" content="{SITE_URL}media/despues.jpg">
-  <link rel="canonical" href="{SITE_URL}proyectos.html">
+  <link rel="canonical" href="{page_url('proyectos.html')}">
+  {hreflang_tags('proyectos.html')}
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="{p('style.css')}">
 {ga_script()}
 {fb_pixel_script()}
-{translate_script()}
+{translate_script('proyectos.html')}
 {organization_schema()}
-{breadcrumb_schema([('Inicio', SITE_URL), ('Proyectos', f'{SITE_URL}proyectos.html')])}
+{breadcrumb_schema([(t('bc_home'), SITE_URL), (t('nav_projects'), page_url('proyectos.html'))])}
   <style>
     /* CAROUSEL */
     .carousel-wrap {{ position: relative; max-width: 900px; margin: 0 auto; overflow: hidden; border-radius: 12px; border: 1px solid rgba(197,160,89,0.2); }}
@@ -8066,7 +8265,7 @@ def generate_proyectos():
   <script>document.documentElement.classList.add('js-enabled');</script>
   <canvas id="bg-canvas"></canvas>
 {generate_header("proyectos")}
-{breadcrumb_html([('Inicio', 'index.html'), ('Proyectos', '')])}
+{breadcrumb_html([(t('bc_home'), p('index.html')), (t('nav_projects'), '')])}
 
   <section class="hero-cat">
     <h1>{i18n('projects_title')}</h1>
@@ -8076,8 +8275,8 @@ def generate_proyectos():
 {ba_sections}{gallery_section}{video_section}
   <section class="section-wrap" style="padding-top: 1rem;">
     <div style="text-align: center;">
-      <a href="index.html" class="btn-back">{i18n('cat_back_home')}</a>
-      <a href="contacto.html" class="btn-outline">{i18n('cat_contact')}</a>
+      <a href="{p('index.html')}" class="btn-back">{i18n('cat_back_home')}</a>
+      <a href="{p('contacto.html')}" class="btn-outline">{i18n('cat_contact')}</a>
     </div>
   </section>
 
@@ -8118,7 +8317,7 @@ def generate_proyectos():
 </body>
 </html>
 '''
-    with open(OUTPUT_DIR / 'proyectos.html', 'w', encoding='utf-8') as f:
+    with open(out_dir() / 'proyectos.html', 'w', encoding='utf-8') as f:
         f.write(minify_html(html))
     print("proyectos.html generado")
 
@@ -8145,15 +8344,22 @@ def main():
     generate_style()
     generate_sitemap(categories)
     generate_robots()
-    generate_index(categories)
-    generate_contacto()
-    generate_nosotros()
-    generate_privacy()
-    generate_proyectos()
-    generate_sabias_que()
 
-    for cat in categories:
-        generate_category_page(cat, categories)
+    for lang in ('es', 'en'):
+        set_lang(lang)
+        print(f"\n===== Generando version {lang.upper()} -> {out_dir()} =====")
+        (OUTPUT_DIR / 'en').mkdir(parents=True, exist_ok=True)
+        generate_index(categories)
+        generate_contacto()
+        generate_nosotros()
+        generate_privacy()
+        generate_proyectos()
+        generate_sabias_que()
+
+        for cat in categories:
+            generate_category_page(cat, categories)
+
+    set_lang('es')
 
     # Generar products.json para el buscador
     products_data = []
@@ -8163,8 +8369,11 @@ def main():
             for prod in sub["products"]:
                 products_data.append({
                     'name': os.path.splitext(prod)[0],
+                    'name_en': _CAT_TR.get('names', {}).get(os.path.splitext(prod)[0], os.path.splitext(prod)[0]),
                     'category': cat["name"],
+                    'category_en': _CAT_TR.get('categories', {}).get(cat["name"], cat["name"]),
                     'subcategory': sub["name"],
+                    'subcategory_en': _CAT_TR.get('subcategories', {}).get(sub["name"], sub["name"]),
                     'url': f'{cat["filename"]}#{sub["slug"]}',
                     'thumb': f'img/{cat["slug"]}/{sub["slug"]}/{prod}',
                     'price': cat_price.get('range', 'Consultar'),
@@ -8174,8 +8383,11 @@ def main():
         for prod in cat["direct_products"]:
             products_data.append({
                 'name': os.path.splitext(prod)[0],
+                'name_en': _CAT_TR.get('names', {}).get(os.path.splitext(prod)[0], os.path.splitext(prod)[0]),
                 'category': cat["name"],
+                'category_en': _CAT_TR.get('categories', {}).get(cat["name"], cat["name"]),
                 'subcategory': None,
+                'subcategory_en': None,
                 'url': cat["filename"],
                 'thumb': f'img/{cat["slug"]}/{prod}',
                 'price': cat_price.get('range', 'Consultar'),
@@ -8211,8 +8423,24 @@ def main():
                     'curiosos': curiosos,
                     'faqs': faqs
                 }
+    # Versión EN de los datos de investigación para el chatbot
+    research_output_en = {}
+    if RESEARCH_DATA_EN and RESEARCH_DATA:
+        for cat_name, data in RESEARCH_DATA_EN.items():
+            slug = research_cat_slugs.get(cat_name)
+            if not slug:
+                continue
+            curiosos = _extract_curiosos_data(data.get('curiosos', ''))
+            faqs = _extract_faqs_data(data.get('faqs', ''))
+            if curiosos or faqs:
+                research_output_en[slug] = {
+                    'name': cat_name,
+                    'slug': slug,
+                    'curiosos': curiosos,
+                    'faqs': faqs
+                }
     
-    output_data = {'products': products_data, 'research': research_output}
+    output_data = {'products': products_data, 'research': research_output, 'research_en': research_output_en}
     with open(OUTPUT_DIR / 'products.json', 'w', encoding='utf-8') as f:
         json.dump(output_data, f, ensure_ascii=False, indent=2)
     print(f"\nproducts.json generado con {len(products_data)} productos y datos de {len(research_output)} categorías de investigación")

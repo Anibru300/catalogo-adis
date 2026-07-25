@@ -2,8 +2,11 @@
   "products": [
     {
       "name": "Adler",
+      "name_en": "Adler",
       "category": "Placas PVC",
+      "category_en": "PVC Panels",
       "subcategory": "Placas PVC tipo madera",
+      "subcategory_en": "Wood-look PVC Panels",
       "url": "1-placas-pvc.html#11-placas-pvc-tipo-madera",
       "thumb": "img/1-placas-pvc/11-placas-pvc-tipo-madera/Adler.jpg",
       "price": "Consultar",
@@ -12,8 +15,11 @@
     },
     {
       "name": "Alpina",
+      "name_en": "Alpina",
       "category": "Placas PVC",
+      "category_en": "PVC Panels",
       "subcategory": "Placas PVC tipo madera",
+      "subcategory_en": "Wood-look PVC Panels",
       "url": "1-placas-pvc.html#11-placas-pvc-tipo-madera",
       "thumb": "img/1-placas-pvc/11-placas-pvc-tipo-madera/Alpina.jpg",
       "price": "Consultar",
@@ -22,8 +28,11 @@
     },
     {
       "name": "Angulo 8x8x2440mm",
+      "name_en": "Corner Trim 8x8x2440mm",
       "category": "Placas PVC",
+      "category_en": "PVC Panels",
       "subcategory": "Placas PVC tipo madera",
+      "subcategory_en": "Wood-look PVC Panels",
       "url": "1-placas-pvc.html#11-placas-pvc-tipo-madera",
       "thumb": "img/1-placas-pvc/11-placas-pvc-tipo-madera/Angulo 8x8x2440mm.jpg",
       "price": "Consultar",
@@ -32,8 +41,11 @@
     },
     {
       "name": "Solaria",
+      "name_en": "Solaria",
       "category": "Placas PVC",
+      "category_en": "PVC Panels",
       "subcategory": "Placas PVC tipo madera",
+      "subcategory_en": "Wood-look PVC Panels",
       "url": "1-placas-pvc.html#11-placas-pvc-tipo-madera",
       "thumb": "img/1-placas-pvc/11-placas-pvc-tipo-madera/Solaria.jpg",
       "price": "Consultar",
@@ -42,8 +54,11 @@
     },
     {
       "name": "Solden",
+      "name_en": "Solden",
       "category": "Placas PVC",
+      "category_en": "PVC Panels",
       "subcategory": "Placas PVC tipo madera",
+      "subcategory_en": "Wood-look PVC Panels",
       "url": "1-placas-pvc.html#11-placas-pvc-tipo-madera",
       "thumb": "img/1-placas-pvc/11-placas-pvc-tipo-madera/Solden.jpg",
       "price": "Consultar",
@@ -52,8 +67,11 @@
     },
     {
       "name": "anton",
+      "name_en": "anton",
       "category": "Placas PVC",
+      "category_en": "PVC Panels",
       "subcategory": "Placas PVC tipo madera",
+      "subcategory_en": "Wood-look PVC Panels",
       "url": "1-placas-pvc.html#11-placas-pvc-tipo-madera",
       "thumb": "img/1-placas-pvc/11-placas-pvc-tipo-madera/anton.jpg",
       "price": "Consultar",
@@ -62,8 +80,11 @@
     },
     {
       "name": "perfil T 7x3x2440mm",
+      "name_en": "T-profile 7x3x2440mm",
       "category": "Placas PVC",
+      "category_en": "PVC Panels",
       "subcategory": "Placas PVC tipo madera",
+      "subcategory_en": "Wood-look PVC Panels",
       "url": "1-placas-pvc.html#11-placas-pvc-tipo-madera",
       "thumb": "img/1-placas-pvc/11-placas-pvc-tipo-madera/perfil T 7x3x2440mm.jpg",
       "price": "Consultar",
@@ -72,8 +93,11 @@
     },
     {
       "name": "ANGULO 8x8x2440mm",
+      "name_en": "CORNER TRIM 8x8x2440mm",
       "category": "Placas PVC",
+      "category_en": "PVC Panels",
       "subcategory": "Placas PVC Texturizadas",
+      "subcategory_en": "Textured PVC Panels",
       "url": "1-placas-pvc.html#12-placas-pvc-texturizadas",
       "thumb": "img/1-placas-pvc/12-placas-pvc-texturizadas/ANGULO 8x8x2440mm.jpg",
       "price": "Consultar",
@@ -82,8 +106,11 @@
     },
     {
       "name": "ASH",
+      "name_en": "ASH",
       "category": "Placas PVC",
+      "category_en": "PVC Panels",
       "subcategory": "Placas PVC Texturizadas",
+      "subcategory_en": "Textured PVC Panels",
       "url": "1-placas-pvc.html#12-placas-pvc-texturizadas",
       "thumb": "img/1-placas-pvc/12-placas-pvc-texturizadas/ASH.png",
       "price": "Consultar",
@@ -92,8 +119,11 @@
     },
     {
       "name": "CEDAR",
+      "name_en": "CEDAR",
       "category": "Placas PVC",
+      "category_en": "PVC Panels",
       "subcategory": "Placas PVC Texturizadas",
+      "subcategory_en": "Textured PVC Panels",
       "url": "1-placas-pvc.html#12-placas-pvc-texturizadas",
       "thumb": "img/1-placas-pvc/12-placas-pvc-texturizadas/CEDAR.png",
       "price": "Consultar",
@@ -102,8 +132,11 @@
     },
     {
       "name": "ENCINO",
+      "name_en": "OAK",
       "category": "Placas PVC",
+      "category_en": "PVC Panels",
       "subcategory": "Placas PVC Texturizadas",
+      "subcategory_en": "Textured PVC Panels",
       "url": "1-placas-pvc.html#12-placas-pvc-texturizadas",
       "thumb": "img/1-placas-pvc/12-placas-pvc-texturizadas/ENCINO.png",
       "price": "Consultar",
@@ -112,8 +145,11 @@
     },
     {
       "name": "IPE",
+      "name_en": "IPE",
       "category": "Placas PVC",
+      "category_en": "PVC Panels",
       "subcategory": "Placas PVC Texturizadas",
+      "subcategory_en": "Textured PVC Panels",
       "url": "1-placas-pvc.html#12-placas-pvc-texturizadas",
       "thumb": "img/1-placas-pvc/12-placas-pvc-texturizadas/IPE.png",
       "price": "Consultar",
@@ -122,8 +158,11 @@
     },
     {
       "name": "JATOBA",
+      "name_en": "JATOBA",
       "category": "Placas PVC",
+      "category_en": "PVC Panels",
       "subcategory": "Placas PVC Texturizadas",
+      "subcategory_en": "Textured PVC Panels",
       "url": "1-placas-pvc.html#12-placas-pvc-texturizadas",
       "thumb": "img/1-placas-pvc/12-placas-pvc-texturizadas/JATOBA.png",
       "price": "Consultar",
@@ -132,8 +171,11 @@
     },
     {
       "name": "NOGAL",
+      "name_en": "WALNUT",
       "category": "Placas PVC",
+      "category_en": "PVC Panels",
       "subcategory": "Placas PVC Texturizadas",
+      "subcategory_en": "Textured PVC Panels",
       "url": "1-placas-pvc.html#12-placas-pvc-texturizadas",
       "thumb": "img/1-placas-pvc/12-placas-pvc-texturizadas/NOGAL.png",
       "price": "Consultar",
@@ -142,8 +184,11 @@
     },
     {
       "name": "PERFIL T 7x3x2440mm",
+      "name_en": "T-PROFILE 7x3x2440mm",
       "category": "Placas PVC",
+      "category_en": "PVC Panels",
       "subcategory": "Placas PVC Texturizadas",
+      "subcategory_en": "Textured PVC Panels",
       "url": "1-placas-pvc.html#12-placas-pvc-texturizadas",
       "thumb": "img/1-placas-pvc/12-placas-pvc-texturizadas/PERFIL T 7x3x2440mm.jpg",
       "price": "Consultar",
@@ -152,8 +197,11 @@
     },
     {
       "name": "WENGE",
+      "name_en": "WENGE",
       "category": "Placas PVC",
+      "category_en": "PVC Panels",
       "subcategory": "Placas PVC Texturizadas",
+      "subcategory_en": "Textured PVC Panels",
       "url": "1-placas-pvc.html#12-placas-pvc-texturizadas",
       "thumb": "img/1-placas-pvc/12-placas-pvc-texturizadas/WENGE.png",
       "price": "Consultar",
@@ -162,8 +210,11 @@
     },
     {
       "name": "PLACA TIPO ESPEJO DORADO",
+      "name_en": "GOLD MIRROR-LOOK PANEL",
       "category": "Placas PVC",
+      "category_en": "PVC Panels",
       "subcategory": "Placas PVC Tipo espejo",
+      "subcategory_en": "Mirror-look PVC Panels",
       "url": "1-placas-pvc.html#13-placas-pvc-tipo-espejo",
       "thumb": "img/1-placas-pvc/13-placas-pvc-tipo-espejo/PLACA TIPO ESPEJO DORADO.jpg",
       "price": "Consultar",
@@ -172,8 +223,11 @@
     },
     {
       "name": "PLACA TIPO ESPEJO",
+      "name_en": "MIRROR-LOOK PANEL",
       "category": "Placas PVC",
+      "category_en": "PVC Panels",
       "subcategory": "Placas PVC Tipo espejo",
+      "subcategory_en": "Mirror-look PVC Panels",
       "url": "1-placas-pvc.html#13-placas-pvc-tipo-espejo",
       "thumb": "img/1-placas-pvc/13-placas-pvc-tipo-espejo/PLACA TIPO ESPEJO.jpg",
       "price": "Consultar",
@@ -182,8 +236,11 @@
     },
     {
       "name": "PLACA TIPO METAL",
+      "name_en": "METAL-LOOK PANEL",
       "category": "Placas PVC",
+      "category_en": "PVC Panels",
       "subcategory": "Placas PVC Tipo espejo",
+      "subcategory_en": "Mirror-look PVC Panels",
       "url": "1-placas-pvc.html#13-placas-pvc-tipo-espejo",
       "thumb": "img/1-placas-pvc/13-placas-pvc-tipo-espejo/PLACA TIPO METAL.jpg",
       "price": "Consultar",
@@ -192,8 +249,11 @@
     },
     {
       "name": "AGATA",
+      "name_en": "AGATE",
       "category": "Placas PVC",
+      "category_en": "PVC Panels",
       "subcategory": null,
+      "subcategory_en": null,
       "url": "1-placas-pvc.html",
       "thumb": "img/1-placas-pvc/AGATA.jpg",
       "price": "Consultar",
@@ -202,8 +262,11 @@
     },
     {
       "name": "ARENA",
+      "name_en": "SAND",
       "category": "Placas PVC",
+      "category_en": "PVC Panels",
       "subcategory": null,
+      "subcategory_en": null,
       "url": "1-placas-pvc.html",
       "thumb": "img/1-placas-pvc/ARENA.jpg",
       "price": "Consultar",
@@ -212,8 +275,11 @@
     },
     {
       "name": "Aurora Dorada",
+      "name_en": "Golden Aurora",
       "category": "Placas PVC",
+      "category_en": "PVC Panels",
       "subcategory": null,
+      "subcategory_en": null,
       "url": "1-placas-pvc.html",
       "thumb": "img/1-placas-pvc/Aurora Dorada.jpg",
       "price": "Consultar",
@@ -222,8 +288,11 @@
     },
     {
       "name": "Carrara Oscuro",
+      "name_en": "Dark Carrara",
       "category": "Placas PVC",
+      "category_en": "PVC Panels",
       "subcategory": null,
+      "subcategory_en": null,
       "url": "1-placas-pvc.html",
       "thumb": "img/1-placas-pvc/Carrara Oscuro.jpg",
       "price": "Consultar",
@@ -232,8 +301,11 @@
     },
     {
       "name": "Cuarzo",
+      "name_en": "Quartz",
       "category": "Placas PVC",
+      "category_en": "PVC Panels",
       "subcategory": null,
+      "subcategory_en": null,
       "url": "1-placas-pvc.html",
       "thumb": "img/1-placas-pvc/Cuarzo.jpg",
       "price": "Consultar",
@@ -242,8 +314,11 @@
     },
     {
       "name": "Grafito",
+      "name_en": "Graphite",
       "category": "Placas PVC",
+      "category_en": "PVC Panels",
       "subcategory": null,
+      "subcategory_en": null,
       "url": "1-placas-pvc.html",
       "thumb": "img/1-placas-pvc/Grafito.jpg",
       "price": "Consultar",
@@ -252,8 +327,11 @@
     },
     {
       "name": "Jaspe",
+      "name_en": "Jasper",
       "category": "Placas PVC",
+      "category_en": "PVC Panels",
       "subcategory": null,
+      "subcategory_en": null,
       "url": "1-placas-pvc.html",
       "thumb": "img/1-placas-pvc/Jaspe.jpg",
       "price": "Consultar",
@@ -262,8 +340,11 @@
     },
     {
       "name": "OBSIDIANA",
+      "name_en": "OBSIDIAN",
       "category": "Placas PVC",
+      "category_en": "PVC Panels",
       "subcategory": null,
+      "subcategory_en": null,
       "url": "1-placas-pvc.html",
       "thumb": "img/1-placas-pvc/OBSIDIANA.jpg",
       "price": "Consultar",
@@ -272,8 +353,11 @@
     },
     {
       "name": "Onix",
+      "name_en": "Onyx",
       "category": "Placas PVC",
+      "category_en": "PVC Panels",
       "subcategory": null,
+      "subcategory_en": null,
       "url": "1-placas-pvc.html",
       "thumb": "img/1-placas-pvc/Onix.jpg",
       "price": "Consultar",
@@ -282,8 +366,11 @@
     },
     {
       "name": "Opalo",
+      "name_en": "Opal",
       "category": "Placas PVC",
+      "category_en": "PVC Panels",
       "subcategory": null,
+      "subcategory_en": null,
       "url": "1-placas-pvc.html",
       "thumb": "img/1-placas-pvc/Opalo.jpg",
       "price": "Consultar",
@@ -292,8 +379,11 @@
     },
     {
       "name": "Perfil t 7x3x2440mm",
+      "name_en": "T-Profile 7x3x2440mm",
       "category": "Placas PVC",
+      "category_en": "PVC Panels",
       "subcategory": null,
+      "subcategory_en": null,
       "url": "1-placas-pvc.html",
       "thumb": "img/1-placas-pvc/Perfil t 7x3x2440mm.jpg",
       "price": "Consultar",
@@ -302,8 +392,11 @@
     },
     {
       "name": "Perla",
+      "name_en": "Pearl",
       "category": "Placas PVC",
+      "category_en": "PVC Panels",
       "subcategory": null,
+      "subcategory_en": null,
       "url": "1-placas-pvc.html",
       "thumb": "img/1-placas-pvc/Perla.jpg",
       "price": "Consultar",
@@ -312,8 +405,11 @@
     },
     {
       "name": "Topacio",
+      "name_en": "Topaz",
       "category": "Placas PVC",
+      "category_en": "PVC Panels",
       "subcategory": null,
+      "subcategory_en": null,
       "url": "1-placas-pvc.html",
       "thumb": "img/1-placas-pvc/Topacio.jpg",
       "price": "Consultar",
@@ -322,8 +418,11 @@
     },
     {
       "name": "ZAFIRO",
+      "name_en": "SAPPHIRE",
       "category": "Placas PVC",
+      "category_en": "PVC Panels",
       "subcategory": null,
+      "subcategory_en": null,
       "url": "1-placas-pvc.html",
       "thumb": "img/1-placas-pvc/ZAFIRO.jpg",
       "price": "Consultar",
@@ -332,8 +431,11 @@
     },
     {
       "name": "angulo 8x8x2440mm",
+      "name_en": "corner trim 8x8x2440mm",
       "category": "Placas PVC",
+      "category_en": "PVC Panels",
       "subcategory": null,
+      "subcategory_en": null,
       "url": "1-placas-pvc.html",
       "thumb": "img/1-placas-pvc/angulo 8x8x2440mm.jpg",
       "price": "Consultar",
@@ -342,8 +444,11 @@
     },
     {
       "name": "AMANECHER",
+      "name_en": "AMANECHER",
       "category": "Lambrin WPC",
+      "category_en": "WPC Fluted Wall Panels",
       "subcategory": "Lambrin Interior",
+      "subcategory_en": "Interior WPC Fluted Panels",
       "url": "2-lambrin-wpc.html#21-lambrin-interior",
       "thumb": "img/2-lambrin-wpc/21-lambrin-interior/AMANECHER.jpg",
       "price": "Consultar",
@@ -352,8 +457,11 @@
     },
     {
       "name": "ANGULO WPC PARA INTERIOR",
+      "name_en": "INTERIOR WPC CORNER TRIM",
       "category": "Lambrin WPC",
+      "category_en": "WPC Fluted Wall Panels",
       "subcategory": "Lambrin Interior",
+      "subcategory_en": "Interior WPC Fluted Panels",
       "url": "2-lambrin-wpc.html#21-lambrin-interior",
       "thumb": "img/2-lambrin-wpc/21-lambrin-interior/ANGULO WPC PARA INTERIOR.jpg",
       "price": "Consultar",
@@ -362,8 +470,11 @@
     },
     {
       "name": "Amizade",
+      "name_en": "Amizade",
       "category": "Lambrin WPC",
+      "category_en": "WPC Fluted Wall Panels",
       "subcategory": "Lambrin Interior",
+      "subcategory_en": "Interior WPC Fluted Panels",
       "url": "2-lambrin-wpc.html#21-lambrin-interior",
       "thumb": "img/2-lambrin-wpc/21-lambrin-interior/Amizade.jpg",
       "price": "Consultar",
@@ -372,8 +483,11 @@
     },
     {
       "name": "BAHIA",
+      "name_en": "BAHIA",
       "category": "Lambrin WPC",
+      "category_en": "WPC Fluted Wall Panels",
       "subcategory": "Lambrin Interior",
+      "subcategory_en": "Interior WPC Fluted Panels",
       "url": "2-lambrin-wpc.html#21-lambrin-interior",
       "thumb": "img/2-lambrin-wpc/21-lambrin-interior/BAHIA.jpg",
       "price": "Consultar",
@@ -382,8 +496,11 @@
     },
     {
       "name": "Brasilia",
+      "name_en": "Brasilia",
       "category": "Lambrin WPC",
+      "category_en": "WPC Fluted Wall Panels",
       "subcategory": "Lambrin Interior",
+      "subcategory_en": "Interior WPC Fluted Panels",
       "url": "2-lambrin-wpc.html#21-lambrin-interior",
       "thumb": "img/2-lambrin-wpc/21-lambrin-interior/Brasilia.jpg",
       "price": "Consultar",
@@ -392,8 +509,11 @@
     },
     {
       "name": "Cerezo Macapa",
+      "name_en": "Macapa Cherry",
       "category": "Lambrin WPC",
+      "category_en": "WPC Fluted Wall Panels",
       "subcategory": "Lambrin Interior",
+      "subcategory_en": "Interior WPC Fluted Panels",
       "url": "2-lambrin-wpc.html#21-lambrin-interior",
       "thumb": "img/2-lambrin-wpc/21-lambrin-interior/Cerezo Macapa.jpg",
       "price": "Consultar",
@@ -402,8 +522,11 @@
     },
     {
       "name": "Estrelado",
+      "name_en": "Estrelado",
       "category": "Lambrin WPC",
+      "category_en": "WPC Fluted Wall Panels",
       "subcategory": "Lambrin Interior",
+      "subcategory_en": "Interior WPC Fluted Panels",
       "url": "2-lambrin-wpc.html#21-lambrin-interior",
       "thumb": "img/2-lambrin-wpc/21-lambrin-interior/Estrelado.jpg",
       "price": "Consultar",
@@ -412,8 +535,11 @@
     },
     {
       "name": "Fortaleza",
+      "name_en": "Fortaleza",
       "category": "Lambrin WPC",
+      "category_en": "WPC Fluted Wall Panels",
       "subcategory": "Lambrin Interior",
+      "subcategory_en": "Interior WPC Fluted Panels",
       "url": "2-lambrin-wpc.html#21-lambrin-interior",
       "thumb": "img/2-lambrin-wpc/21-lambrin-interior/Fortaleza.jpg",
       "price": "Consultar",
@@ -422,8 +548,11 @@
     },
     {
       "name": "Manaos",
+      "name_en": "Manaos",
       "category": "Lambrin WPC",
+      "category_en": "WPC Fluted Wall Panels",
       "subcategory": "Lambrin Interior",
+      "subcategory_en": "Interior WPC Fluted Panels",
       "url": "2-lambrin-wpc.html#21-lambrin-interior",
       "thumb": "img/2-lambrin-wpc/21-lambrin-interior/Manaos.jpg",
       "price": "Consultar",
@@ -432,8 +561,11 @@
     },
     {
       "name": "Nogal Olinda",
+      "name_en": "Olinda Walnut",
       "category": "Lambrin WPC",
+      "category_en": "WPC Fluted Wall Panels",
       "subcategory": "Lambrin Interior",
+      "subcategory_en": "Interior WPC Fluted Panels",
       "url": "2-lambrin-wpc.html#21-lambrin-interior",
       "thumb": "img/2-lambrin-wpc/21-lambrin-interior/Nogal Olinda.jpg",
       "price": "Consultar",
@@ -442,8 +574,11 @@
     },
     {
       "name": "Nuvem",
+      "name_en": "Nuvem",
       "category": "Lambrin WPC",
+      "category_en": "WPC Fluted Wall Panels",
       "subcategory": "Lambrin Interior",
+      "subcategory_en": "Interior WPC Fluted Panels",
       "url": "2-lambrin-wpc.html#21-lambrin-interior",
       "thumb": "img/2-lambrin-wpc/21-lambrin-interior/Nuvem.jpg",
       "price": "Consultar",
@@ -452,8 +587,11 @@
     },
     {
       "name": "Ouro Preto",
+      "name_en": "Ouro Preto",
       "category": "Lambrin WPC",
+      "category_en": "WPC Fluted Wall Panels",
       "subcategory": "Lambrin Interior",
+      "subcategory_en": "Interior WPC Fluted Panels",
       "url": "2-lambrin-wpc.html#21-lambrin-interior",
       "thumb": "img/2-lambrin-wpc/21-lambrin-interior/Ouro Preto.jpg",
       "price": "Consultar",
@@ -462,8 +600,11 @@
     },
     {
       "name": "Ribeira",
+      "name_en": "Ribeira",
       "category": "Lambrin WPC",
+      "category_en": "WPC Fluted Wall Panels",
       "subcategory": "Lambrin Interior",
+      "subcategory_en": "Interior WPC Fluted Panels",
       "url": "2-lambrin-wpc.html#21-lambrin-interior",
       "thumb": "img/2-lambrin-wpc/21-lambrin-interior/Ribeira.jpg",
       "price": "Consultar",
@@ -472,8 +613,11 @@
     },
     {
       "name": "Rodeiro",
+      "name_en": "Rodeiro",
       "category": "Lambrin WPC",
+      "category_en": "WPC Fluted Wall Panels",
       "subcategory": "Lambrin Interior",
+      "subcategory_en": "Interior WPC Fluted Panels",
       "url": "2-lambrin-wpc.html#21-lambrin-interior",
       "thumb": "img/2-lambrin-wpc/21-lambrin-interior/Rodeiro.jpg",
       "price": "Consultar",
@@ -482,8 +626,11 @@
     },
     {
       "name": "Río",
+      "name_en": "Río",
       "category": "Lambrin WPC",
+      "category_en": "WPC Fluted Wall Panels",
       "subcategory": "Lambrin Interior",
+      "subcategory_en": "Interior WPC Fluted Panels",
       "url": "2-lambrin-wpc.html#21-lambrin-interior",
       "thumb": "img/2-lambrin-wpc/21-lambrin-interior/Río.jpg",
       "price": "Consultar",
@@ -492,8 +639,11 @@
     },
     {
       "name": "Sabeiro",
+      "name_en": "Sabeiro",
       "category": "Lambrin WPC",
+      "category_en": "WPC Fluted Wall Panels",
       "subcategory": "Lambrin Interior",
+      "subcategory_en": "Interior WPC Fluted Panels",
       "url": "2-lambrin-wpc.html#21-lambrin-interior",
       "thumb": "img/2-lambrin-wpc/21-lambrin-interior/Sabeiro.jpg",
       "price": "Consultar",
@@ -502,8 +652,11 @@
     },
     {
       "name": "Sao Paulo",
+      "name_en": "Sao Paulo",
       "category": "Lambrin WPC",
+      "category_en": "WPC Fluted Wall Panels",
       "subcategory": "Lambrin Interior",
+      "subcategory_en": "Interior WPC Fluted Panels",
       "url": "2-lambrin-wpc.html#21-lambrin-interior",
       "thumb": "img/2-lambrin-wpc/21-lambrin-interior/Sao Paulo.jpg",
       "price": "Consultar",
@@ -512,8 +665,11 @@
     },
     {
       "name": "Sonho",
+      "name_en": "Sonho",
       "category": "Lambrin WPC",
+      "category_en": "WPC Fluted Wall Panels",
       "subcategory": "Lambrin Interior",
+      "subcategory_en": "Interior WPC Fluted Panels",
       "url": "2-lambrin-wpc.html#21-lambrin-interior",
       "thumb": "img/2-lambrin-wpc/21-lambrin-interior/Sonho.jpg",
       "price": "Consultar",
@@ -522,8 +678,11 @@
     },
     {
       "name": "Teak Aracaju",
+      "name_en": "Teak Aracaju",
       "category": "Lambrin WPC",
+      "category_en": "WPC Fluted Wall Panels",
       "subcategory": "Lambrin Interior",
+      "subcategory_en": "Interior WPC Fluted Panels",
       "url": "2-lambrin-wpc.html#21-lambrin-interior",
       "thumb": "img/2-lambrin-wpc/21-lambrin-interior/Teak Aracaju.jpg",
       "price": "Consultar",
@@ -532,8 +691,11 @@
     },
     {
       "name": "CHARCOAL",
+      "name_en": "CHARCOAL",
       "category": "Lambrin WPC",
+      "category_en": "WPC Fluted Wall Panels",
       "subcategory": "Lambrin Exterior",
+      "subcategory_en": "Exterior WPC Fluted Panels",
       "url": "2-lambrin-wpc.html#22-lambrin-exterior",
       "thumb": "img/2-lambrin-wpc/22-lambrin-exterior/CHARCOAL.jpg",
       "price": "Consultar",
@@ -542,8 +704,11 @@
     },
     {
       "name": "DARK BLACK",
+      "name_en": "DARK BLACK",
       "category": "Lambrin WPC",
+      "category_en": "WPC Fluted Wall Panels",
       "subcategory": "Lambrin Exterior",
+      "subcategory_en": "Exterior WPC Fluted Panels",
       "url": "2-lambrin-wpc.html#22-lambrin-exterior",
       "thumb": "img/2-lambrin-wpc/22-lambrin-exterior/DARK BLACK.jpg",
       "price": "Consultar",
@@ -552,8 +717,11 @@
     },
     {
       "name": "Esquinero",
+      "name_en": "Corner Trim",
       "category": "Lambrin WPC",
+      "category_en": "WPC Fluted Wall Panels",
       "subcategory": "Lambrin Exterior",
+      "subcategory_en": "Exterior WPC Fluted Panels",
       "url": "2-lambrin-wpc.html#22-lambrin-exterior",
       "thumb": "img/2-lambrin-wpc/22-lambrin-exterior/Esquinero.jpg",
       "price": "Consultar",
@@ -562,8 +730,11 @@
     },
     {
       "name": "REDWOOD",
+      "name_en": "REDWOOD",
       "category": "Lambrin WPC",
+      "category_en": "WPC Fluted Wall Panels",
       "subcategory": "Lambrin Exterior",
+      "subcategory_en": "Exterior WPC Fluted Panels",
       "url": "2-lambrin-wpc.html#22-lambrin-exterior",
       "thumb": "img/2-lambrin-wpc/22-lambrin-exterior/REDWOOD.jpg",
       "price": "Consultar",
@@ -572,8 +743,11 @@
     },
     {
       "name": "SLIVER GRAY",
+      "name_en": "SLIVER GRAY",
       "category": "Lambrin WPC",
+      "category_en": "WPC Fluted Wall Panels",
       "subcategory": "Lambrin Exterior",
+      "subcategory_en": "Exterior WPC Fluted Panels",
       "url": "2-lambrin-wpc.html#22-lambrin-exterior",
       "thumb": "img/2-lambrin-wpc/22-lambrin-exterior/SLIVER GRAY.jpg",
       "price": "Consultar",
@@ -582,8 +756,11 @@
     },
     {
       "name": "TEAK",
+      "name_en": "TEAK",
       "category": "Lambrin WPC",
+      "category_en": "WPC Fluted Wall Panels",
       "subcategory": "Lambrin Exterior",
+      "subcategory_en": "Exterior WPC Fluted Panels",
       "url": "2-lambrin-wpc.html#22-lambrin-exterior",
       "thumb": "img/2-lambrin-wpc/22-lambrin-exterior/TEAK.jpg",
       "price": "Consultar",
@@ -592,8 +769,11 @@
     },
     {
       "name": "Bahia",
+      "name_en": "Bahia",
       "category": "Lambrin WPC",
+      "category_en": "WPC Fluted Wall Panels",
       "subcategory": "Desigual",
+      "subcategory_en": "Staggered (Uneven)",
       "url": "2-lambrin-wpc.html#23-desigual",
       "thumb": "img/2-lambrin-wpc/23-desigual/Bahia.jpg",
       "price": "Consultar",
@@ -602,8 +782,11 @@
     },
     {
       "name": "Brasilia",
+      "name_en": "Brasilia",
       "category": "Lambrin WPC",
+      "category_en": "WPC Fluted Wall Panels",
       "subcategory": "Desigual",
+      "subcategory_en": "Staggered (Uneven)",
       "url": "2-lambrin-wpc.html#23-desigual",
       "thumb": "img/2-lambrin-wpc/23-desigual/Brasilia.jpg",
       "price": "Consultar",
@@ -612,8 +795,11 @@
     },
     {
       "name": "Parota",
+      "name_en": "Parota",
       "category": "Lambrin WPC",
+      "category_en": "WPC Fluted Wall Panels",
       "subcategory": "Desigual",
+      "subcategory_en": "Staggered (Uneven)",
       "url": "2-lambrin-wpc.html#23-desigual",
       "thumb": "img/2-lambrin-wpc/23-desigual/Parota.jpg",
       "price": "Consultar",
@@ -622,8 +808,11 @@
     },
     {
       "name": "Rio",
+      "name_en": "Rio",
       "category": "Lambrin WPC",
+      "category_en": "WPC Fluted Wall Panels",
       "subcategory": "Desigual",
+      "subcategory_en": "Staggered (Uneven)",
       "url": "2-lambrin-wpc.html#23-desigual",
       "thumb": "img/2-lambrin-wpc/23-desigual/Rio.jpg",
       "price": "Consultar",
@@ -632,8 +821,11 @@
     },
     {
       "name": "Sao Paulo",
+      "name_en": "Sao Paulo",
       "category": "Lambrin WPC",
+      "category_en": "WPC Fluted Wall Panels",
       "subcategory": "Desigual",
+      "subcategory_en": "Staggered (Uneven)",
       "url": "2-lambrin-wpc.html#23-desigual",
       "thumb": "img/2-lambrin-wpc/23-desigual/Sao Paulo.jpg",
       "price": "Consultar",
@@ -642,8 +834,11 @@
     },
     {
       "name": "Bahia",
+      "name_en": "Bahia",
       "category": "Lambrin WPC",
+      "category_en": "WPC Fluted Wall Panels",
       "subcategory": "Media luna",
+      "subcategory_en": "Half Moon",
       "url": "2-lambrin-wpc.html#24-media-luna",
       "thumb": "img/2-lambrin-wpc/24-media-luna/Bahia.jpg",
       "price": "Consultar",
@@ -652,8 +847,11 @@
     },
     {
       "name": "Sao Paulo",
+      "name_en": "Sao Paulo",
       "category": "Lambrin WPC",
+      "category_en": "WPC Fluted Wall Panels",
       "subcategory": "Media luna",
+      "subcategory_en": "Half Moon",
       "url": "2-lambrin-wpc.html#24-media-luna",
       "thumb": "img/2-lambrin-wpc/24-media-luna/Sao Paulo.jpg",
       "price": "Consultar",
@@ -662,8 +860,11 @@
     },
     {
       "name": "azeituna",
+      "name_en": "azeituna",
       "category": "Lambrin WPC",
+      "category_en": "WPC Fluted Wall Panels",
       "subcategory": "Media luna",
+      "subcategory_en": "Half Moon",
       "url": "2-lambrin-wpc.html#24-media-luna",
       "thumb": "img/2-lambrin-wpc/24-media-luna/azeituna.jpg",
       "price": "Consultar",
@@ -672,8 +873,11 @@
     },
     {
       "name": "brasilia",
+      "name_en": "brasilia",
       "category": "Lambrin WPC",
+      "category_en": "WPC Fluted Wall Panels",
       "subcategory": "Media luna",
+      "subcategory_en": "Half Moon",
       "url": "2-lambrin-wpc.html#24-media-luna",
       "thumb": "img/2-lambrin-wpc/24-media-luna/brasilia.jpg",
       "price": "Consultar",
@@ -682,8 +886,11 @@
     },
     {
       "name": "rio",
+      "name_en": "rio",
       "category": "Lambrin WPC",
+      "category_en": "WPC Fluted Wall Panels",
       "subcategory": "Media luna",
+      "subcategory_en": "Half Moon",
       "url": "2-lambrin-wpc.html#24-media-luna",
       "thumb": "img/2-lambrin-wpc/24-media-luna/rio.jpg",
       "price": "Consultar",
@@ -692,8 +899,11 @@
     },
     {
       "name": "AURELI",
+      "name_en": "AURELI",
       "category": "Lambrin WPC",
+      "category_en": "WPC Fluted Wall Panels",
       "subcategory": "Media luna PS",
+      "subcategory_en": "Half Moon PS",
       "url": "2-lambrin-wpc.html#25-media-luna-ps",
       "thumb": "img/2-lambrin-wpc/25-media-luna-ps/AURELI.jpg",
       "price": "Consultar",
@@ -702,8 +912,11 @@
     },
     {
       "name": "CRESSIDA",
+      "name_en": "CRESSIDA",
       "category": "Lambrin WPC",
+      "category_en": "WPC Fluted Wall Panels",
       "subcategory": "Media luna PS",
+      "subcategory_en": "Half Moon PS",
       "url": "2-lambrin-wpc.html#25-media-luna-ps",
       "thumb": "img/2-lambrin-wpc/25-media-luna-ps/CRESSIDA.jpg",
       "price": "Consultar",
@@ -712,8 +925,11 @@
     },
     {
       "name": "ELARA",
+      "name_en": "ELARA",
       "category": "Lambrin WPC",
+      "category_en": "WPC Fluted Wall Panels",
       "subcategory": "Media luna PS",
+      "subcategory_en": "Half Moon PS",
       "url": "2-lambrin-wpc.html#25-media-luna-ps",
       "thumb": "img/2-lambrin-wpc/25-media-luna-ps/ELARA.jpg",
       "price": "Consultar",
@@ -722,8 +938,11 @@
     },
     {
       "name": "GILDARA",
+      "name_en": "GILDARA",
       "category": "Lambrin WPC",
+      "category_en": "WPC Fluted Wall Panels",
       "subcategory": "Media luna PS",
+      "subcategory_en": "Half Moon PS",
       "url": "2-lambrin-wpc.html#25-media-luna-ps",
       "thumb": "img/2-lambrin-wpc/25-media-luna-ps/GILDARA.jpg",
       "price": "Consultar",
@@ -732,8 +951,11 @@
     },
     {
       "name": "CONCRETO Aparente",
+      "name_en": "EXPOSED Concrete",
       "category": "Revestimiento Flexible",
+      "category_en": "Flexible Stone Veneer",
       "subcategory": null,
+      "subcategory_en": null,
       "url": "3-revestimiento-flexible.html",
       "thumb": "img/3-revestimiento-flexible/CONCRETO Aparente.jpg",
       "price": "Consultar",
@@ -742,8 +964,11 @@
     },
     {
       "name": "Concreto Gris",
+      "name_en": "Gray Concrete",
       "category": "Revestimiento Flexible",
+      "category_en": "Flexible Stone Veneer",
       "subcategory": null,
+      "subcategory_en": null,
       "url": "3-revestimiento-flexible.html",
       "thumb": "img/3-revestimiento-flexible/Concreto Gris.jpg",
       "price": "Consultar",
@@ -752,8 +977,11 @@
     },
     {
       "name": "Granito Blanco",
+      "name_en": "White Granite",
       "category": "Revestimiento Flexible",
+      "category_en": "Flexible Stone Veneer",
       "subcategory": null,
+      "subcategory_en": null,
       "url": "3-revestimiento-flexible.html",
       "thumb": "img/3-revestimiento-flexible/Granito Blanco.jpg",
       "price": "Consultar",
@@ -762,8 +990,11 @@
     },
     {
       "name": "Granito Imperial Blanco",
+      "name_en": "Imperial White Granite",
       "category": "Revestimiento Flexible",
+      "category_en": "Flexible Stone Veneer",
       "subcategory": null,
+      "subcategory_en": null,
       "url": "3-revestimiento-flexible.html",
       "thumb": "img/3-revestimiento-flexible/Granito Imperial Blanco.jpg",
       "price": "Consultar",
@@ -772,8 +1003,11 @@
     },
     {
       "name": "Granito Oro",
+      "name_en": "Gold Granite",
       "category": "Revestimiento Flexible",
+      "category_en": "Flexible Stone Veneer",
       "subcategory": null,
+      "subcategory_en": null,
       "url": "3-revestimiento-flexible.html",
       "thumb": "img/3-revestimiento-flexible/Granito Oro.jpg",
       "price": "Consultar",
@@ -782,8 +1016,11 @@
     },
     {
       "name": "Madera Roble",
+      "name_en": "Oak Wood",
       "category": "Revestimiento Flexible",
+      "category_en": "Flexible Stone Veneer",
       "subcategory": null,
+      "subcategory_en": null,
       "url": "3-revestimiento-flexible.html",
       "thumb": "img/3-revestimiento-flexible/Madera Roble.jpeg",
       "price": "Consultar",
@@ -792,8 +1029,11 @@
     },
     {
       "name": "SHERWOOD",
+      "name_en": "SHERWOOD",
       "category": "Plafon PVC",
+      "category_en": "PVC Ceiling Panels",
       "subcategory": "Plafon pvc laminado",
+      "subcategory_en": "Laminated PVC Ceiling Panels",
       "url": "4-plafon-pvc.html#41-plafon-pvc-laminado",
       "thumb": "img/4-plafon-pvc/41-plafon-pvc-laminado/SHERWOOD.jpg",
       "price": "Consultar",
@@ -802,8 +1042,11 @@
     },
     {
       "name": "Teesdale",
+      "name_en": "Teesdale",
       "category": "Plafon PVC",
+      "category_en": "PVC Ceiling Panels",
       "subcategory": "Plafon pvc laminado",
+      "subcategory_en": "Laminated PVC Ceiling Panels",
       "url": "4-plafon-pvc.html#41-plafon-pvc-laminado",
       "thumb": "img/4-plafon-pvc/41-plafon-pvc-laminado/Teesdale.jpg",
       "price": "Consultar",
@@ -812,8 +1055,11 @@
     },
     {
       "name": "Ash Nomad",
+      "name_en": "Ash Nomad",
       "category": "Plafon PVC",
+      "category_en": "PVC Ceiling Panels",
       "subcategory": "Plafon Laminado wood",
+      "subcategory_en": "Wood Laminate Ceiling Panels",
       "url": "4-plafon-pvc.html#42-plafon-laminado-wood",
       "thumb": "img/4-plafon-pvc/42-plafon-laminado-wood/Ash Nomad.jpg",
       "price": "Consultar",
@@ -822,8 +1068,11 @@
     },
     {
       "name": "Birch Ember",
+      "name_en": "Birch Ember",
       "category": "Plafon PVC",
+      "category_en": "PVC Ceiling Panels",
       "subcategory": "Plafon Laminado wood",
+      "subcategory_en": "Wood Laminate Ceiling Panels",
       "url": "4-plafon-pvc.html#42-plafon-laminado-wood",
       "thumb": "img/4-plafon-pvc/42-plafon-laminado-wood/Birch Ember.jpg",
       "price": "Consultar",
@@ -832,8 +1081,11 @@
     },
     {
       "name": "Cocoa Ash",
+      "name_en": "Cocoa Ash",
       "category": "Plafon PVC",
+      "category_en": "PVC Ceiling Panels",
       "subcategory": "Plafon Laminado wood",
+      "subcategory_en": "Wood Laminate Ceiling Panels",
       "url": "4-plafon-pvc.html#42-plafon-laminado-wood",
       "thumb": "img/4-plafon-pvc/42-plafon-laminado-wood/Cocoa Ash.jpg",
       "price": "Consultar",
@@ -842,8 +1094,11 @@
     },
     {
       "name": "Ivory Elm",
+      "name_en": "Ivory Elm",
       "category": "Plafon PVC",
+      "category_en": "PVC Ceiling Panels",
       "subcategory": "Plafon Laminado wood",
+      "subcategory_en": "Wood Laminate Ceiling Panels",
       "url": "4-plafon-pvc.html#42-plafon-laminado-wood",
       "thumb": "img/4-plafon-pvc/42-plafon-laminado-wood/Ivory Elm.jpg",
       "price": "Consultar",
@@ -852,8 +1107,11 @@
     },
     {
       "name": "Maple Dusk",
+      "name_en": "Maple Dusk",
       "category": "Plafon PVC",
+      "category_en": "PVC Ceiling Panels",
       "subcategory": "Plafon Laminado wood",
+      "subcategory_en": "Wood Laminate Ceiling Panels",
       "url": "4-plafon-pvc.html#42-plafon-laminado-wood",
       "thumb": "img/4-plafon-pvc/42-plafon-laminado-wood/Maple Dusk.jpg",
       "price": "Consultar",
@@ -862,8 +1120,11 @@
     },
     {
       "name": "Walnut Elipse",
+      "name_en": "Walnut Elipse",
       "category": "Plafon PVC",
+      "category_en": "PVC Ceiling Panels",
       "subcategory": "Plafon Laminado wood",
+      "subcategory_en": "Wood Laminate Ceiling Panels",
       "url": "4-plafon-pvc.html#42-plafon-laminado-wood",
       "thumb": "img/4-plafon-pvc/42-plafon-laminado-wood/Walnut Elipse.jpg",
       "price": "Consultar",
@@ -872,8 +1133,11 @@
     },
     {
       "name": "Wild Teak",
+      "name_en": "Wild Teak",
       "category": "Plafon PVC",
+      "category_en": "PVC Ceiling Panels",
       "subcategory": "Plafon Laminado wood",
+      "subcategory_en": "Wood Laminate Ceiling Panels",
       "url": "4-plafon-pvc.html#42-plafon-laminado-wood",
       "thumb": "img/4-plafon-pvc/42-plafon-laminado-wood/Wild Teak.jpg",
       "price": "Consultar",
@@ -882,8 +1146,11 @@
     },
     {
       "name": "Ranurado vista 2",
+      "name_en": "Fluted View 2",
       "category": "Plafon PVC",
+      "category_en": "PVC Ceiling Panels",
       "subcategory": "Plafon Ranurado",
+      "subcategory_en": "Fluted Ceiling Panels",
       "url": "4-plafon-pvc.html#plafon-ranurado",
       "thumb": "img/4-plafon-pvc/plafon-ranurado/Ranurado vista 2.jpg",
       "price": "Consultar",
@@ -892,8 +1159,11 @@
     },
     {
       "name": "Ranurado",
+      "name_en": "Fluted",
       "category": "Plafon PVC",
+      "category_en": "PVC Ceiling Panels",
       "subcategory": "Plafon Ranurado",
+      "subcategory_en": "Fluted Ceiling Panels",
       "url": "4-plafon-pvc.html#plafon-ranurado",
       "thumb": "img/4-plafon-pvc/plafon-ranurado/Ranurado.jpg",
       "price": "Consultar",
@@ -902,8 +1172,11 @@
     },
     {
       "name": "Cambridge",
+      "name_en": "Cambridge",
       "category": "Plafon PVC",
+      "category_en": "PVC Ceiling Panels",
       "subcategory": null,
+      "subcategory_en": null,
       "url": "4-plafon-pvc.html",
       "thumb": "img/4-plafon-pvc/Cambridge.jpg",
       "price": "Consultar",
@@ -912,8 +1185,11 @@
     },
     {
       "name": "Liverpool",
+      "name_en": "Liverpool",
       "category": "Plafon PVC",
+      "category_en": "PVC Ceiling Panels",
       "subcategory": null,
+      "subcategory_en": null,
       "url": "4-plafon-pvc.html",
       "thumb": "img/4-plafon-pvc/Liverpool.jpg",
       "price": "Consultar",
@@ -922,8 +1198,11 @@
     },
     {
       "name": "York",
+      "name_en": "York",
       "category": "Plafon PVC",
+      "category_en": "PVC Ceiling Panels",
       "subcategory": null,
+      "subcategory_en": null,
       "url": "4-plafon-pvc.html",
       "thumb": "img/4-plafon-pvc/York.jpg",
       "price": "Consultar",
@@ -932,8 +1211,11 @@
     },
     {
       "name": "bristol",
+      "name_en": "bristol",
       "category": "Plafon PVC",
+      "category_en": "PVC Ceiling Panels",
       "subcategory": null,
+      "subcategory_en": null,
       "url": "4-plafon-pvc.html",
       "thumb": "img/4-plafon-pvc/bristol.jpg",
       "price": "Consultar",
@@ -942,8 +1224,11 @@
     },
     {
       "name": "Austin",
+      "name_en": "Austin",
       "category": "Paneles tridimensionales",
+      "category_en": "3D Wall Panels",
       "subcategory": "Blanco",
+      "subcategory_en": "White",
       "url": "5-paneles-tridimensionales.html#51-blanco",
       "thumb": "img/5-paneles-tridimensionales/51-blanco/Austin.jpg",
       "price": "Consultar",
@@ -952,8 +1237,11 @@
     },
     {
       "name": "Boston",
+      "name_en": "Boston",
       "category": "Paneles tridimensionales",
+      "category_en": "3D Wall Panels",
       "subcategory": "Blanco",
+      "subcategory_en": "White",
       "url": "5-paneles-tridimensionales.html#51-blanco",
       "thumb": "img/5-paneles-tridimensionales/51-blanco/Boston.jpg",
       "price": "Consultar",
@@ -962,8 +1250,11 @@
     },
     {
       "name": "Charleston",
+      "name_en": "Charleston",
       "category": "Paneles tridimensionales",
+      "category_en": "3D Wall Panels",
       "subcategory": "Blanco",
+      "subcategory_en": "White",
       "url": "5-paneles-tridimensionales.html#51-blanco",
       "thumb": "img/5-paneles-tridimensionales/51-blanco/Charleston.jpg",
       "price": "Consultar",
@@ -972,8 +1263,11 @@
     },
     {
       "name": "Charlotte",
+      "name_en": "Charlotte",
       "category": "Paneles tridimensionales",
+      "category_en": "3D Wall Panels",
       "subcategory": "Blanco",
+      "subcategory_en": "White",
       "url": "5-paneles-tridimensionales.html#51-blanco",
       "thumb": "img/5-paneles-tridimensionales/51-blanco/Charlotte.jpg",
       "price": "Consultar",
@@ -982,8 +1276,11 @@
     },
     {
       "name": "Chicago",
+      "name_en": "Chicago",
       "category": "Paneles tridimensionales",
+      "category_en": "3D Wall Panels",
       "subcategory": "Blanco",
+      "subcategory_en": "White",
       "url": "5-paneles-tridimensionales.html#51-blanco",
       "thumb": "img/5-paneles-tridimensionales/51-blanco/Chicago.jpg",
       "price": "Consultar",
@@ -992,8 +1289,11 @@
     },
     {
       "name": "Cleveland",
+      "name_en": "Cleveland",
       "category": "Paneles tridimensionales",
+      "category_en": "3D Wall Panels",
       "subcategory": "Blanco",
+      "subcategory_en": "White",
       "url": "5-paneles-tridimensionales.html#51-blanco",
       "thumb": "img/5-paneles-tridimensionales/51-blanco/Cleveland.jpg",
       "price": "Consultar",
@@ -1002,8 +1302,11 @@
     },
     {
       "name": "Columbus",
+      "name_en": "Columbus",
       "category": "Paneles tridimensionales",
+      "category_en": "3D Wall Panels",
       "subcategory": "Blanco",
+      "subcategory_en": "White",
       "url": "5-paneles-tridimensionales.html#51-blanco",
       "thumb": "img/5-paneles-tridimensionales/51-blanco/Columbus.jpg",
       "price": "Consultar",
@@ -1012,8 +1315,11 @@
     },
     {
       "name": "Dallas",
+      "name_en": "Dallas",
       "category": "Paneles tridimensionales",
+      "category_en": "3D Wall Panels",
       "subcategory": "Blanco",
+      "subcategory_en": "White",
       "url": "5-paneles-tridimensionales.html#51-blanco",
       "thumb": "img/5-paneles-tridimensionales/51-blanco/Dallas.jpg",
       "price": "Consultar",
@@ -1022,8 +1328,11 @@
     },
     {
       "name": "Denver",
+      "name_en": "Denver",
       "category": "Paneles tridimensionales",
+      "category_en": "3D Wall Panels",
       "subcategory": "Blanco",
+      "subcategory_en": "White",
       "url": "5-paneles-tridimensionales.html#51-blanco",
       "thumb": "img/5-paneles-tridimensionales/51-blanco/Denver.jpg",
       "price": "Consultar",
@@ -1032,8 +1341,11 @@
     },
     {
       "name": "Detroit",
+      "name_en": "Detroit",
       "category": "Paneles tridimensionales",
+      "category_en": "3D Wall Panels",
       "subcategory": "Blanco",
+      "subcategory_en": "White",
       "url": "5-paneles-tridimensionales.html#51-blanco",
       "thumb": "img/5-paneles-tridimensionales/51-blanco/Detroit.jpg",
       "price": "Consultar",
@@ -1042,8 +1354,11 @@
     },
     {
       "name": "Filadelfia",
+      "name_en": "Filadelfia",
       "category": "Paneles tridimensionales",
+      "category_en": "3D Wall Panels",
       "subcategory": "Blanco",
+      "subcategory_en": "White",
       "url": "5-paneles-tridimensionales.html#51-blanco",
       "thumb": "img/5-paneles-tridimensionales/51-blanco/Filadelfia.jpg",
       "price": "Consultar",
@@ -1052,8 +1367,11 @@
     },
     {
       "name": "Frisco",
+      "name_en": "Frisco",
       "category": "Paneles tridimensionales",
+      "category_en": "3D Wall Panels",
       "subcategory": "Blanco",
+      "subcategory_en": "White",
       "url": "5-paneles-tridimensionales.html#51-blanco",
       "thumb": "img/5-paneles-tridimensionales/51-blanco/Frisco.jpg",
       "price": "Consultar",
@@ -1062,8 +1380,11 @@
     },
     {
       "name": "Houston",
+      "name_en": "Houston",
       "category": "Paneles tridimensionales",
+      "category_en": "3D Wall Panels",
       "subcategory": "Blanco",
+      "subcategory_en": "White",
       "url": "5-paneles-tridimensionales.html#51-blanco",
       "thumb": "img/5-paneles-tridimensionales/51-blanco/Houston.jpg",
       "price": "Consultar",
@@ -1072,8 +1393,11 @@
     },
     {
       "name": "Minneapolis",
+      "name_en": "Minneapolis",
       "category": "Paneles tridimensionales",
+      "category_en": "3D Wall Panels",
       "subcategory": "Grises",
+      "subcategory_en": "Grays",
       "url": "5-paneles-tridimensionales.html#52-grises",
       "thumb": "img/5-paneles-tridimensionales/52-grises/Minneapolis.jpg",
       "price": "Consultar",
@@ -1082,8 +1406,11 @@
     },
     {
       "name": "Oklahoma",
+      "name_en": "Oklahoma",
       "category": "Paneles tridimensionales",
+      "category_en": "3D Wall Panels",
       "subcategory": "Grises",
+      "subcategory_en": "Grays",
       "url": "5-paneles-tridimensionales.html#52-grises",
       "thumb": "img/5-paneles-tridimensionales/52-grises/Oklahoma.jpg",
       "price": "Consultar",
@@ -1092,8 +1419,11 @@
     },
     {
       "name": "Orlando",
+      "name_en": "Orlando",
       "category": "Paneles tridimensionales",
+      "category_en": "3D Wall Panels",
       "subcategory": "Grises",
+      "subcategory_en": "Grays",
       "url": "5-paneles-tridimensionales.html#52-grises",
       "thumb": "img/5-paneles-tridimensionales/52-grises/Orlando.jpg",
       "price": "Consultar",
@@ -1102,8 +1432,11 @@
     },
     {
       "name": "Portland",
+      "name_en": "Portland",
       "category": "Paneles tridimensionales",
+      "category_en": "3D Wall Panels",
       "subcategory": "Madera",
+      "subcategory_en": "Wood",
       "url": "5-paneles-tridimensionales.html#53-madera",
       "thumb": "img/5-paneles-tridimensionales/53-madera/Portland.jpg",
       "price": "Consultar",
@@ -1112,8 +1445,11 @@
     },
     {
       "name": "Providence",
+      "name_en": "Providence",
       "category": "Paneles tridimensionales",
+      "category_en": "3D Wall Panels",
       "subcategory": "Madera",
+      "subcategory_en": "Wood",
       "url": "5-paneles-tridimensionales.html#53-madera",
       "thumb": "img/5-paneles-tridimensionales/53-madera/Providence.jpg",
       "price": "Consultar",
@@ -1122,8 +1458,11 @@
     },
     {
       "name": "Raleigh",
+      "name_en": "Raleigh",
       "category": "Paneles tridimensionales",
+      "category_en": "3D Wall Panels",
       "subcategory": "Madera",
+      "subcategory_en": "Wood",
       "url": "5-paneles-tridimensionales.html#53-madera",
       "thumb": "img/5-paneles-tridimensionales/53-madera/Raleigh.jpg",
       "price": "Consultar",
@@ -1132,8 +1471,11 @@
     },
     {
       "name": "Reno",
+      "name_en": "Reno",
       "category": "Paneles tridimensionales",
+      "category_en": "3D Wall Panels",
       "subcategory": "Madera",
+      "subcategory_en": "Wood",
       "url": "5-paneles-tridimensionales.html#53-madera",
       "thumb": "img/5-paneles-tridimensionales/53-madera/Reno.jpg",
       "price": "Consultar",
@@ -1142,8 +1484,11 @@
     },
     {
       "name": "seattle",
+      "name_en": "seattle",
       "category": "Paneles tridimensionales",
+      "category_en": "3D Wall Panels",
       "subcategory": "Negro",
+      "subcategory_en": "Black",
       "url": "5-paneles-tridimensionales.html#54-negro",
       "thumb": "img/5-paneles-tridimensionales/54-negro/seattle.jpg",
       "price": "Consultar",
@@ -1152,8 +1497,11 @@
     },
     {
       "name": "Laredo",
+      "name_en": "Laredo",
       "category": "Paneles tridimensionales",
+      "category_en": "3D Wall Panels",
       "subcategory": "Oro",
+      "subcategory_en": "Gold",
       "url": "5-paneles-tridimensionales.html#55-oro",
       "thumb": "img/5-paneles-tridimensionales/55-oro/Laredo.jpg",
       "price": "Consultar",
@@ -1162,8 +1510,11 @@
     },
     {
       "name": "Miami",
+      "name_en": "Miami",
       "category": "Paneles tridimensionales",
+      "category_en": "3D Wall Panels",
       "subcategory": "Oro",
+      "subcategory_en": "Gold",
       "url": "5-paneles-tridimensionales.html#55-oro",
       "thumb": "img/5-paneles-tridimensionales/55-oro/Miami.jpg",
       "price": "Consultar",
@@ -1172,8 +1523,11 @@
     },
     {
       "name": "memphis",
+      "name_en": "memphis",
       "category": "Paneles tridimensionales",
+      "category_en": "3D Wall Panels",
       "subcategory": "Oro",
+      "subcategory_en": "Gold",
       "url": "5-paneles-tridimensionales.html#55-oro",
       "thumb": "img/5-paneles-tridimensionales/55-oro/memphis.jpg",
       "price": "Consultar",
@@ -1182,8 +1536,11 @@
     },
     {
       "name": "BAHIA 1",
+      "name_en": "BAHIA 1",
       "category": "Vigas PVC",
+      "category_en": "PVC Beams",
       "subcategory": "Interior",
+      "subcategory_en": "Interior",
       "url": "6-vigas-pvc.html#61-interior",
       "thumb": "img/6-vigas-pvc/61-interior/BAHIA 1.jpg",
       "price": "Consultar",
@@ -1192,8 +1549,11 @@
     },
     {
       "name": "BAHIA",
+      "name_en": "BAHIA",
       "category": "Vigas PVC",
+      "category_en": "PVC Beams",
       "subcategory": "Interior",
+      "subcategory_en": "Interior",
       "url": "6-vigas-pvc.html#61-interior",
       "thumb": "img/6-vigas-pvc/61-interior/BAHIA.jpg",
       "price": "Consultar",
@@ -1202,8 +1562,11 @@
     },
     {
       "name": "BRASILIA 1",
+      "name_en": "BRASILIA 1",
       "category": "Vigas PVC",
+      "category_en": "PVC Beams",
       "subcategory": "Interior",
+      "subcategory_en": "Interior",
       "url": "6-vigas-pvc.html#61-interior",
       "thumb": "img/6-vigas-pvc/61-interior/BRASILIA 1.jpg",
       "price": "Consultar",
@@ -1212,8 +1575,11 @@
     },
     {
       "name": "BRASILIA",
+      "name_en": "BRASILIA",
       "category": "Vigas PVC",
+      "category_en": "PVC Beams",
       "subcategory": "Interior",
+      "subcategory_en": "Interior",
       "url": "6-vigas-pvc.html#61-interior",
       "thumb": "img/6-vigas-pvc/61-interior/BRASILIA.jpg",
       "price": "Consultar",
@@ -1222,8 +1588,11 @@
     },
     {
       "name": "COPLE PARA VIGA 2",
+      "name_en": "BEAM COUPLER 2",
       "category": "Vigas PVC",
+      "category_en": "PVC Beams",
       "subcategory": "Interior",
+      "subcategory_en": "Interior",
       "url": "6-vigas-pvc.html#61-interior",
       "thumb": "img/6-vigas-pvc/61-interior/COPLE PARA VIGA 2.jpg",
       "price": "Consultar",
@@ -1232,8 +1601,11 @@
     },
     {
       "name": "COPLE PARA VIGA",
+      "name_en": "BEAM COUPLER",
       "category": "Vigas PVC",
+      "category_en": "PVC Beams",
       "subcategory": "Interior",
+      "subcategory_en": "Interior",
       "url": "6-vigas-pvc.html#61-interior",
       "thumb": "img/6-vigas-pvc/61-interior/COPLE PARA VIGA.jpg",
       "price": "Consultar",
@@ -1242,8 +1614,11 @@
     },
     {
       "name": "RIO 1",
+      "name_en": "RIO 1",
       "category": "Vigas PVC",
+      "category_en": "PVC Beams",
       "subcategory": "Interior",
+      "subcategory_en": "Interior",
       "url": "6-vigas-pvc.html#61-interior",
       "thumb": "img/6-vigas-pvc/61-interior/RIO 1.jpg",
       "price": "Consultar",
@@ -1252,8 +1627,11 @@
     },
     {
       "name": "RIO",
+      "name_en": "RIO",
       "category": "Vigas PVC",
+      "category_en": "PVC Beams",
       "subcategory": "Interior",
+      "subcategory_en": "Interior",
       "url": "6-vigas-pvc.html#61-interior",
       "thumb": "img/6-vigas-pvc/61-interior/RIO.jpg",
       "price": "Consultar",
@@ -1262,8 +1640,11 @@
     },
     {
       "name": "SAO PAULO 1",
+      "name_en": "SAO PAULO 1",
       "category": "Vigas PVC",
+      "category_en": "PVC Beams",
       "subcategory": "Interior",
+      "subcategory_en": "Interior",
       "url": "6-vigas-pvc.html#61-interior",
       "thumb": "img/6-vigas-pvc/61-interior/SAO PAULO 1.jpg",
       "price": "Consultar",
@@ -1272,8 +1653,11 @@
     },
     {
       "name": "SAO PAULO",
+      "name_en": "SAO PAULO",
       "category": "Vigas PVC",
+      "category_en": "PVC Beams",
       "subcategory": "Interior",
+      "subcategory_en": "Interior",
       "url": "6-vigas-pvc.html#61-interior",
       "thumb": "img/6-vigas-pvc/61-interior/SAO PAULO.jpg",
       "price": "Consultar",
@@ -1282,8 +1666,11 @@
     },
     {
       "name": "SOPORTE PARA VIGA INTERIOR 100X50MM",
+      "name_en": "BRACKET FOR INTERIOR BEAM 100X50MM",
       "category": "Vigas PVC",
+      "category_en": "PVC Beams",
       "subcategory": "Interior",
+      "subcategory_en": "Interior",
       "url": "6-vigas-pvc.html#61-interior",
       "thumb": "img/6-vigas-pvc/61-interior/SOPORTE PARA VIGA INTERIOR 100X50MM.jpg",
       "price": "Consultar",
@@ -1292,8 +1679,11 @@
     },
     {
       "name": "DARK BLACK",
+      "name_en": "DARK BLACK",
       "category": "Vigas PVC",
+      "category_en": "PVC Beams",
       "subcategory": "Exterior",
+      "subcategory_en": "Exterior",
       "url": "6-vigas-pvc.html#62-exterior",
       "thumb": "img/6-vigas-pvc/62-exterior/DARK BLACK.jpg",
       "price": "Consultar",
@@ -1302,8 +1692,11 @@
     },
     {
       "name": "REDWOOD",
+      "name_en": "REDWOOD",
       "category": "Vigas PVC",
+      "category_en": "PVC Beams",
       "subcategory": "Exterior",
+      "subcategory_en": "Exterior",
       "url": "6-vigas-pvc.html#62-exterior",
       "thumb": "img/6-vigas-pvc/62-exterior/REDWOOD.jpg",
       "price": "Consultar",
@@ -1312,8 +1705,11 @@
     },
     {
       "name": "SOPORTE GIRATORIO PARA VIGA EXTERIOR",
+      "name_en": "SWIVEL BRACKET FOR EXTERIOR BEAM",
       "category": "Vigas PVC",
+      "category_en": "PVC Beams",
       "subcategory": "Exterior",
+      "subcategory_en": "Exterior",
       "url": "6-vigas-pvc.html#62-exterior",
       "thumb": "img/6-vigas-pvc/62-exterior/SOPORTE GIRATORIO PARA VIGA EXTERIOR.jpg",
       "price": "Consultar",
@@ -1322,8 +1718,11 @@
     },
     {
       "name": "TEAK",
+      "name_en": "TEAK",
       "category": "Vigas PVC",
+      "category_en": "PVC Beams",
       "subcategory": "Exterior",
+      "subcategory_en": "Exterior",
       "url": "6-vigas-pvc.html#62-exterior",
       "thumb": "img/6-vigas-pvc/62-exterior/TEAK.jpg",
       "price": "Consultar",
@@ -1332,8 +1731,11 @@
     },
     {
       "name": "ACONCAGUA",
+      "name_en": "ACONCAGUA",
       "category": "Pisos",
+      "category_en": "Flooring",
       "subcategory": "Laminado",
+      "subcategory_en": "Laminate",
       "url": "7-pisos.html#71-laminado",
       "thumb": "img/7-pisos/71-laminado/ACONCAGUA.jpg",
       "price": "Consultar",
@@ -1342,8 +1744,11 @@
     },
     {
       "name": "ALCAÑIZ",
+      "name_en": "ALCAÑIZ",
       "category": "Pisos",
+      "category_en": "Flooring",
       "subcategory": "Laminado",
+      "subcategory_en": "Laminate",
       "url": "7-pisos.html#71-laminado",
       "thumb": "img/7-pisos/71-laminado/ALCAÑIZ.jpeg",
       "price": "Consultar",
@@ -1352,8 +1757,11 @@
     },
     {
       "name": "ARCTIC OAK SPLASH",
+      "name_en": "ARCTIC OAK SPLASH",
       "category": "Pisos",
+      "category_en": "Flooring",
       "subcategory": "Laminado",
+      "subcategory_en": "Laminate",
       "url": "7-pisos.html#71-laminado",
       "thumb": "img/7-pisos/71-laminado/ARCTIC OAK SPLASH.jpg",
       "price": "Consultar",
@@ -1362,8 +1770,11 @@
     },
     {
       "name": "AUSTRALIAN WALNUT SPLASH",
+      "name_en": "AUSTRALIAN WALNUT SPLASH",
       "category": "Pisos",
+      "category_en": "Flooring",
       "subcategory": "Laminado",
+      "subcategory_en": "Laminate",
       "url": "7-pisos.html#71-laminado",
       "thumb": "img/7-pisos/71-laminado/AUSTRALIAN WALNUT SPLASH.jpg",
       "price": "Consultar",
@@ -1372,8 +1783,11 @@
     },
     {
       "name": "BOULDER",
+      "name_en": "BOULDER",
       "category": "Pisos",
+      "category_en": "Flooring",
       "subcategory": "Laminado",
+      "subcategory_en": "Laminate",
       "url": "7-pisos.html#71-laminado",
       "thumb": "img/7-pisos/71-laminado/BOULDER.jpg",
       "price": "Consultar",
@@ -1382,8 +1796,11 @@
     },
     {
       "name": "CALANDA",
+      "name_en": "CALANDA",
       "category": "Pisos",
+      "category_en": "Flooring",
       "subcategory": "Laminado",
+      "subcategory_en": "Laminate",
       "url": "7-pisos.html#71-laminado",
       "thumb": "img/7-pisos/71-laminado/CALANDA.jpeg",
       "price": "Consultar",
@@ -1392,8 +1809,11 @@
     },
     {
       "name": "CEREZO TABLA",
+      "name_en": "CHERRY PLANK",
       "category": "Pisos",
+      "category_en": "Flooring",
       "subcategory": "Laminado",
+      "subcategory_en": "Laminate",
       "url": "7-pisos.html#71-laminado",
       "thumb": "img/7-pisos/71-laminado/CEREZO TABLA.jpg",
       "price": "Consultar",
@@ -1402,8 +1822,11 @@
     },
     {
       "name": "COLONIAL OAK",
+      "name_en": "COLONIAL OAK",
       "category": "Pisos",
+      "category_en": "Flooring",
       "subcategory": "Laminado",
+      "subcategory_en": "Laminate",
       "url": "7-pisos.html#71-laminado",
       "thumb": "img/7-pisos/71-laminado/COLONIAL OAK.jpg",
       "price": "Consultar",
@@ -1412,8 +1835,11 @@
     },
     {
       "name": "COPPER OAK",
+      "name_en": "COPPER OAK",
       "category": "Pisos",
+      "category_en": "Flooring",
       "subcategory": "Laminado",
+      "subcategory_en": "Laminate",
       "url": "7-pisos.html#71-laminado",
       "thumb": "img/7-pisos/71-laminado/COPPER OAK.jpg",
       "price": "Consultar",
@@ -1422,8 +1848,11 @@
     },
     {
       "name": "DEMOCRACY OAK",
+      "name_en": "DEMOCRACY OAK",
       "category": "Pisos",
+      "category_en": "Flooring",
       "subcategory": "Laminado",
+      "subcategory_en": "Laminate",
       "url": "7-pisos.html#71-laminado",
       "thumb": "img/7-pisos/71-laminado/DEMOCRACY OAK.jpg",
       "price": "Consultar",
@@ -1432,8 +1861,11 @@
     },
     {
       "name": "DENALI",
+      "name_en": "DENALI",
       "category": "Pisos",
+      "category_en": "Flooring",
       "subcategory": "Laminado",
+      "subcategory_en": "Laminate",
       "url": "7-pisos.html#71-laminado",
       "thumb": "img/7-pisos/71-laminado/DENALI.jpg",
       "price": "Consultar",
@@ -1442,8 +1874,11 @@
     },
     {
       "name": "ELBRUS",
+      "name_en": "ELBRUS",
       "category": "Pisos",
+      "category_en": "Flooring",
       "subcategory": "Laminado",
+      "subcategory_en": "Laminate",
       "url": "7-pisos.html#71-laminado",
       "thumb": "img/7-pisos/71-laminado/ELBRUS.jpg",
       "price": "Consultar",
@@ -1452,8 +1887,11 @@
     },
     {
       "name": "EVEREST",
+      "name_en": "EVEREST",
       "category": "Pisos",
+      "category_en": "Flooring",
       "subcategory": "Laminado",
+      "subcategory_en": "Laminate",
       "url": "7-pisos.html#71-laminado",
       "thumb": "img/7-pisos/71-laminado/EVEREST.jpg",
       "price": "Consultar",
@@ -1462,8 +1900,11 @@
     },
     {
       "name": "GOLDEN OAK",
+      "name_en": "GOLDEN OAK",
       "category": "Pisos",
+      "category_en": "Flooring",
       "subcategory": "Laminado",
+      "subcategory_en": "Laminate",
       "url": "7-pisos.html#71-laminado",
       "thumb": "img/7-pisos/71-laminado/GOLDEN OAK.jpg",
       "price": "Consultar",
@@ -1472,8 +1913,11 @@
     },
     {
       "name": "GUDAR",
+      "name_en": "GUDAR",
       "category": "Pisos",
+      "category_en": "Flooring",
       "subcategory": "Laminado",
+      "subcategory_en": "Laminate",
       "url": "7-pisos.html#71-laminado",
       "thumb": "img/7-pisos/71-laminado/GUDAR.jpeg",
       "price": "Consultar",
@@ -1482,8 +1926,11 @@
     },
     {
       "name": "HICKORY CAROLINA",
+      "name_en": "HICKORY CAROLINA",
       "category": "Pisos",
+      "category_en": "Flooring",
       "subcategory": "Laminado",
+      "subcategory_en": "Laminate",
       "url": "7-pisos.html#71-laminado",
       "thumb": "img/7-pisos/71-laminado/HICKORY CAROLINA.jpg",
       "price": "Consultar",
@@ -1492,8 +1939,11 @@
     },
     {
       "name": "INDEPENDENCE OAK",
+      "name_en": "INDEPENDENCE OAK",
       "category": "Pisos",
+      "category_en": "Flooring",
       "subcategory": "Laminado",
+      "subcategory_en": "Laminate",
       "url": "7-pisos.html#71-laminado",
       "thumb": "img/7-pisos/71-laminado/INDEPENDENCE OAK.jpg",
       "price": "Consultar",
@@ -1502,8 +1952,11 @@
     },
     {
       "name": "IVORY WHITE",
+      "name_en": "IVORY WHITE",
       "category": "Pisos",
+      "category_en": "Flooring",
       "subcategory": "Laminado",
+      "subcategory_en": "Laminate",
       "url": "7-pisos.html#71-laminado",
       "thumb": "img/7-pisos/71-laminado/IVORY WHITE.jpg",
       "price": "Consultar",
@@ -1512,8 +1965,11 @@
     },
     {
       "name": "KIEFER STORM",
+      "name_en": "KIEFER STORM",
       "category": "Pisos",
+      "category_en": "Flooring",
       "subcategory": "Laminado",
+      "subcategory_en": "Laminate",
       "url": "7-pisos.html#71-laminado",
       "thumb": "img/7-pisos/71-laminado/KIEFER STORM.jpg",
       "price": "Consultar",
@@ -1522,8 +1978,11 @@
     },
     {
       "name": "KILIMANJARO",
+      "name_en": "KILIMANJARO",
       "category": "Pisos",
+      "category_en": "Flooring",
       "subcategory": "Laminado",
+      "subcategory_en": "Laminate",
       "url": "7-pisos.html#71-laminado",
       "thumb": "img/7-pisos/71-laminado/KILIMANJARO.jpg",
       "price": "Consultar",
@@ -1532,8 +1991,11 @@
     },
     {
       "name": "MOUNTAIN BEECH SPLASH",
+      "name_en": "MOUNTAIN BEECH SPLASH",
       "category": "Pisos",
+      "category_en": "Flooring",
       "subcategory": "Laminado",
+      "subcategory_en": "Laminate",
       "url": "7-pisos.html#71-laminado",
       "thumb": "img/7-pisos/71-laminado/MOUNTAIN BEECH SPLASH.jpg",
       "price": "Consultar",
@@ -1542,8 +2004,11 @@
     },
     {
       "name": "MOUNTAIN BEECH",
+      "name_en": "MOUNTAIN BEECH",
       "category": "Pisos",
+      "category_en": "Flooring",
       "subcategory": "Laminado",
+      "subcategory_en": "Laminate",
       "url": "7-pisos.html#71-laminado",
       "thumb": "img/7-pisos/71-laminado/MOUNTAIN BEECH.jpg",
       "price": "Consultar",
@@ -1552,8 +2017,11 @@
     },
     {
       "name": "NOGAL AMERICANO",
+      "name_en": "AMERICAN WALNUT",
       "category": "Pisos",
+      "category_en": "Flooring",
       "subcategory": "Laminado",
+      "subcategory_en": "Laminate",
       "url": "7-pisos.html#71-laminado",
       "thumb": "img/7-pisos/71-laminado/NOGAL AMERICANO.jpg",
       "price": "Consultar",
@@ -1562,8 +2030,11 @@
     },
     {
       "name": "OAK BREEZE",
+      "name_en": "OAK BREEZE",
       "category": "Pisos",
+      "category_en": "Flooring",
       "subcategory": "Laminado",
+      "subcategory_en": "Laminate",
       "url": "7-pisos.html#71-laminado",
       "thumb": "img/7-pisos/71-laminado/OAK BREEZE.jpg",
       "price": "Consultar",
@@ -1572,8 +2043,11 @@
     },
     {
       "name": "OAK CABANA LAGOS",
+      "name_en": "OAK CABANA LAGOS",
       "category": "Pisos",
+      "category_en": "Flooring",
       "subcategory": "Laminado",
+      "subcategory_en": "Laminate",
       "url": "7-pisos.html#71-laminado",
       "thumb": "img/7-pisos/71-laminado/OAK CABANA LAGOS.jpg",
       "price": "Consultar",
@@ -1582,8 +2056,11 @@
     },
     {
       "name": "OAK DESIGN",
+      "name_en": "OAK DESIGN",
       "category": "Pisos",
+      "category_en": "Flooring",
       "subcategory": "Laminado",
+      "subcategory_en": "Laminate",
       "url": "7-pisos.html#71-laminado",
       "thumb": "img/7-pisos/71-laminado/OAK DESIGN.jpg",
       "price": "Consultar",
@@ -1592,8 +2069,11 @@
     },
     {
       "name": "OAK EPIC APULIEN",
+      "name_en": "OAK EPIC APULIEN",
       "category": "Pisos",
+      "category_en": "Flooring",
       "subcategory": "Laminado",
+      "subcategory_en": "Laminate",
       "url": "7-pisos.html#71-laminado",
       "thumb": "img/7-pisos/71-laminado/OAK EPIC APULIEN.jpg",
       "price": "Consultar",
@@ -1602,8 +2082,11 @@
     },
     {
       "name": "OAK EVOKE CRYSTAL",
+      "name_en": "OAK EVOKE CRYSTAL",
       "category": "Pisos",
+      "category_en": "Flooring",
       "subcategory": "Laminado",
+      "subcategory_en": "Laminate",
       "url": "7-pisos.html#71-laminado",
       "thumb": "img/7-pisos/71-laminado/OAK EVOKE CRYSTAL.jpg",
       "price": "Consultar",
@@ -1612,8 +2095,11 @@
     },
     {
       "name": "OAK FRESCO",
+      "name_en": "OAK FRESCO",
       "category": "Pisos",
+      "category_en": "Flooring",
       "subcategory": "Laminado",
+      "subcategory_en": "Laminate",
       "url": "7-pisos.html#71-laminado",
       "thumb": "img/7-pisos/71-laminado/OAK FRESCO.jpg",
       "price": "Consultar",
@@ -1622,8 +2108,11 @@
     },
     {
       "name": "OAK NATURAL",
+      "name_en": "OAK NATURAL",
       "category": "Pisos",
+      "category_en": "Flooring",
       "subcategory": "Laminado",
+      "subcategory_en": "Laminate",
       "url": "7-pisos.html#71-laminado",
       "thumb": "img/7-pisos/71-laminado/OAK NATURAL.jpg",
       "price": "Consultar",
@@ -1632,8 +2121,11 @@
     },
     {
       "name": "OAK SILEA",
+      "name_en": "OAK SILEA",
       "category": "Pisos",
+      "category_en": "Flooring",
       "subcategory": "Laminado",
+      "subcategory_en": "Laminate",
       "url": "7-pisos.html#71-laminado",
       "thumb": "img/7-pisos/71-laminado/OAK SILEA.jpg",
       "price": "Consultar",
@@ -1642,8 +2134,11 @@
     },
     {
       "name": "OAK SOLANO",
+      "name_en": "OAK SOLANO",
       "category": "Pisos",
+      "category_en": "Flooring",
       "subcategory": "Laminado",
+      "subcategory_en": "Laminate",
       "url": "7-pisos.html#71-laminado",
       "thumb": "img/7-pisos/71-laminado/OAK SOLANO.png",
       "price": "Consultar",
@@ -1652,8 +2147,11 @@
     },
     {
       "name": "OAK SOUL",
+      "name_en": "OAK SOUL",
       "category": "Pisos",
+      "category_en": "Flooring",
       "subcategory": "Laminado",
+      "subcategory_en": "Laminate",
       "url": "7-pisos.html#71-laminado",
       "thumb": "img/7-pisos/71-laminado/OAK SOUL.jpg",
       "price": "Consultar",
@@ -1662,8 +2160,11 @@
     },
     {
       "name": "OAK SUNSET",
+      "name_en": "OAK SUNSET",
       "category": "Pisos",
+      "category_en": "Flooring",
       "subcategory": "Laminado",
+      "subcategory_en": "Laminate",
       "url": "7-pisos.html#71-laminado",
       "thumb": "img/7-pisos/71-laminado/OAK SUNSET.png",
       "price": "Consultar",
@@ -1672,8 +2173,11 @@
     },
     {
       "name": "OAK THUNDER",
+      "name_en": "OAK THUNDER",
       "category": "Pisos",
+      "category_en": "Flooring",
       "subcategory": "Laminado",
+      "subcategory_en": "Laminate",
       "url": "7-pisos.html#71-laminado",
       "thumb": "img/7-pisos/71-laminado/OAK THUNDER.jpg",
       "price": "Consultar",
@@ -1682,8 +2186,11 @@
     },
     {
       "name": "OAK TREND",
+      "name_en": "OAK TREND",
       "category": "Pisos",
+      "category_en": "Flooring",
       "subcategory": "Laminado",
+      "subcategory_en": "Laminate",
       "url": "7-pisos.html#71-laminado",
       "thumb": "img/7-pisos/71-laminado/OAK TREND.jpg",
       "price": "Consultar",
@@ -1692,8 +2199,11 @@
     },
     {
       "name": "OAK VIENNA",
+      "name_en": "OAK VIENNA",
       "category": "Pisos",
+      "category_en": "Flooring",
       "subcategory": "Laminado",
+      "subcategory_en": "Laminate",
       "url": "7-pisos.html#71-laminado",
       "thumb": "img/7-pisos/71-laminado/OAK VIENNA.jpg",
       "price": "Consultar",
@@ -1702,8 +2212,11 @@
     },
     {
       "name": "OAK VOUGE",
+      "name_en": "OAK VOUGE",
       "category": "Pisos",
+      "category_en": "Flooring",
       "subcategory": "Laminado",
+      "subcategory_en": "Laminate",
       "url": "7-pisos.html#71-laminado",
       "thumb": "img/7-pisos/71-laminado/OAK VOUGE.png",
       "price": "Consultar",
@@ -1712,8 +2225,11 @@
     },
     {
       "name": "PLANTATION OAK",
+      "name_en": "PLANTATION OAK",
       "category": "Pisos",
+      "category_en": "Flooring",
       "subcategory": "Laminado",
+      "subcategory_en": "Laminate",
       "url": "7-pisos.html#71-laminado",
       "thumb": "img/7-pisos/71-laminado/PLANTATION OAK.jpg",
       "price": "Consultar",
@@ -1722,8 +2238,11 @@
     },
     {
       "name": "REVOLUTION OAK",
+      "name_en": "REVOLUTION OAK",
       "category": "Pisos",
+      "category_en": "Flooring",
       "subcategory": "Laminado",
+      "subcategory_en": "Laminate",
       "url": "7-pisos.html#71-laminado",
       "thumb": "img/7-pisos/71-laminado/REVOLUTION OAK.jpg",
       "price": "Consultar",
@@ -1732,8 +2251,11 @@
     },
     {
       "name": "SPRUCE ANTIQUE",
+      "name_en": "SPRUCE ANTIQUE",
       "category": "Pisos",
+      "category_en": "Flooring",
       "subcategory": "Laminado",
+      "subcategory_en": "Laminate",
       "url": "7-pisos.html#71-laminado",
       "thumb": "img/7-pisos/71-laminado/SPRUCE ANTIQUE.jpg",
       "price": "Consultar",
@@ -1742,8 +2264,11 @@
     },
     {
       "name": "TAHOE",
+      "name_en": "TAHOE",
       "category": "Pisos",
+      "category_en": "Flooring",
       "subcategory": "Laminado",
+      "subcategory_en": "Laminate",
       "url": "7-pisos.html#71-laminado",
       "thumb": "img/7-pisos/71-laminado/TAHOE.jpg",
       "price": "Consultar",
@@ -1752,8 +2277,11 @@
     },
     {
       "name": "TERNASCO",
+      "name_en": "TERNASCO",
       "category": "Pisos",
+      "category_en": "Flooring",
       "subcategory": "Laminado",
+      "subcategory_en": "Laminate",
       "url": "7-pisos.html#71-laminado",
       "thumb": "img/7-pisos/71-laminado/TERNASCO.jpeg",
       "price": "Consultar",
@@ -1762,8 +2290,11 @@
     },
     {
       "name": "TITANIUM OAK",
+      "name_en": "TITANIUM OAK",
       "category": "Pisos",
+      "category_en": "Flooring",
       "subcategory": "Laminado",
+      "subcategory_en": "Laminate",
       "url": "7-pisos.html#71-laminado",
       "thumb": "img/7-pisos/71-laminado/TITANIUM OAK.jpg",
       "price": "Consultar",
@@ -1772,8 +2303,11 @@
     },
     {
       "name": "UTRILLAS",
+      "name_en": "UTRILLAS",
       "category": "Pisos",
+      "category_en": "Flooring",
       "subcategory": "Laminado",
+      "subcategory_en": "Laminate",
       "url": "7-pisos.html#71-laminado",
       "thumb": "img/7-pisos/71-laminado/UTRILLAS.jpeg",
       "price": "Consultar",
@@ -1782,8 +2316,11 @@
     },
     {
       "name": "WALNUT SABO",
+      "name_en": "WALNUT SABO",
       "category": "Pisos",
+      "category_en": "Flooring",
       "subcategory": "Laminado",
+      "subcategory_en": "Laminate",
       "url": "7-pisos.html#71-laminado",
       "thumb": "img/7-pisos/71-laminado/WALNUT SABO.jpg",
       "price": "Consultar",
@@ -1792,8 +2329,11 @@
     },
     {
       "name": "WALNUT",
+      "name_en": "WALNUT",
       "category": "Pisos",
+      "category_en": "Flooring",
       "subcategory": "Laminado",
+      "subcategory_en": "Laminate",
       "url": "7-pisos.html#71-laminado",
       "thumb": "img/7-pisos/71-laminado/WALNUT.jpg",
       "price": "Consultar",
@@ -1802,8 +2342,11 @@
     },
     {
       "name": "ALBANY CREEK",
+      "name_en": "ALBANY CREEK",
       "category": "Pisos",
+      "category_en": "Flooring",
       "subcategory": "WPC",
+      "subcategory_en": "WPC",
       "url": "7-pisos.html#72-wpc",
       "thumb": "img/7-pisos/72-wpc/ALBANY CREEK.jpg",
       "price": "Consultar",
@@ -1812,8 +2355,11 @@
     },
     {
       "name": "CANBERRA",
+      "name_en": "CANBERRA",
       "category": "Pisos",
+      "category_en": "Flooring",
       "subcategory": "WPC",
+      "subcategory_en": "WPC",
       "url": "7-pisos.html#72-wpc",
       "thumb": "img/7-pisos/72-wpc/CANBERRA.jpg",
       "price": "Consultar",
@@ -1822,8 +2368,11 @@
     },
     {
       "name": "HAMPTON",
+      "name_en": "HAMPTON",
       "category": "Pisos",
+      "category_en": "Flooring",
       "subcategory": "WPC",
+      "subcategory_en": "WPC",
       "url": "7-pisos.html#72-wpc",
       "thumb": "img/7-pisos/72-wpc/HAMPTON.jpg",
       "price": "Consultar",
@@ -1832,8 +2381,11 @@
     },
     {
       "name": "NORWELL",
+      "name_en": "NORWELL",
       "category": "Pisos",
+      "category_en": "Flooring",
       "subcategory": "WPC",
+      "subcategory_en": "WPC",
       "url": "7-pisos.html#72-wpc",
       "thumb": "img/7-pisos/72-wpc/NORWELL.jpg",
       "price": "Consultar",
@@ -1842,8 +2394,11 @@
     },
     {
       "name": "VERMONT",
+      "name_en": "VERMONT",
       "category": "Pisos",
+      "category_en": "Flooring",
       "subcategory": "WPC",
+      "subcategory_en": "WPC",
       "url": "7-pisos.html#72-wpc",
       "thumb": "img/7-pisos/72-wpc/VERMONT.jpg",
       "price": "Consultar",
@@ -1852,8 +2407,11 @@
     },
     {
       "name": "ALBERTA",
+      "name_en": "ALBERTA",
       "category": "Pisos",
+      "category_en": "Flooring",
       "subcategory": "SPC",
+      "subcategory_en": "SPC",
       "url": "7-pisos.html#73-spc",
       "thumb": "img/7-pisos/73-spc/ALBERTA.jpg",
       "price": "Consultar",
@@ -1862,8 +2420,11 @@
     },
     {
       "name": "AMAZON",
+      "name_en": "AMAZON",
       "category": "Pisos",
+      "category_en": "Flooring",
       "subcategory": "SPC",
+      "subcategory_en": "SPC",
       "url": "7-pisos.html#73-spc",
       "thumb": "img/7-pisos/73-spc/AMAZON.jpg",
       "price": "Consultar",
@@ -1872,8 +2433,11 @@
     },
     {
       "name": "ASHLAR GRAY",
+      "name_en": "ASHLAR GRAY",
       "category": "Pisos",
+      "category_en": "Flooring",
       "subcategory": "SPC",
+      "subcategory_en": "SPC",
       "url": "7-pisos.html#73-spc",
       "thumb": "img/7-pisos/73-spc/ASHLAR GRAY.jpg",
       "price": "Consultar",
@@ -1882,8 +2446,11 @@
     },
     {
       "name": "ASHLAR",
+      "name_en": "ASHLAR",
       "category": "Pisos",
+      "category_en": "Flooring",
       "subcategory": "SPC",
+      "subcategory_en": "SPC",
       "url": "7-pisos.html#73-spc",
       "thumb": "img/7-pisos/73-spc/ASHLAR.jpg",
       "price": "Consultar",
@@ -1892,8 +2459,11 @@
     },
     {
       "name": "BANFF",
+      "name_en": "BANFF",
       "category": "Pisos",
+      "category_en": "Flooring",
       "subcategory": "SPC",
+      "subcategory_en": "SPC",
       "url": "7-pisos.html#73-spc",
       "thumb": "img/7-pisos/73-spc/BANFF.jpg",
       "price": "Consultar",
@@ -1902,8 +2472,11 @@
     },
     {
       "name": "CARAMEL",
+      "name_en": "CARAMEL",
       "category": "Pisos",
+      "category_en": "Flooring",
       "subcategory": "SPC",
+      "subcategory_en": "SPC",
       "url": "7-pisos.html#73-spc",
       "thumb": "img/7-pisos/73-spc/CARAMEL.jpg",
       "price": "Consultar",
@@ -1912,8 +2485,11 @@
     },
     {
       "name": "COLORADO RUSH",
+      "name_en": "COLORADO RUSH",
       "category": "Pisos",
+      "category_en": "Flooring",
       "subcategory": "SPC",
+      "subcategory_en": "SPC",
       "url": "7-pisos.html#73-spc",
       "thumb": "img/7-pisos/73-spc/COLORADO RUSH.jpg",
       "price": "Consultar",
@@ -1922,8 +2498,11 @@
     },
     {
       "name": "CONCRETE LITE",
+      "name_en": "CONCRETE LITE",
       "category": "Pisos",
+      "category_en": "Flooring",
       "subcategory": "SPC",
+      "subcategory_en": "SPC",
       "url": "7-pisos.html#73-spc",
       "thumb": "img/7-pisos/73-spc/CONCRETE LITE.jpg",
       "price": "Consultar",
@@ -1932,8 +2511,11 @@
     },
     {
       "name": "CONCRETE",
+      "name_en": "CONCRETE",
       "category": "Pisos",
+      "category_en": "Flooring",
       "subcategory": "SPC",
+      "subcategory_en": "SPC",
       "url": "7-pisos.html#73-spc",
       "thumb": "img/7-pisos/73-spc/CONCRETE.jpg",
       "price": "Consultar",
@@ -1942,8 +2524,11 @@
     },
     {
       "name": "DALBY",
+      "name_en": "DALBY",
       "category": "Pisos",
+      "category_en": "Flooring",
       "subcategory": "SPC",
+      "subcategory_en": "SPC",
       "url": "7-pisos.html#73-spc",
       "thumb": "img/7-pisos/73-spc/DALBY.jpg",
       "price": "Consultar",
@@ -1952,8 +2537,11 @@
     },
     {
       "name": "DELAMERE",
+      "name_en": "DELAMERE",
       "category": "Pisos",
+      "category_en": "Flooring",
       "subcategory": "SPC",
+      "subcategory_en": "SPC",
       "url": "7-pisos.html#73-spc",
       "thumb": "img/7-pisos/73-spc/DELAMERE.jpg",
       "price": "Consultar",
@@ -1962,8 +2550,11 @@
     },
     {
       "name": "EXPRESSO",
+      "name_en": "EXPRESSO",
       "category": "Pisos",
+      "category_en": "Flooring",
       "subcategory": "SPC",
+      "subcategory_en": "SPC",
       "url": "7-pisos.html#73-spc",
       "thumb": "img/7-pisos/73-spc/EXPRESSO.jpg",
       "price": "Consultar",
@@ -1972,8 +2563,11 @@
     },
     {
       "name": "JASPER",
+      "name_en": "JASPER",
       "category": "Pisos",
+      "category_en": "Flooring",
       "subcategory": "SPC",
+      "subcategory_en": "SPC",
       "url": "7-pisos.html#73-spc",
       "thumb": "img/7-pisos/73-spc/JASPER.jpg",
       "price": "Consultar",
@@ -1982,8 +2576,11 @@
     },
     {
       "name": "MINERAL GRAY",
+      "name_en": "MINERAL GRAY",
       "category": "Pisos",
+      "category_en": "Flooring",
       "subcategory": "SPC",
+      "subcategory_en": "SPC",
       "url": "7-pisos.html#73-spc",
       "thumb": "img/7-pisos/73-spc/MINERAL GRAY.jpg",
       "price": "Consultar",
@@ -1992,8 +2589,11 @@
     },
     {
       "name": "MOKA",
+      "name_en": "MOCHA",
       "category": "Pisos",
+      "category_en": "Flooring",
       "subcategory": "SPC",
+      "subcategory_en": "SPC",
       "url": "7-pisos.html#73-spc",
       "thumb": "img/7-pisos/73-spc/MOKA.jpg",
       "price": "Consultar",
@@ -2002,8 +2602,11 @@
     },
     {
       "name": "NOMADIC",
+      "name_en": "NOMADIC",
       "category": "Pisos",
+      "category_en": "Flooring",
       "subcategory": "SPC",
+      "subcategory_en": "SPC",
       "url": "7-pisos.html#73-spc",
       "thumb": "img/7-pisos/73-spc/NOMADIC.jpg",
       "price": "Consultar",
@@ -2012,8 +2615,11 @@
     },
     {
       "name": "PARKLAND",
+      "name_en": "PARKLAND",
       "category": "Pisos",
+      "category_en": "Flooring",
       "subcategory": "SPC",
+      "subcategory_en": "SPC",
       "url": "7-pisos.html#73-spc",
       "thumb": "img/7-pisos/73-spc/PARKLAND.jpg",
       "price": "Consultar",
@@ -2022,8 +2628,11 @@
     },
     {
       "name": "SILVERSTONE",
+      "name_en": "SILVERSTONE",
       "category": "Pisos",
+      "category_en": "Flooring",
       "subcategory": "SPC",
+      "subcategory_en": "SPC",
       "url": "7-pisos.html#73-spc",
       "thumb": "img/7-pisos/73-spc/SILVERSTONE.jpg",
       "price": "Consultar",
@@ -2032,8 +2641,11 @@
     },
     {
       "name": "SILVESTER",
+      "name_en": "SILVESTER",
       "category": "Pisos",
+      "category_en": "Flooring",
       "subcategory": "SPC",
+      "subcategory_en": "SPC",
       "url": "7-pisos.html#73-spc",
       "thumb": "img/7-pisos/73-spc/SILVESTER.jpg",
       "price": "Consultar",
@@ -2042,8 +2654,11 @@
     },
     {
       "name": "STERLING OAK",
+      "name_en": "STERLING OAK",
       "category": "Pisos",
+      "category_en": "Flooring",
       "subcategory": "SPC",
+      "subcategory_en": "SPC",
       "url": "7-pisos.html#73-spc",
       "thumb": "img/7-pisos/73-spc/STERLING OAK.jpg",
       "price": "Consultar",
@@ -2052,8 +2667,11 @@
     },
     {
       "name": "TONGASS",
+      "name_en": "TONGASS",
       "category": "Pisos",
+      "category_en": "Flooring",
       "subcategory": "SPC",
+      "subcategory_en": "SPC",
       "url": "7-pisos.html#73-spc",
       "thumb": "img/7-pisos/73-spc/TONGASS.jpg",
       "price": "Consultar",
@@ -2062,8 +2680,11 @@
     },
     {
       "name": "YOSEMITE",
+      "name_en": "YOSEMITE",
       "category": "Pisos",
+      "category_en": "Flooring",
       "subcategory": "SPC",
+      "subcategory_en": "SPC",
       "url": "7-pisos.html#73-spc",
       "thumb": "img/7-pisos/73-spc/YOSEMITE.jpg",
       "price": "Consultar",
@@ -2072,8 +2693,11 @@
     },
     {
       "name": "LIGHT GRAY",
+      "name_en": "LIGHT GRAY",
       "category": "Pisos",
+      "category_en": "Flooring",
       "subcategory": "Deck Sintetico",
+      "subcategory_en": "Composite Decking",
       "url": "7-pisos.html#74-deck-sintetico",
       "thumb": "img/7-pisos/74-deck-sintetico/LIGHT GRAY.jpg",
       "price": "Consultar",
@@ -2082,8 +2706,11 @@
     },
     {
       "name": "MAPLE",
+      "name_en": "MAPLE",
       "category": "Pisos",
+      "category_en": "Flooring",
       "subcategory": "Deck Sintetico",
+      "subcategory_en": "Composite Decking",
       "url": "7-pisos.html#74-deck-sintetico",
       "thumb": "img/7-pisos/74-deck-sintetico/MAPLE.jpg",
       "price": "Consultar",
@@ -2092,8 +2719,11 @@
     },
     {
       "name": "TEAK",
+      "name_en": "TEAK",
       "category": "Pisos",
+      "category_en": "Flooring",
       "subcategory": "Deck Sintetico",
+      "subcategory_en": "Composite Decking",
       "url": "7-pisos.html#74-deck-sintetico",
       "thumb": "img/7-pisos/74-deck-sintetico/TEAK.jpg",
       "price": "Consultar",
@@ -2102,8 +2732,11 @@
     },
     {
       "name": "WENGE",
+      "name_en": "WENGE",
       "category": "Pisos",
+      "category_en": "Flooring",
       "subcategory": "Deck Sintetico",
+      "subcategory_en": "Composite Decking",
       "url": "7-pisos.html#74-deck-sintetico",
       "thumb": "img/7-pisos/74-deck-sintetico/WENGE.jpg",
       "price": "Consultar",
@@ -2112,8 +2745,11 @@
     },
     {
       "name": "AMAZONAS-A",
+      "name_en": "AMAZONAS-A",
       "category": "Zacate",
+      "category_en": "Artificial Grass",
       "subcategory": "Follaje Sintetico",
+      "subcategory_en": "Artificial Foliage",
       "url": "8-zacate.html#81-follaje-sintetico",
       "thumb": "img/8-zacate/81-follaje-sintetico/AMAZONAS-A.jpg",
       "price": "Consultar",
@@ -2122,8 +2758,11 @@
     },
     {
       "name": "AMAZONAS-B",
+      "name_en": "AMAZONAS-B",
       "category": "Zacate",
+      "category_en": "Artificial Grass",
       "subcategory": "Follaje Sintetico",
+      "subcategory_en": "Artificial Foliage",
       "url": "8-zacate.html#81-follaje-sintetico",
       "thumb": "img/8-zacate/81-follaje-sintetico/AMAZONAS-B.jpg",
       "price": "Consultar",
@@ -2132,8 +2771,11 @@
     },
     {
       "name": "AMAZONAS-C",
+      "name_en": "AMAZONAS-C",
       "category": "Zacate",
+      "category_en": "Artificial Grass",
       "subcategory": "Follaje Sintetico",
+      "subcategory_en": "Artificial Foliage",
       "url": "8-zacate.html#81-follaje-sintetico",
       "thumb": "img/8-zacate/81-follaje-sintetico/AMAZONAS-C.jpg",
       "price": "Consultar",
@@ -2142,8 +2784,11 @@
     },
     {
       "name": "AMSTERDAM",
+      "name_en": "AMSTERDAM",
       "category": "Zacate",
+      "category_en": "Artificial Grass",
       "subcategory": "Follaje Sintetico",
+      "subcategory_en": "Artificial Foliage",
       "url": "8-zacate.html#81-follaje-sintetico",
       "thumb": "img/8-zacate/81-follaje-sintetico/AMSTERDAM.jpg",
       "price": "Consultar",
@@ -2152,8 +2797,11 @@
     },
     {
       "name": "ARRAYAN AMARILLO",
+      "name_en": "YELLOW MYRTLE",
       "category": "Zacate",
+      "category_en": "Artificial Grass",
       "subcategory": "Follaje Sintetico",
+      "subcategory_en": "Artificial Foliage",
       "url": "8-zacate.html#81-follaje-sintetico",
       "thumb": "img/8-zacate/81-follaje-sintetico/ARRAYAN AMARILLO.jpg",
       "price": "Consultar",
@@ -2162,8 +2810,11 @@
     },
     {
       "name": "ARRAYAN MORADO",
+      "name_en": "PURPLE MYRTLE",
       "category": "Zacate",
+      "category_en": "Artificial Grass",
       "subcategory": "Follaje Sintetico",
+      "subcategory_en": "Artificial Foliage",
       "url": "8-zacate.html#81-follaje-sintetico",
       "thumb": "img/8-zacate/81-follaje-sintetico/ARRAYAN MORADO.jpg",
       "price": "Consultar",
@@ -2172,8 +2823,11 @@
     },
     {
       "name": "ARRAYAN NATURAL",
+      "name_en": "NATURAL MYRTLE",
       "category": "Zacate",
+      "category_en": "Artificial Grass",
       "subcategory": "Follaje Sintetico",
+      "subcategory_en": "Artificial Foliage",
       "url": "8-zacate.html#81-follaje-sintetico",
       "thumb": "img/8-zacate/81-follaje-sintetico/ARRAYAN NATURAL.jpg",
       "price": "Consultar",
@@ -2182,8 +2836,11 @@
     },
     {
       "name": "ARRAYAN ROJO",
+      "name_en": "RED MYRTLE",
       "category": "Zacate",
+      "category_en": "Artificial Grass",
       "subcategory": "Follaje Sintetico",
+      "subcategory_en": "Artificial Foliage",
       "url": "8-zacate.html#81-follaje-sintetico",
       "thumb": "img/8-zacate/81-follaje-sintetico/ARRAYAN ROJO.jpg",
       "price": "Consultar",
@@ -2192,8 +2849,11 @@
     },
     {
       "name": "ARRAYAN VERDE",
+      "name_en": "GREEN MYRTLE",
       "category": "Zacate",
+      "category_en": "Artificial Grass",
       "subcategory": "Follaje Sintetico",
+      "subcategory_en": "Artificial Foliage",
       "url": "8-zacate.html#81-follaje-sintetico",
       "thumb": "img/8-zacate/81-follaje-sintetico/ARRAYAN VERDE.jpg",
       "price": "Consultar",
@@ -2202,8 +2862,11 @@
     },
     {
       "name": "BRUSELAS",
+      "name_en": "BRUSELAS",
       "category": "Zacate",
+      "category_en": "Artificial Grass",
       "subcategory": "Follaje Sintetico",
+      "subcategory_en": "Artificial Foliage",
       "url": "8-zacate.html#81-follaje-sintetico",
       "thumb": "img/8-zacate/81-follaje-sintetico/BRUSELAS.jpg",
       "price": "Consultar",
@@ -2212,8 +2875,11 @@
     },
     {
       "name": "GRECIA",
+      "name_en": "GRECIA",
       "category": "Zacate",
+      "category_en": "Artificial Grass",
       "subcategory": "Follaje Sintetico",
+      "subcategory_en": "Artificial Foliage",
       "url": "8-zacate.html#81-follaje-sintetico",
       "thumb": "img/8-zacate/81-follaje-sintetico/GRECIA.jpg",
       "price": "Consultar",
@@ -2222,8 +2888,11 @@
     },
     {
       "name": "JAZMIN",
+      "name_en": "JASMINE",
       "category": "Zacate",
+      "category_en": "Artificial Grass",
       "subcategory": "Follaje Sintetico",
+      "subcategory_en": "Artificial Foliage",
       "url": "8-zacate.html#81-follaje-sintetico",
       "thumb": "img/8-zacate/81-follaje-sintetico/JAZMIN.jpg",
       "price": "Consultar",
@@ -2232,8 +2901,11 @@
     },
     {
       "name": "LAUREL DORADO",
+      "name_en": "GOLDEN LAUREL",
       "category": "Zacate",
+      "category_en": "Artificial Grass",
       "subcategory": "Follaje Sintetico",
+      "subcategory_en": "Artificial Foliage",
       "url": "8-zacate.html#81-follaje-sintetico",
       "thumb": "img/8-zacate/81-follaje-sintetico/LAUREL DORADO.jpg",
       "price": "Consultar",
@@ -2242,8 +2914,11 @@
     },
     {
       "name": "MENTA",
+      "name_en": "MINT",
       "category": "Zacate",
+      "category_en": "Artificial Grass",
       "subcategory": "Follaje Sintetico",
+      "subcategory_en": "Artificial Foliage",
       "url": "8-zacate.html#81-follaje-sintetico",
       "thumb": "img/8-zacate/81-follaje-sintetico/MENTA.jpg",
       "price": "Consultar",
@@ -2252,8 +2927,11 @@
     },
     {
       "name": "MILAN",
+      "name_en": "MILAN",
       "category": "Zacate",
+      "category_en": "Artificial Grass",
       "subcategory": "Follaje Sintetico",
+      "subcategory_en": "Artificial Foliage",
       "url": "8-zacate.html#81-follaje-sintetico",
       "thumb": "img/8-zacate/81-follaje-sintetico/MILAN.jpg",
       "price": "Consultar",
@@ -2262,8 +2940,11 @@
     },
     {
       "name": "PERSIA",
+      "name_en": "PERSIA",
       "category": "Zacate",
+      "category_en": "Artificial Grass",
       "subcategory": "Follaje Sintetico",
+      "subcategory_en": "Artificial Foliage",
       "url": "8-zacate.html#81-follaje-sintetico",
       "thumb": "img/8-zacate/81-follaje-sintetico/PERSIA.jpg",
       "price": "Consultar",
@@ -2272,8 +2953,11 @@
     },
     {
       "name": "SEVILLA",
+      "name_en": "SEVILLA",
       "category": "Zacate",
+      "category_en": "Artificial Grass",
       "subcategory": "Follaje Sintetico",
+      "subcategory_en": "Artificial Foliage",
       "url": "8-zacate.html#81-follaje-sintetico",
       "thumb": "img/8-zacate/81-follaje-sintetico/SEVILLA.jpg",
       "price": "Consultar",
@@ -2282,8 +2966,11 @@
     },
     {
       "name": "SIBERIA",
+      "name_en": "SIBERIA",
       "category": "Zacate",
+      "category_en": "Artificial Grass",
       "subcategory": "Follaje Sintetico",
+      "subcategory_en": "Artificial Foliage",
       "url": "8-zacate.html#81-follaje-sintetico",
       "thumb": "img/8-zacate/81-follaje-sintetico/SIBERIA.jpg",
       "price": "Consultar",
@@ -2292,8 +2979,11 @@
     },
     {
       "name": "TREBOL",
+      "name_en": "CLOVER",
       "category": "Zacate",
+      "category_en": "Artificial Grass",
       "subcategory": "Follaje Sintetico",
+      "subcategory_en": "Artificial Foliage",
       "url": "8-zacate.html#81-follaje-sintetico",
       "thumb": "img/8-zacate/81-follaje-sintetico/TREBOL.jpg",
       "price": "Consultar",
@@ -2302,8 +2992,11 @@
     },
     {
       "name": "TG-07-ARUBA",
+      "name_en": "TG-07-ARUBA",
       "category": "Zacate",
+      "category_en": "Artificial Grass",
       "subcategory": "Pasto Recreativo",
+      "subcategory_en": "Recreational Turf",
       "url": "8-zacate.html#82-pasto-recreativo",
       "thumb": "img/8-zacate/82-pasto-recreativo/TG-07-ARUBA.jpg",
       "price": "Consultar",
@@ -2312,8 +3005,11 @@
     },
     {
       "name": "TG-10-ACA",
+      "name_en": "TG-10-ACA",
       "category": "Zacate",
+      "category_en": "Artificial Grass",
       "subcategory": "Pasto Recreativo",
+      "subcategory_en": "Recreational Turf",
       "url": "8-zacate.html#82-pasto-recreativo",
       "thumb": "img/8-zacate/82-pasto-recreativo/TG-10-ACA.jpg",
       "price": "Consultar",
@@ -2322,8 +3018,11 @@
     },
     {
       "name": "TG-18-SUMMER",
+      "name_en": "TG-18-SUMMER",
       "category": "Zacate",
+      "category_en": "Artificial Grass",
       "subcategory": "Pasto Recreativo",
+      "subcategory_en": "Recreational Turf",
       "url": "8-zacate.html#82-pasto-recreativo",
       "thumb": "img/8-zacate/82-pasto-recreativo/TG-18-SUMMER.jpg",
       "price": "Consultar",
@@ -2332,8 +3031,11 @@
     },
     {
       "name": "TG-20-BERMUDA",
+      "name_en": "TG-20-BERMUDA",
       "category": "Zacate",
+      "category_en": "Artificial Grass",
       "subcategory": "Pasto Recreativo",
+      "subcategory_en": "Recreational Turf",
       "url": "8-zacate.html#82-pasto-recreativo",
       "thumb": "img/8-zacate/82-pasto-recreativo/TG-20-BERMUDA.jpg",
       "price": "Consultar",
@@ -2342,8 +3044,11 @@
     },
     {
       "name": "TG-25-CANCUN",
+      "name_en": "TG-25-CANCUN",
       "category": "Zacate",
+      "category_en": "Artificial Grass",
       "subcategory": "Pasto Recreativo",
+      "subcategory_en": "Recreational Turf",
       "url": "8-zacate.html#82-pasto-recreativo",
       "thumb": "img/8-zacate/82-pasto-recreativo/TG-25-CANCUN.jpg",
       "price": "Consultar",
@@ -2352,8 +3057,11 @@
     },
     {
       "name": "TG-30-MAUI",
+      "name_en": "TG-30-MAUI",
       "category": "Zacate",
+      "category_en": "Artificial Grass",
       "subcategory": "Pasto Recreativo",
+      "subcategory_en": "Recreational Turf",
       "url": "8-zacate.html#82-pasto-recreativo",
       "thumb": "img/8-zacate/82-pasto-recreativo/TG-30-MAUI.jpg",
       "price": "Consultar",
@@ -2362,8 +3070,11 @@
     },
     {
       "name": "TG-35-TULUM",
+      "name_en": "TG-35-TULUM",
       "category": "Zacate",
+      "category_en": "Artificial Grass",
       "subcategory": "Pasto Recreativo",
+      "subcategory_en": "Recreational Turf",
       "url": "8-zacate.html#82-pasto-recreativo",
       "thumb": "img/8-zacate/82-pasto-recreativo/TG-35-TULUM.jpg",
       "price": "Consultar",
@@ -2372,8 +3083,11 @@
     },
     {
       "name": "TG-40-BALI",
+      "name_en": "TG-40-BALI",
       "category": "Zacate",
+      "category_en": "Artificial Grass",
       "subcategory": "Pasto Recreativo",
+      "subcategory_en": "Recreational Turf",
       "url": "8-zacate.html#82-pasto-recreativo",
       "thumb": "img/8-zacate/82-pasto-recreativo/TG-40-BALI.jpg",
       "price": "Consultar",
@@ -2382,8 +3096,11 @@
     },
     {
       "name": "TG-45-GULHI",
+      "name_en": "TG-45-GULHI",
       "category": "Zacate",
+      "category_en": "Artificial Grass",
       "subcategory": "Pasto Recreativo",
+      "subcategory_en": "Recreational Turf",
       "url": "8-zacate.html#82-pasto-recreativo",
       "thumb": "img/8-zacate/82-pasto-recreativo/TG-45-GULHI.jpg",
       "price": "Consultar",
@@ -2392,8 +3109,11 @@
     },
     {
       "name": "TG-50-ANAKENA",
+      "name_en": "TG-50-ANAKENA",
       "category": "Zacate",
+      "category_en": "Artificial Grass",
       "subcategory": "Pasto Recreativo",
+      "subcategory_en": "Recreational Turf",
       "url": "8-zacate.html#82-pasto-recreativo",
       "thumb": "img/8-zacate/82-pasto-recreativo/TG-50-ANAKENA.jpg",
       "price": "Consultar",
@@ -2402,8 +3122,11 @@
     },
     {
       "name": "BLACK",
+      "name_en": "BLACK",
       "category": "Cladding",
+      "category_en": "Stone-look Cladding",
       "subcategory": "Placa tipo roca",
+      "subcategory_en": "Rock-look Panels",
       "url": "9-cladding.html#91-placa-tipo-roca",
       "thumb": "img/9-cladding/91-placa-tipo-roca/BLACK.jpg",
       "price": "Consultar",
@@ -2412,8 +3135,11 @@
     },
     {
       "name": "GRAY",
+      "name_en": "GRAY",
       "category": "Cladding",
+      "category_en": "Stone-look Cladding",
       "subcategory": "Placa tipo roca",
+      "subcategory_en": "Rock-look Panels",
       "url": "9-cladding.html#91-placa-tipo-roca",
       "thumb": "img/9-cladding/91-placa-tipo-roca/GRAY.jpg",
       "price": "Consultar",
@@ -2422,8 +3148,11 @@
     },
     {
       "name": "Esquiner 35X45X2900MM",
+      "name_en": "Corner Trim 35X45X2900MM",
       "category": "Cladding",
+      "category_en": "Stone-look Cladding",
       "subcategory": null,
+      "subcategory_en": null,
       "url": "9-cladding.html",
       "thumb": "img/9-cladding/Esquiner 35X45X2900MM.jpg",
       "price": "Consultar",
@@ -2432,8 +3161,11 @@
     },
     {
       "name": "HICKORY",
+      "name_en": "HICKORY",
       "category": "Cladding",
+      "category_en": "Stone-look Cladding",
       "subcategory": null,
+      "subcategory_en": null,
       "url": "9-cladding.html",
       "thumb": "img/9-cladding/HICKORY.jpg",
       "price": "Consultar",
@@ -2442,8 +3174,11 @@
     },
     {
       "name": "MAPLE",
+      "name_en": "MAPLE",
       "category": "Cladding",
+      "category_en": "Stone-look Cladding",
       "subcategory": null,
+      "subcategory_en": null,
       "url": "9-cladding.html",
       "thumb": "img/9-cladding/MAPLE.jpg",
       "price": "Consultar",
@@ -2452,8 +3187,11 @@
     },
     {
       "name": "MERBAU",
+      "name_en": "MERBAU",
       "category": "Cladding",
+      "category_en": "Stone-look Cladding",
       "subcategory": null,
+      "subcategory_en": null,
       "url": "9-cladding.html",
       "thumb": "img/9-cladding/MERBAU.jpg",
       "price": "Consultar",
@@ -2462,8 +3200,11 @@
     },
     {
       "name": "REDWOOD",
+      "name_en": "REDWOOD",
       "category": "Cladding",
+      "category_en": "Stone-look Cladding",
       "subcategory": null,
+      "subcategory_en": null,
       "url": "9-cladding.html",
       "thumb": "img/9-cladding/REDWOOD.jpg",
       "price": "Consultar",
@@ -2472,8 +3213,11 @@
     },
     {
       "name": "TASMANIA",
+      "name_en": "TASMANIA",
       "category": "Cladding",
+      "category_en": "Stone-look Cladding",
       "subcategory": null,
+      "subcategory_en": null,
       "url": "9-cladding.html",
       "thumb": "img/9-cladding/TASMANIA.jpg",
       "price": "Consultar",
@@ -2482,8 +3226,11 @@
     },
     {
       "name": "TEAK",
+      "name_en": "TEAK",
       "category": "Cladding",
+      "category_en": "Stone-look Cladding",
       "subcategory": null,
+      "subcategory_en": null,
       "url": "9-cladding.html",
       "thumb": "img/9-cladding/TEAK.jpg",
       "price": "Consultar",
@@ -2492,8 +3239,11 @@
     },
     {
       "name": "WENGE",
+      "name_en": "WENGE",
       "category": "Cladding",
+      "category_en": "Stone-look Cladding",
       "subcategory": null,
+      "subcategory_en": null,
       "url": "9-cladding.html",
       "thumb": "img/9-cladding/WENGE.jpg",
       "price": "Consultar",
@@ -2502,8 +3252,11 @@
     },
     {
       "name": "perfil plano25X3X2900MM",
+      "name_en": "flat profile 25X3X2900MM",
       "category": "Cladding",
+      "category_en": "Stone-look Cladding",
       "subcategory": null,
+      "subcategory_en": null,
       "url": "9-cladding.html",
       "thumb": "img/9-cladding/perfil plano25X3X2900MM.jpg",
       "price": "Consultar",
@@ -2929,6 +3682,428 @@
         {
           "q": "¿Cuántas vigas necesito para mi techo?",
           "a": "Depende del efecto deseado:  - Efecto sutil: 3-4 vigas transversales en una sala de 4x5 metros. - Efecto cabaña completo: Vigas cada 60-80 cm, cubriendo todo el techo. - Acento focal: 1-3 vigas sobre un área específica (comedor, TV, barra).  Regla práctica: Vigas transversales cada 80-100 cm crean un ritmo agradable sin abrumar. Para un cálculo exacto, acércate a ADIS con las dimensiones de tu espacio y te hacemos un diseño sin costo."
+        }
+      ]
+    }
+  },
+  "research_en": {
+    "placas_pvc": {
+      "name": "PLACAS PVC",
+      "slug": "placas_pvc",
+      "curiosos": [
+        {
+          "title": "Did you know PVC was discovered by accident?",
+          "content": "Polyvinyl chloride (PVC) was first synthesized in 1872, when German chemist Eugen Baumann obtained it accidentally after leaving vinyl chloride exposed to sunlight. However, it wasn't until 1926 that B.F. Goodrich chemist Waldo Semon developed a method to plasticize PVC, turning it into a flexible and commercially viable material. Today, PVC is the second most produced plastic in the world, surpassed only by polyethylene."
+        },
+        {
+          "title": "Recycled PVC has an impressive second life",
+          "content": "🌍 Recycled PVC has an impressive second life PVC is 100% recyclable and can be reused up to 7 times without losing its mechanical properties. In the construction industry, recycled PVC profiles and panels are used in flooring, piping and new wall coverings, contributing to the circular economy."
+        },
+        {
+          "title": "PVC is inherently flame retardant",
+          "content": "🔥 PVC is inherently flame retardant Unlike natural wood or other plastics, PVC contains chlorine in its molecular structure, which gives it natural fire resistance. It does not spread flames and self-extinguishes once the ignition source is removed — a property that saves lives in architectural applications."
+        },
+        {
+          "title": "️ Hot stamping digital printing revolutionized decorative PVC",
+          "content": "🖨️ Hot stamping digital printing revolutionized decorative PVC Hot stamping technology applied to marble-look panels makes it possible to transfer metallic films and pigments onto the PVC substrate with pinpoint precision. The result is a visual reproduction of marble that even experts mistake for the real thing at first glance — at a fraction of the cost and weight of natural stone."
+        },
+        {
+          "title": "⚖️ A marble-look PVC panel weighs 85% less than real marble",
+          "content": "A MARMOLIZZI PVC panel measuring 1220×2440 mm weighs only 19 kg, while a natural marble slab of the same dimensions would exceed 120 kg. This difference transforms logistics, installation and the structure required."
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Can PVC panels be installed in the shower?",
+          "a": "Yes, PVC panels are 100% waterproof and can be installed in the shower area as long as the joints between panels are properly sealed with neutral silicone and the installation has no gaps where water could accumulate. We recommend the marble-look MARMOLIZZI models or the textured lines for this use."
+        },
+        {
+          "q": "Can they be used outdoors under the Sonora sun?",
+          "a": "Yes, but only in light colors. Dark colors absorb too much heat and can warp. For outdoor use in our desert region, we recommend the ALPINA, SOLARIA or ARENA models from the digital or marble lines. Always install with wide expansion joints (3-4 mm)."
+        },
+        {
+          "q": "How are the panels cut?",
+          "a": "With a circular saw and a tungsten carbide blade, or with a jigsaw. Always cut with the decorative side facing down to avoid chipping the visible face. For precise and angled cuts, we recommend using a cutting table or hiring an experienced installer."
+        },
+        {
+          "q": "How long does a PVC panel really last?",
+          "a": "Tekno-Step offers a 15-year warranty, but with basic maintenance (occasional cleaning), the real service life exceeds 20-25 years. PVC does not rot or degrade with moisture, which makes it extraordinarily durable."
+        },
+        {
+          "q": "Can you tell that \"it's not real wood\"?",
+          "a": "The textured lines (CEDAR, IPE, NOGAL) have a three-dimensional relief that faithfully reproduces the texture of wood. From 1 meter away, even experts have trouble telling them apart. The digital lines offer a flawless visual appearance, though with a smooth surface. The decision depends on the budget and on whether the client is looking for the full tactile experience."
+        }
+      ]
+    },
+    "lambrin_wpc": {
+      "name": "LAMBRIN WPC",
+      "slug": "lambrin_wpc",
+      "curiosos": [
+        {
+          "title": "WPC was born out of the need to recycle",
+          "content": "🧪 WPC was born out of the need to recycle Wood-plastic composite was developed in the late 1980s in Europe as a way to make use of wood waste and recycled plastics. What began as a cutting-edge eco-friendly material became the premium choice for exteriors, decking and cladding. Today, WPC is a multi-billion dollar market with applications ranging from construction to the automotive industry."
+        },
+        {
+          "title": "It's not wood. It's not plastic. It's something better.",
+          "content": "🌲 It's not wood. It's not plastic. It's something better. WPC retains roughly 60-70% wood fibers in its composition (usually sawmill wood dust) blended with 30-40% high-density polyethylene (HDPE) and stabilizing additives. This molecular combination is what allows it to \"breathe\" like wood without absorbing water like wood does."
+        },
+        {
+          "title": "️ WPC floats... literally",
+          "content": "🌧️ WPC floats... literally Unlike solid wood, which sinks in water, WPC has a density of around 1.1-1.3 g/cm³, which means some formulations float. This is no trivial curiosity: it demonstrates its low water absorption (less than 1% in many formulations), the property that makes it revolutionary for outdoor use."
+        },
+        {
+          "title": "A WPC fluted panel can outlast the house it's installed in",
+          "content": "🏠 A WPC fluted panel can outlast the house it's installed in With a 15-year warranty and an estimated service life of 25-30 years, WPC fluted panels far outlast natural wood in durability. Traditionally treated wood lasts 10-15 years outdoors with constant maintenance; WPC doubles that with no need for varnish or sealer."
+        },
+        {
+          "title": "The tongue-and-groove system with hidden clips was inspired by Japanese joinery",
+          "content": "📐 The tongue-and-groove system with hidden clips was inspired by Japanese joinery The technique of assembly without visible screws has its roots in the Japanese woodworking tradition of *sashimono*, where joints are made through precise fittings. The WPC fluted panel clip system allows for a clean installation where no fastener is visible, achieving a premium finish worthy of the finest architectural projects."
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Does WPC fluted paneling really not lift with rain?",
+          "a": "Correct. WPC has a water absorption rate of less than 1%, which means it practically does not absorb water. Unlike natural wood, which swells and contracts with humidity, WPC keeps its dimensions stable. In Nogales, where summer rains can be intense, exterior WPC fluted paneling performs flawlessly."
+        },
+        {
+          "q": "Can WPC fluted paneling be installed without a professional?",
+          "a": "An installer with basic experience in finishes can install it by following the instructions. However, we recommend hiring a professional for large projects or exterior façades, since the clip system requires precision in the base structure. A poorly done installation can result in loose pieces or uneven alignment."
+        },
+        {
+          "q": "How many square meters do I need and how do I calculate it?",
+          "a": "Measure the height and width of each wall in meters, multiply both dimensions to get the m² per wall, and add up all the walls. We recommend adding a 10% waste allowance for cuts and corners. For example, if you have 20 m² of wall, order material for 22 m². Our ADIS team can do the exact calculation if you send us the measurements or plans."
+        },
+        {
+          "q": "Does WPC fade in the sun?",
+          "a": "Tekno-Step WPC fluted panels include UV stabilizer additives in their formulation that prevent fading. The 15-year warranty covers precisely this aspect. In our experience in Nogales and Tucson, where solar radiation is extreme, WPC holds its color noticeably better than natural wood or other materials without UV treatment."
+        },
+        {
+          "q": "Can I use interior paneling outdoors or vice versa?",
+          "a": "We do not recommend swapping the lines. The interior paneling has a formulation optimized for controlled conditions and can degrade faster if exposed to rain and intense direct sunlight. The exterior paneling has a higher concentration of UV additives and a more robust formulation. Use each one in its intended environment to maximize service life and warranty coverage."
+        }
+      ]
+    },
+    "revestimiento": {
+      "name": "REVESTIMIENTO FLEXIBLE",
+      "slug": "revestimiento",
+      "curiosos": [
+        {
+          "title": "🪨 It's real stone. Literally.",
+          "content": "Unlike PVC or ceramic panels that *imitate* stone, flexible stone veneer is made of genuine sheets of natural stone. The manufacturing process consists of splitting blocks of natural stone into ultra-thin sheets down to thicknesses of 1 to 3 mm, which are then reinforced with fiberglass to give them flexibility and strength. Every piece is unique, with the veins, inclusions and color variations that only nature can create."
+        },
+        {
+          "title": "The technique was born in India more than 20 years ago",
+          "content": "🌍 The technique was born in India more than 20 years ago Flexible stone veneer was originally developed in India in the early 2000s as a way to make use of stone veins that would otherwise be discarded for being too thin or irregular for traditional construction. The innovation was the fiberglass reinforcement, which turned a limitation into an extraordinary advantage."
+        },
+        {
+          "title": "It can be installed over almost any surface",
+          "content": "📐 It can be installed over almost any surface Thanks to its low weight (4 kg/m²), flexible stone veneer can be adhered directly over drywall, wood, concrete, metal, existing ceramic and even over other coverings. It requires no supporting structure or special reinforcement. This makes it the ideal option for remodels where demolition is not wanted."
+        },
+        {
+          "title": "No two pieces are alike",
+          "content": "🎨 No two pieces are alike Being natural stone, every panel has a unique, unrepeatable pattern of veins, tones and textures. When you install flexible stone veneer, you're creating a work of geological art on your wall. This natural variability is exactly what interior designers value most: absolute authenticity."
+        },
+        {
+          "title": "️ It's used in museums and heritage buildings",
+          "content": "🏛️ It's used in museums and heritage buildings Flexible stone veneer has become the material of choice for historic building restorations in Europe. Its low weight makes it possible to clad old structures without compromising their structural integrity, and its flexibility allows it to adapt to uneven walls that have settled over centuries."
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Is it real stone or an imitation?",
+          "a": "It is 100% real natural stone. It's not PVC, not ceramic, not resin. It's an authentic sheet of natural stone (slate, quartzite or sandstone) that is quarried and processed down to a thickness of 1-3 mm. The fiberglass backing reinforcement is what gives it flexibility. You can see and feel the natural veins, inclusions and irregularities of the stone. Every piece is unique, exactly as nature created it."
+        },
+        {
+          "q": "How much does it weigh, and can my wall handle it?",
+          "a": "Only 4 kg per square meter. To give you an idea: a traditional quarry stone slab weighs between 30 and 50 kg/m². That means flexible stone veneer is 8 to 12 times lighter than traditional stone. Any drywall, block, concrete or wood wall can support it with no problem. In fact, you can install it directly over drywall with no reinforcement whatsoever. That's precisely its magic."
+        },
+        {
+          "q": "Can it be used on my exterior façade here in Nogales/Tucson?",
+          "a": "Absolutely. Flexible stone veneer is specially designed for exterior façade use. It withstands the intense UV radiation of the desert, summer rains, winds and the temperature swings of our border region. Its 35-year warranty applies to both interiors and exteriors. In previous projects in Nogales and Tucson, it has performed exceptionally even on east- and west-facing façades with direct sun exposure."
+        },
+        {
+          "q": "What if my house has round columns?",
+          "a": "Round columns are the perfect setting for flexible stone veneer! It's one of the few stone materials that can adapt to curved surfaces. You can gently heat the panel with a heat gun and bend it around cylindrical columns 10 cm in diameter or larger. The result is a column clad in natural stone that looks like it cost thousands of dollars in specialized labor."
+        },
+        {
+          "q": "What's the difference between the MUNICH, COLONIA, HAMBURGO models, etc.?",
+          "a": "Each model corresponds to a specific finish: MUNICH and COLONIA are Exposed/Gray Concrete (modern industrial look), HAMBURGO and BREMEN are White Granite and Imperial White (classic elegance), DRESDE and NUREMBERG include Oak Wood (natural warmth), and FRANKFURT and DUSSELDORF offer Gold Granite (striking luxury). They all share the same technical properties (flexible, 4 kg/m², 35-year warranty). The difference is purely aesthetic: stone type, color and veining. We invite you to visit our showroom in Nogales to see and touch each model in person."
+        }
+      ]
+    },
+    "plafon": {
+      "name": "PLAFÓN PVC LAMINADO WOOD STYLE",
+      "slug": "plafon",
+      "curiosos": [
+        {
+          "title": "PVC has spent nearly 100 years as the \"silent material\" of construction",
+          "content": "Polyvinyl chloride (PVC) polymer was commercially developed in the 1930s, but its boom in the construction sector didn't happen until the 1960s. Interestingly, one of the first mass uses of PVC was for wall coverings in German hospitals, precisely because of its bacterial resistance and ease of disinfection. Today, wood-look laminated PVC ceiling paneling inherits that same philosophy: premium aesthetics + extreme functionality."
+        },
+        {
+          "title": "The \"cathedral effect\" of long planks",
+          "content": "Vistawood planks measure 2.80 meters long x 30 cm wide. This elongated proportion is no coincidence: architects discovered that long horizontal lines visually expand the space, creating what interior design calls the \"cathedral effect\" — the sense of breadth and height achieved by guiding the eye horizontally."
+        },
+        {
+          "title": "The 7 wood tones and the psychology of color",
+          "content": "Each of the 7 models in the Vistawood line (Cocoa Ash, Ash Nomad, Birch Ember, Walnut Ellipse, Ivory Elm, Maple Dusk and Wild Teak) was selected after studies of interior design trends in Europe. They're not random colors: Cocoa Ash, for example, was designed specifically for spaces with warm late-afternoon lighting, while Ivory Elm maximizes light reflection in dark spaces."
+        },
+        {
+          "title": "The secret of the laminate: 7 layers in 9 millimeters",
+          "content": "Although it's only 9 mm thick, each Vistawood plank contains 7 functional layers: a top UV protection layer, a high-resolution photographic decorative layer, a dimensional stabilization layer, a controlled-density foamed PVC core, a structural reinforcement layer, a balancing layer and a bottom contact layer. The result is a panel that weighs only 23.55 kg per box yet withstands decades of use."
+        },
+        {
+          "title": "The 15-year warranty has a catch (a good one)",
+          "content": "Tekno-Step offers a 15-year warranty on the Vistawood line. In wall-covering industry terms, that's exceptional: most traditional gypsum ceilings offer warranties of 5 to 10 years. The key is that PVC does not absorb moisture, eliminating the leading cause of ceiling degradation."
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Can it be installed in bathrooms and kitchens?",
+          "a": "Yes, and it's one of the best decisions. Vistawood PVC ceiling paneling is completely resistant to water and steam. In kitchens it stands up to grease and cooking vapors; in bathrooms it's unaffected by condensation or shower steam. Just wipe it down with a damp cloth and mild soap."
+        },
+        {
+          "q": "How long does installation take in an average home?",
+          "a": "For a home with 100 m² of ceilings, PVC ceiling panel installation takes 2 to 4 working days, including the framing. The equivalent drywall ceiling would take 7-10 days. The self-adhesive 3D XPC panel can cut this even further: a 12 m² room can be done in 3-4 hours."
+        },
+        {
+          "q": "Does it really look like wood or can you tell it's plastic?",
+          "a": "The decorative laminate of the Vistawood line uses high-resolution photographic printing with an embossed texture that mimics real wood grain. At a normal viewing distance (1.5-3 meters), most people can't tell the difference. From under 30 cm the synthetic nature is noticeable up close, but the overall visual effect is one of high quality and elegance."
+        },
+        {
+          "q": "Can I install it myself or do I need a professional?",
+          "a": "The self-adhesive 3D XPC panel is designed for DIY installation: just peel and stick. Laminated Vistawood requires basic construction experience to assemble the framing and fasten the planks correctly. If you have experience with basic tools, you can give it a try; if not, hire a certified installer. ADIS can recommend trained installers in Nogales and Tucson."
+        },
+        {
+          "q": "What happens if a plank gets damaged?",
+          "a": "PVC can't be repaired like wood. If a plank is punctured or cracked, you must replace it entirely. That's why we recommend buying 1-2 spare planks at the time of installation. Individual planks measure 2.80 m x 30 cm, so store them in a dry, flat place."
+        }
+      ]
+    },
+    "paneles_3d": {
+      "name": "PANELES TRIDIMENSIONALES 3D",
+      "slug": "paneles_3d",
+      "curiosos": [
+        {
+          "title": "The origin: from the museum to your living room",
+          "content": "Decorative 3D panels have their roots in the parametric architecture of the 1990s, when firms like Zaha Hadid began experimenting with undulating surfaces and complex geometric patterns. What started as an exclusive luxury of museums and landmark buildings became an affordable product for any home thanks to PVC injection molding technology. Today, for less than the cost of a professional paint job, you can have a wall with the same visual sophistication as a contemporary art museum."
+        },
+        {
+          "title": "The geometric pattern that tricks the brain",
+          "content": "3D patterns aren't just decorative: they create optical illusions that modify the perception of space. Vertical patterns visually lengthen walls; wave patterns soften rigid angles; hexagonal patterns bring a sense of order and technology. At ADIS we've seen living rooms completely transformed with just one 3D accent wall."
+        },
+        {
+          "title": "From 330 grams of plastic to a work of art",
+          "content": "Each 50x50 cm 3D panel tile weighs only ~330 grams. That means an entire 8 m² wall (32 tiles) weighs barely 10.5 kilograms. It's so light you can install it on drywall or even plasterboard walls with no structural issues."
+        },
+        {
+          "title": "The \"gallery effect\" in your business",
+          "content": "White 3D panels with directional lighting create what designers call the \"gallery effect\": soft shadows that shift throughout the day with natural light, turning a flat, boring wall into a living surface. Restaurants, boutiques and hotel lobbies in Tucson and Nogales use this effect to create Instagram-worthy spaces that their customers photograph and share organically."
+        },
+        {
+          "title": "The 5 colors and their psychology",
+          "content": "| Color | Feeling it conveys | Ideal for | |-||| | White | Spaciousness, purity, modernity | Small spaces, minimalism | | Gray | Sophistication, neutrality, calm | Offices, bedrooms, lobbies | | Wood | Warmth, nature, coziness | Living rooms, restaurants, hotels | | Black | Dramatic luxury, extreme elegance | Bars, lounges, feature walls | | Gold | Opulence, celebration, distinction | Events, boutiques, VIP spaces |"
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Can it be installed on a wall with existing paint?",
+          "a": "Yes, as long as the paint is in good condition. The wall must be clean, dry, stable and free of peeling. If the current paint is in bad shape (peeling, bubbling, moisture stains), you need to repair it first. In some cases it's advisable to lightly sand very glossy surfaces or apply a primer to improve adhesion."
+        },
+        {
+          "q": "How long does it take to install an accent wall?",
+          "a": "An accent wall of approximately 7-10 m² (equivalent to a wall of 3m x 2.5m to 3m x 3.5m) installs in 4 to 8 hours with the adhesive method. With screws it can take a bit longer (6-10 hours) but offers greater long-term security. Surface preparation can add 2-4 extra hours if the wall needs repairs."
+        },
+        {
+          "q": "Do they really look like the ones in Instagram and Pinterest photos?",
+          "a": "Yes, and even better in person. Photos don't fully capture the physical dimension of the texture: the way light creates soft shadows throughout the day, the tactile feel when you run your hand over it, and the change in appearance depending on the viewing angle. What is important: lighting makes the difference. A white 3D panel with directional lighting (spotlights or wall sconces) looks spectacular. Without proper lighting, it loses much of its impact."
+        },
+        {
+          "q": "What if I get bored of the color? Can I paint it?",
+          "a": "Yes, and it's one of the great advantages. You can paint 3D panels with oil-based paint after they're installed. This gives you total freedom: start with white and if in two years you want pearl gray, just paint. Important note: Don't use acrylic or latex paint, as it won't adhere well to the PVC and will peel. Ask at ADIS and we'll recommend the right paints."
+        },
+        {
+          "q": "Are they water-resistant? Can I use them in my bathroom?",
+          "a": "3D PVC panels are water-resistant in the sense that they don't degrade with ambient humidity or occasional splashes. You can use them in dry areas of bathrooms: behind the sink, in the vanity area, on walls opposite the shower. Don't install them inside the shower or on walls that receive constant direct water. Don't use them outdoors exposed to rain either."
+        }
+      ]
+    },
+    "pisos": {
+      "name": "PISOS",
+      "slug": "pisos",
+      "curiosos": [
+        {
+          "title": "Laminate flooring was born... by accident!",
+          "content": "In 1977, the Swedish company Perstorp was trying to create more durable kitchen countertops. One of its engineers, while combining layers of high-density wood fiber (HDF) with melamine resins, discovered that the result could also be used as flooring. That's how modern laminate was born. Today, almost 50 years later, laminate has evolved to reach AC5 usage classes capable of withstanding airport traffic."
+        },
+        {
+          "title": "SPC is literally \"crushed stone flooring\"",
+          "content": "The core of SPC (Stone Plastic Composite) floors is made of 60-70% limestone powder (calcium carbonate) mixed with PVC resins. That means, in essence, you're walking on a compressed stone surface with a decorative finish. It's the same material used in some high-pressure pipes, which explains its extreme water resistance."
+        },
+        {
+          "title": "WPC was first used in decks... and now it's conquering interiors!",
+          "content": "Wood Plastic Composite (WPC) was originally developed in the 1990s to replace chemically treated wood in outdoor decks. The technology proved so versatile that indoor flooring is now manufactured with the same wood-plastic compound. It's one of the few materials that managed to \"migrate\" from outdoors to indoors without losing performance."
+        },
+        {
+          "title": "Synthetic decks were invented to save forests",
+          "content": "WPC synthetic decking was born in response to environmental concerns over the logging of ipe, mahogany and other tropical woods for outdoor use. A WPC deck with a \"Teak\" finish prevents the felling of approximately 12 teak trees for every 100 m² installed. Co-extrusion (integrated UV protective layer) is a technology NASA initially explored to protect satellites."
+        },
+        {
+          "title": "The AC (Abrasion Class) rating is tested with a \"robot stride\" machine",
+          "content": "To classify a laminate floor as AC3, AC4 or AC5, laboratories use a TABER machine that simulates thousands of footsteps with abrasive. An AC4 floor like SPLASH! withstands more than 4,000 revolutions of this machine with no visible wear. Imagine walking 10 km daily over the same spot for years."
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Can I install laminate in the kitchen?",
+          "a": "Short answer: Yes, with precautions. MAGNUS and SPLASH! laminate are \"water resistant\", which means they withstand occasional spills if cleaned up quickly. However, they are NOT waterproof: if water is left standing or there's a prolonged leak, the HDF core will swell irreversibly. If your kitchen has a high flooding risk (under a sink with old plumbing, for example), we recommend SPC. If the kitchen is a normal one and you're careful with spills, laminate will work perfectly."
+        },
+        {
+          "q": "What's the real difference between SPC and WPC for an average customer?",
+          "a": "Answer: The main difference you'll NOTICE is the feel underfoot. SPC is harder and colder (because its core is stone+PVC). WPC is warmer and more comfortable (because it contains wood fibers). In performance: SPC is 100% waterproof and handles heavy traffic better. WPC absorbs noise better and is more pleasant to walk on barefoot. If you're installing in a bathroom, kitchen or high-traffic commercial area → SPC. If it's for your living room or bedroom and you value comfort → WPC."
+        },
+        {
+          "q": "Does synthetic decking really not fade under the Sonora sun?",
+          "a": "Answer: Tekno-Step co-extruded WPC decking has an integrated UV protective layer (co-extrusion) that guarantees color stability throughout its service life (18-25 years depending on the model). In Nogales, Sonora and Tucson, AZ, where UV radiation is intense most of the year, this is crucial. Unlike natural wood, which requires re-sealing every 1-2 years, co-extruded decking keeps its color with no maintenance. The Tekno-Step warranty specifically covers UV stability."
+        },
+        {
+          "q": "Exactly how big is a box of MAGNUS laminate and how many do I need for my living room?",
+          "a": "Answer: Each box of MAGNUS contains 6 planks of 2200 × 239 mm, which equals 3.155 m² per box. To calculate how many you need: measure your living room area (length × width), add 10% for cutting waste, and divide by 3.155. Example: a 4 m × 5 m living room = 20 m². With 10% waste = 22 m². 22 ÷ 3.155 = 6.97 → You need 7 boxes."
+        },
+        {
+          "q": "Can I install the flooring myself or do I need a professional installer?",
+          "a": "Answer: Click-system floors (laminate, SPC and WPC) are designed for DIY installation. If you're reasonably handy, have the basic tools (jigsaw, hammer, spacers) and follow the acclimation and perimeter-gap instructions, you can achieve a good result. However, we recommend a professional installer when: the area is larger than 50 m², the subfloor needs leveling, there are irregular shapes (steps, columns), or it's being installed in wet areas where joint sealing is critical. Professional installation in Nogales, Sonora runs about $80-120 pesos/m² and ensures there will be no warranty issues from a bad installation."
+        }
+      ]
+    },
+    "zacate": {
+      "name": "ZACATE SINTÉTICO",
+      "slug": "zacate",
+      "curiosos": [
+        {
+          "title": "The first artificial grass was created for... a sports venue in the '60s!",
+          "content": "The history of artificial turf began in 1965 when Monsanto developed ChemGrass for a sports venue in Houston. However, the real revolution came in 1966 when it was installed in the Houston Astros' Astrodome stadium (which is why it was initially called \"AstroTurf\"). Interestingly, the first successful application wasn't for football per se, but because the stadium's dome wouldn't let natural grass grow indoors. Today, almost 60 years later, the technology has evolved to create fibers that look and feel like real grass."
+        },
+        {
+          "title": "An artificial turf field saves 2.3 million liters of water a year",
+          "content": "A natural grass soccer field consumes approximately 2.3 million liters of water per year in irrigation alone. In Nogales, Sonora, where water is a precious and scarce resource, this figure takes on extraordinary relevance. Installing artificial grass in an average 50 m² yard equals saving the liters of water a family of 4 would consume in 8 years."
+        },
+        {
+          "title": "The polyethylene fibers in artificial grass are the same as supermarket bags... but far more sophisticated!",
+          "content": "The polyethylene (PE) used in artificial grass is technically the same polymer as plastic bags, but of UHMW grade (Ultra High Molecular Weight). That means its molecules are 100-1,000 times longer, giving it UV resistance, flexibility and durability. A high-end artificial grass fiber can be bent 50,000 times without breaking."
+        },
+        {
+          "title": "Artificial foliage dates back to... the Egyptian Empire!",
+          "content": "Egyptians used silk leaves and artificial flowers to decorate tombs more than 3,000 years ago. In Victorian times, cloth-and-wax artificial foliage became fashionable among European high society. Modern polyurethane and polyester foliage with UV protection is virtually indistinguishable from the natural thing at first glance, and can last 5-8 years outdoors without fading."
+        },
+        {
+          "title": "Dogs prefer artificial grass (and so do their owners)",
+          "content": "A University of California study found that 78% of dogs showed a preference for doing their business on artificial grass vs. concrete or gravel. This is because synthetic fibers retain less heat than concrete under the sun and offer a \"natural\" surface that dogs recognize. Plus, artificial grass insulates against bacteria and insects, reducing the risk of parasites in pets."
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Doesn't artificial grass feel \"plasticky\" and fake underfoot?",
+          "a": "Answer: The technology has evolved enormously. The high-end artificial grasses distributed by ADIS use high-molecular-weight polyethylene fibers shaped like a \"C\" or \"W\" that bend and spring back like natural grass. The key lies in three factors: (1) fiber height (30-40 mm is ideal for a natural feel), (2) stitch density (more fibers = softer), and (3) silica sand infill that keeps the fibers upright and adds weight. Walking barefoot, the feel is surprisingly similar to well-kept natural grass. We invite you to visit our showroom in Nogales to check it out for yourself."
+        },
+        {
+          "q": "How long does artificial grass really last under the Sonora sun?",
+          "a": "Answer: In Nogales, Sonora and Tucson, AZ, where UV radiation is intense most of the year, quality decorative artificial grass has a service life of 5 to 8 years. The factors that matter most are: (1) quality of the UV treatment (our products have built-in protection), (2) grass color (lighter greens resist heat better than dark ones), and (3) traffic level and maintenance. A well-maintained lawn (brushed and clean) can last up to 10 years. For high-traffic sports applications, the expectation is 8-10 years."
+        },
+        {
+          "q": "Can I install artificial grass myself or do I need a professional?",
+          "a": "Answer: For small areas (under 20 m²) with a flat surface, installation is an accessible DIY project: level the ground, lay geotextile fabric, roll out the grass, cut with a utility knife and anchor it down. However, we recommend a professional installer when: (a) the area exceeds 30 m², (b) the terrain has slopes that require preparation, (c) structured drainage is needed, (d) there are irregular shapes (around pools, trees), or (e) multiple rolls need to be joined. A bad installation shows: visible seams, ripples, water pooling. At ADIS we offer professional installation with a warranty."
+        },
+        {
+          "q": "Is it safe for my kids and pets? Doesn't it release toxic chemicals?",
+          "a": "Answer: The artificial grasses distributed by ADIS are made from food-grade polyethylene (the same material as water bottles) and comply with safety regulations for human contact. They are free of lead, heavy metals and phthalates. For children, they offer a cushioned surface that reduces fall injuries compared to concrete. For pets, it's an insulator against insects, bacteria and parasites (there's no soil to nest in). Urine doesn't damage the material and cleans up easily. If you have specific concerns, we can provide the material safety data sheets (MSDS) and lab certifications."
+        },
+        {
+          "q": "How much do I really save on water and maintenance compared to natural grass?",
+          "a": "Answer: In Nogales, Sonora, the cost of water is significant and summer watering is almost daily. Let's do the math for a typical 50 m² yard: Natural grass: Daily summer watering (~45 min) = ~450 liters/day = ~13,500 liters/month. Over 6 hot months = 81,000 liters. At current prices in Nogales, that's roughly $8,000-$12,000 MXN per year in water alone. Adding mowing ($400/month), fertilizers ($1,500/year) and pesticides ($800/year), annual maintenance exceeds $12,000-$15,000 MXN. Artificial grass: Zero watering, zero mowing, zero fertilizers. Just occasional rinsing. Over 5 years, the savings are $60,000-$75,000 MXN — more than enough to pay back the initial investment and start coming out ahead."
+        }
+      ]
+    },
+    "cladding": {
+      "name": "CLADDING  PLACAS TIPO PIEDRA",
+      "slug": "cladding",
+      "curiosos": [
+        {
+          "title": "Stone-look PU panels weigh 95% less than real rock... but look identical!",
+          "content": "A polyurethane (PU) stone-look panel weighs approximately 1.8 kg per piece (60.5 × 121 cm). The equivalent natural stone weighs between 30 and 50 kg per m². That means a PU panel weighs ~2.5 kg/m² vs. 40 kg/m² of real stone. The difference is so staggering that one person can install 20 m² of PU panels in an afternoon, while the same area in natural stone requires masons, a reinforced support structure and days of work. Injection molding technology captures even the natural imperfections of rock: cracks, veins, weathering — all in a material you can lift with one hand."
+        },
+        {
+          "title": "Real-stone flexible veneer is the only technology that combines authentic stone with flexibility",
+          "content": "It sounds like a contradiction: how can something made of stone be flexible? The secret is in the thickness: sheets of natural stone just 1-2 mm thick are bonded to a fiberglass backing, and the result is a 4 kg/m² panel that can be bent, cut with scissors and adhered to curved surfaces. It's a technology originally developed in Germany for restoring historic monuments where the weight of the original stone threatened the structure."
+        },
+        {
+          "title": "WPC Wall Cladding is revolutionizing façades in Europe",
+          "content": "In countries like Germany, the Netherlands and the United Kingdom, WPC cladding already accounts for more than 30% of new residential façades. The reason is simple: it offers the aesthetics of wood without its maintenance (it doesn't splinter, doesn't crack, doesn't require varnishing every 2 years). In Nogales, Sonora, where the intense sun degrades exterior wood in 2-3 years, WPC cladding is practically the only viable option for achieving the wood look outdoors."
+        },
+        {
+          "title": "PU panels were first used on Hollywood sets",
+          "content": "High-density expanded polyurethane was originally popularized in the film industry to create sets that looked like stone, brick or wood but were light enough to move between takes. When the technology matured, someone thought: \"Why not use them in real houses?\" Today, stone-look PU panels are one of the fastest-growing covering categories in residential and commercial construction."
+        },
+        {
+          "title": "A cladded façade can lower indoor temperatures by up to 8°C",
+          "content": "Both WPC Wall Cladding and stone-look panels create an air chamber between the covering and the original wall. This thermal barrier reduces heat transfer into the interior. In Tucson, AZ and Nogales, Sonora, where outdoor temperatures can exceed 45°C in summer, a cladded façade can mean 20-30% savings in air conditioning consumption. The cladding investment pays for itself in 3-5 years from energy savings alone."
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Do stone-look PU panels look \"fake\" or plasticky?",
+          "a": "Answer: The high-quality PU panels distributed by ADIS use molds taken from real rock, with reliefs that replicate cracks, veins, natural weathering and even mineral inclusions. From 1-2 meters away, they're virtually indistinguishable from natural stone. The key is in the installation: a good installer varies the placement pattern, alternates orientations and uses decorative filler in the joints to simulate a real stone installation. In interiors with ambient lighting, the effect is striking. The difference shows up to the touch (lighter and slightly warmer) and when tapped (sounds hollow vs. solid). For applications where direct contact is minimal (accent walls, entry façades), PU panels deliver 95% of the visual impact at 20% of the cost and weight."
+        },
+        {
+          "q": "Do I need to reinforce my wall to install PU panels or flexible stone veneer?",
+          "a": "Answer: Generally NO. PU panels weigh approximately 2.5 kg/m² and flexible stone veneer about 4 kg/m². To put it in perspective: a coat of high-quality latex paint weighs ~1.5 kg/m² per layer. These coverings weigh less than two coats of paint. Any wall that can hold paint can hold these coverings with no problem. The only consideration is that the surface must be solid: don't install over damaged drywall, walls with structural moisture or surfaces with peeling paint. If your wall is in good condition, you can install directly over the existing finish (plaster, concrete, block, brick) with the appropriate adhesive."
+        },
+        {
+          "q": "How long does it take to install a wall of stone-look PU panels?",
+          "a": "Answer: A professional installer can lay 20-30 m² of PU panels in an 8-hour workday. For a typical living room accent wall (e.g. 4 m wide × 2.5 m high = 10 m²), installation takes half a day including preparation. Compared to natural stone, which requires: support structure (+1 day), mesh placement (+0.5 days), stone installation (+2-3 days), and jointing (+1 day) — PU panels represent an 80-90% savings in construction time. Plus, they generate no stone-cutting dust and require no heavy specialized tools."
+        },
+        {
+          "q": "Does WPC Wall Cladding really require no maintenance in the Sonora climate?",
+          "a": "Answer: Correct. WPC Wall Cladding is designed to withstand the most extreme climates with no maintenance. Specifically: (1) Intense sun: The WPC compound includes UV stabilizers that prevent fading. (2) Monsoon rains: It's 100% waterproof — doesn't absorb water, doesn't swell, doesn't rot. (3) Temperature swings: It handles expansion and contraction without cracking (unlike wood). The only recommended \"maintenance\" is a wash with soap and water every 6-12 months to remove accumulated dust. You never need to varnish, seal, sand or repaint — ever. In accelerated aging tests, WPC cladding maintains its aesthetic and structural properties after simulating 25 years of outdoor exposure."
+        },
+        {
+          "q": "Can I combine different types of cladding on the same façade?",
+          "a": "Answer: Absolutely! In fact, it's one of the most striking design trends. Some combinations we've executed in Nogales and Tucson projects with excellent results: (1) Teak WPC Cladding on the lower part of the façade + stone-look PU panels on the upper part = a modern, warm look. (2) Volcanic flagstone PU panels on the entry wall + Stone Gray WPC Cladding on the sides = spectacular textural contrast. (3) Flexible stone veneer on the main façade + PU panels on interior accent walls = exterior-interior coherence. At ADIS we offer free design consulting to help you combine textures and colors. We can create 3D renders of your façade with the different options before you make a decision."
+        }
+      ]
+    },
+    "vigas": {
+      "name": "VIGAS PVC",
+      "slug": "vigas",
+      "curiosos": [
+        {
+          "title": "From real wood to \"eternal wood\"",
+          "content": "Decorative PVC, WPC and PU beams emerged as an answer to an age-old problem: natural wood beams are beautiful but demand constant tribute. Termites, moisture, warping, rot, peeling paint — every year, millions of dollars are spent maintaining wood beams that, sooner or later, succumb. In the 2000s, polymer composite technology matured enough to replicate not only the appearance but the tactile texture of real wood. Today, a WPC or PU beam can fool even an experienced carpenter... until they're told it's been installed for 10 years without a single drop of varnish."
+        },
+        {
+          "title": "The 2.81 kg beam that carries the weight of tradition",
+          "content": "The 2,900 x 152 x 75 mm PU beam weighs only 2.81 kilograms. To put it in perspective: a real wood beam of the same dimensions would weigh approximately 12-15 kg. That means you can lift a PU beam with a single finger, while the wood one requires two people. This 80% weight reduction revolutionized ceiling décor, making it possible to install decorative beams on structures that could never support the weight of natural wood."
+        }
+      ],
+      "faqs": [
+        {
+          "q": "Are the beams structural? Can they hold up my roof?",
+          "a": "No. WPC, PU and PVC beams are strictly decorative. They are not designed to bear structural loads, roof weight, or to be used as load-bearing construction elements. They are fastened to the existing ceiling (slab, drywall, drop ceiling) with screws or adhesive, but their function is purely aesthetic. If you need structural beams, you must consult a civil engineer."
+        },
+        {
+          "q": "What's the difference between WPC, PU and PVC?",
+          "a": "| Material | What it is | Best for | |-|--|| | WPC | Wood Plastic Composite. Polymer blended with wood fiber. | Most realistic profile, longest warranty (15 years) | | PU | Polyurethane. Ultra-low-weight foamed material. | Fragile ceilings where weight is critical | | PVC | Polyvinyl chloride. Rigid polymer. | Best price, good durability, fire resistant |  In short: WPC = maximum realism and warranty. PU = minimum weight. PVC = best value for money."
+        },
+        {
+          "q": "Can I install them myself or do I need a professional?",
+          "a": "WPC and PVC Profile beams can be installed by someone with basic DIY experience, though two people are recommended for safety when working at heights. PU beams are so light that one person can easily handle them alone. The most important things are: 1. Locate the ceiling joists to anchor correctly 2. Use a laser level for perfect alignment 3. Use a safe ladder or scaffold  If you don't feel comfortable working on ceilings, ADIS can recommend certified installers in Nogales and Tucson."
+        },
+        {
+          "q": "Do they look like real wood or can you tell they're plastic?",
+          "a": "WPC beams have the most convincing realism thanks to the real wood fiber composite in their composition. At a normal viewing distance (1.5-3 meters), most people can't tell the difference. PU beams have a slightly more \"uniform\" finish that can give away their synthetic nature at very close range, but the overall effect is high quality. The key is in the installation: a well-installed, aligned beam with a decorative cap looks professional and elegant."
+        },
+        {
+          "q": "How many beams do I need for my ceiling?",
+          "a": "It depends on the desired effect:  - Subtle effect: 3-4 cross beams in a 4x5 meter living room. - Full cabin effect: Beams every 60-80 cm, covering the whole ceiling. - Focal accent: 1-3 beams over a specific area (dining room, TV, bar).  Rule of thumb: Cross beams every 80-100 cm create a pleasant rhythm without overwhelming. For an exact calculation, come to ADIS with your space dimensions and we'll do a design at no cost."
         }
       ]
     }
