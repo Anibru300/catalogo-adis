@@ -86,21 +86,13 @@
       var metros = document.getElementById('waModalMetros').value.trim();
       var uso = document.getElementById('waModalUso').value;
       var comentario = document.getElementById('waModalComentario').value.trim();
-      var msg = 'Hola ADIS, soy ' + (nombre || 'un cliente interesado') + '. Me interesa cotizar:
-Producto: ' + product + '
-Categoria: ' + category;
-      if (subcategory) msg += '
-Subcategoria: ' + subcategory;
-      if (ciudad) msg += '
-Ubicacion de la obra: ' + ciudad;
-      if (metros) msg += '
-Metros cuadrados aproximados: ' + metros;
-      msg += '
-Uso: ' + uso;
-      if (comentario) msg += '
-Comentario: ' + comentario;
-      msg += '
-Favor de contactarme para mas detalles. ¡Gracias!';
+      var msg = 'Hola ADIS, soy ' + (nombre || 'un cliente interesado') + '. Me interesa cotizar:\nProducto: ' + product + '\nCategoria: ' + category;
+      if (subcategory) msg += '\nSubcategoria: ' + subcategory;
+      if (ciudad) msg += '\nUbicacion de la obra: ' + ciudad;
+      if (metros) msg += '\nMetros cuadrados aproximados: ' + metros;
+      msg += '\nUso: ' + uso;
+      if (comentario) msg += '\nComentario: ' + comentario;
+      msg += '\nFavor de contactarme para mas detalles. ¡Gracias!';
       window.open('https://wa.me/' + phone + '?text=' + encodeURIComponent(msg), '_blank');
       closeWaModal();
       e.target.reset();

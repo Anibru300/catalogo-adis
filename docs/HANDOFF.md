@@ -9,8 +9,10 @@
 - **Sitio en vivo**: `https://anibru300.github.io/catalogo-adis/`
 - **Generador principal**: `generar_web.py` (Python 3.13 en `C:\Users\Carlos\AppData\Local\Programs\Python\Python313\python`).
 - **Salida**: carpeta `public/` (GitHub Pages sirve desde `public/`).
-- **Último commit local**: `8425e96` — "Traduce chatbot a EN y nombres de categorías del menú".
+- **Último commit local**: `1486784` — "Agrega handoff doc con estado y pendientes".
 - **Push pendiente**: Sí. El commit aún no se ha empujado a GitHub.
+- **Kimi CLI**: actualizado a `v1.49.0` (el ejecutable en uso se reemplazará al reiniciar la terminal).
+- **Modelo por defecto de Kimi**: cambiado a `kimi-code/k3` (1,048,576 tokens de contexto) en `C:\Users\Carlos\.kimi\config.toml`.
 
 ## Qué se arregló en la sesión anterior
 
