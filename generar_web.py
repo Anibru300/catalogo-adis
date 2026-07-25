@@ -525,6 +525,7 @@ ICONS_SVG = {
     'download': '<svg viewBox="0 0 24 24" width="{size}" height="{size}" fill="none" stroke="{color}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>',
     'file-text': '<svg viewBox="0 0 24 24" width="{size}" height="{size}" fill="none" stroke="{color}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>',
     'send': '<svg viewBox="0 0 24 24" width="{size}" height="{size}" fill="none" stroke="{color}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>',
+    'globe': '<svg viewBox="0 0 24 24" width="{size}" height="{size}" fill="none" stroke="{color}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>',
     'menu': '<svg viewBox="0 0 24 24" width="{size}" height="{size}" fill="none" stroke="{color}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>',
 }
 
@@ -805,9 +806,21 @@ def translate_script(page_file='index.html'):
     }})();
   </script>
   <link rel="prefetch" href="{link}" as="document">
-  <a id="translateToggle" class="translate-toggle" href="{link}" hreflang="{'es' if CUR_LANG == 'en' else 'en'}" aria-label="{aria}" title="{aria}">{label}</a>
   <!-- End ADIS i18n Toggle -->
 '''
+
+
+def translate_toggle(page_file='index.html'):
+    """Botón ES/EN visible en el header (arriba a la derecha), mobile-first."""
+    if CUR_LANG == 'en':
+        link = '../' + page_file
+        label, aria, hl = 'ES', 'Cambiar a español', 'es'
+    else:
+        link = 'en/' + page_file
+        label, aria, hl = 'EN', 'Switch to English', 'en'
+    globe = svg_icon('globe', size=15, color='currentColor')
+    return (f'<a id="translateToggle" class="translate-toggle" href="{link}" '
+            f'hreflang="{hl}" aria-label="{aria}" title="{aria}">{globe}<span>{label}</span></a>')
 
 
 def tracking_script():
@@ -1415,6 +1428,7 @@ nav.desktop-nav a:hover::after { width: 100%; }
   display: none; background: none; border: none; color: var(--gold);
   font-size: 1.5rem; cursor: pointer;
 }
+.header-actions { display: flex; align-items: center; gap: 0.9rem; }
 .mobile-menu {
   position: fixed; inset: 0; z-index: 999;
   background: rgba(15,15,15,0.98);
@@ -1459,21 +1473,27 @@ nav.desktop-nav a:hover::after { width: 100%; }
 }
 .whatsapp-float:hover .wa-tooltip { opacity: 1; visibility: visible; transform: translateY(-50%) translateX(0); }
 
-/* BOTÓN TRADUCTOR */
+/* BOTÓN TRADUCTOR (en el header, arriba a la derecha - mobile first) */
 .translate-toggle {
-  position: fixed; bottom: 95px; right: 25px; z-index: 9999;
-  width: 50px; height: 50px; background: var(--gold);
-  border-radius: 50%; display: flex; align-items: center; justify-content: center;
-  box-shadow: 0 4px 20px rgba(197,160,89,0.4);
-  border: none; color: var(--black); font-weight: 800; font-size: 0.85rem;
-  cursor: pointer; transition: transform 0.3s, box-shadow 0.3s;
-  font-family: 'Montserrat', sans-serif; text-decoration: none;
+  display: inline-flex; align-items: center; gap: 0.4rem;
+  background: var(--gold); color: var(--black);
+  padding: 0.5rem 0.95rem; border-radius: 999px; border: none;
+  font-family: 'Montserrat', sans-serif; font-weight: 800; font-size: 0.8rem;
+  letter-spacing: 1px; text-decoration: none; cursor: pointer;
+  box-shadow: 0 2px 14px rgba(197,160,89,0.45);
+  transition: transform 0.3s, box-shadow 0.3s;
+  animation: langPulse 2s ease-in-out 3;
 }
-.translate-toggle:hover { transform: scale(1.1); box-shadow: 0 6px 30px rgba(197,160,89,0.6); }
+.translate-toggle:hover { transform: scale(1.08); box-shadow: 0 4px 22px rgba(197,160,89,0.65); }
+.translate-toggle svg { display: block; }
+@keyframes langPulse {
+  0%, 100% { box-shadow: 0 2px 14px rgba(197,160,89,0.45); transform: scale(1); }
+  50% { box-shadow: 0 2px 26px rgba(197,160,89,0.9); transform: scale(1.07); }
+}
 [data-i18n] { display: inline; }
 
 @media (max-width: 768px) {
-  .translate-toggle { width: 44px; height: 44px; font-size: 0.75rem; bottom: 85px; right: 18px; }
+  .translate-toggle { padding: 0.45rem 0.8rem; font-size: 0.75rem; gap: 0.3rem; letter-spacing: 0.5px; }
 }
 
 /* MODAL COTIZAR POR WHATSAPP */
@@ -3127,7 +3147,7 @@ footer {
   .mobile-bottom-nav { display: flex; }
   .cat-nav { flex-direction: column; }
   .spotlight-box { padding-top: 10vh; }
-  .desktop-nav { display: none; }
+  nav.desktop-nav { display: none; }
   .menu-btn { display: block; }
   .hero-home { min-height: auto; padding: 4.5rem 1rem 1.5rem; }
   .hero-home h1 { font-size: clamp(1.7rem, 7.5vw, 2.2rem); }
@@ -3180,7 +3200,6 @@ footer {
   .mobile-bottom-nav a span:first-child svg { width: 22px; height: 22px; }
   body { padding-bottom: 130px; }
   .hero-actions { flex-direction: column; align-items: center; }
-  .translate-toggle { bottom: 90px; }
   .whatsapp-float { bottom: 25px; }
   .hero-actions .btn-primary, .hero-actions .btn-secondary { width: 100%; max-width: 320px; }
   .contact-layout { grid-template-columns: 1fr; gap: 2rem; }
@@ -3215,7 +3234,7 @@ footer {
 
 /* PRODUCTO DESTACADO - PVC MARMOL */
 .featured-product-section { padding: 5rem 2rem; background: linear-gradient(135deg, rgba(15,15,15,0.97) 0%, rgba(26,26,26,0.95) 100%); position: relative; overflow: hidden; }
-.featured-product-section::before { content: ''; position: absolute; top: -50%; right: -20%; width: 600px; height: 600px; background: radial-gradient(circle, rgba(197,160,89,0.08) 0%, transparent 70%); border-radius: 50%; pointer-events: none; }
+.featured-product-section::before { content: ''; position: absolute; top: -50%; right: 0; width: 600px; height: 600px; background: radial-gradient(circle, rgba(197,160,89,0.08) 0%, transparent 70%); border-radius: 50%; pointer-events: none; }
 .featured-product-wrap { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center; }
 .featured-product-image { position: relative; border-radius: 16px; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,0.5); }
 .featured-product-image img { width: 100%; height: 100%; object-fit: cover; display: block; }
@@ -4005,8 +4024,8 @@ def product_card_html(prod_file, cat, sub=None):
 '''
 
 
-def generate_header(current_page='index'):
-    """Genera el header HTML con mega-menu y search mejorado."""
+def generate_header(current_page='index', page_file='index.html'):
+    """Genera el header HTML con mega-menu, search mejorado y toggle de idioma."""
     
     MEGA_ITEMS = [
         ('1-placas-pvc.html', 'img/1-placas-pvc/11-placas-pvc-tipo-madera/Adler.jpg', 'menu_placas_pvc'),
@@ -4075,7 +4094,10 @@ def generate_header(current_page='index'):
           <div class="search-dropdown" id="searchDropdown"></div>
         </div>
       </nav>
-      <button class="menu-btn" onclick="toggleMenu()">{svg_icon('menu', size=22, color='var(--gold)')}</button>
+      <div class="header-actions">
+        {translate_toggle(page_file)}
+        <button class="menu-btn" onclick="toggleMenu()">{svg_icon('menu', size=22, color='var(--gold)')}</button>
+      </div>
     </div>
   </header>
 
@@ -6342,7 +6364,7 @@ def generate_index(categories):
   <script>document.documentElement.classList.add('js-enabled');</script>
   <canvas id="bg-canvas"></canvas>
 
-{generate_header("index")}
+{generate_header("index", "index.html")}
 
   <!-- INICIO -->
   <section class="hero-home" id="inicio">
@@ -6590,7 +6612,7 @@ def generate_contacto():
 <body>
   <script>document.documentElement.classList.add('js-enabled');</script>
   <canvas id="bg-canvas"></canvas>
-{generate_header("contacto")}
+{generate_header("contacto", "contacto.html")}
 {breadcrumb_html([(t('bc_home'), p('index.html')), (t('nav_contact'), '')])}
 
   <section class="hero-cat" style="padding-top: 8rem;">
@@ -6772,7 +6794,7 @@ def generate_nosotros():
 <body>
   <script>document.documentElement.classList.add('js-enabled');</script>
   <canvas id="bg-canvas"></canvas>
-{generate_header("nosotros")}
+{generate_header("nosotros", "nosotros.html")}
 {breadcrumb_html([(t('bc_home'), p('index.html')), (t('nav_about'), '')])}
 
   <section class="about-hero">
@@ -6912,7 +6934,7 @@ def generate_privacy():
 <body>
   <script>document.documentElement.classList.add('js-enabled');</script>
   <canvas id="bg-canvas"></canvas>
-{generate_header("privacy")}
+{generate_header("privacy", "aviso-de-privacidad.html")}
 {breadcrumb_html([(t('bc_home'), p('index.html')), (t('footer_links_privacy'), '')])}
 
   <section class="hero-cat" style="padding-top: 8rem;">
@@ -7248,7 +7270,7 @@ def generate_category_page(cat, categories):
 <body>
   <script>document.documentElement.classList.add('js-enabled');</script>
   <canvas id="bg-canvas"></canvas>
-{generate_header(cat["slug"])}
+{generate_header(cat["slug"], cat["filename"])}
 {breadcrumbs_html}
   <section class="hero-cat-bg" style="background-image: url('{p(hero_bg)}');">
     <div class="hero-cat-content">
@@ -7980,7 +8002,7 @@ def generate_sabias_que():
 <body>
   <script>document.documentElement.classList.add('js-enabled');</script>
   <canvas id="bg-canvas"></canvas>
-{generate_header("sabias-que")}
+{generate_header("sabias-que", sq_filename)}
 {breadcrumb_html([(t('bc_home'), p('index.html')), (t('bc_sabias'), p('sabias-que.html')), (cat_name_disp, '')])}
 
   <section class="sq-hero">
@@ -8077,7 +8099,7 @@ function sqToggle(el) {{
 <body>
   <script>document.documentElement.classList.add('js-enabled');</script>
   <canvas id="bg-canvas"></canvas>
-{generate_header("sabias-que")}
+{generate_header("sabias-que", "sabias-que.html")}
 {breadcrumb_html([(t('bc_home'), p('index.html')), (t('bc_sabias'), '')])}
 
   <section class="sq-hero">
@@ -8269,7 +8291,7 @@ def generate_proyectos():
 <body>
   <script>document.documentElement.classList.add('js-enabled');</script>
   <canvas id="bg-canvas"></canvas>
-{generate_header("proyectos")}
+{generate_header("proyectos", "proyectos.html")}
 {breadcrumb_html([(t('bc_home'), p('index.html')), (t('nav_projects'), '')])}
 
   <section class="hero-cat">

@@ -139,6 +139,8 @@ git push origin main
 
 ## Notas para la siguiente sesión
 
+- **2026-07-25 — Botón de idioma movido al header (mobile-first):** el toggle ES/EN ya no es flotante abajo a la derecha; ahora es una píldora dorada `🌐 EN/ES` dentro del header (`.header-actions`, junto a la hamburguesa), generada por `translate_toggle(page_file)` e insertada por `generate_header(current_page, page_file)`. `translate_script()` ya solo inyecta el JS + prefetch. Se corrigieron dos bugs móviles preexistentes: `.desktop-nav` nunca se ocultaba en móvil por especificidad (`nav.desktop-nav` > `.desktop-nav`) y el `::before` de `.featured-product-section` (`right: -20%`) expandía el viewport móvil a 469px (ahora `right: 0`).
+
 - Antes de tocar `generar_web.py`, revisar que no haya `desktop.ini` en `.git/refs/`.
 - Si se va a seguir traduciendo, el patrón es:
   1. Agregar clave en `TRANSLATIONS` (Python) o `CHATBOT_I18N` (JS dentro de `generar_web.py`).
