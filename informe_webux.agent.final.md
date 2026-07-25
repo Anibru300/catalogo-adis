@@ -1,0 +1,1175 @@
+# Informe de consultoría UX/UI: ADIS Diseño vs Tekno-Step
+
+*Análisis comparativo, diagnóstico y plan de transformación web — Julio 2026*
+
+## Resumen Ejecutivo
+
+**Veredicto:** ADIS Diseño no está detrás de Tekno-Step por plataforma ni por catálogo, sino por acabado y confianza. La brecha global es de un solo punto sobre diez —8.3 contra 7.3 en promedio sobre 16 apartados evaluados [^1^][^2^]— y se concentra en dos frentes corregibles en semanas, no meses: las señales de confianza verificable y el pulido visible de la ejecución. Este informe documenta la brecha, la convierte en un plan de 22 mejoras priorizadas y propone un rediseño de home que conserva intacta la identidad boutique binacional de ADIS.
+
+### Hallazgos clave
+
+Tres hallazgos resumen las dieciséis comparaciones y estructuran todo el informe.
+
+#### La brecha competitiva es de acabado y confianza, no de plataforma ni estructura: ADIS ya tiene catálogo, embudo y SEO local
+
+ADIS ya opera la infraestructura que muchos negocios del giro no tienen: 251 productos en 9 categorías con fichas técnicas, 9 artículos educativos, 10 PDFs descargables y un embudo de cotización por WhatsApp que lleva al cliente del primer clic a la conversación en 0–1 pasos [^2^]. En SEO —el apartado que decide quién aparece cuando alguien busca recubrimientos en Nogales o Arizona— ADIS gana 8 a 7 y se impone en 5 de 9 factores de forma clara y 2 de forma parcial, con datos estructurados LocalBusiness binacionales que Tekno-Step no tiene [^1^][^2^]. Donde ADIS pierde no es en fondo sino en acabado: emojis del sistema como iconografía (4/10 contra 8/10), un footer con enlaces azules por defecto y "© 2026" a futuro, erratas visibles y un bug de hreflang que sirve español en la URL declarada en inglés [^2^].
+
+#### La confianza es la brecha más ancha: 9 vs. 5
+
+La única casilla donde la brecha es ancha es la confianza: 9 contra 5 [^1^][^2^]. Tekno-Step exhibe 26 sucursales con WhatsApp propio, más de 20 años de trayectoria, garantías documentadas y testimonios firmados con nombre y apellido [^1^]. ADIS no tiene página "Nosotros", sus 4 reseñas de 5 estrellas no son verificables y no publica aviso de privacidad ni políticas escritas [^2^]. En un negocio donde el cliente entrega anticipos antes de ver la obra, esta es la casilla que decide ventas.
+
+#### ADIS conserva ventajas diferenciables (identidad premium negro #0F0F0F/dorado #C5A059, binacional MX-USA, precios orientativos) que deben potenciarse
+
+Cuatro activos de ADIS no son replicables por el competidor con presupuesto. La identidad premium negro #0F0F0F con dorado #C5A059 y tipografía editorial Playfair Display diferencia a ADIS de todo el estilo "ferretería" del giro [^2^]. El enfoque binacional —sección "Servimos en Arizona", teléfonos MX/USA, sitio bilingüe— lo convierte en el único jugador del corredor Nogales–Arizona [^2^]. La transparencia de rangos de precios en MXN/USD rompe con el "cotiza para saber" que Tekno-Step impone en todo su catálogo [^1^][^2^]. Y la velocidad de cotización por WhatsApp contextual es el embudo más rápido del mercado local [^2^]. La implicación estratégica es directa: imitar el megamenú o el simulador de Tekno-Step diluiría justo lo que hace a ADIS reconocible; la ruta correcta es adoptar del líder únicamente su disciplina operativa —iconos SVG, breadcrumbs, imágenes optimizadas, formularios que guardan datos— sin tocar la identidad.
+
+### Diagnóstico en cifras
+
+#### Las nueve dimensiones del diagnóstico, en una tabla
+
+| Dimensión | Tekno-Step (1-10) | ADIS (1-10) | Lectura en una línea |
+|---|---|---|---|
+| Diseño UI | 8.8 [^1^] | 7.6 [^2^] | Sistema disciplinado de componentes vs. identidad premium con rupturas puntuales (emojis, footer) |
+| Profesionalismo | 9 [^1^] | 7.5 [^2^] | Acabado institucional vs. detalles de obra inconclusa |
+| Layout y organización | 8 [^1^] | 7 [^2^] | Taxonomías igual de sólidas; a ADIS le falta el piso institucional (Nosotros, legales) |
+| Navegación UX | 9 [^1^] | 7 [^2^] | Megamenú, breadcrumbs y buscador vs. menú sin migas; el embudo de ADIS, eso sí, cotiza en 0-1 clics |
+| Contenido y servicios | 8 [^1^] | 7 [^2^] | Simulador y garantía vs. 251 fichas reales y rangos de precios (ventaja exclusiva de ADIS) |
+| Fotografía | 9 [^1^] | 7 [^2^] | Producción aspiracional impecable vs. autenticidad con ejecución casera y hero sin imagen |
+| Branding y confianza | 8.5 [^1^] | 6 [^2^] | 26 sucursales y testimonios firmados vs. identidad superior desmentida por la falta de prueba verificable |
+| Conversión (CRO) | 8 [^1^] | 7 [^2^] | ADIS convierte más rápido; Tekno-Step conserva los leads que ADIS evapora al no capturar correos |
+| SEO | 7 [^1^] | 8 [^2^] | **ADIS gana**: domina el SEO local binacional; su bug de hreflang es el error técnico más urgente |
+
+*Escala 1-10. La tabla consolida 11 de los 16 apartados del capítulo 12: Diseño UI promedia las filas Diseño (9 vs. 8) y UI (8.5 vs. 7.2), y Branding y confianza promedia las filas Branding (8 vs. 7) y Confianza (9 vs. 5); las demás filas son directas. Todo redondeado a un decimal. Fuentes: análisis técnico directo de tekno-step.com [^1^] y adis-diseño.com [^2^], 2026-07-21.*
+
+La tabla permite tres lecturas que orientan la decisión. Primero, la brecha es estrecha y concentrada: en 11 de los 16 apartados del capítulo 12 la diferencia es de un punto o menos [^1^][^2^]. El déficit tiene un epicentro claro —Branding y confianza (8.5 vs. 6)— y dos frentes secundarios de 2 puntos cada uno: Navegación (9 vs. 7) y Fotografía (9 vs. 7); el resto son brechas de alrededor de un punto. Segundo, el único apartado ganado en limpio por ADIS —SEO— es precisamente el que decide la demanda en su mercado: dominar la búsqueda local binacional vale más que empatar en componentes de interfaz. Tercero, las dimensiones donde ADIS empata o roza al competidor (diseño, UX de embudo, responsive en el análisis completo) lo hace con una fracción del presupuesto y de la plataforma de Tekno-Step, lo que confirma que su techo no es técnico sino de acabado. Ninguna debilidad de ADIS es estructural: todas son de pulido, confianza o captación, y por tanto corregibles sin migrar de plataforma ni copiar al líder.
+
+### Recomendación central
+
+#### Priorizar correcciones críticas visibles + capa de confianza verificable + captación de datos antes que rediseño total
+
+Recomendamos descartar el rediseño de plataforma y ejecutar el plan de 22 mejoras del capítulo 14, ordenadas en 4 niveles por retorno sobre esfuerzo: 6 críticas (footer, iconografía, erratas, hreflang, hero, posters de video), 5 importantes (Nosotros, reseñas de Google embebidas, captación de email, políticas escritas, precios por modelo), 6 recomendadas (WebP y minificación, breadcrumbs, Open Graph, FAQ, interlinking, fotografía profesional) y 5 opcionales que se activan solo con lo anterior cerrado [^1^][^2^].
+
+La secuencia sugerida cabe en cuatro semanas:
+
+- **Semana 1 — Críticas:** sellar las fugas visibles (footer, emojis, erratas, posters, hero) y decidir la corrección del hreflang.
+- **Semana 2 — Confianza y captación:** guardar los datos que el formulario ya recolecta, publicar Nosotros, políticas y widget de reseñas verificables.
+- **Semana 3 — Motor técnico:** sesión fotográfica, conversión a WebP, breadcrumbs, Open Graph e interlinking blog → catálogo.
+- **Semana 4 — Consolidación:** QA en teléfono real, FAQ global y elección del primer diferenciador opcional con un mes de leads capturados.
+
+Al cierre del ciclo, ADIS habrá convertido sus debilidades de severidad alta en activos verificables y estará en posición de ejecutar el rediseño de home de 13 estaciones del capítulo 15 y las 100 ideas de inspiración del capítulo 16 sobre una base que ya vende. La visión no es convertirse en Tekno-Step: es igualar y superar su experiencia —no su escala— conservando lo que ningún competidor nacional puede ofrecer en este mercado: una boutique binacional de acabados con identidad premium, precios transparentes y la cotización más rápida del corredor Nogales–Arizona.
+
+## 1. Análisis de diseño (UI)
+
+La brecha de diseño entre Tekno-Step y ADIS no es de talento visual sino de disciplina de sistema: Tekno-Step aplica reglas simples con rigor casi absoluto; ADIS posee una identidad más diferenciada, pero la rompe en puntos visibles que cuestan credibilidad. Este capítulo descompone ambos sistemas en 20 aspectos calificados del 1 al 10, con una conclusión práctica: ADIS debe conservar su lenguaje negro-dorado y adoptar la disciplina operativa del competidor, no su estética.
+
+### 1.1 Paleta de colores y psicología del color
+
+#### 1.1.1 Tekno-Step: rojo de acción sobre neutros
+
+Tekno-Step opera una paleta acotada y con roles innegociables: el rojo de marca #cb333b (hover #b82c33) se reserva exclusivamente a la acción —botones principales, lupa del buscador, flechas del slider, contador de cotizaciones— mientras los neutros (#111111 encabezados, #333333 cuerpo, #666666 enlaces, fondos #ffffff/#f8f9fa) hacen el trabajo estructural; el verde #25d366 se reserva a WhatsApp y el grafito #232323 a botones secundarios.[^1^]
+
+En términos de psicología del color —el efecto emocional que los colores producen en la percepción de marca—, esta arquitectura comunica urgencia suave y claridad: el usuario aprende en segundos que "rojo = hacer algo". El blanco dominante deja respirar al producto y el negro aporta sobriedad premium. La única fisura son restos de colores del framework Bootstrap en el CSS, que delatan plantilla sin llegar a verse.[^1^]
+
+[Captura: tekno_01_hero.png]
+
+#### 1.1.2 ADIS: negro y dorado premium, con rupturas
+
+ADIS construye su identidad sobre variables CSS bien sistematizadas: negro #0F0F0F como fondo global, #1A1A1A en secciones alternas, #2A2A2A en bordes, y el dorado #C5A059 (con su variante clara #E8D5A3) como acento en títulos, bordes, badges, precios y CTAs secundarios.[^2^] El dorado elegido es sobrio —no amarillo chillón— y la psicología resultante es de lujo y exclusividad: el posicionamiento correcto para diferenciarse de ferreterías y depósitos de materiales. El verde WhatsApp #25D366 rompe la paleta a propósito y con éxito: el usuario aprende que "verde = cotizar".[^2^]
+
+El problema no es la paleta sino sus rupturas: los enlaces del footer (teléfonos y correo) se renderizan en azul por defecto del navegador —un bug de CSS visible— y los emojis del sistema introducen colores ajenos a la identidad en tarjetas y botones.[^2^] Hay además un riesgo de fondo: tanto negro puede percibirse frío y apaga el protagonismo de los materiales, que en este giro venden por su textura y color real. Recomendamos conservar íntegra la dupla negro/dorado, corregir el bug del footer en la primera iteración y evaluar secciones claras puntuales para que las texturas respiren.
+
+[Captura: adis_01_hero.png]
+
+### 1.2 Tipografías y tamaño de textos
+
+#### 1.2.1 Disciplina de una sola familia vs. dupla editorial
+
+Tekno-Step resuelve la tipografía con una decisión radical: **Montserrat** en todo el sitio (rango variable 100–900), base de 16 px, interlineado de 24 px, pesos 700–900 en titulares de 28–32 px y titulares de hero de hasta ~90 px.[^1^] La jerarquía H1→H2→H3 es inequívoca: título de sección → tarjeta → metadato en gris pequeño. ADIS apuesta por la dupla clásica del diseño editorial de lujo: **Playfair Display** (serif, 400/700) para H1, H2 y precios, y **Montserrat** (300–800) para cuerpo, menús y botones, con H1 fluido mediante `clamp(2.5rem, 5vw, 4.5rem)` que escala solo según el dispositivo.[^2^]
+
+Ambas soluciones son técnicamente buenas y la de ADIS es, si acaso, más expresiva: la pareja serif/sans produce un aire editorial que Montserrat sola no logra. Su único desliz es que las tarjetas de "Servimos en Arizona" heredan Playfair Display donde el resto del sitio usa Montserrat.[^2^] La lección transferible de Tekno-Step no es la fuente sino la regla: una familia, un rol por peso, cero excepciones.
+
+### 1.3 Jerarquía visual, espaciado, márgenes y espacio en blanco
+
+#### 1.3.1 Cómo guía el ojo cada sitio
+
+En Tekno-Step el ojo sigue una ruta deliberada: un solo mensaje por bloque, secciones separadas por 60–90 px de aire vertical, gutters uniformes de ~24 px y fondo blanco que hace resaltar tarjetas y CTAs rojos.[^1^] En ADIS el patrón es igualmente disciplinado —H2 centrados con subrayado dorado corto, subtítulo gris, grid de tarjetas, CTA verde— y el "espacio en blanco" (aquí, espacio en negro) es abundante, con padding vertical de 64–80 px y contenedores de 1100–1200 px.[^2^]
+
+Ambos comparten la misma falla: espacio muerto improductivo. Tekno-Step deja un gran hueco vacío entre el breadcrumb y el formulario en Contacto y Distribuidor;[^1^] ADIS presenta un vacío comparable entre el hero y "¿Por qué elegir ADIS?", y su home se extiende ~10,400 px con transiciones repetitivas.[^2^] La diferencia de grado importa: en Tekno-Step es un desperfecto localizado; en ADIS afecta el primer scroll de la home, el momento exacto en que el visitante decide si sigue bajando. Priorizamos compactar ese tramo inicial por encima de cualquier otro ajuste.
+
+### 1.4 Bordes, sombras, iconografía, botones, hover y animaciones
+
+#### 1.4.1 Sistema profesional vs. emojis del sistema
+
+En los componentes pequeños se decide la percepción de profesionalismo, y aquí está la brecha más ancha del capítulo. Tres contrastes la explican:
+
+- **Botones.** Tekno-Step usa un único radio *pill* de 30 px en toda la interfaz: primario rojo con hover más oscuro, secundario negro y outline verde para WhatsApp, con copy corto en imperativo ("Conoce más", "Iniciar simulación").[^1^] ADIS alterna botón verde sólido, outline dorado y dorado sólido con radius de 4 px y copy igualmente de acción ("COTIZAR GRATIS POR WHATSAPP").[^2^] Ambos funcionan; el de ADIS gana en jerarquía de conversión (verde = cotizar) y pierde en unidad formal.
+- **Iconografía.** Tekno-Step emplea el set Line Awesome de trazo lineal uniforme, con iconos sociales oficiales.[^1^] ADIS no tiene set de iconos: usa **emojis del sistema** (🚚 🛡️ 🤝 ⚡) cuyo dibujo varía según el sistema operativo del visitante y choca con la estética de lujo —el caso extremo es un 📜 de pergamino enlazando a Facebook en el footer.[^2^]
+- **Detalle de acabado.** Ambos sitios cuidan bordes (radios consistentes y bordes finos translúcidos), sombras suaves y animaciones discretas con `transition` —79 reglas hover y respeto a `prefers-reduced-motion` en ADIS; 293 transiciones y elevaciones sutiles en Tekno-Step.[^2^][^1^]
+
+[Captura: adis_02.png]
+
+La conclusión es directa: ADIS no necesita rediseñar componentes, necesita **sustituir los emojis por un set SVG de trazo fino en dorado** (Line Awesome, Lucide o Phosphor son opciones gratuitas equivalentes). Es la corrección de menor costo y mayor impacto visual de todo el informe.
+
+[Captura: adis_13_footer2.png]
+
+### 1.5 Consistencia visual, estilo gráfico y calidad de recursos
+
+#### 1.5.1 Renders premium vs. fotografía real "sin filtros"
+
+Tekno-Step ejecuta un estilo gráfico homogéneo de fotografía/render de interiores de alta producción: 162 imágenes en formato WebP, 136 con carga diferida (*lazy-load*), banners de hero en alta resolución con overlays que garantizan contraste, y el mismo patrón de tarjeta en home, categoría, producto y contacto.[^1^] Sus inconsistencias son menores: un botón en inglés ("My Account") y variantes de capitalización.[^1^] ADIS hace lo contrario en intención: fotografía propia de producto y showroom "sin filtros", con texturas reales y hasta fotos de obra —autenticidad documental que Tekno-Step no tiene.[^2^] Pero la ejecución baja el percibido premium (JPG de hasta 532 KB sin WebP ni versiones responsive, la foto "tipo mármol" del spotlight oscura y genérica, videos que se ven como cajas negras rotuladas "Video 01") y la consistencia se rompe en el footer azul, la mezcla emoji/geoglifos y grafías variables ("Lambrin"/"Lambrín").[^2^]
+
+¿Qué significa esto para ADIS? Que su activo diferencial no es imitable: Tekno-Step no puede mostrar obra real porque su lenguaje es 100% aspiracional, y ADIS sí. Recomendamos **conservar la fotografía propia y el estilo dark-luxury, y adoptar la disciplina técnica del competidor**: conversión a WebP, pósters de video diseñados, un único patrón de tarjeta y cero elementos fuera del sistema. Con eso, ADIS iguala el acabado de Tekno-Step manteniendo una identidad más distintiva.
+
+### 1.6 Tabla de calificaciones UI
+
+#### 1.6.1 Calificación 1–10 por aspecto y sitio
+
+| Aspecto | Tekno-Step (1-10) | ADIS (1-10) | Brecha y lectura |
+|---|---|---|---|
+| Paleta de colores | 9 [^1^] | 8 [^2^] | Ambas acotadas; ADIS pierde por el bug azul del footer |
+| Psicología del color | 9 [^1^] | 8 [^2^] | Rojo=acción vs. negro/dorado=lujo; ambas correctas |
+| Tipografías | 9 [^1^] | 9 [^2^] | Montserrat única vs. dupla Playfair+Montserrat; empate técnico |
+| Tamaños de texto | 9 [^1^] | 8 [^2^] | Ambos fluidos; ADIS con excepción en tarjetas Arizona |
+| Jerarquía visual | 9 [^1^] | 8 [^2^] | Un mensaje por bloque en ambos; Tekno-Step más claro |
+| Espaciado | 8 [^1^] | 7 [^2^] | Generoso en ambos; hueco post-hero de ADIS en zona crítica |
+| Márgenes | 8 [^1^] | 7 [^2^] | Gutters uniformes; ADIS con ritmo más repetitivo |
+| Espacio en blanco | 7 [^1^] | 7 [^2^] | Espacio muerto en formularios (Tekno) y post-hero (ADIS) |
+| Bordes | 9 [^1^] | 8 [^2^] | Pill 30 px consistente vs. radios 4–12 px sistematizados |
+| Sombras | 8 [^1^] | 8 [^2^] | Suaves y con intención en ambos |
+| Iconografía | 8 [^1^] | 4 [^2^] | **Mayor brecha**: set profesional vs. emojis del sistema |
+| Botones | 9 [^1^] | 8 [^2^] | Ambos con copy de acción; Tekno-Step más unificado |
+| Efectos hover | 8 [^1^] | 8 [^2^] | Sutiles y funcionales en ambos |
+| Animaciones | 8 [^1^] | 8 [^2^] | Discretas en ambos; ADIS respeta reduced-motion |
+| Consistencia visual | 8 [^1^] | 6.5 [^2^] | Tekno: detalles de idioma; ADIS: footer, emojis, grafías |
+| Estilo gráfico | 9 [^1^] | 8 [^2^] | Aspiracional premium vs. dark-luxury editorial |
+| Calidad de imágenes | 9 [^1^] | 7 [^2^] | WebP + lazy-load vs. JPG pesados sin optimizar |
+| Calidad de iconos | 8 [^1^] | 4 [^2^] | Mismo diagnóstico que iconografía |
+| Calidad de banners | 9 [^1^] | 5 [^2^] | Hero con overlays vs. hero sin imagen y videos sin póster |
+| Aspecto profesional global | 9 [^1^] | 7.5 [^2^] | Retail consolidado vs. alto para artesanal, delatado por detalles |
+
+*Escala 1–10. Fuentes: análisis técnico directo de tekno-step.com [^1^] y adis-diseño.com [^2^], 2026-07-21.*
+
+La tabla confirma el patrón del capítulo: en 14 de los 20 aspectos la brecha es de un punto o menos, y el empate en tipografías muestra que el nivel base de ADIS no es inferior. La diferencia práctica se concentra en pocas casillas —sobre todo iconografía (8 vs. 4), calidad de iconos (8 vs. 4) y banners (9 vs. 5)— que no exigen rediseño sino correcciones acotadas: un set de iconos SVG, pósters y hero con imagen real, y el fix del footer. El promedio resultante (8.5 para Tekno-Step, 7.2 para ADIS) es recuperable en una sola iteración de pulido. La lectura estratégica para ADIS es directa: compite contra el acabado, no contra la escala, y el acabado se corrige en semanas, no en años. Los capítulos siguientes muestran dónde esa recuperación empieza.
+
+## 2. Layout
+
+La brecha de layout no es técnica sino de ambición espacial: Tekno-Step construye una tienda que se siente grande; ADIS, una página correcta que desaprovecha sus mejores activos visuales.
+
+### 2.1 Header y menú
+
+#### 2.1.1 Header sticky de Tekno-Step con megamenú de 6 familias y hasta 4 niveles vs header de ADIS con menú simple
+
+Tekno-Step opera un header en dos pisos: barra superior negra (redes, teléfono, WhatsApp, "Quiero ser distribuidor") que desaparece al scroll, y header fijo con buscador, cotizaciones y tiendas. El megamenú de 6 familias despliega hasta 4 niveles que ordenan miles de SKU.[^1^]
+
+ADIS también fija su header (negro translúcido, desenfoque, borde dorado), con menú de 5 entradas (INICIO · CATÁLOGO · ¿SABÍAS QUE? · PROYECTOS · CONTACTO), buscador y dos desplegables: Catálogo abre un megamenú de 9 categorías con imágenes; ¿Sabías que?, 9 artículos.[^2^] Elegante y compacto, pero sin CTA de contacto persistente (botón destacado) ni navegación por subcategoría visible desde el menú.
+
+### 2.2 Hero
+
+#### 2.2.1 Hero comercial con propuesta de valor y CTAs de Tekno-Step vs hero de ADIS en pantalla negra con logo, sin imagen de producto instalado
+
+El hero de Tekno-Step es un slider de 3 diapositivas: un mensaje por slide ("Personaliza con MUROS DECORATIVOS — Crea escenarios fascinantes") sobre fotografía de producto instalado y un único CTA "Conoce más":[^1^] en tres segundos, la marca muestra lo que vende.
+
+[Captura: tekno_01_hero.png]
+
+ADIS ofrece pantalla negra con logo, badge "CATÁLOGO 2025 — 2026", H1, doble CTA y buscador:[^2^] texto sólido, pero **sin imagen de producto instalado**, su mejor vendedor visual.
+
+[Captura: adis_01_hero.png]
+
+La lección no es copiar el slider: una foto de ambiente con overlay negro convierte el hero de "presentación" en "demostración".
+
+### 2.3 Distribución del contenido, columnas y anchura
+
+#### 2.3.1 Retícula y anchura de contenido en ambos; tarjetas editoriales consistentes de Tekno-Step
+
+| Elemento | Tekno-Step | ADIS | Lección para ADIS |
+|---|---|---|---|
+| Header | Sticky compacto: logo, buscador, cotización, cuenta [^1^] | Fijo con blur y borde dorado; 5 entradas + buscador [^2^] | Añadir CTA de contacto persistente |
+| Menú | Megamenú 6 familias, hasta 4 niveles [^1^] | Dos desplegables: megamenú de 9 categorías con imágenes + dropdown de 9 artículos [^2^] | Sumar subcategorías al desplegable |
+| Hero | Slider de 3 slides, producto instalado, 1 CTA por slide [^1^] | Pantalla negra con logo, sin imagen de producto [^2^] | Foto de ambiente como fondo |
+| Anchura | Contenedor ≈1770 px útiles en viewport 1920 [^1^] | Contenedores de 1100–1200 px [^2^] | Anchura correcta; sin cambio |
+| Columnas | 4 en producto, 6 en sucursales, 2 en simulador [^1^] | 4 en beneficios, 3 en catálogo, 2 en estrella [^2^] | Unificar el patrón de tarjeta |
+| Separación | Márgenes de 60–90 px, un mensaje por bloque [^1^] | Padding de 64–80 px; alterna negro/#1A1A1A [^2^] | Eliminar vacíos improductivos |
+| Footer | 4 columnas + newsletter + pagos + app + barra legal [^1^] | Columna única, enlaces azules sin estilizar [^2^] | Reconstruir como cierre de confianza (ver 2.5) |
+
+La tabla permite una conclusión clara: **la retícula de ADIS no es el problema**. Sus anchuras, columnas y márgenes están en rango profesional; la brecha se concentra en header, hero y footer. El valor atípico es la anchura de Tekno-Step (~1770 px), que habilita grids densos con tarjetas editoriales siempre idénticas—foto, miniatura, nombre y SKU.[^1^] Esa consistencia, no la anchura, es lo transferible: en un catálogo de 251 productos como el de ADIS,[^2^] donde el usuario escanea en lugar de leer, un patrón de tarjeta único acelera el reconocimiento y la comparación; bastan cuatro elementos: imagen, nombre, rango de precio y CTA visible.[^2^]
+
+### 2.4 Separación entre secciones, orden visual y flujo de lectura
+
+#### 2.4.1 Narrativa de home de Tekno-Step (descubrir→imaginar→confiar→convertir) vs secuencia de ADIS con videos en cajas negras "Video 01" sin poster
+
+La home de Tekno-Step (~6,860 px) narra cuatro actos—**descubrir** (hero), **imaginar** (simulador), **confiar** (testimonios, 26 sucursales), **convertir** (newsletter y contacto)—con un mensaje y un CTA por bloque.[^1^]
+
+ADIS recorre el mismo embudo en 50% más página (~10,400 px) y pierde fuerza al final: los tres videos son cajas negras "Video 01/02/03", sin poster.[^2^] En su prueba visual más fuerte—obras reales—el layout deja de vender; basta un fotograma de poster y un título descriptivo.
+
+### 2.5 Footer
+
+#### 2.5.1 Footer completo de Tekno-Step (con "Páginas de Gracias" expuesta) vs footer de ADIS con bug de estilos (tel/email azules), © 2026 y sin aviso de privacidad
+
+El footer de Tekno-Step es segunda navegación y cierre de objeciones: 4 columnas (newsletter, "Uso exterior/interior", "Más sobre Tekno-Step"), métodos de pago, badges de app y barra legal con aviso de privacidad;[^1^] su único desliz es exponer "Páginas de Gracias", página de sistema que no debería exponerse.[^1^]
+
+[Captura: tekno_09_footer.png]
+
+El footer de ADIS es una columna única con logo, teléfonos y correo—**en azul por defecto del navegador, un bug de estilos visible**—dos iconos (un 📜 enlaza a Facebook) y un copyright a futuro ("© 2026"), sin aviso de privacidad, columnas ni dirección.[^2^]
+
+[Captura: adis_13_footer2.png]
+
+El footer es lo último que ve el cliente antes de dar un anticipo; la corrección: arreglar el CSS, añadir columnas de catálogo y contacto, dirección y horario, y publicar el aviso de privacidad exigido por ley.
+
+### 2.6 Por qué funciona el layout de Tekno-Step
+
+#### 2.6.1 Síntesis de principios de layout transferibles
+
+Cuatro principios explican el éxito espacial de Tekno-Step; todos son transferibles:
+
+1. **Anclaje superior permanente.** El header sticky mantiene búsqueda, cotización y catálogo disponibles;[^1^] ADIS ya tiene la base: solo falta el CTA de contacto.
+2. **Promesa inmediata.** El hero muestra el producto instalado y un solo CTA;[^1^] ADIS lo logra con una foto de ambiente sobre su fondo negro, reforzando lo premium.
+3. **Ritmo de secciones.** Tarjetas idénticas, márgenes generosos y un mensaje por bloque: lectura que no cansa.[^1^]
+4. **Cierre con confianza.** El footer responde las objeciones finales—pagos, garantía, ayuda, legalidad—antes de la decisión.[^1^] Es donde ADIS está más lejos y lo más barato de corregir: disciplina de acabado, no rediseño.
+
+Ninguno exige plataforma nueva ni copiar identidad ajena: ADIS debe empezar por hero y footer, las de mayor retorno por hora de corrección.
+
+## 3. Navegación (UX)
+
+ADIS ya gana donde más importa —llevar al cliente a cotizar— pero pierde donde más se nota: orientar al visitante que aún compara. Tekno-Step resuelve la exploración con megamenú, buscador y migas de pan; ADIS, la conversión con un WhatsApp omnipresente, pero deja al explorador sin señales de ruta. La decisión no es copiar al competidor, sino importar esas piezas de orientación.
+
+### 3.1 Organización del menú y facilidad para encontrar información
+
+#### 3.1.1 Megamenú + buscador con filtro por categoría + breadcrumbs con schema vs menú y catálogo con filtros de ADIS
+
+La diferencia de fondo es de modelo mental: Tekno-Step organiza su menú como un catálogo puro (6 familias: Muros, Pisos, Deck, Pasto sintético, Follajes, Accesorios) con un megamenú de hasta 4 niveles que solo despliega lo que el usuario pide [^1^]. ADIS organiza el suyo como un negocio de servicios: INICIO · CATÁLOGO (con miniaturas de sus 9 categorías) · ¿SABÍAS QUE? · PROYECTOS · CONTACTO [^2^]. Ambos enfoques funcionan para su escala; con ~251 productos [^2^], ADIS no necesita 4 niveles de profundidad.
+
+La brecha real está en las herramientas de orientación. Tekno-Step ofrece un buscador prominente en el header con filtro por categoría, y añade breadcrumbs —la ruta "Inicio > Categoría > Producto"— en todas las páginas internas, con datos estructurados BreadcrumbList que le indican a Google esa ruta [^1^]. ADIS también tiene buscador (atajo "/", resultados en vivo) y filtros por categoría [^2^]; pero carece de breadcrumbs: quien aterriza desde Google en "Placas PVC" no tiene señal visual de dónde está dentro del sitio.
+
+[Captura: tekno_01_hero.png]
+
+### 3.2 Número de clics y flujo del usuario
+
+#### 3.2.1 Clics hasta producto, cotización y empresa en cada sitio; ADIS logra 0-1 clics para cotizar por WhatsApp contextual
+
+El conteo de clics revela la fortaleza oculta de ADIS: su flujo de cotización es el más corto de los dos sitios, gracias a la barra inferior fija, el flotante y mensajes de WhatsApp pre-rellenados que cambian según la sección de origen [^2^].
+
+| Tarea del usuario | Clics Tekno-Step | Clics ADIS | Lectura |
+|---|---|---|---|
+| Llegar a un producto específico | 3 (menú → línea → ficha); 1 desde carruseles de home [^1^] | 2 (Catálogo → categoría) + scroll; sin fichas individuales [^2^] | Empate funcional; Tekno-Step da ficha por modelo, ADIS por subcategoría |
+| Cotizar / contactar | 1 desde cualquier punto (flotante, topbar, "Encuentra tu tienda") [^1^] | 0–1 desde cualquier punto (barra fija + flotante + CTAs contextuales) [^2^] | ADIS gana: la cotización está siempre a la vista |
+| Conocer la empresa | 2 (footer → "Nosotros") [^1^] | No resoluble: no existe página Nosotros; solo una frase en home [^2^] | Único callejón sin salida de ADIS y el más grave para la confianza |
+| Orientarse dentro del sitio | Inmediato: breadcrumbs con schema en todas las internas [^1^] | No disponible: sin breadcrumbs [^2^] | Brecha de orientación fácil de corregir |
+
+El patrón es claro: ambos sitios convergen en la conversión (1 clic o menos), pero divergen en exploración y confianza. Tekno-Step asume que el usuario navega un catálogo profundo y le da ruta, buscador y ficha individual; ADIS asume que quiere hablar con alguien y le elimina toda fricción. El caso atípico y más costoso es "conocer la empresa": la única tarea que un sitio resuelve y el otro no, y justo la que un cliente realiza antes de dar un anticipo. Recomendamos mantener intacto el flujo de cotización —es la ventaja competitiva de ADIS— y concentrar la inversión en dos piezas: una página Nosotros en el menú y breadcrumbs en las 9 páginas de categoría.
+
+### 3.3 Llamados a la acción y escaneo visual
+
+#### 3.3.1 CTAs reales transcritos de ambos sitios y su densidad por pantalla
+
+Ambos sitios aplican bien la regla de oro del escaneo visual: un mensaje por bloque y un CTA (llamado a la acción) en cada punto de decisión. La diferencia está en la variedad de verbos. Tekno-Step reparte la atención entre descubrir y cotizar: "Conoce más", "Iniciar simulación", "Ver todo", "Agregar a cotización", "Quiero ser distribuidor", "¡Escríbenos!", "Únete" [^1^]. ADIS concentra casi todo en un solo verbo —cotizar— con ejecución contextual: "💬 COTIZAR GRATIS POR WHATSAPP", "💬 PEDIR COTIZACIÓN EXACTA", "💬 COTIZAR DESDE ARIZONA", "Cotizar Placas PVC" por categoría [^2^].
+
+La densidad de estímulos es el punto a vigilar en ADIS: conviven a la vez seis capas fijas —la barra verde de cotización, la barra inferior de navegación, el flotante de WhatsApp animado, el botón "📞 Llamar", el chatbot "Asistente ADIS" y el selector EN/ES [^2^]. En escritorio el ojo aprende que "verde = cotizar" [^2^]; en pantallas pequeñas, esos seis elementos fijos pueden tapar contenido y competir entre sí [^2^]. Tekno-Step resuelve lo mismo con solo tres flotantes circulares (teléfono, WhatsApp, simulador) [^1^].
+
+[Captura: adis_01_hero.png]
+
+### 3.4 Qué hace mejor Tekno-Step en navegación
+
+#### 3.4.1 Hallazgos transferibles: profundidad sin perdida, buscador visible, flotantes permanentes
+
+Seis prácticas de Tekno-Step son transferibles a ADIS sin copiar su estructura:
+
+1. **Profundidad sin pérdida:** su megamenú nunca deja al usuario sin ruta porque los breadcrumbs acompañan cada página interna [^1^]. ADIS no necesita 4 niveles; sí breadcrumbs en categorías y artículos "¿Sabías que?".
+2. **Buscador como pieza central del header:** con filtro por categoría y placeholder que invita a escribir [^1^]. ADIS ya tiene la tecnología (atajo "/", resultados en vivo) [^2^]; solo falta darle esa jerarquía visual.
+3. **Flotantes permanentes y acotados:** tres círculos fijos cubren teléfono, WhatsApp y simulador en todas las páginas [^1^]. ADIS debería consolidar sus seis elementos fijos en tres para liberar la pantalla móvil.
+4. **Ficha individual por producto** con SKU, navegación entre productos hermanos y regreso a su categoría [^1^]. ADIS puede crear fichas por modelo solo para los modelos estrella de cada categoría, no para los 251.
+5. **Navegación institucional en el footer:** "Nosotros", garantías, FAQ y contacto en una columna [^1^]. El footer de ADIS hoy no contiene ningún enlace de navegación [^2^].
+6. **Menú 100% catálogo, sin distracciones:** la barra principal solo vende producto; lo institucional vive en el footer [^1^]. ADIS puede conservar su menú de servicios, pero debe añadir la entrada que falta: Nosotros.
+
+ADIS no tiene un problema de navegación hacia la venta —lo resuelve mejor que su competidor— sino hacia la confianza. Breadcrumbs, buscador visible, flotantes acotados y una página Nosotros a 1 clic cerrarían la brecha en una sola iteración, sin tocar la arquitectura del catálogo que analiza el capítulo siguiente.
+
+## 4. Arquitectura de información
+
+Ambos sitios organizan bien su catálogo; la diferencia: Tekno-Step construye una empresa completa alrededor del producto y ADIS construye solo el producto. Eso pesa al decidir a quién darle un anticipo.
+
+### 4.1 Cómo organiza servicios y soluciones cada sitio
+
+#### 4.1.1 6 familias de producto de Tekno-Step vs 9 categorías de ADIS; lógica de agrupación por espacio/tipo
+
+Tekno-Step agrupa su catálogo en **6 familias** —Muros, Pisos, Deck, Pasto sintético, Follajes y Accesorios— en un megamenú de hasta 4 niveles, y añade en el footer una segunda lectura por intención: "Uso exterior" y "Uso interior".[^1^] Así cubre a quien busca por material y a quien piensa por espacio.
+
+ADIS organiza su oferta en **9 categorías** —Placas PVC, Lambrín WPC, Revestimiento Flexible, Plafón PVC, Paneles 3D, Vigas PVC, Pisos, Zacate y Cladding— con ~251 productos, más dos ejes diferenciales: el educativo ("¿Sabías que?") —un eje educativo que Tekno-Step cubre con otro formato (blog); el de ADIS es más accesible y local— y el de prueba visual (Proyectos con antes/después), que Tekno-Step no replica.[^2^]
+
+Para ADIS: su taxonomía es igual de sólida y su eje educativo es ventaja propia; lo que falta es la agrupación por espacio (baño, cocina, fachada), que es como piensa su cliente. Recomendamos añadirla sin tocar las 9 categorías.
+
+### 4.2 Cómo presentan y explican sus productos
+
+#### 4.2.1 Fichas de producto con "agregar a cotización" y contador vs fichas técnicas de ADIS con rangos de precio orientativos USD/MXN
+
+Cada modelo de Tekno-Step tiene ficha individual con galería, SKU, cantidad y botón "Agregar a cotización"; el contador "Cotizaciones (n)" del header convierte la visita en lista para el asesor.[^1^] No hay precios: la conversación comercial pasa a un humano.
+
+[Captura: tekno_pag_producto.png]
+
+ADIS no usa fichas individuales: cada categoría muestra sus modelos con fotos reales y ficha técnica por subcategoría (Material, Dimensiones, Presentación, Uso), con "Precios orientativos" en MXN —Placas PVC $850–$1,400/pz, Pisos $900–$2,500/caja— y cotización USD/MXN para Arizona.[^2^]
+
+[Captura: adis_pag_catalogo_productos.png]
+
+Los rangos de ADIS reducen la ansiedad del "¿cuánto costará?" y filtran prospectos —algo raro en el giro—; pero sin fichas por modelo no se pueden comparar productos y toca cotizar hasta para dudas básicas. Recomendamos conservar los rangos y agregar fichas con precio por modelo: ninguno de los dos lo tiene hoy.
+
+### 4.3 Cómo presentan la empresa y generan confianza
+
+#### 4.3.1 +20 años, 26 sucursales, app móvil, blog, FAQ, registro de garantía de Tekno-Step vs ADIS sin página Nosotros y empresa descrita en 1 frase
+
+Este es el punto más desequilibrado del comparativo y el más importante: en remodelación la confianza vende más que el catálogo, porque el cliente paga anticipos a quien entrará a su casa.
+
+Tekno-Step despliega una capa de confianza completa: página Nosotros ("Más de 20 años transformando espacios") con compromiso ambiental; **26 sucursales físicas** con WhatsApp propio; 8 testimonios firmados; app móvil iOS/Android; blog, FAQ y catálogos; registro de garantía; métodos de pago y avisos legales.[^1^] Cada elemento responde una objeción: existen, llevan tiempo, atienden cerca, respaldan lo que venden.
+
+[Captura: tekno_pag_nosotros.png]
+
+ADIS describe a la empresa en una sola frase genérica —"nos especializamos en ofrecer soluciones funcionales, estéticas y duraderas"— y carece de página Nosotros, aviso de privacidad, política escrita de garantías y testimonios verificables (4 reseñas de 5 estrellas sin enlace a Google o Facebook).[^2^] Sus activos de confianza existen pero están desperdigados: garantía de hasta 15 años declarada, dirección con mapa, horario, videos de obra y fotos "sin filtros".[^2^] El problema no es carecer de credenciales: es no empaquetarlas donde el cliente las busca.
+
+### 4.4 Comparación directa de arquitectura
+
+#### 4.4.1 Qué conservar, qué agregar: Nosotros, garantías, certificaciones, canal profesional
+
+| Dimensión | Tekno-Step | ADIS Diseño | Ventaja |
+|---|---|---|---|
+| Agrupación del catálogo | 6 familias + reagrupación por uso [^1^] | 9 categorías con subcategorías [^2^] | Empate (falta eje por espacio) |
+| Profundidad | Ficha individual por modelo [^1^] | Grid por categoría, sin ficha individual [^2^] | Tekno-Step |
+| Precios | Sin precios; cotización con contador [^1^] | Rangos orientativos MXN/USD visibles [^2^] | ADIS |
+| Contenido educativo | Blog, FAQ y catálogos [^1^] | 9 artículos "¿Sabías que?" con FAQ [^2^] | Empate |
+| Presentación de la empresa | Nosotros completa: +20 años, RSE [^1^] | 1 frase genérica en home [^2^] | Tekno-Step, amplio margen |
+| Prueba social | 8 testimonios firmados [^1^] | 4 testimonios no verificables [^2^] | Tekno-Step |
+| Presencia física | 26 sucursales con WhatsApp propio [^1^] | 1 showroom + cobertura binacional [^2^] | Tekno-Step en escala; ADIS en diferenciación |
+| Post-venta y legales | Registro de garantía y legales [^1^] | Garantía sin política escrita; sin legales [^2^] | Tekno-Step |
+| Canal B2B | "Quiero ser distribuidor" con formulario [^1^] | Inexistente [^2^] | Tekno-Step |
+
+La tabla muestra un patrón consistente: ADIS compite de tú a tú en la mitad comercial de la arquitectura —catálogo, educación y, sobre todo, transparencia de precios, donde es el único de los dos que publica rangos— pero pierde toda la fila inferior (empresa, prueba social, post-venta, B2B), que es justamente la que sostiene una compra de alto valor con anticipo. La excepción favorable es su cobertura binacional Nogales–Arizona, un activo estructural que Tekno-Step no puede imitar y que hoy el sitio subutiliza. Ninguna dimensión exige cambiar de plataforma ni de catálogo. La implicación práctica: ADIS no necesita rehacer su arquitectura, necesita añadirle el piso institucional que la tabla delimita.
+
+**Conservar (no tocar):**
+
+- **Las 9 categorías** — claras, profundas y posicionadas en SEO local.[^2^]
+- **Los precios orientativos por categoría** — diferenciador frente al "cotiza para saber" de Tekno-Step.[^2^]
+- **El eje "¿Sabías que?"** — cubre la investigación previa a la compra mejor que el blog del competidor.[^2^]
+
+**Agregar (en orden de prioridad):**
+
+1. **Página Nosotros** con historia y fotos del showroom y del equipo — la ausencia que más frena anticipos.
+2. **Garantías por escrito** — la garantía de 15 años ya existe; falta documentarla.[^2^]
+3. **Reseñas verificables** embebiendo Google Reviews — convierte testimonios sospechosos en prueba.
+4. **Agrupación "Soluciones por espacio"** — captura a quien piensa en espacios, no en materiales.
+5. **Canal para contratistas y arquitectos** binacional — equivalente local del "Quiero ser distribuidor", sin copiarlo.[^1^]
+6. **Aviso de privacidad y términos** — obligación legal al recabar datos y mínimo de seriedad percibida.[^2^]
+
+Con estos seis agregados ADIS cierra la brecha de confianza sin sacrificar sus ventajas: precios, educación y enfoque binacional. El siguiente capítulo examina si los textos están a la altura.
+
+## 5. Contenido
+
+La brecha de contenido entre ambos sitios no es de volumen ni de ambición: es de pulido y de confianza. Tekno-Step escribe como un retailer consolidado que vende aspiración; ADIS escribe como un negocio artesanal con buen argumento comercial pero con erratas y vacíos informativos que erosionan justo lo que más necesita: credibilidad ante un cliente que va a dar un anticipo.
+
+### 5.1 Redacción, tono y longitud de textos
+
+#### 5.1.1 Tono comercial pulido de Tekno-Step con erratas puntuales vs tono artesanal de ADIS
+
+Tekno-Step usa un tono aspiracional y cercano, con frases cortas que venden emoción antes que especificación ("Crea escenarios fascinantes", "Verde perfecto todo el año")[^1^], y longitudes disciplinadas: titulares de 2 a 6 palabras, párrafos de 1 a 3 líneas, descripciones de producto de 60 a 90 palabras[^1^]. ADIS opta por un tono comercial cercano y funcional ("Transforma tu hogar o negocio… Cotiza gratis hoy"), con buen equilibrio entre beneficio y especificación técnica medida (mm, m², kg)[^2^]. En redacción base, ambos compiten de tú a tú.
+
+La diferencia real está en las erratas y en lo que revelan. Tekno-Step arrastra errores puntuales: "Saltilllo" por Saltillo en su grid de sucursales, "exelcelente" y "amble" en testimonios (que, paradójicamente, prueban que las reseñas son reales y sin editar), un botón en inglés ("My Account") y la página interna "Páginas de Gracias" expuesta en el footer[^1^]. Son manchas de una empresa que puede permitírselas: su credibilidad ya está anclada en 26 sucursales y más de 20 años[^1^]. ADIS tiene erratas comparables en número pero más costosas en contexto: "VIGAS PVCWPCPU" en una tarjeta de su hub educativo, el spanglish "sin edits" (debería ser "sin edición"), la mezcla "Lambrin/Lambrín" y "Plafon/Plafón", y cifras que no cuadran entre secciones (250+ productos declarados frente a 251 reales según la suma de su propio catálogo)[^2^].
+
+[Captura: adis_pag_sabiasque.png]
+
+El punto decisivo: un negocio que está construyendo credibilidad no puede cometer los errores de quien ya la tiene. Cada errata en Tekno-Step es una anécdota; cada errata en ADIS es una razón para dudar antes de transferir un anticipo. Recomendamos una pasada editorial completa (tildes, nombres de producto unificados, cifras verificadas) antes de cualquier rediseño: es la mejora de mayor impacto por hora invertida.
+
+### 5.2 Títulos y subtítulos
+
+#### 5.2.1 Transcripción y evaluación de titulares reales
+
+La tabla transcribe los titulares y CTAs reales de home y páginas clave, y evalúa si venden beneficio o solo describen:
+
+| Sitio | Titular / CTA real | ¿Beneficio o descripción? |
+|---|---|---|
+| Tekno-Step | "Personaliza con MUROS DECORATIVOS — Crea escenarios fascinantes" [^1^] | Beneficio emocional fuerte |
+| Tekno-Step | "Con nuestra linea de PASTOS SINTÉTICOS — Verde perfecto todo el año" [^1^] | Beneficio concreto y visual |
+| Tekno-Step | "Soluciones que transforman tus espacios" [^1^] | Beneficio aspiracional (H1) |
+| Tekno-Step | CTAs: "Conoce más", "Iniciar simulación", "Ver todo", "¡Escríbenos!", "Quiero ser distribuidor" [^1^] | Acción clara, imperativo corto |
+| ADIS | "Recubrimientos PVC, WPC y paneles 3D en Nogales, Sonora" [^2^] | Descripción (excelente para SEO, fría para vender) |
+| ADIS | "¿Por qué elegir ADIS?" [^2^] | Promesa de argumento, correcto |
+| ADIS | "Servimos en Arizona" [^2^] | Descripción funcional diferenciadora |
+| ADIS | "Cotiza recubrimientos en Nogales, Sonora" [^2^] | Acción + palabra clave local |
+| ADIS | CTAs: "💬 COTIZAR GRATIS POR WHATSAPP", "💬 PEDIR COTIZACIÓN EXACTA", "VER CATÁLOGO" [^2^] | Acción con beneficio ("gratis", "exacta") |
+
+[Captura: tekno_01_hero.png]
+
+[Captura: adis_01_hero.png]
+
+La lectura comparada revela una división de roles casi perfecta: Tekno-Step titula para emocionar y deja el SEO a su estructura técnica; ADIS titula para Google y deja la emoción a sus CTAs. El H1 de ADIS es un titular de directorio, no de marca: posiciona en búsquedas locales, pero no dice por qué quedarse. El valor atípico positivo es la precisión de sus CTAs: "PEDIR COTIZACIÓN EXACTA" promete un resultado concreto que ningún botón de Tekno-Step ofrece ("Conoce más" es genérico). ADIS no necesita reescribir todo: basta añadir una línea de beneficio emocional bajo cada titular descriptivo — su eslogan "Creando espacios, reinventando hogares" [^2^] es material desaprovechado que solo vive en el logo y el footer.
+
+### 5.3 Beneficios vs características, uso de listas y CTAs
+
+#### 5.3.1 Cómo cada sitio traduce producto a beneficio
+
+Ambos sitios dominan la traducción producto→beneficio, pero en distintos niveles del embudo. Tekno-Step concentra el beneficio en home y categorías ("Texturas y acabados que definen tu estilo") y reserva la ficha para la mezcla característica-beneficio ("alternativa práctica a la madera tradicional… sin los problemas de mantenimiento, humedad o deformación")[^1^]. ADIS hace lo contrario: su home es funcional y sus categorías combinan beneficio ("Resistente a la humedad y rayos UV") con datos técnicos exactos (2440×1220×5 mm; 2.977 m²/pz)[^2^]. Su mejor pieza persuasiva es el spotlight "Hoja de PVC tipo Mármol", con checklist de beneficios[^2^].
+
+En listas, ADIS usa el formato ✔ con eficacia y medida; Tekno-Step las reserva para beneficios de categoría y bullets ambientales[^1^][^2^]. En CTAs, la asimetría es estratégica: Tekno-Step despliega más acciones (cotización, simulador, newsletter, distribuidor)[^1^], mientras ADIS concentra todo en una sola — cotizar por WhatsApp — repetida con variantes contextuales por sección[^2^]. Para el tamaño de ADIS la concentración es correcta; lo que falta no son más CTAs sino un segundo nivel de captación (descarga de catálogo a cambio de correo) para no perder al visitante que aún no quiere hablar.
+
+### 5.4 Información faltante en ADIS
+
+#### 5.4.1 Checklist de contenido por escribir
+
+Tekno-Step demuestra que la información institucional cabe sin inflar el menú: su página Nosotros narra trayectoria, compromiso ambiental y responsabilidad social[^1^]. ADIS reduce su presentación a una frase genérica[^2^]. Este es el checklist, con el lugar donde cada pieza debería vivir:
+
+1. **Quién es la empresa** — historia, años de experiencia, equipo y fotos reales del showroom. *Dónde: página "Nosotros" nueva, enlazada en menú y footer.*
+2. **Cobertura y logística** — ciudades atendidas, costos y tiempos de envío, zona de instalación. *Dónde: sección "Servimos en Arizona" ampliada + FAQ.*
+3. **Por qué elegirlos** — el argumento binacional (atención bilingüe, cotización USD/MXN) redactado como promesa, no como tarjetas. *Dónde: home, bajo el hero.*
+4. **Garantías por escrito** — la garantía "hasta 15 años" ya se anuncia[^2^]; falta el documento que la respalde. *Dónde: página de garantías + footer.*
+5. **Proceso de trabajo** — de la cotización a la instalación, paso a paso y con tiempos. *Dónde: página de Contacto, junto al formulario.*
+6. **Precios por modelo** — hoy solo hay rangos por categoría[^2^]; el comprador no puede comparar sin cotizar. *Dónde: tarjetas de producto.*
+7. **Stock y disponibilidad** — indicador simple por modelo. *Dónde: tarjetas de producto.*
+8. **Aviso de privacidad y condiciones** — el sitio recaba nombre, teléfono y correo[^2^]. *Dónde: footer, obligatorio.*
+
+Priorizar los puntos 1, 4 y 6 cerraría la mayor parte de la brecha de confianza frente a Tekno-Step con contenido que ADIS ya posee y solo necesita redactar. Este checklist necesita un sitio donde vivir: el capítulo siguiente verifica qué secciones existen hoy en ambos sitios y cuáles faltan para alojarlo.
+
+## 6. Secciones: inventario comparado
+
+La ventaja de Tekno-Step es **estructural y de confianza**, no tecnológica: su home recorre la narrativa descubrir → imaginar → confiar → convertir, mientras ADIS omite justo las secciones que un cliente de remodelación necesita antes de entregar un anticipo. Ninguna pieza faltante exige cambiar de plataforma.
+
+### 6.1 Inventario completo de secciones de Tekno-Step
+
+#### 6.1.1 Lista ordenada real de secciones de home y páginas clave
+
+La home de Tekno-Step (≈6,860 px), en orden exacto verificado por scroll completo [^1^]:
+
+1. **Topbar negra fija:** redes, "Envíos a toda la República", teléfono, WhatsApp, "Quiero ser distribuidor".
+2. **Header sticky:** logo "Decora tus Sueños", buscador con filtro, contador "Cotizaciones (0)", cuenta, "Encuentra tu tienda".
+3. **Megamenú de 6 familias** (Muros, Pisos, Deck, Pasto, Follajes, Accesorios) hasta 4 niveles.
+4. **Hero slider de 3 diapositivas**, un mensaje y un CTA por slide.
+5. **"Soluciones que transforman tus espacios" (H1):** pestañas por categoría con carrusel de tarjetas de producto.
+6. **Banner "Simulador Virtual"** con CTA "Iniciar simulación".
+7. **"Explora más":** pestañas de nuevos / vendidos / buscados.
+8. **"Soluciones integrales para cada espacio":** 4 tarjetas de categoría con claim de beneficio.
+9. **"Inspírate y transforma tus espacios":** lookbook con el producto usado enlazado a su ficha.
+10. **Testimonios:** 8+ reseñas firmadas con nombre y apellido.
+11. **"Estamos cerca de ti":** 26 sucursales, cada una con botón de WhatsApp.
+12. **Footer:** newsletter, columnas de enlaces, métodos de pago, app y barra legal.
+13. **Flotantes permanentes:** teléfono, WhatsApp, simulador.
+
+[Captura: tekno_03.png]
+
+Páginas clave: **Nosotros**, **Quiero ser distribuidor**, **Contacto**, **Simulador**, **Registra tu garantía**, **Blog**, **Preguntas frecuentes**, **Catálogos digitales**, **Aviso de privacidad** y **Términos** [^1^].
+
+### 6.2 Cobertura de ADIS: cuáles tiene y cuáles no
+
+#### 6.2.1 Mapeo sección por sección contra el inventario de Tekno-Step
+
+| Sección de Tekno-Step (orden real) | Tekno-Step | ADIS | Debería agregar |
+|---|---|---|---|
+| Topbar con contacto y CTA B2B | Sí [^1^] | Parcial: WhatsApp omnipresente, sin CTA B2B [^2^] | Baja: su mercado es retail local |
+| Header sticky con buscador y cotización | Sí [^1^] | Parcial: header fijo + buscador, sin contador [^2^] | Baja: el embudo ya resuelve por WhatsApp |
+| Megamenú de familias | Sí (6 familias) [^1^] | Sí (9 categorías con imágenes) [^2^] | No: cobertura equivalente |
+| Hero slider con 3 mensajes | Sí [^1^] | Parcial: hero de texto, sin imagen de producto [^2^] | Media: una foto de ambiente vendería más que el logo |
+| Carrusel de producto por categoría | Sí [^1^] | Sí: grid de catálogo + Productos Estrella [^2^] | No |
+| Banner Simulador Virtual | Sí, pieza central [^1^] | No [^2^] | Media: evolucionar el antes/después hacia un visualizador propio |
+| "Explora más" (nuevos/vendidos) | Sí [^1^] | Parcial: Productos Estrella cubre "más vendidos" [^2^] | Baja |
+| Tarjetas de categoría con claim | Sí [^1^] | Sí: tarjetas "Sobre ADIS" y catálogo [^2^] | No |
+| Lookbook de inspiración | Sí [^1^] | Parcial: Proyectos con antes/después y videos [^2^] | Baja: el formato real es más creíble que el render |
+| Testimonios firmados | Sí, 8+ con nombre completo [^1^] | Parcial: 4 reseñas 5⭐ no verificables [^2^] | Alta: embeber reseñas de Google/Facebook |
+| "Estamos cerca de ti" (26 sucursales) | Sí [^1^] | No aplica | No aplica: el equivalente ya existe ("Servimos en Arizona", showroom fronterizo) [^2^] |
+| Footer con newsletter y legales | Sí [^1^] | Parcial: footer simple, sin newsletter ni legales [^2^] | Alta: el aviso de privacidad es obligación al captar datos |
+| Flotantes de contacto | Sí (teléfono, WhatsApp, simulador) [^1^] | Sí: WhatsApp, Llamar, chatbot, barra inferior [^2^] | No |
+| Página Nosotros | Sí [^1^] | No: solo una frase "Sobre ADIS" en home [^2^] | Alta |
+| Registro de garantía | Sí [^1^] | No: garantía de 15 años declarada, sin política [^2^] | Alta: página de garantías por escrito |
+| Blog | Sí [^1^] | Parcial: "¿Sabías que?", 9 artículos [^2^] | No: formato equivalente y con buen SEO |
+| FAQ independiente | Sí [^1^] | Parcial: FAQs dispersas en artículos [^2^] | Media: consolidar en página FAQ global |
+| Catálogos digitales | Sí [^1^] | Sí: 10 PDFs descargables [^2^] | No |
+| Aviso de privacidad y términos | Sí [^1^] | No [^2^] | Alta: recaban datos personales sin marco legal visible |
+| App móvil | Sí (iOS/Android) [^1^] | No aplica | No aplica: no es prioridad local binacional |
+
+[Captura: tekno_07.png]
+
+El patrón es nítido: **ADIS cubre bien catálogo y conversión, y mal confianza institucional**. De las 20 secciones inventariadas de Tekno-Step, ADIS iguala 5, cubre parcialmente 9 y carece de 4; de las faltantes, 3 son críticas para la confianza (Nosotros, garantía escrita y páginas legales) y la cuarta es el simulador, de prioridad media [^1^][^2^]. Las 2 secciones restantes (26 sucursales, app móvil) no aplican a su escala y tienen equivalente propio: la cobertura binacional con showroom fronterizo y entregas en Arizona [^2^]. El valor atípico más costoso es la garantía: ADIS promete "hasta 15 años" en home [^2^] sin una página que explique cobertura y reclamación. Promesa sin documento se lee como eslogan; documentada, es el argumento de venta más difícil de copiar.
+
+[Captura: adis_13_footer2.png]
+
+### 6.3 Secciones que ADIS debería agregar
+
+#### 6.3.1 Lista priorizada con justificación de negocio
+
+Recomendamos priorizar lo que reduce el riesgo percibido antes del anticipo:
+
+1. **Nosotros (Alta).** Historia, años de experiencia, fotos del showroom y del equipo. Tekno-Step compensa con "+20 años" y 26 sucursales [^1^]; ADIS, con cercanía verificable en el corredor Nogales–Tucson [^2^].
+2. **Garantías por escrito (Alta).** Convertir la promesa de 15 años en página con cobertura por material, reclamación y, a futuro, registro en línea como el de Tekno-Step [^1^].
+3. **Reseñas verificables (Alta).** Embeber Google/Facebook: la prueba social de Tekno-Step es creíble por firmada e imperfecta [^1^]; las reseñas 5⭐ sin fuente de ADIS pueden percibirse fabricadas [^2^].
+4. **Legales: aviso de privacidad y términos (Alta).** El sitio recaba datos personales sin aviso publicado [^2^]: exposición legal que se resuelve con dos páginas estáticas.
+5. **FAQ global (Media).** Consolidar las preguntas dispersas en "¿Sabías que?" en una página sobre pago, envío, instalación y garantía [^2^].
+6. **Visualizador (Media).** No copiar el simulador [^1^]: escalar el antes/después de Proyectos a una herramienta "imagina tu espacio" con materiales propios [^2^].
+
+Con estas seis piezas, ADIS cierra la brecha estructural sin tocar su plataforma y llega a los capítulos siguientes (7 a 11) con la confianza ya resuelta: el siguiente paso es dotar a estas secciones de fotografía a la altura de su discurso premium.
+
+## 7. Fotografías
+
+**En fotografía, Tekno-Step gana en producción y ADIS gana en autenticidad: la decisión correcta no es copiar sus renders, sino profesionalizar el material real que ADIS ya posee.** Tekno-Step construye un lenguaje 100% aspiracional —el espacio soñado— sin documentar una sola instalación real[^1^]. ADIS muestra producto físico, obra y antes/después propios, pero con ejecución casera y archivos pesados que contradicen su identidad premium negro/dorado[^2^]. La brecha es de acabado fotográfico, no de contenido, y se cierra con una sola tanda de producción dirigida.
+
+### 7.1 Estilo, calidad, tamaño y encuadres
+
+#### 7.1.1 Renders/interiores editoriales de Tekno-Step vs fotos propias con encuadre irregular de ADIS
+
+Tekno-Step mezcla renders y fotografía de interiores de alta producción —recámaras, spas, salas, oficinas, fachadas— con packshots sobre fondo neutro, alternando planos amplios de ambiente con detalles de textura[^1^]. Técnicamente es impecable: alta resolución, 162 imágenes WebP y 136 con carga diferida (lazy-load: la imagen se descarga solo al entrar en pantalla)[^1^]. Calidad: 9/10[^1^].
+
+[Captura: tekno_05.png]
+
+ADIS practica fotografía documental de producto con archivos por modelo ("Adler.jpg", "Carrara Oscuro.jpg") que delatan origen propio[^2^]. El problema es triple: fotos de showroom caseras (luz dura, empaques y pies visibles), JPG de hasta 532 KB (SHERWOOD.jpg) sin WebP ni srcset (versiones de la imagen según pantalla), y una foto "tipo mármol" del spotlight que parece stock[^2^]. El déficit de optimización se ejemplifica en el propio logo: un solo PNG pesa 280 KB y se repite en header, hero y footer[^2^]. Resultado: 7/10 —la crudeza refuerza autenticidad, pero erosiona el premium que el diseño persigue[^2^].
+
+### 7.2 Colores, tipos de fotografías e imágenes de fondo
+
+#### 7.2.1 Paleta fotográfica cálida coherente vs fondos negros de ADIS; imágenes de fondo y banners
+
+La paleta fotográfica de Tekno-Step es deliberada: dominan maderas, beige e iluminación ámbar, contrastados con escenarios oscuros dramáticos afines a la identidad rojo-negro de marca; toda imagen de fondo lleva overlay o gradiente para que el texto respire[^1^].
+
+ADIS toma la decisión opuesta en su punto de mayor impacto: el hero a 100vh es una pantalla negra con logo y texto, sin foto de ambiente —desaprovecha el argumento visual más potente de su catálogo, los acabados instalados[^2^]. Las cabeceras de categoría sí usan textura a pantalla completa con overlay oscuro, pero no hay un solo banner promocional diseñado y los tres videos del home son cajas negras rotuladas "Video 01/02/03", sin imagen de portada (poster)[^2^]. Banners: 5/10[^2^].
+
+[Captura: adis_01_hero.png]
+
+### 7.3 Fotografías de productos y del equipo
+
+#### 7.3.1 Producto en contexto vs producto aislado; ausencia total de fotos de equipo/instalaciones en ambos sitios
+
+Tekno-Step vende el producto en contexto: cada modelo aparece instalado en un ambiente aspiracional, etiquetado en su lookbook y enlazado a la ficha[^1^]. ADIS vende el producto aislado —texturas y placas apiladas con sello "FOTO REAL"— y lo complementa con algo que Tekno-Step no tiene: un slider antes/después de remodelaciones reales[^2^]. El dato estratégico del capítulo: **ninguno de los dos sitios muestra fotos de equipo humano, instalaciones u obra en proceso**[^1^][^2^]; quien lo haga primero se adueña de la confianza del nicho.
+
+| Aspecto | Tekno-Step | ADIS | Lección para ADIS |
+|---|---|---|---|
+| Estilo | Renders/interiores editoriales [^1^] | Documental, showroom casero [^2^] | Mantener lo real, elevar producción |
+| Calidad | Alta resolución, 9/10 [^1^] | Buena resolución pero pesada, 7/10 [^2^] | Exportar con criterio |
+| Tamaño/peso | 162 WebP, 136 lazy-load [^1^] | JPG hasta 532 KB, sin WebP/srcset; sí lazy-load (22 de 26 imágenes) [^2^] | Migrar a WebP + srcset |
+| Encuadre | Ambiente amplio + detalle [^1^] | Irregular: empaques y pies visibles [^2^] | Encuadres por tipo de foto |
+| Color | Paleta cálida coherente [^1^] | Texturas correctas; hero negro sin foto [^2^] | Hero con ambiente cálido |
+| Tipo dominante | Producto en contexto (lookbook) [^1^] | Producto aislado + "FOTO REAL" [^2^] | Sumar contexto a fichas estrella |
+| Fondos/banners | Hero WebP con overlay [^1^] | Sin banners; videos sin poster [^2^] | Posters y banner promocional |
+| Producto | Instalado y etiquetado [^1^] | Texturas propias por modelo [^2^] | Fotografiar top 20 instalados |
+| Equipo/instalaciones | Ausentes por completo [^1^] | Ausentes por completo [^2^] | Diferenciación inmediata |
+
+La tabla revela un patrón asimétrico: Tekno-Step domina lo técnico (formato, peso, encuadre, coherencia cromática) mientras ADIS domina lo único que no se puede comprar —material genuino de obra y showroom—. El dato que desentona es la última fila: la ausencia de fotos humanas es total en ambos sitios, lo que convierte una debilidad del sector en la jugada de diferenciación más barata disponible. Para ADIS la conclusión operativa es clara: no necesita más fotografías, necesita rehacer la producción de las que ya tiene y sumar la tanda de confianza que el modelo de renders del competidor no puede replicar con credibilidad.
+
+[Captura: adis_pag_catalogo_productos.png]
+
+### 7.4 Plan fotográfico para ADIS
+
+#### 7.4.1 Lista de fotografías a conseguir: showroom, equipo humano, instalación en proceso, antes/después profesional, detalle de materiales, fachada
+
+Recomendamos priorizar esta producción porque ataca las tres brechas documentadas —hero vacío, cero fotos de confianza, encuadre irregular— con material base que ya existe[^2^]:
+
+| Fotografía a conseguir | Encuadre y ambiente | Destino en el sitio | Prioridad |
+|---|---|---|---|
+| Ambiente instalado (muro WPC o mármol PVC terminado) | Plano amplio, luz cálida, overlay oscuro | Nuevo hero de home [^2^] | Alta |
+| Equipo humano | Medio cuerpo en showroom, placas ordenadas | Nueva página "Nosotros" [^2^] | Alta |
+| Instalación en proceso | Manos colocando placa, herramienta visible | Proyectos y "Por qué elegir ADIS" | Alta |
+| Antes/después profesional | Mismo encuadre, misma luz, sin filtros | Escalar el slider antes/después [^2^] | Media |
+| Detalle de materiales | Macro de textura (veta, canto, unión) | Fichas de los 20 modelos top | Media |
+| Fachada del showroom | Plano frontal con rótulo, luz suave | Contacto y schema LocalBusiness [^2^] | Media |
+
+La lógica del plan es de conversión, no de estética: el hero con ambiente real convierte la primera pantalla en argumento de venta; las fotos de equipo y obra alimentan la página Nosotros que un cliente necesita antes de dar un anticipo; el detalle de materiales eleva las fichas sin depender de stock. Toda la tanda debe entregarse con especificación fija —WebP, srcset responsive, máximo ~120 KB por imagen y poster para los tres videos— corrigiendo el déficit de rendimiento documentado[^2^]. Con una sesión de producción y una iteración de optimización, ADIS llega al capítulo de branding con un activo que ningún render de Tekno-Step puede igualar: identidad visual propia y verificable.
+
+[Captura: adis_pag_proyectos.png]
+
+## 8. Branding
+
+La conclusión es favorable: **ADIS ya tiene una identidad más diferenciada que Tekno-Step; le falta disciplina de ejecución y señales de confianza verificables, no personalidad.** El sistema visual de ambos es coherente; solo Tekno-Step lo respalda con andamiaje institucional; y el posicionamiento boutique-binacional de ADIS es más defendible que imitar al retailer nacional.
+
+### 8.1 Identidad visual y consistencia
+
+#### 8.1.1 Sistema disciplinado rojo/Montserrat de Tekno-Step vs identidad premium negro/dorado de ADIS con fugas (emojis, azules por defecto)
+
+En el núcleo, ADIS compite de tú a tú. Tekno-Step aplica con disciplina un rojo #cb333b reservado a la acción, Montserrat como tipografía única y el logo "TEKNOSTEP®" con tagline "Decora tus Sueños", extendido a 7 redes verificadas.[^1^] ADIS responde con un sistema sistematizado y distintivo: variables CSS consistentes (`--gold` #C5A059, `--black` #0F0F0F), la pareja Playfair Display + Montserrat y un monograma "AD" dorado con el eslogan "Creando espacios, reinventando hogares" en header, hero y footer.[^2^]
+
+[Captura: adis_01_hero.png]
+
+La diferencia aparece en los bordes. ADIS rompe su lenguaje de lujo con tres fugas visibles: emojis del sistema como iconografía (🚚 🛡️ 🤝, un 💬 de WhatsApp y un 📜 que enlaza a Facebook), enlaces del footer en azul por defecto y un copyright fechado a 2026.[^2^] Se suman erratas ("VIGAS PVCWPCPU", Lambrin/Lambrín) y cifras que no cuadran: el hero promete "250+ productos" y los contadores "100 clientes", pero el catálogo suma 251.[^2^] Tekno-Step también tiene deslices ("Saltilllo", un reCAPTCHA en chino), pero ninguno contradice su promesa; las fugas de ADIS sí: cada una susurra "obra inconclusa" donde el diseño grita "exclusividad".[^1^][^2^]
+
+[Captura: adis_12_footer.png]
+
+| Dimensión de branding | Tekno-Step | ADIS Diseño | Lectura para ADIS |
+|---|---|---|---|
+| Identidad cromática | Rojo #cb333b + neutros [^1^] | Negro #0F0F0F + dorado #C5A059 en variables CSS [^2^] | Empate; la paleta de ADIS diferencia más del giro |
+| Tipografía | Montserrat única [^1^] | Playfair Display + Montserrat [^2^] | Tono editorial que el competidor no tiene |
+| Consistencia de aplicación | Alta; restos Bootstrap y erratas [^1^] | Media (6.5/10): emojis, footer azul, badges dispares [^2^] | Correcciones de una iteración |
+| Iconografía | Set propio, 8/10 [^1^] | Emojis del sistema, 4/10 [^2^] | Prioridad 1: iconos SVG propios |
+| Andamiaje institucional | Razón social, legales, garantía, app [^1^] | Sin Nosotros, sin legales, © 2026, @gmail.com [^2^] | La brecha real (ver 8.2) |
+| Imagen percibida | Retailer nacional de categoría [^1^] | Estudio boutique premium con fugas [^2^] | Defendible si se sellan las fugas |
+
+El patrón es claro: donde la comparación es de sistema (color, tipografía), ADIS empata o gana; donde es de disciplina de aplicación (iconografía, footer, datos), pierde por errores de ejecución, no de criterio. El atípico es la iconografía —4/10 frente a 8/10—, la única brecha amplia y visible ya en la primera pantalla del recorrido. El plan de marca de ADIS no requiere identidad nueva sino una "semana de sellado": iconos SVG propios, una regla CSS para los enlaces del footer, unificar las cifras al dato real (251) y corregir el copyright, para que la ejecución deje de desmentir al diseño y la promesa premium quede intacta en cada pantalla.
+
+### 8.2 Profesionalismo y confianza
+
+#### 8.2.1 Señales de marca consolidada (26 sucursales, app, garantías) vs señales faltantes en ADIS (legales, reseñas, historia)
+
+En este giro la confianza se compra con señales verificables, no con adjetivos, y Tekno-Step juega con ventaja estructural: 26 sucursales con WhatsApp propio, más de 20 años, razón social, aviso de privacidad y términos, registro de garantía, app móvil y 8 testimonios firmados con nombre completo —creíbles por imperfectos ("exelcelente" sin editar).[^1^] Ninguna señal es sofisticada; todas son comprobables.
+
+[Captura: tekno_09_footer.png]
+
+ADIS muestra el espejo inverso: señales comerciales que Tekno-Step no tiene —precios orientativos, garantía de 15 años, teléfonos MX/USA, mapa y horario— pero un vacío institucional. No hay página Nosotros, ni aviso de privacidad pese a recabar nombre, teléfono y correo (obligación legal en México); sus 4 testimonios son 5 estrellas no verificables y el contacto usa un correo @gmail.com.[^2^] Recomendamos este orden: página Nosotros con historia y fotos del showroom, aviso de privacidad y garantía escrita, reseñas de Google embebidas (credibilidad y SEO local en un movimiento) y correo corporativo —activos de una semana que sostienen cada cotización con anticipo.
+
+### 8.3 Imagen corporativa comparada
+
+#### 8.3.1 Posicionamiento percibido: retailer nacional de volumen vs estudio boutique binacional — y por qué la segunda es defendible
+
+Tekno-Step se percibe como lo que es: un retailer nacional de volumen.[^1^] ADIS se percibe como un estudio boutique binacional: estética "dark luxury editorial", instalación y asesoría integradas, y cobertura del corredor Nogales–Tucson–Phoenix en dos idiomas.[^2^] Imitarlo sería un error por tres razones. Primera: ADIS vende servicio y criterio —instalación, asesoría, obra terminada—, no cajas en un anaquel; la marca boutique describe su modelo real. Segunda: ningún retailer nacional iguala la cercanía bilingüe de un corredor fronterizo: es foso competitivo, no limitación. Tercera: el lenguaje negro/dorado ya lo diferencia de todo el giro.[^2^]
+
+Pero una marca boutique exige coherencia total: en el segmento premium el detalle *es* el producto, y cada emoji, enlace azul o cifra inconsistente cobra precio doble a quien promete acabado impecable. La decisión es defender el posicionamiento boutique-binacional y destinar el siguiente esfuerzo no a escalar hacia Tekno-Step, sino a sellar fugas y construir la confianza que haga creíble la palabra "premium" —la percepción que el capítulo 9 convertirá en leads.
+
+## 9. Conversión (CRO)
+
+ADIS convierte más rápido que Tekno-Step, pero Tekno-Step conserva lo que convierte y ADIS no. Esa es la conclusión central del capítulo: el embudo de ADIS lleva al visitante a una conversación de ventas en 0–1 clics desde cualquier página [^2^]; el de Tekno-Step exige formularios largos o armar una cotización [^1^]. La diferencia aparece cuando el lead no cierra en el chat: Tekno-Step ya tiene su correo y teléfono; ADIS no tiene nada. Tres mecanismos explican la brecha —formularios, canales y CTAs— y todos tienen corrección de bajo costo.
+
+### 9.1 Formularios y captación de clientes
+
+#### 9.1.1 Formularios de Tekno-Step (contacto, distribuidor, garantía) vs formulario de ADIS que deriva a WhatsApp sin guardar correo
+
+Tekno-Step opera tres formularios que almacenan datos antes de cualquier conversación humana: contacto (`*Nombre`, `*Correo electrónico`, `*Teléfono`, estado entre los 32, `*Ciudad`, `Mensaje`, con reCAPTCHA y anti-spam), "Quiero ser distribuidor" (misma estructura, copy B2B) y "Registra tu garantía" (captación post-venta) [^1^]. Se suma una cuarta vía: el newsletter del footer con botón "Únete" [^1^]. Cada envío alimenta una base de datos propia.
+
+[Captura: tekno_pag_contacto.png]
+
+El formulario de cotización de ADIS está mejor pensado para su negocio —Nombre*, Teléfono*, Correo, Ciudad/Ubicación de la obra*, m² aproximados, Producto de interés (con la opción "No estoy seguro, necesito asesoría") y Mensaje— pero tiene un defecto estructural: al enviarse construye un mensaje de WhatsApp y no guarda registro alguno: el campo "Correo" se pide y nunca se almacena [^2^]. Si el cliente no responde el chat, el lead se evapora sin posibilidad de seguimiento.
+
+[Captura: adis_pag_contacto.png]
+
+### 9.2 WhatsApp, teléfono y cotizaciones
+
+#### 9.2.1 Flotantes fijos tel/WA/simulador y 12 números por sucursal vs WhatsApp contextual + barra fija + chatbot de ADIS; tel:// mal formado en Tekno-Step
+
+Tekno-Step despliega tres flotantes permanentes en todas sus páginas —teléfono 55 5368 1400, WhatsApp 55 1733 5352 y simulador— más un botón de WhatsApp por cada una de sus 26 sucursales, con 12 números reales [^1^]. Su enlace telefónico usa el formato irregular `tel://5553681400` (doble barra, sin prefijo +52), que puede fallar en celulares [^1^]. ADIS responde con una arquitectura más ágil: al menos 10 entradas a WhatsApp con mensajes pre-rellenados **contextuales** (el texto cambia si el usuario viene de precios, Arizona, una categoría o formas de pago), barra verde fija, flotante con pulso y el chatbot "Asistente ADIS" [^2^]. Publica además dos teléfonos bien diferenciados: MX +52 631-120-4943 y USA +1 (520) 839-2877 [^2^]. Su riesgo: las dos barras fijas y los flotantes (WhatsApp, Llamar, chatbot, EN) pueden solaparse entre sí en pantallas pequeñas [^2^].
+
+| Mecanismo de conversión | Tekno-Step [^1^] | ADIS Diseño [^2^] |
+|---|---|---|
+| Formulario principal | 6 campos + reCAPTCHA; guarda datos | 7 campos orientados a obra; no guarda nada |
+| Captación de correo | Formularios + newsletter + garantía | Ninguna: todo deriva a WhatsApp |
+| Sistema de cotización | "Agregar a cotización" con cantidad, SKU y contador "Cotizaciones (n)" | Sin acumulador: cada CTA abre un chat |
+| WhatsApp | Flotante + 12 números por sucursal; mensaje genérico | ≥10 entradas contextuales + barra fija + flotante |
+| Teléfono | Flotante y topbar; `tel://` mal formado | 2 números MX/USA correctos |
+| Asistencia automatizada | Sin chat en vivo visible | Chatbot con intents que deriva a WhatsApp |
+| Lead magnets | Catálogos digitales, blog, FAQ | 10 PDFs sin pedir correo |
+| Remarketing/tracking | GTM, Google Ads, Meta y TikTok Pixel | Solo Google Analytics |
+
+El cuadro enfrenta dos filosofías opuestas con un punto ciego en ADIS. Tekno-Step opera un sistema de acumulación: cada interacción (formulario, newsletter, garantía, cotización con contador) deja un dato reutilizable, y sus cuatro píxeles de remarketing vuelven a impactar a quien no compró. ADIS opera un sistema de inmediatez: gana en velocidad (0–1 clics, mensajes contextuales, chatbot) pero cada lead vive y muere dentro del chat. El valor atípico es el correo: Tekno-Step lo exige en todos sus formularios; ADIS lo pide y lo descarta. En un negocio de remodelación con decisiones de semanas —el cliente compara, consulta a la familia y vuelve— no tener cómo recontactar es la fuga más costosa del sitio.
+
+### 9.3 Botones y CTAs
+
+#### 9.3.1 Copy real de CTAs de ambos; sistema "agregar a cotización" con contador
+
+El copy de Tekno-Step es corto e imperativo: "Conoce más", "Iniciar simulación", "¡Escríbenos!", "Únete", "Enviar" y "Quiero ser distribuidor" [^1^]. Su CTA clave es el botón negro "Agregar a cotización" de cada ficha —selector de cantidad, SKU visible y contador "Cotizaciones (n)" en el header— que funciona como carrito sin precios: el usuario acumula productos y envía una sola solicitud a un asesor [^1^].
+
+[Captura: tekno_pag_producto.png]
+
+ADIS usa un copy más persuasivo: "💬 COTIZAR GRATIS POR WHATSAPP", "💬 PEDIR COTIZACIÓN EXACTA", "💬 COTIZAR DESDE ARIZONA", "Cotizar Placas PVC" (contextual por categoría) y "💬 Enviar cotización por WhatsApp" [^2^]. Ventajas reales: "gratis" elimina fricción, "exacta" calma la ansiedad del precio y "desde Arizona" segmenta el mercado binacional. Debilidades: el emoji 💬 rompe la identidad premium, y sin acumulador un cliente interesado en piso + lambrín + plafón describe todo en un solo chat, sin que ADIS sepa qué comparó.
+
+### 9.4 Cómo mejorar la tasa de conversión de ADIS
+
+#### 9.4.1 Captar email además de WhatsApp, CTA por intención, prueba social junto al CTA, seguimiento/remarketing
+
+Recomendamos seis acciones ordenadas por impacto sobre esfuerzo; las tres primeras son de implementación inmediata:
+
+1. **Guardar el lead antes de abrir WhatsApp (impacto alto, esfuerzo bajo).** El formulario ya recolecta nombre, teléfono, correo, ciudad y m² [^2^]; basta con registrar esos datos en una base (hoja de cálculo conectada o CRM gratuito) y *después* abrir el wa.me que ya construye. Mismo flujo para el usuario; base de prospectos desde el día uno.
+2. **Gatear los 10 PDFs de catálogo (impacto alto, esfuerzo bajo).** Hoy se descargan sin pedir nada [^2^]. Cambiar "Descargar" por un mini-formulario de nombre + correo convierte un recurso gratuito en la segunda fuente de captación.
+3. **Prueba social verificable junto al CTA (impacto alto, esfuerzo medio).** Los testimonios actuales son 5 estrellas sin fuente [^2^]. Embeber el widget de Google Reviews bajo "COTIZAR GRATIS POR WHATSAPP" y junto al formulario pone evidencia real donde se decide el contacto.
+4. **CTA por intención de página (impacto medio, esfuerzo bajo).** ADIS ya tiene mensajes contextuales; el paso siguiente es adaptar el *botón*: en precios, "Pedir presupuesto de mi espacio"; en Arizona, cotización en USD; en catálogo, "Cotizar [categoría]". Una intención por página, un CTA primario.
+5. **Remarketing con la base capturada (impacto medio, esfuerzo medio).** Instalar Meta Pixel junto al Google Analytics existente [^2^] —Tekno-Step ya opera GTM, Google Ads, Meta y TikTok Pixel [^1^]— y usar los correos capturados para seguimiento de cotizaciones no cerradas.
+6. **Sacar los ganchos del chatbot y descongestionar el móvil (impacto medio, esfuerzo bajo).** El "envío gratis en Nogales y Rio Rico, mayoreo desde 10 cajas" vive escondido en el bot [^2^]; debe ser un banner visible. En paralelo, consolidar barra fija + flotantes en dos elementos para no tapar contenido en móvil [^2^].
+
+Con estas seis acciones ADIS conserva su ventaja —el embudo más rápido del mercado local— y le suma lo único que Tekno-Step hace mejor: que ningún interesado se pierda. El tráfico ya llega por SEO local; la disciplina de captación es lo que lo convierte en cartera de clientes y no en conversaciones olvidadas.
+
+## 10. SEO
+
+En SEO —las prácticas que determinan si Google encuentra y muestra un sitio cuando alguien busca "recubrimientos en Nogales"— el comparativo favorece a ADIS: **ya supera a Tekno-Step en SEO local** (el que genera clientes en su zona binacional) y sus desventajas son técnicas y corregibles en días. Un solo error, la etiqueta de idiomas mal configurada, anula hoy su mayor ventaja: ser el único sitio bilingüe del comparativo, un activo decisivo en su zona fronteriza.
+
+### 10.1 Encabezados y organización del contenido
+
+#### 10.1.1 Jerarquía de encabezados real en ambos sitios
+
+Los encabezados (H1 a H6) son los títulos y subtítulos que estructuran cada página; Google los lee para entender de qué trata el contenido, y cada página debería tener exactamente un H1. ADIS cumple: su home tiene un único H1 en el hero, ocho H2 por sección, H3 en tarjetas y H4 en precios y descargas, con solo saltos de nivel menores [^2^]. Tekno-Step tiene H1 correcto en Nosotros, Distribuidor, Categoría y Producto, pero **sus páginas de Contacto y Simulador carecen por completo de H1** [^1^] — dos páginas clave de conversión que Google indexa sin titular principal.
+
+[Captura: tekno_pag_contacto.png]
+
+Dos factores adicionales inclinan la sección hacia ADIS. Tekno-Step declara el idioma de todo su sitio como `lang="mx"`, un código inválido (el correcto es `es` o `es-MX`); ADIS declara correctamente `lang="es"` [^1^][^2^]. Y en textos alternativos de imágenes (la descripción que Google usa para indexar fotos), ADIS tiene 25 de 26 con descripción propia [^2^]; Tekno-Step acumula 6 vacíos y el genérico repetido "Tekno-Step Facebook" en iconos sociales [^1^]. **Conclusión: ADIS no requiere reestructurar nada aquí; su base de encabezados ya es mejor que la del líder nacional.**
+
+### 10.2 URLs, títulos y organización
+
+#### 10.2.1 URLs semánticas, titles y descriptions únicos
+
+El `<title>` es el titular azul que aparece en los resultados de Google y la *meta description* el texto gris debajo; juntos deciden si el usuario hace clic. Ambos sitios usan URLs semánticas en español y títulos orientados a palabra clave [^1^][^2^], pero la ejecución de ADIS es más disciplinada: cada página interna lleva título y descripción únicos con enfoque geográfico, como *"Cotizar Recubrimientos Nogales Sonora · Arizona | Contacto ADIS"* [^2^]. Tekno-Step, en cambio, tiene categorías sin sufijo de marca y al menos una con la **meta description completamente vacía** (/muros-interiores) [^1^] — Google improvisará ese texto por ella.
+
+En infraestructura de indexación ADIS está completo para su escala: robots.txt y sitemap.xml con **22 URLs declaradas** —sus 22 páginas indexables, incluidos los 9 artículos del hub educativo "¿Sabías que?"— [^2^]. Su única desventaja real es heredada: el dominio con ñ fuerza el formato punycode `xn--adis-diseo-19a.com` en URLs compartidas, correos y códigos QR, lo que afea la marca fuera del navegador [^2^].
+
+### 10.3 Datos estructurados y posicionamiento
+
+#### 10.3.1 JSON-LD: LocalBusiness binacional de ADIS vs estructura de catálogo de Tekno-Step
+
+Los datos estructurados (formato JSON-LD) son etiquetas invisibles que le explican a Google qué es el negocio: dirección, horarios, teléfono. Aquí está la ventaja más importante del capítulo. ADIS declara un esquema **LocalBusiness** con dirección postal completa en Nogales, Sonora, coordenadas geográficas, dos bloques de horarios, dos puntos de contacto y un área de servicio con seis ciudades en ambos lados de la frontera, más WebSite con SearchAction [^2^]. Tekno-Step declara Organization, WebSite con SearchAction y BreadcrumbList (migas de pan: la ruta "Inicio > Muros > Producto" que Google muestra en resultados) [^1^]. Traducción de negocio: ADIS está optimizado para ganar búsquedas *"cerca de mí"* en Nogales, Tucson, Phoenix y Rio Rico; Tekno-Step, para que su catálogo nacional se vea bien. Para un negocio local de remodelación, el esquema de ADIS es la mejor práctica correcta — y Tekno-Step no la tiene.
+
+| Factor SEO | Tekno-Step | ADIS | Quién gana | Acción para ADIS |
+|---|---|---|---|---|
+| H1 por página | Sin H1 en Contacto y Simulador [^1^] | H1 correcto en home e internas [^2^] | ADIS | Mantener; vigilar saltos H4 menores [^2^] |
+| Idioma declarado | `lang="mx"` inválido [^1^] | `lang="es"` correcto [^2^] | ADIS | Ninguna |
+| Titles y descriptions | Únicos; description vacía en una categoría [^1^] | Únicos con keyword local en todas [^2^] | ADIS | Acortar description home (177 car.) [^2^] |
+| Textos alternativos | 6 vacíos, genéricos repetidos [^1^] | 25/26 descriptivos [^2^] | ADIS | Completar el alt faltante |
+| Datos estructurados | Organization + WebSite/SearchAction + BreadcrumbList [^1^] | LocalBusiness completo (geo, horarios, área binacional) [^2^] | ADIS (local) / Tekno (catálogo) | Añadir BreadcrumbList |
+| Hreflang bilingüe | No aplica (monolingüe) | Declarado pero con bug: `?hl=en` sirve español [^2^] | Ninguno | **Corregir: prioridad 1** |
+| Indexación | Sin robots meta [^1^] | robots.txt + sitemap con 22 URLs [^2^] | ADIS | Mantener sitemap actualizado |
+| Peso y velocidad | ≈2,9 MB de código, servidor ~2,5 s, WebP + lazy-load [^1^] | ≈2,4 MB, sin WebP/srcset ni minificación [^2^] | ADIS en peso; Tekno en optimización | Migrar imágenes a WebP |
+| Redes sociales (OG/Twitter) | OG completo + Twitter Card [^1^] | OG básico; falta og:type y twitter:card [^2^] | Tekno-Step | Completar etiquetas OG |
+
+La tabla revela un patrón poco común: **ADIS gana cinco de nueve factores de forma clara y dos de forma parcial** frente a un competidor con plataforma de e-commerce profesional. El valor atípico es el hreflang, el único factor sin ganador, y es una herida autoinfligida: declaró a Google una versión en inglés cuya URL entrega contenido en español [^2^]. El segundo atípico es el peso: aunque el sitio de ADIS es más ligero en total, Tekno-Step aplica técnicas de optimización (WebP, carga diferida de 136 imágenes) que ADIS no usa [^1^][^2^]. La implicación práctica: la ventaja de ADIS es de cimientos, no de acabado — todo lo que le falta es trabajo puntual de un desarrollador, no una reconstrucción del sitio ni cambio de plataforma.
+
+### 10.4 Oportunidades de mejora SEO para ADIS
+
+#### 10.4.1 Seis correcciones ordenadas por impacto
+
+**1. Corregir el hreflang (crítico).** La URL `?hl=en` sirve contenido en español porque el cambio de idioma ocurre solo en el navegador del visitante, no en el servidor [^2^]. Google lo interpreta como contenido duplicado y deja de confiar en la versión inglesa: ADIS pierde las búsquedas de sus clientes de Arizona. La solución: URLs reales en inglés (p. ej., `/en/`) o retirar la etiqueta.
+
+**2. Completar Open Graph y Twitter Card.** Faltan og:type y twitter:card, y el og:image es el logo pesado de 280 KB [^2^]. Importa porque estas etiquetas controlan cómo se ve el sitio al compartirlo por WhatsApp y Facebook — el canal donde sus clientes recomiendan.
+
+**3. Añadir esquema BreadcrumbList.** Tekno-Step lo tiene y ADIS no [^1^][^2^]. Es la ruta de navegación que Google muestra bajo cada resultado; mejora la tasa de clic sin crear contenido nuevo.
+
+**4. Embeber reseñas de Google con esquema de reseñas.** Las reseñas marcadas con datos estructurados pueden mostrar estrellas directamente en los resultados, reforzando a la vez el SEO local y la credibilidad.
+
+**5. Interconectar el blog "¿Sabías que?" con el catálogo.** Los 9 artículos educativos ya atacan búsquedas informacionales de cola larga [^2^]; enlazar cada artículo a su categoría de producto convertiría lectores en cotizaciones.
+
+[Captura: adis_pag_sabiasque.png]
+
+**6. Atender Core Web Vitals.** Son las métricas de velocidad y estabilidad visual que Google usa como factor de posicionamiento. La home de ADIS carga ≈2,4 MB con un JPG de 532 KB, sin formato WebP, sin carga adaptable por pantalla y sin código minificado [^2^]. Migrar imágenes a WebP y minificar son mejoras de bajo costo con impacto directo en ranking móvil — donde se decide la mayoría de búsquedas locales.
+
+Ninguna de estas seis acciones requiere cambiar de plataforma ni rediseñar el sitio: ejecutadas en este orden, ADIS convertiría su ventaja latente de SEO local en posicionamiento visible en ambos lados de la frontera, exactamente donde Tekno-Step no tiene presencia física.
+
+## 11. Versión móvil
+
+Para ADIS, la versión móvil no es secundaria: es el escaparate principal. El cliente típico de acabados en el corredor Nogales–Arizona descubre el negocio desde el teléfono y cierra por WhatsApp. Ambos sitios son responsive; el problema compartido es el exceso de elementos fijos en pantalla pequeña, mayor en ADIS.
+
+### 11.1 Diseño responsive, espaciado y tamaños
+
+#### 11.1.1 Evidencia de media queries y viewport en ambos; limitación del análisis (sin prueba de viewport real)
+
+Ambos sitios declaran correctamente el meta viewport (`width=device-width, initial-scale=1`) y aplican media queries con breakpoints estándar: diseño responsive real, no un escritorio "encogido".[^1^][^2^] Tekno-Step declara 116 media queries (cortes de 480 a 1200 px), propio de su plataforma (PrestaShop + Elementor); ADIS declara 16 (900/768/600/480) sobre un desarrollo a medida, con una ventaja: tipografía fluida con `clamp()` —el H1 escala de 2.5rem a 4.5rem según el ancho— sin saltos entre pantallas.[^1^][^2^]
+
+| Aspecto móvil | Tekno-Step | ADIS Diseño |
+|---|---|---|
+| Meta viewport | Correcto [^1^] | Correcto [^2^] |
+| Media queries | 116; breakpoints 480–1200 px [^1^] | 16; breakpoints 900/768/600/480 [^2^] |
+| Menú móvil | Hamburguesa dedicada (`mobile-menu`); barra de categorías colapsa [^1^] | Hamburguesa (`toggleMenu`) + barra inferior fija con Inicio/Catálogo/Proyectos/Contacto [^2^] |
+| Tipografía | Sistema del page-builder [^1^] | Fluida con `clamp()`; H1 2.5–4.5rem [^2^] |
+| Elementos fijos simultáneos | Header sticky compacto + 3 flotantes (teléfono, WhatsApp, simulador) [^1^] | Barra verde de cotización + barra inferior + WhatsApp + Llamar + chatbot + botón EN [^2^] |
+| Protección contra solape | No documentada [^1^] | `body { padding-bottom: 90px }` [^2^] |
+| Botones | Flotantes circulares compactos [^1^] | Flotantes de 60 px, CTAs a ancho completo, touch-friendly [^2^] |
+| Señal mobile-first adicional | App nativa iOS/Android [^1^] | Buscador con versión móvil propia (`searchInputMobile`) [^2^] |
+
+El contraste de la tabla es de fondo: Tekno-Step hereda la robustez —y la pesadez— del e-commerce: 116 media queries garantizan cobertura, pero su megamenú de 4 niveles puede resultar profundo para el pulgar.[^1^] ADIS, con menos código, decide mejor para pantalla chica: la barra inferior replica el patrón de app nativa al alcance del pulgar, y el `padding-bottom: 90px` demuestra que alguien pensó en el solape de la barra fija.[^2^] El valor atípico es la cantidad de capas fijas de ADIS: seis contra cuatro de Tekno-Step. Esa ventaja de diseño deliberado se degrada si las seis capas se muestran a la vez en un teléfono de 360 px; la prioridad no es añadir, sino podar.
+
+**Limitación metodológica.** El análisis se realizó en viewport de escritorio (1920×1080); no se emuló un dispositivo móvil real en ningún sitio.[^1^][^2^] Las conclusiones se basan en evidencia de código y capturas de escritorio. Recomendamos validar con PageSpeed Insights en modo móvil y con un teléfono físico antes de ejecutar cambios.
+
+### 11.2 Navegación, botones y legibilidad móvil
+
+#### 11.2.1 Header sticky y flotantes en pantallas pequeñas; riesgo de tapar contenido; tamaños de botón y texto
+
+El patrón dominante en ambos es la persistencia: el usuario nunca debe perder de vista el botón de contacto. Tekno-Step mantiene un header sticky compacto más tres flotantes circulares —teléfono, WhatsApp y simulador— verificados en capturas.[^1^]
+
+[Captura: tekno_02.png]
+
+ADIS replica la lógica con más capas —seis en total—: barra verde fija "Cotizar por WhatsApp", barra inferior de navegación, flotantes de WhatsApp y llamada, chatbot "Asistente ADIS" y botón de idioma EN.[^2^]
+
+[Captura: adis_05.png]
+
+El riesgo es idéntico en ambos y mayor en ADIS: en pantallas menores de 400 px los flotantes pueden tapar contenido, y la suma barra verde + barra inferior + flotantes puede consumir un tercio del alto visible.[^1^][^2^] En tamaños, ADIS está mejor resuelto: flotantes de 60 px y CTAs a ancho completo superan el mínimo táctil de 44 px, y la tipografía fluida se lee sin zoom.[^2^] Dos puntos sí penalizan a ADIS: los videos de la home no tienen imagen de portada (poster) y se perciben como cajas negras, y el hero arranca en pantalla negra mientras carga.[^2^] Ambas fricciones ocurren exactamente en el primer vistazo.
+
+### 11.3 Mejoras específicas para la versión móvil de ADIS
+
+#### 11.3.1 Lista accionable: barra fija que no solape, posters de video, tap targets, tipografía fluida
+
+ADIS no necesita rediseñar su móvil: necesita podar capas y pulir el primer vistazo. Recomendamos, en orden de prioridad:
+
+1. **Reducir los elementos fijos simultáneos a un máximo de dos** en pantallas <768 px: conservar barra inferior y flotante de WhatsApp; ocultar el chatbot tras un toque y fundir "Llamar" en Contacto.[^2^]
+2. **Verificar que la barra verde no solape contenido ni flotantes** en alturas cortas: el `padding-bottom` protege el texto, no la superposición entre capas.[^2^]
+3. **Añadir posters ligeros a todos los videos** para que ninguno aparezca como caja negra.[^2^]
+4. **Resolver el arranque negro del hero** con una imagen de respaldo mientras carga el video.[^2^]
+5. **Mantener todos los tap targets en ≥44 px** (los flotantes de 60 px ya cumplen; auditar menú, chips del chatbot e iconos del footer).[^2^]
+6. **Conservar la tipografía fluida con `clamp()`** y extenderla a los textos de tarjetas que heredan la fuente display, para lectura cómoda en 360 px.[^2^]
+7. **Hacer el menú hamburguesa inequívoco**: icono estándar con etiqueta visible y cierre automático al elegir sección.[^2^]
+8. **Probar el formulario de cotización en un teléfono real** y validar todo el sitio con PageSpeed Insights móvil, cerrando la limitación declarada en 11.1.[^2^]
+
+Ejecutados estos ocho puntos —una iteración de desarrollo, no una replataforma—, ADIS convertiría su móvil en su canal más fuerte: una experiencia para el pulgar hoy limitada por exceso de capas y un primer vistazo en negro.
+
+## 12. Comparación directa
+
+Después de once capítulos de análisis por dimensión, la foto completa se puede resumir en una sola frase: **Tekno-Step gana por sistema y escala; ADIS gana por identidad, cercanía y velocidad de venta — y la brecha total es de un solo punto sobre diez.** Esta sección consolida las calificaciones de los capítulos 1 a 11 en una tabla de 16 apartados y extrae la conclusión estratégica que guiará los capítulos de síntesis siguientes.
+
+### 12.1 Tabla comparativa 1-10
+
+#### 12.1.1 Calificación por sitio en: diseño, profesionalismo, colores, tipografía, UX, UI, navegación, organización, servicios, fotografías, branding, confianza, conversión, SEO, responsive, velocidad percibida
+
+| Apartado | Tekno-Step (1-10) | ADIS (1-10) | Ganador | Lectura en una línea |
+|---|---|---|---|---|
+| Diseño | 9 [^1^] | 8 [^2^] | Tekno-Step | Sistema disciplinado vs. identidad premium con rupturas puntuales |
+| Profesionalismo | 9 [^1^] | 7.5 [^2^] | Tekno-Step | Acabado de retail consolidado vs. boutique delatada por detalles |
+| Colores | 9 [^1^] | 8 [^2^] | Tekno-Step | Ambas acotadas y con roles; ADIS pierde por el bug azul del footer |
+| Tipografía | 9 [^1^] | 9 [^2^] | Empate | Montserrat única vs. dupla editorial Playfair + Montserrat |
+| UX | 8 [^1^] | 8 [^2^] | Empate | ADIS lleva a cotizar en 0-1 clics; Tekno-Step orienta mejor al explorador |
+| UI | 8.5 [^1^] | 7.2 [^2^] | Tekno-Step | Componentes unificados vs. emojis del sistema y consistencia rota |
+| Navegación | 9 [^1^] | 7 [^2^] | Tekno-Step | Megamenú + breadcrumbs + buscador vs. menú sin migas ni Nosotros |
+| Organización | 8 [^1^] | 7 [^2^] | Tekno-Step | Taxonomías igual de sólidas; ADIS carece del piso institucional |
+| Servicios | 8 [^1^] | 7 [^2^] | Tekno-Step | Simulador, garantía y canal B2B vs. rangos de precios (ventaja ADIS) |
+| Fotografías | 9 [^1^] | 7 [^2^] | Tekno-Step | Producción aspiracional impecable vs. autenticidad con ejecución casera |
+| Branding | 8 [^1^] | 7 [^2^] | Tekno-Step | La identidad de ADIS diferencia más, pero sus fugas la desmienten |
+| Confianza | 9 [^1^] | 5 [^2^] | Tekno-Step | 26 sucursales, garantías y legales vs. sin Nosotros ni marco legal |
+| Conversión | 8 [^1^] | 7 [^2^] | Tekno-Step | ADIS convierte más rápido; Tekno-Step conserva los leads que ADIS evapora |
+| SEO | 7 [^1^] | 8 [^2^] | **ADIS** | ADIS gana 5 de 9 factores en claro (2 parciales) y domina el SEO local binacional |
+| Responsive | 8 [^1^] | 8 [^2^] | Empate | Ambos responsive en código; ADIS con tipografía fluida y exceso de capas |
+| Velocidad percibida | 7 [^1^] | 6 [^2^] | Tekno-Step | WebP + carga diferida vs. JPG pesados y un hero que arranca en negro |
+
+*Escala 1-10. Fuentes: análisis técnico directo de tekno-step.com [^1^] y adis-diseño.com [^2^], 2026-07-21.*
+
+La tabla revela tres patrones que ningún capítulo aislado mostraba con esta claridad. Primero, la brecha es estrecha y concentrada: en 11 de los 16 apartados la diferencia es de un punto o menos, apenas la supera en UI (8.5 vs. 7.2) y tres terminan en empate. El déficit de ADIS tiene un epicentro claro: una sola casilla, confianza (9 vs. 5), concentra la mayor parte de la distancia, y el resto se reparte en brechas de 1 a 2 puntos —navegación (9 vs. 7), fotografías (9 vs. 7) y profesionalismo (9 vs. 7.5) son las más anchas—, sin un segundo frente catastrófico. Segundo, el único apartado ganado en limpio por ADIS es SEO (8 vs. 7), y no es un apartado menor: es el que decide quién aparece cuando un cliente de Nogales o Tucson busca recubrimientos. Tercero, los empates son estratégicamente asimétricos: en tipografía, UX y responsive, ADIS empata con una fracción del presupuesto y la plataforma del competidor, lo que confirma que su nivel base de diseño no es inferior. La conclusión operativa: ADIS no necesita un rediseño, necesita cerrar dos frentes concretos —la capa de confianza institucional y el pulido técnico de recursos— para que la tabla se invierta.
+
+### 12.2 Lectura de resultados
+
+#### 12.2.1 Dónde gana Tekno-Step, dónde gana ADIS y qué significa para la estrategia
+
+![Comparación directa de calificaciones](grafica_comparativa.png)
+
+Tekno-Step gana en tres frentes que comparten una misma raíz: **escala, sistema y profundidad**. Escala, porque 26 sucursales, más de 20 años y una app móvil componen una capa de confianza que ningún competidor local puede improvisar [^1^]. Sistema, porque su disciplina de ejecución —una familia tipográfica, un set de iconos, un patrón de tarjeta, WebP con carga diferida— sostiene una experiencia uniforme en miles de páginas [^1^]. Profundidad, porque fichas individuales, megamenú con breadcrumbs, simulador virtual y formularios que guardan datos construyen un recorrido de exploración y post-venta que ADIS hoy no ofrece [^1^]. Su victoria en confianza (9 vs. 5) es la más ancha de la tabla y la más cara: en remodelación, el cliente entrega anticipos a quien le demuestra que existe.
+
+ADIS gana en cuatro frentes que Tekno-Step no puede replicar con presupuesto: **SEO local** (LocalBusiness binacional, títulos geolocalizados, 5 factores claros y 2 parciales de 9) [^2^]; **identidad premium** (la dupla negro/dorado con Playfair Display diferencia a ADIS de todo el giro) [^2^]; **transparencia** (rangos de precios publicados en MXN/USD frente al "cotiza para saber" del competidor) [^2^]; y **velocidad de cotización** (0-1 clics con mensajes de WhatsApp contextuales, el embudo más rápido del mercado local) [^2^]. A estas cuatro se suman los empates estratégicos: empatar en tipografía, UX y responsive con un desarrollo a medida contra una plataforma de e-commerce nacional indica que el techo de ADIS no es técnico sino de acabado.
+
+El mapa de calificaciones también corrige una tentación frecuente: copiar al líder. Imitar el megamenú, el simulador o los renders de Tekno-Step costaría meses y diluiría justo lo que hace a ADIS reconocible. La ruta correcta es la inversa: conservar intactas las cuatro ventajas propias y adoptar del competidor únicamente su disciplina operativa —iconos SVG, breadcrumbs, formatos de imagen optimizados y formularios que guardan datos—, piezas que no alteran la identidad y se implementan en semanas.
+
+La brecha total —promedio 8.3 para Tekno-Step frente a 7.3 para ADIS— se traduce en una conclusión estratégica precisa: **ADIS está a una iteración de pulido visual y una capa de confianza de superar la experiencia, no la escala, de Tekno-Step.** La experiencia se corrige con una página Nosotros, garantías por escrito, reseñas verificables, iconos SVG y optimización de imágenes; la escala no hace falta alcanzarla, porque el negocio de ADIS no es vender cajas a nivel nacional sino ganar el corredor Nogales-Arizona, donde ya posiciona mejor. El capítulo siguiente desglosa estas fortalezas y debilidades en una matriz accionable.
+
+## 13. Fortalezas y debilidades
+
+Conclusión neta: **Tekno-Step gana por escala y sistema; ADIS por enfoque y agilidad de conversión**; su brecha es de acabado, no de fondo.
+
+### 13.1 Fortalezas de ambos sitios
+
+#### 13.1.1 10 fortalezas de Tekno-Step y 5+ de ADIS con evidencia
+
+**Fortalezas de Tekno-Step**
+
+1. **Simulador virtual propio:** el usuario sube una foto de su espacio y visualiza muros, pisos, deck y pastos.[^1^]
+2. **Cobertura física nacional:** 26 sucursales con botón de WhatsApp propio (12 números reales).[^1^]
+3. **CRO multicanal permanente:** flotantes de teléfono/WhatsApp/simulador, cotización con contador, formularios y newsletter.[^1^]
+4. **Catálogo profundo y bien arquitecturado:** 6 familias, megamenú de 4 niveles, buscador con filtro y breadcrumbs con schema.[^1^]
+5. **Contenido visual premium:** fotografía y renders de interiores de alto nivel en WebP con lazy-load.[^1^]
+6. **Identidad visual disciplinada:** rojo #cb333b reservado a la acción, botones pill, Montserrat en todo el sitio.[^1^]
+7. **Prueba social real:** más de 8 testimonios firmados con nombre y apellido.[^1^]
+8. **SEO técnico sólido:** titles y descriptions por página, Open Graph y Twitter Card, JSON-LD (Organization, WebSite, Breadcrumbs).[^1^]
+9. **Stack de marketing completo:** GTM, píxeles de Google Ads, Meta y TikTok, app móvil, blog y catálogos digitales.[^1^]
+10. **Doble motor de negocio:** B2C (cotización, tiendas, envíos) y B2B ("Quiero ser distribuidor"), más registro de garantía.[^1^]
+
+**Fortalezas de ADIS**
+
+1. **Embudo de conversión de 0–1 clics:** WhatsApp contextual en cada sección, barra inferior fija, flotantes, chatbot y formulario.[^2^]
+2. **Identidad premium diferenciada:** negro #0F0F0F con dorado #C5A059 y Playfair Display/Montserrat, por encima del estilo "ferretería" del giro.[^2^]
+3. **SEO local ejemplar para su escala:** schema LocalBusiness completo (dirección, geo, horarios, 6 ciudades), titles y descriptions únicos.[^2^]
+4. **Enfoque binacional:** sección "Servimos en Arizona", teléfonos MX/USA, cotización USD/MXN y sitio bilingüe ES/EN.[^2^]
+5. **Contenido real y profundo:** 251 productos en 9 categorías con fichas técnicas, 9 artículos educativos y 10 PDFs descargables.[^2^]
+6. **Transparencia de precios:** rangos orientativos por categoría (Placas PVC $850–$1,400/pz), algo raro en el sector.[^2^]
+
+### 13.2 Debilidades de ambos sitios
+
+#### 13.2.1 5 debilidades de Tekno-Step y 10 de ADIS con evidencia y severidad
+
+**Debilidades de Tekno-Step**
+
+1. **Sin precios ni compra online:** todo exige cotización y espera humana: fricción para el comprador decidido.[^1^]
+2. **Huecos de SEO on-page:** Contacto y Simulador sin H1, categoría sin meta description, `lang="mx"` inválido.[^1^]
+3. **Peso técnico elevado:** ~2,9 MB de código base y respuesta del servidor de ~2,5 segundos.[^1^]
+4. **Detalles sin pulir:** erratas visibles ("Saltilllo", "exelcelente"), "My Account" en inglés, página de sistema expuesta en el footer.[^1^]
+5. **Prueba de autoridad ausente:** sin logos de clientes, certificaciones ni fotos reales de instalaciones.[^1^]
+
+**Debilidades de ADIS**
+
+1. **Sin página "Nosotros":** la empresa es una frase genérica, sin historia, equipo ni fotos del showroom.[^2^]
+2. **Emojis como iconografía:** 🚚🛡️⚡ varían por dispositivo y rompen la estética premium; el 📜 del footer enlaza a Facebook.[^2^]
+3. **Footer descuidado:** teléfonos y email en azul por defecto (bug de CSS), "© 2026" a futuro, sin aviso de privacidad.[^2^]
+4. **Erratas y cifras inconsistentes:** "VIGAS PVCWPCPU", "sin edits", "250+ productos" frente a una suma real de 251.[^2^]
+5. **Bug de internacionalización:** `?hl=en` declarado en hreflang sirve contenido en español.[^2^]
+6. **Cero captación de datos:** formularios y PDFs derivan todo a WhatsApp sin guardar email ni teléfono.[^2^]
+7. **Testimonios no verificables:** 4 reseñas de 5 estrellas con nombres genéricos, sin enlace a Google o Facebook.[^2^]
+8. **Sin precios por modelo:** solo rangos amplios; comparar dos productos obliga a cotizar.[^2^]
+9. **Hero sin imagen de producto:** una pantalla negra con logo; videos como cajas negras "Video 01/02/03" sin poster.[^2^]
+10. **Rendimiento mejorable:** ~2,4 MB iniciales, JPG de hasta 532 KB sin WebP, CSS/JS sin minificar.[^2^]
+
+**Tabla de severidad de las debilidades de ADIS** (insumo del plan del capítulo 14):
+
+| # | Debilidad | Impacto principal | Severidad | Esfuerzo de corrección |
+|---|---|---|---|---|
+| 1 | Bug de hreflang (`?hl=en` en español) | SEO | Alta | Bajo |
+| 2 | Footer con bug, © 2026 y sin legales | Profesionalismo | Alta | Bajo |
+| 3 | Sin página "Nosotros" | Branding / Conversión | Alta | Medio |
+| 4 | Cero captación de email/datos | Conversión | Alta | Medio |
+| 5 | Testimonios no verificables | Conversión | Alta | Medio |
+| 6 | Erratas y cifras inconsistentes | Profesionalismo | Media | Bajo |
+| 7 | Emojis como iconografía | Branding / UX | Media | Bajo |
+| 8 | Hero sin imagen y videos sin poster | UX / Conversión | Media | Medio |
+| 9 | Sin precios por modelo | Conversión | Media | Medio |
+| 10 | Rendimiento (JPG pesados, sin minificar) | UX / SEO | Media | Medio |
+
+La tabla está ordenada por retorno sobre esfuerzo: las cinco primeras filas concentran severidad alta y, en dos casos (hreflang y footer), se corrigen en horas sobre el sitio estático actual. El patrón es claro: **ninguna debilidad de ADIS es estructural**; todas son de acabado, confianza o captación. Contrastan con las de Tekno-Step —sin e-commerce, peso del page-builder—, decisiones de arquitectura costosas de revertir. La severidad alta se concentra en confianza y captación, no en diseño: el sistema visual ya es un activo a conservar. Implicación práctica: ADIS puede cerrar la mayor parte de su brecha con una sola iteración de pulido.
+
+**Lo que esto significa para ADIS.** Su diferenciación descansa en tres fortalezas que Tekno-Step no copia fácilmente: el embudo WhatsApp de 0–1 clics, la identidad premium negro/dorado y el SEO local binacional Nogales–Arizona. Tres debilidades le cuestan ventas hoy: la ausencia de prueba de confianza (sin "Nosotros" ni reseñas verificables), la captación de datos nula y los detalles de obra inconclusa que erosionan el premium que su diseño construye.
+
+## 14. Plan de mejora priorizado
+
+Este plan convierte los hallazgos anteriores en una lista de trabajo ejecutable: **primero lo que el cliente ve roto** (errores que cuestan credibilidad), **después lo que construye confianza** (las señales previas a dar un anticipo), **luego rendimiento y SEO** y **al final los diferenciadores**. Los niveles reordenan la tabla de severidades del capítulo 13 con criterio de negocio: las críticas mezclan Altas y Medias porque todas cobran credibilidad en cada visita; las importantes cubren el resto de las Altas —confianza y captación— y exigen más ejecución. Nada exige cambiar de plataforma: basta un webmaster, un redactor y una sesión de fotografía.
+
+### 14.1 Mejoras críticas
+
+Son los errores visibles que desmienten la promesa premium: quien vende acabados impecables no puede tener su acabado digital roto. Todas se ejecutan en días; solo el hreflang exige esfuerzo medio.
+
+| Mejora | Qué hacer exactamente | Prioridad | Impacto esperado | Esfuerzo |
+|---|---|---|---|---|
+| Reparar el footer | Corregir el CSS para que teléfonos y correo hereden el dorado #C5A059 en vez del azul por defecto; sustituir "© 2026" por el año en curso con script automático; crear el aviso de privacidad y enlazarlo [^2^] | Alta | Profesionalismo + Conversión: es lo último que ve el cliente; sin aviso hay exposición legal al recabar datos [^2^] | Bajo (2–4 h) |
+| Sustituir emojis por iconografía | Reemplazar los emojis del sistema (🚚 🛡️ 🤝, 💬 en CTAs, 📜 que enlaza a Facebook) por iconos SVG propios en dorado, de trazo y tamaño uniformes [^2^] | Alta | Branding + Profesionalismo: sella la fuga más visible; la iconografía calificó 4/10 frente a 8/10 de Tekno-Step [^1^][^2^] | Bajo (medio día) |
+| Corregir erratas y cifras | Pasada editorial: "VIGAS PVCWPCPU", "sin edits" → "sin edición", unificar "Lambrín"/"Plafón"; alinear "250+ productos" y "100 clientes" con el dato real (251) [^2^] | Alta | Profesionalismo + Conversión: cada errata es una razón para dudar antes de transferir un anticipo | Bajo (1 día) |
+| Corregir el hreflang | La URL `?hl=en` declara inglés a Google pero sirve español; servir URLs reales en inglés (`/en/`) o retirar la etiqueta [^2^] | Alta | SEO: hoy anula la mayor ventaja de ADIS —ser el único sitio bilingüe del corredor— y pierde búsquedas de Arizona [^2^] | Medio (2–5 días) |
+| Hero con imagen real y propuesta de valor | Fotografía de ambiente instalado como fondo con overlay negro, manteniendo el H1 localizado; añadir línea de beneficio con el eslogan; imagen de respaldo para eliminar el arranque en pantalla negra [^2^] | Alta | UX + Conversión + Branding: convierte la primera pantalla en demostración de producto, como el slider de Tekno-Step [^1^] | Medio (1–2 días) |
+| Posters para los videos | Asignar a cada video un fotograma de portada y título descriptivo ("Remodelación de cocina con placas PVC") en lugar de las cajas negras "Video 01/02/03" [^2^] | Alta | UX + Conversión: la prueba visual más fuerte de ADIS hoy no invita al clic [^2^] | Bajo (2–3 h) |
+
+Las seis críticas comparten un patrón: baratas, visibles y acumulativas; footer, emojis, erratas y posters se resuelven en una semana de webmaster con apoyo editorial. El valor atípico es el hreflang: única mejora de esfuerzo medio y la única puramente técnica; no se ve en pantalla, pero decide si ADIS existe para la mitad de su mercado [^2^]. El criterio para llamarlas críticas no es su dificultad sino su costo diario: mientras sigan abiertas, cada visitante recibe la impresión de obra inconclusa que erosiona el precio premium ante todo el tráfico entrante. Su orden interno ya quedó fijado en la semana 1.
+
+[Captura: adis_13_footer2.png]
+
+### 14.2 Mejoras importantes
+
+Selladas las fugas visibles, el segundo frente es la confianza verificable: Tekno-Step la resuelve con 26 sucursales, +20 años y legales completos [^1^]; ADIS, con activos que ya posee sin empaquetar [^2^].
+
+| Mejora | Qué hacer exactamente | Prioridad | Impacto esperado | Esfuerzo |
+|---|---|---|---|---|
+| Página Nosotros | Crear /nosotros con historia, años de experiencia y fotos reales del showroom y del equipo; enlazarla en menú y footer [^2^] | Media-Alta | Profesionalismo + Conversión: responde "¿existen y puedo confiarles mi casa?", hoy sin respuesta (la empresa se describe en 1 frase) [^2^] | Medio (2–3 días) |
+| Google Reviews embebido + schema | Embeber el widget de reseñas de Google junto al CTA principal y al formulario; añadir datos estructurados de reseña [^2^] | Media-Alta | Conversión + SEO + Profesionalismo: convierte los 4 testimonios 5⭐ no verificables en prueba creíble [^2^] | Medio (1 día) |
+| Precios por modelo | Añadir el precio por modelo a las tarjetas de producto, conservando los rangos MXN/USD por categoría; empezar por los 20 más vendidos [^2^] | Media | Conversión + UX: hoy no se puede comparar sin cotizar; ninguno de los dos sitios lo tiene, sería ventaja exclusiva [^1^][^2^] | Medio-Alto (~251 productos) |
+| Captación de email | Guardar nombre, teléfono, correo, ciudad y m² en una base (hoja conectada o CRM gratuito) antes de abrir el wa.me; gatear los 10 PDFs con mini-formulario [^2^] | Media-Alta | Conversión: hoy cada lead vive y muere en el chat; el correo se pide y nunca se almacena [^2^] | Bajo-Medio (1–2 días) |
+| Políticas escritas | Publicar garantías (cobertura por material y reclamación de la garantía de hasta 15 años ya anunciada), envíos y devoluciones; enlazar en footer y FAQ [^2^] | Media-Alta | Profesionalismo + Conversión: promesa sin documento se lee como eslogan; documentada es el argumento más difícil de copiar [^2^] | Bajo-Medio (2 días) |
+
+Este bloque cierra la fila donde ADIS pierde todo: empresa, prueba social, post-venta y legales. Dos guías de ejecución: la captación de email es la mejora de mayor retorno por hora del plan, porque el formulario ya recolecta los datos y solo falta guardarlos [^2^]; y las políticas escritas se potencian con las reseñas de Google —una garantía de 15 años con prueba verificable es una combinación que Tekno-Step no ofrece junta [^1^][^2^]. Los precios por modelo quedan en Media por esfuerzo, no por valor; el orden interno pone la captación primero, las reseñas en paralelo, y Nosotros y políticas alimentadas por la sesión de 14.3.
+
+### 14.3 Mejoras recomendadas
+
+Con la confianza resuelta, el tercer frente es el motor técnico: velocidad, datos estructurados y fotografía a la altura del discurso.
+
+| Mejora | Qué hacer exactamente | Prioridad | Impacto esperado | Esfuerzo |
+|---|---|---|---|---|
+| WebP, srcset y minificación | Convertir imágenes a WebP (el JPG mayor pesa 532 KB), generar versiones por pantalla con srcset y minificar CSS/JS; meta ~120 KB por imagen [^2^] | Media | SEO + UX: mejora Core Web Vitals y el ranking móvil; Tekno-Step ya sirve 162 WebP con carga diferida [^1^][^2^] | Medio (2–3 días) |
+| Breadcrumbs con schema | Añadir migas de pan visibles y esquema BreadcrumbList en páginas internas, como hace Tekno-Step [^1^][^2^] | Media | SEO + UX: mejora la tasa de clic sin crear contenido | Bajo (medio día) |
+| OG y Twitter Card completos | Añadir og:type y twitter:card; sustituir el og:image (logo de 280 KB) por una imagen de ambiente ligera [^2^] | Media | Branding + Conversión: controla cómo se ve el sitio al compartirse por WhatsApp y Facebook [^2^] | Bajo (2–3 h) |
+| FAQ global | Consolidar las preguntas dispersas en "¿Sabías que?" en una página sobre pago, envío, instalación y garantía, con esquema FAQPage [^2^] | Media | UX + SEO: captura búsquedas informacionales y reduce preguntas repetidas por WhatsApp | Medio (1–2 días) |
+| Interlinking blog → catálogo | Enlazar cada uno de los 9 artículos educativos a su categoría de producto con anchor text descriptivo [^2^] | Media | SEO + Conversión: convierte lectores informados en cotizaciones | Bajo (medio día) |
+| Fotografía profesional | Sesión dirigida: ambiente instalado para el hero, equipo en showroom, instalación en proceso, detalle de materiales y fachada, entregada en WebP [^2^] | Media | Profesionalismo + Branding + Conversión: ningún sitio muestra equipo ni obra en proceso; quien lo haga primero se adueña de la confianza del nicho [^1^][^2^] | Medio (1 sesión) |
+
+La ventaja SEO de ADIS (gana 5 de 9 factores en claro frente a Tekno-Step) es de cimientos, no de acabado; estas seis acciones son el acabado [^1^][^2^]. La excepción del nivel es la fotografía: técnicamente producción, estratégicamente la más diferenciadora, porque ataca una debilidad del sector entero —cero rostros humanos— con material que el modelo de renders del competidor no puede replicar [^1^]. La misma sesión alimenta la página Nosotros, el fondo del hero y el og:image. OG, breadcrumbs e interlinking se cierran en horas y pueden adelantarse; WebP con srcset es la más pesada y conviene iniciarla por el JPG de 532 KB [^2^]. Ninguna exige rediseño.
+
+[Captura: adis_01_hero.png]
+
+### 14.4 Mejoras opcionales
+
+Ninguna corrige un problema; todas amplían ventajas. Se activan solo con los tres niveles anteriores cerrados y presupuesto disponible.
+
+| Mejora | Qué hacer exactamente | Prioridad | Impacto esperado | Esfuerzo |
+|---|---|---|---|---|
+| Visualizador de espacios propio | Evolucionar el antes/después de Proyectos hacia una herramienta "imagina tu espacio" con materiales propios, sin copiar el simulador de Tekno-Step [^1^][^2^] | Baja | UX + Branding: iguala la pieza central del competidor con un enfoque más creíble (obra real, no render) | Alto (4–8 semanas) |
+| Canal B2B contratistas y arquitectos | Página con formulario, condiciones de mayoreo (hoy escondidas en el chatbot: "desde 10 cajas") y contacto binacional dedicado [^2^] | Baja | Conversión: equivalente local del "Quiero ser distribuidor" de Tekno-Step [^1^][^2^] | Medio (1–2 semanas) |
+| PWA instalable | Convertir el sitio en aplicación web progresiva con icono en pantalla de inicio y caché de catálogo, en lugar de una app nativa como la de Tekno-Step [^1^] | Baja | UX: acceso recurrente sin costo de desarrollo nativo | Alto (3–6 semanas) |
+| Animaciones refinadas | Micro-interacciones discretas (aparición por scroll, hover en tarjetas) coherentes con la estética negro/dorado [^2^] | Baja | Branding + UX: eleva la percepción premium sin tocar estructura | Medio (1–2 semanas) |
+| Cotización con contador | Botón "agregar a cotización" con cantidad por modelo y contador en el header, que envíe una sola solicitud consolidada por WhatsApp [^1^] | Baja | Conversión + UX: permite cotizar piso + lambrín + plafón en una conversación y revela qué compara el cliente | Alto (2–4 semanas) |
+
+El canal B2B es la opción con mejor relación impacto/esfuerzo y la única que abre una línea de ingresos nueva: merece adelantarse si el negocio ya atiende contratistas de facto. La cotización con contador y el visualizador resuelven problemas que el embudo de 0–1 clics ya resuelve por WhatsApp [^2^]: su momento llega cuando el volumen lo justifique. La PWA y las animaciones son las de menor urgencia: la primera duplica lo que la barra fija de WhatsApp ya resuelve; las segundas rinden solo sobre la base pulida por 14.1 y 14.3 [^2^]. Aquí no actuar no cuesta una fuga diaria, solo pospone ventajas.
+
+**Secuencia sugerida (4 semanas).** Semana 1, críticas: footer, emojis, erratas, posters y hero (días 1–4) y decisión del hreflang (día 5). Semana 2, importantes: captación de email y gateo de PDFs primero; políticas y Nosotros en paralelo; reseñas al cierre. Semana 3, recomendadas: sesión fotográfica el lunes; WebP/srcset y minificación entre semana; OG, breadcrumbs e interlinking al final. Semana 4, consolidación: QA móvil (PageSpeed Insights + prueba en teléfono físico), FAQ global y elección de la primera opcional. Al cierre, ADIS habrá convertido sus debilidades Altas en activos verificables y llegará al rediseño del capítulo 15 con una base que ya vende.
+
+## 15. Rediseño sugerido
+
+ADIS no necesita más secciones: necesita **ordenar las que ya tiene en la secuencia en que un cliente de remodelación toma la decisión**. Hoy su home abre con un hero de texto sin imagen de producto y deja la prueba —el antes/después real, la garantía, las reseñas— dispersa o inexistente [^2^]. La propuesta respeta el orden sugerido por el cliente como columna vertebral y lo adapta en tres puntos: la barra de "empresas que confían" se convierte en prueba inmediata verificable (ADIS vende a hogares, no a corporativos), el "proceso de trabajo" sube antes de los beneficios porque es la respuesta a la objeción del anticipo, y se inserta un bloque "Nosotros y garantías" que el recorrido actual no tiene y que Tekno-Step sí resuelve con su página Nosotros y su registro de garantía [^1^].
+
+### 15.1 Nueva estructura propuesta para la home de ADIS
+
+#### 15.1.1 Hero → Empresas que confían → Servicios → Soluciones → Productos destacados → Casos de éxito → Proceso de trabajo → Beneficios → Marcas → Testimonios → FAQ → Contacto → Footer
+
+| Orden | Sección | Qué contiene (pieza real de ADIS + pieza nueva) | Por qué en esa posición |
+|---|---|---|---|
+| 1 | Hero | Foto de ambiente real instalado (hoy el hero es solo texto [^2^]) + propuesta binacional + CTA WhatsApp pre-rellenado [^2^] | Atención: la primera pantalla vende el resultado, no el logo |
+| 2 | Prueba inmediata (adapta "Empresas que confían") | Nuevo: barra con reseñas de Google embebidas, años de experiencia y cobertura Nogales–Tucson [^2^] | Credibilidad temprana: en servicios locales el cliente reconoce reseñas y cercanía, no logos de empresas |
+| 3 | Servicios | Remodelación, instalación y asesoría; tarjetas "Sobre ADIS" reescritas como servicios [^2^] | Responde "¿qué hacen por mí?" antes de mostrar catálogo |
+| 4 | Soluciones por espacio | Tarjetas por ambiente (cocina, closet, muro, piso) enlazadas a las 9 categorías [^2^] | Imaginación: el cliente se reconoce en su espacio, no en una familia técnica |
+| 5 | Productos destacados | Productos Estrella existentes con precios orientativos [^2^] | Oferta concreta con precio, algo que Tekno-Step nunca muestra [^1^] |
+| 6 | Casos de éxito | Proyectos con slider antes/después y videos reales [^2^] | Prueba: el antes/después es el equivalente verificable al lookbook de Tekno-Step [^1^] |
+| 7 | Proceso de trabajo | Nueva: 4 pasos (cotización → diseño → instalación → garantía) con tiempos y responsables | Reducción de riesgo: la sección que más pesa en un negocio que pide anticipo; por eso sube |
+| 8 | Beneficios | Garantía de 15 años hoy solo declarada [^2^], atención binacional, precios en USD/MXN [^2^] | Refuerzo racional: visto el proceso, los beneficios se leen como compromisos, no eslóganes |
+| 9 | Nosotros y marcas | Nueva: historia, fotos de showroom y equipo (faltante del cap. 6) + marcas que distribuye | Confianza institucional: Tekno-Step la resuelve con "+20 años" y 26 sucursales [^1^]; ADIS con cercanía verificable |
+| 10 | Testimonios | Los 4 testimonios actuales sustituidos por reseñas embebidas de Google/Facebook [^2^] | Validación social tardía: confirma lo prometido, justo antes de la decisión |
+| 11 | FAQ | Consolidación de las preguntas hoy dispersas en los 9 artículos de "¿Sabías que?" [^2^] | Objeciones finales: pago, envío, instalación y garantía sin salir de la home |
+| 12 | Contacto | Bloque actual con mapa, horario, teléfonos MX/USA y formulario [^2^] | Acción: llega cuando el visitante ya tiene motivos y ninguna duda estructural |
+| 13 | Footer | Nueva: captación de correo (hoy ADIS no captura ni un email [^2^]), aviso de privacidad y términos | Cierre legal y de remarketing: quien no compra hoy queda alcanzable |
+
+La tabla deja ver el criterio rector: **cada sección ocupa el lugar de la objeción que resuelve**. Las piezas nuevas son solo cinco (barra de prueba, proceso, Nosotros, FAQ consolidada, footer con captación y legales); las otras ocho reutilizan contenido que ADIS ya opera —catálogo de 251 productos, proyectos con antes/después, precios orientativos, contacto con mapa— y solo cambian de posición [^2^]. La fila que rompe el patrón es la 2: donde el orden de ejemplo pedía logos de empresas, ADIS debe poner reseñas verificables, porque su cliente no es un comprador corporativo sino una familia que dejará entrar un equipo a su casa. Es además la corrección más barata del rediseño: embeber Google Reviews no exige desarrollo, solo decisión.
+
+[Captura: adis_pag_proyectos.png]
+
+### 15.2 Por qué ese orden es más efectivo
+
+#### 15.2.1 Justificación psicológica y de conversión de la secuencia (atención→credibilidad→oferta→prueba→acción) adaptada al negocio binacional de ADIS
+
+La home de Tekno-Step recorre descubrir → imaginar → confiar → convertir, con el simulador como pieza de imaginación [^1^]. Funciona para retail de producto: el visitante explora, se visualiza con el material y cotiza sin hablar con nadie. Pero ADIS no vende un piso en caja: vende una remodelación con anticipo, mano de obra y semanas de convivencia. Para ese negocio, la secuencia ganadora es atención → credibilidad → imaginación → oferta → prueba → reducción de riesgo → acción, y cada fila del mapa corresponde a una estación: el hero con foto real captura la atención (1); la barra de reseñas da credibilidad antes de cualquier promesa (2); servicios y soluciones encienden la imaginación sin depender de un simulador (3-4); los productos con precio orientativo hacen la oferta concreta (5); los casos con antes/después aportan la prueba (6); proceso, beneficios, Nosotros, testimonios y FAQ desmontan el riesgo paso a paso (7-11); y contacto más footer cierran la acción (12-13).
+
+Dos decisiones hacen esta secuencia superadora para ADIS. Primero, la **credibilidad se adelanta a la oferta**: Tekno-Step puede mostrar testimonios en la posición 10 de su home porque su escala física (26 sucursales con WhatsApp propio) ya legitima la marca desde la primera pantalla [^1^]; ADIS, sin sucursales que exhibir, debe verificar su palabra antes de pedir dinero, y por eso las reseñas suben al segundo bloque. Segundo, la **reducción de riesgo ocupa la mitad del recorrido** (filas 7 a 11) porque el ticket y el compromiso de una remodelación lo exigen: la garantía de 15 años, hoy una frase suelta en home [^2^], se convierte en el remate de un argumento construido por proceso, beneficios y Nosotros — el mismo efecto que Tekno-Step logra con su registro de garantía en línea [^1^], pero con narrativa en lugar de software.
+
+El resultado es una home que no copia a Tekno-Step ni exige plataforma nueva: reordena activos existentes, agrega cinco piezas de confianza y convierte la ventaja binacional de ADIS —cercanía, dos monedas, entregas en Arizona [^2^]— en el hilo conductor del recorrido. La prioridad de ejecución sigue la del plan del capítulo 14: primero las filas 2, 7 y 9, que son las que hoy frenan el anticipo.
+
+## 16. Inspiración: 100 ideas accionables
+
+Las 100 ideas que cierran este informe demuestran una tesis simple: **la ventaja de Tekno-Step es replicable sin copiar un solo píxel**, porque se apoya en disciplina de sistema —color, jerarquía, canales, captación de datos— más que en recursos fuera del alcance de ADIS. Cada idea indica qué hace Tekno-Step y cómo adaptarlo a la identidad negro/dorado, la binacionalidad y el catálogo real de ADIS. Las marcadas con (★) son las de mayor impacto: si solo se ejecutaran 20, deberían ser esas.
+
+### 16.1 20 mejores ideas de diseño
+
+Tekno-Step no diseña más bonito que ADIS: diseña con más disciplina. Estas ideas cierran esa brecha de acabado.
+
+#### 16.1.1 Cada idea con "qué hace Tekno-Step" + "cómo adaptarla a ADIS sin copiar"
+
+1. **Un solo color de acción.** El rojo #cb333b se reserva a CTAs, lupa y flechas [^1^]. → ADIS: el verde #25D366 como único color de acción; el dorado #C5A059, solo énfasis [^2^].
+2. **Una familia tipográfica bien aplicada.** Montserrat gobierna todo el sitio [^1^]. → ADIS: fijar "Playfair solo titulares" y corregir las tarjetas de Arizona que la heredan [^2^].
+3. **Radios consistentes.** Todos los botones son pill de 30 px [^1^]. → ADIS: unificar sus radios (hoy mezcla 4 y 12 px [^2^]) sin excepciones.
+4. **(★) Iconografía profesional.** Set lineal homogéneo (Line Awesome) en todo el sitio [^1^]. → ADIS: sustituir los emojis por iconos SVG dorados: la corrección más barata con mayor efecto premium [^2^].
+5. **Sombras suaves, nunca duras.** 170 box-shadow difusas dan profundidad sin ensuciar [^1^]. → ADIS: limitar sus glows dorados a dos niveles [^2^].
+6. **Tarjetas editoriales con gradiente.** Degradado oscuro inferior para legibilidad [^1^]. → ADIS: aplicarlo donde el texto dorado pierde contraste sobre foto [^2^].
+7. **(★) Hero con fotografía de ambiente.** El hero vende espacios instalados a pantalla completa [^1^]. → ADIS: cambiar su hero de texto por una foto real de instalación con overlay, conservando copy y CTAs [^2^].
+8. **Imágenes WebP con carga diferida.** 162 WebP y 136 con lazy-load [^1^]. → ADIS: convertir sus JPG de hasta 532 KB a WebP con srcset; bajaría de 2.4 MB [^2^].
+9. **Header que se compacta al scroll.** El topbar desaparece y queda una versión reducida fija [^1^]. → ADIS: mantener su header con blur [^2^] pero reducir su altura al hacer scroll.
+10. **Banners gráficos de campaña.** Sliders promocionales por línea de producto [^1^]. → ADIS: crear 2-3 estacionales; hoy no tiene ninguno [^2^].
+11. **Un mensaje por bloque.** Cada sección comunica una idea con un CTA [^1^]. → ADIS: auditar su home de 10,400 px [^2^] y dividir las secciones dobles.
+12. **Verde reservado a WhatsApp.** Nunca se usa verde fuera del canal [^1^]. → ADIS ya la aplica [^2^]: convertirla en norma escrita de marca.
+13. **Espaciado generoso y constante.** Secciones separadas por 60-90 px [^1^]. → ADIS: eliminar el hueco entre hero y "¿Por qué elegir ADIS?" [^2^].
+14. **Sliders con indicador de progreso.** Progreso circular y flechas visibles [^1^]. → ADIS: dotar a su slider antes/después [^2^] de indicadores y flechas evidentes.
+15. **Mockups de dispositivo.** El banner del simulador usa un smartphone como ancla [^1^]. → ADIS: usar un mockup de teléfono para promocionar su WhatsApp contextual [^2^].
+16. **Pauta fotográfica definida.** Paleta cálida y encuadres consistentes [^1^]. → ADIS: fijar luz, fondo y encuadre para sus fotos de showroom caseras, sin perder autenticidad [^2^].
+17. **Animaciones al servicio del contenido.** Aparición gradual al hacer scroll [^1^]. → ADIS: conservar las suyas y su prefers-reduced-motion [^2^], sin que retrasen la carga.
+18. **Contraste garantizado sobre foto.** Textos con sombra/overlay en todos los banners [^1^]. → ADIS: aplicar la regla a sus cabeceras de categoría [^2^].
+19. **Hovers siempre de marca.** 293 transiciones coherentes [^1^]. → ADIS: que ningún enlace caiga al azul por defecto, el bug de su footer [^2^].
+20. **(★) Footer diseñado con barra legal.** Cuatro columnas sobre gris claro y cierre legal negro [^1^]. → ADIS: rediseñarlo en negro/dorado: es la pieza que más delata el estado "en construcción" [^2^].
+
+Prioridad de diseño: ejecutar primero las ideas 4, 7 y 20 —iconos, hero y footer—, las que un visitante nota en los primeros 15 segundos.
+
+### 16.2 20 mejores ideas de navegación
+
+Tekno-Step mueve miles de SKUs sin abrumar; ADIS puede mover sus 251 productos con la misma elegancia.
+
+#### 16.2.1 Mismo formato de adaptación
+
+1. **Megamenú por familias.** Seis entradas con árbol de 4 niveles que solo despliega lo pedido [^1^]. → ADIS: su mega-menú de 9 categorías ya es equivalente [^2^]; sumar subcategorías al desplegable.
+2. **Buscador con filtro de categoría.** Selector "Todas las categorías" junto al campo [^1^]. → ADIS: sumarlo a su buscador global con atajo "/" [^2^].
+3. **Placeholder conversacional.** "¿Qué estás buscando?" invita a escribir [^1^]. → ADIS: reescribir el suyo con copy bilingüe ("¿Qué quieres remodelar?").
+4. **(★) Breadcrumbs con schema.** Migas visibles con BreadcrumbList en todas las internas [^1^]. → ADIS: implementarlas en sus 22 URLs [^2^]: orientación y SEO a la vez.
+5. **(★) Flotantes permanentes pero limitados.** Tres botones fijos: teléfono, WhatsApp, simulador [^1^]. → ADIS: consolidar sus seis elementos fijos [^2^] en un máximo de tres.
+6. **Contacto a 1 clic desde cualquier punto.** Flotantes y topbar lo garantizan [^1^]. → ADIS ya opera a 0-1 clics [^2^]: fijarlo como estándar.
+7. **Navegación entre productos hermanos.** Flechas ‹ › dentro de cada ficha [^1^]. → ADIS: enlaces "anterior/siguiente" entre subcategorías y categorías.
+8. **Footer como mapa del sitio.** Columnas que enlazan todo lo importante [^1^]. → ADIS: cuatro columnas (catálogo, ¿Sabías que?, empresa, legales) [^2^].
+9. **Localizador de tiendas prominente.** Botón negro "Encuentra tu tienda" en el header [^1^]. → ADIS: botón "Visita nuestro showroom" con mapa; hoy la dirección solo está en Contacto [^2^].
+10. **Menú 100% catálogo.** La empresa se enlaza solo desde el footer, decisión deliberada [^1^]. → ADIS: adoptar ese criterio al crear sus páginas institucionales.
+11. **Pestañas de categoría en home.** Filtran el carrusel sin cambiar de página [^1^]. → ADIS: pestañas en "Nuestro Catálogo" para filtrar sin scroll eterno [^2^].
+12. **Menú móvil dedicado.** Hamburguesa con menú propio [^1^]. → ADIS: ya lo tiene [^2^]; añadir el buscador dentro del menú móvil.
+13. **Contacto local por sucursal.** Cada tienda tiene su WhatsApp [^1^]. → ADIS: etiquetar el WhatsApp MX y el USA según la sección de origen [^2^].
+14. **Enlaces cruzados entre fichas.** Cada ficha enlaza de vuelta a su categoría [^1^]. → ADIS: extender sus chips de subcategoría [^2^] a categorías complementarias ("¿plafón? mira también vigas").
+15. **Responsive verificado.** 116 media queries [^1^]. → ADIS: auditar sus 16 media queries [^2^] en dispositivos reales, no solo en código — prueba pendiente desde el capítulo 11.
+16. **Topbar informativa.** Teléfono, envíos y WhatsApp arriba de todo [^1^]. → ADIS: topbar dorada con "Envíos a Nogales y Arizona" y teléfonos MX/USA [^2^].
+17. **URLs semánticas.** Rutas legibles en español por familia [^1^]. → ADIS: conservar sus URLs limpias y retirar el prefijo numérico (1-placas-pvc.html) en la próxima iteración [^2^].
+18. **(★) Lookbook enlazado a producto.** Cada foto de ambiente etiquetada con el material y enlazada a su ficha [^1^]. → ADIS: etiquetar sus fotos de Proyectos con el producto usado y enlazar a la categoría [^2^].
+19. **Garantía y FAQ a un clic.** Ayuda post-venta en el footer [^1^]. → ADIS: reservar esos enlaces para cuando existan las páginas.
+20. **Anclas entre secciones de home.** La estructura apilada permite saltar entre bloques [^1^]. → ADIS: anclas ("Precios", "Catálogo", "Proyectos") desde el header compacto.
+
+Prioridad de navegación: las ideas 4, 5 y 18 —breadcrumbs, flotantes depurados y proyectos enlazados— eliminan más fricción por peso invertido.
+
+### 16.3 20 mejores ideas de contenido
+
+Tekno-Step escribe para emocionar y estructura para confiar; ADIS tiene la materia prima y le falta el empaque.
+
+#### 16.3.1 Mismo formato de adaptación
+
+1. **(★) Titulares que emocionan.** "Crea escenarios fascinantes" vende el resultado, no el material [^1^]. → ADIS: elevar sus titulares con beneficio emocional sin perder la keyword local [^2^].
+2. **Beneficio sobre característica.** "Verde perfecto todo el año" antes que cualquier especificación [^1^]. → ADIS: revisar fichas para que cada dato técnico cierre con su beneficio [^2^].
+3. **CTAs cortos en imperativo.** "Conoce más", "Únete", "Enviar" [^1^]. → ADIS: homogeneizar mayúsculas y longitud de sus CTAs [^2^].
+4. **(★) Testimonios firmados y sin pulir.** Ocho reseñas con nombre completo; las erratas prueban que son reales [^1^]. → ADIS: recolectar reseñas con nombre, producto y ciudad, enlazadas a Google [^2^].
+5. **Blog editorial.** Blog de arquitectura que atrae tráfico informacional [^1^]. → ADIS: escalar "¿Sabías que?" [^2^] a un blog con calendario mensual.
+6. **FAQ consolidada.** Página única de preguntas frecuentes [^1^]. → ADIS: consolidar las preguntas hoy dispersas en sus 9 artículos [^2^].
+7. **Catálogos digitales.** Descargables enlazados desde el footer [^1^]. → ADIS: ya ofrece 10 PDFs [^2^]; rediseñar portadas negro/dorado como pieza de marca.
+8. **(★) Nosotros con trayectoria.** "Más de 20 años transformando espacios" ancla la credibilidad [^1^]. → ADIS: crear Nosotros con historia, equipo y fotos del showroom; hoy es una sola frase [^2^].
+9. **Compromiso ambiental declarado.** Sección de sostenibilidad en Nosotros [^1^]. → ADIS: documentar solo prácticas reales, sin inventar certificaciones.
+10. **Lookbook de inspiración.** Galería de ambientes por categoría [^1^]. → ADIS: galería "Inspírate" con ambientes del corredor Nogales-Tucson y sus propios proyectos [^2^].
+11. **Contenido reagrupado por uso.** El footer separa "Uso exterior" de "Uso interior" [^1^]. → ADIS: reagrupar por espacio (cocina, baño, fachada, jardín).
+12. **(★) Textos legales completos.** Aviso de privacidad y términos publicados [^1^]. → ADIS: redactarlos de inmediato: capta datos personales sin aviso de privacidad, una obligación legal [^2^].
+13. **Garantía registrable en línea.** Formulario "Registra tu garantía" [^1^]. → ADIS: publicar por escrito su garantía de 15 años [^2^] con página y formulario.
+14. **Página B2B con copy propio.** "Conviértete en distribuidor oficial" [^1^]. → ADIS: página "Contratistas y arquitectos" que haga visible su mayoreo desde 10 cajas, hoy oculto en el chatbot [^2^].
+15. **Longitudes escaneables.** Titulares de 2-6 palabras, párrafos de 1-3 líneas [^1^]. → ADIS: fragmentar los párrafos largos de sus artículos.
+16. **Newsletter con promesa editorial bilingüe.** "Tendencias, ideas y novedades exclusivas" a cambio del correo [^1^]. → ADIS: definir la promesa de contenido antes de captar ("una idea de remodelación al mes", en español e inglés).
+17. **(★) Mensaje pre-redactado contextual.** "Hola, estoy interesado en sus productos" facilita el primer contacto [^1^]. → ADIS: sus mensajes ya son contextuales [^2^]; pulir su redacción como pieza de copy que nombre producto y ciudad, no solo como atajo.
+18. **Corrección editorial.** Los typos de Tekno-Step ("Saltilllo") erosionan lo premium [^1^]. → ADIS: corregir "VIGAS PVCWPCPU", "sin edits" y la mezcla Lambrin/Lambrín [^2^].
+19. **Eslogan más allá del logo.** "Decora tus Sueños" acompaña la marca [^1^]. → ADIS: integrar "Creando espacios, reinventando hogares" [^2^] en titulares y PDFs.
+20. **Presencia social coherente.** Siete redes con handle unificado [^1^]. → ADIS: 2-3 redes bien atendidas (ya tiene Facebook [^2^]) antes de abrir más.
+
+Prioridad de contenido: las ideas 4, 8, 12 y 17 construyen la confianza verificable que hoy decide el anticipo.
+
+### 16.4 20 mejores ideas de estructura
+
+La arquitectura de Tekno-Step guía una narrativa de decisión; ADIS puede adoptar la lógica con sus propias piezas.
+
+#### 16.4.1 Mismo formato de adaptación
+
+1. **(★) Narrativa descubrir → imaginar → confiar → convertir.** La home es una secuencia de objeciones resueltas [^1^]. → ADIS: reordenarla con el mapa del capítulo 15.
+2. **(★) Una herramienta central diferenciadora.** El simulador virtual es el eje de la home [^1^]. → ADIS: escalar su slider antes/después [^2^] a un "visualizador de ambientes" propio, sin copiar la herramienta.
+3. **Doble eje de organización.** Catálogo por familia y reagrupación por uso [^1^]. → ADIS: sumar el eje "por espacio" a sus 9 categorías [^2^].
+4. **Cobertura física como sección.** "Estamos cerca de ti" con 26 sucursales [^1^]. → ADIS: sección de cobertura binacional con mapa Nogales-Rio Rico-Tucson-Phoenix, evolución de sus tarjetas [^2^].
+5. **Doble motor B2C + B2B.** Cotización al consumidor y canal de distribuidores [^1^]. → ADIS: canal para contratistas y arquitectos del corredor binacional, sin copiar el formato.
+6. **Ordenamientos por popularidad.** Pestañas "Los más nuevos / vendidos / buscados" [^1^]. → ADIS: pestañas "Más cotizados" y "Novedades" alimentadas por sus datos de WhatsApp.
+7. **Un H1 inequívoco por página.** Jerarquía de encabezados limpia [^1^]. → ADIS: ya cumple [^2^]; mantenerlo en las páginas nuevas.
+8. **(★) Páginas institucionales completas.** Nosotros, FAQ, garantía, legales [^1^]. → ADIS: crear las cuatro que le faltan [^2^].
+9. **Tarjetas editoriales dentro de carruseles.** "Lambrín WPC que eleva tus espacios" rompe el ritmo de producto [^1^]. → ADIS: intercalar tarjetas de servicio entre las de categoría.
+10. **Banner de herramienta a media home.** El simulador aparece tras el primer bloque de producto [^1^]. → ADIS: banner a media home para su cotización guiada o su visualizador.
+11. **Arquitectura plana.** Producto específico a 3 clics desde la home [^1^]. → ADIS: preservar sus 2 clics [^2^] cuando el catálogo crezca.
+12. **SKU visible en ficha.** Cada producto muestra su código [^1^]. → ADIS: asignar SKU a sus 251 productos [^2^] para cotizaciones inequívocas.
+13. **Cantidad en el punto de decisión.** Selector −/+ junto al botón de cotización [^1^]. → ADIS: llevar el campo de m² [^2^] a cada página de categoría.
+14. **Ficha técnica con plantilla única.** Estructura repetida en todas las fichas [^1^]. → ADIS: homologar su plantilla técnica [^2^] en las 9 categorías.
+15. **Zona de descargas integrada.** Catálogos enlazados desde footer y Nosotros [^1^]. → ADIS: mantener la suya [^2^] añadiendo conteo y peso por PDF.
+16. **Área post-venta.** La garantía tiene su lugar en la arquitectura [^1^]. → ADIS: sección con garantía escrita y guías de mantenimiento por material.
+17. **Plantilla de categoría con CTA contextual.** Breadcrumb, grid y llamada a la acción por página [^1^]. → ADIS: ya tiene "Cotizar Placas PVC" [^2^]; extender el patrón a las 9.
+18. **Control de URLs duplicadas.** Tekno-Step arrastra duplicados típicos de su CMS [^1^]. → ADIS: su sitio estático no los padece [^2^]; documentar canonical y corregir el og:image de Proyectos.
+19. **Footer que responde objeciones finales.** Pagos, garantía, app y ayuda en el cierre [^1^]. → ADIS: footer con formas de pago, garantía y enlace a FAQ.
+20. **Separación home / catálogo / institucional.** Tres capas delimitadas [^1^]. → ADIS: conservar sus tres niveles al incorporar páginas nuevas [^2^].
+
+Prioridad de estructura: las ideas 1 y 2 —reordenar la narrativa y crear el visualizador— transforman la posición competitiva; las demás son andamiaje.
+
+### 16.5 20 mejores ideas de conversión
+
+Tekno-Step convierte sin precios gracias a un sistema; ADIS convierte por WhatsApp pero pierde al lead que no responde.
+
+#### 16.5.1 Mismo formato de adaptación
+
+1. **(★) Cotización con contador.** "Agregar a cotización" en cada ficha y contador en el header [^1^]. → ADIS: ese botón por producto, armando un resumen enviable por WhatsApp [^2^].
+2. **Medir y bilingüizar el flujo de WhatsApp.** Contacto inmediato sin fricción [^1^]. → ADIS: ya opera el canal con mensajes contextuales [^2^]; lo pendiente es medir qué mensajes convierten y traducir el flujo al inglés para el tráfico de Arizona.
+3. **Números locales por plaza.** Doce números distintos según sucursal [^1^]. → ADIS: dos números etiquetados (MX/USA) con horario de respuesta [^2^].
+4. **Un formulario por motivo.** Contacto, distribuidor y garantía usan formularios diferenciados [^1^]. → ADIS: separar cotización, contratistas y garantía con copy propio.
+5. **(★) Gatear las descargas por correo.** Newsletter con promesa de valor [^1^]. → ADIS: entregar sus 10 PDFs de catálogo a cambio del correo en formularios y descargas; hoy no guarda ni uno y cada lead perdido es irrecuperable [^2^].
+6. **Catálogo como lead magnet.** Los descargables atraen al investigador [^1^]. → ADIS: "Te enviamos el catálogo por WhatsApp": entrega el PDF y captura el número en el mismo paso [^2^].
+7. **Teléfono a un toque.** Botón flotante de llamada permanente [^1^]. → ADIS: ya tiene "Llamar" [^2^]; verificar el formato internacional de sus tel: (+52 / +1).
+8. **Anti-spam invisible.** reCAPTCHA, honeypot y campo de tiempo [^1^]. → ADIS: añadir honeypot a sus formularios sin fricción visual.
+9. **Formulario con geografía.** Select con los 32 estados [^1^]. → ADIS: select con su geografía real: Nogales Son./AZ, Rio Rico, Tucson, Phoenix y "Otro" [^2^].
+10. **Jerarquía primario/secundario.** Rojo para enviar, negro para cotizar [^1^]. → ADIS: aplicar en todos los formularios su jerarquía verde/dorado [^2^].
+11. **Post-venta como captación.** El registro de garantía alimenta la base de datos [^1^]. → ADIS: su formulario de garantía debe guardar contacto, producto y fecha.
+12. **(★) Stack de medición y remarketing.** GTM, Google Ads, Meta y TikTok Pixel [^1^]. → ADIS: instalar GTM y Meta Pixel; hoy solo tiene Analytics [^2^].
+13. **Canal propio en el bolsillo.** App iOS/Android [^1^]. → ADIS: no necesita app; el equivalente honesto es WhatsApp Business con catálogo y Google Business optimizado.
+14. **CTA en cada punto de decisión.** Ninguna sección termina sin acción [^1^]. → ADIS: ya es omnipresente [^2^]; auditar solapamientos en móvil.
+15. **Formularios cortos.** Seis campos bastan para iniciar conversación [^1^]. → ADIS: mantener sus 7 [^2^] reduciendo los obligatorios a nombre, teléfono y ciudad (el correo ya es opcional [^2^]).
+16. **Página de gracias.** Tekno-Step la tiene (aunque mal expuesta en el footer) [^1^]. → ADIS: crearla bien: confirma el envío, sugiere el siguiente paso y permite medir conversiones.
+17. **Mensaje que identifica el origen.** El pre-llenado facilita rastrear la intención [^1^]. → ADIS: incluir la página de origen en el mensaje para saber qué sección vende más [^2^].
+18. **Prueba social con invitación.** "CONOCER TU OPINIÓN" + "¡Escríbenos!" genera reseñas nuevas [^1^]. → ADIS: tras cada instalación, invitar a dejar reseña en Google [^2^].
+19. **(★) El gancho logístico visible.** "Envíos a toda la República Mexicana" preside la topbar [^1^]. → ADIS: sacar del chatbot a la interfaz su gancho oculto: "Envío gratis en Nogales y Rio Rico" [^2^].
+20. **Expectativa de atención.** Cada sucursal comunica disponibilidad inmediata [^1^]. → ADIS: mostrar junto a cada CTA su horario (Mar-Dom 10:00-19:00 [^2^]) y respuesta en 24 h.
+
+Prioridad de conversión: las ideas 1, 5, 12 y 19 —cotización con contador, captación de correo, píxeles y envío gratis visible— convierten el tráfico actual en la base de prospectos que hoy no existe [^2^].
+
+# Referencias
+
+[1] TEKNOSTEP DE MÉXICO S. DE R.L. DE C.V. Pisos, muros decorativos, deck y pasto sintético | Tekno-Step[EB/OL]. (2026-07-21). https://tekno-step.com/
+[2] ADIS Diseño & Remodelación. Recubrimientos en Nogales, Sonora · Arizona | ADIS Diseño & Remodelación[EB/OL]. (2026-07-21). https://xn--adis-diseo-19a.com/
+[3] TEKNOSTEP DE MÉXICO S. DE R.L. DE C.V. Distribuidores de pisos, muros, follaje y pasto sintético | Tekno-Step[EB/OL]. (2026-07-21). https://tekno-step.com/contenido/quienes-somos
+[4] TEKNOSTEP DE MÉXICO S. DE R.L. DE C.V. Contacto Tekno-Step | Pisos, muros y pasto sintético[EB/OL]. (2026-07-21). https://tekno-step.com/contenido/contacto
+[5] TEKNOSTEP DE MÉXICO S. DE R.L. DE C.V. Muros Interiores[EB/OL]. (2026-07-21). https://tekno-step.com/muros-interiores
+[6] TEKNOSTEP DE MÉXICO S. DE R.L. DE C.V. Lambrín Interior Bahía | Lambrín WPC Interior[EB/OL]. (2026-07-21). https://tekno-step.com/lambrin-interior-bahia.html
+[7] TEKNOSTEP DE MÉXICO S. DE R.L. DE C.V. Simulador de pisos, muros y pasto sintético | Tekno-Step[EB/OL]. (2026-07-21). https://tekno-step.com/contenido/simulador
+[8] TEKNOSTEP DE MÉXICO S. DE R.L. DE C.V. Quiero ser distribuidor | Tekno-Step[EB/OL]. (2026-07-21). https://tekno-step.com/contenido/quiero-ser-distribuidor
+[9] ADIS Diseño & Remodelación. Placas PVC en Nogales, Sonora | ADIS Catálogo[EB/OL]. (2026-07-21). https://xn--adis-diseo-19a.com/1-placas-pvc.html
+[10] ADIS Diseño & Remodelación. ¿Sabías que? | ADIS Diseño & Remodelación[EB/OL]. (2026-07-21). https://xn--adis-diseo-19a.com/sabias-que.html
+[11] ADIS Diseño & Remodelación. Proyectos Reales | ADIS Diseño & Remodelación[EB/OL]. (2026-07-21). https://xn--adis-diseo-19a.com/proyectos.html
+[12] ADIS Diseño & Remodelación. Cotizar Recubrimientos Nogales Sonora · Arizona | Contacto ADIS[EB/OL]. (2026-07-21). https://xn--adis-diseo-19a.com/contacto.html
