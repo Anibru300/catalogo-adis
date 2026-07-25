@@ -994,7 +994,7 @@ def _webp_path_for(dst_path):
     return webp, webp600
 
 
-def _ensure_webp(src_path, dst_path, max_width=None):
+def _ensure_webp(src_path, dst_path, max_width=None, quality=85):
     """Genera una versión WebP de src_path en dst_path. Retorna True si se generó."""
     if not HAS_PIL:
         return False
@@ -1006,7 +1006,7 @@ def _ensure_webp(src_path, dst_path, max_width=None):
                 new_size = (max_width, int(im.height * ratio))
                 im = im.resize(new_size, Image.LANCZOS)
             dst_path.parent.mkdir(parents=True, exist_ok=True)
-            im.save(dst_path, 'WEBP', quality=85, method=6)
+            im.save(dst_path, 'WEBP', quality=quality, method=6)
             return True
     except Exception as e:
         print(f"  [WEBP] Error generando {dst_path}: {e}")
@@ -1019,9 +1019,9 @@ def _generate_image_variants(src, dst):
     if HAS_PIL:
         webp, webp600 = _webp_path_for(dst)
         if copied or not webp.exists():
-            _ensure_webp(src, webp)
+            _ensure_webp(src, webp, max_width=1600, quality=82)
         if copied or not webp600.exists():
-            _ensure_webp(src, webp600, max_width=600)
+            _ensure_webp(src, webp600, max_width=600, quality=78)
     return copied
 
 
@@ -1427,19 +1427,33 @@ nav.desktop-nav a:hover::after { width: 100%; }
 .menu-btn {
   display: none; background: none; border: none; color: var(--gold);
   font-size: 1.5rem; cursor: pointer;
+  min-width: 44px; min-height: 44px; align-items: center; justify-content: center;
 }
 .header-actions { display: flex; align-items: center; gap: 0.9rem; }
 .mobile-menu {
-  position: fixed; inset: 0; z-index: 999;
+  position: fixed; inset: 0; z-index: 10001;
   background: rgba(15,15,15,0.98);
   display: none; flex-direction: column; align-items: center; justify-content: center;
-  gap: 2rem;
+  gap: 1.2rem; overflow-y: auto; padding: 4.5rem 1rem 2rem;
 }
 .mobile-menu.active { display: flex; }
 .mobile-menu a {
   color: var(--white); text-decoration: none; font-size: 1.2rem;
   text-transform: uppercase; letter-spacing: 3px; font-weight: 600;
+  padding: 0.5rem 1rem;
 }
+.mobile-menu-cats {
+  display: flex; flex-wrap: wrap; justify-content: center; gap: 0.5rem;
+  max-width: 360px; margin-top: 0.5rem; padding-top: 1.2rem;
+  border-top: 1px solid rgba(197,160,89,0.2);
+}
+.mobile-menu-cats a {
+  font-size: 0.68rem; letter-spacing: 1px; padding: 0.55rem 0.8rem;
+  border: 1px solid rgba(197,160,89,0.35); border-radius: 999px;
+  color: rgba(245,245,245,0.85); min-height: 44px;
+  display: inline-flex; align-items: center;
+}
+.mobile-menu-lang { margin-top: 0.5rem; }
 .mobile-menu .close-menu {
   position: absolute; top: 1.5rem; right: 1.5rem;
   background: none; border: none; color: var(--gold); font-size: 2rem; cursor: pointer;
@@ -1507,6 +1521,7 @@ nav.desktop-nav a:hover::after { width: 100%; }
   background: linear-gradient(145deg, rgba(26,26,26,0.98) 0%, rgba(15,15,15,0.98) 100%);
   border: 1px solid rgba(197,160,89,0.2); border-radius: 18px; width: 100%; max-width: 460px;
   padding: 1.8rem; position: relative; box-shadow: 0 25px 70px rgba(0,0,0,0.6);
+  max-height: 90vh; overflow-y: auto;
   transform: translateY(20px) scale(0.97); transition: all 0.3s ease;
 }
 .wa-modal.active .wa-modal-box { transform: translateY(0) scale(1); }
@@ -1522,7 +1537,7 @@ nav.desktop-nav a:hover::after { width: 100%; }
 .wa-modal-field input, .wa-modal-field select, .wa-modal-field textarea {
   width: 100%; background: rgba(255,255,255,0.05); border: 1px solid rgba(197,160,89,0.2);
   border-radius: 10px; padding: 0.7rem 0.9rem; color: var(--white); font-family: 'Montserrat', sans-serif;
-  font-size: 0.9rem; transition: all 0.2s;
+  font-size: 1rem; transition: all 0.2s;
 }
 .wa-modal-field input:focus, .wa-modal-field select:focus, .wa-modal-field textarea:focus {
   outline: none; border-color: var(--gold); background: rgba(255,255,255,0.08); box-shadow: 0 0 0 3px rgba(197,160,89,0.1);
@@ -1538,19 +1553,6 @@ nav.desktop-nav a:hover::after { width: 100%; }
 .wa-modal-submit:hover { background: #1ebe57; transform: translateY(-2px); box-shadow: 0 8px 25px rgba(37,211,102,0.35); }
 
 /* STICKY CTA BAR */
-.sticky-cta-bar {
-  position: fixed; bottom: 0; left: 0; right: 0; z-index: 9998;
-  display: grid; grid-template-columns: 1fr auto; gap: 0.6rem;
-  padding: 0.7rem 1rem; background: rgba(15,15,15,0.96);
-  border-top: 1px solid rgba(197,160,89,0.2); box-shadow: 0 -6px 30px rgba(0,0,0,0.35);
-  transform: translateY(100%); transition: transform 0.35s ease;
-}
-.sticky-cta-bar.visible { transform: translateY(0); }
-.sticky-cta-bar a { display: flex; align-items: center; justify-content: center; gap: 0.5rem; padding: 0.75rem 1rem; border-radius: 10px; text-decoration: none; font-weight: 700; font-size: 0.85rem; transition: all 0.25s ease; }
-.sticky-cta-wa { background: #25D366; color: white; }
-.sticky-cta-wa:hover { background: #1ebe57; transform: translateY(-2px); }
-.sticky-cta-pdf { background: rgba(197,160,89,0.15); color: var(--gold-light); border: 1px solid rgba(197,160,89,0.3); }
-.sticky-cta-pdf:hover { background: rgba(197,160,89,0.25); }
 
 /* CTA FINAL DE CATEGORÍA */
 .cta-final-section { padding: 2rem; }
@@ -1698,8 +1700,6 @@ nav.desktop-nav a:hover::after { width: 100%; }
 .hero-note { font-size: 0.85rem; color: rgba(245,245,245,0.6); }
 .hero-note a { color: var(--gold); text-decoration: underline; }
 .hero-note a:hover { color: var(--gold-light); }
-.sticky-cta-call { background: rgba(197,160,89,0.15); color: var(--gold-light); border: 1px solid rgba(197,160,89,0.3); }
-.sticky-cta-call:hover { background: rgba(197,160,89,0.25); }
 
 /* INFO CARDS */
 .info-grid {
@@ -1819,6 +1819,9 @@ nav.desktop-nav a:hover::after { width: 100%; }
   width: 100%; height: 100%; object-fit: cover;
   transition: transform 0.6s ease;
 }
+.cat-card picture, .featured-card picture, .product-gallery picture,
+.featured-product-image picture { display: block; width: 100%; height: 100%; }
+.mega-item picture { display: block; width: 52px; height: 52px; flex-shrink: 0; }
 .cat-card:hover img {
   transform: scale(1.1);
 }
@@ -1862,7 +1865,7 @@ nav.desktop-nav a:hover::after { width: 100%; }
 }
 .featured-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(350px, 100%), 1fr));
   gap: 2rem;
   max-width: 1100px; margin: 0 auto;
 }
@@ -1925,7 +1928,7 @@ nav.desktop-nav a:hover::after { width: 100%; }
 }
 .breadcrumbs a:hover { color: var(--gold); }
 .breadcrumbs span { color: var(--gold); margin: 0 0.4rem; }
-@media (max-width: 768px) { .breadcrumbs { padding-top: 5.5rem; } }
+@media (max-width: 768px) { .breadcrumbs { padding-top: 5.5rem; } .breadcrumbs a { display: inline-block; padding: 0.6rem 0; } }
 
 /* HERO CATEGORIA ESTRELLA */
 .hero-star-badge {
@@ -2199,7 +2202,7 @@ footer {
   padding: 0.75rem 0.9rem;
   color: var(--white);
   font-family: 'Montserrat', sans-serif;
-  font-size: 0.9rem;
+  font-size: 1rem;
   transition: all 0.2s;
 }
 .form-field input:focus,
@@ -2239,7 +2242,7 @@ footer {
 }
 .stats-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(200px, 100%), 1fr));
   gap: 2rem;
   max-width: 1000px; margin: 0 auto;
 }
@@ -2718,6 +2721,17 @@ footer {
   font-size: 2.5rem; cursor: pointer; transition: color 0.3s;
 }
 .lightbox-close:hover { color: var(--gold); }
+.lightbox-nav {
+  position: absolute; top: 50%; transform: translateY(-50%);
+  width: 48px; height: 48px; border-radius: 50%;
+  background: rgba(15,15,15,0.7); border: 1px solid var(--gold); color: var(--gold);
+  font-size: 1.3rem; cursor: pointer; display: none;
+  align-items: center; justify-content: center; transition: all 0.3s; z-index: 2;
+}
+.lightbox-nav.visible { display: flex; }
+.lightbox-nav:hover { background: var(--gold); color: var(--black); }
+.lightbox-nav.prev { left: 12px; }
+.lightbox-nav.next { right: 12px; }
 .lightbox-caption {
   position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%);
   background: rgba(15,15,15,0.8); padding: 0.6rem 1.5rem;
@@ -3127,7 +3141,7 @@ footer {
   border-top: 1px solid rgba(197,160,89,0.15); padding: 0.6rem 0;
 }
 .mobile-bottom-nav a {
-  flex: 1; display: flex; flex-direction: column; align-items: center; gap: 0.2rem;
+  flex: 1; min-width: 0; display: flex; flex-direction: column; align-items: center; gap: 0.2rem;
   color: rgba(245,245,245,0.5); text-decoration: none; font-size: 0.65rem; font-weight: 600; letter-spacing: 1px; transition: color 0.3s;
 }
 .mobile-bottom-nav a.active, .mobile-bottom-nav a:hover { color: var(--gold); }
@@ -3141,25 +3155,26 @@ footer {
 /* MOBILE */
 @media (max-width: 768px) {
   .mega-menu, .nav-dropdown { display: none; }
-  .search-box input { width: 160px; }
+  .search-box input { width: 160px; font-size: 1rem; }
   .search-box input:focus { width: 220px; }
   .search-dropdown { width: calc(100vw - 40px); right: auto; left: -20px; }
   .mobile-bottom-nav { display: flex; }
   .cat-nav { flex-direction: column; }
   .spotlight-box { padding-top: 10vh; }
   nav.desktop-nav { display: none; }
-  .menu-btn { display: block; }
-  .hero-home { min-height: auto; padding: 4.5rem 1rem 1.5rem; }
+  .menu-btn { display: inline-flex; }
+  .hero-home { min-height: auto; padding: 5.5rem 1rem 1.5rem; }
+  .section-wrap, .section-wrap-alt { padding: 3.5rem 1rem; }
+  .featured-grid { grid-template-columns: 1fr; }
   .hero-home h1 { font-size: clamp(1.7rem, 7.5vw, 2.2rem); }
   .hero-content { padding: 1rem 0; }
-  .hero-content img { height: 80px; margin-bottom: 1rem; }
   .hero-content img { height: 90px; margin-bottom: 1.2rem; }
   .hero-badge { font-size: 0.6rem; padding: 0.4rem 1rem; margin-bottom: 1rem; }
   .hero-home p { font-size: 0.95rem; margin-bottom: 1.5rem; }
   .btn-primary { padding: 0.8rem 1.8rem; font-size: 0.75rem; width: 100%; max-width: 320px; }
   .search-hero { margin-top: 1.5rem; }
   .search-hero-title { font-size: 1.1rem; }
-  .search-hero-input { padding: 0.9rem 1.2rem 0.9rem 3rem; font-size: 0.9rem; border-width: 2px; }
+  .search-hero-input { padding: 0.9rem 1.2rem 0.9rem 3rem; font-size: 1rem; border-width: 2px; }
   .search-hero-icon { left: 1rem; font-size: 1.2rem; }
   .search-hero-hint { font-size: 0.7rem; }
   .products-grid { grid-template-columns: 1fr; }
@@ -3182,17 +3197,15 @@ footer {
   .btn-cotizar { padding: 0.7rem 1.2rem; font-size: 0.75rem; min-height: 44px; }
   .wa-modal-box { margin: 1rem; padding: 1.4rem; }
   .wa-modal-row { grid-template-columns: 1fr; }
-  .sticky-cta-bar { grid-template-columns: 1fr auto; padding: 0.6rem 0.8rem; }
-  .sticky-cta-bar a { padding: 0.65rem 0.7rem; font-size: 0.78rem; }
   .cat-card { height: 260px; }
   .cat-card-overlay { padding: 1.2rem; }
   .cat-card-overlay h3 { font-size: 1.3rem; }
   .cat-card-overlay span { font-size: 0.7rem; }
   .cat-filters { padding: 0 1rem; }
   .cat-filters-inner { padding: 1rem; }
-  .cat-filter-search { padding: 0.7rem 0.8rem; font-size: 0.85rem; }
+  .cat-filter-search { padding: 0.7rem 0.8rem; font-size: 1rem; }
   .cat-filter-chips { gap: 0.5rem; }
-  .filter-chip { padding: 0.5rem 0.8rem; font-size: 0.75rem; }
+  .filter-chip { padding: 0.5rem 0.8rem; font-size: 0.75rem; min-height: 44px; display: inline-flex; align-items: center; }
   .logo img { height: 45px; }
   .mobile-bottom-nav { padding: 0.7rem 0 0.9rem; }
   .mobile-bottom-nav a { font-size: 0.7rem; gap: 0.3rem; min-height: 48px; padding: 0.4rem 0; }
@@ -3200,12 +3213,13 @@ footer {
   .mobile-bottom-nav a span:first-child svg { width: 22px; height: 22px; }
   body { padding-bottom: 130px; }
   .hero-actions { flex-direction: column; align-items: center; }
-  .whatsapp-float { bottom: 25px; }
+  .whatsapp-float { bottom: 108px; }
+  .chatbot-float { bottom: 108px; }
   .hero-actions .btn-primary, .hero-actions .btn-secondary { width: 100%; max-width: 320px; }
   .contact-layout { grid-template-columns: 1fr; gap: 2rem; }
   .contact-form-panel, .contact-info-panel { padding: 1.5rem; }
   .form-row { grid-template-columns: 1fr; gap: 0; }
-  .benefits-grid { grid-template-columns: 1fr 1fr; }
+  .benefits-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .trust-banner { gap: 1rem; padding: 1rem; }
   .trust-item span { font-size: 1.6rem; }
 }
@@ -3219,9 +3233,11 @@ footer {
   .cat-card { height: 220px; }
   .real-sheets-grid { grid-template-columns: repeat(2, 1fr); gap: 0.5rem; }
   .section-header h2 { font-size: 1.4rem; }
+  .benefit-card { padding: 1.2rem 0.6rem; }
+  .benefit-card h3 { font-size: 0.78rem; letter-spacing: 1px; overflow-wrap: break-word; }
+  .mobile-bottom-nav a { font-size: 0.6rem; letter-spacing: 0.5px; }
   .btn-primary { padding: 0.7rem 1rem; }
   .btn-cotizar { width: 100%; }
-}
   .subcat-section { padding: 2rem 1rem; }
   .subcat-header h3 { font-size: 1.3rem; }
   .real-sheets-section { padding: 2.5rem 1rem; }
@@ -3402,14 +3418,14 @@ footer {
 .lead-container h2 { font-family: 'Playfair Display', serif; color: var(--white); font-size: clamp(1.6rem, 4vw, 2.2rem); margin-bottom: 0.5rem; }
 .lead-container p { color: rgba(245,245,245,0.65); margin-bottom: 2rem; }
 .lead-form { display: flex; flex-direction: column; gap: 1rem; max-width: 500px; margin: 0 auto; }
-.lead-form input, .lead-form textarea { padding: 0.9rem 1.2rem; background: rgba(15,15,15,0.6); border: 1px solid rgba(197,160,89,0.25); border-radius: 6px; color: var(--white); font-family: 'Montserrat', sans-serif; font-size: 0.9rem; }
+.lead-form input, .lead-form textarea { padding: 0.9rem 1.2rem; background: rgba(15,15,15,0.6); border: 1px solid rgba(197,160,89,0.25); border-radius: 6px; color: var(--white); font-family: 'Montserrat', sans-serif; font-size: 1rem; }
 .lead-form input:focus, .lead-form textarea:focus { outline: none; border-color: var(--gold); }
 .lead-form button { justify-content: center; display: inline-flex; align-items: center; gap: 0.5rem; }
 .lead-note { font-size: 0.75rem; color: rgba(245,245,245,0.4); margin-top: 1rem; }
 
 /* REVIEWS SECTION */
 .reviews-section { padding: 5rem 2rem; }
-.reviews-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; margin-top: 3rem; }
+.reviews-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr)); gap: 2rem; margin-top: 3rem; }
 .review-card { background: rgba(42,42,42,0.5); border: 1px solid rgba(197,160,89,0.12); border-radius: 8px; padding: 2rem; position: relative; transition: all 0.3s; }
 .review-card:hover { border-color: rgba(197,160,89,0.3); transform: translateY(-5px); }
 .review-badge { position: absolute; top: 1rem; right: 1rem; font-size: 0.65rem; text-transform: uppercase; letter-spacing: 1px; color: var(--gold); border: 1px solid rgba(197,160,89,0.3); padding: 0.2rem 0.6rem; border-radius: 20px; }
@@ -3418,6 +3434,18 @@ footer {
 .review-author { color: var(--white); font-weight: 600; font-size: 0.85rem; }
 .review-meta { color: rgba(245,245,245,0.5); font-size: 0.75rem; }
 .reviews-cta { text-align: center; margin-top: 2.5rem; }
+
+/* TÁCTIL: sin hover pegado + feedback :active en dispositivos touch */
+@media (hover: none) {
+  .product-card:hover, .cat-card:hover, .info-card:hover, .benefit-card:hover,
+  .featured-card:hover, .mega-item:hover, .review-card:hover, .sq-card:hover,
+  .real-sheets-item:hover { transform: none; }
+  .featured-card:hover img, .cat-card:hover img, .product-gallery:hover img { transform: none; }
+  .btn-primary:hover, .btn-secondary:hover, .btn-cotizar:hover, .filter-chip:hover { transform: none; }
+  .product-card:active, .cat-card:active, .featured-card:active, .sq-card:active { transform: scale(0.98); }
+  .btn-primary:active, .btn-secondary:active, .btn-cotizar:active, .filter-chip:active,
+  .carousel-btn:active, .lightbox-nav:active { transform: scale(0.94); filter: brightness(1.15); }
+}
 '''
 
 
@@ -3453,7 +3481,7 @@ PARTICLES_JS = '''(function() {
   const canvas = document.getElementById('bg-canvas');
   if (!canvas) return;
   const ctx = canvas.getContext('2d');
-  let w, h, particles = [];
+  let w, h, particles = [], rafId = null;
   const COUNT = window.innerWidth < 768 ? 30 : 70;
   const CONNECT_DIST = 140;
   const COLOR = 'rgba(197, 160, 89, ';
@@ -3503,9 +3531,20 @@ PARTICLES_JS = '''(function() {
         }
       }
     }
-    requestAnimationFrame(animate);
+    rafId = requestAnimationFrame(animate);
   }
-  animate();
+  // Eficiencia: no animar con reduced-motion; pausar cuando la pestaña no es visible
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (!reduceMotion) {
+    animate();
+    document.addEventListener('visibilitychange', function() {
+      if (document.hidden) {
+        if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
+      } else if (!rafId) {
+        animate();
+      }
+    });
+  }
 })();'''
 
 
@@ -3831,8 +3870,10 @@ def modal_cotizar_html():
 ''' + '''
   <!-- LIGHTBOX -->
   <div class="lightbox" id="lightbox" onclick="closeLightbox(event)">
-    <button class="lightbox-close" onclick="closeLightbox(event)">{svg_icon('x', size=28, color='var(--gold)')}</button>
+    <button class="lightbox-close" onclick="closeLightbox(event)"><svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="var(--gold)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
     <img src="" alt="" id="lightboxImg">
+    <button class="lightbox-nav prev" onclick="navLightbox(-1, event)" aria-label="Anterior">&#10094;</button>
+    <button class="lightbox-nav next" onclick="navLightbox(1, event)" aria-label="Siguiente">&#10095;</button>
     <div class="lightbox-caption" id="lightboxCaption"></div>
   </div>
   <script>
@@ -3870,14 +3911,41 @@ def modal_cotizar_html():
       closeWaModal();
       e.target.reset();
     }
-    // Lightbox
+    // Lightbox con navegación (flechas, teclado y swipe táctil)
+    var lbImages = [];
+    var lbIndex = 0;
+    function lbCollect() {
+      lbImages = [];
+      document.querySelectorAll('[onclick*="openLightbox"]').forEach(function(el) {
+        var m = el.getAttribute('onclick').match(/openLightbox\\('([^']*)'\\s*(?:,\\s*'([^']*)')?/);
+        if (m) lbImages.push({ src: m[1], caption: m[2] || '' });
+      });
+    }
+    function lbShow(i) {
+      var item = lbImages[i];
+      if (!item) return;
+      document.getElementById('lightboxImg').src = item.src;
+      document.getElementById('lightboxCaption').textContent = item.caption;
+      var showNav = lbImages.length > 1;
+      document.querySelectorAll('.lightbox-nav').forEach(function(b) {
+        b.classList.toggle('visible', showNav);
+      });
+    }
     function openLightbox(src, caption) {
       var lb = document.getElementById('lightbox');
       if (!lb) return;
-      document.getElementById('lightboxImg').src = src;
-      document.getElementById('lightboxCaption').textContent = caption || '';
+      if (!lbImages.length) lbCollect();
+      lbIndex = 0;
+      for (var i = 0; i < lbImages.length; i++) { if (lbImages[i].src === src) { lbIndex = i; break; } }
+      lbShow(lbIndex);
       lb.classList.add('active');
       document.body.style.overflow = 'hidden';
+    }
+    function navLightbox(dir, e) {
+      if (e) e.stopPropagation();
+      if (lbImages.length < 2) return;
+      lbIndex = (lbIndex + dir + lbImages.length) % lbImages.length;
+      lbShow(lbIndex);
     }
     function closeLightbox(e) {
       var lb = document.getElementById('lightbox');
@@ -3887,8 +3955,24 @@ def modal_cotizar_html():
       document.body.style.overflow = '';
     }
     document.addEventListener('keydown', function(e) {
+      var lb = document.getElementById('lightbox');
+      if (!lb || !lb.classList.contains('active')) return;
       if (e.key === 'Escape') closeLightbox();
+      if (e.key === 'ArrowLeft') navLightbox(-1);
+      if (e.key === 'ArrowRight') navLightbox(1);
     });
+    (function() {
+      var lb = document.getElementById('lightbox');
+      if (!lb) return;
+      var x0 = null;
+      lb.addEventListener('touchstart', function(e) { x0 = e.touches[0].clientX; }, { passive: true });
+      lb.addEventListener('touchend', function(e) {
+        if (x0 === null) return;
+        var dx = e.changedTouches[0].clientX - x0;
+        if (Math.abs(dx) > 40) navLightbox(dx < 0 ? 1 : -1);
+        x0 = null;
+      }, { passive: true });
+    })();
   </script>
 '''
 
@@ -3973,11 +4057,29 @@ def category_filters_js():
 
 
 def webp_srcset(img_path):
-    """Devuelve rutas WebP para una imagen relativa si existen."""
+    """Devuelve rutas WebP para una imagen relativa si existen (URL-encoded para srcset)."""
     p = Path(img_path)
-    webp = p.with_suffix('.webp').as_posix()
-    webp600 = (p.parent / (p.stem + '-600w.webp')).as_posix()
+    webp = p.with_suffix('.webp').as_posix().replace(' ', '%20')
+    webp600 = (p.parent / (p.stem + '-600w.webp')).as_posix().replace(' ', '%20')
     return webp, webp600
+
+
+def ensure_logo_webp():
+    """Genera versión WebP ligera del logo (287KB PNG -> ~20-30KB WebP)."""
+    if not HAS_PIL:
+        return
+    src = OUTPUT_DIR / 'LOGO ADIS.png'
+    dst = OUTPUT_DIR / 'LOGO ADIS.webp'
+    if src.exists() and (not dst.exists() or src.stat().st_mtime > dst.stat().st_mtime):
+        _ensure_webp(src, dst, max_width=320, quality=85)
+
+
+def logo_tag():
+    """Logo con WebP optimizado y fallback PNG (header, hero, footer)."""
+    webp = p('LOGO ADIS.webp').replace(' ', '%20')
+    png = p('LOGO ADIS.png')
+    return (f'<picture><source srcset="{webp}" type="image/webp">'
+            f'<img src="{png}" alt="ADIS Logo"></picture>')
 
 
 def picture_tag(img_path, alt, loading='lazy', onclick=None):
@@ -4038,7 +4140,7 @@ def generate_header(current_page='index', page_file='index.html'):
         ('8-zacate.html', 'img/8-zacate/81-follaje-sintetico/AMAZONAS-A.jpg', 'menu_zacate'),
         ('9-cladding.html', 'img/9-cladding/91-placa-tipo-roca/BLACK.jpg', 'menu_cladding'),
     ]
-    mega_html = '\n'.join([f'        <a href="{p(u)}" class="mega-item"><img src="{p(i)}" alt="{t(k)}" loading="lazy"><span>{i18n(k)}</span></a>' for u, i, k in MEGA_ITEMS])
+    mega_html = '\n'.join([f'        <a href="{p(u)}" class="mega-item">{picture_tag(i, t(k))}<span>{i18n(k)}</span></a>' for u, i, k in MEGA_ITEMS])
     
     SABIAS_ITEMS = [
         ('sabias-que-pvc.html', 'menu_placas_pvc'),
@@ -4082,10 +4184,11 @@ def generate_header(current_page='index', page_file='index.html'):
         <a href="{p('proyectos.html')}">{i18n("nav_projects")}</a>
         <a href="{p('nosotros.html')}">{i18n("nav_about")}</a>
         <a href="{p('contacto.html')}">{i18n("nav_contact")}</a>'''
+    mobile_cats = '\n'.join([f'      <a href="{p(u)}" onclick="toggleMenu()">{i18n(k)}</a>' for u, i, k in MEGA_ITEMS])
 
     return f'''  <header>
     <div class="header-inner">
-      <a href="{p('index.html')}" class="logo"><img src="{p('LOGO ADIS.png')}" alt="ADIS Logo"></a>
+      <a href="{p('index.html')}" class="logo">{logo_tag()}</a>
       <nav class="desktop-nav">
         {nav_links}
         <div class="search-box">
@@ -4109,7 +4212,11 @@ def generate_header(current_page='index', page_file='index.html'):
     <a href="{p('proyectos.html')}" onclick="toggleMenu()">{i18n("nav_projects")}</a>
     <a href="{p('nosotros.html')}" onclick="toggleMenu()">{i18n("nav_about")}</a>
     <a href="{p('contacto.html')}" onclick="toggleMenu()">{i18n("nav_contact")}</a>
-    <div class="search-box" style="margin-top:1rem;">
+    <div class="mobile-menu-cats">
+{mobile_cats}
+    </div>
+    <div class="mobile-menu-lang">{translate_toggle(page_file)}</div>
+    <div class="search-box" style="margin-top:0.5rem;">
       <input type="text" id="searchInputMobile" placeholder="{t('search_mobile_placeholder')}" autocomplete="off" style="width:220px;">
       <button onclick="performSearchMobile()">{svg_icon('search', size=18, color='var(--gold)')}</button>
       <div class="search-dropdown" id="searchDropdownMobile"></div>
@@ -4965,7 +5072,7 @@ def generate_footer():
         const wrap = document.createElement('div');
         wrap.className = 'chat-input-wrap';
         wrap.style.cssText = 'display:flex;gap:0.5rem;margin-top:0.5rem;padding-top:0.5rem;border-top:1px solid rgba(197,160,89,0.15);';
-        wrap.innerHTML = `<input type="text" id="chatTextInput" placeholder="${ct('input_placeholder')}" autocomplete="off" style="flex:1;padding:0.6rem 1rem;background:rgba(255,255,255,0.06);border:1px solid rgba(197,160,89,0.25);border-radius:20px;color:var(--light);font-family:'Montserrat',sans-serif;font-size:0.82rem;" onkeydown="if(event.key==='Enter'){chatBotProcess(this.value);this.value='';}"><button onclick="chatBotProcess(document.getElementById('chatTextInput').value);document.getElementById('chatTextInput').value='';" style="background:var(--gold);border:none;border-radius:50%;width:34px;height:34px;cursor:pointer;color:var(--black);font-size:0.9rem;flex-shrink:0;">➤</button>`;
+        wrap.innerHTML = `<input type="text" id="chatTextInput" placeholder="${ct('input_placeholder')}" autocomplete="off" style="flex:1;padding:0.6rem 1rem;background:rgba(255,255,255,0.06);border:1px solid rgba(197,160,89,0.25);border-radius:20px;color:var(--light);font-family:'Montserrat',sans-serif;font-size:1rem;" onkeydown="if(event.key==='Enter'){chatBotProcess(this.value);this.value='';}"><button onclick="chatBotProcess(document.getElementById('chatTextInput').value);document.getElementById('chatTextInput').value='';" style="background:var(--gold);border:none;border-radius:50%;width:34px;height:34px;cursor:pointer;color:var(--black);font-size:0.9rem;flex-shrink:0;">➤</button>`;
         chatBody.appendChild(wrap);
         chatBody.scrollTop = chatBody.scrollHeight;
         setTimeout(() => { const inp = document.getElementById('chatTextInput'); if (inp) inp.focus(); }, 100);
@@ -6113,7 +6220,7 @@ def generate_footer():
   </script>
 '''
     return f"""  <footer>
-    <div class="footer-logo"><img src="{p('LOGO ADIS.png')}" alt="ADIS Logo"></div>
+    <div class="footer-logo">{logo_tag()}</div>
     <div class="footer-info">
       <strong>ADI&#39;S DISEÑO & REMODELACIÓN</strong><br>
       {i18n('footer_slogan')}<br>
@@ -6207,7 +6314,7 @@ def generate_index(categories):
                 desc_key = 'featured_pvc_desc'
             
             featured_cards += f'''      <a href="{p(cat["filename"])}" class="featured-card reveal">
-        <img src="{p(thumb_src)}" alt="{cat_display(cat["name"])}" loading="lazy">
+        {picture_tag(thumb_src, cat_display(cat["name"]))}
         <div class="featured-card-overlay">
           <div class="star-label">&#11088; {i18n('featured_star_label')}</div>
           <h3>{cat_display(cat["name"])}</h3>
@@ -6220,7 +6327,7 @@ def generate_index(categories):
         featured_class = ' featured' if is_star else ''
         
         cat_cards += f'''      <a href="{p(cat["filename"])}" class="cat-card reveal{featured_class}">
-        {star_badge}<img src="{p(thumb_src)}" alt="{cat_display(cat["name"])}" loading="lazy">
+        {star_badge}{picture_tag(thumb_src, cat_display(cat["name"]))}
         <div class="cat-card-overlay">
           <div class="cat-arrow">→</div>
           <h3>{cat_display(cat["name"])}</h3>
@@ -6369,7 +6476,7 @@ def generate_index(categories):
   <!-- INICIO -->
   <section class="hero-home" id="inicio">
     <div class="hero-content">
-      <img src="{p('LOGO ADIS.png')}" alt="ADIS Logo">
+      {logo_tag()}
       <div class="hero-badge">{i18n('hero_badge')}</div>
       <h1>{i18n('hero_title', html=True)}</h1>
       <p>{i18n('hero_subtitle', html=True)}</p>
@@ -6473,7 +6580,7 @@ def generate_index(categories):
     <div class="featured-product-wrap">
       <div class="featured-product-image">
         <span class="featured-product-badge">{i18n('featured_marble_title')}</span>
-        <img src="{p('img/1-placas-pvc/Carrara%20Oscuro.jpg')}" alt="{t('featured_marble_title')}" loading="lazy">
+        {picture_tag('img/1-placas-pvc/Carrara Oscuro.jpg', t('featured_marble_title'))}
       </div>
       <div class="featured-product-content">
         <h3>{i18n('featured_marble_title')}</h3>
@@ -7722,7 +7829,7 @@ def generate_testimonios():
       <div class="divider"></div>
       <p>{i18n('testimonials_subtitle', html=True)}</p>
     </div>
-    <div style="max-width: 1100px; margin: 0 auto; padding: 0 2rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin-bottom: 3rem;">
+    <div style="max-width: 1100px; margin: 0 auto; padding: 0 2rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr)); gap: 1.5rem; margin-bottom: 3rem;">
       <div style="background: rgba(42,42,42,0.7); backdrop-filter: blur(10px); border: 1px solid rgba(197,160,89,0.2); border-radius: 12px; padding: 1.8rem; position: relative;">
         <div style="font-size: 3rem; color: var(--gold); opacity: 0.3; position: absolute; top: 0.5rem; right: 1rem; font-family: Georgia, serif;">"</div>
         <span class="review-badge">{i18n('reviews_badge')}</span>
@@ -8283,9 +8390,9 @@ def generate_proyectos():
     .carousel-btn:hover {{ background: var(--gold); color: var(--black); }}
     .carousel-btn.prev {{ left: 15px; }}
     .carousel-btn.next {{ right: 15px; }}
-    .video-grid {{ display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem; max-width: 1200px; margin: 0 auto; }}
+    .video-grid {{ display: grid; grid-template-columns: repeat(auto-fill, minmax(min(300px, 100%), 1fr)); gap: 1.5rem; max-width: 1200px; margin: 0 auto; }}
     .video-card video {{ width: 100%; border-radius: 8px; }}
-    @media (max-width: 768px) {{ .carousel-slide img {{ height: 280px; }} .carousel-btn {{ width: 36px; height: 36px; font-size: 1rem; }} }}
+    @media (max-width: 768px) {{ .carousel-slide img {{ height: 280px; }} .carousel-btn {{ width: 44px; height: 44px; font-size: 1rem; }} }}
   </style>
 </head>
 <body>
@@ -8318,12 +8425,30 @@ def generate_proyectos():
       carouselState[id] = (carouselState[id] + dir + slides) % slides;
       el.style.transform = 'translateX(-' + (carouselState[id] * 100) + '%)';
     }}
-    // Auto-play carruseles
-    setInterval(() => {{
-      document.querySelectorAll('.carousel').forEach(car => {{
-        moveCarousel(car.id, 1);
-      }});
-    }}, 5000);
+    // Swipe táctil en carruseles + pausa de autoplay al interactuar
+    let userInteracted = false;
+    document.querySelectorAll('.carousel').forEach(car => {{
+      let x0 = null;
+      car.addEventListener('touchstart', e => {{ x0 = e.touches[0].clientX; }}, {{ passive: true }});
+      car.addEventListener('touchend', e => {{
+        if (x0 === null) return;
+        const dx = e.changedTouches[0].clientX - x0;
+        if (Math.abs(dx) > 40) {{ userInteracted = true; moveCarousel(car.id, dx < 0 ? 1 : -1); }}
+        x0 = null;
+      }}, {{ passive: true }});
+      car.addEventListener('pointerdown', () => {{ userInteracted = true; }});
+    }});
+    // Auto-play carruseles: solo desktop, respeta reduced-motion y pausa del usuario
+    const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const isMobileView = matchMedia('(max-width: 768px)').matches;
+    if (!reduceMotion && !isMobileView) {{
+      setInterval(() => {{
+        if (userInteracted) return;
+        document.querySelectorAll('.carousel').forEach(car => {{
+          moveCarousel(car.id, 1);
+        }});
+      }}, 5000);
+    }}
     
     // Autoplay videos when visible
     (function() {{
@@ -8368,6 +8493,7 @@ def main():
         cat["total_products"] = total
 
     print("\nGenerando archivos...")
+    ensure_logo_webp()
     generate_style()
     generate_sitemap(categories)
     generate_robots()
