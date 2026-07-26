@@ -138,7 +138,8 @@ TRANSLATIONS = {
     'featured_title': {'es': 'Productos Estrella', 'en': 'Star Products'},
     'featured_subtitle': {'es': 'Los favoritos de nuestros clientes. Calidad premium que transforma cualquier espacio.', 'en': 'Our customers\' favorites. Premium quality that transforms any space.'},
     'featured_star_label': {'es': 'Producto Estrella', 'en': 'Star Product'},
-    'featured_star_badge': {'es': 'Estrella', 'en': 'Star'},
+    'featured_star_badge': {'es': 'Más vendido', 'en': 'Best seller'},
+    'badge_new': {'es': 'Nuevo', 'en': 'New'},
     'featured_wpc_desc': {'es': 'Wood Plastic Composite de alta gama. Resistente a la humedad, rayos UV y perfecto para interiores y exteriores. Nuestro producto más solicitado.', 'en': 'High-end Wood Plastic Composite. Moisture and UV resistant, perfect for indoors and outdoors. Our most requested product.'},
     'featured_pvc_desc': {'es': 'Paneles rígidos tipo madera, texturizados y espejo. Acabado profesional con instalación rápida y garantía extendida.', 'en': 'Rigid wood-look, textured and mirror panels. Professional finish with fast installation and extended warranty.'},
 
@@ -228,6 +229,19 @@ TRANSLATIONS = {
     'cat_cta_final_form': {'es': 'Llenar formulario', 'en': 'Fill form'},
     'cat_back_home': {'es': '← Volver al Inicio', 'en': '← Back to Home'},
     'cat_contact': {'es': 'Contactar', 'en': 'Contact'},
+    'calc_title': {'es': '¿Cuánto material necesito?', 'en': 'How much material do I need?'},
+    'calc_subtitle': {'es': 'Ingresa las medidas de tu muro y calcula los m² a cotizar.', 'en': 'Enter your wall measurements and calculate the square meters to quote.'},
+    'calc_height': {'es': 'Alto del muro (m)', 'en': 'Wall height (m)'},
+    'calc_width': {'es': 'Ancho del muro (m)', 'en': 'Wall width (m)'},
+    'calc_product': {'es': 'Producto de interés', 'en': 'Product of interest'},
+    'calc_button': {'es': 'Calcular material', 'en': 'Calculate material'},
+    'calc_error': {'es': 'Ingresa medidas válidas (mayores a 0).', 'en': 'Please enter valid measurements (greater than 0).'},
+    'calc_note_tpl': {'es': 'Área: {m} m² + 10% de desperdicio por cortes y ajustes.', 'en': 'Area: {m} m² + 10% extra for cuts and adjustments.'},
+    'calc_wa_msg': {'es': 'Hola ADIS, quiero cotizar {c}. Mi muro mide {a} m de alto x {b} m de ancho = {m} m2. Con el 10% de desperdicio serian aproximadamente {t} m2. ¿Me pueden dar precio y disponibilidad?', 'en': 'Hello ADIS, I would like a quote for {c}. My wall is {a} m high x {b} m wide = {m} m2. With 10% waste it would be about {t} m2. Can you give me pricing and availability?'},
+    'trans_title': {'es': 'Transformaciones reales de clientes', 'en': 'Real customer transformations'},
+    'trans_subtitle': {'es': 'Fotos reales de proyectos ADIS. Sin filtros, sin edición.', 'en': 'Real photos from ADIS projects. No filters, no editing.'},
+    'trans_cta': {'es': 'Ver todos los proyectos', 'en': 'See all projects'},
+    'topbar_text': {'es': 'Envíos a Nogales y Tucson · Cotización gratis hoy', 'en': 'We ship to Nogales & Tucson · Free quote today'},
     'cat_best_sellers': {'es': 'Más Vendidos — Placas PVC Tipo Espejo', 'en': 'Best Sellers — Mirror PVC Panels'},
     'cat_accessories': {'es': 'Accesorios', 'en': 'Accessories'},
     'cat_products': {'es': 'Productos {category}', 'en': '{category} Products'},
@@ -1430,6 +1444,13 @@ nav.desktop-nav a:hover::after { width: 100%; }
   min-width: 44px; min-height: 44px; align-items: center; justify-content: center;
 }
 .header-actions { display: flex; align-items: center; gap: 0.9rem; }
+.topbar {
+  background: var(--gold); color: var(--black);
+  text-align: center; font-size: 0.72rem; font-weight: 700;
+  letter-spacing: 1px; text-transform: uppercase;
+  padding: 0.4rem 1rem; display: flex; align-items: center; justify-content: center; gap: 0.5rem;
+}
+.topbar svg { flex-shrink: 0; }
 .mobile-menu {
   position: fixed; inset: 0; z-index: 10001;
   background: rgba(15,15,15,0.98);
@@ -1633,7 +1654,7 @@ nav.desktop-nav a:hover::after { width: 100%; }
 .hero-home {
   min-height: 100vh;
   display: flex; align-items: center; justify-content: center;
-  position: relative; padding: 5rem 2rem;
+  position: relative; padding: 7rem 2rem 5rem;
   text-align: center;
   background: url('media/despues 2.jpeg') center/cover no-repeat;
   z-index: 1;
@@ -1642,7 +1663,11 @@ nav.desktop-nav a:hover::after { width: 100%; }
   content: '';
   position: absolute; inset: 0;
   background: linear-gradient(135deg, rgba(15,15,15,0.88) 0%, rgba(15,15,15,0.65) 60%, rgba(15,15,15,0.5) 100%);
-  z-index: 0;
+  z-index: 1;
+}
+.hero-video {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  object-fit: cover; z-index: 0;
 }
 .hero-content {
   max-width: 800px; position: relative; z-index: 2;
@@ -1679,6 +1704,22 @@ nav.desktop-nav a:hover::after { width: 100%; }
   font-size: 0.8rem; font-weight: 700; letter-spacing: 2px;
   text-transform: uppercase; text-decoration: none;
   border: 2px solid var(--gold); transition: all 0.3s;
+  position: relative; overflow: hidden;
+}
+.btn-primary::after {
+  content: ''; position: absolute; top: 0; left: -80%;
+  width: 50%; height: 100%;
+  background: linear-gradient(100deg, transparent 0%, rgba(255,255,255,0.35) 50%, transparent 100%);
+  transform: skewX(-20deg);
+  animation: btnShine 4.5s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes btnShine {
+  0%, 55% { left: -80%; }
+  100% { left: 180%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .btn-primary::after { animation: none; display: none; }
 }
 .btn-primary:hover {
   background: transparent; color: var(--gold);
@@ -1767,6 +1808,18 @@ nav.desktop-nav a:hover::after { width: 100%; }
 }
 .benefit-icon { display: flex; justify-content: center; align-items: center; margin-bottom: 1rem; }
 .benefit-icon svg { width: 44px; height: 44px; }
+/* Iconos con 'pop' escalonado al hacer scroll (desktop; en móvil estáticos) */
+.js-enabled .reveal .benefit-icon { opacity: 0; transform: scale(0.2) rotate(-10deg); transition: opacity 0.5s ease, transform 0.55s cubic-bezier(0.34, 1.56, 0.64, 1); }
+.js-enabled .reveal.active .benefit-icon { opacity: 1; transform: scale(1) rotate(0); }
+.js-enabled .reveal.active .benefit-card:nth-child(2) .benefit-icon { transition-delay: 0.12s; }
+.js-enabled .reveal.active .benefit-card:nth-child(3) .benefit-icon { transition-delay: 0.24s; }
+.js-enabled .reveal.active .benefit-card:nth-child(4) .benefit-icon { transition-delay: 0.36s; }
+@media (max-width: 768px) {
+  .js-enabled .reveal .benefit-icon { opacity: 1; transform: none; transition: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .js-enabled .reveal .benefit-icon { opacity: 1 !important; transform: none !important; transition: none !important; }
+}
 .benefit-card h3 {
   font-size: 0.9rem; color: var(--white); text-transform: uppercase;
   letter-spacing: 2px; margin-bottom: 0.6rem;
@@ -1782,12 +1835,13 @@ nav.desktop-nav a:hover::after { width: 100%; }
   border: 1px solid rgba(197,160,89,0.15);
   border-radius: 12px;
 }
-.trust-item { text-align: center; }
+.trust-item { display: flex; align-items: center; gap: 0.7rem; text-align: left; }
+.trust-item > svg { flex-shrink: 0; }
 .trust-item span {
   display: block;
   font-family: 'Playfair Display', serif;
-  font-size: 2rem; color: var(--gold);
-  font-weight: 700;
+  font-size: 1.7rem; color: var(--gold);
+  font-weight: 700; line-height: 1.1;
 }
 .trust-item {
   font-size: 0.75rem; color: rgba(245,245,245,0.7);
@@ -1857,6 +1911,10 @@ nav.desktop-nav a:hover::after { width: 100%; }
   font-size: 0.65rem; font-weight: 700; text-transform: uppercase;
   letter-spacing: 1px; box-shadow: 0 4px 15px rgba(197,160,89,0.4);
 }
+.star-badge.new-badge {
+  background: #2E9E6B; color: #fff;
+  box-shadow: 0 4px 15px rgba(46,158,107,0.4);
+}
 
 /* SECCIÓN ESTRELLAS HOME */
 .featured-section {
@@ -1913,7 +1971,7 @@ nav.desktop-nav a:hover::after { width: 100%; }
 
 /* BREADCRUMBS */
 .breadcrumbs {
-  padding: 6.5rem 2rem 0;
+  padding: 8.5rem 2rem 0;
   font-size: 0.75rem;
   color: rgba(245,245,245,0.5);
   text-transform: uppercase;
@@ -1928,7 +1986,7 @@ nav.desktop-nav a:hover::after { width: 100%; }
 }
 .breadcrumbs a:hover { color: var(--gold); }
 .breadcrumbs span { color: var(--gold); margin: 0 0.4rem; }
-@media (max-width: 768px) { .breadcrumbs { padding-top: 5.5rem; } .breadcrumbs a { display: inline-block; padding: 0.6rem 0; } }
+@media (max-width: 768px) { .breadcrumbs { padding-top: 7rem; } .breadcrumbs a { display: inline-block; padding: 0.6rem 0; } }
 
 /* HERO CATEGORIA ESTRELLA */
 .hero-star-badge {
@@ -1947,7 +2005,7 @@ nav.desktop-nav a:hover::after { width: 100%; }
 
 /* HERO CATEGORÍA */
 .hero-cat {
-  padding: 8rem 2rem 3rem;
+  padding: 10rem 2rem 3rem;
   text-align: center;
   position: relative; z-index: 1;
 }
@@ -2087,7 +2145,7 @@ footer {
 
 /* CONTACTO */
 .contact-section {
-  padding: 8rem 2rem 4rem;
+  padding: 10rem 2rem 4rem;
   max-width: 900px; margin: 0 auto;
   position: relative; z-index: 1;
 }
@@ -2762,7 +2820,7 @@ footer {
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding: 8rem 2rem 4rem;
+  padding: 10rem 2rem 4rem;
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -3163,7 +3221,8 @@ footer {
   .spotlight-box { padding-top: 10vh; }
   nav.desktop-nav { display: none; }
   .menu-btn { display: inline-flex; }
-  .hero-home { min-height: auto; padding: 5.5rem 1rem 1.5rem; }
+  .hero-home { min-height: auto; padding: 7rem 1rem 1.5rem; }
+  .topbar { font-size: 0.6rem; letter-spacing: 0.3px; padding: 0.35rem 0.5rem; }
   .section-wrap, .section-wrap-alt { padding: 3.5rem 1rem; }
   .featured-grid { grid-template-columns: 1fr; }
   .hero-home h1 { font-size: clamp(1.7rem, 7.5vw, 2.2rem); }
@@ -3186,7 +3245,7 @@ footer {
   .chatbot-float { width: 50px; height: 50px; font-size: 1.5rem; }
   .chatbot-window { width: calc(100vw - 40px); left: 20px; }
   .stat-number { font-size: 2rem; }
-  .hero-cat-bg { min-height: 32vh; padding: 6rem 1rem 2rem; }
+  .hero-cat-bg { min-height: 32vh; padding: 7.5rem 1rem 2rem; }
   .hero-cat-bg h1 { font-size: clamp(1.8rem, 8vw, 2.5rem); }
   .hero-cat-actions { flex-direction: column; gap: 0.8rem; }
   .hero-cat-actions .btn-primary { width: 100%; }
@@ -3221,7 +3280,7 @@ footer {
   .form-row { grid-template-columns: 1fr; gap: 0; }
   .benefits-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .trust-banner { gap: 1rem; padding: 1rem; }
-  .trust-item span { font-size: 1.6rem; }
+  .trust-item span { font-size: 1.3rem; }
 }
 
 @media (max-width: 480px) {
@@ -3243,7 +3302,7 @@ footer {
   .real-sheets-section { padding: 2.5rem 1rem; }
   .real-sheets-grid { grid-template-columns: repeat(2, 1fr); gap: 0.75rem; }
   .section-header h2 { font-size: 1.6rem; }
-  .contact-section { padding: 6rem 1rem 2rem; }
+  .contact-section { padding: 7.5rem 1rem 2rem; }
   .specs-bar { padding: 0 1rem; margin-bottom: 2rem; }
   .spec-item { padding: 1rem 0.6rem; }
 }
@@ -3292,7 +3351,7 @@ footer {
 @media (max-width: 768px) { .real-sheets-grid { grid-template-columns: repeat(2, 1fr); } }
 
 /* SABIAS QUE - PAGINA INTERACTIVA */
-.sq-hero { padding: 8rem 2rem 3rem; text-align: center; background: linear-gradient(135deg, rgba(15,15,15,0.95) 0%, rgba(26,26,26,0.9) 100%); position: relative; }
+.sq-hero { padding: 10rem 2rem 3rem; text-align: center; background: linear-gradient(135deg, rgba(15,15,15,0.95) 0%, rgba(26,26,26,0.9) 100%); position: relative; }
 .sq-hero h1 { font-family: 'Playfair Display', serif; font-size: 2.8rem; color: var(--gold-light); margin-bottom: 0.6rem; }
 .sq-hero p { color: rgba(245,245,245,0.5); font-size: 1rem; max-width: 500px; margin: 0 auto; }
 
@@ -3381,7 +3440,7 @@ footer {
 .footer-links a:hover { color: var(--gold); }
 
 /* ABOUT PAGE */
-.about-hero { min-height: 60vh; display: flex; align-items: center; justify-content: center; position: relative; padding: 8rem 2rem 4rem; text-align: center; background: url('media/proyecto-recepcion.jpg') center/cover no-repeat; }
+.about-hero { min-height: 60vh; display: flex; align-items: center; justify-content: center; position: relative; padding: 10rem 2rem 4rem; text-align: center; background: url('media/proyecto-recepcion.jpg') center/cover no-repeat; }
 .about-hero::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(15,15,15,0.9) 0%, rgba(15,15,15,0.7) 100%); }
 .about-hero-content { position: relative; z-index: 2; max-width: 800px; }
 .about-hero-content h1 { font-family: 'Playfair Display', serif; font-size: clamp(2.2rem, 5vw, 3.5rem); color: var(--white); margin-bottom: 1rem; }
@@ -3434,6 +3493,36 @@ footer {
 .review-author { color: var(--white); font-weight: 600; font-size: 0.85rem; }
 .review-meta { color: rgba(245,245,245,0.5); font-size: 0.75rem; }
 .reviews-cta { text-align: center; margin-top: 2.5rem; }
+
+/* TRANSFORMACIONES REALES */
+.transform-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; max-width: 1100px; margin: 0 auto 2rem; }
+.transform-item { border-radius: 12px; overflow: hidden; border: 1px solid rgba(197,160,89,0.2); cursor: pointer; position: relative; aspect-ratio: 1/1; }
+.transform-item picture, .transform-item img { display: block; width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
+.transform-item:hover img { transform: scale(1.07); }
+.transform-item::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, rgba(15,15,15,0.35) 0%, transparent 45%); pointer-events: none; }
+.transform-cta { text-align: center; }
+@media (max-width: 768px) {
+  .transform-grid { grid-template-columns: repeat(2, 1fr); gap: 0.7rem; }
+}
+
+/* CALCULADORA DE MATERIAL */
+.calc-box { max-width: 800px; margin: 0 auto; background: rgba(26,26,26,0.8); border: 1px solid rgba(197,160,89,0.25); border-radius: 18px; padding: 2.5rem; box-shadow: 0 20px 60px rgba(0,0,0,0.4); }
+.calc-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-bottom: 1.5rem; }
+.calc-field label { display: block; font-size: 0.75rem; font-weight: 600; color: rgba(245,245,245,0.7); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.4rem; }
+.calc-field input, .calc-field select { width: 100%; background: rgba(255,255,255,0.05); border: 1px solid rgba(197,160,89,0.25); border-radius: 10px; padding: 0.85rem 1rem; color: var(--white); font-family: 'Montserrat', sans-serif; font-size: 1rem; }
+.calc-field input:focus, .calc-field select:focus { outline: none; border-color: var(--gold); box-shadow: 0 0 0 3px rgba(197,160,89,0.12); }
+.calc-field select option { background: #1A1A1A; color: var(--white); }
+.calc-btn { width: 100%; justify-content: center; border: none; cursor: pointer; }
+.calc-result { text-align: center; margin-top: 1.8rem; padding-top: 1.8rem; border-top: 1px solid rgba(197,160,89,0.2); }
+.calc-m2 { font-family: 'Playfair Display', serif; font-size: 3rem; color: var(--gold); font-weight: 700; line-height: 1; }
+.calc-result p { color: rgba(245,245,245,0.7); font-size: 0.9rem; margin: 0.6rem 0 1.2rem; }
+.calc-result .btn-wa { display: inline-flex; }
+@media (max-width: 768px) {
+  .calc-box { padding: 1.5rem; }
+  .calc-grid { grid-template-columns: 1fr 1fr; }
+  .calc-field:last-child { grid-column: 1 / -1; }
+  .calc-m2 { font-size: 2.4rem; }
+}
 
 /* TÁCTIL: sin hover pegado + feedback :active en dispositivos touch */
 @media (hover: none) {
@@ -3823,6 +3912,84 @@ def generate_robots():
     print("  robots.txt generado")
 
 
+def transformations_html(images):
+    """Grid de fotos reales de proyectos (UGC) con lightbox."""
+    if not images:
+        return ''
+    items = '\n'.join(
+        f'      <div class="transform-item">{picture_tag(f"media/{img}", t("trans_title"), onclick=f"openLightbox(\'{p("media/" + img)}\', \'{t("trans_title")}\')")}</div>'
+        for img in images)
+    return f'''  <!-- TRANSFORMACIONES REALES -->
+  <section class="section-wrap-alt reveal" id="transformaciones">
+    <div class="section-header">
+      <h2>{i18n('trans_title')}</h2>
+      <div class="divider"></div>
+      <p>{i18n('trans_subtitle')}</p>
+    </div>
+    <div class="transform-grid">
+{items}
+    </div>
+    <div class="transform-cta">
+      <a href="{p('proyectos.html')}" class="btn-secondary">{i18n('trans_cta')}</a>
+    </div>
+  </section>
+'''
+
+
+def calculator_html(categories, preselect=None):
+    """Sección calculadora de m² con CTA a WhatsApp (i18n)."""
+    options = '\n'.join(
+        f'        <option value="{cat_display(c["name"])}"{" selected" if preselect and c["name"] == preselect else ""}>{cat_display(c["name"])}</option>'
+        for c in categories)
+    return f'''  <!-- CALCULADORA DE MATERIAL -->
+  <section class="section-wrap calc-section reveal" id="calculadora">
+    <div class="calc-box">
+      <div class="section-header">
+        <h2>{i18n('calc_title')}</h2>
+        <div class="divider"></div>
+        <p>{i18n('calc_subtitle')}</p>
+      </div>
+      <div class="calc-grid">
+        <div class="calc-field"><label for="calcAlto">{i18n('calc_height')}</label><input type="number" id="calcAlto" min="0" step="0.1" placeholder="2.4" inputmode="decimal"></div>
+        <div class="calc-field"><label for="calcAncho">{i18n('calc_width')}</label><input type="number" id="calcAncho" min="0" step="0.1" placeholder="3.0" inputmode="decimal"></div>
+        <div class="calc-field"><label for="calcCat">{i18n('calc_product')}</label><select id="calcCat">
+{options}
+        </select></div>
+      </div>
+      <button type="button" class="btn-primary calc-btn" onclick="adisCalc()">{i18n('calc_button')}</button>
+      <div class="calc-result" id="calcResult" style="display:none;">
+        <div class="calc-m2"><span id="calcM2">0</span> m²</div>
+        <p id="calcNote"></p>
+        <a href="#" id="calcWa" class="btn-primary btn-wa" target="_blank" onclick="gtag('event','whatsapp_click',{{'location':'calculadora'}})">{i18n('cta_quote_whatsapp')}</a>
+      </div>
+    </div>
+  </section>
+  <script>
+    function adisCalc() {{
+      var alto = parseFloat(document.getElementById('calcAlto').value) || 0;
+      var ancho = parseFloat(document.getElementById('calcAncho').value) || 0;
+      var cat = document.getElementById('calcCat').value;
+      var res = document.getElementById('calcResult');
+      res.style.display = 'block';
+      var area = alto * ancho;
+      if (area <= 0) {{
+        document.getElementById('calcM2').textContent = '—';
+        document.getElementById('calcNote').textContent = '{t('calc_error')}';
+        document.getElementById('calcWa').style.display = 'none';
+        return;
+      }}
+      var total = Math.round(area * 1.1 * 10) / 10;
+      document.getElementById('calcM2').textContent = total.toFixed(1);
+      document.getElementById('calcNote').textContent = '{t('calc_note_tpl')}'.replace('{{m}}', area.toFixed(1));
+      var msg = '{t('calc_wa_msg')}'.replace('{{c}}', cat).replace('{{a}}', alto).replace('{{b}}', ancho).replace('{{m}}', area.toFixed(1)).replace('{{t}}', total.toFixed(1));
+      var wa = document.getElementById('calcWa');
+      wa.href = 'https://wa.me/{CONTACTO['whatsapp']}?text=' + encodeURIComponent(msg);
+      wa.style.display = 'inline-flex';
+    }}
+  </script>
+'''
+
+
 def modal_cotizar_html():
     """Modal único de cotización por WhatsApp. Se inyecta una vez por página."""
     return f'''
@@ -4082,11 +4249,12 @@ def logo_tag():
             f'<img src="{png}" alt="ADIS Logo"></picture>')
 
 
-def picture_tag(img_path, alt, loading='lazy', onclick=None):
+def picture_tag(img_path, alt, loading='lazy', onclick=None, cls=''):
     """Genera un tag <picture> con fallback WebP."""
     webp_path, webp600 = webp_srcset(img_path)
     attrs = f' onclick="{onclick}"' if onclick else ''
-    return f'''<picture>
+    cls_attr = f' class="{cls}"' if cls else ''
+    return f'''<picture{cls_attr}>
             <source srcset="{p(webp_path)}" type="image/webp">
             <source srcset="{p(webp600)}" media="(max-width: 600px)" type="image/webp">
             <img src="{p(img_path)}" alt="{alt}" loading="{loading}"{attrs}>
@@ -4187,6 +4355,7 @@ def generate_header(current_page='index', page_file='index.html'):
     mobile_cats = '\n'.join([f'      <a href="{p(u)}" onclick="toggleMenu()">{i18n(k)}</a>' for u, i, k in MEGA_ITEMS])
 
     return f'''  <header>
+    <div class="topbar">{svg_icon('truck', size=15, color='var(--black)')}<span>{i18n('topbar_text')}</span></div>
     <div class="header-inner">
       <a href="{p('index.html')}" class="logo">{logo_tag()}</a>
       <nav class="desktop-nav">
@@ -6283,6 +6452,9 @@ def generate_index(categories):
 
     STAR_CATEGORIES = {'Lambrin WPC', 'Placas PVC'}
 
+    # Fotos reales de proyectos para la sección Transformaciones
+    trans_imgs = sorted(f.name for f in (OUTPUT_DIR / 'media').glob('proyecto-*.jpeg'))[:8]
+
     # Conteo real de productos para evitar cifras inconsistentes
     total_products_global = sum(
         len(cat["direct_products"]) + sum(len(sub["products"]) for sub in cat["subcategories"])
@@ -6323,7 +6495,12 @@ def generate_index(categories):
       </a>
 '''
         
-        star_badge = f'<div class="star-badge">&#11088; {i18n("featured_star_badge")}</div>' if is_star else ''
+        if is_star:
+            star_badge = f'<div class="star-badge">&#11088; {i18n("featured_star_badge")}</div>'
+        elif cat['slug'] == '9-cladding':
+            star_badge = f'<div class="star-badge new-badge">&#10024; {i18n("badge_new")}</div>'
+        else:
+            star_badge = ''
         featured_class = ' featured' if is_star else ''
         
         cat_cards += f'''      <a href="{p(cat["filename"])}" class="cat-card reveal{featured_class}">
@@ -6475,6 +6652,10 @@ def generate_index(categories):
 
   <!-- INICIO -->
   <section class="hero-home" id="inicio">
+    <video class="hero-video" autoplay muted loop playsinline preload="metadata" poster="{p('media/despues 2.jpeg')}">
+      <source src="{p('media/video-01.mp4')}" type="video/mp4">
+    </video>
+    <script>if (matchMedia('(prefers-reduced-motion: reduce)').matches) {{ var hv = document.querySelector('.hero-video'); if (hv) {{ hv.removeAttribute('autoplay'); hv.pause(); }} }}</script>
     <div class="hero-content">
       {logo_tag()}
       <div class="hero-badge">{i18n('hero_badge')}</div>
@@ -6524,10 +6705,11 @@ def generate_index(categories):
       </div>
     </div>
     <div class="trust-banner">
-      <div class="trust-item"><span>{total_products_global}+</span> {i18n('trust_products')}</div>
-      <div class="trust-item"><span>50+</span> {i18n('trust_projects')}</div>
-      <div class="trust-item"><span>9</span> {i18n('trust_categories')}</div>
-      <div class="trust-item"><span>15</span> {i18n('trust_warranty')}</div>
+      <div class="trust-item">{svg_icon('layers', size=28)}<div><span>{total_products_global}+</span>{i18n('trust_products')}</div></div>
+      <div class="trust-item">{svg_icon('home', size=28)}<div><span>50+</span>{i18n('trust_projects')}</div></div>
+      <div class="trust-item">{svg_icon('truck', size=28)}<div>{i18n('benefit_shipping_title')}</div></div>
+      <div class="trust-item">{svg_icon('shield', size=28)}<div>{i18n('benefit_warranty_title')}</div></div>
+      <div class="trust-item">{svg_icon('bolt', size=28)}<div>{i18n('benefit_install_title')}</div></div>
     </div>
   </section>
 
@@ -6596,6 +6778,10 @@ def generate_index(categories):
       </div>
     </div>
   </section>
+
+{calculator_html(categories)}
+
+{transformations_html(trans_imgs)}
 
   <!-- SERVICIO EN ARIZONA -->
   <section class="section-wrap arizona-section reveal" id="arizona">
@@ -7402,6 +7588,8 @@ def generate_category_page(cat, categories):
       <a href="{p('contacto.html')}" class="btn-outline">{i18n('cat_contact')}</a>
     </div>
   </section>
+
+{calculator_html(categories, preselect=cat['name'])}
 
   <!-- CTA FINAL DE CATEGORÍA -->
   <section class="section-wrap cta-final-section reveal" style="padding-top: 2rem; padding-bottom: 2rem;">
@@ -8277,19 +8465,12 @@ def generate_proyectos():
       <div class="divider"></div>
       <p>{i18n('projects_carousel_hint')}</p>
     </div>
-    <div class="carousel-wrap">
-      <div class="carousel" id="carousel-ba-{i}">
-        <div class="carousel-slide">
-          {picture_tag(f'media/{antes}', t('projects_before'), onclick=f"openLightbox('{antes_url}', '{t('projects_before')} - {label}')")}
-          <div class="carousel-label" style="background: rgba(197,160,89,0.2);">{i18n('projects_before')}</div>
-        </div>
-        <div class="carousel-slide">
-          {picture_tag(f'media/{despues}', t('projects_after'), onclick=f"openLightbox('{despues_url}', '{t('projects_after')} - {label}')")}
-          <div class="carousel-label" style="background: var(--gold); color: var(--black);">{i18n('projects_after')}</div>
-        </div>
-      </div>
-      <button class="carousel-btn prev" onclick="moveCarousel('carousel-ba-{i}', -1)">&#10094;</button>
-      <button class="carousel-btn next" onclick="moveCarousel('carousel-ba-{i}', 1)">&#10095;</button>
+    <div class="ba-slider">
+      {picture_tag(f'media/{despues}', t('projects_after'), cls='ba-after')}
+      {picture_tag(f'media/{antes}', t('projects_before'), cls='ba-before')}
+      <div class="ba-handle"><div class="ba-handle-btn">&#10094;&#10095;</div></div>
+      <div class="ba-label ba-label-before">{i18n('projects_before')}</div>
+      <div class="ba-label ba-label-after">{i18n('projects_after')}</div>
     </div>
   </section>
 '''
@@ -8384,6 +8565,17 @@ def generate_proyectos():
   <style>
     /* CAROUSEL */
     .carousel-wrap {{ position: relative; max-width: 900px; margin: 0 auto; overflow: hidden; border-radius: 12px; border: 1px solid rgba(197,160,89,0.2); }}
+    /* SLIDER ANTES/DESPUÉS INTERACTIVO */
+    .ba-slider {{ --pos: 50%; position: relative; max-width: 900px; margin: 0 auto; border-radius: 12px; overflow: hidden; border: 1px solid rgba(197,160,89,0.25); aspect-ratio: 16/10; user-select: none; -webkit-user-select: none; touch-action: pan-y; cursor: ew-resize; box-shadow: 0 20px 60px rgba(0,0,0,0.4); }}
+    .ba-slider picture {{ position: absolute; inset: 0; display: block; margin: 0; }}
+    .ba-slider img {{ width: 100%; height: 100%; object-fit: cover; pointer-events: none; display: block; }}
+    .ba-before {{ clip-path: inset(0 calc(100% - var(--pos)) 0 0); }}
+    .ba-handle {{ position: absolute; top: 0; bottom: 0; left: var(--pos); width: 3px; background: var(--gold); transform: translateX(-50%); box-shadow: 0 0 12px rgba(197,160,89,0.6); pointer-events: none; }}
+    .ba-handle-btn {{ position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 48px; height: 48px; border-radius: 50%; background: var(--gold); color: var(--black); display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1.05rem; box-shadow: 0 4px 16px rgba(0,0,0,0.4); }}
+    .ba-label {{ position: absolute; bottom: 14px; padding: 0.4rem 1rem; border-radius: 20px; font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; backdrop-filter: blur(8px); pointer-events: none; }}
+    .ba-label-before {{ left: 14px; background: rgba(15,15,15,0.6); color: var(--white); }}
+    .ba-label-after {{ right: 14px; background: var(--gold); color: var(--black); }}
+    @media (max-width: 768px) {{ .ba-slider {{ aspect-ratio: 4/3; }} }}
     .carousel {{ display: flex; transition: transform 0.5s ease; }}
     .carousel-slide {{ min-width: 100%; position: relative; }}
     .carousel-slide img {{ width: 100%; height: 500px; object-fit: cover; display: block; cursor: pointer; }}
@@ -8427,6 +8619,18 @@ def generate_proyectos():
       carouselState[id] = (carouselState[id] + dir + slides) % slides;
       el.style.transform = 'translateX(-' + (carouselState[id] * 100) + '%)';
     }}
+    // Slider Antes/Después arrastrable (mouse + táctil)
+    document.querySelectorAll('.ba-slider').forEach(sl => {{
+      const setPos = x => {{
+        const r = sl.getBoundingClientRect();
+        const pct = Math.max(2, Math.min(98, (x - r.left) / r.width * 100));
+        sl.style.setProperty('--pos', pct + '%');
+      }};
+      let dragging = false;
+      sl.addEventListener('pointerdown', e => {{ dragging = true; sl.setPointerCapture(e.pointerId); setPos(e.clientX); }});
+      sl.addEventListener('pointermove', e => {{ if (dragging) setPos(e.clientX); }});
+      ['pointerup', 'pointercancel'].forEach(ev => sl.addEventListener(ev, () => {{ dragging = false; }}));
+    }});
     // Swipe táctil en carruseles + pausa de autoplay al interactuar
     let userInteracted = false;
     document.querySelectorAll('.carousel').forEach(car => {{
