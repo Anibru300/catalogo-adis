@@ -7621,7 +7621,7 @@ VIDEO_CAPTIONS = {
     'video-01.mp4': 'Sala de estar con lambrín',
     'video-02.mp4': 'Baño con hojas PVC',
     'video-03.mp4': 'Pared con molduras decorativas',
-    'video-04.mp4': 'Pasillo con cajoneras',
+    'video-04.mp4': 'Hojas PVC con diseño único',
     'video-05.mp4': 'Puerta con lambrín negro',
     'video-06.mp4': 'Sala de entretenimiento',
     'video-07.mp4': 'Salón de uñas remodelado',
