@@ -242,7 +242,7 @@ TRANSLATIONS = {
     'trans_subtitle': {'es': 'Fotos reales de proyectos ADIS. Sin filtros, sin edición.', 'en': 'Real photos from ADIS projects. No filters, no editing.'},
     'trans_cta': {'es': 'Ver todos los proyectos', 'en': 'See all projects'},
     'topbar_text': {'es': 'Envíos a Nogales y Tucson · Cotización gratis hoy', 'en': 'We ship to Nogales & Tucson · Free quote today'},
-    'cat_best_sellers': {'es': 'Más Vendidos — Placas PVC Tipo Espejo', 'en': 'Best Sellers — Mirror PVC Panels'},
+    'cat_best_sellers': {'es': 'Más Vendidos — Placas PVC', 'en': 'Best Sellers — PVC Panels'},
     'cat_accessories': {'es': 'Accesorios', 'en': 'Accessories'},
     'cat_products': {'es': 'Productos {category}', 'en': '{category} Products'},
     'cat_real_sheets_title': {'es': 'Hojas Reales de PVC', 'en': 'Real PVC Sheets'},
@@ -7618,8 +7618,8 @@ def generate_category_page(cat, categories):
 
 # Títulos descriptivos para videos de proyectos (visibles en home y proyectos.html)
 VIDEO_CAPTIONS = {
-    'video-01.mp4': 'Sala de estar con plafón',
-    'video-02.mp4': 'Panel de lambrín WPC',
+    'video-01.mp4': 'Sala de estar con lambrín',
+    'video-02.mp4': 'Baño con hojas PVC',
     'video-03.mp4': 'Pared con molduras decorativas',
     'video-04.mp4': 'Pasillo con cajoneras',
     'video-05.mp4': 'Puerta con lambrín negro',
