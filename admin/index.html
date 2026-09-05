@@ -106,6 +106,13 @@
   .stars-input { display:flex; gap:0.3rem; }
   .stars-input button { background:none; border:none; font-size:1.4rem; cursor:pointer; filter:grayscale(1); }
   .stars-input button.on { filter:none; }
+  .pnl-cards { display:grid; grid-template-columns:repeat(auto-fit, minmax(min(180px,100%),1fr)); gap:0.8rem; margin-bottom:1.2rem; }
+  .pnl-card { background:var(--card); border:1px solid rgba(197,160,89,0.25); border-radius:12px; padding:1rem 1.1rem; }
+  .pnl-card .k { font-size:0.68rem; color:var(--muted); text-transform:uppercase; letter-spacing:1px; }
+  .pnl-card .v { font-size:1.25rem; font-weight:700; margin-top:0.3rem; }
+  .pnl-card.good .v { color:#7ce3a1; }
+  .pnl-card.bad .v { color:#f1948a; }
+  .stock-alert { color:#f1948a; font-weight:700; }
 
   /* Impresion de cotizacion */
   #printArea { display:none; }
@@ -151,6 +158,10 @@
     <nav class="tabs">
       <button class="tab active" data-tab="leads" onclick="showTab('leads')">📥 Leads</button>
       <button class="tab" data-tab="quotes" onclick="showTab('quotes')">🧾 Cotizaciones</button>
+      <button class="tab" data-tab="inventory" onclick="showTab('inventory')">📦 Inventario</button>
+      <button class="tab" data-tab="sales" onclick="showTab('sales')">💵 Ventas</button>
+      <button class="tab" data-tab="expenses" onclick="showTab('expenses')">📉 Gastos</button>
+      <button class="tab" data-tab="pnl" onclick="showTab('pnl')">📊 Resultados</button>
       <button class="tab" data-tab="reviews" onclick="showTab('reviews')">⭐ Reseñas</button>
       <button class="tab" data-tab="analytics" onclick="showTab('analytics')">📊 Estadísticas</button>
     </nav>
@@ -234,6 +245,102 @@
       </div>
     </section>
 
+    <!-- INVENTARIO -->
+    <section id="tab-inventory" class="panel hidden">
+      <div class="toolbar">
+        <h2 style="margin:0;">Inventario</h2>
+        <select id="invAlmacen" onchange="renderInventory()"></select>
+        <button class="btn btn-sm" onclick="showProductForm()">＋ Producto</button>
+        <button class="btn btn-sm" onclick="showWarehouseForm()">＋ Almacén</button>
+        <button class="btn btn-sm" onclick="showConfigForm()">⚙ Moneda</button>
+      </div>
+      <div id="bizForms"></div>
+      <div class="card-box table-scroll">
+        <table>
+          <thead><tr><th>Producto</th><th>Categoría</th><th>Costo</th><th>Precio</th><th>Margen</th><th>Stock</th><th>Mín</th><th></th></tr></thead>
+          <tbody id="invTable"><tr><td colspan="8" class="muted">Cargando…</td></tr></tbody>
+        </table>
+      </div>
+      <h2>Movimientos recientes</h2>
+      <div class="card-box table-scroll">
+        <table>
+          <thead><tr><th>Fecha</th><th>Tipo</th><th>Producto</th><th>Almacén</th><th>Cant.</th><th>Referencia</th><th>Notas</th></tr></thead>
+          <tbody id="movTable"><tr><td colspan="7" class="muted">Cargando…</td></tr></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- VENTAS -->
+    <section id="tab-sales" class="panel hidden">
+      <div class="toolbar"><h2 style="margin:0;">Registrar venta</h2></div>
+      <div class="card-box">
+        <div class="row">
+          <div><label>Fecha</label><input type="date" id="sFecha"></div>
+          <div><label>Cliente</label><input id="sCliente" placeholder="Nombre del cliente"></div>
+          <div><label>Almacén *</label><select id="sAlmacen"></select></div>
+          <div><label>Moneda</label><select id="sMoneda"><option value="MXN">MXN</option><option value="USD">USD</option></select></div>
+        </div>
+        <label>Agregar producto (del inventario)</label>
+        <div class="search-results">
+          <input id="sSearch" placeholder="Escribe el nombre del producto..." autocomplete="off" oninput="searchSaleProducts()">
+          <div id="sSearchResults"></div>
+        </div>
+        <div class="items" id="sItems"></div>
+        <div class="total-line"><span class="muted">Total:</span><strong class="gold" id="sTotal">$0.00</strong></div>
+        <label>Notas</label>
+        <textarea id="sNotas" rows="2" placeholder="Observaciones..."></textarea>
+        <div class="toolbar" style="margin-top:1rem;">
+          <button class="btn btn-solid" onclick="saveSale()">💾 Guardar venta (descuenta stock)</button>
+        </div>
+      </div>
+      <h2>Ventas recientes</h2>
+      <div class="card-box table-scroll">
+        <table>
+          <thead><tr><th>Fecha</th><th>Cliente</th><th>Almacén</th><th>Productos</th><th>Total</th><th>Utilidad</th></tr></thead>
+          <tbody id="salesTable"><tr><td colspan="6" class="muted">Cargando…</td></tr></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- GASTOS -->
+    <section id="tab-expenses" class="panel hidden">
+      <div class="toolbar"><h2 style="margin:0;">Registrar gasto</h2></div>
+      <div class="card-box">
+        <div class="row">
+          <div><label>Fecha</label><input type="date" id="gFecha"></div>
+          <div><label>Categoría *</label><input id="gCategoria" list="gCatList" placeholder="Renta, Luz, Nómina..."><datalist id="gCatList"><option>Renta</option><option>Luz</option><option>Agua</option><option>Nómina</option><option>Gasolina</option><option>Publicidad</option><option>Mantenimiento</option><option>Envíos</option><option>Otro</option></datalist></div>
+          <div><label>Monto *</label><input type="number" id="gMonto" min="0" step="0.01" placeholder="0.00"></div>
+          <div><label>Moneda</label><select id="gMoneda"><option value="MXN">MXN</option><option value="USD">USD</option></select></div>
+        </div>
+        <label>Descripción</label>
+        <input id="gDesc" placeholder="Ej. Recibo CFE local Nogales">
+        <div class="toolbar" style="margin-top:1rem;">
+          <button class="btn btn-solid" onclick="addExpense()">💾 Guardar gasto</button>
+        </div>
+      </div>
+      <h2>Gastos registrados</h2>
+      <div class="card-box table-scroll">
+        <table>
+          <thead><tr><th>Fecha</th><th>Categoría</th><th>Descripción</th><th>Monto</th><th></th></tr></thead>
+          <tbody id="expTable"><tr><td colspan="5" class="muted">Cargando…</td></tr></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- RESULTADOS -->
+    <section id="tab-pnl" class="panel hidden">
+      <div class="toolbar">
+        <h2 style="margin:0;">Estado de resultados</h2>
+        <input type="month" id="pnlMes" style="width:auto;">
+        <button class="btn btn-sm btn-solid" onclick="generarPNL()">Generar</button>
+        <button class="btn btn-sm" onclick="printPNL()">🖨️ Imprimir</button>
+      </div>
+      <div id="pnlCards"></div>
+      <div class="card-box table-scroll" id="pnlBox" style="display:none;">
+        <table><thead><tr><th>Concepto</th><th style="text-align:right;">Monto</th></tr></thead><tbody id="pnlTable"></tbody></table>
+      </div>
+    </section>
+
     <!-- ANALYTICS -->
     <section id="tab-analytics" class="panel hidden">
       <div class="toolbar"><h2 style="margin:0;">Estadísticas del sitio</h2></div>
@@ -308,7 +415,10 @@ function enterApp(u){
   if (CONFIG.LOOKER_STUDIO_URL) {
     $('analyticsBox').innerHTML = '<iframe id="analyticsFrame" src="' + esc(CONFIG.LOOKER_STUDIO_URL) + '" frameborder="0" allowfullscreen></iframe>';
   }
-  loadLeads(); loadQuotes(); loadReviewsAdmin(); loadProducts();
+  loadLeads(); loadQuotes(); loadReviewsAdmin(); loadProducts(); loadBiz();
+  $('sFecha').value = new Date().toISOString().slice(0,10);
+  $('gFecha').value = new Date().toISOString().slice(0,10);
+  $('pnlMes').value = new Date().toISOString().slice(0,7);
 }
 function logout(){
   token = null; usuario = '';
@@ -322,7 +432,8 @@ function logout(){
 /* ---------- tabs ---------- */
 function showTab(name){
   document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active', t.dataset.tab===name));
-  ['leads','quotes','reviews','analytics'].forEach(n=>$('tab-'+n).classList.toggle('hidden', n!==name));
+  ['leads','quotes','inventory','sales','expenses','pnl','reviews','analytics'].forEach(n=>$('tab-'+n).classList.toggle('hidden', n!==name));
+  if (name==='pnl' && !$('pnlCards').innerHTML) generarPNL();
 }
 
 /* ---------- leads ---------- */
@@ -441,6 +552,279 @@ function loadReviewsAdmin(){
 function deleteReview(row){
   if (!confirm('¿Eliminar esta reseña del sitio?')) return;
   apiPost({tipo:'delete_review', row}).then(d=>{ notice(d&&d.ok?'Reseña eliminada.':'No se pudo eliminar.', !!(d&&d.ok)); if(d&&d.ok) loadReviewsAdmin(); });
+}
+
+/* =====================================================================
+   MINI-ERP: inventario, almacenes, ventas, gastos y estado de resultados
+   ===================================================================== */
+let biz = { productos: [], almacenes: [], stock: [], config: { moneda_base: 'MXN', tipo_cambio: '18.5' } };
+let saleItems = [];
+let pnlData = null;
+
+function loadBiz(){
+  apiGet('productos').then(d=>{ if(d&&d.ok){ biz.productos=d.productos; renderInventory(); if($('sSearch').value) searchSaleProducts(); } });
+  apiGet('almacenes').then(d=>{ if(d&&d.ok){ biz.almacenes=d.almacenes; fillWarehouseSelects(); renderInventory(); } });
+  apiGet('stock').then(d=>{ if(d&&d.ok){ biz.stock=d.stock; renderInventory(); renderSaleItems(); } });
+  apiGet('movimientos').then(d=>{ if(d&&d.ok) renderMovs(d.movimientos); });
+  apiGet('ventas').then(d=>{ if(d&&d.ok) renderSales(d.ventas); });
+  apiGet('gastos').then(d=>{ if(d&&d.ok) renderExpenses(d.gastos); });
+  apiGet('config').then(d=>{ if(d&&d.ok) biz.config=d; });
+}
+
+function fillWarehouseSelects(){
+  const opts = biz.almacenes.map(a=>'<option value="'+esc(a.id)+'">'+esc(a.nombre)+'</option>').join('');
+  $('invAlmacen').innerHTML = '<option value="">Todos los almacenes</option>'+opts;
+  $('sAlmacen').innerHTML = '<option value="">— Selecciona —</option>'+opts;
+}
+
+function stockTotal(pid){
+  return biz.stock.filter(s=>String(s.producto_id)===String(pid))
+    .reduce((sum,s)=>sum+(Number(s.cantidad)||0), 0);
+}
+function stockEn(pid, aid){
+  if (!aid) return stockTotal(pid);
+  const s = biz.stock.filter(x=>String(x.producto_id)===String(pid)&&String(x.almacen_id)===String(aid))[0];
+  return s ? Number(s.cantidad)||0 : 0;
+}
+
+function renderInventory(){
+  const aid = $('invAlmacen').value;
+  if (!biz.productos.length) { $('invTable').innerHTML='<tr><td colspan="8" class="muted">Sin productos. Dale a "＋ Producto" o importa tu lista de Excel.</td></tr>'; return; }
+  $('invTable').innerHTML = biz.productos.map(p=>{
+    const costo=Number(p.ccosto||p.costo)||0, precio=Number(p.precio)||0;
+    const margen = precio ? ((precio-costo)/precio*100).toFixed(0)+'%' : '—';
+    const st = stockEn(p.id, aid);
+    const min = Number(p.stock_minimo)||0;
+    const alerta = min && st<=min ? ' stock-alert' : '';
+    const mon = esc(p.moneda||'MXN');
+    return '<tr><td>'+esc(p.nombre)+'</td><td>'+esc(p.categoria)+'</td>' +
+      '<td>'+fmtMoney(costo)+' '+mon+'</td><td>'+fmtMoney(precio)+' '+mon+'</td><td>'+margen+'</td>' +
+      '<td class="'+alerta+'">'+st+'</td><td>'+(min||'—')+'</td>' +
+      '<td style="white-space:nowrap;">' +
+      '<button class="btn btn-sm" onclick="showProductForm(\''+p.id+'\')">✎</button> ' +
+      '<button class="btn btn-sm" onclick="showAdjustForm(\''+p.id+'\')">±</button> ' +
+      '<button class="btn btn-danger btn-sm" onclick="deleteProduct(\''+p.id+'\')">✕</button></td></tr>';
+  }).join('');
+}
+
+function renderMovs(list){
+  if (!list.length) { $('movTable').innerHTML='<tr><td colspan="7" class="muted">Sin movimientos.</td></tr>'; return; }
+  $('movTable').innerHTML = list.slice().reverse().map(m=>
+    '<tr><td>'+esc(m.fecha)+'</td><td>'+esc(m.tipo)+'</td><td>'+esc(m.producto)+'</td><td>'+esc(m.almacen)+'</td>' +
+    '<td>'+esc(m.cantidad)+'</td><td>'+esc(m.referencia)+'</td><td>'+esc(m.notas)+'</td></tr>').join('');
+}
+
+/* ----- formularios dinamicos (producto / almacen / config / ajuste) ----- */
+function closeBizForms(){ $('bizForms').innerHTML=''; }
+
+function showProductForm(id){
+  const p = id ? biz.productos.filter(x=>String(x.id)===String(id))[0] : null;
+  $('bizForms').innerHTML = '<div class="card-box"><div class="row">' +
+    '<div><label>Nombre *</label><input id="pNombre" value="'+esc(p?p.nombre:'')+'"></div>' +
+    '<div><label>Categoría</label><input id="pCat" value="'+esc(p?p.categoria:'')+'"></div>' +
+    '<div><label>Costo</label><input type="number" id="pCosto" min="0" step="0.01" value="'+(p?p.costo:'')+'"></div>' +
+    '<div><label>Precio venta</label><input type="number" id="pPrecio" min="0" step="0.01" value="'+(p?p.precio:'')+'"></div>' +
+    '<div><label>Unidad</label><input id="pUnidad" value="'+esc(p?p.unidad:'pieza')+'"></div>' +
+    '<div><label>Stock mínimo</label><input type="number" id="pMin" min="0" value="'+(p?p.stock_minimo:'')+'"></div>' +
+    '<div><label>Moneda</label><select id="pMoneda"><option value="MXN"'+((!p||p.moneda==='MXN')?' selected':'')+'>MXN</option><option value="USD"'+(p&&p.moneda==='USD'?' selected':'')+'>USD</option></select></div>' +
+    '</div><div class="toolbar" style="margin-top:1rem;">' +
+    '<button class="btn btn-solid btn-sm" onclick="saveProduct(\''+(p?p.id:'')+'\')">💾 Guardar</button> ' +
+    '<button class="btn btn-sm" onclick="closeBizForms()">Cancelar</button></div></div>';
+  $('pNombre').focus();
+}
+
+function saveProduct(id){
+  const nombre=$('pNombre').value.trim();
+  if (!nombre) { notice('El producto necesita nombre.', false); return; }
+  apiPost({tipo:'save_product', id:id||undefined, nombre, categoria:$('pCat').value.trim(),
+    costo:parseFloat($('pCosto').value)||0, precio:parseFloat($('pPrecio').value)||0,
+    unidad:$('pUnidad').value.trim()||'pieza', stock_minimo:parseFloat($('pMin').value)||0,
+    moneda:$('pMoneda').value}).then(d=>{
+    notice(d&&d.ok?'Producto guardado.':'No se pudo guardar.', !!(d&&d.ok));
+    if(d&&d.ok){ closeBizForms(); loadBiz(); }
+  });
+}
+
+function deleteProduct(id){
+  if (!confirm('¿Desactivar este producto? (no se borra de la hoja)')) return;
+  apiPost({tipo:'delete_product', id}).then(d=>{ if(d&&d.ok) loadBiz(); });
+}
+
+function showWarehouseForm(){
+  const lista = biz.almacenes.map(a=>
+    '<tr><td>'+esc(a.nombre)+'</td><td>'+esc(a.ubicacion)+'</td>' +
+    '<td><button class="btn btn-danger btn-sm" onclick="deleteWarehouse(\''+a.id+'\')">✕</button></td></tr>').join('');
+  $('bizForms').innerHTML = '<div class="card-box"><div class="row">' +
+    '<div><label>Nombre del almacén *</label><input id="wNombre" placeholder="Ej. Nogales, Rio Rico..."></div>' +
+    '<div><label>Ubicación</label><input id="wUbi" placeholder="Dirección / ciudad"></div>' +
+    '</div><div class="toolbar" style="margin-top:1rem;">' +
+    '<button class="btn btn-solid btn-sm" onclick="saveWarehouse()">💾 Guardar almacén</button> ' +
+    '<button class="btn btn-sm" onclick="closeBizForms()">Cerrar</button></div>' +
+    '<div class="table-scroll"><table><thead><tr><th>Almacén</th><th>Ubicación</th><th></th></tr></thead><tbody>' +
+    (lista || '<tr><td colspan="3" class="muted">Sin almacenes todavía.</td></tr>') + '</tbody></table></div></div>';
+}
+
+function saveWarehouse(){
+  const nombre=$('wNombre').value.trim();
+  if (!nombre) { notice('Escribe el nombre del almacén.', false); return; }
+  apiPost({tipo:'save_almacen', nombre, ubicacion:$('wUbi').value.trim()}).then(d=>{
+    notice(d&&d.ok?'Almacén guardado.':'No se pudo guardar.', !!(d&&d.ok));
+    if(d&&d.ok){ closeBizForms(); loadBiz(); }
+  });
+}
+
+function deleteWarehouse(id){
+  if (!confirm('¿Desactivar este almacén?')) return;
+  apiPost({tipo:'delete_almacen', id}).then(d=>{ if(d&&d.ok){ closeBizForms(); loadBiz(); } });
+}
+
+function showConfigForm(){
+  $('bizForms').innerHTML = '<div class="card-box"><div class="row">' +
+    '<div><label>Moneda base (para resultados)</label><select id="cBase"><option value="MXN"'+(biz.config.moneda_base==='MXN'?' selected':'')+'>MXN — Pesos</option><option value="USD"'+(biz.config.moneda_base==='USD'?' selected':'')+'>USD — Dólares</option></select></div>' +
+    '<div><label>Tipo de cambio (1 USD = ? en moneda base)</label><input type="number" id="cTC" min="0" step="0.01" value="'+esc(biz.config.tipo_cambio)+'"></div>' +
+    '</div><div class="toolbar" style="margin-top:1rem;">' +
+    '<button class="btn btn-solid btn-sm" onclick="saveConfig()">💾 Guardar</button> ' +
+    '<button class="btn btn-sm" onclick="closeBizForms()">Cerrar</button></div>' +
+    '<p class="muted">Ejemplo: si la moneda base es MXN y 1 dólar = $18.50 pesos, escribe 18.50. Las ventas y gastos en USD se convertirán automáticamente.</p></div>';
+}
+
+function saveConfig(){
+  apiPost({tipo:'config', moneda_base:$('cBase').value, tipo_cambio:parseFloat($('cTC').value)||1}).then(d=>{
+    notice(d&&d.ok?'Configuración guardada.':'No se pudo guardar.', !!(d&&d.ok));
+    if(d&&d.ok){ biz.config=d; closeBizForms(); }
+  });
+}
+
+function showAdjustForm(pid){
+  const p = biz.productos.filter(x=>String(x.id)===String(pid))[0];
+  if (!biz.almacenes.length) { notice('Primero crea un almacén.', false); return; }
+  $('bizForms').innerHTML = '<div class="card-box"><p style="margin-bottom:0.5rem;"><strong>'+esc(p.nombre)+'</strong></p><div class="row">' +
+    '<div><label>Almacén *</label><select id="mAlmacen">'+biz.almacenes.map(a=>'<option value="'+esc(a.id)+'">'+esc(a.nombre)+'</option>').join('')+'</select></div>' +
+    '<div><label>Tipo *</label><select id="mTipo"><option value="entrada">Entrada (compra/mercancía)</option><option value="salida">Salida (merma/uso)</option><option value="ajuste">Ajuste (fijar cantidad exacta)</option></select></div>' +
+    '<div><label>Cantidad *</label><input type="number" id="mCant" min="0" step="0.01"></div>' +
+    '</div><label>Notas</label><input id="mNotas" placeholder="Ej. Compra a proveedor X, merma..."><div class="toolbar" style="margin-top:1rem;">' +
+    '<button class="btn btn-solid btn-sm" onclick="saveAdjust(\''+p.id+'\')">💾 Aplicar</button> ' +
+    '<button class="btn btn-sm" onclick="closeBizForms()">Cancelar</button></div></div>';
+}
+
+function saveAdjust(pid){
+  apiPost({tipo:'movimiento', tipo_mov:$('mTipo').value, producto_id:pid, almacen_id:$('mAlmacen').value,
+    cantidad:parseFloat($('mCant').value)||0, notas:$('mNotas').value.trim()}).then(d=>{
+    notice(d&&d.ok?'Movimiento aplicado. Stock nuevo: '+(d.stock_nuevo!==undefined?d.stock_nuevo:'?'):(d&&d.error)||'Error', !!(d&&d.ok));
+    if(d&&d.ok){ closeBizForms(); loadBiz(); }
+  });
+}
+
+/* ----- ventas ----- */
+function searchSaleProducts(){
+  const q = $('sSearch').value.trim().toLowerCase();
+  const box = $('sSearchResults');
+  if (q.length < 2) { box.innerHTML=''; return; }
+  const matches = biz.productos.filter(p => (p.nombre+' '+(p.categoria||'')).toLowerCase().includes(q)).slice(0,8);
+  box.innerHTML = '<div class="sr-list">' + (matches.length
+    ? matches.map(p=>'<div class="sr-item" onclick="addSaleItem(\''+p.id+'\')"><span>'+esc(p.nombre)+'</span><span class="gold">'+fmtMoney(p.precio)+' '+esc(p.moneda||'MXN')+'</span></div>').join('')
+    : '<div class="sr-item muted">Sin resultados</div>') + '</div>';
+}
+function addSaleItem(pid){
+  const p = biz.productos.filter(x=>String(x.id)===String(pid))[0];
+  if (!p) return;
+  saleItems.push({producto_id:p.id, nombre:p.nombre, cantidad:1, precio:Number(p.precio)||0});
+  $('sSearch').value=''; $('sSearchResults').innerHTML='';
+  renderSaleItems();
+}
+function renderSaleItems(){
+  $('sItems').innerHTML = saleItems.map((it,i)=>
+    '<div class="item-row">' +
+    '<input value="'+esc(it.nombre)+'" disabled>' +
+    '<input type="number" min="1" value="'+it.cantidad+'" onchange="saleItems['+i+'].cantidad=parseFloat(this.value)||1; updateSaleTotal()">' +
+    '<input type="number" min="0" step="0.01" value="'+it.precio+'" onchange="saleItems['+i+'].precio=parseFloat(this.value)||0; updateSaleTotal()">' +
+    '<button class="del" onclick="saleItems.splice('+i+',1); renderSaleItems()">✕</button></div>'
+  ).join('');
+  updateSaleTotal();
+}
+function updateSaleTotal(){
+  const t = saleItems.reduce((s,it)=>s+(Number(it.cantidad)||0)*(Number(it.precio)||0),0);
+  $('sTotal').textContent = fmtMoney(t)+' '+$('sMoneda').value;
+  return t;
+}
+function saveSale(){
+  if (!$('sAlmacen').value) { notice('Selecciona un almacén.', false); return; }
+  if (!saleItems.length) { notice('Agrega al menos un producto.', false); return; }
+  apiPost({tipo:'venta', fecha:$('sFecha').value, cliente:$('sCliente').value.trim(),
+    almacen_id:$('sAlmacen').value, moneda:$('sMoneda').value, items:saleItems, notas:$('sNotas').value.trim()})
+    .then(d=>{
+      notice(d&&d.ok?'Venta guardada. Stock descontado.':(d&&d.error)||'Error', !!(d&&d.ok));
+      if(d&&d.ok){ saleItems=[]; renderSaleItems(); $('sCliente').value=''; $('sNotas').value=''; loadBiz(); }
+    });
+}
+function renderSales(list){
+  if (!list.length) { $('salesTable').innerHTML='<tr><td colspan="6" class="muted">Sin ventas registradas.</td></tr>'; return; }
+  $('salesTable').innerHTML = list.slice().reverse().map(v=>
+    '<tr><td>'+esc(v.fecha)+'</td><td>'+esc(v.cliente)+'</td><td>'+esc(v.almacen)+'</td><td>'+esc(v.items)+'</td>' +
+    '<td class="gold">'+fmtMoney(v.total)+' '+esc(v.moneda)+'</td><td style="color:#7ce3a1;">'+fmtMoney(v.utilidad_base)+' '+esc(biz.config.moneda_base||'')+'</td></tr>').join('');
+}
+
+/* ----- gastos ----- */
+function addExpense(){
+  const cat=$('gCategoria').value.trim(), monto=parseFloat($('gMonto').value)||0;
+  if (!cat || !monto) { notice('Falta la categoría o el monto.', false); return; }
+  apiPost({tipo:'gasto', fecha:$('gFecha').value, categoria:cat, descripcion:$('gDesc').value.trim(),
+    monto, moneda:$('gMoneda').value}).then(d=>{
+    notice(d&&d.ok?'Gasto guardado.':'No se pudo guardar.', !!(d&&d.ok));
+    if(d&&d.ok){ $('gMonto').value=''; $('gDesc').value=''; loadBiz(); }
+  });
+}
+function renderExpenses(list){
+  if (!list.length) { $('expTable').innerHTML='<tr><td colspan="5" class="muted">Sin gastos registrados.</td></tr>'; return; }
+  $('expTable').innerHTML = list.map((g,i)=>
+    '<tr><td>'+esc(g.fecha)+'</td><td>'+esc(g.categoria)+'</td><td>'+esc(g.descripcion)+'</td>' +
+    '<td class="gold">'+fmtMoney(g.monto)+' '+esc(g.moneda)+'</td>' +
+    '<td><button class="btn btn-danger btn-sm" onclick="deleteExpense('+(i+2)+')">✕</button></td></tr>').join('');
+}
+function deleteExpense(row){
+  if (!confirm('¿Eliminar este gasto?')) return;
+  apiPost({tipo:'delete_gasto', row}).then(d=>{ if(d&&d.ok) loadBiz(); });
+}
+
+/* ----- estado de resultados ----- */
+function generarPNL(){
+  const mes = $('pnlMes').value;
+  if (!mes) { notice('Selecciona un mes.', false); return; }
+  fetch(CONFIG.API_URL + '?action=estado_resultados&mes=' + mes + '&token=' + encodeURIComponent(token))
+    .then(r=>r.json()).then(d=>{
+      if (!d || !d.ok) { $('pnlCards').innerHTML='<p class="muted">'+(d&&d.error||'Error')+'</p>'; return; }
+      pnlData = d;
+      const f = n => fmtMoney(n)+' '+d.moneda_base;
+      const clsBruta = d.utilidad_bruta>=0?'good':'bad', clsNeta = d.utilidad_neta>=0?'good':'bad';
+      $('pnlCards').innerHTML = '<div class="pnl-cards">' +
+        '<div class="pnl-card"><div class="k">Ventas ('+d.num_ventas+')</div><div class="v">'+f(d.ingresos)+'</div></div>' +
+        '<div class="pnl-card"><div class="k">Costo mercancía</div><div class="v">'+f(d.costos)+'</div></div>' +
+        '<div class="pnl-card '+clsBruta+'"><div class="k">Utilidad bruta</div><div class="v">'+f(d.utilidad_bruta)+' <small style="font-size:0.7rem;">'+d.margen_bruto.toFixed(1)+'%</small></div></div>' +
+        '<div class="pnl-card"><div class="k">Gastos operativos</div><div class="v">'+f(d.total_gastos)+'</div></div>' +
+        '<div class="pnl-card '+clsNeta+'"><div class="k">Utilidad neta</div><div class="v">'+f(d.utilidad_neta)+' <small style="font-size:0.7rem;">'+d.margen_neto.toFixed(1)+'%</small></div></div>' +
+        '</div>';
+      const cats = Object.keys(d.gastos).sort();
+      $('pnlBox').style.display='block';
+      $('pnlTable').innerHTML =
+        '<tr><td>Ventas</td><td style="text-align:right;">'+f(d.ingresos)+'</td></tr>' +
+        '<tr><td>(−) Costo de la mercancía vendida</td><td style="text-align:right;">'+f(d.costos)+'</td></tr>' +
+        '<tr><td><strong>= Utilidad bruta</strong></td><td style="text-align:right;"><strong>'+f(d.utilidad_bruta)+'</strong></td></tr>' +
+        '<tr><td colspan="2" style="color:var(--gold);">Gastos por categoría</td></tr>' +
+        (cats.length ? cats.map(c=>'<tr><td>&nbsp;&nbsp;'+esc(c)+'</td><td style="text-align:right;">'+f(d.gastos[c])+'</td></tr>').join('') : '<tr><td colspan="2" class="muted">Sin gastos este mes.</td></tr>') +
+        '<tr><td>(−) Total gastos</td><td style="text-align:right;">'+f(d.total_gastos)+'</td></tr>' +
+        '<tr><td><strong>= Utilidad neta del mes</strong></td><td style="text-align:right;"><strong>'+f(d.utilidad_neta)+'</strong></td></tr>';
+    }).catch(()=>{ $('pnlCards').innerHTML='<p class="muted">Error de conexion.</p>'; });
+}
+function printPNL(){
+  if (!pnlData) { notice('Primero genera el resultado.', false); return; }
+  const d = pnlData, f = n => fmtMoney(n)+' '+d.moneda_base;
+  const mesTxt = $('pnlMes').value;
+  $('printArea').innerHTML =
+    '<h1>ADIS Diseño & Remodelación</h1><div class="pq-meta">Estado de resultados · ' + mesTxt + ' · Moneda: ' + d.moneda_base + '</div>' +
+    '<table><tbody>' + $('pnlTable').innerHTML + '</tbody></table>' +
+    '<p style="margin-top:1rem;font-size:0.85rem;">Ventas: '+d.num_ventas+' · Margen bruto: '+d.margen_bruto.toFixed(1)+'% · Margen neto: '+d.margen_neto.toFixed(1)+'%</p>' +
+    '<div class="pq-foot">Generado desde el panel administrativo ADIS</div>';
+  window.print();
 }
 
 window.addEventListener('load', ()=>{

@@ -73,6 +73,15 @@ Al modificar plantillas: mantener `p()` en toda ruta relativa (href/src/fetch/ba
 4. **Backend**: `admin/apps-script.gs` (pegar en Apps Script de la hoja de Google). Credenciales `ADMIN_USUARIO`/`ADMIN_CLAVE` dentro del script. Pestañas Leads/Cotizaciones/Reseñas se crean solas.
 5. **Guía de configuración**: `admin/GUIA_CONFIGURACION.md` (pasos Google Sheet → deploy → conectar URL). Falta que el usuario la siga y pase la URL `/exec`.
 
+## Mini-ERP (2026-09-04)
+
+El panel (`admin/index.html` + `admin/apps-script.gs`) ahora incluye gestión del negocio:
+- **Productos** (costo/precio/unidad/stock mínimo/moneda), **Almacenes**, **Stock** por almacén, **Movimientos** (entrada/salida/ajuste).
+- **Ventas**: registran salidas de stock y calculan utilidad (costo vs precio) en moneda base.
+- **Gastos** por categoría. **Estado de resultados** mensual (`?action=estado_resultados&mes=YYYY-MM`): ingresos, costos, utilidad bruta, gastos por categoría, utilidad neta, márgenes; imprimible.
+- **Moneda dual**: Config (`moneda_base`, `tipo_cambio` = MXN por 1 USD); conversión server-side en `aBase()`.
+- Endpoint `import_productos` para migrar el Excel de precios/costos del usuario (PENDIENTE: usuario pasa el archivo + la URL /exec tras crear la hoja y el deploy).
+
 ## Qué falta por hacer (prioridad sugerida)
 
 1. **Push del commit actual**

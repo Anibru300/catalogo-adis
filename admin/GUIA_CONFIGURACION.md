@@ -64,6 +64,20 @@ git add -A && git commit -m "feat: captacion de leads, reseñas en vivo y panel 
 
 ---
 
+## El panel también es tu mini-ERP (ya incluido)
+
+El mismo panel administra el negocio. Todas estas pestañas se crean solas en la hoja de Google:
+
+| Pestaña | Función |
+|---|---|
+| 📦 **Inventario** | Productos con costo/precio, stock por almacén, alertas de stock mínimo, movimientos (entradas/salidas/ajustes) |
+| 💵 **Ventas** | Registrar ventas — descuenta stock automáticamente y calcula la utilidad por venta |
+| 📉 **Gastos** | Gastos por categoría (renta, luz, nómina...) en MXN o USD |
+| 📊 **Resultados** | Estado de resultados mensual completo: ventas − costos − gastos = utilidad neta, con márgenes e imprimible |
+
+- **Moneda dual:** en ⚙ Moneda (pestaña Inventario) defines la moneda base y el tipo de cambio; todo se convierte automáticamente.
+- **Importar tu catálogo:** cuando tengas tu Excel/Sheets de productos con precios y costos, pásamelo y lo importo de una vez (el endpoint `import_productos` ya está listo).
+
 ## Paso 5 — Seguridad y ocultamiento del panel
 
 Ya está hecho en el código, pero conviene saberlo:
