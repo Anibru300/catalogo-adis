@@ -113,6 +113,19 @@
   .pnl-card.good .v { color:#7ce3a1; }
   .pnl-card.bad .v { color:#f1948a; }
   .stock-alert { color:#f1948a; font-weight:700; }
+  .inv-layout { display:grid; grid-template-columns:1fr 290px; gap:1.2rem; align-items:start; }
+  @media (max-width: 950px) { .inv-layout { grid-template-columns:1fr; } .inv-photo { position:static !important; } }
+  .inv-photo { position:sticky; top:80px; background:var(--card); border:1px solid rgba(197,160,89,0.35); border-radius:12px; padding:1rem; text-align:center; }
+  .inv-photo img { width:100%; border-radius:8px; display:block; background:#111; min-height:120px; object-fit:cover; }
+  .inv-photo .ph-code { font-size:0.7rem; color:var(--gold); letter-spacing:1px; margin-top:0.7rem; }
+  .inv-photo .ph-name { font-size:0.9rem; font-weight:600; margin-top:0.15rem; }
+  .inv-photo .ph-meta { font-size:0.72rem; color:var(--muted); margin-top:0.2rem; line-height:1.5; }
+  .badge-revision { background:rgba(231,76,60,0.15); color:#f1948a; border:1px solid rgba(231,76,60,0.4); padding:0.05rem 0.4rem; border-radius:6px; font-size:0.62rem; white-space:nowrap; }
+  tr.inv-selected td { background:rgba(197,160,89,0.1) !important; }
+  tr.inv-inactive td { opacity:0.45; }
+  .inv-dash { margin-bottom:1rem; }
+  .inv-dash .pnl-card { padding:0.7rem 0.9rem; }
+  .inv-dash .pnl-card .v { font-size:1rem; }
 
   /* Impresion de cotizacion */
   #printArea { display:none; }
@@ -249,17 +262,25 @@
     <section id="tab-inventory" class="panel hidden">
       <div class="toolbar">
         <h2 style="margin:0;">Inventario</h2>
+        <input id="invSearch" placeholder="Buscar código o nombre..." oninput="renderInventory()" style="width:200px;">
         <select id="invAlmacen" onchange="renderInventory()"></select>
+        <label style="margin:0;display:flex;gap:0.35rem;align-items:center;font-size:0.75rem;"><input type="checkbox" id="invVerInactivos" onchange="renderInventory()" style="width:auto;">Ver inactivos</label>
         <button class="btn btn-sm" onclick="showProductForm()">＋ Producto</button>
         <button class="btn btn-sm" onclick="showWarehouseForm()">＋ Almacén</button>
         <button class="btn btn-sm" onclick="showConfigForm()">⚙ Moneda</button>
       </div>
+      <div id="invDash" class="pnl-cards inv-dash"></div>
       <div id="bizForms"></div>
-      <div class="card-box table-scroll">
-        <table>
-          <thead><tr><th>Producto</th><th>Categoría</th><th>Costo</th><th>Precio</th><th>Margen</th><th>Stock</th><th>Mín</th><th></th></tr></thead>
-          <tbody id="invTable"><tr><td colspan="8" class="muted">Cargando…</td></tr></tbody>
-        </table>
+      <div class="inv-layout">
+        <div class="card-box table-scroll">
+          <table>
+            <thead><tr><th>Código</th><th>Producto</th><th>Categoría</th><th>Costo</th><th>Precio</th><th>Margen</th><th>Stock</th><th>Mín</th><th></th></tr></thead>
+            <tbody id="invTable"><tr><td colspan="9" class="muted">Cargando…</td></tr></tbody>
+          </table>
+        </div>
+        <aside class="inv-photo" id="invPhoto">
+          <p class="muted" style="margin-top:2rem;margin-bottom:2rem;">👆 Toca un producto<br>para ver su foto</p>
+        </aside>
       </div>
       <h2>Movimientos recientes</h2>
       <div class="card-box table-scroll">
@@ -587,24 +608,76 @@ function stockEn(pid, aid){
   return s ? Number(s.cantidad)||0 : 0;
 }
 
+let selectedProdId = null;
+
 function renderInventory(){
   const aid = $('invAlmacen').value;
-  if (!biz.productos.length) { $('invTable').innerHTML='<tr><td colspan="8" class="muted">Sin productos. Dale a "＋ Producto" o importa tu lista de Excel.</td></tr>'; return; }
-  $('invTable').innerHTML = biz.productos.map(p=>{
-    const costo=Number(p.ccosto||p.costo)||0, precio=Number(p.precio)||0;
+  const q = ($('invSearch').value || '').trim().toLowerCase();
+  const verInactivos = $('invVerInactivos').checked;
+  // mini dashboard de estado
+  const total = biz.productos.length;
+  const activos = biz.productos.filter(p=>p.estado!=='inactivo').length;
+  const sinFoto = biz.productos.filter(p=>p.estado!=='inactivo' && !p.foto).length;
+  const revision = biz.productos.filter(p=>p.estado!=='inactivo' && String(p.notas||'').indexOf('REVISION')>=0).length;
+  $('invDash').innerHTML =
+    '<div class="pnl-card"><div class="k">Productos</div><div class="v">'+total+'</div></div>' +
+    '<div class="pnl-card good"><div class="k">Activos</div><div class="v">'+activos+'</div></div>' +
+    '<div class="pnl-card"><div class="k">Sin foto</div><div class="v">'+sinFoto+'</div></div>' +
+    '<div class="pnl-card '+(revision?'bad':'')+'"><div class="k">Revisión manual</div><div class="v">'+revision+'</div></div>';
+  let lista = biz.productos.filter(p=>{
+    if (!verInactivos && p.estado==='inactivo') return false;
+    if (q && !(String(p.codigo||'').toLowerCase().includes(q) || String(p.nombre||'').toLowerCase().includes(q))) return false;
+    return true;
+  });
+  if (!lista.length) { $('invTable').innerHTML='<tr><td colspan="9" class="muted">Sin productos. Dale a "＋ Producto" o importa tu lista.</td></tr>'; return; }
+  $('invTable').innerHTML = lista.map(p=>{
+    const costo=Number(p.costo)||0, precio=Number(p.precio)||0;
     const margen = precio ? ((precio-costo)/precio*100).toFixed(0)+'%' : '—';
     const st = stockEn(p.id, aid);
     const min = Number(p.stock_minimo)||0;
     const alerta = min && st<=min ? ' stock-alert' : '';
     const mon = esc(p.moneda||'MXN');
-    return '<tr><td>'+esc(p.nombre)+'</td><td>'+esc(p.categoria)+'</td>' +
+    const inact = p.estado==='inactivo';
+    const revision = String(p.notas||'').indexOf('REVISION')>=0;
+    return '<tr data-pid="'+p.id+'" onclick="selectProduct(\''+p.id+'\')" class="'+(inact?'inv-inactive ':'')+(selectedProdId===p.id?'inv-selected':'')+'">' +
+      '<td style="white-space:nowrap;">'+esc(p.codigo||'—')+(revision?' <span class="badge-revision">REVISAR</span>':'')+'</td>' +
+      '<td>'+esc(p.nombre)+'</td><td>'+esc(p.categoria)+(p.subcategoria?' <span class="muted">/'+esc(p.subcategoria)+'</span>':'')+'</td>' +
       '<td>'+fmtMoney(costo)+' '+mon+'</td><td>'+fmtMoney(precio)+' '+mon+'</td><td>'+margen+'</td>' +
       '<td class="'+alerta+'">'+st+'</td><td>'+(min||'—')+'</td>' +
       '<td style="white-space:nowrap;">' +
-      '<button class="btn btn-sm" onclick="showProductForm(\''+p.id+'\')">✎</button> ' +
-      '<button class="btn btn-sm" onclick="showAdjustForm(\''+p.id+'\')">±</button> ' +
-      '<button class="btn btn-danger btn-sm" onclick="deleteProduct(\''+p.id+'\')">✕</button></td></tr>';
+      '<button class="btn btn-sm" onclick="event.stopPropagation();showProductForm(\''+p.id+'\')">✎</button> ' +
+      '<button class="btn btn-sm" onclick="event.stopPropagation();showAdjustForm(\''+p.id+'\')">±</button> ' +
+      (inact
+        ? '<button class="btn btn-sm" onclick="event.stopPropagation();restoreProduct(\''+p.id+'\')">↩</button>'
+        : '<button class="btn btn-danger btn-sm" onclick="event.stopPropagation();deleteProduct(\''+p.id+'\')">✕</button>') +
+      '</td></tr>';
   }).join('');
+}
+
+function selectProduct(id){
+  selectedProdId = id;
+  const p = biz.productos.filter(x=>String(x.id)===String(id))[0];
+  if (!p) return;
+  renderInventory();
+  const st = stockTotal(p.id);
+  $('invPhoto').innerHTML =
+    (p.foto ? '<img src="'+esc(p.foto)+'" alt="'+esc(p.nombre)+'" onerror="this.style.display=\'none\'">'
+            : '<div style="padding:2rem 0.5rem;color:var(--muted);font-size:0.75rem;">Sin fotografía<br>(Fase 2: podrás subirla aquí)</div>') +
+    '<div class="ph-code">'+esc(p.codigo||'')+'</div>' +
+    '<div class="ph-name">'+esc(p.nombre)+'</div>' +
+    '<div class="ph-meta">'+esc(p.categoria)+(p.subcategoria?' · '+esc(p.subcategoria):'')+'<br>' +
+    (p.proveedor?'Proveedor: '+esc(p.proveedor)+'<br>':'') +
+    'Stock total: <strong>'+st+'</strong> '+(p.unidad||'')+'<br>' +
+    (Number(p.precio)?'Precio: <strong class="gold">'+fmtMoney(p.precio)+' '+esc(p.moneda||'MXN')+'</strong>':'Precio: pendiente') +
+    '</div>' +
+    '<div style="margin-top:0.8rem;"><button class="btn btn-sm" onclick="showProductForm(\''+p.id+'\')">✎ Editar producto</button></div>';
+}
+
+function restoreProduct(id){
+  apiPost({tipo:'restore_product', id}).then(d=>{
+    notice(d&&d.ok?'Producto recuperado.':(d&&d.error)||'Error', !!(d&&d.ok));
+    if(d&&d.ok) loadBiz();
+  });
 }
 
 function renderMovs(list){
@@ -620,27 +693,39 @@ function closeBizForms(){ $('bizForms').innerHTML=''; }
 function showProductForm(id){
   const p = id ? biz.productos.filter(x=>String(x.id)===String(id))[0] : null;
   $('bizForms').innerHTML = '<div class="card-box"><div class="row">' +
+    '<div><label>Código *</label><input id="pCodigo" value="'+esc(p?p.codigo:'')+'" placeholder="HJPVC-001" style="text-transform:uppercase;"></div>' +
     '<div><label>Nombre *</label><input id="pNombre" value="'+esc(p?p.nombre:'')+'"></div>' +
     '<div><label>Categoría</label><input id="pCat" value="'+esc(p?p.categoria:'')+'"></div>' +
+    '<div><label>Subcategoría</label><input id="pSubcat" value="'+esc(p?p.subcategoria:'')+'"></div>' +
+    '<div><label>Proveedor</label><input id="pProv" value="'+esc(p?p.proveedor:'')+'"></div>' +
     '<div><label>Costo</label><input type="number" id="pCosto" min="0" step="0.01" value="'+(p?p.costo:'')+'"></div>' +
     '<div><label>Precio venta</label><input type="number" id="pPrecio" min="0" step="0.01" value="'+(p?p.precio:'')+'"></div>' +
     '<div><label>Unidad</label><input id="pUnidad" value="'+esc(p?p.unidad:'pieza')+'"></div>' +
     '<div><label>Stock mínimo</label><input type="number" id="pMin" min="0" value="'+(p?p.stock_minimo:'')+'"></div>' +
     '<div><label>Moneda</label><select id="pMoneda"><option value="MXN"'+((!p||p.moneda==='MXN')?' selected':'')+'>MXN</option><option value="USD"'+(p&&p.moneda==='USD'?' selected':'')+'>USD</option></select></div>' +
-    '</div><div class="toolbar" style="margin-top:1rem;">' +
+    '<div><label>Estado</label><select id="pEstado"><option value="activo"'+((!p||p.estado!=='inactivo')?' selected':'')+'>Activo</option><option value="inactivo"'+(p&&p.estado==='inactivo'?' selected':'')+'>Inactivo</option></select></div>' +
+    '</div>' +
+    '<label>Fotografía (ruta en la web, ej: img/1-placas-pvc/.../foto.jpg)</label>' +
+    '<input id="pFoto" value="'+esc(p?p.foto:'')+'" placeholder="img/...">' +
+    '<label>Descripción</label><textarea id="pDesc" rows="2">'+esc(p?p.descripcion:'')+'</textarea>' +
+    '<label>Notas internas</label><input id="pNotas" value="'+esc(p?p.notas:'')+'">' +
+    '<div class="toolbar" style="margin-top:1rem;">' +
     '<button class="btn btn-solid btn-sm" onclick="saveProduct(\''+(p?p.id:'')+'\')">💾 Guardar</button> ' +
     '<button class="btn btn-sm" onclick="closeBizForms()">Cancelar</button></div></div>';
-  $('pNombre').focus();
+  (p ? $('pCodigo') : $('pCodigo')).focus();
 }
 
 function saveProduct(id){
-  const nombre=$('pNombre').value.trim();
+  const codigo=$('pCodigo').value.trim().toUpperCase(), nombre=$('pNombre').value.trim();
+  if (!codigo) { notice('El código es obligatorio.', false); return; }
   if (!nombre) { notice('El producto necesita nombre.', false); return; }
-  apiPost({tipo:'save_product', id:id||undefined, nombre, categoria:$('pCat').value.trim(),
+  apiPost({tipo:'save_product', id:id||undefined, codigo, nombre, categoria:$('pCat').value.trim(),
+    subcategoria:$('pSubcat').value.trim(), proveedor:$('pProv').value.trim(),
     costo:parseFloat($('pCosto').value)||0, precio:parseFloat($('pPrecio').value)||0,
     unidad:$('pUnidad').value.trim()||'pieza', stock_minimo:parseFloat($('pMin').value)||0,
-    moneda:$('pMoneda').value}).then(d=>{
-    notice(d&&d.ok?'Producto guardado.':'No se pudo guardar.', !!(d&&d.ok));
+    moneda:$('pMoneda').value, foto:$('pFoto').value.trim(), estado:$('pEstado').value,
+    descripcion:$('pDesc').value.trim(), notas:$('pNotas').value.trim()}).then(d=>{
+    notice(d&&d.ok?'Producto guardado.':(d&&d.error)||'No se pudo guardar.', !!(d&&d.ok));
     if(d&&d.ok){ closeBizForms(); loadBiz(); }
   });
 }
@@ -720,7 +805,7 @@ function searchSaleProducts(){
   const q = $('sSearch').value.trim().toLowerCase();
   const box = $('sSearchResults');
   if (q.length < 2) { box.innerHTML=''; return; }
-  const matches = biz.productos.filter(p => (p.nombre+' '+(p.categoria||'')).toLowerCase().includes(q)).slice(0,8);
+  const matches = biz.productos.filter(p => p.estado!=='inactivo' && (p.nombre+' '+(p.categoria||'')).toLowerCase().includes(q)).slice(0,8);
   box.innerHTML = '<div class="sr-list">' + (matches.length
     ? matches.map(p=>'<div class="sr-item" onclick="addSaleItem(\''+p.id+'\')"><span>'+esc(p.nombre)+'</span><span class="gold">'+fmtMoney(p.precio)+' '+esc(p.moneda||'MXN')+'</span></div>').join('')
     : '<div class="sr-item muted">Sin resultados</div>') + '</div>';

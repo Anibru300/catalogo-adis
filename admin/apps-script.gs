@@ -31,7 +31,11 @@ var SHEET_MOVES    = 'Movimientos';
 var SHEET_SALES    = 'Ventas';
 var SHEET_EXPENSES = 'Gastos';
 var SHEET_CONFIG   = 'Config';
+var SHEET_LOG      = 'Log';
 var TOKEN_MINUTOS  = 8 * 60;
+
+// Hojas desde las que el panel puede borrar filas (limpieza / correccion)
+var HOJAS_BORRABLES = [SHEET_LEADS, SHEET_QUOTES, SHEET_REVIEWS, SHEET_MOVES, SHEET_SALES, SHEET_EXPENSES, SHEET_STOCK];
 
 var MONEDAS = ['MXN', 'USD'];
 
@@ -84,6 +88,14 @@ function filasComoObjetos(nombre) {
 }
 
 function nuevoId() { return Utilities.getUuid().slice(0, 8); }
+
+// Bitacora de cambios (Fase 4 del plan): quien, que, cuando
+function log_(accion, detalle) {
+  try {
+    hoja(SHEET_LOG, ['fecha', 'usuario', 'accion', 'detalle'])
+      .appendRow([ahora_(), ADMIN_USUARIO, accion, String(detalle || '').slice(0, 500)]);
+  } catch (err) {}
+}
 
 function esTokenValido(token) {
   if (!token) return false;
@@ -188,7 +200,8 @@ function doGet(e) {
     return json({ ok: true, moneda_base: cfg('moneda_base', 'MXN'), tipo_cambio: cfg('tipo_cambio', '18.5') });
   }
   if (action === 'productos') {
-    return json({ ok: true, productos: filasComoObjetos(SHEET_PRODUCTS).filter(function (p) { return String(p.activo) !== 'no'; }) });
+    // Incluye activos e inactivos: el panel filtra y permite recuperar
+    return json({ ok: true, productos: filasComoObjetos(SHEET_PRODUCTS) });
   }
   if (action === 'almacenes') {
     return json({ ok: true, almacenes: filasComoObjetos(SHEET_WAREHOUSES).filter(function (a) { return String(a.activo) !== 'no'; }) });
@@ -304,47 +317,140 @@ function doPost(e) {
     return json({ ok: true, moneda_base: cfg('moneda_base', 'MXN'), tipo_cambio: cfg('tipo_cambio', '18.5') });
   }
 
-  /* ---------- Productos ---------- */
+  /* ---------- Productos (esquema maestro) ---------- */
   if (tipo === 'save_product') {
-    var hp = hoja(SHEET_PRODUCTS, ['id', 'nombre', 'categoria', 'costo', 'precio', 'unidad', 'stock_minimo', 'moneda', 'activo']);
-    var id = data.id || nuevoId();
-    if (data.id) {
-      var vals = hp.getDataRange().getValues();
-      for (var i = 1; i < vals.length; i++) {
-        if (String(vals[i][0]) === String(data.id)) {
-          hp.getRange(i + 1, 1, 1, 9).setValues([[id, data.nombre, data.categoria || '', data.costo || 0,
-            data.precio || 0, data.unidad || 'pieza', data.stock_minimo || 0, data.moneda || 'MXN', 'si']]);
-          return json({ ok: true, id: id });
-        }
+    var ENC_PROD = ['id', 'codigo', 'nombre', 'descripcion', 'categoria', 'subcategoria', 'proveedor',
+      'costo', 'precio', 'unidad', 'stock_minimo', 'moneda', 'foto', 'estado', 'notas', 'fecha_actualizacion'];
+    var hp = hoja(SHEET_PRODUCTS, ENC_PROD);
+    var codigo = String(data.codigo || '').trim();
+    if (!String(data.nombre || '').trim()) return json({ ok: false, error: 'El producto necesita nombre.' });
+    if (!codigo) return json({ ok: false, error: 'El codigo no puede estar vacio.' });
+    // validar codigo unico (excepto el propio producto al editar)
+    var vals = hp.getDataRange().getValues();
+    var filaExistente = null;
+    for (var i = 1; i < vals.length; i++) {
+      if (data.id && String(vals[i][0]) === String(data.id)) filaExistente = i + 1;
+      else if (String(vals[i][1]).toLowerCase() === codigo.toLowerCase()) {
+        return json({ ok: false, error: 'El codigo ' + codigo + ' ya existe en otro producto.' });
       }
     }
-    hp.appendRow([id, data.nombre, data.categoria || '', data.costo || 0, data.precio || 0,
-      data.unidad || 'pieza', data.stock_minimo || 0, data.moneda || 'MXN', 'si']);
-    return json({ ok: true, id: id });
+    var fila = [data.id || nuevoId(), codigo, String(data.nombre).trim(), data.descripcion || '',
+      data.categoria || '', data.subcategoria || '', data.proveedor || '',
+      Number(data.costo) || 0, Number(data.precio) || 0, data.unidad || 'pieza',
+      Number(data.stock_minimo) || 0, data.moneda || 'MXN', data.foto || '',
+      data.estado === 'inactivo' ? 'inactivo' : 'activo', data.notas || '', ahora_()];
+    if (filaExistente) hp.getRange(filaExistente, 1, 1, ENC_PROD.length).setValues([fila]);
+    else hp.appendRow(fila);
+    log_(filaExistente ? 'producto_editado' : 'producto_creado', codigo + ' - ' + data.nombre);
+    return json({ ok: true, id: fila[0] });
   }
 
+  // Desactivar = borrado logico (recuperable). Nunca se borra fisicamente.
   if (tipo === 'delete_product') {
     var hpd = ss().getSheetByName(SHEET_PRODUCTS);
     if (hpd) {
       var vd = hpd.getDataRange().getValues();
       for (var j = 1; j < vd.length; j++) {
-        if (String(vd[j][0]) === String(data.id)) { hpd.getRange(j + 1, 8).setValue('no'); return json({ ok: true }); }
+        if (String(vd[j][0]) === String(data.id)) {
+          hpd.getRange(j + 1, 14).setValue('inactivo');
+          hpd.getRange(j + 1, 16).setValue(ahora_());
+          log_('producto_desactivado', String(vd[j][1]) + ' - ' + String(vd[j][2]));
+          return json({ ok: true });
+        }
       }
     }
     return json({ ok: false, error: 'Producto no encontrado' });
   }
 
-  // Importacion masiva de productos (desde Excel/Sheets)
+  // Recuperar producto desactivado
+  if (tipo === 'restore_product') {
+    var hpr = ss().getSheetByName(SHEET_PRODUCTS);
+    if (hpr) {
+      var vr = hpr.getDataRange().getValues();
+      for (var q = 1; q < vr.length; q++) {
+        if (String(vr[q][0]) === String(data.id)) {
+          hpr.getRange(q + 1, 14).setValue('activo');
+          hpr.getRange(q + 1, 16).setValue(ahora_());
+          log_('producto_recuperado', String(vr[q][1]) + ' - ' + String(vr[q][2]));
+          return json({ ok: true });
+        }
+      }
+    }
+    return json({ ok: false, error: 'Producto no encontrado' });
+  }
+
+  // Importacion masiva (dataset maestro): productos + stock por almacen
   if (tipo === 'import_productos') {
-    var himp = hoja(SHEET_PRODUCTS, ['id', 'nombre', 'categoria', 'costo', 'precio', 'unidad', 'stock_minimo', 'moneda', 'activo']);
-    var count = 0;
+    var ENC_IMP = ['id', 'codigo', 'nombre', 'descripcion', 'categoria', 'subcategoria', 'proveedor',
+      'costo', 'precio', 'unidad', 'stock_minimo', 'moneda', 'foto', 'estado', 'notas', 'fecha_actualizacion'];
+    // reset: limpia las pestañas de productos/stock/movimientos y pone encabezados nuevos
+    if (data.reset) {
+      [SHEET_PRODUCTS, SHEET_STOCK, SHEET_MOVES].forEach(function (n) {
+        var h = ss().getSheetByName(n);
+        if (h) h.clearContents();
+      });
+      hoja(SHEET_PRODUCTS, ENC_IMP);
+      hoja(SHEET_STOCK, ['producto_id', 'almacen_id', 'cantidad']);
+      hoja(SHEET_MOVES, ['fecha', 'tipo', 'producto_id', 'producto', 'almacen_id', 'almacen', 'cantidad', 'costo_unit', 'moneda', 'referencia', 'notas']);
+      log_('reset_base', 'Pestanas de productos/stock/movimientos reiniciadas');
+    }
+    var himp = hoja(SHEET_PRODUCTS, ENC_IMP);
+    var codigosVistos = {};
+    var count = 0, errores = [];
     (data.rows || []).forEach(function (r) {
       if (!r.nombre) return;
-      himp.appendRow([nuevoId(), r.nombre, r.categoria || '', r.costo || 0, r.precio || 0,
-        r.unidad || 'pieza', r.stock_minimo || 0, r.moneda || 'MXN', 'si']);
+      var cod = String(r.codigo || '').trim();
+      if (!cod) { errores.push('Sin codigo: ' + r.nombre); return; }
+      if (codigosVistos[cod.toLowerCase()]) { errores.push('Duplicado en import: ' + cod); return; }
+      codigosVistos[cod.toLowerCase()] = true;
+      himp.appendRow([nuevoId(), cod, r.nombre, r.descripcion || '', r.categoria || '', r.subcategoria || '',
+        r.proveedor || '', Number(r.costo) || 0, Number(r.precio) || 0, r.unidad || 'pieza',
+        Number(r.stock_minimo) || 0, r.moneda || 'MXN', r.foto || '', r.estado || 'activo',
+        r.notas || '', ahora_()]);
       count++;
     });
-    return json({ ok: true, importados: count });
+    // stock por almacen (crea almacenes que no existan)
+    var stockCount = 0;
+    (data.stock || []).forEach(function (s) {
+      if (!s.codigo || !s.almacen) return;
+      var halm = hoja(SHEET_WAREHOUSES, ['id', 'nombre', 'ubicacion', 'activo']);
+      var almRows = halm.getDataRange().getValues();
+      var almId = null;
+      for (var a = 1; a < almRows.length; a++) {
+        if (String(almRows[a][1]).toLowerCase() === String(s.almacen).toLowerCase() && String(almRows[a][3]) !== 'no') {
+          almId = String(almRows[a][0]); break;
+        }
+      }
+      if (!almId) { almId = nuevoId(); halm.appendRow([almId, s.almacen, '', 'si']); }
+      // resolver producto por codigo
+      var prodRows = himp.getDataRange().getValues();
+      var prodId = null, prodNom = '';
+      for (var b = 1; b < prodRows.length; b++) {
+        if (String(prodRows[b][1]).toLowerCase() === String(s.codigo).toLowerCase()) {
+          prodId = String(prodRows[b][0]); prodNom = String(prodRows[b][2]); break;
+        }
+      }
+      if (!prodId) { errores.push('Stock sin producto: ' + s.codigo); return; }
+      ponerStock(prodId, almId, Number(s.cantidad) || 0);
+      hoja(SHEET_MOVES, ['fecha', 'tipo', 'producto_id', 'producto', 'almacen_id', 'almacen', 'cantidad', 'costo_unit', 'moneda', 'referencia', 'notas'])
+        .appendRow([ahora_(), 'ajuste', prodId, prodNom, almId, s.almacen, Number(s.cantidad) || 0, '', 'MXN', 'Importacion inicial', 'Carga desde Excel']);
+      stockCount++;
+    });
+    log_('importacion_masiva', count + ' productos, ' + stockCount + ' existencias');
+    return json({ ok: true, importados: count, stock: stockCount, errores: errores });
+  }
+
+  // Borrado de una fila concreta (limpieza de datos de prueba / correcciones)
+  if (tipo === 'delete_row') {
+    var nombreHoja = String(data.sheet || '');
+    if (HOJAS_BORRABLES.indexOf(nombreHoja) === -1) return json({ ok: false, error: 'Hoja no permitida' });
+    var hb = ss().getSheetByName(nombreHoja);
+    if (hb && data.row > 1 && data.row <= hb.getLastRow()) {
+      hb.deleteRow(data.row);
+      log_('fila_eliminada', nombreHoja + ' fila ' + data.row);
+      return json({ ok: true });
+    }
+    return json({ ok: false, error: 'Fila no encontrada' });
   }
 
   /* ---------- Almacenes ---------- */
@@ -387,6 +493,7 @@ function doPost(e) {
       cantidad: Math.abs(Number(data.cantidad) || 0), costo_unit: data.costo_unit || prod.costo || '',
       moneda: data.moneda || prod.moneda || 'MXN', notas: data.notas || ''
     });
+    log_('movimiento_' + data.tipo_mov, prod.nombre + ' x' + data.cantidad + ' en ' + (alm.nombre || ''));
     return json({ ok: true, stock_nuevo: nuevaCant });
   }
 
@@ -404,6 +511,7 @@ function doPost(e) {
       }
     });
     if (faltantes.length) return json({ ok: false, error: 'Stock insuficiente: ' + faltantes.join(', ') });
+    log_('venta_registrada', (data.cliente || 'mostrador') + ' - ' + (data.items || []).length + ' items');
 
     var total = 0, costoTotal = 0;
     var nombres = [];
@@ -435,6 +543,7 @@ function doPost(e) {
     hoja(SHEET_EXPENSES, ['fecha', 'categoria', 'descripcion', 'monto', 'moneda', 'tipo_cambio', 'monto_base'])
       .appendRow([data.fecha || hoy_(), data.categoria || 'Otro', data.descripcion || '',
         Number(data.monto) || 0, monedaG, tcg, aBase(Number(data.monto) || 0, monedaG, tcg)]);
+    log_('gasto_registrado', (data.categoria || 'Otro') + ' - ' + (data.monto || 0) + ' ' + monedaG);
     return json({ ok: true });
   }
 
