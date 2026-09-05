@@ -30,8 +30,8 @@ OUTPUT_DIR = BASE_DIR / 'public'
 # Sigue los pasos de admin/GUIA_CONFIGURACION.md para crear la hoja de Google
 # y el Apps Script, despliega el script como app web y pega su URL aqui.
 # Mientras esten vacios, el sitio funciona igual (formulario solo abre WhatsApp).
-LEADS_URL = ''    # Recibe los envios del formulario de contacto (pestaña Leads)
-REVIEWS_URL = ''  # Mismo script; expone las resenas para el sitio (puede ser el mismo URL)
+LEADS_URL = 'https://script.google.com/macros/s/AKfycbzkRT6m7oTOhUCpiUsfjq_PUsgzQILCHaRxHoae-XA3AH0gAlZxhR0kWcH7hmJdRcXp/exec'    # Recibe los envios del formulario de contacto (pestaña Leads)
+REVIEWS_URL = 'https://script.google.com/macros/s/AKfycbzkRT6m7oTOhUCpiUsfjq_PUsgzQILCHaRxHoae-XA3AH0gAlZxhR0kWcH7hmJdRcXp/exec'  # Mismo script; expone las resenas para el sitio
 
 CONTACTO = {
     'whatsapp': '15208392877',

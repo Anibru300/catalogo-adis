@@ -72,7 +72,12 @@ function filasComoObjetos(nombre) {
   var filas = [];
   for (var i = 1; i < valores.length; i++) {
     var obj = {};
-    for (var c = 0; c < encabezados.length; c++) obj[encabezados[c]] = valores[i][c];
+    for (var c = 0; c < encabezados.length; c++) {
+      var v = valores[i][c];
+      // Sheets convierte fechas a objetos Date: normalizar a texto ISO
+      if (v instanceof Date) v = Utilities.formatDate(v, 'America/Hermosillo', 'yyyy-MM-dd HH:mm');
+      obj[encabezados[c]] = v;
+    }
     filas.push(obj);
   }
   return filas;
