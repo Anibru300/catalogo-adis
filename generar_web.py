@@ -4372,6 +4372,7 @@ def generate_header(current_page='index', page_file='index.html'):
     <div class="topbar">{svg_icon('truck', size=15, color='var(--black)')}<span>{i18n('topbar_text')}</span></div>
     <div class="header-inner">
       <a href="{p('index.html')}" class="logo">{logo_tag()}</a>
+      <a href="{p('admin.html')}" class="admin-link" title="Panel administrativo" aria-label="Panel administrativo">{svg_icon('shield', size=20, color='var(--gold)')}</a>
       <nav class="desktop-nav">
         {nav_links}
         <div class="search-box">
@@ -4381,7 +4382,6 @@ def generate_header(current_page='index', page_file='index.html'):
         </div>
       </nav>
       <div class="header-actions">
-        <a href="{p('admin.html')}" class="admin-link" title="Panel administrativo" aria-label="Panel administrativo">{svg_icon('shield', size=20, color='var(--gold)')}</a>
         {translate_toggle(page_file)}
         <button class="menu-btn" onclick="toggleMenu()">{svg_icon('menu', size=22, color='var(--gold)')}</button>
       </div>
