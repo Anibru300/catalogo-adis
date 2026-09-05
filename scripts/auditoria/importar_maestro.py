@@ -10,7 +10,7 @@ from pathlib import Path
 from playwright.sync_api import sync_playwright
 
 BASE = Path(__file__).resolve().parents[2]
-URL = 'https://script.google.com/macros/s/AKfycbzkRT6m7oTOhUCpiUsfjq_PUsgzQILCHaRxHoae-XA3AH0gAlZxhR0kWcH7hmJdRcXp/exec'
+URL = 'https://script.google.com/macros/s/AKfycbwia7Zk4sEleYA3dgNWBxRyV9HWyFdfckCmQbPQTxVDrhOLijJAhbUonjvDh5o2eZQW/exec'
 CREDS = {'usuario': 'Adis', 'clave': 'Adisdiseño2026'}
 
 dataset = json.load(open(BASE / 'scripts/auditoria/dataset_maestro.json', encoding='utf-8'))
@@ -59,7 +59,7 @@ with sync_playwright() as p:
     # 4. verificacion de integridad contra el dataset
     prod = get(f'action=productos&token={token}')['productos']
     stock = get(f'action=stock&token={token}')['stock']
-    codigos_api = sorted(str(p['codigo']) for p in prod)
+    codigos_api = sorted(str(p.get('codigo','')) for p in prod)
     codigos_ds = sorted(str(r['codigo']) for r in dataset['productos'])
     print(f'4. Integridad: {len(prod)} productos en Sheets vs {len(dataset["productos"])} en dataset')
     faltan = set(codigos_ds) - set(codigos_api)

@@ -383,18 +383,18 @@ function doPost(e) {
   if (tipo === 'import_productos') {
     var ENC_IMP = ['id', 'codigo', 'nombre', 'descripcion', 'categoria', 'subcategoria', 'proveedor',
       'costo', 'precio', 'unidad', 'stock_minimo', 'moneda', 'foto', 'estado', 'notas', 'fecha_actualizacion'];
-    // reset: limpia las pestañas de productos/stock/movimientos y pone encabezados nuevos
+    // reset: limpia las pestañas y vuelve a escribir encabezados (clearContents deja la hoja sin titulos)
     if (data.reset) {
       [SHEET_PRODUCTS, SHEET_STOCK, SHEET_MOVES].forEach(function (n) {
         var h = ss().getSheetByName(n);
         if (h) h.clearContents();
       });
-      hoja(SHEET_PRODUCTS, ENC_IMP);
-      hoja(SHEET_STOCK, ['producto_id', 'almacen_id', 'cantidad']);
-      hoja(SHEET_MOVES, ['fecha', 'tipo', 'producto_id', 'producto', 'almacen_id', 'almacen', 'cantidad', 'costo_unit', 'moneda', 'referencia', 'notas']);
+      ss().getSheetByName(SHEET_PRODUCTS).appendRow(ENC_IMP);
+      ss().getSheetByName(SHEET_STOCK).appendRow(['producto_id', 'almacen_id', 'cantidad']);
+      ss().getSheetByName(SHEET_MOVES).appendRow(['fecha', 'tipo', 'producto_id', 'producto', 'almacen_id', 'almacen', 'cantidad', 'costo_unit', 'moneda', 'referencia', 'notas']);
       log_('reset_base', 'Pestanas de productos/stock/movimientos reiniciadas');
     }
-    var himp = hoja(SHEET_PRODUCTS, ENC_IMP);
+    var himp = ss().getSheetByName(SHEET_PRODUCTS);
     var codigosVistos = {};
     var count = 0, errores = [];
     (data.rows || []).forEach(function (r) {
