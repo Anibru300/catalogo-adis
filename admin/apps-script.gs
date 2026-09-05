@@ -32,6 +32,8 @@ var SHEET_SALES    = 'Ventas';
 var SHEET_EXPENSES = 'Gastos';
 var SHEET_CONFIG   = 'Config';
 var SHEET_LOG      = 'Log';
+var SHEET_VISITS   = 'Visitas';
+var VISITS_MAX_FILAS = 5000; // tope: se van borrando las mas viejas
 var TOKEN_MINUTOS  = 8 * 60;
 
 // Hojas desde las que el panel puede borrar filas (limpieza / correccion)
@@ -88,6 +90,36 @@ function filasComoObjetos(nombre) {
 }
 
 function nuevoId() { return Utilities.getUuid().slice(0, 8); }
+
+// --- Clasificadores para el tracker de visitas (pestaña Flujo) ---
+function origenDe_(ref) {
+  var r = String(ref || '').toLowerCase();
+  if (!r) return 'Directo / sin dato';
+  if (r.indexOf('google.') !== -1) return 'Google';
+  if (r.indexOf('facebook.') !== -1 || r.indexOf('fb.') !== -1 || r.indexOf('fbwatch') !== -1) return 'Facebook';
+  if (r.indexOf('instagram.') !== -1) return 'Instagram';
+  if (r.indexOf('whatsapp') !== -1) return 'WhatsApp';
+  if (r.indexOf('youtube.') !== -1) return 'YouTube';
+  if (r.indexOf('tiktok.') !== -1) return 'TikTok';
+  if (r.indexOf('bing.') !== -1) return 'Bing';
+  return 'Otro sitio';
+}
+function dispositivoDe_(ua) {
+  var u = String(ua || '').toLowerCase();
+  if (u.indexOf('ipad') !== -1 || u.indexOf('tablet') !== -1) return 'Tableta';
+  if (u.indexOf('mobi') !== -1 || u.indexOf('iphone') !== -1 || u.indexOf('android') !== -1) return 'Móvil';
+  return 'Escritorio';
+}
+function navegadorDe_(ua) {
+  var u = String(ua || '').toLowerCase();
+  if (u.indexOf('edg') !== -1) return 'Edge';
+  if (u.indexOf('opr') !== -1 || u.indexOf('opera') !== -1) return 'Opera';
+  if (u.indexOf('chrome') !== -1) return 'Chrome';
+  if (u.indexOf('firefox') !== -1) return 'Firefox';
+  if (u.indexOf('safari') !== -1) return 'Safari';
+  if (u.indexOf('trident') !== -1 || u.indexOf('msie') !== -1) return 'Internet Explorer';
+  return 'Otro';
+}
 
 // Bitacora de cambios (Fase 4 del plan): quien, que, cuando
 function log_(accion, detalle) {
@@ -191,6 +223,12 @@ function doGet(e) {
 
   if (!esTokenValido(token)) return json({ ok: false, error: 'Sesion no valida. Vuelve a entrar.' });
 
+  if (action === 'visitas') {
+    var hV = ss().getSheetByName(SHEET_VISITS);
+    if (!hV) return json({ ok: true, visitas: [] });
+    return json({ ok: true, visitas: filasComoObjetos(SHEET_VISITS) });
+  }
+
   if (action === 'me') return json({ ok: true, usuario: ADMIN_USUARIO });
   if (action === 'leads') return json({ ok: true, leads: filasComoObjetos(SHEET_LEADS) });
   if (action === 'quotes') return json({ ok: true, quotes: filasComoObjetos(SHEET_QUOTES) });
@@ -281,6 +319,28 @@ function doPost(e) {
     hoja(SHEET_LEADS, ['fecha', 'nombre', 'telefono', 'email', 'ciudad', 'metros', 'producto', 'mensaje', 'pagina', 'idioma'])
       .appendRow([ahora_(), data.nombre || '', data.telefono || '', data.email || '', data.ciudad || '',
         data.metros || '', data.producto || '', data.mensaje || '', data.pagina || '', data.idioma || '']);
+    return json({ ok: true });
+  }
+
+  if (tipo === 'track') { // registro publico de visitas (pestaña Flujo del panel)
+    var hojaV = hoja(SHEET_VISITS, ['fecha', 'hora', 'pagina', 'seccion', 'origen', 'referrer', 'idioma', 'dispositivo', 'navegador', 'ancho', 'ua']);
+    hojaV.appendRow([
+      hoy_(),
+      Utilities.formatDate(new Date(), 'America/Hermosillo', 'HH:mm'),
+      String(data.pagina || '').slice(0, 180),
+      String(data.seccion || '').slice(0, 120),
+      origenDe_(data.referrer),
+      String(data.referrer || '').slice(0, 180),
+      String(data.idioma || ''),
+      dispositivoDe_(data.ua),
+      navegadorDe_(data.ua),
+      Number(data.ancho) || 0,
+      String(data.ua || '').slice(0, 200)
+    ]);
+    // Tope de filas: borrar las mas viejas
+    if (hojaV.getLastRow() > VISITS_MAX_FILAS + 1) {
+      hojaV.deleteRows(2, hojaV.getLastRow() - VISITS_MAX_FILAS - 1);
+    }
     return json({ ok: true });
   }
 

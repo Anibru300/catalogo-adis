@@ -127,6 +127,20 @@
   .inv-dash .pnl-card { padding:0.7rem 0.9rem; }
   .inv-dash .pnl-card .v { font-size:1rem; }
 
+  /* ===== FLUJO (visitas) ===== */
+  .flow-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(340px,100%),1fr)); gap:1.2rem; }
+  .flow-h { font-size:0.85rem; color:var(--gold); margin-bottom:0.7rem; }
+  .flow-bars { display:flex; align-items:flex-end; gap:2px; height:150px; border-bottom:1px solid rgba(197,160,89,0.3); padding-bottom:2px; }
+  .flow-bar { flex:1; min-width:5px; min-height:3px; background:linear-gradient(180deg,var(--gold),rgba(197,160,89,0.3)); border-radius:3px 3px 0 0; position:relative; cursor:default; }
+  .flow-bar:hover { background:var(--gold-soft); }
+  .flow-bar .tip { position:absolute; bottom:calc(100% + 4px); left:50%; transform:translateX(-50%); background:var(--dark); border:1px solid var(--gold); color:var(--white); font-size:0.65rem; padding:0.2rem 0.45rem; border-radius:6px; white-space:nowrap; display:none; z-index:5; }
+  .flow-bar:hover .tip { display:block; }
+  .flow-row { display:grid; grid-template-columns:minmax(90px,130px) 1fr 42px; gap:0.5rem; align-items:center; margin:0.35rem 0; font-size:0.78rem; }
+  .flow-row .lbl { color:var(--white); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .flow-row .bar { height:14px; background:rgba(197,160,89,0.12); border-radius:7px; overflow:hidden; }
+  .flow-row .bar i { display:block; height:100%; background:linear-gradient(90deg,var(--gold),var(--gold-soft)); border-radius:7px; }
+  .flow-row .n { text-align:right; color:var(--gold-soft); font-weight:600; }
+
   /* Impresion de cotizacion */
   #printArea { display:none; }
   @media print {
@@ -256,6 +270,7 @@
       <button class="tab" data-tab="pnl" onclick="showTab('pnl')">📊 Resultados</button>
       <button class="tab" data-tab="reviews" onclick="showTab('reviews')">⭐ Reseñas</button>
       <button class="tab" data-tab="analytics" onclick="showTab('analytics')">📊 Estadísticas</button>
+      <button class="tab" data-tab="flow" onclick="showTab('flow')">🌊 Flujo</button>
     </nav>
     <button class="btn btn-sm" onclick="logout()">Cerrar sesión</button>
   </header>
@@ -368,7 +383,7 @@
           </details>
 
           <details class="prop-sec" open>
-            <summary>03 · Desglose de inversión</summary>
+            <summary>03 · Inversión total del proyecto</summary>
             <div class="sec-body">
               <div class="row" style="align-items:end;">
                 <div>
@@ -386,7 +401,7 @@
                   </div>
                 </div>
               </div>
-              <label>Partidas — elige el producto del catálogo (código, unidad y precio se rellenan solos) o captura manual</label>
+              <label>Partidas (uso interno para calcular el total — NO salen en el documento; el PDF solo muestra la inversión total, como en el formato Word)</label>
               <div class="table-scroll">
                 <table class="prop-items">
                   <thead><tr><th style="min-width:170px;">Producto</th><th style="min-width:190px;">Descripción / especificaciones</th><th style="width:64px;">Cant.</th><th style="width:74px;">Unidad</th><th style="width:92px;">P. unit.</th><th style="width:92px;">Importe</th><th style="width:34px;"></th></tr></thead>
@@ -571,6 +586,44 @@
         <p class="muted">Configura <code>LOOKER_STUDIO_URL</code> en este archivo (ver admin/GUIA_CONFIGURACION.md, paso 6) para ver aquí el tablero de Google Analytics.</p>
       </div>
     </section>
+
+    <!-- FLUJO (visitas del sitio, alimentado por el tracker) -->
+    <section id="tab-flow" class="panel hidden">
+      <div class="toolbar">
+        <h2 style="margin:0;">🌊 Flujo del sitio</h2>
+        <span class="muted" id="flowRango"></span>
+        <button class="btn btn-sm" onclick="loadFlow()">↻ Actualizar</button>
+      </div>
+      <div class="pnl-cards" id="flowKpis"></div>
+      <div class="flow-grid">
+        <div class="card-box">
+          <h3 class="flow-h">📈 Visitas por día (últimos 30 días)</h3>
+          <div id="flowDiario" class="flow-bars"></div>
+        </div>
+        <div class="card-box">
+          <h3 class="flow-h">🌍 ¿De dónde nos visitan?</h3>
+          <div id="flowOrigen"></div>
+        </div>
+        <div class="card-box">
+          <h3 class="flow-h">📱 ¿Quién nos visita?</h3>
+          <div id="flowDisp"></div>
+          <h3 class="flow-h" style="margin-top:1rem;">🧭 Navegador</h3>
+          <div id="flowNav"></div>
+          <h3 class="flow-h" style="margin-top:1rem;">🗣️ Idioma</h3>
+          <div id="flowLang"></div>
+        </div>
+        <div class="card-box">
+          <h3 class="flow-h">🔝 Páginas más visitadas</h3>
+          <div id="flowPaginas"></div>
+          <h3 class="flow-h" style="margin-top:1rem;">👁️ Apartados más vistos en las páginas</h3>
+          <div id="flowSecciones"></div>
+        </div>
+      </div>
+      <div class="card-box table-scroll">
+        <h3 class="flow-h">🕘 Últimas visitas</h3>
+        <table><thead><tr><th>Fecha</th><th>Hora</th><th>Página</th><th>Apartado</th><th>Origen</th><th>Dispositivo</th><th>Navegador</th></tr></thead><tbody id="flowTabla"></tbody></table>
+      </div>
+    </section>
   </main>
 </div>
 
@@ -656,8 +709,72 @@ function logout(){
 /* ---------- tabs ---------- */
 function showTab(name){
   document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active', t.dataset.tab===name));
-  ['leads','quotes','proposal','inventory','sales','expenses','pnl','reviews','analytics'].forEach(n=>$('tab-'+n).classList.toggle('hidden', n!==name));
+  ['leads','quotes','proposal','inventory','sales','expenses','pnl','reviews','analytics','flow'].forEach(n=>$('tab-'+n).classList.toggle('hidden', n!==name));
   if (name==='pnl' && !$('pnlCards').innerHTML) generarPNL();
+  if (name==='flow') loadFlow();
+}
+
+/* ---------- flujo (visitas del sitio) ---------- */
+function fLocal(d){ d=d||new Date(); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
+function contarPor(arr, fn){
+  const m = {};
+  arr.forEach(x => { const k = fn(x) || '—'; m[k] = (m[k]||0)+1; });
+  return Object.keys(m).map(k => [k, m[k]]).sort((a,b)=>b[1]-a[1]);
+}
+function flowBarras(contados, max){
+  if (!contados.length) return '<p class="muted">Sin datos todavía.</p>';
+  const top = contados.slice(0, max||8);
+  const mx = top[0][1] || 1;
+  return top.map(r =>
+    '<div class="flow-row"><span class="lbl" title="'+esc(r[0])+'">'+esc(r[0])+'</span>' +
+    '<span class="bar"><i style="width:'+Math.max(3,Math.round(r[1]/mx*100))+'%"></i></span>' +
+    '<span class="n">'+r[1]+'</span></div>').join('');
+}
+function loadFlow(){
+  $('flowKpis').innerHTML = '<p class="muted">Cargando…</p>';
+  apiGet('visitas').then(d=>{
+    if (!d || !d.ok) { $('flowKpis').innerHTML='<p class="muted">Sin acceso o error de conexión. Si acabas de actualizar el script, despliega una <b>nueva versión</b> en Apps Script.</p>'; return; }
+    const v = (d.visitas || []).filter(x => !x.pagina || String(x.pagina).indexOf('admin') === -1);
+    if (!v.length) {
+      $('flowKpis').innerHTML = '<p class="muted">Aún no hay visitas registradas. El tracker se activa al regenerar y publicar el sitio; entra tú mismo a la página para generar los primeros datos.</p>';
+      ['flowDiario','flowOrigen','flowDisp','flowNav','flowLang','flowPaginas','flowSecciones'].forEach(id=>$(id).innerHTML='');
+      $('flowTabla').innerHTML = ''; $('flowRango').textContent = '';
+      return;
+    }
+    const hoy = fLocal();
+    const hace7 = fLocal(new Date(Date.now()-6*864e5));
+    const hace30 = fLocal(new Date(Date.now()-29*864e5));
+    const vistas = v.filter(x => !x.seccion);            // vistas de página completa
+    const apartados = v.filter(x => x.seccion);          // apartados vistos
+    $('flowRango').textContent = v.length + ' registro(s) en la hoja';
+    const topPag = contarPor(vistas, x=>String(x.pagina).replace(/^\/+/, ''))[0] || ['—', 0];
+    $('flowKpis').innerHTML = [
+      ['Visitas a páginas', vistas.length],
+      ['Hoy', vistas.filter(x=>String(x.fecha)===hoy).length],
+      ['Últimos 7 días', vistas.filter(x=>String(x.fecha)>=hace7).length],
+      ['Apartados vistos', apartados.length],
+      ['Página más vista', topPag[0] + ' (' + topPag[1] + ')']
+    ].map(k=>'<div class="pnl-card"><div class="k">'+k[0]+'</div><div class="v" style="font-size:0.95rem;">'+esc(String(k[1]))+'</div></div>').join('');
+    // Diario (30 días)
+    const porDia = {};
+    vistas.forEach(x => { const f = String(x.fecha); if (f >= hace30) porDia[f] = (porDia[f]||0)+1; });
+    const dias = [];
+    for (let i=29; i>=0; i--) { const f = fLocal(new Date(Date.now()-i*864e5)); dias.push([f, porDia[f]||0]); }
+    const mxD = Math.max(1, ...dias.map(x=>x[1]));
+    $('flowDiario').innerHTML = dias.map(x=>'<div class="flow-bar" style="height:'+Math.max(3,Math.round(x[1]/mxD*100))+'%;"><span class="tip">'+x[0]+' · '+x[1]+' visita(s)</span></div>').join('');
+    // Origen, dispositivo, navegador, idioma
+    $('flowOrigen').innerHTML = flowBarras(contarPor(vistas, x=>x.origen), 10);
+    $('flowDisp').innerHTML = flowBarras(contarPor(vistas, x=>x.dispositivo), 5);
+    $('flowNav').innerHTML = flowBarras(contarPor(vistas, x=>x.navegador), 6);
+    $('flowLang').innerHTML = flowBarras(contarPor(vistas, x=>x.idioma==='en'?'Inglés':'Español'), 3);
+    // Páginas y apartados
+    $('flowPaginas').innerHTML = flowBarras(contarPor(vistas, x=>String(x.pagina).replace(/^\/+/, '')), 10);
+    $('flowSecciones').innerHTML = flowBarras(contarPor(apartados, x=>x.seccion), 10);
+    // Tabla reciente
+    $('flowTabla').innerHTML = v.slice(-25).reverse().map(x=>
+      '<tr><td>'+esc(x.fecha)+'</td><td>'+esc(x.hora)+'</td><td>'+esc(x.pagina)+'</td><td>'+esc(x.seccion||'—')+'</td>' +
+      '<td>'+esc(x.origen||'—')+'</td><td>'+esc(x.dispositivo||'—')+'</td><td>'+esc(x.navegador||'—')+'</td></tr>').join('');
+  }).catch(()=>{ $('flowKpis').innerHTML='<p class="muted">Error de conexión.</p>'; });
 }
 
 /* ---------- leads ---------- */
@@ -938,7 +1055,6 @@ function qpFolio(){ return prop.savedFolio || 'ADIS-'+(prop.fecha?String(new Dat
 
 function buildProposalHTML(){
   const t = calcTotals();
-  const cur = m => '<b>'+(prop.moneda===m?m:'<span style="color:#999;font-weight:400;">'+m+'</span>')+'</b>';
   const checks = TIPOS_PROYECTO.map(tp => '<span class="'+(prop.tipos.indexOf(tp)!==-1?'on':'')+'">'+esc(tp)+'</span>').join('');
   const fotosLlenas = prop.fotos.filter(f => f.data);
   let h = '<div class="qp">';
@@ -968,14 +1084,12 @@ function buildProposalHTML(){
     '<tr><td>DESCRIPCIÓN BREVE DEL PROYECTO</td><td>'+esc(prop.descripcion)+'</td></tr>' +
     '</tbody></table></div>';
 
-  h += '<div class="qp-sec"><div class="qp-sec-t">03 · DESGLOSE DE INVERSIÓN</div>' +
-    '<div class="qp-moneda">Moneda: '+cur('USD')+' &nbsp;·&nbsp; '+cur('MXN')+' &nbsp;—&nbsp; La inversión contempla materiales, insumos, preparación, instalación y servicios especificados en esta propuesta.</div>' +
-    '<table class="qp-table"><thead><tr><th style="width:14%;">CÓDIGO</th><th>DESCRIPCIÓN / ESPECIFICACIONES</th><th style="width:8%;">CANT.</th><th style="width:10%;">UNIDAD</th><th style="width:14%;">P. UNITARIO</th><th style="width:14%;">IMPORTE</th></tr></thead><tbody>' +
-    prop.items.map(it => '<tr><td>'+esc(it.codigo)+'</td><td>'+esc(it.descripcion)+'</td><td class="qp-num">'+esc(String(it.cantidad))+'</td><td>'+esc(it.unidad)+'</td><td class="qp-num">'+fmtMoney(it.precio)+'</td><td class="qp-num">'+fmtMoney((Number(it.cantidad)||0)*(Number(it.precio)||0))+'</td></tr>').join('') +
-    '<tr><td colspan="5" style="text-align:right; font-weight:700; background:#faf6ea;">SUBTOTAL</td><td class="qp-num" style="font-weight:700; background:#faf6ea;">'+fmtMoney(t.subtotal)+'</td></tr>' +
-    (prop.incluirIva ? '<tr><td colspan="5" style="text-align:right; font-weight:700; background:#faf6ea;">IVA / IMPUESTOS ('+esc(String(prop.tasaIva))+'%)</td><td class="qp-num" style="font-weight:700; background:#faf6ea;">'+fmtMoney(t.iva)+'</td></tr>' : '') +
-    '<tr class="qp-grand"><td colspan="5" style="text-align:right;">INVERSIÓN TOTAL '+(t.total?esc(prop.moneda):'')+'</td><td class="qp-num">'+fmtMoney(t.total)+'</td></tr>' +
-    '</tbody></table></div>';
+  h += '<div class="qp-sec"><div class="qp-sec-t">03 · INVERSIÓN TOTAL DEL PROYECTO</div>' +
+    '<table class="qp-table qp-kv"><tbody>' +
+    '<tr><td style="width:22%;">USD</td><td>'+(prop.moneda==='USD' && t.total ? '<b>'+fmtMoney(t.total)+' USD</b>' : '—')+'</td></tr>' +
+    '<tr><td>MXN</td><td>'+(prop.moneda==='MXN' && t.total ? '<b>'+fmtMoney(t.total)+' MXN</b>' : '—')+'</td></tr>' +
+    '</tbody></table>' +
+    '<div class="qp-moneda">La inversión contempla los materiales, insumos, preparación, instalación y servicios especificados en esta propuesta.</div></div>';
 
   h += '<div class="qp-sec"><div class="qp-sec-t">04 · FOTOGRAFÍAS DE PRODUCTOS Y MATERIALES</div>' +
     (fotosLlenas.length
@@ -1048,7 +1162,7 @@ function sendProposalWhatsApp(){
   let txt = 'Propuesta ADIS ' + (prop.savedFolio || qpFolio()) + ' — ' + (prop.cliente || 'Cliente') + '\n';
   txt += 'Proyecto: ' + (prop.proyecto || '—') + '\n';
   txt += 'Inversión total: ' + fmtMoney(t.total) + ' ' + prop.moneda + '\n\n';
-  txt += 'Te envío la propuesta completa con el desglose de inversión, fotos y condiciones. ¡Quedo atento(a)!';
+  txt += 'Te envío la propuesta completa con la inversión total, fotos y condiciones. ¡Quedo atento(a)!';
   window.open('https://wa.me/' + dest + '?text=' + encodeURIComponent(txt), '_blank');
 }
 function loadProposalFromQuote(idx){

@@ -1,6 +1,20 @@
 # Handoff — ADIS Catálogo Web
 
-> Documento para la siguiente sesión. Última actualización: 2026-09-04 (Fase 1 completada + Cotizador profesional).
+> Documento para la siguiente sesión. Última actualización: 2026-09-05 (Cotizador sec.03 + pestaña Flujo).
+
+## Novedades 2026-09-05
+
+### Cotizador — sección 03 solo inversión total (según el Word)
+- El PDF de la cotización **ya no muestra el desglose de partidas**: la sección 03 ahora es "INVERSIÓN TOTAL DEL PROYECTO" con USD/MXN, fiel a `Formato de Cotizacion nuevo.docx`.
+- Las partidas siguen en el editor (uso interno para calcular el total; van etiquetadas como tal). WhatsApp ya no menciona el desglose.
+- Cambio en `admin/index.html` (`buildProposalHTML`). Verificado con Playwright: 2 placas × $850 + IVA = $1,972.00 MXN, sin tabla de partidas.
+
+### 🌊 Pestaña Flujo (panel admin) — requiere REDEPLOY del script
+- Nueva pestaña **Flujo** en `admin/index.html`: KPIs (visitas, hoy, 7 días, apartados vistos, página más vista), gráfica de barras de visitas por día (30 días), "¿De dónde nos visitan?" (Google/Facebook/Instagram/WhatsApp/directo…), "¿Quién nos visita?" (dispositivo/navegador/idioma), páginas y apartados más vistos, tabla de últimas visitas. Gráficas en CSS puro (sin librerías).
+- **Tracker**: snippet en `generate_footer()` (dentro de `chatbot_js`) que envía `tipo:'track'` a Apps Script (sendBeacon/fetch, dedup por sesión) con página, apartados vistos (IntersectionObserver), referrer, idioma, UA y ancho. No trackea `admin.html`.
+- **Backend (`admin/apps-script.gs`)**: sheet `Visitas` (auto-creada, tope 5000 filas), `doPost tipo='track'` (público, con clasificadores `origenDe_`/`dispositivoDe_`/`navegadorDe_`) y `doGet action='visitas'` (con token; devuelve filas como objetos, se agregan en el cliente).
+- ⚠️ **PENDIENTE PUBLICAR**: (1) usuario redeploya Apps Script con **nueva versión** (rutina: Implementar → Administrar implementaciones → ✏️ → Nueva versión) para activar `track`/`visitas`; (2) `git add -A && git commit && git push origin main` para publicar el sitio con el tracker. Prueba: entrar a la web y ver la pestaña Flujo.
+- Test de verificación: `scripts/auditoria/test_flujo_cotizador.py` (Playwright, backend simulado).
 
 ## Novedades de esta sesión
 

@@ -4428,6 +4428,55 @@ def generate_footer():
     var ADIS_DEFAULT_LANG = '__ADIS_LANG__';
     var ADIS_LEADS_URL = '__ADIS_LEADS_URL__';
     var ADIS_REVIEWS_URL = '__ADIS_REVIEWS_URL__';
+
+    // --- Tracker de visitas (pestaña Flujo del panel admin) ---
+    (function() {
+      try {
+        var TRACK_URL = (typeof ADIS_LEADS_URL === 'string') ? ADIS_LEADS_URL : '';
+        if (!TRACK_URL || /admin\\.html$/i.test(location.pathname)) return;
+        var enviados = {};
+        try { enviados = JSON.parse(sessionStorage.getItem('adis_trk_sess') || '{}'); } catch (e) {}
+        function enviar(seccion) {
+          var k = location.pathname + '|' + (seccion || '');
+          if (enviados[k]) return;
+          enviados[k] = 1;
+          try { sessionStorage.setItem('adis_trk_sess', JSON.stringify(enviados)); } catch (e) {}
+          var payload = { tipo: 'track', pagina: location.pathname, seccion: seccion || '',
+            referrer: document.referrer || '',
+            idioma: (typeof ADIS_DEFAULT_LANG === 'string') ? ADIS_DEFAULT_LANG : 'es',
+            ancho: window.innerWidth, ua: navigator.userAgent };
+          var cuerpo = JSON.stringify(payload);
+          if (navigator.sendBeacon) {
+            try {
+              var blob = new Blob([cuerpo], { type: 'text/plain;charset=utf-8' });
+              if (navigator.sendBeacon(TRACK_URL, blob)) return;
+            } catch (e) {}
+          }
+          fetch(TRACK_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+            body: cuerpo, keepalive: true }).catch(function() {});
+        }
+        enviar(''); // vista de página (una por sesión y página)
+        // Apartados de la página que va viendo el visitante
+        if ('IntersectionObserver' in window) {
+          var vistos = {};
+          var io = new IntersectionObserver(function(entries) {
+            entries.forEach(function(en) {
+              if (!en.isIntersecting) return;
+              var el = en.target, nombre = el.id || '';
+              if (!nombre) {
+                var h2 = el.querySelector('h2');
+                nombre = h2 ? h2.textContent.trim().toLowerCase().replace(/\\s+/g, '-').slice(0, 60) : '';
+              }
+              if (nombre && !vistos[nombre]) { vistos[nombre] = 1; enviar(nombre); }
+              io.unobserve(el);
+            });
+          }, { threshold: 0.25 });
+          var secciones = document.querySelectorAll('main section, body > section, section[id]');
+          for (var i = 0; i < secciones.length; i++) io.observe(secciones[i]);
+        }
+      } catch (e) {}
+    })();
+
     function toggleMenu() { document.getElementById('mobileMenu').classList.toggle('active'); }
     
     // Scroll reveal
