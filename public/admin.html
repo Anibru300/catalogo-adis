@@ -24,10 +24,51 @@
   .btn-sm { padding:0.35rem 0.7rem; font-size:0.75rem; }
 
   /* Login */
-  #loginView { display:flex; flex-direction:column; align-items:center; justify-content:center; min-height:100vh; gap:1.2rem; text-align:center; padding:1rem; }
-  #loginView .logo { font-size:1.6rem; font-weight:700; letter-spacing:2px; }
-  #loginView .card { background:var(--card); border:1px solid rgba(197,160,89,0.25); border-radius:14px; padding:2.2rem 2rem; max-width:360px; width:100%; display:flex; flex-direction:column; gap:0.4rem; }
-  #loginStatus { font-size:0.78rem; color:#f1948a; min-height:1.2em; margin-top:0.4rem; }
+  #loginView {
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    min-height:100vh; padding:1rem; position:relative; overflow:hidden;
+    background:
+      radial-gradient(ellipse 80% 55% at 50% -10%, rgba(197,160,89,0.18), transparent 60%),
+      radial-gradient(ellipse 55% 45% at 85% 110%, rgba(197,160,89,0.10), transparent 60%),
+      radial-gradient(ellipse 45% 40% at 8% 95%, rgba(197,160,89,0.07), transparent 60%),
+      var(--black);
+  }
+  #loginView::before {
+    content:''; position:absolute; inset:0; pointer-events:none;
+    background-image: radial-gradient(rgba(197,160,89,0.12) 1px, transparent 1px);
+    background-size: 26px 26px;
+    mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, #000 30%, transparent 75%);
+    -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, #000 30%, transparent 75%);
+  }
+  .login-card {
+    position:relative; z-index:1; width:100%; max-width:380px;
+    background: linear-gradient(160deg, rgba(42,42,42,0.92), rgba(20,20,20,0.94));
+    border:1px solid rgba(197,160,89,0.35); border-radius:18px;
+    padding:2.6rem 2.2rem 2.2rem; text-align:center;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.6), 0 0 0 1px rgba(0,0,0,0.4), 0 0 60px rgba(197,160,89,0.08);
+    backdrop-filter: blur(12px);
+    animation: cardIn 0.5s ease-out;
+  }
+  @keyframes cardIn { from { opacity:0; transform: translateY(14px); } to { opacity:1; transform:none; } }
+  .login-card::before {
+    content:''; position:absolute; top:0; left:15%; right:15%; height:1px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  }
+  .login-logo {
+    width:120px; max-width:60%; margin:0 auto 0.6rem; display:block;
+    border-radius:12px;
+    filter: drop-shadow(0 0 18px rgba(197,160,89,0.35));
+  }
+  .login-title { font-size:1.15rem; font-weight:700; letter-spacing:2px; text-transform:uppercase; }
+  .login-sub { font-size:0.72rem; color:var(--muted); letter-spacing:1.5px; text-transform:uppercase; margin:0.35rem 0 1.4rem; }
+  .login-card label { text-align:left; margin:0.9rem 0 0.35rem; font-size:0.72rem; letter-spacing:0.5px; }
+  .login-card input {
+    background:rgba(13,13,13,0.7); padding:0.85rem 1rem;
+    transition: border-color 0.25s, box-shadow 0.25s;
+  }
+  .login-card input:focus { border-color:var(--gold); box-shadow:0 0 0 3px rgba(197,160,89,0.12); }
+  .login-foot { margin-top:1.4rem; font-size:0.68rem; color:rgba(245,245,245,0.35); letter-spacing:0.5px; }
+  #loginStatus { font-size:0.78rem; color:#f1948a; min-height:1.2em; margin-top:0.6rem; }
 
   /* App */
   header.app { display:flex; flex-wrap:wrap; gap:1rem; align-items:center; justify-content:space-between; padding:1rem 1.5rem; background:var(--dark); border-bottom:1px solid rgba(197,160,89,0.25); position:sticky; top:0; z-index:10; }
@@ -86,14 +127,17 @@
 
 <!-- ============ VISTA: LOGIN ============ -->
 <div id="loginView">
-  <div class="logo">ADIS <span class="gold">PANEL</span></div>
-  <div class="card">
+  <div class="login-card">
+    <img src="LOGO%20ADIS.webp" onerror="this.onerror=null;this.src='LOGO%20ADIS.png'" alt="ADIS Diseño &amp; Remodelación" class="login-logo">
+    <div class="login-title">Panel <span class="gold">Administrativo</span></div>
+    <div class="login-sub">ADIS Diseño &amp; Remodelación</div>
     <label for="loginUser">Usuario</label>
-    <input id="loginUser" autocomplete="username" autocapitalize="off">
+    <input id="loginUser" autocomplete="username" autocapitalize="off" spellcheck="false">
     <label for="loginPass">Contraseña</label>
     <input id="loginPass" type="password" autocomplete="current-password" onkeydown="if(event.key==='Enter')login()">
-    <button class="btn btn-solid" style="justify-content:center; margin-top:1.1rem;" onclick="login()">Entrar</button>
+    <button class="btn btn-solid" style="justify-content:center; margin-top:1.3rem; width:100%; padding:0.85rem;" onclick="login()">Entrar al panel</button>
     <p id="loginStatus"></p>
+    <div class="login-foot">Acceso exclusivo para administración</div>
   </div>
 </div>
 

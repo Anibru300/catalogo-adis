@@ -1453,6 +1453,11 @@ nav.desktop-nav a:hover::after { width: 100%; }
   min-width: 44px; min-height: 44px; align-items: center; justify-content: center;
 }
 .header-actions { display: flex; align-items: center; gap: 0.9rem; }
+.admin-link {
+  display: flex; align-items: center; justify-content: center;
+  min-width: 44px; min-height: 44px; opacity: 0.5; transition: opacity 0.25s;
+}
+.admin-link:hover { opacity: 1; }
 .topbar {
   background: var(--gold); color: var(--black);
   text-align: center; font-size: 0.72rem; font-weight: 700;
@@ -4376,6 +4381,7 @@ def generate_header(current_page='index', page_file='index.html'):
         </div>
       </nav>
       <div class="header-actions">
+        <a href="{p('admin.html')}" class="admin-link" title="Panel administrativo" aria-label="Panel administrativo">{svg_icon('shield', size=20, color='var(--gold)')}</a>
         {translate_toggle(page_file)}
         <button class="menu-btn" onclick="toggleMenu()">{svg_icon('menu', size=22, color='var(--gold)')}</button>
       </div>
