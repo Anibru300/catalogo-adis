@@ -1,4 +1,10 @@
-# Guía de configuración — Leads, Reseñas y Panel de administración
+# Guía de configuración — Leads, Reseñas, Panel de administración y Cotizador
+
+> ⚠️ **ACTUALIZACIÓN (septiembre 2026):** el panel ahora incluye el **Cotizador profesional**
+> (propuestas con el formato ADIS, folio automático y fotos). Para que funcione el guardado:
+> abre Apps Script → pega de nuevo el código de `admin/apps-script.gs` → Guardar →
+> **Implementar → Administrar implementaciones → ✏️ (editar) → Nueva versión → Implementar**.
+> La URL no cambia; todo lo que ya tenías sigue igual.
 
 > Todo se apoya en **Google Sheets + Apps Script** (gratis, sin servidores, sin contraseñas de terceros).
 > Tiempo estimado: **15-20 minutos**. Solo hay que hacerlo una vez.
@@ -77,6 +83,29 @@ El mismo panel administra el negocio. Todas estas pestañas se crean solas en la
 
 - **Moneda dual:** en ⚙ Moneda (pestaña Inventario) defines la moneda base y el tipo de cambio; todo se convierte automáticamente.
 - **Importar tu catálogo:** cuando tengas tu Excel/Sheets de productos con precios y costos, pásamelo y lo importo de una vez (el endpoint `import_productos` ya está listo).
+
+## 📝 Cotizador profesional (formato ADIS)
+
+En la pestaña **Cotizador** del panel armas la propuesta completa, igual que tu formato de Word:
+
+1. **01 Datos:** cliente (si ya es lead, teléfono y ciudad se rellenan solos), proyecto, ubicación, fecha y vigencia.
+2. **02 Alcance:** sube la **foto o render del proyecto**, marca el tipo de proyecto (casillas), área, materiales y descripción.
+3. **03 Desglose:** elige cada producto de una **lista desplegable del catálogo** — código, descripción y unidad se rellenan solos; captura la cantidad y el precio. Subtotal, IVA (16%, se puede quitar) e **inversión total se calculan solos**. Moneda MXN o USD.
+4. **04 Fotos de productos:** sube hasta 6 fotos con su descripción.
+5. **05-06:** especificaciones técnicas, forma de pago y tiempo de entrega.
+6. Las secciones de **garantía, logística premium y firmas** salen automáticas (se pueden quitar con sus casillas).
+
+**Botones de arriba:**
+- 💾 **Guardar** → la cotización se guarda en Google Sheets con **folio automático** (ADIS-2026-001, 002...).
+- 🖨️ **Descargar PDF** → el documento se ve exactamente como tu formato de Word, listo para imprimir o mandar por correo.
+- 🟢 **WhatsApp** → envía un resumen (folio, proyecto y total) al teléfono del cliente.
+- 📂 **Cargar** (en "Cotizaciones guardadas") → reabre cualquier cotización en el editor para ajustarla y volverla a guardar.
+
+> 💡 Todo lo que escribes queda guardado automáticamente como borrador en el navegador:
+> si cierras el panel y vuelves a entrar, tu cotización sigue ahí (incluidas las fotos).
+> Las fotos van **incrustadas en el PDF**; en la hoja de Google se guardan los datos y partidas.
+
+---
 
 ## Paso 5 — Seguridad y ocultamiento del panel
 

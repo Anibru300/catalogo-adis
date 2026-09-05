@@ -1,6 +1,22 @@
 # Handoff — ADIS Catálogo Web
 
-> Documento para la siguiente sesión. Última actualización: 2026-09-04.
+> Documento para la siguiente sesión. Última actualización: 2026-09-04 (Fase 1 completada + Cotizador profesional).
+
+## Novedades de esta sesión
+
+### ✅ Fase 0 y 1 del Plan Maestro — COMPLETAS
+- Base maestra importada en Google Sheets con integridad 100%: **261 productos** (251 web + 10 solo-Excel), 0 duplicados, **20 existencias** en 3 almacenes (Nogales 14, Decosonora 3, Rio Rico 3), costos 261/261. Esquema: ID/Código/Producto/Descripción/Categoría/Subcategoría/Proveedor/Costo/Precio/Unidad/Foto/Estado/Fecha. Pestañas auto-creadas: Productos, Almacenes, Stock, Movimientos, Ventas, Gastos, Config, **Log** (bitácora).
+- Panel admin → pestaña **Inventario**: CRUD completo con validación, buscador/filtros, foto lateral al seleccionar, dashboard (total/activos/sin foto/revisión), soft-delete (Activo/Inactivo).
+- Backend `admin/apps-script.gs`: `importDataset`, CRUD productos, movimientos, ventas con descuento de stock, gastos, estadoResultados (fix fechas Date), config, getLog.
+- **Pendiente usuario**: capturar precios de venta (los 261 tienen costo pero precio vacío) y revisar los 10 productos marcados REVISAR (HJPVC2/3/12/13/14/15/16, KL8276, KL8055, KL8267, ISA).
+
+### 🆕 Cotizador profesional (nueva pestaña 📝 Cotizador en admin/index.html)
+- Replica el formato de `Formato de Cotizacion nuevo.docx` (secciones 01–09: datos, alcance con foto/render + casillas de tipo de proyecto, desglose con IVA, fotos de productos, especificaciones, condiciones, garantía 7 meses, logística premium, firmas, footer).
+- Partidas con **lista desplegable del catálogo** (biz.productos, OJO: el API devuelve llaves en **minúsculas**: id/codigo/nombre/categoria/precio/unidad — NO las cabeceras del sheet). Autollenado código/desc/unidad/precio.
+- Fotos (proyecto + hasta 6 productos) comprimidas a canvas JPEG 0.82 ≤1280px → dataURL; van incrustadas en el PDF pero **NO** se persisten en Sheets (celda 50k chars) — van al borrador localStorage (`adis_prop_draft`).
+- **Folio consecutivo ADIS-AAAA-NNN** vía `cfg('folio_cotizacion')` en el backend; el handler `quote` extendido guarda columnas extra (folio/proyecto/ubicacion/moneda/subtotal/iva/estado/datosJSON) y devuelve `{ok, folio}`. Botón 📂 Cargar reabre cotizaciones guardadas en el editor (parsea `datos`).
+- PDF multipágina validado con Playwright (page.pdf): fiel al DOCX, paginación por secciones.
+- **⚠️ REQUIERE REDEPLOY del script**: usuario debe pegar el nuevo `admin/apps-script.gs` y crear **Nueva versión** de la implementación (rutina habitual). Sin eso, Guardar cae en el handler viejo (sin folio/datos).
 
 ## Estado general
 

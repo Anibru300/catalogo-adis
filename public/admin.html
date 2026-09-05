@@ -132,7 +132,12 @@
   @media print {
     body * { visibility:hidden; }
     #printArea, #printArea * { visibility:visible; }
-    #printArea { display:block; position:absolute; inset:0; background:#fff; color:#000; padding:2rem; font-family:'Montserrat',sans-serif; }
+    #printArea { display:block; position:absolute; top:0; left:0; width:100%; height:auto; background:#fff; color:#000; padding:1.5rem 2rem; font-family:'Montserrat',sans-serif; }
+    #printArea .qp { font-size:0.78rem; }
+    #printArea .qp-table th { font-size:0.68rem; }
+    #printArea .qp-table td { font-size:0.72rem; }
+    #printArea .qp-sec { page-break-inside:avoid; }
+    #printArea .qp-foto img { height:120px; }
     #printArea h1 { color:#8a6d2f; font-size:1.5rem; margin-bottom:0.3rem; }
     #printArea .pq-meta { font-size:0.85rem; color:#444; margin-bottom:1.5rem; }
     #printArea table { width:100%; border-collapse:collapse; font-size:0.85rem; margin-top:1rem; }
@@ -141,6 +146,79 @@
     #printArea .pq-total { text-align:right; font-size:1.1rem; font-weight:700; margin-top:1rem; }
     #printArea .pq-foot { margin-top:2.5rem; font-size:0.75rem; color:#666; border-top:1px solid #ccc; padding-top:0.8rem; }
   }
+
+  /* ===== COTIZADOR PROFESIONAL ===== */
+  .prop-layout { display:grid; grid-template-columns:minmax(0,1fr) 480px; gap:1.2rem; align-items:start; }
+  @media (max-width:1150px){ .prop-layout{ grid-template-columns:1fr; } .prop-preview{ position:static !important; max-height:none !important; } }
+  .prop-sec { border:1px solid rgba(197,160,89,0.25); border-radius:10px; margin-bottom:0.9rem; background:var(--card); }
+  .prop-sec > summary { padding:0.75rem 0.95rem; font-weight:600; color:var(--gold); cursor:pointer; font-size:0.85rem; list-style:none; display:flex; justify-content:space-between; align-items:center; user-select:none; }
+  .prop-sec > summary::after { content:'▾'; color:var(--muted); }
+  .prop-sec:not([open]) > summary::after { content:'▸'; }
+  .prop-sec > summary::-webkit-details-marker { display:none; }
+  .prop-sec .sec-body { padding:0 0.95rem 0.95rem; }
+  .tipos-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(190px,1fr)); gap:0.25rem 0.8rem; margin-top:0.3rem; }
+  .tipos-grid label { display:flex; gap:0.45rem; align-items:center; font-size:0.78rem; color:var(--white); margin:0.25rem 0; cursor:pointer; }
+  .tipos-grid input { width:auto; accent-color:var(--gold); }
+  .radio-row { display:flex; gap:1rem; align-items:center; }
+  .radio-row label { display:flex; gap:0.35rem; align-items:center; margin:0; font-size:0.82rem; color:var(--white); cursor:pointer; }
+  .radio-row input { width:auto; accent-color:var(--gold); }
+  .prop-items { font-size:0.78rem; }
+  .prop-items th { padding:0.4rem 0.3rem; }
+  .prop-items td { padding:0.3rem; border-bottom:none; }
+  .prop-items input, .prop-items select { padding:0.45rem 0.5rem; font-size:0.78rem; }
+  .prop-items .imp { text-align:right; white-space:nowrap; font-weight:600; color:var(--gold-soft); padding-top:0.6rem; }
+  .prop-items .del { background:none; border:1px solid rgba(231,76,60,0.5); color:#e74c3c; border-radius:6px; height:32px; cursor:pointer; width:100%; }
+  .prop-tot { display:flex; justify-content:flex-end; gap:1.5rem; padding:0.6rem 0.2rem; font-size:0.9rem; border-top:1px solid rgba(197,160,89,0.25); margin-top:0.4rem; flex-wrap:wrap; }
+  .prop-tot b { color:var(--gold); }
+  .photo-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:0.6rem; margin-top:0.5rem; }
+  .photo-slot { border:1.5px dashed rgba(197,160,89,0.5); border-radius:10px; padding:0.7rem; text-align:center; position:relative; min-height:110px; display:flex; flex-direction:column; justify-content:center; gap:0.4rem; }
+  .photo-slot.filled { border-style:solid; }
+  .photo-slot img { max-width:100%; max-height:130px; border-radius:8px; display:block; margin:0 auto; object-fit:cover; }
+  .photo-slot .ph-add { cursor:pointer; color:var(--muted); font-size:0.78rem; }
+  .photo-slot .ph-add:hover { color:var(--gold); }
+  .photo-slot .del { position:absolute; top:0.3rem; right:0.3rem; background:rgba(13,13,13,0.8); border:1px solid rgba(231,76,60,0.6); color:#e74c3c; border-radius:6px; width:24px; height:24px; cursor:pointer; font-size:0.7rem; }
+  .photo-slot input[type=file] { display:none; }
+  .prop-preview { position:sticky; top:80px; max-height:calc(100vh - 100px); overflow-y:auto; background:#fff; color:#1a1a1a; border-radius:10px; padding:1.6rem; box-shadow:0 12px 34px rgba(0,0,0,0.55); font-size:0.72rem; line-height:1.45; }
+
+  /* --- documento de la cotizacion (papel) --- */
+  .qp { font-family:'Montserrat',sans-serif; color:#1a1a1a; }
+  .qp-header { display:flex; justify-content:space-between; align-items:center; gap:1rem; border-bottom:3px solid #C5A059; padding-bottom:0.8rem; margin-bottom:1rem; }
+  .qp-header img { height:52px; }
+  .qp-brand { font-weight:700; letter-spacing:1px; font-size:0.92rem; color:#8a6d2f; }
+  .qp-slogan { font-size:0.6rem; color:#777; letter-spacing:0.5px; }
+  .qp-doc { text-align:right; font-size:0.62rem; color:#333; line-height:1.65; }
+  .qp-doc b { color:#8a6d2f; letter-spacing:0.5px; }
+  .qp-sec { margin:1rem 0; }
+  .qp-sec-t { font-weight:700; color:#8a6d2f; font-size:0.78rem; letter-spacing:1px; border-bottom:1px solid #e2d3ac; padding-bottom:0.25rem; margin-bottom:0.55rem; }
+  .qp-table { width:100%; border-collapse:collapse; }
+  .qp-table th { background:#f5ead1; color:#8a6d2f; border:1px solid #d8c692; padding:0.3rem 0.45rem; font-size:0.62rem; text-align:left; font-weight:600; }
+  .qp-table td { border:1px solid #ddd; padding:0.3rem 0.45rem; font-size:0.66rem; color:#111; }
+  .qp-kv td:first-child { background:#faf6ea; font-weight:600; color:#8a6d2f; width:30%; }
+  .qp-num { text-align:right; white-space:nowrap; }
+  .qp-grand td { background:#8a6d2f !important; color:#fff; font-weight:700; font-size:0.72rem; border-color:#8a6d2f; }
+  .qp-checks { display:grid; grid-template-columns:repeat(3,1fr); gap:0.25rem 0.7rem; font-size:0.64rem; margin:0.3rem 0; }
+  .qp-checks span { color:#666; }
+  .qp-checks span::before { content:'\2610\00a0 '; color:#C5A059; }
+  .qp-checks span.on { color:#1a1a1a; }
+  .qp-checks span.on::before { content:'\2611\00a0 '; color:#8a6d2f; }
+  .qp-photo-box { border:1.5px dashed #C5A059; text-align:center; color:#999; padding:1.4rem 0.8rem; font-size:0.62rem; margin:0.3rem 0; }
+  .qp-photo-box img { width:100%; display:block; }
+  .qp-fotos { display:grid; grid-template-columns:repeat(3,1fr); gap:0.55rem; }
+  .qp-foto { border:1px solid #ddd; padding:0.25rem; }
+  .qp-foto img { width:100%; height:85px; object-fit:cover; display:block; }
+  .qp-foto p { font-size:0.6rem; color:#444; margin-top:0.25rem; min-height:1.5em; }
+  .qp-cond { display:grid; grid-template-columns:1fr 1fr; gap:0.55rem; }
+  .qp-cond > div { border:1px solid #e2d3ac; border-left:3px solid #C5A059; padding:0.45rem 0.55rem; font-size:0.62rem; color:#333; }
+  .qp-cond b { color:#8a6d2f; display:block; margin-bottom:0.2rem; font-size:0.62rem; letter-spacing:0.5px; }
+  .qp-4col { display:grid; grid-template-columns:repeat(4,1fr); gap:0.55rem; }
+  .qp-notes { font-size:0.66rem; color:#333; white-space:pre-wrap; }
+  .qp-firmas { display:grid; grid-template-columns:1fr 1fr; gap:2.5rem; margin-top:2rem; }
+  .qp-firma { border-top:1px solid #333; padding-top:0.35rem; font-size:0.62rem; color:#333; line-height:1.7; }
+  .qp-acepta { font-size:0.64rem; color:#444; margin-bottom:0.3rem; }
+  .qp-foot { margin-top:1.4rem; border-top:2px solid #C5A059; padding-top:0.55rem; text-align:center; font-size:0.6rem; color:#555; line-height:1.8; }
+  .qp-foot b { color:#8a6d2f; letter-spacing:1px; }
+  .qp-moneda { font-size:0.62rem; color:#555; margin:0.25rem 0 0.4rem; }
+  .qp-moneda b { color:#8a6d2f; }
 </style>
 </head>
 <body>
@@ -171,6 +249,7 @@
     <nav class="tabs">
       <button class="tab active" data-tab="leads" onclick="showTab('leads')">📥 Leads</button>
       <button class="tab" data-tab="quotes" onclick="showTab('quotes')">🧾 Cotizaciones</button>
+      <button class="tab" data-tab="proposal" onclick="showTab('proposal')">📝 Cotizador</button>
       <button class="tab" data-tab="inventory" onclick="showTab('inventory')">📦 Inventario</button>
       <button class="tab" data-tab="sales" onclick="showTab('sales')">💵 Ventas</button>
       <button class="tab" data-tab="expenses" onclick="showTab('expenses')">📉 Gastos</button>
@@ -228,9 +307,132 @@
       <h2>Cotizaciones guardadas</h2>
       <div class="card-box table-scroll">
         <table>
-          <thead><tr><th>Fecha</th><th>Cliente</th><th>Teléfono</th><th>Total</th><th>Notas</th></tr></thead>
-          <tbody id="quotesTable"><tr><td colspan="5" class="muted">Cargando…</td></tr></tbody>
+          <thead><tr><th>Fecha</th><th>Folio</th><th>Cliente</th><th>Teléfono</th><th>Total</th><th>Acción</th></tr></thead>
+          <tbody id="quotesTable"><tr><td colspan="6" class="muted">Cargando…</td></tr></tbody>
         </table>
+      </div>
+    </section>
+
+    <!-- COTIZADOR PROFESIONAL -->
+    <section id="tab-proposal" class="panel hidden">
+      <div class="toolbar">
+        <h2 style="margin:0;">📝 Cotizador · Propuesta de remodelación</h2>
+        <span style="flex:1;"></span>
+        <button class="btn" onclick="newProposal()">🆕 Nueva</button>
+        <button class="btn" onclick="printProposal()">🖨️ Descargar PDF</button>
+        <button class="btn" onclick="sendProposalWhatsApp()">🟢 WhatsApp</button>
+        <button class="btn btn-solid" onclick="saveProposal()">💾 Guardar cotización</button>
+      </div>
+      <div class="prop-layout">
+        <div>
+          <details class="prop-sec" open>
+            <summary>01 · Datos del cliente y del proyecto</summary>
+            <div class="sec-body">
+              <div class="row">
+                <div><label>Cliente *</label><input id="pCliente" list="pClientesList" placeholder="Nombre del cliente" oninput="prop.cliente=this.value;matchLead();scheduleProp();"><datalist id="pClientesList"></datalist></div>
+                <div><label>Teléfono</label><input id="pTelefono" placeholder="+1 520 ..." oninput="prop.telefono=this.value;scheduleProp();"></div>
+              </div>
+              <div class="row">
+                <div><label>Proyecto</label><input id="pProyecto" placeholder="Ej. Remodelación de cocina" oninput="prop.proyecto=this.value;scheduleProp();"></div>
+                <div><label>Ubicación</label><input id="pUbicacion" placeholder="Nogales, Sonora" oninput="prop.ubicacion=this.value;scheduleProp();"></div>
+              </div>
+              <div class="row">
+                <div><label>Fecha</label><input id="pFecha" type="date" oninput="prop.fecha=this.value;scheduleProp();"></div>
+                <div><label>Vigencia (días)</label><input id="pVigencia" type="number" min="1" oninput="prop.vigencia=parseInt(this.value)||30;scheduleProp();"></div>
+                <div><label>Elaboró</label><input id="pElaboro" oninput="prop.elaboro=this.value;scheduleProp();"></div>
+              </div>
+            </div>
+          </details>
+
+          <details class="prop-sec" open>
+            <summary>02 · Alcance del proyecto</summary>
+            <div class="sec-body">
+              <label>Fotografía / render del proyecto</label>
+              <div class="photo-grid" style="grid-template-columns:1fr;">
+                <div class="photo-slot" id="pFotoProySlot">
+                  <input type="file" id="pFotoProy" accept="image/*" onchange="setFotoProyecto(this)">
+                </div>
+              </div>
+              <label>Tipo de proyecto (marca los que apliquen)</label>
+              <div class="tipos-grid" id="pTipos"></div>
+              <div class="row">
+                <div><label>Otro (especificar)</label><input id="pOtroTipo" placeholder="Ej. Techo de pergola" oninput="prop.otroTipo=this.value;scheduleProp();"></div>
+              </div>
+              <div class="row">
+                <div><label>Área a transformar</label><input id="pArea" placeholder="Ej. Muro principal de sala, 12 m²" oninput="prop.area=this.value;scheduleProp();"></div>
+                <div><label>Materiales principales</label><input id="pMateriales" placeholder="Ej. Placa PVC mármol Carrara, zoclos WPC" oninput="prop.materiales=this.value;scheduleProp();"></div>
+              </div>
+              <label>Descripción breve del proyecto</label>
+              <textarea id="pDescripcion" rows="2" placeholder="Resumen de lo que se hará..." oninput="prop.descripcion=this.value;scheduleProp();"></textarea>
+            </div>
+          </details>
+
+          <details class="prop-sec" open>
+            <summary>03 · Desglose de inversión</summary>
+            <div class="sec-body">
+              <div class="row" style="align-items:end;">
+                <div>
+                  <label>Moneda</label>
+                  <select id="pMoneda" onchange="prop.moneda=this.value;renderItemRows();scheduleProp();">
+                    <option value="MXN">MXN — Pesos mexicanos</option>
+                    <option value="USD">USD — Dólares americanos</option>
+                  </select>
+                </div>
+                <div>
+                  <label>&nbsp;</label>
+                  <div class="radio-row">
+                    <label><input type="checkbox" id="pIncluirIva" checked onchange="prop.incluirIva=this.checked;renderItemRows();scheduleProp();"> Incluir IVA</label>
+                    <label style="gap:0.2rem;">Tasa % <input type="number" id="pTasaIva" value="16" min="0" max="30" style="width:64px; display:inline-block;" oninput="prop.tasaIva=parseFloat(this.value)||0;renderItemRows();scheduleProp();"></label>
+                  </div>
+                </div>
+              </div>
+              <label>Partidas — elige el producto del catálogo (código, unidad y precio se rellenan solos) o captura manual</label>
+              <div class="table-scroll">
+                <table class="prop-items">
+                  <thead><tr><th style="min-width:170px;">Producto</th><th style="min-width:190px;">Descripción / especificaciones</th><th style="width:64px;">Cant.</th><th style="width:74px;">Unidad</th><th style="width:92px;">P. unit.</th><th style="width:92px;">Importe</th><th style="width:34px;"></th></tr></thead>
+                  <tbody id="pItems"></tbody>
+                </table>
+              </div>
+              <button class="btn btn-sm" style="margin-top:0.4rem;" onclick="addPropItem()">＋ Agregar partida</button>
+              <div class="prop-tot" id="pTotales"></div>
+            </div>
+          </details>
+
+          <details class="prop-sec">
+            <summary>04 · Fotografías de productos y materiales</summary>
+            <div class="sec-body">
+              <label>Sube las fotos de los productos que se incluirán en la propuesta</label>
+              <div class="photo-grid" id="pFotosGrid"></div>
+              <button class="btn btn-sm" style="margin-top:0.5rem;" onclick="addFotoSlot()">＋ Agregar foto</button>
+            </div>
+          </details>
+
+          <details class="prop-sec">
+            <summary>05 · Especificaciones técnicas y notas</summary>
+            <div class="sec-body">
+              <textarea id="pEspec" rows="3" placeholder="Acabados, medidas, marcas, colores u observaciones relevantes para el cliente..." oninput="prop.especificaciones=this.value;scheduleProp();"></textarea>
+            </div>
+          </details>
+
+          <details class="prop-sec">
+            <summary>06 · Condiciones comerciales</summary>
+            <div class="sec-body">
+              <label>Forma de pago</label>
+              <input id="pFormaPago" oninput="prop.formaPago=this.value;scheduleProp();">
+              <label>Tiempo de entrega (días de trabajo)</label>
+              <input id="pTiempoEntrega" type="number" min="0" placeholder="Ej. 5" oninput="prop.tiempoEntrega=this.value;scheduleProp();">
+              <label>Alcance y trabajos adicionales</label>
+              <textarea id="pAlcanceExtra" rows="2" oninput="prop.alcanceExtra=this.value;scheduleProp();"></textarea>
+              <label>Secciones del documento</label>
+              <div class="radio-row" style="flex-wrap:wrap; gap:1.2rem;">
+                <label><input type="checkbox" id="pIncluirGarantia" checked onchange="prop.incluirGarantia=this.checked;scheduleProp();"> 07 Garantía</label>
+                <label><input type="checkbox" id="pIncluirLogistica" checked onchange="prop.incluirLogistica=this.checked;scheduleProp();"> 08 Logística premium</label>
+                <label><input type="checkbox" id="pIncluirAceptacion" checked onchange="prop.incluirAceptacion=this.checked;scheduleProp();"> 09 Aceptación (firmas)</label>
+              </div>
+            </div>
+          </details>
+        </div>
+        <div class="prop-preview" id="propPreview"></div>
       </div>
     </section>
 
@@ -437,6 +639,7 @@ function enterApp(u){
     $('analyticsBox').innerHTML = '<iframe id="analyticsFrame" src="' + esc(CONFIG.LOOKER_STUDIO_URL) + '" frameborder="0" allowfullscreen></iframe>';
   }
   loadLeads(); loadQuotes(); loadReviewsAdmin(); loadProducts(); loadBiz();
+  initProposal();
   $('sFecha').value = new Date().toISOString().slice(0,10);
   $('gFecha').value = new Date().toISOString().slice(0,10);
   $('pnlMes').value = new Date().toISOString().slice(0,7);
@@ -453,7 +656,7 @@ function logout(){
 /* ---------- tabs ---------- */
 function showTab(name){
   document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active', t.dataset.tab===name));
-  ['leads','quotes','inventory','sales','expenses','pnl','reviews','analytics'].forEach(n=>$('tab-'+n).classList.toggle('hidden', n!==name));
+  ['leads','quotes','proposal','inventory','sales','expenses','pnl','reviews','analytics'].forEach(n=>$('tab-'+n).classList.toggle('hidden', n!==name));
   if (name==='pnl' && !$('pnlCards').innerHTML) generarPNL();
 }
 
@@ -537,14 +740,335 @@ function printQuote(){
     '<div class="pq-foot">ADIS Diseño & Remodelación · Nogales, Sonora · Rio Rico, AZ · +1 (520) 839-2877 · adis.remodelacion@gmail.com</div>';
   window.print();
 }
+let quotesCache = [];
 function loadQuotes(){
   apiGet('quotes').then(data=>{
-    if (!data || !data.ok) { $('quotesTable').innerHTML='<tr><td colspan="5" class="muted">Sin acceso.</td></tr>'; return; }
-    if (!data.quotes.length) { $('quotesTable').innerHTML='<tr><td colspan="5" class="muted">Aún no hay cotizaciones guardadas.</td></tr>'; return; }
-    $('quotesTable').innerHTML = data.quotes.slice().reverse().map(q=>
-      '<tr><td>'+esc(q.fecha)+'</td><td>'+esc(q.cliente)+'</td><td>'+esc(q.telefono)+'</td><td class="gold">'+esc(q.total)+'</td><td>'+esc(q.notas)+'</td></tr>'
-    ).join('');
+    if (!data || !data.ok) { $('quotesTable').innerHTML='<tr><td colspan="6" class="muted">Sin acceso.</td></tr>'; return; }
+    quotesCache = data.quotes || [];
+    if (!quotesCache.length) { $('quotesTable').innerHTML='<tr><td colspan="6" class="muted">Aún no hay cotizaciones guardadas.</td></tr>'; return; }
+    $('quotesTable').innerHTML = quotesCache.slice().reverse().map((q,i)=>{
+      const rev = quotesCache.length - 1 - i;
+      return '<tr><td>'+esc(String(q.fecha||'').slice(0,10))+'</td><td class="gold">'+esc(q.folio||'—')+'</td><td>'+esc(q.cliente)+'</td>' +
+        '<td>'+esc(q.telefono)+'</td><td class="gold">'+esc(q.total)+'</td>' +
+        '<td>'+(q.datos ? '<button class="btn btn-sm" onclick="loadProposalFromQuote('+rev+')">📂 Cargar</button>' : '<span class="muted">simple</span>')+'</td></tr>';
+    }).join('');
   }).catch(()=>{});
+}
+
+/* ---------- COTIZADOR PROFESIONAL (formato propuesta ADIS) ---------- */
+const TIPOS_PROYECTO = ['Centro de TV decorativo','Puerta oculta','Isla de cocina','Remodelación de cocina','Remodelación de baño','Muro decorativo','Barra decorativa','Plafón decorativo','Fachada / muro exterior','Revestimiento de columnas','Nichos decorativos','Área comercial'];
+const GARANTIA_COBERTURA = ['7 meses de garantía en la instalación a partir de la entrega del proyecto.','Correcciones dentro de cobertura sin costo de mano de obra.','Materiales sujetos a la garantía y plazos de cada fabricante.','Toda solicitud se evalúa conforme a las condiciones de garantía.'];
+const GARANTIA_NO_CUBRE = ['Golpes, accidentes o mal uso; desgaste normal de materiales.','Humedad, filtraciones o fugas ajenas a nuestra instalación.','Modificaciones o reparaciones realizadas por terceros.','Movimientos, asentamientos o problemas estructurales del inmueble.','Daños por condiciones externas al trabajo realizado por ADIS.'];
+const LOGISTICA = [['PROTECCIÓN DEL ESPACIO','Barreras contra polvo y residuos; protección de pisos, muebles y superficies; delimitación del área de trabajo.'],['HORARIOS Y COORDINACIÓN','Programación previa de días y horarios, coordinación de cuadrilla y comunicación de avances relevantes.'],['ORDEN Y LIMPIEZA','Recolección de residuos y limpieza del área al final de cada jornada y al concluir el proyecto.'],['SUPERVISIÓN Y ENTREGA','Supervisión durante la instalación, inspección final y entrega del proyecto conforme a lo acordado.']];
+
+function defaultProp(){
+  return { folio:'', savedFolio:'', fecha:new Date().toISOString().slice(0,10), cliente:'', telefono:'', proyecto:'', ubicacion:'',
+    elaboro:'Josías Espinoza · Gerente', vigencia:30,
+    fotoProyecto:null, tipos:[], otroTipo:'', area:'', materiales:'', descripcion:'',
+    moneda:'MXN', items:[{pid:'',codigo:'',descripcion:'',cantidad:1,unidad:'PZS',precio:0}], incluirIva:true, tasaIva:16,
+    fotos:[{data:null,desc:''},{data:null,desc:''},{data:null,desc:''}],
+    especificaciones:'',
+    formaPago:'50% al iniciar la instalación · 50% al finalizar el proyecto, contra entrega.',
+    tiempoEntrega:'', alcanceExtra:'La propuesta contempla exclusivamente lo especificado. Modificaciones o trabajos adicionales se autorizan previamente y se cotizan por separado.',
+    incluirGarantia:true, incluirLogistica:true, incluirAceptacion:true };
+}
+let prop = defaultProp();
+let propTimer = null;
+
+function initProposal(){
+  try {
+    const d = JSON.parse(localStorage.getItem('adis_prop_draft') || 'null');
+    if (d && d.items) prop = Object.assign(defaultProp(), d);
+  } catch (e) {}
+  renderTiposChk(); applyPropToForm(); renderItemRows(); renderFotoProy(); renderFotosGrid(); renderProposal();
+}
+function scheduleProp(){ schedulePropDraft(); renderProposal(); }
+function schedulePropDraft(){
+  clearTimeout(propTimer);
+  propTimer = setTimeout(()=>{ try { localStorage.setItem('adis_prop_draft', JSON.stringify(prop)); } catch (e) {} }, 400);
+}
+
+function applyPropToForm(){
+  $('pCliente').value = prop.cliente; $('pTelefono').value = prop.telefono;
+  $('pProyecto').value = prop.proyecto; $('pUbicacion').value = prop.ubicacion;
+  $('pFecha').value = prop.fecha; $('pVigencia').value = prop.vigencia; $('pElaboro').value = prop.elaboro;
+  $('pOtroTipo').value = prop.otroTipo; $('pArea').value = prop.area; $('pMateriales').value = prop.materiales;
+  $('pDescripcion').value = prop.descripcion; $('pMoneda').value = prop.moneda;
+  $('pIncluirIva').checked = prop.incluirIva; $('pTasaIva').value = prop.tasaIva;
+  $('pEspec').value = prop.especificaciones; $('pFormaPago').value = prop.formaPago;
+  $('pTiempoEntrega').value = prop.tiempoEntrega; $('pAlcanceExtra').value = prop.alcanceExtra;
+  $('pIncluirGarantia').checked = prop.incluirGarantia; $('pIncluirLogistica').checked = prop.incluirLogistica;
+  $('pIncluirAceptacion').checked = prop.incluirAceptacion;
+}
+
+function matchLead(){
+  const q = prop.cliente.trim().toLowerCase();
+  if (q.length < 3) return;
+  apiGet('leads').then(d=>{
+    if (!d || !d.ok) return;
+    const l = d.leads.find(x => String(x.nombre||'').toLowerCase() === q) || d.leads.find(x => String(x.nombre||'').toLowerCase().indexOf(q) !== -1);
+    if (l && document.activeElement === $('pCliente')) {
+      if (l.telefono && !$('pTelefono').value) { prop.telefono = l.telefono; $('pTelefono').value = l.telefono; }
+      if (l.ciudad && !$('pUbicacion').value) { prop.ubicacion = l.ciudad; $('pUbicacion').value = l.ciudad; }
+      renderProposal();
+    }
+  }).catch(()=>{});
+}
+
+/* ----- alcance: tipos y foto ----- */
+function renderTiposChk(){
+  $('pTipos').innerHTML = TIPOS_PROYECTO.map((t,i)=>
+    '<label><input type="checkbox" '+(prop.tipos.indexOf(t)!==-1?'checked':'')+' onchange="toggleTipo('+i+',this.checked)"> '+esc(t)+'</label>'
+  ).join('');
+}
+function toggleTipo(i, on){
+  const t = TIPOS_PROYECTO[i];
+  const ix = prop.tipos.indexOf(t);
+  if (on && ix === -1) prop.tipos.push(t);
+  if (!on && ix !== -1) prop.tipos.splice(ix,1);
+  scheduleProp();
+}
+
+function fileToDataURL(file, cb){
+  const r = new FileReader();
+  r.onload = e => {
+    const img = new Image();
+    img.onload = () => {
+      const max = 1280; let w = img.width, h = img.height;
+      if (Math.max(w,h) > max) { const s = max/Math.max(w,h); w = Math.round(w*s); h = Math.round(h*s); }
+      const c = document.createElement('canvas'); c.width = w; c.height = h;
+      c.getContext('2d').drawImage(img, 0, 0, w, h);
+      cb(c.toDataURL('image/jpeg', 0.82));
+    };
+    img.src = e.target.result;
+  };
+  r.readAsDataURL(file);
+}
+function setFotoProyecto(input){
+  const f = input.files && input.files[0];
+  if (!f) return;
+  fileToDataURL(f, url => { prop.fotoProyecto = url; renderFotoProy(); renderProposal(); schedulePropDraft(); });
+  input.value = '';
+}
+function renderFotoProy(){
+  $('pFotoProySlot').className = 'photo-slot' + (prop.fotoProyecto ? ' filled' : '');
+  $('pFotoProySlot').innerHTML = prop.fotoProyecto
+    ? '<img src="'+prop.fotoProyecto+'" alt="Foto del proyecto"><button class="del" onclick="prop.fotoProyecto=null;renderFotoProy();renderProposal();schedulePropDraft()">✕</button>'
+    : '<label class="ph-add" for="pFotoProy">📷 Subir fotografía / render del proyecto<br><span class="muted" style="font-size:0.68rem;">JPG, PNG — se comprime automáticamente</span></label>' +
+      '<input type="file" id="pFotoProy" accept="image/*" onchange="setFotoProyecto(this)">';
+}
+
+function setFotoProducto(idx, input){
+  const f = input.files && input.files[0];
+  if (!f) return;
+  fileToDataURL(f, url => { prop.fotos[idx].data = url; renderFotosGrid(); renderProposal(); schedulePropDraft(); });
+  input.value = '';
+}
+function renderFotosGrid(){
+  $('pFotosGrid').innerHTML = prop.fotos.map((f,i)=>
+    '<div class="photo-slot'+(f.data?' filled':'')+'">' +
+    (f.data ? '<img src="'+f.data+'" alt="Foto de producto"><button class="del" onclick="prop.fotos['+i+'].data=null;renderFotosGrid();renderProposal();schedulePropDraft()">✕</button>'
+            : '<label class="ph-add" for="pFoto'+i+'">📷 Foto '+(i+1)+'</label>') +
+    '<input type="file" id="pFoto'+i+'" accept="image/*" onchange="setFotoProducto('+i+',this)">' +
+    '<input placeholder="Descripción:" value="'+esc(f.desc)+'" oninput="prop.fotos['+i+'].desc=this.value;scheduleProp()" style="font-size:0.75rem; padding:0.4rem 0.5rem;">' +
+    '</div>'
+  ).join('');
+}
+function addFotoSlot(){ if (prop.fotos.length >= 6) { notice('Máximo 6 fotos de productos.', false); return; } prop.fotos.push({data:null,desc:''}); renderFotosGrid(); schedulePropDraft(); }
+
+/* ----- partidas ----- */
+function parseNum(v){ return parseFloat(String(v==null?'':v).replace(/[^0-9.]/g,'')) || 0; }
+function productOptionsHTML(sel){
+  const cats = [];
+  biz.productos.forEach(p => { const c = p.categoria || 'General'; if (cats.indexOf(c) === -1) cats.push(c); });
+  let h = '<option value="">— Partida manual —</option>';
+  cats.forEach(c => {
+    h += '<optgroup label="'+esc(c)+'">';
+    biz.productos.filter(p => (p.categoria||'General') === c).forEach(p => {
+      const id = p.id || '';
+      h += '<option value="'+esc(id)+'"'+(sel===id?' selected':'')+'>'+esc((p.codigo||'')+' · '+(p.nombre||''))+'</option>';
+    });
+    h += '</optgroup>';
+  });
+  return h;
+}
+function renderItemRows(){
+  $('pItems').innerHTML = prop.items.map((it,i)=>
+    '<tr>' +
+    '<td><select onchange="itemProduct('+i+',this.value)">'+productOptionsHTML(it.pid)+'</select></td>' +
+    '<td><input value="'+esc(it.descripcion)+'" placeholder="Descripción / especificaciones" oninput="prop.items['+i+'].descripcion=this.value;updItem('+i+');scheduleProp()"></td>' +
+    '<td><input type="number" min="0" step="any" value="'+it.cantidad+'" oninput="prop.items['+i+'].cantidad=parseFloat(this.value)||0;updItem('+i+');scheduleProp()"></td>' +
+    '<td><input value="'+esc(it.unidad)+'" oninput="prop.items['+i+'].unidad=this.value;updItem('+i+');scheduleProp()"></td>' +
+    '<td><input type="number" min="0" step="any" value="'+it.precio+'" oninput="prop.items['+i+'].precio=parseFloat(this.value)||0;updItem('+i+');scheduleProp()"></td>' +
+    '<td class="imp" id="pImp'+i+'"></td>' +
+    '<td><button class="del" onclick="prop.items.splice('+i+',1);renderItemRows();scheduleProp()">✕</button></td>' +
+    '</tr>'
+  ).join('');
+  updateTotalsUI();
+}
+function itemProduct(i, pid){
+  const it = prop.items[i];
+  it.pid = pid;
+  const p = biz.productos.find(x => String(x.id||'') === String(pid));
+  if (p) {
+    it.codigo = p.codigo || ''; it.descripcion = p.nombre || '';
+    it.unidad = (p.unidad || 'PZS').toUpperCase(); it.precio = parseNum(p.precio);
+  }
+  renderItemRows(); scheduleProp();
+}
+function updItem(i){ const it = prop.items[i]; $('pImp'+i).textContent = fmtMoney((Number(it.cantidad)||0)*(Number(it.precio)||0)); updateTotalsUI(); }
+function addPropItem(){ prop.items.push({pid:'',codigo:'',descripcion:'',cantidad:1,unidad:'PZS',precio:0}); renderItemRows(); schedulePropDraft(); }
+function calcTotals(){
+  const sub = prop.items.reduce((s,it)=> s + (String(it.descripcion).trim() ? (Number(it.cantidad)||0)*(Number(it.precio)||0) : 0), 0);
+  const iva = prop.incluirIva ? sub * (Number(prop.tasaIva)||0) / 100 : 0;
+  return { subtotal: sub, iva: iva, total: sub + iva };
+}
+function updateTotalsUI(){
+  const t = calcTotals();
+  prop.items.forEach((it,i)=>{ const el = $('pImp'+i); if (el) el.textContent = fmtMoney((Number(it.cantidad)||0)*(Number(it.precio)||0)); });
+  $('pTotales').innerHTML =
+    '<span class="muted">Subtotal: <b>'+fmtMoney(t.subtotal)+' '+prop.moneda+'</b></span>' +
+    (prop.incluirIva ? '<span class="muted">IVA ('+prop.tasaIva+'%): <b>'+fmtMoney(t.iva)+' '+prop.moneda+'</b></span>' : '') +
+    '<span>INVERSIÓN TOTAL: <b class="gold">'+fmtMoney(t.total)+' '+prop.moneda+'</b></span>';
+}
+
+/* ----- vista previa / documento ----- */
+function qpFecha(f){ if(!f) return '__ / __ / ______'; const d = new Date(f+'T12:00:00'); if(isNaN(d)) return esc(f); return String(d.getDate()).padStart(2,'0')+' / '+String(d.getMonth()+1).padStart(2,'0')+' / '+d.getFullYear(); }
+function qpFolio(){ return prop.savedFolio || 'ADIS-'+(prop.fecha?String(new Date(prop.fecha+'T12:00:00').getFullYear()):new Date().getFullYear())+'-_______'; }
+
+function buildProposalHTML(){
+  const t = calcTotals();
+  const cur = m => '<b>'+(prop.moneda===m?m:'<span style="color:#999;font-weight:400;">'+m+'</span>')+'</b>';
+  const checks = TIPOS_PROYECTO.map(tp => '<span class="'+(prop.tipos.indexOf(tp)!==-1?'on':'')+'">'+esc(tp)+'</span>').join('');
+  const fotosLlenas = prop.fotos.filter(f => f.data);
+  let h = '<div class="qp">';
+  h += '<div class="qp-header"><div>' +
+    '<img src="LOGO%20ADIS.webp" onerror="this.onerror=null;this.src=\'LOGO%20ADIS.png\'" alt="ADIS">' +
+    '<div class="qp-brand" style="margin-top:0.3rem;">ADIS | DISEÑOS &amp; REMODELACIONES</div>' +
+    '<div class="qp-slogan">Creando espacios, reinventando hogares.</div></div>' +
+    '<div class="qp-doc"><b>PROPUESTA DE REMODELACIÓN</b><br>COTIZACIÓN N.º <b>'+esc(qpFolio())+'</b><br>FECHA: <b>'+qpFecha(prop.fecha)+'</b></div></div>';
+
+  h += '<div class="qp-sec"><div class="qp-sec-t">01 · DATOS DEL CLIENTE Y DEL PROYECTO</div>' +
+    '<table class="qp-table qp-kv"><tbody>' +
+    '<tr><td>CLIENTE</td><td>'+esc(prop.cliente)+'</td></tr>' +
+    '<tr><td>PROYECTO</td><td>'+esc(prop.proyecto)+'</td></tr>' +
+    '<tr><td>UBICACIÓN</td><td>'+esc(prop.ubicacion)+'</td></tr>' +
+    '<tr><td>VIGENCIA</td><td>'+esc(String(prop.vigencia||30))+' días naturales</td></tr>' +
+    '<tr><td>ELABORÓ</td><td>'+esc(prop.elaboro)+'</td></tr>' +
+    '</tbody></table></div>';
+
+  h += '<div class="qp-sec"><div class="qp-sec-t">02 · ALCANCE DEL PROYECTO</div>' +
+    (prop.fotoProyecto ? '<div class="qp-photo-box" style="border-style:solid; padding:0.25rem;"><img src="'+prop.fotoProyecto+'" alt="Proyecto"></div>'
+                       : '<div class="qp-photo-box">FOTOGRAFÍA / RENDER DEL PROYECTO<br><span style="font-size:0.55rem;">(se mostrará aquí la imagen que subas en la sección 02 del formulario)</span></div>') +
+    '<div class="qp-checks">'+checks+'</div>' +
+    (prop.otroTipo ? '<div style="font-size:0.64rem; color:#333; margin:0.15rem 0;">Otro: <b>'+esc(prop.otroTipo)+'</b></div>' : '') +
+    '<table class="qp-table qp-kv"><tbody>' +
+    '<tr><td>ÁREA A TRANSFORMAR</td><td>'+esc(prop.area)+'</td></tr>' +
+    '<tr><td>MATERIALES PRINCIPALES</td><td>'+esc(prop.materiales)+'</td></tr>' +
+    '<tr><td>DESCRIPCIÓN BREVE DEL PROYECTO</td><td>'+esc(prop.descripcion)+'</td></tr>' +
+    '</tbody></table></div>';
+
+  h += '<div class="qp-sec"><div class="qp-sec-t">03 · DESGLOSE DE INVERSIÓN</div>' +
+    '<div class="qp-moneda">Moneda: '+cur('USD')+' &nbsp;·&nbsp; '+cur('MXN')+' &nbsp;—&nbsp; La inversión contempla materiales, insumos, preparación, instalación y servicios especificados en esta propuesta.</div>' +
+    '<table class="qp-table"><thead><tr><th style="width:14%;">CÓDIGO</th><th>DESCRIPCIÓN / ESPECIFICACIONES</th><th style="width:8%;">CANT.</th><th style="width:10%;">UNIDAD</th><th style="width:14%;">P. UNITARIO</th><th style="width:14%;">IMPORTE</th></tr></thead><tbody>' +
+    prop.items.map(it => '<tr><td>'+esc(it.codigo)+'</td><td>'+esc(it.descripcion)+'</td><td class="qp-num">'+esc(String(it.cantidad))+'</td><td>'+esc(it.unidad)+'</td><td class="qp-num">'+fmtMoney(it.precio)+'</td><td class="qp-num">'+fmtMoney((Number(it.cantidad)||0)*(Number(it.precio)||0))+'</td></tr>').join('') +
+    '<tr><td colspan="5" style="text-align:right; font-weight:700; background:#faf6ea;">SUBTOTAL</td><td class="qp-num" style="font-weight:700; background:#faf6ea;">'+fmtMoney(t.subtotal)+'</td></tr>' +
+    (prop.incluirIva ? '<tr><td colspan="5" style="text-align:right; font-weight:700; background:#faf6ea;">IVA / IMPUESTOS ('+esc(String(prop.tasaIva))+'%)</td><td class="qp-num" style="font-weight:700; background:#faf6ea;">'+fmtMoney(t.iva)+'</td></tr>' : '') +
+    '<tr class="qp-grand"><td colspan="5" style="text-align:right;">INVERSIÓN TOTAL '+(t.total?esc(prop.moneda):'')+'</td><td class="qp-num">'+fmtMoney(t.total)+'</td></tr>' +
+    '</tbody></table></div>';
+
+  h += '<div class="qp-sec"><div class="qp-sec-t">04 · FOTOGRAFÍAS DE PRODUCTOS Y MATERIALES</div>' +
+    (fotosLlenas.length
+      ? '<div class="qp-fotos">' + fotosLlenas.map(f => '<div class="qp-foto"><img src="'+f.data+'" alt=""><p>'+esc(f.desc)+'</p></div>').join('') + '</div>'
+      : '<div class="qp-photo-box">Aquí se mostrarán las fotos de productos que subas en la sección 04 del formulario.</div>') + '</div>';
+
+  h += '<div class="qp-sec"><div class="qp-sec-t">05 · ESPECIFICACIONES TÉCNICAS Y NOTAS</div>' +
+    '<div class="qp-notes">'+(prop.especificaciones ? esc(prop.especificaciones) : '<span style="color:#999;">Acabados, medidas, marcas, colores u observaciones relevantes para el cliente.</span>')+'</div></div>';
+
+  h += '<div class="qp-sec"><div class="qp-sec-t">06 · CONDICIONES COMERCIALES</div><div class="qp-cond">' +
+    '<div><b>FORMA DE PAGO</b>'+esc(prop.formaPago)+'</div>' +
+    '<div><b>TIEMPO DE ENTREGA</b>Duración estimada: '+esc(prop.tiempoEntrega||'____')+' días de trabajo. Puede variar por condiciones del área o modificaciones autorizadas.</div>' +
+    '<div><b>VIGENCIA DE LA COTIZACIÓN</b>Vigente por '+esc(String(prop.vigencia||30))+' días naturales a partir de la fecha de emisión; después de ese plazo, precios y condiciones se confirman por escrito.</div>' +
+    '<div><b>ALCANCE Y TRABAJOS ADICIONALES</b>'+esc(prop.alcanceExtra)+'</div>' +
+    '</div></div>';
+
+  if (prop.incluirGarantia) {
+    h += '<div class="qp-sec"><div class="qp-sec-t">07 · GARANTÍA ADIS</div><div class="qp-cond">' +
+      '<div><b>COBERTURA</b>'+GARANTIA_COBERTURA.map(x=>esc(x)).join('<br>')+'</div>' +
+      '<div><b>LA GARANTÍA NO CUBRE</b>'+GARANTIA_NO_CUBRE.map(x=>esc(x)).join('<br>')+'</div>' +
+      '</div></div>';
+  }
+  if (prop.incluirLogistica) {
+    h += '<div class="qp-sec"><div class="qp-sec-t">08 · LOGÍSTICA PREMIUM ADIS</div><div class="qp-qp-4 qp-4col">' +
+      LOGISTICA.map(x => '<div style="border:1px solid #e2d3ac; border-left:3px solid #C5A059; padding:0.45rem 0.55rem; font-size:0.62rem; color:#333;"><b style="color:#8a6d2f; display:block; margin-bottom:0.2rem;">'+esc(x[0])+'</b>'+esc(x[1])+'</div>').join('') +
+      '</div></div>';
+  }
+  if (prop.incluirAceptacion) {
+    h += '<div class="qp-sec"><div class="qp-sec-t">09 · ACEPTACIÓN DE LA PROPUESTA</div>' +
+      '<div class="qp-acepta">Con la firma de este documento, el cliente acepta el alcance, la inversión y las condiciones descritas en la presente cotización.</div>' +
+      '<div class="qp-firmas">' +
+      '<div class="qp-firma"><b>CLIENTE</b><br>NOMBRE: '+esc(prop.cliente)+'<br>FIRMA: ______________________________<br>FECHA: ____ / ____ / ______</div>' +
+      '<div class="qp-firma"><b>ADIS DISEÑOS &amp; REMODELACIONES</b><br>NOMBRE: '+esc(prop.elaboro)+'<br>FIRMA: ______________________________<br>FECHA: ____ / ____ / ______</div>' +
+      '</div></div>';
+  }
+
+  h += '<div class="qp-foot"><b>GRACIAS POR CONFIAR EN ADIS</b><br>' +
+    'México: +52 631 120 4943 &nbsp;&nbsp;|&nbsp;&nbsp; USA: +1 520 839 2877 &nbsp;&nbsp;|&nbsp;&nbsp; adis-diseño.com &nbsp;&nbsp;|&nbsp;&nbsp; adis.remodelacion@gmail.com<br>' +
+    'Nogales, Sonora &nbsp;·&nbsp; Rio Rico, AZ &nbsp;—&nbsp; Creando espacios, reinventando hogares.</div>';
+  h += '</div>';
+  return h;
+}
+function renderProposal(){ const el = $('propPreview'); if (el) el.innerHTML = buildProposalHTML(); updateTotalsUI(); }
+
+/* ----- acciones ----- */
+function saveProposal(){
+  if (!prop.cliente.trim()) { notice('Falta el nombre del cliente (sección 01).', false); return; }
+  if (!prop.items.some(it => String(it.descripcion).trim())) { notice('Agrega al menos una partida con descripción (sección 03).', false); return; }
+  const t = calcTotals();
+  const datos = Object.assign({}, prop, {
+    fotoProyecto: prop.fotoProyecto ? '(foto guardada en el borrador local del navegador)' : '',
+    fotos: prop.fotos.map(f => ({ data: f.data ? '(foto en borrador local)' : '', desc: f.desc }))
+  });
+  apiPost({ tipo:'quote', folio: prop.savedFolio || '', cliente: prop.cliente, telefono: prop.telefono,
+    ciudad: prop.ubicacion, proyecto: prop.proyecto, ubicacion: prop.ubicacion, moneda: prop.moneda,
+    items: prop.items.map(it => ({ codigo: it.codigo, descripcion: it.descripcion, cantidad: it.cantidad, unidad: it.unidad, precio: it.precio })),
+    subtotal: t.subtotal, iva: t.iva, total: t.total, notas: prop.especificaciones.slice(0, 500), datos: datos })
+    .then(d => {
+      if (d && d.ok) {
+        prop.savedFolio = d.folio || prop.savedFolio;
+        notice('Cotización <b>' + esc(prop.savedFolio) + '</b> guardada en Google Sheets.');
+        loadQuotes(); renderProposal(); schedulePropDraft();
+      } else notice((d && d.error) || 'No se pudo guardar.', false);
+    }).catch(()=>notice('Error de conexión al guardar.', false));
+}
+function printProposal(){ $('printArea').innerHTML = buildProposalHTML(); window.print(); }
+function sendProposalWhatsApp(){
+  const t = calcTotals();
+  const dest = (prop.telefono || '').replace(/\D/g, '') || CONFIG.WHATSAPP;
+  let txt = 'Propuesta ADIS ' + (prop.savedFolio || qpFolio()) + ' — ' + (prop.cliente || 'Cliente') + '\n';
+  txt += 'Proyecto: ' + (prop.proyecto || '—') + '\n';
+  txt += 'Inversión total: ' + fmtMoney(t.total) + ' ' + prop.moneda + '\n\n';
+  txt += 'Te envío la propuesta completa con el desglose de inversión, fotos y condiciones. ¡Quedo atento(a)!';
+  window.open('https://wa.me/' + dest + '?text=' + encodeURIComponent(txt), '_blank');
+}
+function loadProposalFromQuote(idx){
+  const q = quotesCache[idx];
+  if (!q || !q.datos) { notice('Esta cotización no tiene datos completos para cargar (guárdala de nuevo con el Cotizador).', false); return; }
+  try {
+    const d = JSON.parse(q.datos);
+    if (!d || !d.items) throw 0;
+    prop = Object.assign(defaultProp(), d);
+    prop.savedFolio = q.folio || prop.savedFolio;
+    renderTiposChk(); applyPropToForm(); renderItemRows(); renderFotoProy(); renderFotosGrid(); renderProposal(); schedulePropDraft();
+    showTab('proposal');
+    notice('Cotización ' + (q.folio || '') + ' cargada en el editor. Las fotos se conservan en el borrador local.');
+  } catch (e) { notice('No se pudo leer la cotización guardada.', false); }
+}
+function newProposal(){
+  if (!confirm('¿Empezar una cotización nueva? Se limpia el formulario (lo guardado en Sheets no se toca).')) return;
+  prop = defaultProp();
+  try { localStorage.removeItem('adis_prop_draft'); } catch (e) {}
+  renderTiposChk(); applyPropToForm(); renderItemRows(); renderFotoProy(); renderFotosGrid(); renderProposal();
 }
 
 /* ---------- reseñas ---------- */
@@ -583,7 +1107,7 @@ let saleItems = [];
 let pnlData = null;
 
 function loadBiz(){
-  apiGet('productos').then(d=>{ if(d&&d.ok){ biz.productos=d.productos; renderInventory(); if($('sSearch').value) searchSaleProducts(); } });
+  apiGet('productos').then(d=>{ if(d&&d.ok){ biz.productos=d.productos; renderInventory(); if($('sSearch').value) searchSaleProducts(); if($('pItems')) renderItemRows(); } });
   apiGet('almacenes').then(d=>{ if(d&&d.ok){ biz.almacenes=d.almacenes; fillWarehouseSelects(); renderInventory(); } });
   apiGet('stock').then(d=>{ if(d&&d.ok){ biz.stock=d.stock; renderInventory(); renderSaleItems(); } });
   apiGet('movimientos').then(d=>{ if(d&&d.ok) renderMovs(d.movimientos); });

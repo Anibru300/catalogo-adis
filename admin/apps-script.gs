@@ -287,12 +287,30 @@ function doPost(e) {
   if (!esTokenValido(data.token)) return json({ ok: false, error: 'Sesion no valida. Vuelve a entrar.' });
 
   if (tipo === 'quote') {
+    var hCot = ss().getSheetByName(SHEET_QUOTES) ||
+      hoja(SHEET_QUOTES, ['fecha', 'cliente', 'telefono', 'ciudad', 'items', 'total', 'notas']);
+    // Extender encabezados del formato profesional (solo la primera vez)
+    if (String(hCot.getRange(1, 8).getValue()) === '') {
+      ['folio', 'proyecto', 'ubicacion', 'moneda', 'subtotal', 'iva', 'estado', 'datos']
+        .forEach(function (e, i) { hCot.getRange(1, 8 + i).setValue(e); });
+    }
+    // Folio consecutivo ADIS-AAAA-NNN (se respeta si se re-guarda una cotizacion cargada)
+    var folio = data.folio ? String(data.folio) : '';
+    if (!folio || folio.indexOf('___') !== -1) {
+      var n = Number(cfg('folio_cotizacion', '1')) || 1;
+      cfgSet('folio_cotizacion', String(n + 1));
+      folio = 'ADIS-' + Utilities.formatDate(new Date(), 'America/Hermosillo', 'yyyy') + '-' + ('000' + n).slice(-3);
+    }
     var items = (data.items || []).map(function (it) {
-      return (it.nombre || '') + ' x' + (it.cantidad || 1) + ' @' + (it.precio || 0);
+      return (it.codigo ? it.codigo + ' ' : '') + (it.descripcion || it.nombre || '') +
+        ' x' + (it.cantidad || 1) + ' ' + (it.unidad || '') + ' @' + (it.precio || 0);
     }).join(' | ');
-    hoja(SHEET_QUOTES, ['fecha', 'cliente', 'telefono', 'ciudad', 'items', 'total', 'notas'])
-      .appendRow([ahora_(), data.cliente || '', data.telefono || '', data.ciudad || '', items, data.total || 0, data.notas || '']);
-    return json({ ok: true });
+    hCot.appendRow([ahora_(), data.cliente || '', data.telefono || '', data.ciudad || data.ubicacion || '',
+      items, data.total || 0, data.notas || '', folio, data.proyecto || '', data.ubicacion || '',
+      data.moneda || 'MXN', data.subtotal || 0, data.iva || 0, data.estado || 'Activa',
+      JSON.stringify(data.datos || {})]);
+    log_('Cotizacion', folio + ' · ' + (data.cliente || '') + ' · ' + (data.moneda || '') + ' ' + (data.total || 0));
+    return json({ ok: true, folio: folio });
   }
 
   if (tipo === 'review') {
