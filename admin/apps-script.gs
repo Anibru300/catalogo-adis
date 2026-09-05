@@ -332,6 +332,7 @@ function doPost(e) {
   if (tipo === 'config') {
     if (data.moneda_base) cfgSet('moneda_base', data.moneda_base);
     if (data.tipo_cambio) cfgSet('tipo_cambio', String(data.tipo_cambio));
+    if (data.folio_cotizacion) cfgSet('folio_cotizacion', String(data.folio_cotizacion));
     return json({ ok: true, moneda_base: cfg('moneda_base', 'MXN'), tipo_cambio: cfg('tipo_cambio', '18.5') });
   }
 

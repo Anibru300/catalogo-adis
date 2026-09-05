@@ -35,25 +35,27 @@ A partir de tu archivo **Formato de Cotizacion nuevo.docx** construí la pestañ
 
 ---
 
-## ⚠️ 2. DÓNDE NOS QUEDAMOS (lo único que falta para que el Cotizador guarde bien)
+## ✅ 2. DÓNDE NOS QUEDAMOS — Script YA ACTUALIZADO (esta parte quedó HECHA)
 
-**Hay que actualizar el script de Google (5 minutos, pasos en `admin/GUIA_CONFIGURACION.md`):**
+El 4 de septiembre en la noche se **actualizó el script de Google** y quedó verificado en vivo:
+**la prueba de guardado funcionó: folio `ADIS-2026-001` automático, datos completos en la hoja.** ✅
 
-1. Abrir la hoja de Google → **Extensiones → Apps Script**
-2. Borrar todo el código y pegar el contenido de **`admin/apps-script.gs`** (está actualizado en tu Escritorio)
-3. **Guardar** → **Implementar → Administrar implementaciones → ✏️ (lapicito) → Nueva versión → Implementar**
+**URL nueva del backend (vigente):**
+`https://script.google.com/macros/s/AKfycbz2TczcLpS97Ro_AYkrw3pnbtlw8v3HtF7FnJrPPJHEUT_JBe-Ar1bumFDGPZpC6nvJ/exec`
+Ya está pegada en el panel y en todo el sitio (formulario de contacto, reseñas, importador).
 
-> La URL **no cambia**. Todo lo que ya funcionaba sigue igual.
-> ⚠️ **Importante:** guardar con "Nueva versión". Si solo das Guardar, los cambios no aplican.
+> 🧹 La fila de prueba se eliminó de la hoja, todo limpio.
+> 🔢 Detalle menor: la prueba usó el folio 001, así que tu primera cotización real saldrá como **ADIS-2026-002**.
+> Si la quieres empezar en 001: abre la pestaña **Config** de tu hoja de Google, busca la fila `folio_cotizacion` y cambia el valor de `2` a `1`. (Si no lo haces, no pasa nada.)
 
-**Cómo probar que quedó bien:** entrar al panel → Cotizador → llenar cliente y una partida → 💾 Guardar → debe aparecer el mensaje *"Cotización ADIS-2026-XXX guardada"*.
+**⚠️ Para cualquier próxima actualización del script, la rutina es la misma de siempre:**
+Apps Script → pegar `admin/apps-script.gs` → Guardar → **Implementar → Administrar implementaciones → ✏️ → Nueva versión → Implementar** (así la URL no cambia; lo de hoy cambió porque se creó una implementación nueva).
 
 ---
 
 ## 📌 3. PENDIENTES (en orden sugerido)
 
 ### De tu parte (negocio)
-- [ ] **Redesplegar el script** (punto 2 de arriba) ← *primero mañana*
 - [ ] **Capturar precios de venta**: los 261 productos tienen costo pero precio en $0. Opciones: capturarlos en Inventario del panel, o pasarme tu lista de precios y los vuelco todos de una vez.
 - [ ] **Revisar los 10 productos marcados "REVISAR"** en Inventario (AGATA 2, DALMATA, CHOCOLATA, NEGRA SAHARA, KAYLI, GOLDEN, KL8276, KL8055, KL8267, ISA) — decidir si se quedan, se fusionan o se eliminan.
 - [ ] Probar el Cotizador con una cotización real (subir fotos reales del proyecto) y descargar el PDF.

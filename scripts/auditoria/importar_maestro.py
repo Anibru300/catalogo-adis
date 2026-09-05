@@ -10,7 +10,7 @@ from pathlib import Path
 from playwright.sync_api import sync_playwright
 
 BASE = Path(__file__).resolve().parents[2]
-URL = 'https://script.google.com/macros/s/AKfycbzSrtfR5YBC0cLlTur0un-bgaGc58ipECGA5ZechmM29d_Ii-ds7K-KUZ3hvrTr_4ps/exec'
+URL = 'https://script.google.com/macros/s/AKfycbz2TczcLpS97Ro_AYkrw3pnbtlw8v3HtF7FnJrPPJHEUT_JBe-Ar1bumFDGPZpC6nvJ/exec'
 CREDS = {'usuario': 'Adis', 'clave': 'Adisdiseño2026'}
 
 dataset = json.load(open(BASE / 'scripts/auditoria/dataset_maestro.json', encoding='utf-8'))
