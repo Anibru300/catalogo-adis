@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Panel · ADIS Diseño & Remodelación</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root { --gold:#C5A059; --gold-soft:#E8D5A3; --black:#0d0d0d; --dark:#1a1a1a; --card:#2a2a2a; --white:#f5f5f5; --muted:rgba(245,245,245,0.55); }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'Montserrat',sans-serif; background:var(--black); color:var(--white); min-height:100vh; }
+  .wrap { max-width:1100px; margin:0 auto; padding:1.5rem; }
+  .hidden { display:none !important; }
+  h1 { font-size:1.4rem; letter-spacing:0.5px; }
+  .gold { color:var(--gold); }
+  .btn { display:inline-flex; align-items:center; gap:0.4rem; padding:0.65rem 1.2rem; border-radius:8px; border:1px solid var(--gold); background:transparent; color:var(--gold); font-family:inherit; font-size:0.85rem; font-weight:600; cursor:pointer; transition:all .25s; }
+  .btn:hover { background:var(--gold); color:var(--black); }
+  .btn-solid { background:var(--gold); color:var(--black); }
+  .btn-solid:hover { background:var(--gold-soft); border-color:var(--gold-soft); }
+  .btn-danger { border-color:#c0392b; color:#e74c3c; }
+  .btn-danger:hover { background:#c0392b; color:#fff; }
+  .btn-sm { padding:0.35rem 0.7rem; font-size:0.75rem; }
+
+  /* Login */
+  #loginView { display:flex; flex-direction:column; align-items:center; justify-content:center; min-height:100vh; gap:1.2rem; text-align:center; padding:1rem; }
+  #loginView .logo { font-size:1.6rem; font-weight:700; letter-spacing:2px; }
+  #loginView .card { background:var(--card); border:1px solid rgba(197,160,89,0.25); border-radius:14px; padding:2.2rem 2rem; max-width:360px; width:100%; display:flex; flex-direction:column; gap:0.4rem; }
+  #loginStatus { font-size:0.78rem; color:#f1948a; min-height:1.2em; margin-top:0.4rem; }
+
+  /* App */
+  header.app { display:flex; flex-wrap:wrap; gap:1rem; align-items:center; justify-content:space-between; padding:1rem 1.5rem; background:var(--dark); border-bottom:1px solid rgba(197,160,89,0.25); position:sticky; top:0; z-index:10; }
+  .tabs { display:flex; gap:0.5rem; flex-wrap:wrap; }
+  .tab { padding:0.5rem 1rem; border-radius:8px; border:1px solid transparent; background:transparent; color:var(--muted); font-family:inherit; font-size:0.85rem; font-weight:600; cursor:pointer; }
+  .tab.active { color:var(--gold); border-color:rgba(197,160,89,0.4); background:rgba(197,160,89,0.08); }
+  .tab:hover { color:var(--gold-soft); }
+
+  .panel { padding:1.5rem; }
+  .panel h2 { font-size:1.1rem; margin-bottom:1rem; }
+  .card-box { background:var(--card); border:1px solid rgba(197,160,89,0.2); border-radius:12px; padding:1.2rem; margin-bottom:1.2rem; }
+  label { display:block; font-size:0.78rem; color:var(--muted); margin:0.7rem 0 0.3rem; text-align:left; }
+  input, select, textarea { width:100%; padding:0.7rem 0.9rem; background:rgba(13,13,13,0.6); border:1px solid rgba(197,160,89,0.3); border-radius:8px; color:var(--white); font-family:inherit; font-size:0.9rem; }
+  input:focus, select:focus, textarea:focus { outline:none; border-color:var(--gold); }
+  .row { display:grid; grid-template-columns:repeat(auto-fit, minmax(min(200px,100%),1fr)); gap:0 1rem; }
+  .table-scroll { overflow-x:auto; }
+  table { width:100%; border-collapse:collapse; font-size:0.8rem; }
+  th { text-align:left; color:var(--gold); font-weight:600; padding:0.6rem 0.7rem; border-bottom:1px solid rgba(197,160,89,0.3); white-space:nowrap; }
+  td { padding:0.6rem 0.7rem; border-bottom:1px solid rgba(245,245,245,0.06); vertical-align:top; }
+  tr:hover td { background:rgba(197,160,89,0.04); }
+  .muted { color:var(--muted); font-size:0.8rem; }
+  .msg { padding:0.8rem 1rem; border-radius:8px; font-size:0.85rem; margin-bottom:1rem; }
+  .msg.ok { background:rgba(39,174,96,0.15); border:1px solid rgba(39,174,96,0.4); color:#7ce3a1; }
+  .msg.err { background:rgba(231,76,60,0.12); border:1px solid rgba(231,76,60,0.4); color:#f1948a; }
+  .toolbar { display:flex; gap:0.6rem; align-items:center; flex-wrap:wrap; margin-bottom:1rem; }
+  .items { margin:0.8rem 0; display:flex; flex-direction:column; gap:0.5rem; }
+  .item-row { display:grid; grid-template-columns:1fr 70px 110px 36px; gap:0.5rem; align-items:center; }
+  .item-row .del { background:none; border:1px solid rgba(231,76,60,0.5); color:#e74c3c; border-radius:6px; height:38px; cursor:pointer; }
+  .total-line { display:flex; justify-content:flex-end; gap:2rem; padding:0.8rem 0; font-size:0.95rem; border-top:1px solid rgba(197,160,89,0.25); margin-top:0.5rem; }
+  #analyticsFrame { width:100%; height:70vh; border:1px solid rgba(197,160,89,0.25); border-radius:12px; background:#fff; }
+  .search-results { position:relative; }
+  .sr-list { position:absolute; z-index:20; left:0; right:0; top:100%; background:var(--dark); border:1px solid rgba(197,160,89,0.4); border-radius:0 0 8px 8px; max-height:260px; overflow-y:auto; }
+  .sr-item { padding:0.55rem 0.8rem; font-size:0.82rem; cursor:pointer; display:flex; justify-content:space-between; gap:1rem; }
+  .sr-item:hover { background:rgba(197,160,89,0.12); }
+  .stars-input { display:flex; gap:0.3rem; }
+  .stars-input button { background:none; border:none; font-size:1.4rem; cursor:pointer; filter:grayscale(1); }
+  .stars-input button.on { filter:none; }
+
+  /* Impresion de cotizacion */
+  #printArea { display:none; }
+  @media print {
+    body * { visibility:hidden; }
+    #printArea, #printArea * { visibility:visible; }
+    #printArea { display:block; position:absolute; inset:0; background:#fff; color:#000; padding:2rem; font-family:'Montserrat',sans-serif; }
+    #printArea h1 { color:#8a6d2f; font-size:1.5rem; margin-bottom:0.3rem; }
+    #printArea .pq-meta { font-size:0.85rem; color:#444; margin-bottom:1.5rem; }
+    #printArea table { width:100%; border-collapse:collapse; font-size:0.85rem; margin-top:1rem; }
+    #printArea th { background:#f5ead1; color:#8a6d2f; padding:0.5rem; border:1px solid #d8c692; text-align:left; }
+    #printArea td { padding:0.5rem; border:1px solid #ddd; color:#000; }
+    #printArea .pq-total { text-align:right; font-size:1.1rem; font-weight:700; margin-top:1rem; }
+    #printArea .pq-foot { margin-top:2.5rem; font-size:0.75rem; color:#666; border-top:1px solid #ccc; padding-top:0.8rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ VISTA: LOGIN ============ -->
+<div id="loginView">
+  <div class="logo">ADIS <span class="gold">PANEL</span></div>
+  <div class="card">
+    <label for="loginUser">Usuario</label>
+    <input id="loginUser" autocomplete="username" autocapitalize="off">
+    <label for="loginPass">Contraseña</label>
+    <input id="loginPass" type="password" autocomplete="current-password" onkeydown="if(event.key==='Enter')login()">
+    <button class="btn btn-solid" style="justify-content:center; margin-top:1.1rem;" onclick="login()">Entrar</button>
+    <p id="loginStatus"></p>
+  </div>
+</div>
+
+<!-- ============ VISTA: APP ============ -->
+<div id="appView" class="hidden">
+  <header class="app">
+    <div>
+      <h1>ADIS <span class="gold">PANEL</span></h1>
+      <p class="muted" id="userEmail" style="font-size:0.75rem;"></p>
+    </div>
+    <nav class="tabs">
+      <button class="tab active" data-tab="leads" onclick="showTab('leads')">📥 Leads</button>
+      <button class="tab" data-tab="quotes" onclick="showTab('quotes')">🧾 Cotizaciones</button>
+      <button class="tab" data-tab="reviews" onclick="showTab('reviews')">⭐ Reseñas</button>
+      <button class="tab" data-tab="analytics" onclick="showTab('analytics')">📊 Estadísticas</button>
+    </nav>
+    <button class="btn btn-sm" onclick="logout()">Cerrar sesión</button>
+  </header>
+
+  <main class="wrap">
+    <div id="notice"></div>
+
+    <!-- LEADS -->
+    <section id="tab-leads" class="panel">
+      <div class="toolbar">
+        <h2 style="margin:0;">Leads del formulario</h2>
+        <button class="btn btn-sm" onclick="loadLeads()">↻ Actualizar</button>
+        <span class="muted" id="leadsCount"></span>
+      </div>
+      <div class="card-box table-scroll">
+        <table>
+          <thead><tr><th>Fecha</th><th>Nombre</th><th>Teléfono</th><th>Email</th><th>Ciudad</th><th>m²</th><th>Producto</th><th>Mensaje</th><th></th></tr></thead>
+          <tbody id="leadsTable"><tr><td colspan="9" class="muted">Cargando…</td></tr></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- COTIZACIONES -->
+    <section id="tab-quotes" class="panel hidden">
+      <div class="toolbar">
+        <h2 style="margin:0;">Nueva cotización</h2>
+      </div>
+      <div class="card-box">
+        <div class="row">
+          <div><label>Cliente *</label><input id="qNombre" placeholder="Nombre del cliente"></div>
+          <div><label>Teléfono *</label><input id="qTelefono" placeholder="+1 520 ..."></div>
+          <div><label>Ciudad</label><input id="qCiudad" placeholder="Nogales, Tucson..."></div>
+        </div>
+        <label>Agregar producto (buscar en el catálogo)</label>
+        <div class="search-results">
+          <input id="qSearch" placeholder="Escribe el nombre del producto..." autocomplete="off" oninput="searchProducts()">
+          <div id="qSearchResults"></div>
+        </div>
+        <div class="items" id="qItems"></div>
+        <div class="total-line"><span class="muted">Total:</span><strong class="gold" id="qTotal">$0.00</strong></div>
+        <label>Notas</label>
+        <textarea id="qNotas" rows="2" placeholder="Vigencia, condiciones, observaciones..."></textarea>
+        <div class="toolbar" style="margin-top:1rem;">
+          <button class="btn btn-solid" onclick="saveQuote()">💾 Guardar cotización</button>
+          <button class="btn" onclick="printQuote()">🖨️ Imprimir / PDF</button>
+          <button class="btn" onclick="sendQuoteWhatsApp()">🟢 Enviar por WhatsApp</button>
+        </div>
+      </div>
+      <h2>Cotizaciones guardadas</h2>
+      <div class="card-box table-scroll">
+        <table>
+          <thead><tr><th>Fecha</th><th>Cliente</th><th>Teléfono</th><th>Total</th><th>Notas</th></tr></thead>
+          <tbody id="quotesTable"><tr><td colspan="5" class="muted">Cargando…</td></tr></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- RESEÑAS -->
+    <section id="tab-reviews" class="panel hidden">
+      <div class="toolbar"><h2 style="margin:0;">Publicar reseña en el sitio</h2></div>
+      <div class="card-box">
+        <div class="row">
+          <div><label>Nombre *</label><input id="rNombre" placeholder="Nombre del cliente"></div>
+          <div><label>Calificación</label><div class="stars-input" id="rStars"></div></div>
+        </div>
+        <label>Texto de la reseña *</label>
+        <textarea id="rTexto" rows="3" placeholder="Copia aquí la reseña de Google..."></textarea>
+        <div class="toolbar" style="margin-top:1rem;">
+          <button class="btn btn-solid" onclick="addReview()">⭐ Publicar</button>
+          <span class="muted">Se muestra en la sección de testimonios de todo el sitio.</span>
+        </div>
+      </div>
+      <h2>Reseñas publicadas</h2>
+      <div class="card-box table-scroll">
+        <table>
+          <thead><tr><th>Fecha</th><th>Nombre</th><th>Estrellas</th><th>Texto</th><th></th></tr></thead>
+          <tbody id="reviewsTable"><tr><td colspan="5" class="muted">Cargando…</td></tr></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ANALYTICS -->
+    <section id="tab-analytics" class="panel hidden">
+      <div class="toolbar"><h2 style="margin:0;">Estadísticas del sitio</h2></div>
+      <div id="analyticsBox" class="card-box">
+        <p class="muted">Configura <code>LOOKER_STUDIO_URL</code> en este archivo (ver admin/GUIA_CONFIGURACION.md, paso 6) para ver aquí el tablero de Google Analytics.</p>
+      </div>
+    </section>
+  </main>
+</div>
+
+<!-- Area de impresion -->
+<div id="printArea"></div>
+
+<script>
+/* =====================================================================
+   CONFIGURACION — Completa estos valores (ver admin/GUIA_CONFIGURACION.md)
+   ===================================================================== */
+const CONFIG = {
+  API_URL: 'PEGAR_AQUI_URL_APPS_SCRIPT',   // URL de la app web de Apps Script
+  LOOKER_STUDIO_URL: '',                    // Enlace de inserción del informe de Looker Studio
+  WHATSAPP: '15208392877'
+};
+
+let token = sessionStorage.getItem('adis_admin_token') || null;
+let usuario = sessionStorage.getItem('adis_admin_user') || '';
+let products = [];
+let quoteItems = [];
+let starRating = 5;
+
+/* ---------- helpers ---------- */
+function $(id){ return document.getElementById(id); }
+function notice(text, ok=true){
+  $('notice').innerHTML = '<div class="msg ' + (ok?'ok':'err') + '">' + text + '</div>';
+  setTimeout(()=>{ $('notice').innerHTML=''; }, 5000);
+}
+function fmtMoney(n){ return '$' + (Number(n)||0).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}); }
+function esc(s){ return String(s==null?'':s).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+function apiGet(action){
+  return fetch(CONFIG.API_URL + '?action=' + action + '&token=' + encodeURIComponent(token)).then(r=>r.json());
+}
+function apiPost(payload){
+  payload.token = token;
+  return fetch(CONFIG.API_URL, {method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'}, body:JSON.stringify(payload)})
+    .then(r=>r.json());
+}
+
+/* ---------- autenticacion (usuario/contraseña, validada en el servidor) ---------- */
+function login(){
+  const u = $('loginUser').value.trim(), p = $('loginPass').value;
+  if (!u || !p) { $('loginStatus').textContent = 'Escribe usuario y contraseña.'; return; }
+  $('loginStatus').textContent = 'Verificando…';
+  fetch(CONFIG.API_URL, {method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'},
+    body: JSON.stringify({tipo:'login', usuario:u, clave:p})})
+    .then(r=>r.json())
+    .then(d=>{
+      if (d && d.ok) {
+        token = d.token; usuario = u;
+        sessionStorage.setItem('adis_admin_token', token);
+        sessionStorage.setItem('adis_admin_user', u);
+        enterApp(u);
+      } else {
+        $('loginStatus').textContent = (d && d.error) || 'Usuario o contraseña incorrectos.';
+        $('loginPass').value = '';
+      }
+    })
+    .catch(()=>{ $('loginStatus').textContent = 'No se pudo conectar con el servidor.'; });
+}
+function enterApp(u){
+  $('loginView').classList.add('hidden');
+  $('appView').classList.remove('hidden');
+  $('userEmail').textContent = 'Sesión: ' + u;
+  if (CONFIG.LOOKER_STUDIO_URL) {
+    $('analyticsBox').innerHTML = '<iframe id="analyticsFrame" src="' + esc(CONFIG.LOOKER_STUDIO_URL) + '" frameborder="0" allowfullscreen></iframe>';
+  }
+  loadLeads(); loadQuotes(); loadReviewsAdmin(); loadProducts();
+}
+function logout(){
+  token = null; usuario = '';
+  sessionStorage.removeItem('adis_admin_token');
+  sessionStorage.removeItem('adis_admin_user');
+  $('appView').classList.add('hidden');
+  $('loginView').classList.remove('hidden');
+  $('loginPass').value = '';
+}
+
+/* ---------- tabs ---------- */
+function showTab(name){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active', t.dataset.tab===name));
+  ['leads','quotes','reviews','analytics'].forEach(n=>$('tab-'+n).classList.toggle('hidden', n!==name));
+}
+
+/* ---------- leads ---------- */
+function loadLeads(){
+  apiGet('leads').then(data=>{
+    if (!data || !data.ok) { $('leadsTable').innerHTML='<tr><td colspan="9" class="muted">Sin acceso o error de conexión.</td></tr>'; return; }
+    $('leadsCount').textContent = data.leads.length + ' registro(s)';
+    if (!data.leads.length) { $('leadsTable').innerHTML='<tr><td colspan="9" class="muted">Aún no hay leads captados.</td></tr>'; return; }
+    $('leadsTable').innerHTML = data.leads.slice().reverse().map(l=>
+      '<tr><td>'+esc(l.fecha)+'</td><td>'+esc(l.nombre)+'</td><td>'+esc(l.telefono)+'</td><td>'+esc(l.email)+'</td>' +
+      '<td>'+esc(l.ciudad)+'</td><td>'+esc(l.metros)+'</td><td>'+esc(l.producto)+'</td><td>'+esc(l.mensaje)+'</td>' +
+      '<td><a class="btn btn-sm" target="_blank" href="https://wa.me/'+esc(String(l.telefono).replace(/\D/g,''))+'">WA</a></td></tr>'
+    ).join('');
+  }).catch(()=>{ $('leadsTable').innerHTML='<tr><td colspan="9" class="muted">Error de conexión.</td></tr>'; });
+}
+
+/* ---------- cotizaciones ---------- */
+function loadProducts(){
+  fetch('products.json').then(r=>r.json()).then(d=>{ products = d.products || []; }).catch(()=>{});
+}
+function searchProducts(){
+  const q = $('qSearch').value.trim().toLowerCase();
+  const box = $('qSearchResults');
+  if (q.length < 2) { box.innerHTML=''; return; }
+  const matches = products.filter(p => (p.name+' '+p.category+' '+(p.subcategory||'')).toLowerCase().includes(q)).slice(0,8);
+  box.innerHTML = '<div class="sr-list">' + (matches.length
+    ? matches.map(p=>'<div class="sr-item" onclick="addItem('+products.indexOf(p)+')"><span>'+esc(p.name)+' <span class="muted">· '+esc(p.category)+'</span></span><span class="gold">'+esc(p.price)+'</span></div>').join('')
+    : '<div class="sr-item muted">Sin resultados</div>') + '</div>';
+}
+function addItem(idx){
+  const p = products[idx];
+  const price = parseFloat(String(p.price).replace(/[^0-9.]/g,'')) || 0;
+  quoteItems.push({nombre:p.name, categoria:p.category, cantidad:1, precio:price});
+  $('qSearch').value=''; $('qSearchResults').innerHTML='';
+  renderItems();
+}
+function renderItems(){
+  $('qItems').innerHTML = quoteItems.map((it,i)=>
+    '<div class="item-row">' +
+    '<input value="'+esc(it.nombre)+'" onchange="quoteItems['+i+'].nombre=this.value">' +
+    '<input type="number" min="1" value="'+it.cantidad+'" onchange="quoteItems['+i+'].cantidad=parseFloat(this.value)||1; updateTotal()">' +
+    '<input type="number" min="0" step="0.01" value="'+it.precio+'" onchange="quoteItems['+i+'].precio=parseFloat(this.value)||0; updateTotal()">' +
+    '<button class="del" onclick="quoteItems.splice('+i+',1); renderItems()">✕</button></div>'
+  ).join('');
+  updateTotal();
+}
+function updateTotal(){
+  const t = quoteItems.reduce((s,it)=>s + (Number(it.cantidad)||0)*(Number(it.precio)||0), 0);
+  $('qTotal').textContent = fmtMoney(t);
+  return t;
+}
+function quoteData(){
+  return { tipo:'quote', cliente:$('qNombre').value.trim(), telefono:$('qTelefono').value.trim(),
+    ciudad:$('qCiudad').value.trim(), items:quoteItems, total:updateTotal(), notas:$('qNotas').value.trim() };
+}
+function saveQuote(){
+  if (!$('qNombre').value.trim() || !$('qTelefono').value.trim()) { notice('Falta el nombre o teléfono del cliente.', false); return; }
+  if (!quoteItems.length) { notice('Agrega al menos un producto a la cotización.', false); return; }
+  apiPost(quoteData()).then(d=>{ notice(d && d.ok ? 'Cotización guardada en Google Sheets.' : 'No se pudo guardar.', !!(d&&d.ok)); if(d&&d.ok) loadQuotes(); });
+}
+function quoteText(){
+  const d = quoteData();
+  let t = 'Cotización ADIS — ' + d.cliente + '\n';
+  t += 'Tel: ' + d.telefono + (d.ciudad ? ' · ' + d.ciudad : '') + '\n\n';
+  d.items.forEach(it=>{ t += '• ' + it.nombre + ' × ' + it.cantidad + ' — ' + fmtMoney(it.cantidad*it.precio) + '\n'; });
+  t += '\nTotal: ' + fmtMoney(d.total);
+  if (d.notas) t += '\n\nNotas: ' + d.notas;
+  return t;
+}
+function sendQuoteWhatsApp(){ window.open('https://wa.me/'+CONFIG.WHATSAPP+'?text='+encodeURIComponent(quoteText()),'_blank'); }
+function printQuote(){
+  const d = quoteData();
+  $('printArea').innerHTML =
+    '<h1>ADIS Diseño & Remodelación</h1><div class="pq-meta">Cotización · ' + new Date().toLocaleDateString('es-MX') +
+    ' · Cliente: ' + esc(d.cliente) + ' · Tel: ' + esc(d.telefono) + (d.ciudad?' · '+esc(d.ciudad):'') + '</div>' +
+    '<table><thead><tr><th>Producto</th><th>Cant.</th><th>P. unitario</th><th>Importe</th></tr></thead><tbody>' +
+    d.items.map(it=>'<tr><td>'+esc(it.nombre)+'</td><td>'+it.cantidad+'</td><td>'+fmtMoney(it.precio)+'</td><td>'+fmtMoney(it.cantidad*it.precio)+'</td></tr>').join('') +
+    '</tbody></table><div class="pq-total">Total: ' + fmtMoney(d.total) + '</div>' +
+    (d.notas?'<p style="margin-top:1rem;font-size:0.85rem;">'+esc(d.notas)+'</p>':'') +
+    '<div class="pq-foot">ADIS Diseño & Remodelación · Nogales, Sonora · Rio Rico, AZ · +1 (520) 839-2877 · adis.remodelacion@gmail.com</div>';
+  window.print();
+}
+function loadQuotes(){
+  apiGet('quotes').then(data=>{
+    if (!data || !data.ok) { $('quotesTable').innerHTML='<tr><td colspan="5" class="muted">Sin acceso.</td></tr>'; return; }
+    if (!data.quotes.length) { $('quotesTable').innerHTML='<tr><td colspan="5" class="muted">Aún no hay cotizaciones guardadas.</td></tr>'; return; }
+    $('quotesTable').innerHTML = data.quotes.slice().reverse().map(q=>
+      '<tr><td>'+esc(q.fecha)+'</td><td>'+esc(q.cliente)+'</td><td>'+esc(q.telefono)+'</td><td class="gold">'+esc(q.total)+'</td><td>'+esc(q.notas)+'</td></tr>'
+    ).join('');
+  }).catch(()=>{});
+}
+
+/* ---------- reseñas ---------- */
+function renderStars(){
+  $('rStars').innerHTML = [1,2,3,4,5].map(n=>'<button class="'+(n<=starRating?'on':'')+'" onclick="starRating='+n+'; renderStars()">⭐</button>').join('');
+}
+function addReview(){
+  const nombre=$('rNombre').value.trim(), texto=$('rTexto').value.trim();
+  if (!nombre || !texto) { notice('Faltan el nombre o el texto de la reseña.', false); return; }
+  apiPost({tipo:'review', nombre, estrellas:starRating, texto}).then(d=>{
+    notice(d && d.ok ? 'Reseña publicada en el sitio.' : 'No se pudo publicar.', !!(d&&d.ok));
+    if (d&&d.ok) { $('rNombre').value=''; $('rTexto').value=''; starRating=5; renderStars(); loadReviewsAdmin(); }
+  });
+}
+function loadReviewsAdmin(){
+  renderStars();
+  apiGet('reviews_admin').then(data=>{
+    if (!data || !data.ok) { $('reviewsTable').innerHTML='<tr><td colspan="5" class="muted">Sin acceso.</td></tr>'; return; }
+    if (!data.reviews.length) { $('reviewsTable').innerHTML='<tr><td colspan="5" class="muted">Sin reseñas. Publica la primera.</td></tr>'; return; }
+    $('reviewsTable').innerHTML = data.reviews.map((r,i)=>
+      '<tr><td>'+esc(r.fecha)+'</td><td>'+esc(r.nombre)+'</td><td>'+'⭐'.repeat(Math.max(1,Math.min(5,parseInt(r.estrellas)||5)))+'</td>' +
+      '<td>'+esc(r.texto)+'</td><td><button class="btn btn-danger btn-sm" onclick="deleteReview('+(i+2)+')">✕</button></td></tr>'
+    ).join('');
+  }).catch(()=>{});
+}
+function deleteReview(row){
+  if (!confirm('¿Eliminar esta reseña del sitio?')) return;
+  apiPost({tipo:'delete_review', row}).then(d=>{ notice(d&&d.ok?'Reseña eliminada.':'No se pudo eliminar.', !!(d&&d.ok)); if(d&&d.ok) loadReviewsAdmin(); });
+}
+
+window.addEventListener('load', ()=>{
+  if (CONFIG.API_URL.indexOf('PEGAR') === 0) {
+    $('loginStatus').innerHTML = 'Falta configurar API_URL. Sigue admin/GUIA_CONFIGURACION.md.';
+    return;
+  }
+  if (token) {
+    $('loginUser').value = usuario;
+    apiGet('me').then(d=>{ if (d && d.ok) enterApp(usuario); else logout(); }).catch(()=>logout());
+  }
+});
+</script>
+</body>
+</html>

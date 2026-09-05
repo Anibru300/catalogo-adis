@@ -1,12 +1,13 @@
 # Handoff — ADIS Catálogo Web
 
-> Documento para la siguiente sesión. Última actualización: 2026-07-24.
+> Documento para la siguiente sesión. Última actualización: 2026-09-04.
 
 ## Estado general
 
 - **Proyecto**: Catálogo web estático para ADIS Diseño & Remodelación (Nogales, Sonora · Arizona).
 - **Repo**: `https://github.com/Anibru300/catalogo-adis.git`
-- **Sitio en vivo**: `https://anibru300.github.io/catalogo-adis/`
+- **Sitio en vivo**: `https://anibru300.github.io/catalogo-adis/` → dominio propio `https://xn--adis-diseo-19a.com/`
+- **⚠️ MIGRACIÓN 2026-09-04**: el proyecto salió de Google Drive (Drive corrompía `.git` con `desktop.ini` y destruyó objetos del repo). Nueva ubicación: **`C:\Users\Carlos\Desktop\Pagina`**. `BASE_DIR` en `generar_web.py` ahora se deriva de `Path(__file__).resolve().parent`. `CATALOG_DIR` sigue en Drive (solo lectura). La carpeta vieja en Drive queda intacta como respaldo — NO trabajar ahí.
 - **Generador principal**: `generar_web.py` (Python 3.13 en `C:\Users\Carlos\AppData\Local\Programs\Python\Python313\python`).
 - **Salida**: carpeta `public/` (GitHub Pages sirve desde `public/`).
 - **Último commit local**: `741fe36` — "fix: corrige JS roto en modal de cotizacion WhatsApp (escapes \n)".
@@ -63,6 +64,14 @@ Al modificar plantillas: mantener `p()` en toda ruta relativa (href/src/fetch/ba
 ### 4. Limpieza
 - Se eliminaron scripts residuales: `build_chatbot_new.py`, `chatbot_js_original.js`, `traducir_chatbot.py`, `scripts/finalizar_chatbot_i18n.py`.
 - Backup del intento previo movido a `backups/generar_web_pre_chatbot_i18n_20260724.bak`.
+
+## Novedades 2026-09-04 — Leads, reseñas y panel admin
+
+1. **Captación de leads**: el formulario de contacto ahora envía cada lead a Google Sheets (Apps Script) además de abrir WhatsApp. Config: `LEADS_URL` arriba en `generar_web.py`. Honeypot anti-spam (`cfEmpresa`). Si `LEADS_URL` está vacío, todo funciona como antes.
+2. **Reseñas en vivo**: `generate_testimonios()` mantiene las 4 tarjetas estáticas (fallback/SEO) y, si `REVIEWS_URL` está configurado, carga reseñas de la pestaña Reseñas al hacer scroll (IntersectionObserver). Endpoint público: `?action=reviews`.
+3. **Panel de administración** (`admin/index.html` → se copia a `public/admin.html` en `main()`): login con **usuario/contraseña propios** (validado en Apps Script, token de sesión 8h en CacheService; sin Google). Pestañas: Leads, Cotizaciones (cotizador con productos reales de products.json, imprimir/PDF, WhatsApp), Reseñas (publicar/eliminar), Estadísticas (iframe Looker Studio). Oculto: noindex, `Disallow: /admin.html` en robots.txt, sin enlaces en el sitio.
+4. **Backend**: `admin/apps-script.gs` (pegar en Apps Script de la hoja de Google). Credenciales `ADMIN_USUARIO`/`ADMIN_CLAVE` dentro del script. Pestañas Leads/Cotizaciones/Reseñas se crean solas.
+5. **Guía de configuración**: `admin/GUIA_CONFIGURACION.md` (pasos Google Sheet → deploy → conectar URL). Falta que el usuario la siga y pase la URL `/exec`.
 
 ## Qué falta por hacer (prioridad sugerida)
 

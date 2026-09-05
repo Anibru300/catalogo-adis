@@ -20,9 +20,18 @@ if hasattr(sys.stdout, 'reconfigure'):
     sys.stdout.reconfigure(encoding='utf-8')
 
 # ========== CONFIGURACIÓN ==========
-BASE_DIR = Path(r'G:\Mi unidad\ADIS DISEÑO\Pagina')
+# El proyecto se migro de Google Drive al Escritorio (Drive corrompia .git).
+# BASE_DIR se deriva de la ubicacion de este script para que funcione en cualquier equipo.
+BASE_DIR = Path(__file__).resolve().parent
 CATALOG_DIR = Path(r'G:\Mi unidad\ADIS DISEÑO\CATALOGO FINAL')
 OUTPUT_DIR = BASE_DIR / 'public'
+
+# ========== CAPTACION DE LEADS Y RESENAS (Google Apps Script) ==========
+# Sigue los pasos de admin/GUIA_CONFIGURACION.md para crear la hoja de Google
+# y el Apps Script, despliega el script como app web y pega su URL aqui.
+# Mientras esten vacios, el sitio funciona igual (formulario solo abre WhatsApp).
+LEADS_URL = ''    # Recibe los envios del formulario de contacto (pestaña Leads)
+REVIEWS_URL = ''  # Mismo script; expone las resenas para el sitio (puede ser el mismo URL)
 
 CONTACTO = {
     'whatsapp': '15208392877',
@@ -3904,8 +3913,8 @@ def generate_sitemap(categories):
 
 
 def generate_robots():
-    """Genera robots.txt con referencia al sitemap."""
-    content = f"User-agent: *\nAllow: /\nSitemap: {SITE_URL}sitemap.xml\n"
+    """Genera robots.txt con referencia al sitemap. El panel de admin queda excluido."""
+    content = f"User-agent: *\nAllow: /\nDisallow: /admin.html\nSitemap: {SITE_URL}sitemap.xml\n"
     robots_path = OUTPUT_DIR / 'robots.txt'
     with open(robots_path, 'w', encoding='utf-8') as f:
         f.write(content)
@@ -4411,6 +4420,8 @@ def generate_footer():
   <script>
     var ADIS_PREFIX = '__ADIS_PREFIX__';
     var ADIS_DEFAULT_LANG = '__ADIS_LANG__';
+    var ADIS_LEADS_URL = '__ADIS_LEADS_URL__';
+    var ADIS_REVIEWS_URL = '__ADIS_REVIEWS_URL__';
     function toggleMenu() { document.getElementById('mobileMenu').classList.toggle('active'); }
     
     // Scroll reveal
@@ -6442,7 +6453,7 @@ def generate_footer():
   </div>
 
 
-{chatbot_js.replace('__ADIS_PREFIX__', CUR_PREFIX).replace('__ADIS_LANG__', CUR_LANG)}"""
+{chatbot_js.replace('__ADIS_PREFIX__', CUR_PREFIX).replace('__ADIS_LANG__', CUR_LANG).replace('__ADIS_LEADS_URL__', LEADS_URL).replace('__ADIS_REVIEWS_URL__', REVIEWS_URL)}"""
 
 
 def generate_index(categories):
@@ -6966,6 +6977,10 @@ def generate_contacto():
             <label for="cfMensaje">{i18n('form_message')}</label>
             <textarea id="cfMensaje" rows="3" placeholder="{t('form_message_placeholder')}"></textarea>
           </div>
+          <div class="form-field" style="display:none !important;" aria-hidden="true">
+            <label for="cfEmpresa">Empresa</label>
+            <input type="text" id="cfEmpresa" name="empresa" tabindex="-1" autocomplete="off">
+          </div>
           <button type="submit" class="btn-primary btn-wa" style="width:100%; justify-content:center; display:flex; gap:0.5rem;">{i18n('form_submit')}</button>
           <p class="form-note">{i18n('form_note', html=True)}</p>
         </form>
@@ -7038,6 +7053,17 @@ def generate_contacto():
       if (mensaje) lines.push('{t("contact_form_message_label")}: ' + mensaje);
       lines.push('{t("contact_form_closing")}');
       var url = 'https://wa.me/{CONTACTO["whatsapp"]}?text=' + encodeURIComponent(lines.join('\\n'));
+      // Captacion del lead en Google Sheets (no bloquea el envio por WhatsApp)
+      try {{
+        if (typeof ADIS_LEADS_URL === 'string' && ADIS_LEADS_URL) {{
+          var lead = {{ type: 'lead', nombre: nombre, telefono: tel, email: email, ciudad: ciudad,
+            metros: metros, producto: producto, mensaje: mensaje,
+            pagina: window.location.href,
+            idioma: (typeof ADIS_DEFAULT_LANG !== 'undefined' ? ADIS_DEFAULT_LANG : 'es'),
+            empresa: document.getElementById('cfEmpresa').value }};
+          fetch(ADIS_LEADS_URL, {{ method: 'POST', headers: {{ 'Content-Type': 'text/plain;charset=utf-8' }}, body: JSON.stringify(lead) }}).catch(function() {{}});
+        }}
+      }} catch (err) {{}}
       if (typeof gtag === 'function') gtag('event', 'enviar_cotizacion', {{ location: 'contacto_form' }});
       if (typeof fbq === 'function') fbq('track', 'Lead');
       window.open(url, '_blank');
@@ -8017,7 +8043,7 @@ def generate_testimonios():
       <div class="divider"></div>
       <p>{i18n('testimonials_subtitle', html=True)}</p>
     </div>
-    <div style="max-width: 1100px; margin: 0 auto; padding: 0 2rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr)); gap: 1.5rem; margin-bottom: 3rem;">
+    <div id="reviewsGrid" style="max-width: 1100px; margin: 0 auto; padding: 0 2rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr)); gap: 1.5rem; margin-bottom: 3rem;">
       <div style="background: rgba(42,42,42,0.7); backdrop-filter: blur(10px); border: 1px solid rgba(197,160,89,0.2); border-radius: 12px; padding: 1.8rem; position: relative;">
         <div style="font-size: 3rem; color: var(--gold); opacity: 0.3; position: absolute; top: 0.5rem; right: 1rem; font-family: Georgia, serif;">"</div>
         <span class="review-badge">{i18n('reviews_badge')}</span>
@@ -8104,6 +8130,49 @@ def generate_testimonios():
       alert('{t("testimonial_thanks")}' + nombre + '{t("testimonial_thanks_end")}');
       e.target.reset();
     }}
+
+    // Resenas en vivo desde Google Sheets (via Apps Script). Si falla o no hay URL
+    // configurada, se conservan las tarjetas estaticas generadas.
+    (function() {{
+      var grid = document.getElementById('reviewsGrid');
+      if (!grid || typeof ADIS_REVIEWS_URL !== 'string' || !ADIS_REVIEWS_URL) return;
+      var CARD = 'background: rgba(42,42,42,0.7); backdrop-filter: blur(10px); border: 1px solid rgba(197,160,89,0.2); border-radius: 12px; padding: 1.8rem; position: relative;';
+      var QUOTE = 'font-size: 3rem; color: var(--gold); opacity: 0.3; position: absolute; top: 0.5rem; right: 1rem; font-family: Georgia, serif;';
+      var TEXT = 'font-size: 0.9rem; color: rgba(245,245,245,0.8); line-height: 1.7; margin-bottom: 1rem; font-style: italic;';
+      var AVATAR = 'width: 40px; height: 40px; border-radius: 50%; background: var(--gold); display: flex; align-items: center; justify-content: center; color: var(--black); font-weight: 700; font-size: 0.9rem;';
+      var tried = false;
+      function esc(s) {{ return String(s == null ? '' : s).replace(/[&<>"']/g, function(c) {{ return {{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}}[c]; }}); }}
+      function cardHtml(r) {{
+        var words = String(r.nombre || '?').trim().split(/\\s+/);
+        var initials = words.map(function(w) {{ return w.charAt(0); }}).join('').substring(0, 2).toUpperCase();
+        var n = Math.max(1, Math.min(5, parseInt(r.estrellas, 10) || 5));
+        var stars = '';
+        for (var i = 0; i < n; i++) stars += '\u2B50';
+        return '<div style="' + CARD + '">' +
+          '<div style="' + QUOTE + '">"</div>' +
+          '<span class="review-badge">Google</span>' +
+          '<p style="' + TEXT + '">' + esc(r.texto) + '</p>' +
+          '<div style="display: flex; align-items: center; gap: 0.8rem;">' +
+            '<div style="' + AVATAR + '">' + esc(initials) + '</div>' +
+            '<div><div style="font-size: 0.85rem; color: var(--white); font-weight: 600;">' + esc(r.nombre) + '</div>' +
+            '<div style="font-size: 0.75rem; color: var(--gold);">' + stars + (r.fecha ? ' — ' + esc(r.fecha) : '') + '</div></div>' +
+          '</div></div>';
+      }}
+      function load() {{
+        if (tried) return; tried = true;
+        fetch(ADIS_REVIEWS_URL + '?action=reviews').then(function(res) {{ return res.json(); }}).then(function(data) {{
+          if (data && data.ok && data.reviews && data.reviews.length) {{
+            grid.innerHTML = data.reviews.map(cardHtml).join('');
+          }}
+        }}).catch(function() {{}});
+      }}
+      if ('IntersectionObserver' in window) {{
+        var io = new IntersectionObserver(function(entries) {{
+          entries.forEach(function(en) {{ if (en.isIntersecting) {{ load(); io.disconnect(); }} }});
+        }}, {{ rootMargin: '300px' }});
+        io.observe(grid);
+      }} else {{ load(); }}
+    }})();
   </script>
 '''
 
@@ -8703,6 +8772,12 @@ def main():
     generate_style()
     generate_sitemap(categories)
     generate_robots()
+
+    # Panel de administracion (archivo estatico; no se traduce ni va al sitemap)
+    admin_src = BASE_DIR / 'admin' / 'index.html'
+    if admin_src.exists():
+        shutil.copy2(admin_src, OUTPUT_DIR / 'admin.html')
+        print("admin.html copiado al sitio")
 
     for lang in ('es', 'en'):
         set_lang(lang)

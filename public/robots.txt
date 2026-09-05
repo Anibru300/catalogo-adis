@@ -1,3 +1,4 @@
 User-agent: *
 Allow: /
+Disallow: /admin.html
 Sitemap: https://xn--adis-diseo-19a.com/sitemap.xml
