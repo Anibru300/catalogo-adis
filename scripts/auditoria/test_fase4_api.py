@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """Pruebas Fase 4 — Proyectos + Cobros/CxC + anulacion de venta. Requiere backend Fase 0+."""
-import json, sys, urllib.request
+import json, sys, time, urllib.request
 
 API = 'https://script.google.com/macros/s/AKfycbyb5ij67ky7BYlmi76Zg_CPDy44i0HwB-z3bwGp_umHb0rL_0Jl3ClvorquDVN0SD09/exec'
 USUARIO, CLAVE = 'Adis', 'Adisdiseño2026'
@@ -31,7 +31,8 @@ if not isinstance(get('accion_inexistente_xyz').get('error'), dict):
     print('>> Backend viejo detectado: omite pruebas Fase 4.'); sys.exit(0)
 
 print('== FASE 4: cliente + cotizacion aprobada + proyecto ==')
-CID = post({'tipo': 'save_cliente', 'nombre': 'CLIENTE TEST F4', 'telefono': 'TESTF4001'}).get('id')
+TS = str(int(time.time()))
+CID = post({'tipo': 'save_cliente', 'nombre': 'CLIENTE TEST F4', 'telefono': 'TESTF4' + TS}).get('id')
 q = post({'tipo': 'quote', 'cliente': 'CLIENTE TEST F4', 'items': [], 'total': 5000, 'moneda': 'MXN', 'cliente_id': CID})
 QID = None
 for x in reversed(get('quotes').get('quotes', [])):
@@ -54,7 +55,7 @@ d = post({'tipo': 'cambiar_estado_proyecto', 'id': PRY, 'estado': 'ACTIVO'})
 reg('TERMINADO -> ACTIVO => NO_PERMITIDO', errcode(d) == 'NO_PERMITIDO', errcode(d))
 
 print('== FASE 4: venta vinculada + cobros ==')
-d = post({'tipo': 'save_product', 'codigo': 'TEST-FASE4', 'nombre': 'PRODUCTO PRUEBA FASE 4', 'costo': 10, 'precio': 20, 'moneda': 'MXN'})
+d = post({'tipo': 'save_product', 'codigo': 'TEST-FASE4-' + TS, 'nombre': 'PRODUCTO PRUEBA FASE 4', 'costo': 10, 'precio': 20, 'moneda': 'MXN'})
 PID = d.get('id')
 AID = get('almacenes').get('almacenes', [{}])[0].get('id')
 post({'tipo': 'movimiento', 'tipo_mov': 'entrada', 'producto_id': PID, 'almacen_id': AID, 'cantidad': 10})

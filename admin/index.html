@@ -2471,7 +2471,7 @@ function fichaProyecto(id){
 function saveProyectoMov(id){
   const monto = parseFloat($('pmMonto').value)||0;
   if (monto <= 0) { notice('El monto debe ser mayor que cero.', false); return; }
-  apiPost({tipo:'proyecto_mov', proyecto_id:id, tipo:$('pmTipo').value, monto,
+  apiPost({tipo:'proyecto_mov', proyecto_id:id, mov_tipo:$('pmTipo').value, monto,
     moneda:$('pmMoneda').value, fecha:$('pmFecha').value, descripcion:$('pmDesc').value.trim()}).then(d=>{
     notice(d&&d.ok?'Movimiento guardado.':errMsg(d), !!(d&&d.ok));
     if(d&&d.ok) loadProyectos();

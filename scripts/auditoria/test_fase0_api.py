@@ -63,7 +63,7 @@ reg('GET me con token valido', d.get('ok') is True)
 d = get('me', sin_token=True)
 reg('GET me sin token es rechazado', not d.get('ok'))
 d = get('accion_inexistente_xyz', sin_token=True)
-if isinstance(d.get('error'), dict) and d['error'].get('code') == 'ACCION_DESCONOCIDA':
+if isinstance(d.get('error'), dict):  # backend nuevo devuelve error.code (p.ej. TOKEN_INVALIDO antes que ACCION_DESCONOCIDA)
     BACKEND_NUEVO = True
 else:
     BACKEND_NUEVO = False
@@ -92,11 +92,12 @@ d = post({'tipo': 'delete_gasto', 'id': 'id-que-no-existe-xyz'})
 reg('delete_gasto con id inexistente => NO_ENCONTRADO', errcode(d) == 'NO_ENCONTRADO', errcode(d))
 
 print('== FASE 0: producto y almacen de prueba ==')
-d = post({'tipo': 'save_product', 'codigo': 'TEST-FASE0', 'nombre': 'PRODUCTO DE PRUEBA FASE 0',
+CODIGO_F0 = 'TEST-FASE0-%d' % int(time.time())
+d = post({'tipo': 'save_product', 'codigo': CODIGO_F0, 'nombre': 'PRODUCTO DE PRUEBA FASE 0',
           'costo': 10, 'precio': 20, 'moneda': 'MXN'})
 reg('crear producto TEST-FASE0', d.get('ok') is True, d)
 PID = d.get('id')
-d = post({'tipo': 'save_product', 'codigo': 'TEST-FASE0', 'nombre': 'Duplicado'})
+d = post({'tipo': 'save_product', 'codigo': CODIGO_F0, 'nombre': 'Duplicado'})
 reg('codigo duplicado => CODIGO_DUPLICADO', errcode(d) == 'CODIGO_DUPLICADO', errcode(d))
 almacenes = get('almacenes').get('almacenes', [])
 AID = almacenes[0]['id'] if almacenes else None

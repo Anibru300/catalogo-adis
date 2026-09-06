@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """Pruebas Fase 6 — P&L por proyecto (utilidad operativa, ventas anuladas excluidas) + alertas + proyecto_mov."""
-import json, sys, urllib.request
+import json, sys, time, urllib.request
 
 API = 'https://script.google.com/macros/s/AKfycbyb5ij67ky7BYlmi76Zg_CPDy44i0HwB-z3bwGp_umHb0rL_0Jl3ClvorquDVN0SD09/exec'
 USUARIO, CLAVE = 'Adis', 'Adisdiseño2026'
@@ -30,26 +30,27 @@ TOKEN = raw_post({'tipo': 'login', 'usuario': USUARIO, 'clave': CLAVE}).get('tok
 if not isinstance(get('accion_inexistente_xyz').get('error'), dict):
     print('>> Backend viejo detectado: omite pruebas Fase 6.'); sys.exit(0)
 
+TS = str(int(time.time()))
 print('== FASE 6: proyecto_mov + ficha financiera ==')
 d = post({'tipo': 'save_proyecto', 'nombre': 'PROYECTO TEST F6', 'presupuesto': 1000, 'moneda': 'MXN'})
 PRY = d.get('id')
 reg('proyecto creado (folio PRY-)', d.get('ok') is True and str(d.get('folio', '')).startswith('PRY-'), d.get('folio'))
-d = post({'tipo': 'proyecto_mov', 'proyecto_id': PRY, 'tipo': 'gasto', 'monto': 200, 'moneda': 'MXN', 'fecha': '2020-03-01', 'descripcion': 'Gasto F6'})
+d = post({'tipo': 'proyecto_mov', 'proyecto_id': PRY, 'tipo_mov': 'gasto', 'monto': 200, 'moneda': 'MXN', 'fecha': '2020-03-01', 'descripcion': 'Gasto F6'})
 reg('proyecto_mov gasto ok', d.get('ok') is True)
-d = post({'tipo': 'proyecto_mov', 'proyecto_id': PRY, 'tipo': 'ingreso', 'monto': 50, 'moneda': 'MXN', 'fecha': '2020-03-02'})
+d = post({'tipo': 'proyecto_mov', 'proyecto_id': PRY, 'tipo_mov': 'ingreso', 'monto': 50, 'moneda': 'MXN', 'fecha': '2020-03-02'})
 reg('proyecto_mov ingreso ok', d.get('ok') is True)
-d = post({'tipo': 'proyecto_mov', 'proyecto_id': PRY, 'tipo': 'presupuesto', 'monto': 500, 'moneda': 'MXN'})
+d = post({'tipo': 'proyecto_mov', 'proyecto_id': PRY, 'tipo_mov': 'presupuesto', 'monto': 500, 'moneda': 'MXN'})
 reg('proyecto_mov presupuesto (ajusta base) ok', d.get('ok') is True)
-d = post({'tipo': 'proyecto_mov', 'proyecto_id': PRY, 'tipo': 'otro', 'monto': 10, 'moneda': 'MXN'})
+d = post({'tipo': 'proyecto_mov', 'proyecto_id': PRY, 'tipo_mov': 'otro', 'monto': 10, 'moneda': 'MXN'})
 reg('tipo invalido => VALIDACION', errcode(d) == 'VALIDACION', errcode(d))
-d = post({'tipo': 'proyecto_mov', 'proyecto_id': 'NOEXISTE', 'tipo': 'gasto', 'monto': 10, 'moneda': 'MXN'})
+d = post({'tipo': 'proyecto_mov', 'proyecto_id': 'NOEXISTE', 'tipo_mov': 'gasto', 'monto': 10, 'moneda': 'MXN'})
 reg('proyecto inexistente => NO_ENCONTRADO', errcode(d) == 'NO_ENCONTRADO', errcode(d))
 p = next((x for x in get('proyectos').get('proyectos', []) if str(x.get('id')) == str(PRY)), {})
 reg('ficha: presupuesto 1500, gastos 200, utilidad -150', float(p.get('presupuesto') or 0) == 1500 and float(p.get('gastos_real') or 0) == 200 and float(p.get('utilidad_real') or 0) == -150,
     '%s/%s/%s' % (p.get('presupuesto'), p.get('gastos_real'), p.get('utilidad_real')))
 
 print('== FASE 6: P&L por proyecto y exclusión de anuladas ==')
-d = post({'tipo': 'save_product', 'codigo': 'TEST-FASE6', 'nombre': 'PRODUCTO PRUEBA FASE 6', 'costo': 10, 'precio': 20, 'moneda': 'MXN'})
+d = post({'tipo': 'save_product', 'codigo': 'TEST-FASE6-' + TS, 'nombre': 'PRODUCTO PRUEBA FASE 6', 'costo': 10, 'precio': 20, 'moneda': 'MXN'})
 PID = d.get('id')
 AID = get('almacenes').get('almacenes', [{}])[0].get('id')
 post({'tipo': 'movimiento', 'tipo_mov': 'entrada', 'producto_id': PID, 'almacen_id': AID, 'cantidad': 5})
@@ -61,7 +62,8 @@ d = post({'tipo': 'venta', 'fecha': '2020-03-06', 'cliente': 'TEST F6', 'almacen
 VID2 = d.get('id')
 post({'tipo': 'anular_venta', 'id': VID2})
 d = get('estado_resultados&mes=2020-03')
-reg('P&L global excluye venta anulada (999)', float(d.get('ingresos') or 0) < 900, d.get('ingresos'))
+ing = float(d.get('ingresos') or 0)
+reg('P&L global excluye venta anulada (999)', ing % 300 == 0 and 0 < ing < 900, d.get('ingresos'))
 reg('P&L incluye campo utilidad_operativa', 'utilidad_operativa' in d)
 d = get('estado_resultados&mes=2020-03&proyecto_id=' + str(PRY))
 reg('P&L por proyecto: solo venta del proyecto (300)',

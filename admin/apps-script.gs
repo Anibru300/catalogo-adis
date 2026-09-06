@@ -1322,10 +1322,12 @@ function doPostInterno(data) {
   /* ================= PROYECTOS + COBROS (FASE 4) ================= */
 
   // FASE 6: movimiento financiero directo de un proyecto (gasto/ingreso/presupuesto)
+  // El tipo de movimiento va en 'mov_tipo' (nunca en 'tipo': ese ya es el
+  // discriminador de la operacion 'proyecto_mov').
   if (tipo === 'proyecto_mov') return conLock(function () {
     var filaPM = filaPorId(SHEET_PROJECTS, data.proyecto_id);
     if (!filaPM) throw AdisError('NO_ENCONTRADO', 'Proyecto no encontrado.');
-    var tipoPM = String(data.tipo || '').toLowerCase();
+    var tipoPM = String(data.mov_tipo || data.movimiento || '').toLowerCase();
     if (['gasto', 'ingreso', 'presupuesto'].indexOf(tipoPM) === -1) {
       throw AdisError('VALIDACION', 'Tipo de movimiento inválido (gasto/ingreso/presupuesto).');
     }

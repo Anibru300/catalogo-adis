@@ -31,10 +31,11 @@ if not (isinstance(get('accion_inexistente_xyz').get('error'), dict)):
     print('>> Backend viejo detectado: omite pruebas Fase 3.'); sys.exit(0)
 
 print('== FASE 3: clientes ==')
-d = post({'tipo': 'save_cliente', 'nombre': 'CLIENTE TEST FASE 3', 'telefono': 'TEST0000001', 'origen': 'manual'})
+TEL_F3 = 'TEST%08d' % (int(time.time()) % 100000000)
+d = post({'tipo': 'save_cliente', 'nombre': 'CLIENTE TEST FASE 3', 'telefono': TEL_F3, 'origen': 'manual'})
 reg('crear cliente', d.get('ok') is True, d)
 CID = d.get('id')
-d = post({'tipo': 'save_cliente', 'nombre': 'Duplicado TEST', 'telefono': 'TEST0000001'})
+d = post({'tipo': 'save_cliente', 'nombre': 'Duplicado TEST', 'telefono': TEL_F3})
 reg('telefono duplicado => CLIENTE_DUPLICADO', errcode(d) == 'CLIENTE_DUPLICADO', errcode(d))
 d = post({'tipo': 'save_cliente', 'nombre': ''})
 reg('cliente sin nombre => VALIDACION', errcode(d) == 'VALIDACION', errcode(d))
