@@ -9,7 +9,7 @@ Uso: python test_fase1_api.py
 """
 import json, sys, urllib.request, urllib.error
 
-API = 'https://script.google.com/macros/s/AKfycbyb5ij67ky7BYlmi76Zg_CPDy44i0HwB-z3bwGp_umHb0rL_0Jl3ClvorquDVN0SD09/exec'
+API = 'https://script.google.com/macros/s/AKfycbxq47t5I3eSqPmJ7zCnk47_RlHGfIwov8mcI1tJ92yNVvSsUXHU5Pe7DQ2Nx_h1wPP2/exec'
 USUARIO, CLAVE = 'Adis', 'Adisdiseño2026'
 resultados = []
 def reg(nombre, ok, detalle=''):

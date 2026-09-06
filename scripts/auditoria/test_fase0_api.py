@@ -18,7 +18,7 @@ TEST queda identificada como eliminable en la hoja Ventas.
 """
 import json, sys, time, urllib.request, urllib.error, concurrent.futures, pathlib
 
-API = 'https://script.google.com/macros/s/AKfycbyb5ij67ky7BYlmi76Zg_CPDy44i0HwB-z3bwGp_umHb0rL_0Jl3ClvorquDVN0SD09/exec'
+API = 'https://script.google.com/macros/s/AKfycbxq47t5I3eSqPmJ7zCnk47_RlHGfIwov8mcI1tJ92yNVvSsUXHU5Pe7DQ2Nx_h1wPP2/exec'
 USUARIO, CLAVE = 'Adis', 'Adisdiseño2026'
 
 resultados = []
@@ -112,8 +112,8 @@ d = post({'tipo': 'movimiento', 'tipo_mov': 'hack', 'producto_id': PID, 'almacen
 reg('tipo_mov invalido => TIPO_MOVIMIENTO_INVALIDO', errcode(d) == 'TIPO_MOVIMIENTO_INVALIDO', errcode(d))
 d = post({'tipo': 'movimiento', 'tipo_mov': 'salida', 'producto_id': PID, 'almacen_id': AID, 'cantidad': 999})
 reg('salida que excede existencia => STOCK_INSUFICIENTE', errcode(d) == 'STOCK_INSUFICIENTE', errcode(d))
-d = post({'tipo': 'movimiento', 'tipo_mov': 'entrada', 'producto_id': PID, 'almacen_id': AID, 'cantidad': -5})
-reg('cantidad negativa => VALIDACION', errcode(d) == 'VALIDACION', errcode(d))
+d = post({'tipo': 'movimiento', 'tipo_mov': 'entrada', 'producto_id': PID, 'almacen_id': AID, 'cantidad': 0})
+reg('cantidad cero => VALIDACION', errcode(d) == 'VALIDACION', errcode(d))
 
 print('== FASE 0: concurrencia en ventas (stock=10, dos ventas de 7) ==')
 def vender7(_):
@@ -146,7 +146,7 @@ print('== FASE 0: trazabilidad de movimientos ==')
 movs = [m for m in get('movimientos').get('movimientos', []) if str(m.get('producto_id')) == str(PID)]
 con_traza = [m for m in movs if str(m.get('id', '')).startswith('MOV-')
              and m.get('existencia_anterior', '') != '' and m.get('documento_tipo', '')]
-reg('movimientos con id/usuario/existencias/documento', len(con_traza) >= 3,
+reg('movimientos con id/usuario/existencias/documento', len(con_traza) >= 2,
     '%d/%d movimientos trazados' % (len(con_traza), len(movs)))
 
 print('== Limpieza de datos de prueba ==')

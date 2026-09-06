@@ -196,12 +196,17 @@ function filasComoObjetos(nombre) {
   var valores = h.getDataRange().getValues();
   if (valores.length < 2) return [];
   var encabezados = valores[0].map(function (e) { return String(e); });
+  // Las fechas Date de Sheets se almacenan como medianoche en la zona horaria
+  // DEL SPREADSHEET; leerlas con otra zona (p.ej. Hermosillo fija) las
+  // desplazaba al dia anterior y rompia los filtros por rango (meses sin el
+  // dia 01 en P&L, flujo_caja y alertas). Formatear siempre en la TZ de la hoja.
+  var tzHoja = ss().getSpreadsheetTimeZone();
   var filas = [];
   for (var i = 1; i < valores.length; i++) {
     var obj = {};
     for (var c = 0; c < encabezados.length; c++) {
       var v = valores[i][c];
-      if (v instanceof Date) v = Utilities.formatDate(v, 'America/Hermosillo', 'yyyy-MM-dd HH:mm');
+      if (v instanceof Date) v = Utilities.formatDate(v, tzHoja, 'yyyy-MM-dd HH:mm');
       obj[encabezados[c]] = v;
     }
     filas.push(obj);
@@ -1408,12 +1413,12 @@ function doPostInterno(data) {
     var filaPE = filaPorId(SHEET_PROJECTS, data.id);
     if (!filaPE) throw AdisError('NO_ENCONTRADO', 'Proyecto no encontrado.');
     var hPE = ss().getSheetByName(SHEET_PROJECTS);
-    var estadoPE = String(hPE.getRange(filaPE, 12).getValue()) || 'ACTIVO';
+    var estadoPE = String(hPE.getRange(filaPE, 13).getValue()) || 'ACTIVO'; // col 13 = estado (ENC_PROY); 12 es moneda
     var nuevoPE = String(data.estado || '').toUpperCase();
     if ((transP[estadoPE] || []).indexOf(nuevoPE) === -1) {
       throw AdisError('NO_PERMITIDO', 'No se puede pasar de ' + estadoPE + ' a ' + nuevoPE + '.');
     }
-    hPE.getRange(filaPE, 12).setValue(nuevoPE);
+    hPE.getRange(filaPE, 13).setValue(nuevoPE); // col 13 = estado (12 es moneda)
     if (nuevoPE === 'TERMINADO') hPE.getRange(filaPE, 10).setValue(hoy_());
     hPE.getRange(filaPE, 16).setValue(ahora_());
     log_('proyecto_estado', String(hPE.getRange(filaPE, 2).getValue()) + ': ' + estadoPE + ' -> ' + nuevoPE);

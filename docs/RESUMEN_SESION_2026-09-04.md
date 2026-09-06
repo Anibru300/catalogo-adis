@@ -41,7 +41,7 @@ El 4 de septiembre en la noche se **actualizó el script de Google** y quedó ve
 **la prueba de guardado funcionó: folio `ADIS-2026-001` automático, datos completos en la hoja.** ✅
 
 **URL nueva del backend (vigente):**
-`https://script.google.com/macros/s/AKfycbyb5ij67ky7BYlmi76Zg_CPDy44i0HwB-z3bwGp_umHb0rL_0Jl3ClvorquDVN0SD09/exec`
+`https://script.google.com/macros/s/AKfycbxq47t5I3eSqPmJ7zCnk47_RlHGfIwov8mcI1tJ92yNVvSsUXHU5Pe7DQ2Nx_h1wPP2/exec`
 Ya está pegada en el panel y en todo el sitio (formulario de contacto, reseñas, importador).
 
 > 🧹 La fila de prueba se eliminó de la hoja, todo limpio.
