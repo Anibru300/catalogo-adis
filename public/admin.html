@@ -76,6 +76,22 @@
   .tab.active { color:var(--gold); border-color:rgba(197,160,89,0.4); background:rgba(197,160,89,0.08); }
   .tab:hover { color:var(--gold-soft); }
 
+  /* FASE 7: sidebar en escritorio */
+  @media (min-width: 1100px) {
+    header.app { flex-direction:column; align-items:stretch; position:fixed; left:0; top:0; bottom:0; width:225px; overflow-y:auto; border-right:1px solid rgba(197,160,89,0.25); border-bottom:none; padding:1.2rem 0.8rem; gap:0.6rem; z-index:20; }
+    header.app .tabs { flex-direction:column; flex-wrap:nowrap; gap:2px; }
+    header.app .tab { text-align:left; width:100%; padding:0.55rem 0.8rem; font-size:0.82rem; }
+    header.app .btn { width:100%; margin-top:auto; }
+    main.wrap { margin-left:225px; max-width:none; }
+  }
+  /* FASE 7: buscador Ctrl+K */
+  .cmdk-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.65); z-index:100; display:flex; align-items:flex-start; justify-content:center; padding-top:12vh; }
+  .cmdk-box { width:min(480px, 92vw); background:var(--card); border:1px solid var(--gold); border-radius:12px; overflow:hidden; box-shadow:0 20px 60px rgba(0,0,0,0.6); }
+  .cmdk-box input { border:none; border-bottom:1px solid rgba(197,160,89,0.3); border-radius:0; font-size:1rem; }
+  .cmdk-item { padding:0.6rem 1rem; cursor:pointer; font-size:0.9rem; color:var(--white); }
+  .cmdk-item:hover, .cmdk-item.sel { background:rgba(197,160,89,0.12); color:var(--gold); }
+  .cmdk-hint { padding:0.4rem 1rem; font-size:0.7rem; color:var(--muted); border-top:1px solid rgba(197,160,89,0.15); }
+
   .panel { padding:1.5rem; }
   .panel h2 { font-size:1.1rem; margin-bottom:1rem; }
   .card-box { background:var(--card); border:1px solid rgba(197,160,89,0.2); border-radius:12px; padding:1.2rem; margin-bottom:1.2rem; }
@@ -265,7 +281,8 @@
       <p class="muted" id="userEmail" style="font-size:0.75rem;"></p>
     </div>
     <nav class="tabs">
-      <button class="tab active" data-tab="leads" onclick="showTab('leads')">📥 Leads</button>
+      <button class="tab active" data-tab="dash" onclick="showTab('dash')">🏠 Resumen</button>
+      <button class="tab" data-tab="leads" onclick="showTab('leads')">📥 Leads</button>
       <button class="tab" data-tab="clientes" onclick="showTab('clientes')">👥 Clientes</button>
       <button class="tab" data-tab="quotes" onclick="showTab('quotes')">🧾 Cotizaciones</button>
       <button class="tab" data-tab="proposal" onclick="showTab('proposal')">📝 Cotizador</button>
@@ -287,8 +304,28 @@
   <main class="wrap">
     <div id="notice"></div>
 
+    <!-- RESUMEN (FASE 7: dashboard ejecutivo) -->
+    <section id="tab-dash" class="panel">
+      <div class="toolbar">
+        <h2 style="margin:0;">Resumen del negocio</h2>
+        <span class="muted" id="dashFecha"></span>
+        <button class="btn btn-sm" onclick="loadDash()">↻ Actualizar</button>
+      </div>
+      <div class="pnl-cards" id="dashKpis"></div>
+      <div class="card-box" id="dashAlertas" style="margin-top:1rem;"></div>
+      <div class="toolbar" style="margin-top:1rem;">
+        <span class="muted">Accesos rápidos:</span>
+        <button class="btn btn-sm" onclick="showTab('proposal')">＋ Nueva cotización</button>
+        <button class="btn btn-sm" onclick="showTab('sales')">＋ Nueva venta</button>
+        <button class="btn btn-sm" onclick="showTab('cobros')">Cobrar</button>
+        <button class="btn btn-sm" onclick="showTab('expenses')">Registrar gasto</button>
+        <button class="btn btn-sm" onclick="showTab('oc')">Nueva compra</button>
+        <button class="btn btn-sm" onclick="showTab('flujocaja')">Ver caja</button>
+      </div>
+    </section>
+
     <!-- LEADS -->
-    <section id="tab-leads" class="panel">
+    <section id="tab-leads" class="panel hidden">
       <div class="toolbar">
         <h2 style="margin:0;">Leads del formulario</h2>
         <button class="btn btn-sm" onclick="loadLeads()">↻ Actualizar</button>
@@ -831,6 +868,7 @@ function enterApp(u){
   $('sFecha').value = new Date().toISOString().slice(0,10);
   $('gFecha').value = new Date().toISOString().slice(0,10);
   $('pnlMes').value = new Date().toISOString().slice(0,7);
+  showTab('dash');
 }
 function logout(){
   try { apiPost({tipo:'logout'}); } catch(e) {} // FASE 0: revocar token en el servidor (best-effort)
@@ -843,9 +881,106 @@ function logout(){
 }
 
 /* ---------- tabs ---------- */
+/* ---------- FASE 7: confirmación en dos pasos (sin confirm()) ---------- */
+const _confPend = new Set();
+function confirma(key, msg){
+  if (_confPend.has(key)) { _confPend.delete(key); return true; }
+  _confPend.add(key);
+  notice(msg + ' — vuelve a hacer clic para CONFIRMAR.', true);
+  setTimeout(()=>_confPend.delete(key), 5000);
+  return false;
+}
+
+/* ---------- FASE 7: dashboard ejecutivo (Resumen) ---------- */
+function loadDash(){
+  const hoy = fLocal();
+  const mes = hoy.slice(0, 7);
+  const desdeMes = hoy.slice(0, 8) + '01';
+  $('dashFecha').textContent = hoy;
+  $('dashKpis').innerHTML = '<div class="pnl-card"><div class="k">Cargando…</div><div class="v">—</div></div>';
+  const getj = url => fetch(url).then(r=>r.json()).catch(()=>null);
+  const base = CONFIG.API_URL + '?token=' + encodeURIComponent(token);
+  Promise.all([
+    getj(base + '&action=estado_resultados&mes=' + mes),
+    getj(base + '&action=cxc'),
+    getj(base + '&action=cxp'),
+    getj(base + '&action=flujo_caja&desde=' + desdeMes + '&hasta=' + hoy),
+    getj(base + '&action=alertas'),
+    getj(base + '&action=proyectos'),
+  ]).then(([pnl, cxc, cxp, flujo, alertas, proys])=>{
+    const f = n => fmtMoney(n||0);
+    const moneda = (pnl && pnl.moneda_base) || 'MXN';
+    const porCobrar = cxc ? Number(cxc.por_cobrar_base)||0 : 0;
+    const porPagar = cxp ? Number(cxp.por_pagar_base)||0 : 0;
+    const neto = flujo ? Number(flujo.neto)||0 : 0;
+    const ventasMes = pnl ? Number(pnl.ingresos)||0 : 0;
+    const utilOp = pnl ? Number(pnl.utilidad_operativa != null ? pnl.utilidad_operativa : pnl.utilidad_neta)||0 : 0;
+    const margen = pnl ? Number(pnl.margen_operativo != null ? pnl.margen_operativo : pnl.margen_neto)||0 : 0;
+    const als = (alertas && alertas.alertas) || [];
+    const nCrit = als.filter(a=>a.prioridad==='CRITICA').length;
+    const nAlta = als.filter(a=>a.prioridad==='ALTA').length;
+    const nProy = proys ? (proys.proyectos||[]).filter(p=>p.estado==='ACTIVO').length : 0;
+    $('dashKpis').innerHTML =
+      '<div class="pnl-card"><div class="k">Ventas del mes ('+(pnl?pnl.num_ventas:0)+')</div><div class="v">'+f(ventasMes)+' '+moneda+'</div></div>' +
+      '<div class="pnl-card '+(utilOp>=0?'good':'bad')+'"><div class="k">Utilidad operativa</div><div class="v">'+f(utilOp)+' <small style="font-size:0.7rem;">'+margen.toFixed(1)+'%</small></div></div>' +
+      '<div class="pnl-card '+(porCobrar?'bad':'good')+'"><div class="k">Por cobrar</div><div class="v">'+f(porCobrar)+' '+moneda+'</div></div>' +
+      '<div class="pnl-card '+(porPagar?'bad':'good')+'"><div class="k">Por pagar</div><div class="v">'+f(porPagar)+' '+moneda+'</div></div>' +
+      '<div class="pnl-card '+(neto>=0?'good':'bad')+'"><div class="k">Flujo neto del mes</div><div class="v">'+f(neto)+' '+moneda+'</div></div>' +
+      '<div class="pnl-card '+(nCrit||nAlta?'bad':'good')+'"><div class="k">Alertas</div><div class="v">'+als.length+' <small style="font-size:0.7rem;">'+(nCrit?nCrit+' crítica(s), ':'')+(nAlta?nAlta+' alta(s)':'')+'</small></div></div>' +
+      '<div class="pnl-card"><div class="k">Proyectos activos</div><div class="v">'+nProy+'</div></div>';
+    const colorP = { CRITICA: '#e37c7c', ALTA: '#e8b96a', MEDIA: '#8ab4e8' };
+    $('dashAlertas').innerHTML = als.length
+      ? '<strong>Alertas que necesitan atención:</strong><table style="margin-top:0.5rem;"><tbody>' +
+        als.slice(0, 8).map(a=>'<tr><td style="white-space:nowrap;"><span style="color:'+(colorP[a.prioridad]||'#e8b96a')+';font-weight:700;font-size:0.7rem;">'+esc(a.prioridad)+'</span></td><td style="font-size:0.85rem;">'+esc(a.detalle)+'</td></tr>').join('') +
+        (als.length > 8 ? '<tr><td colspan="2" class="muted">… y '+(als.length-8)+' más. <a href="#" onclick="showTab(\'pnl\'); return false;" style="color:var(--gold);">Ver todas en Resultados</a></td></tr>' : '') +
+        '</tbody></table>'
+      : '<strong style="color:#7ce3a1;">Todo bajo control.</strong> <span class="muted">Sin alertas de inventario, cobros, pagos ni compras.</span>';
+  });
+}
+
+/* ---------- FASE 7: navegación rápida Ctrl+K ---------- */
+const CMDK_TABS = [
+  ['dash','🏠 Resumen'], ['leads','📥 Leads'], ['clientes','👥 Clientes'], ['quotes','🧾 Cotizaciones'],
+  ['proposal','📝 Cotizador'], ['inventory','📦 Inventario'], ['oc','🛒 Compras'], ['sales','💵 Ventas'],
+  ['proyectos','🏗️ Proyectos'], ['cobros','💰 Cobros'], ['flujocaja','🧮 Caja'], ['expenses','📉 Gastos'],
+  ['pnl','📊 Resultados'], ['reviews','⭐ Reseñas'], ['analytics','📊 Estadísticas'], ['flow','🌊 Flujo'],
+];
+let cmdkSel = 0;
+function abrirCmdk(){
+  if ($('cmdkOverlay')) return;
+  const ov = document.createElement('div');
+  ov.id = 'cmdkOverlay'; ov.className = 'cmdk-overlay';
+  ov.innerHTML = '<div class="cmdk-box"><input id="cmdkInput" placeholder="Ir a... (escribe el nombre de la sección)" autocomplete="off"><div id="cmdkList"></div><div class="cmdk-hint">↑↓ seleccionar · Enter ir · Esc cerrar</div></div>';
+  document.body.appendChild(ov);
+  const inp = $('cmdkInput');
+  inp.addEventListener('input', pintarCmdk);
+  inp.addEventListener('keydown', e=>{
+    const items = CMDK_TABS.filter(t=>t[1].toLowerCase().includes(inp.value.toLowerCase()));
+    if (e.key === 'ArrowDown') { e.preventDefault(); cmdkSel = Math.min(cmdkSel + 1, items.length - 1); pintarCmdk(); }
+    else if (e.key === 'ArrowUp') { e.preventDefault(); cmdkSel = Math.max(cmdkSel - 1, 0); pintarCmdk(); }
+    else if (e.key === 'Enter') { e.preventDefault(); if (items[cmdkSel]) { irCmdk(items[cmdkSel][0]); } }
+  });
+  pintarCmdk();
+  inp.focus();
+  ov.addEventListener('mousedown', e=>{ if (e.target === ov) cerrarCmdk(); });
+}
+function pintarCmdk(){
+  const q = $('cmdkInput').value.toLowerCase();
+  const items = CMDK_TABS.filter(t=>t[1].toLowerCase().includes(q));
+  if (cmdkSel >= items.length) cmdkSel = 0;
+  $('cmdkList').innerHTML = items.map((t, i)=>'<div class="cmdk-item'+(i===cmdkSel?' sel':'')+'" onclick="irCmdk(\''+t[0]+'\')">'+esc(t[1])+'</div>').join('') || '<div class="cmdk-item muted">Sin coincidencias</div>';
+}
+function irCmdk(tab){ cerrarCmdk(); showTab(tab); }
+function cerrarCmdk(){ const ov = $('cmdkOverlay'); if (ov) ov.remove(); }
+document.addEventListener('keydown', e=>{
+  if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') { e.preventDefault(); abrirCmdk(); }
+  else if (e.key === 'Escape') cerrarCmdk();
+});
+
 function showTab(name){
   document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active', t.dataset.tab===name));
-  ['leads','clientes','quotes','proposal','inventory','oc','sales','proyectos','cobros','expenses','pnl','reviews','analytics','flujocaja','flow'].forEach(n=>$('tab-'+n).classList.toggle('hidden', n!==name));
+  ['dash','leads','clientes','quotes','proposal','inventory','oc','sales','proyectos','cobros','expenses','pnl','reviews','analytics','flujocaja','flow'].forEach(n=>$('tab-'+n).classList.toggle('hidden', n!==name));
+  if (name==='dash') loadDash();
   if (name==='pnl' && !$('pnlCards').innerHTML) generarPNL();
   if (name==='flow') loadFlow();
   if (name==='oc') loadOC();
@@ -975,11 +1110,11 @@ function saveCliente(datos){
 function convertLead(idx){
   const l = leadsCache[idx];
   if (!l) return;
-  if (!confirm('¿Convertir a '+l.nombre+' en cliente? Se crea en el directorio de clientes (el lead se conserva como histórico).')) return;
+  if (!confirma('lead-'+idx, 'Convertir a '+l.nombre+' en cliente (se crea en el directorio; el lead se conserva como histórico).')) return;
   saveCliente({ nombre:l.nombre, telefono:l.telefono, email:l.email, ciudad:l.ciudad, notas:'Convertido desde lead: '+(l.producto||''), origen:'lead' });
 }
 function deleteCliente(id){
-  if (!confirm('¿Desactivar este cliente? Su historial de cotizaciones no se toca.')) return;
+  if (!confirma('cli-'+id, 'Desactivar este cliente (su historial de cotizaciones no se toca).')) return;
   apiPost({tipo:'delete_cliente', id}).then(d=>{
     notice(d&&d.ok?'Cliente desactivado.':errMsg(d), !!(d&&d.ok));
     if(d&&d.ok) loadClientes();
@@ -1073,7 +1208,7 @@ function loadQuotes(){
   }).catch(()=>{});
 }
 function aprobarQuote(id){
-  if (!confirm('¿Marcar esta cotización como APROBADA? (El siguiente paso será crearle proyecto en la Fase 4.)')) return;
+  if (!confirma('quote-'+id, 'Marcar esta cotización como APROBADA.')) return;
   apiPost({tipo:'set_estado_quote', id, estado:'Aprobada'}).then(d=>{
     notice(d&&d.ok?'Cotización aprobada.':errMsg(d), !!(d&&d.ok));
     if(d&&d.ok) loadQuotes();
@@ -1399,7 +1534,7 @@ function loadProposalFromQuote(idx){
   } catch (e) { notice('No se pudo leer la cotización guardada.', false); }
 }
 function newProposal(){
-  if (!confirm('¿Empezar una cotización nueva? Se limpia el formulario (lo guardado en Sheets no se toca).')) return;
+  if (!confirma('newprop', 'Empezar una cotización nueva (se limpia el formulario; lo guardado en Sheets no se toca).')) return;
   prop = defaultProp();
   try { localStorage.removeItem('adis_prop_draft'); } catch (e) {}
   renderTiposChk(); applyPropToForm(); renderItemRows(); renderFotoProy(); renderFotosGrid(); renderProposal();
@@ -1429,7 +1564,7 @@ function loadReviewsAdmin(){
   }).catch(()=>{});
 }
 function deleteReview(row, id){
-  if (!confirm('¿Eliminar esta reseña del sitio?')) return;
+  if (!confirma('review-'+id, 'Eliminar esta reseña del sitio.')) return;
   // FASE 0: se envia el ID estable (y la fila como respaldo para el backend viejo)
   apiPost({tipo:'delete_review', row, id: id || ''}).then(d=>{ notice(d&&d.ok?'Reseña eliminada.':errMsg(d,'No se pudo eliminar.'), !!(d&&d.ok)); if(d&&d.ok) loadReviewsAdmin(); });
 }
@@ -1676,7 +1811,7 @@ function saveProduct(id){
 }
 
 function deleteProduct(id){
-  if (!confirm('¿Desactivar este producto? (no se borra de la hoja)')) return;
+  if (!confirma('prod-'+id, 'Desactivar este producto (no se borra de la hoja).')) return;
   apiPost({tipo:'delete_product', id}).then(d=>{ if(d&&d.ok) loadBiz(); });
 }
 
@@ -1704,7 +1839,7 @@ function saveWarehouse(){
 }
 
 function deleteWarehouse(id){
-  if (!confirm('¿Desactivar este almacén?')) return;
+  if (!confirma('alm-'+id, 'Desactivar este almacén.')) return;
   apiPost({tipo:'delete_almacen', id}).then(d=>{ if(d&&d.ok){ closeBizForms(); loadBiz(); } });
 }
 
@@ -1813,7 +1948,7 @@ function saveProv(){
   }).catch(()=>notice('Error de conexión.', false));
 }
 function deleteProv(id){
-  if (!confirm('¿Desactivar este proveedor?')) return;
+  if (!confirma('prov-'+id, 'Desactivar este proveedor.')) return;
   apiPost({tipo:'delete_proveedor', id}).then(d=>{
     notice(d&&d.ok?'Proveedor desactivado.':errMsg(d), !!(d&&d.ok));
     if(d&&d.ok) loadOC();
@@ -1897,8 +2032,8 @@ function saveOC(id){
     }).catch(()=>notice('Error de conexión al guardar.', false));
 }
 function cambiarEstadoOC(id, estado){
-  const msg = { AUTORIZADA:'¿Autorizar esta orden?', ENVIADA:'¿Marcar como enviada al proveedor?', CANCELADA:'¿Cancelar esta orden? No afecta el inventario.' };
-  if (!confirm(msg[estado]||('¿Cambiar estado a '+estado+'?'))) return;
+  const msg = { AUTORIZADA:'Autorizar esta orden', ENVIADA:'Marcar como enviada al proveedor', CANCELADA:'Cancelar esta orden (no afecta el inventario)' };
+  if (!confirma('oc-'+id+'-'+estado, (msg[estado]||('Cambiar estado a '+estado))+'.')) return;
   apiPost({tipo:'cambiar_estado_oc', id, estado}).then(d=>{
     notice(d&&d.ok?('Orden ahora está '+estado+'.'):errMsg(d), !!(d&&d.ok));
     if(d&&d.ok) loadOC();
@@ -1989,7 +2124,7 @@ function crearProyectoDesdeSelect(){
   crearProyectoDesdeQuote(qid);
 }
 function crearProyectoDesdeQuote(qid){
-  if (!confirm('¿Crear el proyecto desde esta cotización? Se vinculan cliente, folio y presupuesto.')) return;
+  if (!confirma('proycot-'+qid, 'Crear el proyecto desde esta cotización (se vinculan cliente, folio y presupuesto).')) return;
   apiPost({tipo:'crear_proyecto_desde_cotizacion', quote_id:qid}).then(d=>{
     notice(d&&d.ok?('Proyecto '+(d.folio||'')+(d.ya_existia?' (ya existía)':'')+' creado.'):errMsg(d), !!(d&&d.ok));
     if(d&&d.ok){ loadProyectos(); loadQuotes(); }
@@ -2021,7 +2156,7 @@ function saveProyecto(){
   }).catch(()=>notice('Error de conexión.', false));
 }
 function cambiarEstadoProyecto(id, estado){
-  if (!confirm(estado==='TERMINADO'?'¿Marcar proyecto como TERMINADO?':'¿CANCELAR este proyecto?')) return;
+  if (!confirma('proy-'+id+'-'+estado, estado==='TERMINADO'?'Marcar proyecto como TERMINADO.':'CANCELAR este proyecto.')) return;
   apiPost({tipo:'cambiar_estado_proyecto', id, estado}).then(d=>{
     notice(d&&d.ok?('Proyecto ahora está '+estado+'.'):errMsg(d), !!(d&&d.ok));
     if(d&&d.ok) loadProyectos();
@@ -2085,7 +2220,7 @@ function fillSaleLinks(){
     proyCache.filter(p=>p.estado==='ACTIVO').map(p=>'<option value="'+esc(p.id)+'">'+esc(p.folio)+' · '+esc(p.nombre)+'</option>').join('');
 }
 function anularVenta(id){
-  if (!confirm('¿ANULAR esta venta? La mercancia REGRESA al almacen con movimiento trazable y la venta queda CANCELADA.')) return;
+  if (!confirma('anula-'+id, 'ANULAR esta venta: la mercancía REGRESA al almacén con movimiento trazable y la venta queda CANCELADA.')) return;
   apiPost({tipo:'anular_venta', id}).then(d=>{
     notice(d&&d.ok?'Venta anulada y stock repuesto.':errMsg(d), !!(d&&d.ok));
     if(d&&d.ok){ loadBiz(); loadCXC(); }

@@ -250,6 +250,7 @@ producto/almacén existen → aplicarMovimiento(doc AJUSTE) → Log
 | 2 Compras | nuevos tipos `orden_compra`, `recibir_oc` → `aplicarMovimiento(entrada, doc ORDEN_COMPRA)`; hojas Proveedores, OrdenesCompra |
 | 3 Clientes/Cotizaciones | hoja Clientes; `quote` estado → aprobada crea proyecto; unificar cotizadores en frontend |
 | 4 Proyectos/Ventas 2.0 | Ventas + `pagos` parciales (hoja Cobros); CxC calculado de Ventas−Cobros |
+| 7 Rediseño | sidebar fija en escritorio (movil intacto), dashboard ejecutivo "Resumen" como vista inicial (KPIs: ventas mes, utilidad operativa, por cobrar/pagar, flujo neto, alertas, proyectos activos), navegacion Ctrl+K con buscador, helper `confirma()` en dos pasos reemplaza a los 12 confirm() restantes. Decision: migracion Lucide de iconos diferida (alto riesgo de regresion, bajo valor para panel interno); emojis solo en etiquetas existentes, nada nuevo |
 | 6 Finanzas | `estado_resultados` con filtro `proyecto_id` (gastos = Proyectos_Movs del proyecto), utilidad operativa y márgenes, ventas CANCELADAS excluidas del ingreso; GET `alertas` priorizadas |
 | 5 Gastos/Pagos | estados pagado/pendiente en Gastos; hoja Pagos; flujo de efectivo = Cobros−Pagos por fecha |
 | 6 Finanzas | estado_resultados con niveles (bruta/operativa/neta) + rentabilidad por proyecto |
