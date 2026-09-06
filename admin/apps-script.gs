@@ -56,6 +56,9 @@ var SHEET_CONFIG   = 'Config';
 var SHEET_LOG      = 'Log';
 var SHEET_VISITS   = 'Visitas';
 var SHEET_VISITS_ARCHIVE = 'Visitas_Archivo';
+var SHEET_PROVIDERS  = 'Proveedores';
+var SHEET_PO         = 'OrdenesCompra';
+var SHEET_RECEP      = 'Recepciones';
 var VISITS_MAX_FILAS = 5000;   // activas; el excedente se ARCHIVA (no se borra)
 var TOKEN_MINUTOS  = 8 * 60;
 
@@ -80,6 +83,10 @@ var ENC_VENTAS = ['fecha', 'cliente', 'almacen', 'items', 'total', 'moneda', 'ti
 var ENC_GASTOS = ['fecha', 'categoria', 'descripcion', 'monto', 'moneda', 'tipo_cambio', 'monto_base',
   'id', 'usuario'];
 var ENC_RESENAS = ['fecha', 'nombre', 'estrellas', 'texto', 'activa', 'id', 'usuario'];
+var ENC_PROV = ['id', 'nombre', 'contacto', 'telefono', 'email', 'direccion', 'notas', 'activo', 'fecha'];
+var ENC_OC = ['id', 'folio', 'proveedor_id', 'proveedor', 'fecha', 'fecha_esperada', 'almacen_id', 'almacen',
+  'moneda', 'subtotal', 'iva', 'descuento', 'total', 'estado', 'notas', 'usuario', 'fecha_actualizacion', 'partidas'];
+var ENC_RECEP = ['id', 'oc_id', 'oc_folio', 'fecha', 'items', 'usuario'];
 var ENC_VISITS = ['fecha', 'hora', 'pagina', 'seccion', 'origen', 'referrer', 'idioma',
   'dispositivo', 'navegador', 'ancho', 'ua'];
 
@@ -494,6 +501,38 @@ function doGetInterno(e) {
       num_ventas: ventas.length,
       margen_bruto: ingresos ? (utilBruta / ingresos * 100) : 0,
       margen_neto: ingresos ? (utilNeta / ingresos * 100) : 0 });
+  }
+
+  if (action === 'proveedores') {
+    return json({ ok: true, proveedores: filasComoObjetos(SHEET_PROVIDERS).filter(function (p) { return String(p.activo) !== 'no'; }) });
+  }
+  if (action === 'oc') {
+    var listaOC = filasComoObjetos(SHEET_PO);
+    var receps = filasComoObjetos(SHEET_RECEP);
+    var recibidoPorOC = {};
+    receps.forEach(function (r) {
+      var its = [];
+      try { its = JSON.parse(r.items || '[]'); } catch (e) {}
+      its.forEach(function (it) {
+        var k = String(r.oc_id) + '|' + String(it.producto_id);
+        recibidoPorOC[k] = (recibidoPorOC[k] || 0) + (Number(it.cantidad) || 0);
+      });
+    });
+    listaOC = listaOC.map(function (oc) {
+      var partidas = [];
+      try { partidas = JSON.parse(oc.partidas || '[]'); } catch (e) {}
+      partidas = partidas.map(function (pt) {
+        var rec = recibidoPorOC[String(oc.id) + '|' + String(pt.producto_id)] || 0;
+        return { producto_id: pt.producto_id, producto: pt.producto, cantidad: pt.cantidad,
+          costo_unit: pt.costo_unit, recibido: rec, pendiente: Math.max(0, (Number(pt.cantidad) || 0) - rec) };
+      });
+      return { id: oc.id, folio: oc.folio, proveedor_id: oc.proveedor_id, proveedor: oc.proveedor,
+        fecha: oc.fecha, fecha_esperada: oc.fecha_esperada, almacen_id: oc.almacen_id, almacen: oc.almacen,
+        moneda: oc.moneda, subtotal: Number(oc.subtotal) || 0, iva: Number(oc.iva) || 0,
+        descuento: Number(oc.descuento) || 0, total: Number(oc.total) || 0, estado: oc.estado,
+        notas: oc.notas, partidas: partidas };
+    });
+    return json({ ok: true, oc: listaOC });
   }
 
   throw AdisError('ACCION_DESCONOCIDA', 'Acción desconocida: ' + action);
@@ -938,6 +977,185 @@ function doPostInterno(data) {
     ss().getSheetByName(SHEET_EXPENSES).deleteRow(filaG);
     log_('gasto_eliminado', 'id=' + (data.id || '') + ' fila=' + filaG);
     return json({ ok: true });
+  });
+
+  /* ================= COMPRAS (FASE 2) ================= */
+
+  if (tipo === 'save_proveedor') return conLock(function () {
+    var nombreP = String(data.nombre || '').trim();
+    if (!nombreP) throw AdisError('VALIDACION', 'El proveedor necesita nombre.');
+    var hpr2 = hoja(SHEET_PROVIDERS, ENC_PROV);
+    if (data.id) {
+      var filaProv = filaPorId(SHEET_PROVIDERS, data.id);
+      if (!filaProv) throw AdisError('NO_ENCONTRADO', 'Proveedor no encontrado.');
+      hpr2.getRange(filaProv, 1, 1, ENC_PROV.length).setValues([[data.id, nombreP, data.contacto || '',
+        data.telefono || '', data.email || '', data.direccion || '', data.notas || '', 'si', ahora_()]]);
+      log_('proveedor_editado', nombreP);
+      return json({ ok: true, id: data.id });
+    }
+    var idProv = nuevoId();
+    hpr2.appendRow([idProv, nombreP, data.contacto || '', data.telefono || '', data.email || '',
+      data.direccion || '', data.notas || '', 'si', ahora_()]);
+    log_('proveedor_creado', nombreP);
+    return json({ ok: true, id: idProv });
+  });
+
+  if (tipo === 'delete_proveedor') return conLock(function () {
+    var filaDP = filaPorId(SHEET_PROVIDERS, data.id);
+    if (!filaDP) throw AdisError('NO_ENCONTRADO', 'Proveedor no encontrado.');
+    ss().getSheetByName(SHEET_PROVIDERS).getRange(filaDP, 8).setValue('no');
+    log_('proveedor_desactivado', String(data.id));
+    return json({ ok: true });
+  });
+
+  // Validacion comun de partidas de una OC (usada por save_oc)
+  function validarPartidasOC(itemsIn, mapaProd) {
+    if (!itemsIn || !itemsIn.length) throw AdisError('VALIDACION', 'La orden de compra necesita al menos un producto.');
+    if (itemsIn.length > 100) throw AdisError('VALIDACION', 'Máximo 100 partidas por orden de compra.');
+    var vistos = {};
+    return itemsIn.map(function (it) {
+      var p = mapaProd[String(it.producto_id)];
+      if (!p) throw AdisError('NO_ENCONTRADO', 'Producto no encontrado: ' + it.producto_id);
+      var cant = Number(it.cantidad), costo = Number(it.costo_unit);
+      if (!isFinite(cant) || cant <= 0) throw AdisError('VALIDACION', 'Cantidad inválida para ' + p.nombre + '.');
+      if (!isFinite(costo) || costo < 0) throw AdisError('VALIDACION', 'Costo inválido para ' + p.nombre + '.');
+      if (vistos[String(p.id)]) throw AdisError('VALIDACION', 'Producto repetido en la orden: ' + p.nombre + '.');
+      vistos[String(p.id)] = true;
+      return { producto_id: p.id, producto: p.nombre, cantidad: cant, costo_unit: costo };
+    });
+  }
+  function totalesOC(partidas, ivaPct, descuento) {
+    var subtotal = partidas.reduce(function (s, p) { return s + p.cantidad * p.costo_unit; }, 0);
+    var iva = subtotal * (Number(ivaPct) || 0) / 100;
+    var total = subtotal + iva - (Number(descuento) || 0);
+    if (total < 0) throw AdisError('VALIDACION', 'El total de la orden no puede ser negativo.');
+    return { subtotal: subtotal, iva: iva, total: total };
+  }
+
+  if (tipo === 'save_oc') return conLock(function () {
+    var prodsOC = filasComoObjetos(SHEET_PRODUCTS);
+    var mapaProdOC = {};
+    prodsOC.forEach(function (p) { mapaProdOC[String(p.id)] = p; });
+    var partidas = validarPartidasOC(data.items, mapaProdOC);
+    var prov = filasComoObjetos(SHEET_PROVIDERS).filter(function (p) { return String(p.id) === String(data.proveedor_id) && String(p.activo) !== 'no'; })[0] || {};
+    if (!prov.id) throw AdisError('NO_ENCONTRADO', 'Selecciona un proveedor válido.');
+    var almOC = filasComoObjetos(SHEET_WAREHOUSES).filter(function (a) { return String(a.id) === String(data.almacen_id); })[0] || {};
+    if (!almOC.id) throw AdisError('NO_ENCONTRADO', 'Selecciona un almacén destino válido.');
+    var monedaOC = validarMoneda(data.moneda || cfg('moneda_base', 'MXN'));
+    var t = totalesOC(partidas, data.iva_pct, data.descuento);
+    var fechaOC = validarFecha(data.fecha) || hoy_();
+    var esperada = validarFecha(data.fecha_esperada);
+    var hOC = hoja(SHEET_PO, ENC_OC);
+    if (data.id) { // solo se puede editar en BORRADOR
+      var filaOC = filaPorId(SHEET_PO, data.id);
+      if (!filaOC) throw AdisError('NO_ENCONTRADO', 'Orden de compra no encontrada.');
+      var hojaOC = ss().getSheetByName(SHEET_PO);
+      var estadoActual = String(hojaOC.getRange(filaOC, 14).getValue());
+      if (estadoActual !== 'BORRADOR') throw AdisError('NO_PERMITIDO', 'Solo se pueden editar órdenes en BORRADOR.');
+      hojaOC.getRange(filaOC, 1, 1, ENC_OC.length).setValues([[data.id, hojaOC.getRange(filaOC, 2).getValue(),
+        prov.id, prov.nombre, fechaOC, esperada || '', almOC.id, almOC.nombre, monedaOC,
+        t.subtotal, t.iva, Number(data.descuento) || 0, t.total, 'BORRADOR', data.notas || '',
+        USUARIO_ACTUAL, ahora_(), JSON.stringify(partidas)]]);
+      log_('oc_editada', hojaOC.getRange(filaOC, 2).getValue());
+      return json({ ok: true, id: data.id });
+    }
+    var folioOC = siguienteFolio('OC', 'folio_oc', 4);
+    var idOC = nuevoId();
+    hOC.appendRow([idOC, folioOC, prov.id, prov.nombre, fechaOC, esperada || '', almOC.id, almOC.nombre,
+      monedaOC, t.subtotal, t.iva, Number(data.descuento) || 0, t.total, 'BORRADOR', data.notas || '',
+      USUARIO_ACTUAL, ahora_(), JSON.stringify(partidas)]);
+    log_('oc_creada', folioOC + ' · ' + prov.nombre + ' · ' + monedaOC + ' ' + t.total);
+    return json({ ok: true, id: idOC, folio: folioOC });
+  });
+
+  if (tipo === 'cambiar_estado_oc') return conLock(function () {
+    var filaE = filaPorId(SHEET_PO, data.id);
+    if (!filaE) throw AdisError('NO_ENCONTRADO', 'Orden de compra no encontrada.');
+    var hE = ss().getSheetByName(SHEET_PO);
+    var estadoE = String(hE.getRange(filaE, 14).getValue());
+    var nuevoE = String(data.estado || '').toUpperCase();
+    var transiciones = { BORRADOR: ['AUTORIZADA', 'CANCELADA'], AUTORIZADA: ['ENVIADA', 'CANCELADA'],
+      ENVIADA: ['CANCELADA'], PARCIAL: ['CANCELADA'], RECIBIDA: [], CANCELADA: [] };
+    if ((transiciones[estadoE] || []).indexOf(nuevoE) === -1) {
+      throw AdisError('NO_PERMITIDO', 'No se puede pasar de ' + estadoE + ' a ' + nuevoE + '.');
+    }
+    hE.getRange(filaE, 14).setValue(nuevoE);
+    hE.getRange(filaE, 17).setValue(ahora_());
+    log_('oc_estado', hE.getRange(filaE, 2).getValue() + ': ' + estadoE + ' -> ' + nuevoE);
+    return json({ ok: true, estado: nuevoE });
+  });
+
+  // Recepcion de mercancia: NO modifica stock a mano; genera una ENTRADA por
+  // partida vinculada a la OC (doc_tipo ORDEN_COMPRA). Recepcion parcial: el
+  // estado pasa a PARCIAL hasta completar, luego RECIBIDA.
+  if (tipo === 'recibir_oc') return conLock(function () {
+    var filaR = filaPorId(SHEET_PO, data.oc_id);
+    if (!filaR) throw AdisError('NO_ENCONTRADO', 'Orden de compra no encontrada.');
+    var hR = ss().getSheetByName(SHEET_PO);
+    var estadoR = String(hR.getRange(filaR, 14).getValue());
+    if (['AUTORIZADA', 'ENVIADA', 'PARCIAL'].indexOf(estadoR) === -1) {
+      throw AdisError('NO_PERMITIDO', 'La orden ' + estadoR + ' no admite recepciones.');
+    }
+    var folioR = String(hR.getRange(filaR, 2).getValue());
+    var almacenIdR = String(hR.getRange(filaR, 7).getValue());
+    var almacenNomR = String(hR.getRange(filaR, 8).getValue());
+    var partidasR = [];
+    try { partidasR = JSON.parse(String(hR.getRange(filaR, 18).getValue()) || '[]'); } catch (e) {}
+    var itemsIn = data.items || [];
+    if (!itemsIn.length) throw AdisError('VALIDACION', 'Indica qué productos estás recibiendo.');
+    // recepciones previas para calcular pendiente real
+    var recibidoPrev = {};
+    filasComoObjetos(SHEET_RECEP).forEach(function (r) {
+      if (String(r.oc_id) !== String(data.oc_id)) return;
+      var its = [];
+      try { its = JSON.parse(r.items || '[]'); } catch (e) {}
+      its.forEach(function (it) {
+        recibidoPrev[String(it.producto_id)] = (recibidoPrev[String(it.producto_id)] || 0) + (Number(it.cantidad) || 0);
+      });
+    });
+    var mapaPartidas = {};
+    partidasR.forEach(function (pt) { mapaPartidas[String(pt.producto_id)] = pt; });
+    var recibidosAhora = [];
+    itemsIn.forEach(function (it) {
+      var pt = mapaPartidas[String(it.producto_id)];
+      if (!pt) throw AdisError('VALIDACION', 'El producto no pertenece a esta orden de compra.');
+      var cant = Number(it.cantidad);
+      if (!isFinite(cant) || cant <= 0) throw AdisError('VALIDACION', 'Cantidad inválida para ' + pt.producto + '.');
+      var yaRec = recibidoPrev[String(pt.producto_id)] || 0;
+      if (yaRec + cant > Number(pt.cantidad)) {
+        throw AdisError('VALIDACION', 'Excede lo pendiente de ' + pt.producto + ': pidió ' + pt.cantidad +
+          ', ya recibió ' + yaRec + ', intenta recibir ' + cant + '.');
+      }
+      recibidosAhora.push({ producto_id: pt.producto_id, producto: pt.producto, cantidad: cant, costo_unit: pt.costo_unit });
+    });
+    // aplicar entradas trazables + actualizar ultimo costo
+    recibidosAhora.forEach(function (rc) {
+      aplicarMovimiento({ tipo: 'entrada', producto_id: rc.producto_id, producto: rc.producto,
+        almacen_id: almacenIdR, almacen: almacenNomR, cantidad: rc.cantidad, costo_unit: rc.costo_unit,
+        moneda: String(hR.getRange(filaR, 9).getValue()) || 'MXN',
+        referencia: 'OC ' + folioR, notas: 'Recepción de compra',
+        doc_tipo: 'ORDEN_COMPRA', doc_id: folioR });
+      var filaProd = filaPorId(SHEET_PRODUCTS, rc.producto_id);
+      if (filaProd) {
+        var hp2 = ss().getSheetByName(SHEET_PRODUCTS);
+        hp2.getRange(filaProd, 8).setValue(rc.costo_unit); // ultimo costo
+        hp2.getRange(filaProd, 16).setValue(ahora_());
+      }
+    });
+    hoja(SHEET_RECEP, ENC_RECEP).appendRow([nuevoId(), data.oc_id, folioR, ahora_(),
+      JSON.stringify(recibidosAhora), USUARIO_ACTUAL]);
+    // nuevo estado
+    var completo = partidasR.every(function (pt) {
+      var ya = (recibidoPrev[String(pt.producto_id)] || 0) +
+        recibidosAhora.filter(function (r) { return String(r.producto_id) === String(pt.producto_id); })
+          .reduce(function (s, r) { return s + r.cantidad; }, 0);
+      return ya >= Number(pt.cantidad);
+    });
+    var nuevoEstado = completo ? 'RECIBIDA' : 'PARCIAL';
+    hR.getRange(filaR, 14).setValue(nuevoEstado);
+    hR.getRange(filaR, 17).setValue(ahora_());
+    log_('oc_recepcion', folioR + ': ' + recibidosAhora.length + ' partidas, estado ' + nuevoEstado);
+    return json({ ok: true, estado: nuevoEstado, folio: folioR });
   });
 
   throw AdisError('TIPO_DESCONOCIDO', 'Tipo desconocido: ' + tipo);
