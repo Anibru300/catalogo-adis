@@ -446,7 +446,17 @@ function doGetInterno(e) {
     });
     return json({ ok: true, stock: detalle });
   }
-  if (action === 'movimientos') return json({ ok: true, movimientos: filasComoObjetos(SHEET_MOVES).slice(-100) });
+  if (action === 'movimientos') {
+    // FASE 1: filtro opcional por producto (historial completo hasta 500);
+    // sin filtro, ultimos 100 como antes.
+    var filtroPid = e.parameter.producto_id;
+    var todosMovs = filasComoObjetos(SHEET_MOVES);
+    if (filtroPid) {
+      var filtrados = todosMovs.filter(function (m) { return String(m.producto_id) === String(filtroPid); });
+      return json({ ok: true, movimientos: filtrados.slice(-500) });
+    }
+    return json({ ok: true, movimientos: todosMovs.slice(-100) });
+  }
   if (action === 'ventas') return json({ ok: true, ventas: filasComoObjetos(SHEET_SALES).slice(-100) });
   if (action === 'gastos') return json({ ok: true, gastos: filasComoObjetos(SHEET_EXPENSES) });
 
@@ -629,6 +639,49 @@ function doPostInterno(data) {
     else hp.appendRow(fila);
     log_(filaExistente ? 'producto_editado' : 'producto_creado', codigo + ' - ' + data.nombre);
     return json({ ok: true, id: fila[0] });
+  });
+
+  /* ---------- Actualizacion de precios/costos por lote (FASE 1) ----------
+     Dos pasadas: primero se valida TODO, despues se escribe (si un precio
+     es invalido no se actualiza nada). Columnas resueltas por nombre de
+     encabezado, no por posicion. */
+  if (tipo === 'update_precios') return conLock(function () {
+    var itemsP = data.items || [];
+    if (!itemsP.length) throw AdisError('VALIDACION', 'No hay precios para actualizar.');
+    if (itemsP.length > 200) throw AdisError('VALIDACION', 'Máximo 200 productos por actualización.');
+    var hp = hoja(SHEET_PRODUCTS, ENC_PROD);
+    var valores = hp.getDataRange().getValues();
+    var enc = valores[0].map(String);
+    var colId = enc.indexOf('id'), colPrecio = enc.indexOf('precio'),
+        colCosto = enc.indexOf('costo'), colFecha = enc.indexOf('fecha_actualizacion');
+    // pasada 1: validar y localizar filas
+    var plan = [];
+    itemsP.forEach(function (it) {
+      var filaP = null;
+      for (var i = 1; i < valores.length; i++) {
+        if (String(valores[i][colId]) === String(it.id)) { filaP = i + 1; break; }
+      }
+      if (!filaP) return; // producto inexistente: se omite (se reporta en actualizados)
+      if (it.precio !== undefined && it.precio !== null && it.precio !== '') {
+        var pr = Number(it.precio);
+        if (!isFinite(pr) || pr < 0) throw AdisError('VALIDACION', 'Precio inválido (debe ser >= 0).');
+      }
+      if (it.costo !== undefined && it.costo !== null && it.costo !== '') {
+        var co = Number(it.costo);
+        if (!isFinite(co) || co < 0) throw AdisError('VALIDACION', 'Costo inválido (debe ser >= 0).');
+      }
+      plan.push({ fila: filaP, precio: it.precio, costo: it.costo });
+    });
+    // pasada 2: escribir
+    plan.forEach(function (paso) {
+      if (paso.precio !== undefined && paso.precio !== null && paso.precio !== '')
+        hp.getRange(paso.fila, colPrecio + 1).setValue(Number(paso.precio));
+      if (paso.costo !== undefined && paso.costo !== null && paso.costo !== '')
+        hp.getRange(paso.fila, colCosto + 1).setValue(Number(paso.costo));
+      hp.getRange(paso.fila, colFecha + 1).setValue(ahora_());
+    });
+    log_('precios_actualizados', plan.length + ' productos');
+    return json({ ok: true, actualizados: plan.length });
   });
 
   if (tipo === 'delete_product') return conLock(function () {

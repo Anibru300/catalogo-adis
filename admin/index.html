@@ -233,6 +233,11 @@
   .qp-foot b { color:#8a6d2f; letter-spacing:1px; }
   .qp-moneda { font-size:0.62rem; color:#555; margin:0.25rem 0 0.4rem; }
   .qp-moneda b { color:#8a6d2f; }
+/* FASE 1: historial por producto */
+  .hist-table { width:100%; font-size:0.68rem; border-collapse:collapse; }
+  .hist-table th, .hist-table td { padding:0.22rem 0.3rem; border-bottom:1px solid #3a3a3a; text-align:left; }
+  .hist-table th { color:var(--gold); font-weight:600; }
+  #prRows input { width:90px; padding:0.25rem; }
 </style>
 </head>
 <body>
@@ -483,6 +488,7 @@
         <select id="invAlmacen" onchange="renderInventory()"></select>
         <label style="margin:0;display:flex;gap:0.35rem;align-items:center;font-size:0.75rem;"><input type="checkbox" id="invVerInactivos" onchange="renderInventory()" style="width:auto;">Ver inactivos</label>
         <button class="btn btn-sm" onclick="showProductForm()">＋ Producto</button>
+        <button class="btn btn-sm" onclick="showPricesForm()">💲 Precios</button>
         <button class="btn btn-sm" onclick="showWarehouseForm()">＋ Almacén</button>
         <button class="btn btn-sm" onclick="showConfigForm()">⚙ Moneda</button>
       </div>
@@ -502,8 +508,8 @@
       <h2>Movimientos recientes</h2>
       <div class="card-box table-scroll">
         <table>
-          <thead><tr><th>Fecha</th><th>Tipo</th><th>Producto</th><th>Almacén</th><th>Cant.</th><th>Referencia</th><th>Notas</th></tr></thead>
-          <tbody id="movTable"><tr><td colspan="7" class="muted">Cargando…</td></tr></tbody>
+          <thead><tr><th>Fecha</th><th>Tipo</th><th>Producto</th><th>Almacén</th><th>Cant.</th><th>Existencia</th><th>Documento</th><th>Notas</th></tr></thead>
+          <tbody id="movTable"><tr><td colspan="8" class="muted">Cargando…</td></tr></tbody>
         </table>
       </div>
     </section>
@@ -1276,10 +1282,27 @@ function renderInventory(){
   const activos = biz.productos.filter(p=>p.estado!=='inactivo').length;
   const sinFoto = biz.productos.filter(p=>p.estado!=='inactivo' && !p.foto).length;
   const revision = biz.productos.filter(p=>p.estado!=='inactivo' && String(p.notas||'').indexOf('REVISION')>=0).length;
+  // FASE 1: dashboard completo de salud del inventario
+  const vivos = biz.productos.filter(p=>p.estado!=='inactivo');
+  const sinPrecio = vivos.filter(p=>!(Number(p.precio)>0)).length;
+  const sinCosto = vivos.filter(p=>!(Number(p.costo)>0)).length;
+  const sinStock = vivos.filter(p=>stockTotal(p.id)<=0).length;
+  const stockBajo = vivos.filter(p=>{const min=Number(p.stock_minimo)||0; return min>0 && stockTotal(p.id)<=min;}).length;
+  const tc = Number(biz.config.tipo_cambio)||18.5, base = biz.config.moneda_base||'MXN';
+  const valorInv = vivos.reduce((s,p)=>{
+    const co=Number(p.costo)||0, m=p.moneda||'MXN';
+    const cob = m===base ? co : (base==='MXN'&&m==='USD' ? co*tc : (base==='USD'&&m==='MXN' ? co/tc : co));
+    return s + stockTotal(p.id)*cob;
+  },0);
   $('invDash').innerHTML =
     '<div class="pnl-card"><div class="k">Productos</div><div class="v">'+total+'</div></div>' +
     '<div class="pnl-card good"><div class="k">Activos</div><div class="v">'+activos+'</div></div>' +
+    '<div class="pnl-card '+(sinPrecio?'bad':'')+'"><div class="k">Sin precio</div><div class="v">'+sinPrecio+'</div></div>' +
+    '<div class="pnl-card '+(sinCosto?'bad':'')+'"><div class="k">Sin costo</div><div class="v">'+sinCosto+'</div></div>' +
     '<div class="pnl-card"><div class="k">Sin foto</div><div class="v">'+sinFoto+'</div></div>' +
+    '<div class="pnl-card"><div class="k">Sin stock</div><div class="v">'+sinStock+'</div></div>' +
+    '<div class="pnl-card '+(stockBajo?'bad':'')+'"><div class="k">Stock bajo</div><div class="v">'+stockBajo+'</div></div>' +
+    '<div class="pnl-card"><div class="k">Valor inventario</div><div class="v" style="font-size:0.95rem;">'+fmtMoney(valorInv)+' '+esc(base)+'</div></div>' +
     '<div class="pnl-card '+(revision?'bad':'')+'"><div class="k">Revisión manual</div><div class="v">'+revision+'</div></div>';
   let lista = biz.productos.filter(p=>{
     if (!verInactivos && p.estado==='inactivo') return false;
@@ -1327,7 +1350,29 @@ function selectProduct(id){
     'Stock total: <strong>'+st+'</strong> '+(p.unidad||'')+'<br>' +
     (Number(p.precio)?'Precio: <strong class="gold">'+fmtMoney(p.precio)+' '+esc(p.moneda||'MXN')+'</strong>':'Precio: pendiente') +
     '</div>' +
-    '<div style="margin-top:0.8rem;"><button class="btn btn-sm" onclick="showProductForm(\''+p.id+'\')">✎ Editar producto</button></div>';
+    '<div style="margin-top:0.8rem;"><button class="btn btn-sm" onclick="showProductForm(\''+p.id+'\')">✎ Editar producto</button></div>' +
+    '<div id="invHist" style="margin-top:0.8rem;"></div>';
+  loadProductHistory(p.id);
+}
+
+// FASE 1: historial de movimientos del producto seleccionado (trazabilidad completa)
+function loadProductHistory(pid){
+  const box = $('invHist');
+  if (!box) return;
+  box.innerHTML = '<p class="muted" style="font-size:0.72rem;">Cargando historial…</p>';
+  apiGet('movimientos&producto_id='+encodeURIComponent(pid)).then(d=>{
+    let movs = (d && d.movimientos) || [];
+    // filtro cliente ademas del server: compatible con backend viejo (sin filtro)
+    movs = movs.filter(m=>String(m.producto_id)===String(pid));
+    if (!movs.length) { box.innerHTML='<p class="muted" style="font-size:0.72rem;">Sin movimientos registrados.</p>'; return; }
+    box.innerHTML = '<table class="hist-table"><thead><tr><th>Fecha</th><th>Tipo</th><th>Cant.</th><th>Existencia</th><th>Documento</th></tr></thead><tbody>' +
+      movs.slice().reverse().slice(0,30).map(m=>
+        '<tr><td>'+esc(String(m.fecha||'').slice(0,16))+'</td><td>'+esc(m.tipo)+'</td><td>'+esc(m.cantidad)+'</td>' +
+        '<td>'+(m.existencia_anterior!==undefined && m.existencia_anterior!=='' ? esc(m.existencia_anterior)+' → '+esc(m.existencia_posterior) : '—')+'</td>' +
+        '<td>'+esc(m.documento_tipo||m.referencia||'—')+(m.id?' <span class="muted">'+esc(m.id)+'</span>':'')+'</td></tr>').join('') +
+      '</tbody></table>' +
+      (movs.length>30 ? '<p class="muted" style="font-size:0.7rem;margin-top:0.3rem;">Mostrando los últimos 30 de '+movs.length+' movimientos.</p>' : '');
+  }).catch(()=>{ box.innerHTML='<p class="muted" style="font-size:0.72rem;">No se pudo cargar el historial.</p>'; });
 }
 
 function restoreProduct(id){
@@ -1338,14 +1383,60 @@ function restoreProduct(id){
 }
 
 function renderMovs(list){
-  if (!list.length) { $('movTable').innerHTML='<tr><td colspan="7" class="muted">Sin movimientos.</td></tr>'; return; }
+  if (!list.length) { $('movTable').innerHTML='<tr><td colspan="8" class="muted">Sin movimientos.</td></tr>'; return; }
   $('movTable').innerHTML = list.slice().reverse().map(m=>
     '<tr><td>'+esc(m.fecha)+'</td><td>'+esc(m.tipo)+'</td><td>'+esc(m.producto)+'</td><td>'+esc(m.almacen)+'</td>' +
-    '<td>'+esc(m.cantidad)+'</td><td>'+esc(m.referencia)+'</td><td>'+esc(m.notas)+'</td></tr>').join('');
+    '<td>'+esc(m.cantidad)+'</td>' +
+    '<td>'+(m.existencia_anterior!==undefined && m.existencia_anterior!=='' ? esc(m.existencia_anterior)+' → '+esc(m.existencia_posterior) : '—')+'</td>' +
+    '<td>'+esc(m.documento_tipo||m.referencia||'')+'</td><td>'+esc(m.notas)+'</td></tr>').join('');
 }
 
 /* ----- formularios dinamicos (producto / almacen / config / ajuste) ----- */
 function closeBizForms(){ $('bizForms').innerHTML=''; }
+
+/* ----- FASE 1: captura rapida de precios por lote ----- */
+let priceRowsCache = [];
+function showPricesForm(){
+  priceRowsCache = biz.productos.filter(p=>p.estado!=='inactivo').map(p=>({
+    id:p.id, codigo:p.codigo, nombre:p.nombre, costo:Number(p.costo)||0, precio:Number(p.precio)||0, moneda:p.moneda||'MXN'}));
+  $('bizForms').innerHTML = '<div class="card-box"><div class="toolbar" style="margin-bottom:0.5rem;">' +
+    '<strong>Captura rápida de precios</strong>' +
+    '<input id="prSearch" placeholder="Filtrar por código o nombre..." oninput="renderPricesRows(this.value)" style="width:220px;">' +
+    '<button class="btn btn-solid btn-sm" onclick="savePrices()">💾 Guardar cambios</button> ' +
+    '<button class="btn btn-sm" onclick="closeBizForms()">Cerrar</button></div>' +
+    '<div id="prRows"></div></div>';
+  renderPricesRows('');
+}
+function priceMargenTxt(r){
+  if (!r.precio) return '—';
+  const neg = r.costo > r.precio;
+  return '<span style="color:'+(neg?'#e37c7c':'#7ce3a1')+';">'+( ((r.precio-r.costo)/r.precio*100).toFixed(1)+'%'+(neg?' ⚠':'') )+'</span>';
+}
+function renderPricesRows(q){
+  q = (q||'').trim().toLowerCase();
+  const rows = priceRowsCache
+    .map((r,i)=>({r,i}))
+    .filter(o=>!q || String(o.r.codigo||'').toLowerCase().includes(q) || String(o.r.nombre||'').toLowerCase().includes(q))
+    .slice(0,100);
+  $('prRows').innerHTML = '<div class="table-scroll"><table><thead><tr><th>Código</th><th>Producto</th><th>Costo</th><th>Precio</th><th>Margen</th></tr></thead><tbody>' +
+    rows.map(o=>
+      '<tr><td style="white-space:nowrap;">'+esc(o.r.codigo||'—')+'</td><td>'+esc(o.r.nombre)+'</td>' +
+      '<td><input type="number" min="0" step="0.01" value="'+(o.r.costo||'')+'" onchange="priceRowsCache['+o.i+'].costo=parseFloat(this.value)||0; updPriceMargen('+o.i+')"></td>' +
+      '<td><input type="number" min="0" step="0.01" value="'+(o.r.precio||'')+'" onchange="priceRowsCache['+o.i+'].precio=parseFloat(this.value)||0; updPriceMargen('+o.i+')"></td>' +
+      '<td id="prM'+o.i+'">'+priceMargenTxt(o.r)+'</td></tr>').join('') +
+    '</tbody></table></div>' +
+    (priceRowsCache.length>100 && !q ? '<p class="muted" style="font-size:0.72rem;margin-top:0.4rem;">Mostrando 100 de '+priceRowsCache.length+' productos — usa el filtro para ver los demás.</p>' : '');
+}
+function updPriceMargen(i){ const el=$('prM'+i); if(el) el.innerHTML=priceMargenTxt(priceRowsCache[i]); }
+function savePrices(){
+  const items = priceRowsCache.map(r=>({id:r.id, costo:r.costo, precio:r.precio}));
+  apiPost({tipo:'update_precios', items})
+    .then(d=>{
+      notice(d&&d.ok?('Precios actualizados en '+(d.actualizados||0)+' productos.'):errMsg(d,'No se pudo guardar.'), !!(d&&d.ok));
+      if(d&&d.ok) loadBiz();
+    })
+    .catch(()=>notice('Error de conexión al guardar precios.', false));
+}
 
 function showProductForm(id){
   const p = id ? biz.productos.filter(x=>String(x.id)===String(id))[0] : null;
