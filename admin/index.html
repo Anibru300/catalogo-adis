@@ -267,6 +267,7 @@
     </div>
     <nav class="tabs">
       <button class="tab active" data-tab="leads" onclick="showTab('leads')">📥 Leads</button>
+      <button class="tab" data-tab="clientes" onclick="showTab('clientes')">👥 Clientes</button>
       <button class="tab" data-tab="quotes" onclick="showTab('quotes')">🧾 Cotizaciones</button>
       <button class="tab" data-tab="proposal" onclick="showTab('proposal')">📝 Cotizador</button>
       <button class="tab" data-tab="inventory" onclick="showTab('inventory')">📦 Inventario</button>
@@ -299,37 +300,36 @@
       </div>
     </section>
 
+    <!-- CLIENTES -->
+
+    <!-- CLIENTES -->
+    <section id="tab-clientes" class="panel hidden">
+      <div class="toolbar">
+        <h2 style="margin:0;">Clientes</h2>
+        <button class="btn btn-sm" onclick="showClienteForm()">＋ Cliente</button>
+        <span class="muted" id="cliCount"></span>
+      </div>
+      <div id="cliForms"></div>
+      <div class="card-box table-scroll">
+        <table>
+          <thead><tr><th>Nombre</th><th>Teléfono</th><th>Email</th><th>Ciudad</th><th>Origen</th><th></th></tr></thead>
+          <tbody id="cliTable"><tr><td colspan="6" class="muted">Cargando…</td></tr></tbody>
+        </table>
+      </div>
+    </section>
+
     <!-- COTIZACIONES -->
     <section id="tab-quotes" class="panel hidden">
       <div class="toolbar">
-        <h2 style="margin:0;">Nueva cotización</h2>
+        <h2 style="margin:0;">Cotizaciones</h2>
+        <button class="btn btn-sm" onclick="showTab('proposal')">＋ Nueva cotización (Cotizador)</button>
       </div>
-      <div class="card-box">
-        <div class="row">
-          <div><label>Cliente *</label><input id="qNombre" placeholder="Nombre del cliente"></div>
-          <div><label>Teléfono *</label><input id="qTelefono" placeholder="+1 520 ..."></div>
-          <div><label>Ciudad</label><input id="qCiudad" placeholder="Nogales, Tucson..."></div>
-        </div>
-        <label>Agregar producto (buscar en el catálogo)</label>
-        <div class="search-results">
-          <input id="qSearch" placeholder="Escribe el nombre del producto..." autocomplete="off" oninput="searchProducts()">
-          <div id="qSearchResults"></div>
-        </div>
-        <div class="items" id="qItems"></div>
-        <div class="total-line"><span class="muted">Total:</span><strong class="gold" id="qTotal">$0.00</strong></div>
-        <label>Notas</label>
-        <textarea id="qNotas" rows="2" placeholder="Vigencia, condiciones, observaciones..."></textarea>
-        <div class="toolbar" style="margin-top:1rem;">
-          <button class="btn btn-solid" onclick="saveQuote()">💾 Guardar cotización</button>
-          <button class="btn" onclick="printQuote()">🖨️ Imprimir / PDF</button>
-          <button class="btn" onclick="sendQuoteWhatsApp()">🟢 Enviar por WhatsApp</button>
-        </div>
-      </div>
+      <p class="muted" style="font-size:0.78rem;margin-bottom:0.8rem;">La captura de cotizaciones ahora vive en el <strong>Cotizador profesional</strong> (formato ADIS con folio, fotos y PDF). Aquí administras las guardadas.</p>
       <h2>Cotizaciones guardadas</h2>
       <div class="card-box table-scroll">
         <table>
-          <thead><tr><th>Fecha</th><th>Folio</th><th>Cliente</th><th>Teléfono</th><th>Total</th><th>Acción</th></tr></thead>
-          <tbody id="quotesTable"><tr><td colspan="6" class="muted">Cargando…</td></tr></tbody>
+          <thead><tr><th>Fecha</th><th>Folio</th><th>Cliente</th><th>Teléfono</th><th>Total</th><th>Estado</th><th>Acción</th></tr></thead>
+          <tbody id="quotesTable"><tr><td colspan="7" class="muted">Cargando…</td></tr></tbody>
         </table>
       </div>
     </section>
@@ -738,7 +738,7 @@ function enterApp(u){
   if (CONFIG.LOOKER_STUDIO_URL) {
     $('analyticsBox').innerHTML = '<iframe id="analyticsFrame" src="' + esc(CONFIG.LOOKER_STUDIO_URL) + '" frameborder="0" allowfullscreen></iframe>';
   }
-  loadLeads(); loadQuotes(); loadReviewsAdmin(); loadProducts(); loadBiz();
+  loadLeads(); loadQuotes(); loadReviewsAdmin(); loadProducts(); loadBiz(); loadClientes();
   initProposal();
   $('sFecha').value = new Date().toISOString().slice(0,10);
   $('gFecha').value = new Date().toISOString().slice(0,10);
@@ -757,10 +757,11 @@ function logout(){
 /* ---------- tabs ---------- */
 function showTab(name){
   document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active', t.dataset.tab===name));
-  ['leads','quotes','proposal','inventory','oc','sales','expenses','pnl','reviews','analytics','flow'].forEach(n=>$('tab-'+n).classList.toggle('hidden', n!==name));
+  ['leads','clientes','quotes','proposal','inventory','oc','sales','expenses','pnl','reviews','analytics','flow'].forEach(n=>$('tab-'+n).classList.toggle('hidden', n!==name));
   if (name==='pnl' && !$('pnlCards').innerHTML) generarPNL();
   if (name==='flow') loadFlow();
   if (name==='oc') loadOC();
+  if (name==='clientes') loadClientes();
 }
 
 /* ---------- flujo (visitas del sitio) ---------- */
@@ -827,17 +828,69 @@ function loadFlow(){
 }
 
 /* ---------- leads ---------- */
+let leadsCache = [];
 function loadLeads(){
   apiGet('leads').then(data=>{
     if (!data || !data.ok) { $('leadsTable').innerHTML='<tr><td colspan="9" class="muted">Sin acceso o error de conexión.</td></tr>'; return; }
-    $('leadsCount').textContent = data.leads.length + ' registro(s)';
-    if (!data.leads.length) { $('leadsTable').innerHTML='<tr><td colspan="9" class="muted">Aún no hay leads captados.</td></tr>'; return; }
-    $('leadsTable').innerHTML = data.leads.slice().reverse().map(l=>
-      '<tr><td>'+esc(l.fecha)+'</td><td>'+esc(l.nombre)+'</td><td>'+esc(l.telefono)+'</td><td>'+esc(l.email)+'</td>' +
+    leadsCache = data.leads || [];
+    $('leadsCount').textContent = leadsCache.length + ' registro(s)';
+    if (!leadsCache.length) { $('leadsTable').innerHTML='<tr><td colspan="9" class="muted">Aún no hay leads captados.</td></tr>'; return; }
+    $('leadsTable').innerHTML = leadsCache.slice().reverse().map((l,i)=>{
+      const rev = leadsCache.length - 1 - i;
+      return '<tr><td>'+esc(l.fecha)+'</td><td>'+esc(l.nombre)+'</td><td>'+esc(l.telefono)+'</td><td>'+esc(l.email)+'</td>' +
       '<td>'+esc(l.ciudad)+'</td><td>'+esc(l.metros)+'</td><td>'+esc(l.producto)+'</td><td>'+esc(l.mensaje)+'</td>' +
-      '<td><a class="btn btn-sm" target="_blank" href="https://wa.me/'+esc(String(l.telefono).replace(/\D/g,''))+'">WA</a></td></tr>'
-    ).join('');
+      '<td style="white-space:nowrap;"><a class="btn btn-sm" target="_blank" href="https://wa.me/'+esc(String(l.telefono).replace(/\D/g,''))+'">WA</a> ' +
+      '<button class="btn btn-sm" title="Convertir en cliente" onclick="convertLead('+rev+')">→ Cliente</button></td></tr>';
+    }).join('');
   }).catch(()=>{ $('leadsTable').innerHTML='<tr><td colspan="9" class="muted">Error de conexión.</td></tr>'; });
+}
+
+/* ---------- clientes (FASE 3) ---------- */
+let clientesCache = [];
+function loadClientes(){
+  apiGet('clientes').then(d=>{
+    if (!d || !d.ok) { $('cliTable').innerHTML='<tr><td colspan="6" class="muted">Sin acceso.</td></tr>'; return; }
+    clientesCache = d.clientes || [];
+    $('cliCount').textContent = clientesCache.length + ' cliente(s)';
+    if (!clientesCache.length) { $('cliTable').innerHTML='<tr><td colspan="6" class="muted">Sin clientes todavía. Convierte un lead o crea uno.</td></tr>'; return; }
+    $('cliTable').innerHTML = clientesCache.map(c=>
+      '<tr><td>'+esc(c.nombre)+'</td><td>'+esc(c.telefono||'—')+'</td><td>'+esc(c.email||'—')+'</td>' +
+      '<td>'+esc(c.ciudad||'—')+'</td><td>'+(c.origen==='lead'?'Lead':'Manual')+'</td>' +
+      '<td><button class="btn btn-danger btn-sm" onclick="deleteCliente(\''+c.id+'\')">✕</button></td></tr>').join('');
+  }).catch(()=>{ $('cliTable').innerHTML='<tr><td colspan="6" class="muted">Error de conexión.</td></tr>'; });
+}
+function showClienteForm(){
+  $('cliForms').innerHTML = '<div class="card-box"><div class="row">' +
+    '<div><label>Nombre *</label><input id="cNombre"></div>' +
+    '<div><label>Teléfono</label><input id="cTel"></div>' +
+    '<div><label>Email</label><input id="cEmail"></div>' +
+    '<div><label>Ciudad</label><input id="cCiudad"></div>' +
+    '</div><label>Notas / dirección</label><input id="cNotas">' +
+    '<div class="toolbar" style="margin-top:1rem;"><button class="btn btn-solid btn-sm" onclick="saveCliente()">💾 Guardar</button> ' +
+    '<button class="btn btn-sm" onclick="$(\'cliForms\').innerHTML=\'\'">Cancelar</button></div></div>';
+}
+function saveCliente(datos){
+  const d = datos || { nombre:$('cNombre').value.trim(), telefono:$('cTel').value.trim(),
+    email:$('cEmail').value.trim(), ciudad:$('cCiudad').value.trim(), notas:$('cNotas').value.trim(), origen:'manual' };
+  if (!d.nombre) { notice('El cliente necesita nombre.', false); return; }
+  apiPost({tipo:'save_cliente', nombre:d.nombre, telefono:d.telefono||'', email:d.email||'',
+    ciudad:d.ciudad||'', notas:d.notas||'', origen:d.origen||'manual'}).then(r=>{
+    notice(r&&r.ok?'Cliente guardado.':errMsg(r,'No se pudo guardar.'), !!(r&&r.ok));
+    if(r&&r.ok){ $('cliForms').innerHTML=''; loadClientes(); }
+  }).catch(()=>notice('Error de conexión.', false));
+}
+function convertLead(idx){
+  const l = leadsCache[idx];
+  if (!l) return;
+  if (!confirm('¿Convertir a '+l.nombre+' en cliente? Se crea en el directorio de clientes (el lead se conserva como histórico).')) return;
+  saveCliente({ nombre:l.nombre, telefono:l.telefono, email:l.email, ciudad:l.ciudad, notas:'Convertido desde lead: '+(l.producto||''), origen:'lead' });
+}
+function deleteCliente(id){
+  if (!confirm('¿Desactivar este cliente? Su historial de cotizaciones no se toca.')) return;
+  apiPost({tipo:'delete_cliente', id}).then(d=>{
+    notice(d&&d.ok?'Cliente desactivado.':errMsg(d), !!(d&&d.ok));
+    if(d&&d.ok) loadClientes();
+  });
 }
 
 /* ---------- cotizaciones ---------- */
@@ -914,11 +967,22 @@ function loadQuotes(){
     if (!quotesCache.length) { $('quotesTable').innerHTML='<tr><td colspan="6" class="muted">Aún no hay cotizaciones guardadas.</td></tr>'; return; }
     $('quotesTable').innerHTML = quotesCache.slice().reverse().map((q,i)=>{
       const rev = quotesCache.length - 1 - i;
+      const estado = q.estado || 'Activa';
+      const puedeAprobar = q.id && estado === 'Activa';
       return '<tr><td>'+esc(String(q.fecha||'').slice(0,10))+'</td><td class="gold">'+esc(q.folio||'—')+'</td><td>'+esc(q.cliente)+'</td>' +
         '<td>'+esc(q.telefono)+'</td><td class="gold">'+esc(q.total)+'</td>' +
-        '<td>'+(q.datos ? '<button class="btn btn-sm" onclick="loadProposalFromQuote('+rev+')">📂 Cargar</button>' : '<span class="muted">simple</span>')+'</td></tr>';
+        '<td>'+(q.id ? '<span class="muted">'+esc(estado)+'</span>' : '<span class="muted">'+(q.datos?'Activa':'simple')+'</span>')+'</td>' +
+        '<td style="white-space:nowrap;">'+(q.datos ? '<button class="btn btn-sm" onclick="loadProposalFromQuote('+rev+')">📂 Cargar</button> ' : '')+
+        (puedeAprobar ? '<button class="btn btn-sm" onclick="aprobarQuote(\''+q.id+'\')">✔ Aprobar</button>' : '')+'</td></tr>';
     }).join('');
   }).catch(()=>{});
+}
+function aprobarQuote(id){
+  if (!confirm('¿Marcar esta cotización como APROBADA? (El siguiente paso será crearle proyecto en la Fase 4.)')) return;
+  apiPost({tipo:'set_estado_quote', id, estado:'Aprobada'}).then(d=>{
+    notice(d&&d.ok?'Cotización aprobada.':errMsg(d), !!(d&&d.ok));
+    if(d&&d.ok) loadQuotes();
+  });
 }
 
 /* ---------- COTIZADOR PROFESIONAL (formato propuesta ADIS) ---------- */
@@ -969,7 +1033,17 @@ function applyPropToForm(){
 
 function matchLead(){
   const q = prop.cliente.trim().toLowerCase();
+  prop.clienteId = ''; // se reasigna solo si hay coincidencia exacta con un cliente
   if (q.length < 3) return;
+  // FASE 3: autocompletar tambien desde clientes registrados (con prioridad)
+  const c = clientesCache.find(x => String(x.nombre||'').toLowerCase() === q) || clientesCache.find(x => String(x.nombre||'').toLowerCase().indexOf(q) !== -1);
+  if (c && document.activeElement === $('pCliente')) {
+    prop.clienteId = c.id;
+    if (c.telefono && !$('pTelefono').value) { prop.telefono = c.telefono; $('pTelefono').value = c.telefono; }
+    if (c.ciudad && !$('pUbicacion').value) { prop.ubicacion = c.ciudad; $('pUbicacion').value = c.ciudad; }
+    renderProposal();
+    return;
+  }
   apiGet('leads').then(d=>{
     if (!d || !d.ok) return;
     const l = d.leads.find(x => String(x.nombre||'').toLowerCase() === q) || d.leads.find(x => String(x.nombre||'').toLowerCase().indexOf(q) !== -1);
@@ -1194,6 +1268,7 @@ function saveProposal(){
   });
   apiPost({ tipo:'quote', folio: prop.savedFolio || '', cliente: prop.cliente, telefono: prop.telefono,
     ciudad: prop.ubicacion, proyecto: prop.proyecto, ubicacion: prop.ubicacion, moneda: prop.moneda,
+    cliente_id: prop.clienteId || '',
     items: prop.items.map(it => ({ codigo: it.codigo, descripcion: it.descripcion, cantidad: it.cantidad, unidad: it.unidad, precio: it.precio })),
     subtotal: t.subtotal, iva: t.iva, total: t.total, notas: prop.especificaciones.slice(0, 500), datos: datos })
     .then(d => {
@@ -1222,6 +1297,7 @@ function loadProposalFromQuote(idx){
     if (!d || !d.items) throw 0;
     prop = Object.assign(defaultProp(), d);
     prop.savedFolio = q.folio || prop.savedFolio;
+    prop.clienteId = q.cliente_id || prop.clienteId || '';
     renderTiposChk(); applyPropToForm(); renderItemRows(); renderFotoProy(); renderFotosGrid(); renderProposal(); schedulePropDraft();
     showTab('proposal');
     notice('Cotización ' + (q.folio || '') + ' cargada en el editor. Las fotos se conservan en el borrador local.');

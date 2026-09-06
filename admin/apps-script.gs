@@ -57,6 +57,7 @@ var SHEET_LOG      = 'Log';
 var SHEET_VISITS   = 'Visitas';
 var SHEET_VISITS_ARCHIVE = 'Visitas_Archivo';
 var SHEET_PROVIDERS  = 'Proveedores';
+var SHEET_CLIENTS    = 'Clientes';
 var SHEET_PO         = 'OrdenesCompra';
 var SHEET_RECEP      = 'Recepciones';
 var VISITS_MAX_FILAS = 5000;   // activas; el excedente se ARCHIVA (no se borra)
@@ -72,7 +73,7 @@ var TIPOS_MOVIMIENTO = ['entrada', 'salida', 'ajuste'];
 /* ----- Esquemas (columnas NUEVAS siempre se agregan al final; nunca se
    renombran ni reordenan las existentes para no romper datos vivos) ----- */
 var ENC_COTIZ = ['fecha', 'cliente', 'telefono', 'ciudad', 'items', 'total', 'notas',
-  'folio', 'proyecto', 'ubicacion', 'moneda', 'subtotal', 'iva', 'estado', 'datos', 'id', 'usuario'];
+  'folio', 'proyecto', 'ubicacion', 'moneda', 'subtotal', 'iva', 'estado', 'datos', 'id', 'usuario', 'cliente_id'];
 var ENC_PROD = ['id', 'codigo', 'nombre', 'descripcion', 'categoria', 'subcategoria', 'proveedor',
   'costo', 'precio', 'unidad', 'stock_minimo', 'moneda', 'foto', 'estado', 'notas', 'fecha_actualizacion'];
 var ENC_MOV = ['fecha', 'tipo', 'producto_id', 'producto', 'almacen_id', 'almacen', 'cantidad',
@@ -84,6 +85,7 @@ var ENC_GASTOS = ['fecha', 'categoria', 'descripcion', 'monto', 'moneda', 'tipo_
   'id', 'usuario'];
 var ENC_RESENAS = ['fecha', 'nombre', 'estrellas', 'texto', 'activa', 'id', 'usuario'];
 var ENC_PROV = ['id', 'nombre', 'contacto', 'telefono', 'email', 'direccion', 'notas', 'activo', 'fecha'];
+var ENC_CLIENTES = ['id', 'nombre', 'telefono', 'email', 'ciudad', 'direccion', 'notas', 'origen', 'fecha', 'activo'];
 var ENC_OC = ['id', 'folio', 'proveedor_id', 'proveedor', 'fecha', 'fecha_esperada', 'almacen_id', 'almacen',
   'moneda', 'subtotal', 'iva', 'descuento', 'total', 'estado', 'notas', 'usuario', 'fecha_actualizacion', 'partidas'];
 var ENC_RECEP = ['id', 'oc_id', 'oc_folio', 'fecha', 'items', 'usuario'];
@@ -503,6 +505,9 @@ function doGetInterno(e) {
       margen_neto: ingresos ? (utilNeta / ingresos * 100) : 0 });
   }
 
+  if (action === 'clientes') {
+    return json({ ok: true, clientes: filasComoObjetos(SHEET_CLIENTS).filter(function (c) { return String(c.activo) !== 'no'; }) });
+  }
   if (action === 'proveedores') {
     return json({ ok: true, proveedores: filasComoObjetos(SHEET_PROVIDERS).filter(function (p) { return String(p.activo) !== 'no'; }) });
   }
@@ -605,7 +610,7 @@ function doPostInterno(data) {
     hCot.appendRow([ahora_(), cliente, data.telefono || '', data.ciudad || data.ubicacion || '',
       items, data.total || 0, data.notas || '', folio, data.proyecto || '', data.ubicacion || '',
       validarMoneda(data.moneda || 'MXN'), data.subtotal || 0, data.iva || 0, data.estado || 'Activa',
-      JSON.stringify(data.datos || {}), nuevoId(), USUARIO_ACTUAL]);
+      JSON.stringify(data.datos || {}), nuevoId(), USUARIO_ACTUAL, data.cliente_id || '']);
     log_('cotizacion', folio + ' · ' + cliente + ' · ' + (data.moneda || '') + ' ' + (data.total || 0));
     return json({ ok: true, folio: folio });
   });
@@ -977,6 +982,62 @@ function doPostInterno(data) {
     ss().getSheetByName(SHEET_EXPENSES).deleteRow(filaG);
     log_('gasto_eliminado', 'id=' + (data.id || '') + ' fila=' + filaG);
     return json({ ok: true });
+  });
+
+  /* ---------- Clientes (FASE 3) ---------- */
+  if (tipo === 'save_cliente') return conLock(function () {
+    var nombreC = String(data.nombre || '').trim();
+    if (!nombreC) throw AdisError('VALIDACION', 'El cliente necesita nombre.');
+    var telC = String(data.telefono || '').trim();
+    var hc = hoja(SHEET_CLIENTS, ENC_CLIENTES);
+    if (data.id) {
+      var filaC = filaPorId(SHEET_CLIENTS, data.id);
+      if (!filaC) throw AdisError('NO_ENCONTRADO', 'Cliente no encontrado.');
+      hc.getRange(filaC, 1, 1, ENC_CLIENTES.length).setValues([[data.id, nombreC, telC, data.email || '',
+        data.ciudad || '', data.direccion || '', data.notas || '', 'manual', ahora_(), 'si']]);
+      log_('cliente_editado', nombreC);
+      return json({ ok: true, id: data.id });
+    }
+    // dedup por telefono entre clientes activos (mismo telefono = mismo cliente)
+    if (telC) {
+      var existentes = filasComoObjetos(SHEET_CLIENTS);
+      for (var ic = 0; ic < existentes.length; ic++) {
+        if (String(existentes[ic].activo) !== 'no' && String(existentes[ic].telefono) === telC) {
+          throw AdisError('CLIENTE_DUPLICADO', 'Ya existe un cliente con ese teléfono: ' + existentes[ic].nombre);
+        }
+      }
+    }
+    var idC = nuevoId();
+    hc.appendRow([idC, nombreC, telC, data.email || '', data.ciudad || '', data.direccion || '',
+      data.notas || '', data.origen === 'lead' ? 'lead' : 'manual', ahora_(), 'si']);
+    log_('cliente_creado', nombreC + (telC ? ' · ' + telC : ''));
+    return json({ ok: true, id: idC });
+  });
+
+  if (tipo === 'delete_cliente') return conLock(function () {
+    var filaDC = filaPorId(SHEET_CLIENTS, data.id);
+    if (!filaDC) throw AdisError('NO_ENCONTRADO', 'Cliente no encontrado.');
+    ss().getSheetByName(SHEET_CLIENTS).getRange(filaDC, 10).setValue('no');
+    log_('cliente_desactivado', String(data.id));
+    return json({ ok: true });
+  });
+
+  // Estados de cotizacion: Activa -> Aprobada/Vencida/Cancelada; Aprobada -> Vencida
+  if (tipo === 'set_estado_quote') return conLock(function () {
+    var transQ = { Activa: ['Aprobada', 'Vencida', 'Cancelada'], Aprobada: ['Vencida'], Vencida: [], Cancelada: [] };
+    var filaQ = filaPorId(SHEET_QUOTES, data.id);
+    if (!filaQ) throw AdisError('NO_ENCONTRADO', 'Cotización no encontrada (solo las nuevas tienen ID estable).');
+    var hQ = ss().getSheetByName(SHEET_QUOTES);
+    var encQ = hQ.getRange(1, 1, 1, hQ.getLastColumn()).getValues()[0].map(String);
+    var colEstado = encQ.indexOf('estado');
+    var estadoQ = String(hQ.getRange(filaQ, colEstado + 1).getValue()) || 'Activa';
+    var nuevoQ = String(data.estado || '');
+    if ((transQ[estadoQ] || []).indexOf(nuevoQ) === -1) {
+      throw AdisError('NO_PERMITIDO', 'No se puede pasar de ' + estadoQ + ' a ' + nuevoQ + '.');
+    }
+    hQ.getRange(filaQ, colEstado + 1).setValue(nuevoQ);
+    log_('cotizacion_estado', String(hQ.getRange(filaQ, 8).getValue()) + ': ' + estadoQ + ' -> ' + nuevoQ);
+    return json({ ok: true, estado: nuevoQ });
   });
 
   /* ================= COMPRAS (FASE 2) ================= */
