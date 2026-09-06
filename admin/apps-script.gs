@@ -60,6 +60,7 @@ var SHEET_PROVIDERS  = 'Proveedores';
 var SHEET_CLIENTS    = 'Clientes';
 var SHEET_PROJECTS   = 'Proyectos';
 var SHEET_COBROS     = 'Cobros';
+var SHEET_PAGOS      = 'Pagos';
 var SHEET_PO         = 'OrdenesCompra';
 var SHEET_RECEP      = 'Recepciones';
 var VISITS_MAX_FILAS = 5000;   // activas; el excedente se ARCHIVA (no se borra)
@@ -85,7 +86,9 @@ var ENC_VENTAS = ['fecha', 'cliente', 'almacen', 'items', 'total', 'moneda', 'ti
   'total_base', 'costo_total_base', 'utilidad_base', 'notas', 'id', 'folio', 'usuario',
   'cliente_id', 'proyecto_id', 'estado_pago', 'almacen_id', 'items_json'];
 var ENC_GASTOS = ['fecha', 'categoria', 'descripcion', 'monto', 'moneda', 'tipo_cambio', 'monto_base',
-  'id', 'usuario'];
+  'id', 'usuario', 'folio', 'estado', 'pagado'];
+var ENC_PAGOS = ['id', 'folio', 'gasto_id', 'gasto_folio', 'categoria', 'fecha', 'monto', 'moneda',
+  'monto_base', 'metodo', 'notas', 'usuario'];
 var ENC_RESENAS = ['fecha', 'nombre', 'estrellas', 'texto', 'activa', 'id', 'usuario'];
 var ENC_PROV = ['id', 'nombre', 'contacto', 'telefono', 'email', 'direccion', 'notas', 'activo', 'fecha'];
 var ENC_CLIENTES = ['id', 'nombre', 'telefono', 'email', 'ciudad', 'direccion', 'notas', 'origen', 'fecha', 'activo'];
@@ -491,7 +494,7 @@ function doGetInterno(e) {
       return f >= desde && f <= hasta;
     };
     var ventas = filasComoObjetos(SHEET_SALES).filter(function (v) { return enRango(v.fecha); });
-    var gastos = filasComoObjetos(SHEET_EXPENSES).filter(function (g) { return enRango(g.fecha); });
+    var gastos = filasComoObjetos(SHEET_EXPENSES).filter(function (g) { return enRango(g.fecha) && String(g.estado) !== 'CANCELADA'; });
     var ingresos = 0, costos = 0;
     ventas.forEach(function (v) { ingresos += Number(v.total_base) || 0; costos += Number(v.costo_total_base) || 0; });
     var porCategoria = {};
@@ -587,6 +590,72 @@ function doGetInterno(e) {
     var porCobrar = cxc.reduce(function (s, x) { return s + x.saldo_base; }, 0);
     return json({ ok: true, cxc: cxc, por_cobrar_base: porCobrar, moneda_base: cfg('moneda_base', 'MXN'),
       cobros: cobrosCx.slice(-100).reverse() });
+  }
+
+  if (action === 'pagos') {
+    return json({ ok: true, pagos: filasComoObjetos(SHEET_PAGOS).slice(-200).reverse(),
+      moneda_base: cfg('moneda_base', 'MXN') });
+  }
+  if (action === 'cxp') { // cuentas por pagar: gastos (no cancelados) vs pagos reales
+    var gastosCp = filasComoObjetos(SHEET_EXPENSES).filter(function (g) { return g.id && String(g.estado) !== 'CANCELADA'; });
+    var pagosCp = filasComoObjetos(SHEET_PAGOS);
+    var cxp = gastosCp.map(function (g) {
+      var pagadoP = 0, pagadoBaseP = 0, ultimoPago = '';
+      pagosCp.forEach(function (p) {
+        if (String(p.gasto_id) === String(g.id)) {
+          pagadoP += Number(p.monto) || 0; pagadoBaseP += Number(p.monto_base) || 0;
+          if (String(p.fecha) > ultimoPago) ultimoPago = String(p.fecha);
+        }
+      });
+      var totalCp = Number(g.monto) || 0, totalBaseCp = Number(g.monto_base) || 0;
+      return { gasto_id: g.id, folio: g.folio, fecha: g.fecha, categoria: g.categoria,
+        descripcion: g.descripcion || '', moneda: g.moneda, total: totalCp, pagado: pagadoP,
+        saldo: Math.max(0, totalCp - pagadoP), total_base: totalBaseCp, pagado_base: pagadoBaseP,
+        saldo_base: Math.max(0, totalBaseCp - pagadoBaseP), estado: g.estado || 'ACTIVA',
+        estado_pago: (pagadoBaseP >= totalBaseCp - 0.001 && totalBaseCp > 0) ? 'PAGADA' : (pagadoBaseP > 0 ? 'PARCIAL' : 'PENDIENTE'),
+        ultimo_pago: ultimoPago };
+    });
+    var porPagar = cxp.reduce(function (s, x) { return s + x.saldo_base; }, 0);
+    return json({ ok: true, cxp: cxp, por_pagar_base: porPagar, moneda_base: cfg('moneda_base', 'MXN'),
+      pagos: pagosCp.slice(-100).reverse() });
+  }
+  if (action === 'flujo_caja') { // FASE 5: efectivo REAL = cobros entrados - pagos salidos
+    var desdeFc = String(params.desde || ''), hastaFc = String(params.hasta || '');
+    if (!desdeFc || !hastaFc) {
+      var ahoraFc = new Date();
+      var yFc = ahoraFc.getFullYear(), mFc = ahoraFc.getMonth() + 1;
+      desdeFc = yFc + '-' + (mFc < 10 ? '0' : '') + mFc + '-01';
+      hastaFc = Utilities.formatDate(ahoraFc, 'America/Hermosillo', 'yyyy-MM-dd');
+    }
+    var enRangoFc = function (fecha) { var f = String(fecha).slice(0, 10); return f >= desdeFc && f <= hastaFc; };
+    var cobrosFc = filasComoObjetos(SHEET_COBROS).filter(function (c) { return enRangoFc(c.fecha); });
+    var pagosFc = filasComoObjetos(SHEET_PAGOS).filter(function (p) { return enRangoFc(p.fecha); });
+    var porDiaFc = {};
+    cobrosFc.forEach(function (c) {
+      var f = String(c.fecha).slice(0, 10);
+      porDiaFc[f] = porDiaFc[f] || { fecha: f, entradas: 0, salidas: 0 };
+      porDiaFc[f].entradas += Number(c.monto_base) || 0;
+    });
+    pagosFc.forEach(function (p) {
+      var f = String(p.fecha).slice(0, 10);
+      porDiaFc[f] = porDiaFc[f] || { fecha: f, entradas: 0, salidas: 0 };
+      porDiaFc[f].salidas += Number(p.monto_base) || 0;
+    });
+    var diasFc = Object.keys(porDiaFc).sort().map(function (k) { return porDiaFc[k]; });
+    var entradasFc = cobrosFc.reduce(function (s, c) { return s + (Number(c.monto_base) || 0); }, 0);
+    var salidasFc = pagosFc.reduce(function (s, p) { return s + (Number(p.monto_base) || 0); }, 0);
+    var movsFc = cobrosFc.map(function (c) {
+      return { tipo: 'entrada', fecha: c.fecha, folio: c.folio || '',
+        concepto: (c.cliente || '') + (c.venta_folio ? ' · ' + c.venta_folio : ''),
+        monto_base: Number(c.monto_base) || 0, metodo: c.metodo || '' };
+    }).concat(pagosFc.map(function (p) {
+      return { tipo: 'salida', fecha: p.fecha, folio: p.folio || '',
+        concepto: (p.categoria || '') + (p.gasto_folio ? ' · ' + p.gasto_folio : ''),
+        monto_base: Number(p.monto_base) || 0, metodo: p.metodo || '' };
+    })).sort(function (a, b) { return String(a.fecha) < String(b.fecha) ? 1 : -1; }).slice(0, 100);
+    return json({ ok: true, desde: desdeFc, hasta: hastaFc, moneda_base: cfg('moneda_base', 'MXN'),
+      entradas: entradasFc, salidas: salidasFc, neto: entradasFc - salidasFc,
+      num_cobros: cobrosFc.length, num_pagos: pagosFc.length, dias: diasFc, movimientos: movsFc });
   }
 
   throw AdisError('ACCION_DESCONOCIDA', 'Acción desconocida: ' + action);
@@ -1024,22 +1093,89 @@ function doPostInterno(data) {
     var monedaG = validarMoneda(data.moneda || cfg('moneda_base', 'MXN'));
     var tcg = Number(data.tipo_cambio) || Number(cfg('tipo_cambio', '18.5')) || 1;
     var fechaG = validarFecha(data.fecha) || hoy_();
+    var folioG = siguienteFolio('GAS', 'folio_gasto', 4);
     hoja(SHEET_EXPENSES, ENC_GASTOS).appendRow([fechaG, categoria, data.descripcion || '',
-      monto, monedaG, tcg, aBase(monto, monedaG, tcg), nuevoId(), USUARIO_ACTUAL]);
-    log_('gasto_registrado', categoria + ' - ' + monto + ' ' + monedaG);
+      monto, monedaG, tcg, aBase(monto, monedaG, tcg), nuevoId(), USUARIO_ACTUAL, folioG, 'ACTIVA', 0]);
+    log_('gasto_registrado', folioG + ' · ' + categoria + ' - ' + monto + ' ' + monedaG);
+    return json({ ok: true, folio: folioG });
+  });
+
+  // FASE 5: pago parcial/total de un gasto (gasto != pago; flujo de efectivo real)
+  if (tipo === 'gasto_pago' || tipo === 'registrar_pago') return conLock(function () {
+    var filaGP = filaPorId(SHEET_EXPENSES, data.gasto_id);
+    if (!filaGP) throw AdisError('NO_ENCONTRADO', 'Gasto no encontrado.');
+    var hGP = ss().getSheetByName(SHEET_EXPENSES);
+    var estadoGP = String(hGP.getRange(filaGP, 11).getValue()) || 'ACTIVA';
+    if (estadoGP === 'CANCELADA') throw AdisError('NO_PERMITIDO', 'El gasto está cancelado; no admite pagos.');
+    var folioGP = String(hGP.getRange(filaGP, 10).getValue()) || '';
+    var monedaGP = String(hGP.getRange(filaGP, 5).getValue()) || 'MXN';
+    var tcgGP = Number(hGP.getRange(filaGP, 6).getValue()) || 1;
+    var montoP = Number(data.monto);
+    if (!isFinite(montoP) || montoP <= 0) throw AdisError('VALIDACION', 'El monto del pago debe ser mayor que cero.');
+    var monedaP = validarMoneda(data.moneda || monedaGP);
+    var tcP = Number(data.tipo_cambio) || Number(cfg('tipo_cambio', '18.5')) || 1;
+    var pagadoPrev = 0, pagadoPrevBase = 0;
+    filasComoObjetos(SHEET_PAGOS).forEach(function (p) {
+      if (String(p.gasto_id) === String(data.gasto_id)) {
+        pagadoPrevBase += Number(p.monto_base) || 0;
+        if (String(p.moneda) === monedaGP) pagadoPrev += Number(p.monto) || 0;
+      }
+    });
+    var totalBaseGP = Number(hGP.getRange(filaGP, 7).getValue()) || 0;
+    var montoBaseP = aBase(montoP, monedaP, tcP);
+    if (pagadoPrevBase + montoBaseP > totalBaseGP + 0.001) {
+      throw AdisError('VALIDACION', 'El pago excede el saldo pendiente del gasto ' + folioGP + '.');
+    }
+    var folioP = siguienteFolio('PAG', 'folio_pago', 4);
+    hoja(SHEET_PAGOS, ENC_PAGOS).appendRow([nuevoId(), folioP, String(data.gasto_id), folioGP,
+      String(hGP.getRange(filaGP, 2).getValue()), validarFecha(data.fecha) || hoy_(),
+      montoP, monedaP, montoBaseP, data.metodo || '', data.notas || '', USUARIO_ACTUAL]);
+    // columna pagado en la moneda del gasto (si el pago es en otra moneda, equivalente aproximado)
+    var sumaPagado = pagadoPrev + (String(monedaP) === monedaGP ? montoP : (tcgGP ? montoBaseP / tcgGP : montoBaseP));
+    hGP.getRange(filaGP, 12).setValue(Math.round(sumaPagado * 100) / 100);
+    var estadoPagoGP = (pagadoPrevBase + montoBaseP >= totalBaseGP - 0.001 && totalBaseGP > 0) ? 'PAGADA' : 'PARCIAL';
+    log_('pago_registrado', folioP + ' · ' + folioGP + ' · ' + montoP + ' ' + monedaP + ' · ' + estadoPagoGP);
+    return json({ ok: true, folio: folioP, estado_pago: estadoPagoGP });
+  });
+
+  // FASE 5: cancelar gasto (baja logica; nunca borrado fisico ni con pagos)
+  if (tipo === 'gasto_cancelar') return conLock(function () {
+    var filaGC = filaPorId(SHEET_EXPENSES, data.id);
+    if (!filaGC) throw AdisError('NO_ENCONTRADO', 'Gasto no encontrado.');
+    var hGC = ss().getSheetByName(SHEET_EXPENSES);
+    if (String(hGC.getRange(filaGC, 11).getValue()) === 'CANCELADA') return json({ ok: true, ya_cancelada: true });
+    var pagadoGC = 0;
+    filasComoObjetos(SHEET_PAGOS).forEach(function (p) {
+      if (String(p.gasto_id) === String(data.id)) pagadoGC += Number(p.monto_base) || 0;
+    });
+    if (pagadoGC > 0.001) throw AdisError('NO_PERMITIDO', 'El gasto tiene pagos registrados; no puede cancelarse (los pagos son efectivo ya salido).');
+    hGC.getRange(filaGC, 11).setValue('CANCELADA');
+    log_('gasto_cancelado', 'id=' + (data.id || ''));
     return json({ ok: true });
   });
 
+  // FASE 5: delete_gasto queda como alias de CANCELAR (baja logica trazable, no fisica)
   if (tipo === 'delete_gasto') return conLock(function () {
     var filaG = filaPorId(SHEET_EXPENSES, data.id);
     if (!filaG && Number(data.row) > 1) { // compatibilidad temporal con frontend viejo
       var hg0 = ss().getSheetByName(SHEET_EXPENSES);
-      if (hg0 && Number(data.row) <= hg0.getLastRow()) filaG = Number(data.row);
+      if (hg0 && Number(data.row) <= hg0.getLastRow()) {
+        // validar que la fila legacy corresponde al id enviado (o no hay id)
+        var idFila = String(hg0.getRange(Number(data.row), 8).getValue() || '');
+        if (!data.id || idFila === String(data.id)) filaG = Number(data.row);
+      }
     }
     if (!filaG) throw AdisError('NO_ENCONTRADO', 'Gasto no encontrado.');
-    ss().getSheetByName(SHEET_EXPENSES).deleteRow(filaG);
-    log_('gasto_eliminado', 'id=' + (data.id || '') + ' fila=' + filaG);
-    return json({ ok: true });
+    var hGx = ss().getSheetByName(SHEET_EXPENSES);
+    if (String(hGx.getRange(filaG, 11).getValue()) === 'CANCELADA') return json({ ok: true, ya_cancelada: true });
+    var pagadoG = 0;
+    filasComoObjetos(SHEET_PAGOS).forEach(function (p) {
+      if (String(p.gasto_id) === String(data.id)) pagadoG += Number(p.monto_base) || 0;
+    });
+    if (pagadoG > 0.001) throw AdisError('NO_PERMITIDO', 'El gasto tiene pagos registrados; no puede cancelarse.');
+    hGx.getRange(filaG, 11).setValue('CANCELADA');
+    log_('gasto_cancelado', 'id=' + (data.id || '') + ' (via delete_gasto)');
+    return json({ ok: true, cancelada: true });
   });
 
   /* ---------- Clientes (FASE 3) ---------- */

@@ -58,6 +58,7 @@ Panel administrativo de ADIS | Diseños & Remodelaciones sobre arquitectura de
 | `estado_resultados&mes=YYYY-MM` | `{ok, ingresos, costos, utilidad_bruta, gastos:{cat}, total_gastos, utilidad_neta, num_ventas, margen_bruto, margen_neto, moneda_base}` | |
 
 | `proyectos`, `cxc` | sí | Fase 4 |
+| `pagos`, `cxp`, `flujo_caja?desde=&hasta=` | sí | Fase 5: CxP y efectivo real (cobros−pagos) |
 
 ### POST
 
@@ -81,9 +82,11 @@ Panel administrativo de ADIS | Diseños & Remodelaciones sobre arquitectura de
 | `movimiento` | sí | Stock, Movimientos, Log | sí |
 | `venta` | sí | Stock, Movimientos, Ventas, Config (folio), Log | sí |
 | `gasto` | sí | Gastos, Log | sí |
-| `delete_gasto` | sí | Gastos | sí |
+| `delete_gasto` | sí | Gastos | fecha, categoria, descripcion, monto, moneda, tipo_cambio, monto_base, id, usuario, folio (GAS-), estado (ACTIVA/CANCELADA), pagado |
 
 | `save_proyecto`, `proyecto_mov`, `crear_proyecto_desde_cotizacion` | sí | Proyectos, Proyectos_Movs, Config, Log | sí |
+| `gasto_pago` (registrar_pago) | sí | Pagos, Gastos, Log | sí |
+| `gasto_cancelar` / `delete_gasto` (alias, baja lógica) | sí | Gastos, Log | sí |
 | `venta_pago` (registrar_cobro) | sí | Cobros, Ventas, Log | sí |
 | `venta_anular` | sí | Ventas, Stock, Movimientos, Log | sí |
 
@@ -116,6 +119,7 @@ Columnas nuevas de la Fase 0 se agregaron **al final** (migración aditiva;
 | Clientes | id, folio, nombre, telefono, email, ciudad, tags, notas, **usuario, creado** |
 | Proyectos | id, folio, nombre, cliente_id, cotizacion_id, estado, moneda, presupuesto, cobrado, creado, usuario, notas |
 | Proyectos_Movs | id, proyecto_id, tipo, monto, moneda_base, tipo_cambio_base, monto_base, fecha, usuario, descripcion, doc_tipo, doc_id |
+| Pagos | id, folio, gasto_id, gasto_folio, categoria, fecha, monto, moneda, monto_base, metodo, notas, usuario |
 | Cobros | id, venta_id, fecha, monto, moneda, tipo_cambio, monto_base, metodo, notas, usuario |
 | Cotizaciones | fecha, cliente, telefono, ciudad, items, total, notas, folio, proyecto, ubicacion, moneda, subtotal, iva, estado, datos, **id, usuario** |
 | Leads | fecha, nombre, telefono, email, ciudad, metros, producto, mensaje, pagina, idioma |
@@ -137,6 +141,8 @@ Gastos, Stock, Visitas. **Ventas y Movimientos son histórico protegido.**
 | `folio_venta` | 1 | consecutivo VEN-AAAA-NNNN |
 | `folio_movimiento` | 1 | consecutivo MOV-AAAA-NNNNN |
 | `folio_proyecto` | 1 | consecutivo PRY-NNNNNN |
+| `folio_gasto` | 1 | consecutivo GAS-AAAA-NNNN |
+| `folio_pago` | 1 | consecutivo PAG-AAAA-NNNN |
 
 ## 4. Identificadores y folios
 
@@ -251,6 +257,7 @@ producto/almacén existen → aplicarMovimiento(doc AJUSTE) → Log
 
 | Script | Qué valida | Cuándo |
 |---|---|---|
+| `scripts/auditoria/test_fase5_api.py` | API (gasto con folio, pagos parciales, CxP, cancelar lógica, flujo de caja, P&L excluye cancelados). | tras redeploy |
 | `scripts/auditoria/test_fase4_api.py` | API (proyectos, cobros parciales, CxC, anulacion con repuesto de stock). | tras redeploy |
 | `scripts/auditoria/test_fase0_api.py` | API + concurrencia (ventas simultáneas, folios duplicados, errores por código). Auto-detecta backend viejo/nuevo. | tras redeploy del script |
 | `scripts/auditoria/test_fase0_regresion.py` | Playwright: login + las 10 pestañas + logout, 0 errores JS. | en cada cambio del panel |

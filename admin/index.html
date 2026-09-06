@@ -275,6 +275,7 @@
       <button class="tab" data-tab="sales" onclick="showTab('sales')">💵 Ventas</button>
       <button class="tab" data-tab="proyectos" onclick="showTab('proyectos')">🏗️ Proyectos</button>
       <button class="tab" data-tab="cobros" onclick="showTab('cobros')">💰 Cobros</button>
+      <button class="tab" data-tab="flujocaja" onclick="showTab('flujocaja')">🧮 Caja</button>
       <button class="tab" data-tab="expenses" onclick="showTab('expenses')">📉 Gastos</button>
       <button class="tab" data-tab="pnl" onclick="showTab('pnl')">📊 Resultados</button>
       <button class="tab" data-tab="reviews" onclick="showTab('reviews')">⭐ Reseñas</button>
@@ -630,10 +631,26 @@
         </div>
       </div>
       <h2>Gastos registrados</h2>
+      <div id="cxpDash" class="pnl-cards" style="margin-bottom:1rem;"></div>
+      <div id="pagoForms"></div>
       <div class="card-box table-scroll">
         <table>
-          <thead><tr><th>Fecha</th><th>Categoría</th><th>Descripción</th><th>Monto</th><th></th></tr></thead>
-          <tbody id="expTable"><tr><td colspan="5" class="muted">Cargando…</td></tr></tbody>
+          <thead><tr><th>Folio</th><th>Fecha</th><th>Categoría</th><th>Descripción</th><th>Monto</th><th>Pagado</th><th>Saldo</th><th>Estado</th><th></th></tr></thead>
+          <tbody id="expTable"><tr><td colspan="9" class="muted">Cargando…</td></tr></tbody>
+        </table>
+      </div>
+      <h2 style="margin-top:1.5rem;">Cuentas por pagar</h2>
+      <div class="card-box table-scroll">
+        <table>
+          <thead><tr><th>Folio</th><th>Fecha</th><th>Categoría</th><th>Total</th><th>Pagado</th><th>Saldo</th><th>Estado</th><th></th></tr></thead>
+          <tbody id="cxpTable"><tr><td colspan="8" class="muted">Cargando…</td></tr></tbody>
+        </table>
+      </div>
+      <h2 style="margin-top:1.5rem;">Pagos recientes</h2>
+      <div class="card-box table-scroll">
+        <table>
+          <thead><tr><th>Folio</th><th>Fecha</th><th>Gasto</th><th>Categoría</th><th>Monto</th><th>Método</th></tr></thead>
+          <tbody id="pagosTable"><tr><td colspan="6" class="muted">Cargando…</td></tr></tbody>
         </table>
       </div>
     </section>
@@ -657,6 +674,33 @@
       <div class="toolbar"><h2 style="margin:0;">Estadísticas del sitio</h2></div>
       <div id="analyticsBox" class="card-box">
         <p class="muted">Configura <code>LOOKER_STUDIO_URL</code> en este archivo (ver admin/GUIA_CONFIGURACION.md, paso 6) para ver aquí el tablero de Google Analytics.</p>
+      </div>
+    </section>
+
+    <!-- FLUJO DE EFECTIVO (FASE 5: entradas = cobros reales, salidas = pagos reales) -->
+    <section id="tab-flujocaja" class="panel hidden">
+      <div class="toolbar">
+        <h2 style="margin:0;">Flujo de efectivo</h2>
+        <select id="flujoRango" onchange="loadFlujoCaja()" style="width:auto;">
+          <option value="hoy">Hoy</option>
+          <option value="semana">Últimos 7 días</option>
+          <option value="mes" selected>Este mes</option>
+        </select>
+        <button class="btn btn-sm" onclick="loadFlujoCaja()">↻ Actualizar</button>
+      </div>
+      <p class="muted" style="margin:0 0 0.5rem;">Entradas = cobros registrados · Salidas = pagos registrados (efectivo real, no ventas/gastos de crédito).</p>
+      <div class="pnl-cards" id="flujoKpis"></div>
+      <div class="card-box" style="margin-top:1rem;">
+        <h3 class="flow-h">Entradas vs salidas por día</h3>
+        <div id="flujoDiario" class="flow-bars"></div>
+        <div id="flujoDiarioLeyenda" class="muted" style="font-size:0.75rem;margin-top:0.4rem;"></div>
+      </div>
+      <div class="card-box table-scroll" style="margin-top:1rem;">
+        <h3 class="flow-h">Movimientos de caja</h3>
+        <table>
+          <thead><tr><th>Fecha</th><th>Folio</th><th>Concepto</th><th>Tipo</th><th>Monto</th><th>Método</th></tr></thead>
+          <tbody id="flujoMovs"><tr><td colspan="6" class="muted">Cargando…</td></tr></tbody>
+        </table>
       </div>
     </section>
 
@@ -800,13 +844,14 @@ function logout(){
 /* ---------- tabs ---------- */
 function showTab(name){
   document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active', t.dataset.tab===name));
-  ['leads','clientes','quotes','proposal','inventory','oc','sales','proyectos','cobros','expenses','pnl','reviews','analytics','flow'].forEach(n=>$('tab-'+n).classList.toggle('hidden', n!==name));
+  ['leads','clientes','quotes','proposal','inventory','oc','sales','proyectos','cobros','expenses','pnl','reviews','analytics','flujocaja','flow'].forEach(n=>$('tab-'+n).classList.toggle('hidden', n!==name));
   if (name==='pnl' && !$('pnlCards').innerHTML) generarPNL();
   if (name==='flow') loadFlow();
   if (name==='oc') loadOC();
   if (name==='clientes') loadClientes();
   if (name==='proyectos') loadProyectos();
   if (name==='cobros') loadCXC();
+  if (name==='flujocaja') loadFlujoCaja();
 }
 
 /* ---------- flujo (visitas del sitio) ---------- */
@@ -1401,6 +1446,7 @@ function loadBiz(){
   apiGet('movimientos').then(d=>{ if(d&&d.ok) renderMovs(d.movimientos); });
   apiGet('ventas').then(d=>{ if(d&&d.ok) renderSales(d.ventas); });
   apiGet('gastos').then(d=>{ if(d&&d.ok) renderExpenses(d.gastos); });
+  apiGet('cxp').then(d=>{ if(d&&d.ok){ cxpCache = d.cxp || []; pagosCache = d.pagos || []; renderCXP(d); } });
   apiGet('config').then(d=>{ if(d&&d.ok) biz.config=d; });
 }
 
@@ -1899,7 +1945,7 @@ function printOC(id){
 /* =====================================================================
    FASE 4 — PROYECTOS + COBROS (cuentas por cobrar)
    ===================================================================== */
-let proyCache = [], cxcCache = [], cobrosCache = [];
+let proyCache = [], cxcCache = [], cobrosCache = [], cxpCache = [], pagosCache = [];
 
 function loadProyectos(){
   apiGet('proyectos').then(d=>{
@@ -2108,21 +2154,121 @@ function addExpense(){
   if (!cat || !monto) { notice('Falta la categoría o el monto.', false); return; }
   apiPost({tipo:'gasto', fecha:$('gFecha').value, categoria:cat, descripcion:$('gDesc').value.trim(),
     monto, moneda:$('gMoneda').value}).then(d=>{
-    notice(d&&d.ok?'Gasto guardado.':'No se pudo guardar.', !!(d&&d.ok));
+    notice(d&&d.ok?('Gasto '+(d.folio||'')+' guardado.'):errMsg(d,'No se pudo guardar.'), !!(d&&d.ok));
     if(d&&d.ok){ $('gMonto').value=''; $('gDesc').value=''; loadBiz(); }
   });
 }
+// FASE 5: gasto != pago. Cada gasto lleva folio GAS-, estado (ACTIVA/CANCELADA) y pagos parciales.
 function renderExpenses(list){
-  if (!list.length) { $('expTable').innerHTML='<tr><td colspan="5" class="muted">Sin gastos registrados.</td></tr>'; return; }
-  $('expTable').innerHTML = list.map((g,i)=>
-    '<tr><td>'+esc(g.fecha)+'</td><td>'+esc(g.categoria)+'</td><td>'+esc(g.descripcion)+'</td>' +
-    '<td class="gold">'+fmtMoney(g.monto)+' '+esc(g.moneda)+'</td>' +
-    '<td><button class="btn btn-danger btn-sm" onclick="deleteExpense('+(i+2)+',\''+esc(g.id||'')+'\')">✕</button></td></tr>').join('');
+  if (!list.length) { $('expTable').innerHTML='<tr><td colspan="9" class="muted">Sin gastos registrados.</td></tr>'; return; }
+  $('expTable').innerHTML = list.slice().reverse().map(g=>{
+    const est = g.estado || 'ACTIVA';
+    const cancelada = est==='CANCELADA';
+    const pagado = Number(g.pagado)||0;
+    const saldo = Math.max(0, (Number(g.monto)||0) - pagado);
+    const colE = cancelada ? '#9a9a9a' : '#e8b96a';
+    const acciones = g.id && !cancelada
+      ? (saldo>0.001 ? '<button class="btn btn-sm" onclick="showPagoForm(\''+g.id+'\')">Pagar</button> ' : '') +
+        '<button class="btn btn-danger btn-sm" onclick="cancelarGasto(\''+g.id+'\', this)">Cancelar</button>'
+      : (cancelada ? '<span class="muted">cancelado</span>' : '');
+    return '<tr><td class="gold">'+esc(g.folio||'—')+'</td><td>'+esc(g.fecha)+'</td><td>'+esc(g.categoria)+'</td><td>'+esc(g.descripcion)+'</td>' +
+      '<td class="gold">'+fmtMoney(g.monto)+' '+esc(g.moneda)+'</td>' +
+      '<td style="color:#7ce3a1;">'+fmtMoney(pagado)+'</td>' +
+      '<td>'+(saldo>0.001&&!cancelada?'<span class="gold">'+fmtMoney(saldo)+'</span>':'—')+'</td>' +
+      '<td><span style="color:'+colE+';font-weight:600;font-size:0.72rem;">'+esc(est)+'</span></td>' +
+      '<td style="white-space:nowrap;">'+acciones+'</td></tr>';}).join('');
 }
-function deleteExpense(row, id){
-  if (!confirm('¿Eliminar este gasto?')) return;
-  // FASE 0: se envia el ID estable (y la fila como respaldo para el backend viejo)
-  apiPost({tipo:'delete_gasto', row, id: id || ''}).then(d=>{ if(d&&d.ok) loadBiz(); else notice(errMsg(d,'No se pudo eliminar.'), false); });
+function renderCXP(d){
+  const porPagar = Number(d && d.por_pagar_base)||0;
+  const conSaldo = cxpCache.filter(x=>x.saldo_base>0.001).length;
+  const pagadas = cxpCache.filter(x=>x.estado_pago==='PAGADA').length;
+  if ($('cxpDash')) $('cxpDash').innerHTML =
+    '<div class="pnl-card '+(porPagar?'bad':'good')+'"><div class="k">Por pagar ('+esc((d&&d.moneda_base)||'MXN')+')</div><div class="v">'+fmtMoney(porPagar)+'</div></div>' +
+    '<div class="pnl-card"><div class="k">Gastos con saldo</div><div class="v">'+conSaldo+'</div></div>' +
+    '<div class="pnl-card good"><div class="k">Gastos pagados</div><div class="v">'+pagadas+'</div></div>';
+  if (!$('cxpTable')) return;
+  const orden = cxpCache.slice().sort((a,b)=>(Number(b.saldo_base>0.001))-(Number(a.saldo_base>0.001)));
+  $('cxpTable').innerHTML = orden.length ? orden.map(x=>{
+    const col = x.estado_pago==='PAGADA'?'#7ce3a1':(x.estado_pago==='PARCIAL'?'#e8b96a':'#e37c7c');
+    return '<tr><td class="gold">'+esc(x.folio||'—')+'</td><td>'+esc(x.fecha)+'</td><td>'+esc(x.categoria)+'</td>' +
+      '<td>'+fmtMoney(x.total)+' '+esc(x.moneda)+'</td><td style="color:#7ce3a1;">'+fmtMoney(x.pagado)+'</td>' +
+      '<td class="gold">'+fmtMoney(x.saldo)+'</td>' +
+      '<td><span style="color:'+col+';font-weight:600;font-size:0.72rem;">'+esc(x.estado_pago)+'</span></td>' +
+      '<td style="white-space:nowrap;">'+(x.saldo>0.001?'<button class="btn btn-sm" onclick="showPagoForm(\''+x.gasto_id+'\')">Pagar</button>':'')+'</td></tr>';
+  }).join('') : '<tr><td colspan="8" class="muted">Sin gastos pendientes de pago.</td></tr>';
+  $('pagosTable').innerHTML = pagosCache.length ? pagosCache.map(p=>
+    '<tr><td class="gold">'+esc(p.folio||'—')+'</td><td>'+esc(p.fecha)+'</td><td>'+esc(p.gasto_folio||'—')+'</td>' +
+    '<td>'+esc(p.categoria||'—')+'</td><td class="gold">'+fmtMoney(p.monto)+' '+esc(p.moneda)+'</td><td>'+esc(p.metodo||'—')+'</td></tr>').join('')
+    : '<tr><td colspan="6" class="muted">Sin pagos registrados.</td></tr>';
+}
+function showPagoForm(gastoId){
+  const x = cxpCache.filter(g=>String(g.gasto_id)===String(gastoId))[0];
+  if (!x) { notice('Recarga la pestaña para ver el saldo actualizado.', false); return; }
+  $('pagoForms').innerHTML = '<div class="card-box"><p style="margin-bottom:0.5rem;"><strong>Registrar pago — '+esc(x.folio)+'</strong> <span class="muted">'+esc(x.categoria)+' · saldo '+fmtMoney(x.saldo)+' '+esc(x.moneda)+'</span></p><div class="row">' +
+    '<div><label>Fecha</label><input type="date" id="pgFecha" value="'+fLocal()+'"></div>' +
+    '<div><label>Monto *</label><input type="number" id="pgMonto" min="0" step="0.01" value="'+x.saldo+'"></div>' +
+    '<div><label>Moneda</label><select id="pgMoneda"><option value="'+esc(x.moneda)+'">'+esc(x.moneda)+'</option><option value="MXN">MXN</option><option value="USD">USD</option></select></div>' +
+    '<div><label>Método</label><select id="pgMetodo"><option>Efectivo</option><option>Transferencia</option><option>Tarjeta</option><option>Depósito</option><option>Otro</option></select></div>' +
+    '</div><label>Notas</label><input id="pgNotas">' +
+    '<div class="toolbar" style="margin-top:1rem;"><button class="btn btn-solid btn-sm" onclick="savePago(\''+x.gasto_id+'\')">Guardar pago</button> ' +
+    '<button class="btn btn-sm" onclick="$(\'pagoForms\').innerHTML=\'\'">Cerrar</button></div></div>';
+  $('pagoForms').scrollIntoView({behavior:'smooth', block:'nearest'});
+}
+function savePago(gastoId){
+  const monto = parseFloat($('pgMonto').value)||0;
+  if (monto <= 0) { notice('El monto debe ser mayor que cero.', false); return; }
+  apiPost({tipo:'gasto_pago', gasto_id:gastoId, fecha:$('pgFecha').value, monto,
+    moneda:$('pgMoneda').value, metodo:$('pgMetodo').value, notas:$('pgNotas').value.trim()}).then(d=>{
+    notice(d&&d.ok?('Pago '+(d.folio||'')+' registrado. Gasto ahora: '+d.estado_pago+'.'):errMsg(d), !!(d&&d.ok));
+    if(d&&d.ok){ $('pagoForms').innerHTML=''; loadBiz(); }
+  }).catch(()=>notice('Error de conexión.', false));
+}
+// doble paso sin confirm(): el boton pide confirmacion a si mismo
+function cancelarGasto(id, btn){
+  if (btn.dataset.confirm !== '1') {
+    btn.dataset.confirm = '1'; btn.textContent = '¿Seguro?';
+    setTimeout(()=>{ if (btn.isConnected){ btn.dataset.confirm=''; btn.textContent='Cancelar'; } }, 3000);
+    return;
+  }
+  apiPost({tipo:'gasto_cancelar', id}).then(d=>{
+    notice(d&&d.ok?'Gasto cancelado (baja lógica; queda en el historial).':errMsg(d), !!(d&&d.ok));
+    if(d&&d.ok) loadBiz();
+  });
+}
+
+/* ----- FASE 5: flujo de efectivo real (cobros vs pagos) ----- */
+function loadFlujoCaja(){
+  const hoy = fLocal();
+  const rango = ($('flujoRango') && $('flujoRango').value) || 'mes';
+  let desde;
+  if (rango === 'hoy') desde = hoy;
+  else if (rango === 'semana') desde = fLocal(new Date(Date.now() - 6 * 864e5));
+  else desde = hoy.slice(0, 8) + '01';
+  apiGet('flujo_caja&desde=' + desde + '&hasta=' + hoy).then(d=>{
+    if (!d || !d.ok) { $('flujoKpis').innerHTML = '<p class="muted">'+esc(errMsg(d,'Sin acceso.'))+'</p>'; return; }
+    const f = n => fmtMoney(n) + ' ' + d.moneda_base;
+    const clsN = d.neto >= 0 ? 'good' : 'bad';
+    $('flujoKpis').innerHTML =
+      '<div class="pnl-card good"><div class="k">Entradas ('+d.num_cobros+' cobro(s))</div><div class="v">'+f(d.entradas)+'</div></div>' +
+      '<div class="pnl-card bad"><div class="k">Salidas ('+d.num_pagos+' pago(s))</div><div class="v">'+f(d.salidas)+'</div></div>' +
+      '<div class="pnl-card '+clsN+'"><div class="k">Flujo neto</div><div class="v">'+f(d.neto)+'</div></div>';
+    const dias = d.dias || [];
+    const mx = Math.max(1, ...dias.map(x => Math.max(x.entradas, x.salidas)));
+    $('flujoDiario').innerHTML = dias.length ? dias.map(x => {
+      const hE = Math.max(2, Math.round(x.entradas / mx * 100));
+      const hS = Math.max(2, Math.round(x.salidas / mx * 100));
+      return '<div style="flex:1;display:flex;flex-direction:column;justify-content:flex-end;gap:1px;min-width:8px;">' +
+        '<div class="flow-bar" style="height:'+hE+'px;background:#3fae6a;" title="'+x.fecha+' entradas '+f(x.entradas)+'"></div>' +
+        '<div class="flow-bar" style="height:'+hS+'px;background:#c05a5a;" title="'+x.fecha+' salidas '+f(x.salidas)+'"></div></div>';
+    }).join('') : '<p class="muted">Sin movimientos en el rango.</p>';
+    $('flujoDiarioLeyenda').textContent = dias.length ? 'Verde = entradas · Rojo = salidas · ' + dias.length + ' día(s) con movimiento' : '';
+    $('flujoMovs').innerHTML = (d.movimientos || []).length ? d.movimientos.map(m=>
+      '<tr><td>'+esc(m.fecha)+'</td><td class="gold">'+esc(m.folio||'—')+'</td><td>'+esc(m.concepto||'—')+'</td>' +
+      '<td><span style="color:'+(m.tipo==='entrada'?'#7ce3a1':'#e37c7c')+';font-weight:600;font-size:0.75rem;">'+(m.tipo==='entrada'?'ENTRADA':'SALIDA')+'</span></td>' +
+      '<td style="color:'+(m.tipo==='entrada'?'#7ce3a1':'#e37c7c')+';font-weight:600;">'+(m.tipo==='entrada'?'+':'−')+fmtMoney(m.monto_base)+'</td>' +
+      '<td>'+esc(m.metodo||'—')+'</td></tr>').join('')
+      : '<tr><td colspan="6" class="muted">Sin movimientos en el rango.</td></tr>';
+  }).catch(()=>{});
 }
 
 /* ----- estado de resultados ----- */
