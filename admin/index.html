@@ -273,6 +273,8 @@
       <button class="tab" data-tab="inventory" onclick="showTab('inventory')">📦 Inventario</button>
       <button class="tab" data-tab="oc" onclick="showTab('oc')">🛒 Compras</button>
       <button class="tab" data-tab="sales" onclick="showTab('sales')">💵 Ventas</button>
+      <button class="tab" data-tab="proyectos" onclick="showTab('proyectos')">🏗️ Proyectos</button>
+      <button class="tab" data-tab="cobros" onclick="showTab('cobros')">💰 Cobros</button>
       <button class="tab" data-tab="expenses" onclick="showTab('expenses')">📉 Gastos</button>
       <button class="tab" data-tab="pnl" onclick="showTab('pnl')">📊 Resultados</button>
       <button class="tab" data-tab="reviews" onclick="showTab('reviews')">⭐ Reseñas</button>
@@ -547,6 +549,8 @@
           <div><label>Cliente</label><input id="sCliente" placeholder="Nombre del cliente"></div>
           <div><label>Almacén *</label><select id="sAlmacen"></select></div>
           <div><label>Moneda</label><select id="sMoneda"><option value="MXN">MXN</option><option value="USD">USD</option></select></div>
+          <div><label>Cliente (directorio)</label><select id="sClienteSel" onchange="if(this.value){$('sCliente').value=this.options[this.selectedIndex].text.replace(/^[^ ]+ /,'');}"><option value="">— Mostrador —</option></select></div>
+          <div><label>Proyecto</label><select id="sProyectoSel"><option value="">— Ninguno —</option></select></div>
         </div>
         <label>Agregar producto (del inventario)</label>
         <div class="search-results">
@@ -564,8 +568,47 @@
       <h2>Ventas recientes</h2>
       <div class="card-box table-scroll">
         <table>
-          <thead><tr><th>Fecha</th><th>Cliente</th><th>Almacén</th><th>Productos</th><th>Total</th><th>Utilidad</th></tr></thead>
-          <tbody id="salesTable"><tr><td colspan="6" class="muted">Cargando…</td></tr></tbody>
+          <thead><tr><th>Fecha</th><th>Cliente</th><th>Almacén</th><th>Productos</th><th>Total</th><th>Estado pago</th><th>Utilidad</th><th></th></tr></thead>
+          <tbody id="salesTable"><tr><td colspan="8" class="muted">Cargando…</td></tr></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- PROYECTOS -->
+    <section id="tab-proyectos" class="panel hidden">
+      <div class="toolbar">
+        <h2 style="margin:0;">Proyectos</h2>
+        <select id="proyDesdeCot"></select>
+        <button class="btn btn-sm" onclick="crearProyectoDesdeSelect()">＋ Desde cotización aprobada</button>
+        <button class="btn btn-sm" onclick="showProyectoForm()">＋ Proyecto manual</button>
+      </div>
+      <div id="proyForms"></div>
+      <div id="proyDash" class="pnl-cards" style="margin-bottom:1rem;"></div>
+      <div class="card-box table-scroll">
+        <table>
+          <thead><tr><th>Folio</th><th>Proyecto</th><th>Cliente</th><th>Presupuesto</th><th>Cobrado</th><th>Estado</th><th></th></tr></thead>
+          <tbody id="proyTable"><tr><td colspan="7" class="muted">Cargando…</td></tr></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- COBROS / CUENTAS POR COBRAR -->
+    <section id="tab-cobros" class="panel hidden">
+      <div class="toolbar"><h2 style="margin:0;">Cuentas por cobrar</h2><button class="btn btn-sm" onclick="loadCXC()">↻ Actualizar</button></div>
+      <div id="cxcDash" class="pnl-cards" style="margin-bottom:1rem;"></div>
+      <div id="cobForms"></div>
+      <h2>Saldo por venta</h2>
+      <div class="card-box table-scroll">
+        <table>
+          <thead><tr><th>Folio</th><th>Fecha</th><th>Cliente</th><th>Total</th><th>Cobrado</th><th>Saldo</th><th>Estado</th><th></th></tr></thead>
+          <tbody id="cxcTable"><tr><td colspan="8" class="muted">Cargando…</td></tr></tbody>
+        </table>
+      </div>
+      <h2 style="margin-top:1.5rem;">Cobros recientes</h2>
+      <div class="card-box table-scroll">
+        <table>
+          <thead><tr><th>Folio</th><th>Fecha</th><th>Venta</th><th>Cliente</th><th>Monto</th><th>Método</th></tr></thead>
+          <tbody id="cobrosTable"><tr><td colspan="6" class="muted">Cargando…</td></tr></tbody>
         </table>
       </div>
     </section>
@@ -757,11 +800,13 @@ function logout(){
 /* ---------- tabs ---------- */
 function showTab(name){
   document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active', t.dataset.tab===name));
-  ['leads','clientes','quotes','proposal','inventory','oc','sales','expenses','pnl','reviews','analytics','flow'].forEach(n=>$('tab-'+n).classList.toggle('hidden', n!==name));
+  ['leads','clientes','quotes','proposal','inventory','oc','sales','proyectos','cobros','expenses','pnl','reviews','analytics','flow'].forEach(n=>$('tab-'+n).classList.toggle('hidden', n!==name));
   if (name==='pnl' && !$('pnlCards').innerHTML) generarPNL();
   if (name==='flow') loadFlow();
   if (name==='oc') loadOC();
   if (name==='clientes') loadClientes();
+  if (name==='proyectos') loadProyectos();
+  if (name==='cobros') loadCXC();
 }
 
 /* ---------- flujo (visitas del sitio) ---------- */
@@ -852,6 +897,7 @@ function loadClientes(){
     if (!d || !d.ok) { $('cliTable').innerHTML='<tr><td colspan="6" class="muted">Sin acceso.</td></tr>'; return; }
     clientesCache = d.clientes || [];
     $('cliCount').textContent = clientesCache.length + ' cliente(s)';
+    fillSaleLinks();
     if (!clientesCache.length) { $('cliTable').innerHTML='<tr><td colspan="6" class="muted">Sin clientes todavía. Convierte un lead o crea uno.</td></tr>'; return; }
     $('cliTable').innerHTML = clientesCache.map(c=>
       '<tr><td>'+esc(c.nombre)+'</td><td>'+esc(c.telefono||'—')+'</td><td>'+esc(c.email||'—')+'</td>' +
@@ -969,11 +1015,13 @@ function loadQuotes(){
       const rev = quotesCache.length - 1 - i;
       const estado = q.estado || 'Activa';
       const puedeAprobar = q.id && estado === 'Activa';
+      const puedeProyecto = q.id && estado === 'Aprobada' && q.datos;
       return '<tr><td>'+esc(String(q.fecha||'').slice(0,10))+'</td><td class="gold">'+esc(q.folio||'—')+'</td><td>'+esc(q.cliente)+'</td>' +
         '<td>'+esc(q.telefono)+'</td><td class="gold">'+esc(q.total)+'</td>' +
         '<td>'+(q.id ? '<span class="muted">'+esc(estado)+'</span>' : '<span class="muted">'+(q.datos?'Activa':'simple')+'</span>')+'</td>' +
         '<td style="white-space:nowrap;">'+(q.datos ? '<button class="btn btn-sm" onclick="loadProposalFromQuote('+rev+')">📂 Cargar</button> ' : '')+
-        (puedeAprobar ? '<button class="btn btn-sm" onclick="aprobarQuote(\''+q.id+'\')">✔ Aprobar</button>' : '')+'</td></tr>';
+        (puedeAprobar ? '<button class="btn btn-sm" onclick="aprobarQuote(\''+q.id+'\')">✔ Aprobar</button> ' : '')+
+        (puedeProyecto ? '<button class="btn btn-sm" onclick="crearProyectoDesdeQuote(\''+q.id+'\')">🏗️ Proyecto</button>' : '')+'</td></tr>';
     }).join('');
   }).catch(()=>{});
 }
@@ -1848,6 +1896,152 @@ function printOC(id){
   window.print();
 }
 
+/* =====================================================================
+   FASE 4 — PROYECTOS + COBROS (cuentas por cobrar)
+   ===================================================================== */
+let proyCache = [], cxcCache = [], cobrosCache = [];
+
+function loadProyectos(){
+  apiGet('proyectos').then(d=>{
+    if (!d || !d.ok) { $('proyTable').innerHTML='<tr><td colspan="7" class="muted">Sin acceso.</td></tr>'; return; }
+    proyCache = d.proyectos || [];
+    renderProyectos();
+    fillSaleLinks();
+  }).catch(()=>{});
+}
+function renderProyectos(){
+  const activos = proyCache.filter(p=>p.estado==='ACTIVO').length;
+  const presup = proyCache.filter(p=>p.estado==='ACTIVO').reduce((s,p)=>s+(Number(p.presupuesto)||0),0);
+  const cobr = proyCache.reduce((s,p)=>s+(Number(p.cobrado)||0),0);
+  $('proyDash').innerHTML =
+    '<div class="pnl-card"><div class="k">Proyectos activos</div><div class="v">'+activos+'</div></div>' +
+    '<div class="pnl-card"><div class="k">Total proyectos</div><div class="v">'+proyCache.length+'</div></div>' +
+    '<div class="pnl-card"><div class="k">Presupuesto activo</div><div class="v" style="font-size:0.95rem;">'+fmtMoney(presup)+'</div></div>' +
+    '<div class="pnl-card good"><div class="k">Cobrado (proyectos)</div><div class="v" style="font-size:0.95rem;">'+fmtMoney(cobr)+'</div></div>';
+  if (!proyCache.length) { $('proyTable').innerHTML='<tr><td colspan="7" class="muted">Sin proyectos. Crea uno desde una cotización aprobada.</td></tr>'; }
+  else $('proyTable').innerHTML = proyCache.slice().reverse().map(p=>
+    '<tr><td class="gold" style="white-space:nowrap;">'+esc(p.folio||'—')+'</td><td>'+esc(p.nombre)+(p.cotizacion_folio?' <span class="muted">('+esc(p.cotizacion_folio)+')</span>':'')+'</td>' +
+    '<td>'+esc(p.cliente||'—')+'</td><td>'+fmtMoney(p.presupuesto)+' '+esc(p.moneda||'')+'</td>' +
+    '<td style="color:#7ce3a1;">'+fmtMoney(p.cobrado)+'</td><td>'+ocEstadoBadge(p.estado)+'</td>' +
+    '<td style="white-space:nowrap;">'+(p.estado==='ACTIVO'
+      ? '<button class="btn btn-sm" onclick="cambiarEstadoProyecto(\''+p.id+'\',\'TERMINADO\')">✔ Terminar</button> ' +
+        '<button class="btn btn-danger btn-sm" onclick="cambiarEstadoProyecto(\''+p.id+'\',\'CANCELADO\')">✕</button>'
+      : '')+'</td></tr>').join('');
+  // selector "desde cotización" se llena desde quotesCache (cotizaciones aprobadas sin proyecto)
+  const usadas = proyCache.map(p=>String(p.cotizacion_id));
+  const aptas = quotesCache.filter(q=>q.estado==='Aprobada' && q.id && usadas.indexOf(String(q.id))<0);
+  $('proyDesdeCot').innerHTML = '<option value="">— Cotización aprobada —</option>' +
+    aptas.map(q=>'<option value="'+esc(q.id)+'">'+esc(q.folio||'')+' · '+esc(q.cliente||'')+'</option>').join('');
+}
+function crearProyectoDesdeSelect(){
+  const qid = $('proyDesdeCot').value;
+  if (!qid) { notice('Selecciona una cotización aprobada.', false); return; }
+  crearProyectoDesdeQuote(qid);
+}
+function crearProyectoDesdeQuote(qid){
+  if (!confirm('¿Crear el proyecto desde esta cotización? Se vinculan cliente, folio y presupuesto.')) return;
+  apiPost({tipo:'crear_proyecto_desde_cotizacion', quote_id:qid}).then(d=>{
+    notice(d&&d.ok?('Proyecto '+(d.folio||'')+(d.ya_existia?' (ya existía)':'')+' creado.'):errMsg(d), !!(d&&d.ok));
+    if(d&&d.ok){ loadProyectos(); loadQuotes(); }
+  });
+}
+function showProyectoForm(){
+  const cliOpts = '<option value="">— Sin cliente —</option>' + clientesCache.map(c=>'<option value="'+esc(c.id)+'">'+esc(c.nombre)+'</option>').join('');
+  $('proyForms').innerHTML = '<div class="card-box"><div class="row">' +
+    '<div><label>Nombre del proyecto *</label><input id="prNombre" placeholder="Remodelación cocina Pérez"></div>' +
+    '<div><label>Cliente</label><select id="prCliente">'+cliOpts+'</select></div>' +
+    '<div><label>Ubicación</label><input id="prUbi"></div>' +
+    '<div><label>Presupuesto</label><input type="number" id="prPresupuesto" min="0" step="0.01" value="0"></div>' +
+    '<div><label>Moneda</label><select id="prMoneda"><option value="MXN">MXN</option><option value="USD">USD</option></select></div>' +
+    '<div><label>Fecha inicio</label><input type="date" id="prInicio" value="'+fLocal()+'"></div>' +
+    '</div><label>Notas</label><input id="prNotas">' +
+    '<div class="toolbar" style="margin-top:1rem;"><button class="btn btn-solid btn-sm" onclick="saveProyecto()">💾 Guardar proyecto</button> ' +
+    '<button class="btn btn-sm" onclick="$(\'proyForms\').innerHTML=\'\'">Cancelar</button></div></div>';
+}
+function saveProyecto(){
+  const nombre = $('prNombre').value.trim();
+  if (!nombre) { notice('El proyecto necesita nombre.', false); return; }
+  const cid = $('prCliente').value;
+  const cliente = cid ? clientesCache.filter(c=>String(c.id)===String(cid))[0] : null;
+  apiPost({tipo:'save_proyecto', nombre, cliente_id:cid, cliente:cliente?cliente.nombre:'',
+    ubicacion:$('prUbi').value.trim(), presupuesto:parseFloat($('prPresupuesto').value)||0,
+    moneda:$('prMoneda').value, fecha_inicio:$('prInicio').value, notas:$('prNotas').value.trim()}).then(d=>{
+    notice(d&&d.ok?('Proyecto '+(d.folio||'')+' creado.'):errMsg(d,'No se pudo guardar.'), !!(d&&d.ok));
+    if(d&&d.ok){ $('proyForms').innerHTML=''; loadProyectos(); }
+  }).catch(()=>notice('Error de conexión.', false));
+}
+function cambiarEstadoProyecto(id, estado){
+  if (!confirm(estado==='TERMINADO'?'¿Marcar proyecto como TERMINADO?':'¿CANCELAR este proyecto?')) return;
+  apiPost({tipo:'cambiar_estado_proyecto', id, estado}).then(d=>{
+    notice(d&&d.ok?('Proyecto ahora está '+estado+'.'):errMsg(d), !!(d&&d.ok));
+    if(d&&d.ok) loadProyectos();
+  });
+}
+
+function loadCXC(){
+  apiGet('cxc').then(d=>{
+    if (!d || !d.ok) { $('cxcTable').innerHTML='<tr><td colspan="8" class="muted">Sin acceso.</td></tr>'; return; }
+    cxcCache = d.cxc || [];
+    cobrosCache = d.cobros || [];
+    const porCobrar = Number(d.por_cobrar_base)||0;
+    const pendientes = cxcCache.filter(x=>x.saldo_base>0.001).length;
+    const pagadas = cxcCache.filter(x=>x.estado_pago==='PAGADA').length;
+    $('cxcDash').innerHTML =
+      '<div class="pnl-card '+(porCobrar?'bad':'good')+'"><div class="k">Por cobrar ('+esc(d.moneda_base||'MXN')+')</div><div class="v">'+fmtMoney(porCobrar)+'</div></div>' +
+      '<div class="pnl-card"><div class="k">Ventas con saldo</div><div class="v">'+pendientes+'</div></div>' +
+      '<div class="pnl-card good"><div class="k">Ventas pagadas</div><div class="v">'+pagadas+'</div></div>';
+    if (!cxcCache.length) { $('cxcTable').innerHTML='<tr><td colspan="8" class="muted">Sin ventas con ID (las ventas nuevas aparecen aquí).</td></tr>'; }
+    else $('cxcTable').innerHTML = cxcCache.slice().reverse().map(x=>{
+      const col = x.estado_pago==='PAGADA'?'#7ce3a1':(x.estado_pago==='PARCIAL'?'#e8b96a':'#e37c7c');
+      return '<tr><td class="gold">'+esc(x.folio||'—')+'</td><td>'+esc(x.fecha)+'</td><td>'+esc(x.cliente||'—')+'</td>' +
+        '<td>'+fmtMoney(x.total)+' '+esc(x.moneda)+'</td><td style="color:#7ce3a1;">'+fmtMoney(x.cobrado)+'</td>' +
+        '<td class="gold">'+fmtMoney(x.saldo)+'</td>' +
+        '<td><span style="color:'+col+';font-weight:600;font-size:0.75rem;">'+esc(x.estado_pago)+'</span></td>' +
+        '<td style="white-space:nowrap;">'+(x.saldo>0.001?'<button class="btn btn-sm" onclick="showCobroForm(\''+x.venta_id+'\')">💰 Cobrar</button> ':'')+'</td></tr>';
+    }).join('');
+    $('cobrosTable').innerHTML = cobrosCache.length ? cobrosCache.map(c=>
+      '<tr><td class="gold">'+esc(c.folio||'—')+'</td><td>'+esc(c.fecha)+'</td><td>'+esc(c.venta_folio||'—')+'</td>' +
+      '<td>'+esc(c.cliente||'—')+'</td><td class="gold">'+fmtMoney(c.monto)+' '+esc(c.moneda)+'</td><td>'+esc(c.metodo||'—')+'</td></tr>').join('')
+      : '<tr><td colspan="6" class="muted">Sin cobros registrados.</td></tr>';
+  }).catch(()=>{});
+}
+function showCobroForm(ventaId){
+  const x = cxcCache.filter(v=>String(v.venta_id)===String(ventaId))[0];
+  if (!x) return;
+  $('cobForms').innerHTML = '<div class="card-box"><p style="margin-bottom:0.5rem;"><strong>Registrar cobro — '+esc(x.folio)+'</strong> <span class="muted">'+esc(x.cliente||'')+' · saldo '+fmtMoney(x.saldo)+' '+esc(x.moneda)+'</span></p><div class="row">' +
+    '<div><label>Fecha</label><input type="date" id="cbFecha" value="'+fLocal()+'"></div>' +
+    '<div><label>Monto *</label><input type="number" id="cbMonto" min="0" step="0.01" value="'+x.saldo+'"></div>' +
+    '<div><label>Moneda</label><select id="cbMoneda"><option value="'+esc(x.moneda)+'">'+esc(x.moneda)+'</option><option value="MXN">MXN</option><option value="USD">USD</option></select></div>' +
+    '<div><label>Método</label><select id="cbMetodo"><option>Efectivo</option><option>Transferencia</option><option>Tarjeta</option><option>Depósito</option><option>Otro</option></select></div>' +
+    '</div><label>Notas</label><input id="cbNotas">' +
+    '<div class="toolbar" style="margin-top:1rem;"><button class="btn btn-solid btn-sm" onclick="saveCobro(\''+x.venta_id+'\')">💾 Guardar cobro</button> ' +
+    '<button class="btn btn-sm" onclick="$(\'cobForms\').innerHTML=\'\'">Cancelar</button></div></div>';
+}
+function saveCobro(ventaId){
+  const monto = parseFloat($('cbMonto').value)||0;
+  if (monto <= 0) { notice('El monto debe ser mayor que cero.', false); return; }
+  apiPost({tipo:'registrar_cobro', venta_id:ventaId, fecha:$('cbFecha').value, monto,
+    moneda:$('cbMoneda').value, metodo:$('cbMetodo').value, notas:$('cbNotas').value.trim()}).then(d=>{
+    notice(d&&d.ok?('Cobro '+(d.folio||'')+' registrado. Venta ahora: '+d.estado_pago+'.'):errMsg(d), !!(d&&d.ok));
+    if(d&&d.ok){ $('cobForms').innerHTML=''; loadCXC(); loadBiz(); }
+  }).catch(()=>notice('Error de conexión.', false));
+}
+
+// Rellena los selects de cliente/proyecto del formulario de venta
+function fillSaleLinks(){
+  if ($('sClienteSel')) $('sClienteSel').innerHTML = '<option value="">— Mostrador —</option>' +
+    clientesCache.map(c=>'<option value="'+esc(c.id)+'">'+esc(c.nombre)+'</option>').join('');
+  if ($('sProyectoSel')) $('sProyectoSel').innerHTML = '<option value="">— Ninguno —</option>' +
+    proyCache.filter(p=>p.estado==='ACTIVO').map(p=>'<option value="'+esc(p.id)+'">'+esc(p.folio)+' · '+esc(p.nombre)+'</option>').join('');
+}
+function anularVenta(id){
+  if (!confirm('¿ANULAR esta venta? La mercancia REGRESA al almacen con movimiento trazable y la venta queda CANCELADA.')) return;
+  apiPost({tipo:'anular_venta', id}).then(d=>{
+    notice(d&&d.ok?'Venta anulada y stock repuesto.':errMsg(d), !!(d&&d.ok));
+    if(d&&d.ok){ loadBiz(); loadCXC(); }
+  });
+}
+
 /* ----- ventas ----- */
 function searchSaleProducts(){
   const q = $('sSearch').value.trim().toLowerCase();
@@ -1884,17 +2078,28 @@ function saveSale(){
   if (!$('sAlmacen').value) { notice('Selecciona un almacén.', false); return; }
   if (!saleItems.length) { notice('Agrega al menos un producto.', false); return; }
   apiPost({tipo:'venta', fecha:$('sFecha').value, cliente:$('sCliente').value.trim(),
-    almacen_id:$('sAlmacen').value, moneda:$('sMoneda').value, items:saleItems, notas:$('sNotas').value.trim()})
+    almacen_id:$('sAlmacen').value, moneda:$('sMoneda').value,
+    cliente_id:$('sClienteSel').value, proyecto_id:$('sProyectoSel').value,
+    items:saleItems, notas:$('sNotas').value.trim()})
     .then(d=>{
       notice(d&&d.ok?'Venta '+(d.folio?d.folio+' ':'')+'guardada. Stock descontado.':errMsg(d), !!(d&&d.ok));
       if(d&&d.ok){ saleItems=[]; renderSaleItems(); $('sCliente').value=''; $('sNotas').value=''; loadBiz(); }
     });
 }
 function renderSales(list){
-  if (!list.length) { $('salesTable').innerHTML='<tr><td colspan="6" class="muted">Sin ventas registradas.</td></tr>'; return; }
-  $('salesTable').innerHTML = list.slice().reverse().map(v=>
-    '<tr><td>'+esc(v.fecha)+'</td><td>'+esc(v.cliente)+'</td><td>'+esc(v.almacen)+'</td><td>'+esc(v.items)+'</td>' +
-    '<td class="gold">'+fmtMoney(v.total)+' '+esc(v.moneda)+'</td><td style="color:#7ce3a1;">'+fmtMoney(v.utilidad_base)+' '+esc(biz.config.moneda_base||'')+'</td></tr>').join('');
+  if (!list.length) { $('salesTable').innerHTML='<tr><td colspan="8" class="muted">Sin ventas registradas.</td></tr>'; return; }
+  $('salesTable').innerHTML = list.slice().reverse().map(v=>{
+    const ep = v.estado_pago || '—';
+    const col = ep==='PAGADA'?'#7ce3a1':(ep==='PARCIAL'?'#e8b96a':(ep==='CANCELADA'?'#9a9a9a':'#e37c7c'));
+    const acciones = v.id
+      ? (ep!=='CANCELADA' && ep!=='PAGADA' ? '<button class="btn btn-sm" onclick="showTab(\'cobros\'); setTimeout(()=>showCobroForm(\''+v.id+'\'),400);">💰 Cobrar</button> ' : '') +
+        (ep!=='CANCELADA' ? '<button class="btn btn-danger btn-sm" onclick="anularVenta(\''+v.id+'\')">Anular</button>' : '')
+      : '<span class="muted">legacy</span>';
+    return '<tr><td>'+esc(v.fecha)+'</td><td>'+esc(v.cliente)+(v.folio?' <span class="muted">'+esc(v.folio)+'</span>':'')+'</td><td>'+esc(v.almacen)+'</td><td>'+esc(v.items)+'</td>' +
+      '<td class="gold">'+fmtMoney(v.total)+' '+esc(v.moneda)+'</td>' +
+      '<td><span style="color:'+col+';font-weight:600;font-size:0.72rem;">'+esc(ep)+'</span></td>' +
+      '<td style="color:#7ce3a1;">'+fmtMoney(v.utilidad_base)+' '+esc(biz.config.moneda_base||'')+'</td>' +
+      '<td style="white-space:nowrap;">'+acciones+'</td></tr>';}).join('');
 }
 
 /* ----- gastos ----- */

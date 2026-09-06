@@ -14,7 +14,7 @@ from playwright.sync_api import sync_playwright
 
 ADMIN = pathlib.Path(__file__).resolve().parents[2] / 'public'
 USUARIO, CLAVE = 'Adis', 'Adisdiseño2026'
-TABS = ['leads', 'clientes', 'quotes', 'proposal', 'inventory', 'oc', 'sales', 'expenses', 'pnl', 'reviews', 'analytics', 'flow']
+TABS = ['leads', 'clientes', 'quotes', 'proposal', 'inventory', 'oc', 'sales', 'proyectos', 'cobros', 'expenses', 'pnl', 'reviews', 'analytics', 'flow']
 
 # servir public/ por HTTP local (file:// no permite fetch de products.json)
 handler = functools.partial(http.server.SimpleHTTPRequestHandler, directory=str(ADMIN))

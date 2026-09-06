@@ -58,6 +58,8 @@ var SHEET_VISITS   = 'Visitas';
 var SHEET_VISITS_ARCHIVE = 'Visitas_Archivo';
 var SHEET_PROVIDERS  = 'Proveedores';
 var SHEET_CLIENTS    = 'Clientes';
+var SHEET_PROJECTS   = 'Proyectos';
+var SHEET_COBROS     = 'Cobros';
 var SHEET_PO         = 'OrdenesCompra';
 var SHEET_RECEP      = 'Recepciones';
 var VISITS_MAX_FILAS = 5000;   // activas; el excedente se ARCHIVA (no se borra)
@@ -80,12 +82,17 @@ var ENC_MOV = ['fecha', 'tipo', 'producto_id', 'producto', 'almacen_id', 'almace
   'costo_unit', 'moneda', 'referencia', 'notas',
   'id', 'usuario', 'existencia_anterior', 'existencia_posterior', 'documento_tipo', 'documento_id'];
 var ENC_VENTAS = ['fecha', 'cliente', 'almacen', 'items', 'total', 'moneda', 'tipo_cambio',
-  'total_base', 'costo_total_base', 'utilidad_base', 'notas', 'id', 'folio', 'usuario'];
+  'total_base', 'costo_total_base', 'utilidad_base', 'notas', 'id', 'folio', 'usuario',
+  'cliente_id', 'proyecto_id', 'estado_pago', 'almacen_id', 'items_json'];
 var ENC_GASTOS = ['fecha', 'categoria', 'descripcion', 'monto', 'moneda', 'tipo_cambio', 'monto_base',
   'id', 'usuario'];
 var ENC_RESENAS = ['fecha', 'nombre', 'estrellas', 'texto', 'activa', 'id', 'usuario'];
 var ENC_PROV = ['id', 'nombre', 'contacto', 'telefono', 'email', 'direccion', 'notas', 'activo', 'fecha'];
 var ENC_CLIENTES = ['id', 'nombre', 'telefono', 'email', 'ciudad', 'direccion', 'notas', 'origen', 'fecha', 'activo'];
+var ENC_PROY = ['id', 'folio', 'nombre', 'cliente_id', 'cliente', 'cotizacion_id', 'cotizacion_folio',
+  'ubicacion', 'fecha_inicio', 'fecha_fin', 'presupuesto', 'moneda', 'estado', 'notas', 'usuario', 'fecha_actualizacion'];
+var ENC_COBROS = ['id', 'folio', 'venta_id', 'venta_folio', 'cliente', 'proyecto_id', 'fecha', 'monto',
+  'moneda', 'monto_base', 'metodo', 'notas', 'usuario'];
 var ENC_OC = ['id', 'folio', 'proveedor_id', 'proveedor', 'fecha', 'fecha_esperada', 'almacen_id', 'almacen',
   'moneda', 'subtotal', 'iva', 'descuento', 'total', 'estado', 'notas', 'usuario', 'fecha_actualizacion', 'partidas'];
 var ENC_RECEP = ['id', 'oc_id', 'oc_folio', 'fecha', 'items', 'usuario'];
@@ -540,6 +547,48 @@ function doGetInterno(e) {
     return json({ ok: true, oc: listaOC });
   }
 
+  if (action === 'proyectos') {
+    var listaProy = filasComoObjetos(SHEET_PROJECTS).map(function (p) {
+      // cobrado del proyecto = cobros de ventas vinculadas
+      var cobrado = 0, cobradoBase = 0;
+      var ventasProy = filasComoObjetos(SHEET_SALES).filter(function (v) { return String(v.proyecto_id) === String(p.id) && String(v.estado_pago) !== 'CANCELADA'; });
+      var cobros = filasComoObjetos(SHEET_COBROS);
+      ventasProy.forEach(function (v) {
+        cobros.forEach(function (c) {
+          if (String(c.venta_id) === String(v.id)) { cobrado += Number(c.monto) || 0; cobradoBase += Number(c.monto_base) || 0; }
+        });
+      });
+      return { id: p.id, folio: p.folio, nombre: p.nombre, cliente_id: p.cliente_id, cliente: p.cliente,
+        cotizacion_id: p.cotizacion_id, cotizacion_folio: p.cotizacion_folio, ubicacion: p.ubicacion,
+        fecha_inicio: p.fecha_inicio, fecha_fin: p.fecha_fin, presupuesto: Number(p.presupuesto) || 0,
+        moneda: p.moneda, estado: p.estado, notas: p.notas, ventas_count: ventasProy.length,
+        cobrado: cobrado, cobrado_base: cobradoBase };
+    });
+    return json({ ok: true, proyectos: listaProy });
+  }
+  if (action === 'cxc') { // cuentas por cobrar: ventas (no canceladas) vs cobros reales
+    var ventasCx = filasComoObjetos(SHEET_SALES).filter(function (v) { return String(v.estado_pago) !== 'CANCELADA' && v.id; });
+    var cobrosCx = filasComoObjetos(SHEET_COBROS);
+    var cxc = ventasCx.map(function (v) {
+      var cobrado = 0, cobradoBase = 0, ultimoCobro = '';
+      cobrosCx.forEach(function (c) {
+        if (String(c.venta_id) === String(v.id)) {
+          cobrado += Number(c.monto) || 0; cobradoBase += Number(c.monto_base) || 0;
+          if (String(c.fecha) > ultimoCobro) ultimoCobro = String(c.fecha);
+        }
+      });
+      var total = Number(v.total) || 0, totalBase = Number(v.total_base) || 0;
+      return { venta_id: v.id, folio: v.folio, fecha: v.fecha, cliente: v.cliente, moneda: v.moneda,
+        total: total, cobrado: cobrado, saldo: Math.max(0, total - cobrado),
+        total_base: totalBase, cobrado_base: cobradoBase, saldo_base: Math.max(0, totalBase - cobradoBase),
+        estado_pago: v.estado_pago || (cobrado >= total && total > 0 ? 'PAGADA' : (cobrado > 0 ? 'PARCIAL' : 'PENDIENTE')),
+        ultimo_cobro: ultimoCobro, proyecto_id: v.proyecto_id || '' };
+    });
+    var porCobrar = cxc.reduce(function (s, x) { return s + x.saldo_base; }, 0);
+    return json({ ok: true, cxc: cxc, por_cobrar_base: porCobrar, moneda_base: cfg('moneda_base', 'MXN'),
+      cobros: cobrosCx.slice(-100).reverse() });
+  }
+
   throw AdisError('ACCION_DESCONOCIDA', 'Acción desconocida: ' + action);
 }
 
@@ -884,6 +933,11 @@ function doPostInterno(data) {
     var almacenV = filasComoObjetos(SHEET_WAREHOUSES)
       .filter(function (a) { return String(a.id) === String(data.almacen_id); })[0] || {};
     if (!almacenV.id) throw AdisError('VALIDACION', 'Selecciona un almacén válido.');
+    // FASE 4: vinculos opcionales con cliente y proyecto (validados)
+    var clienteIdV = data.cliente_id ? String(data.cliente_id) : '';
+    if (clienteIdV && !filaPorId(SHEET_CLIENTS, clienteIdV)) throw AdisError('NO_ENCONTRADO', 'Cliente no encontrado.');
+    var proyectoIdV = data.proyecto_id ? String(data.proyecto_id) : '';
+    if (proyectoIdV && !filaPorId(SHEET_PROJECTS, proyectoIdV)) throw AdisError('NO_ENCONTRADO', 'Proyecto no encontrado.');
     var items = data.items || [];
     if (!items.length) throw AdisError('VALIDACION', 'La venta necesita al menos un producto.');
 
@@ -937,7 +991,11 @@ function doPostInterno(data) {
       var costoBase = aBase(costoTotal, monedaV, tc);
       hoja(SHEET_SALES, ENC_VENTAS).appendRow([fechaV, data.cliente || '', almacenV.nombre, nombres.join(' | '),
         total, monedaV, tc, totalBase, costoBase, totalBase - costoBase, data.notas || '',
-        ventaId, folioV, USUARIO_ACTUAL]);
+        ventaId, folioV, USUARIO_ACTUAL, clienteIdV, proyectoIdV, 'PENDIENTE', String(data.almacen_id),
+        JSON.stringify(items.map(function (it2) {
+          var p2 = mapaProd[String(it2.producto_id)] || {};
+          return { producto_id: p2.id || it2.producto_id, producto: p2.nombre || '', cantidad: Number(it2.cantidad) || 0 };
+        }))]);
       log_('venta_registrada', folioV + ' · ' + (data.cliente || 'mostrador') + ' · ' + items.length + ' items');
       return json({ ok: true, id: ventaId, folio: folioV, total: total, utilidad: totalBase - costoBase });
     } catch (errV) {
@@ -1038,6 +1096,153 @@ function doPostInterno(data) {
     hQ.getRange(filaQ, colEstado + 1).setValue(nuevoQ);
     log_('cotizacion_estado', String(hQ.getRange(filaQ, 8).getValue()) + ': ' + estadoQ + ' -> ' + nuevoQ);
     return json({ ok: true, estado: nuevoQ });
+  });
+
+  /* ================= PROYECTOS + COBROS (FASE 4) ================= */
+
+  // Crea un proyecto desde una cotizacion Aprobada (sin recapturar datos)
+  if (tipo === 'crear_proyecto_desde_cotizacion') return conLock(function () {
+    var filaCot = filaPorId(SHEET_QUOTES, data.quote_id);
+    if (!filaCot) throw AdisError('NO_ENCONTRADO', 'Cotización no encontrada.');
+    var hCot2 = ss().getSheetByName(SHEET_QUOTES);
+    var encCot2 = hCot2.getRange(1, 1, 1, hCot2.getLastColumn()).getValues()[0].map(String);
+    var vCot = {};
+    hCot2.getRange(filaCot, 1, 1, encCot2.length).getValues()[0].forEach(function (val, ic2) { vCot[encCot2[ic2]] = val; });
+    var estadoCot = String(vCot.estado || 'Activa');
+    if (estadoCot !== 'Aprobada') throw AdisError('NO_PERMITIDO', 'La cotización debe estar APROBADA para crear el proyecto (está: ' + estadoCot + ').');
+    // idempotencia: si ya tiene proyecto, se devuelve el existente
+    var existentes = filasComoObjetos(SHEET_PROJECTS);
+    for (var ip = 0; ip < existentes.length; ip++) {
+      if (String(existentes[ip].cotizacion_id) === String(data.quote_id)) {
+        return json({ ok: true, id: existentes[ip].id, folio: existentes[ip].folio, ya_existia: true });
+      }
+    }
+    var datosCot = {};
+    try { datosCot = JSON.parse(String(vCot.datos || '{}')); } catch (e) {}
+    var nombreProy = String(datosCot.proyecto || '').trim() || ('Proyecto ' + String(vCot.folio));
+    var folioProy = siguienteFolio('PRY', 'folio_proyecto', 4);
+    var idProy = nuevoId();
+    hoja(SHEET_PROJECTS, ENC_PROY).appendRow([idProy, folioProy, nombreProy, String(vCot.cliente_id || ''),
+      String(vCot.cliente || ''), String(data.quote_id), String(vCot.folio || ''),
+      String(datosCot.ubicacion || vCot.ubicacion || ''), hoy_(), '', Number(vCot.total) || 0,
+      String(vCot.moneda || 'MXN'), 'ACTIVO', data.notas || '', USUARIO_ACTUAL, ahora_()]);
+    log_('proyecto_creado', folioProy + ' · ' + nombreProy + ' · desde ' + vCot.folio);
+    return json({ ok: true, id: idProy, folio: folioProy });
+  });
+
+  if (tipo === 'save_proyecto') return conLock(function () {
+    var nombreP2 = String(data.nombre || '').trim();
+    if (!nombreP2) throw AdisError('VALIDACION', 'El proyecto necesita nombre.');
+    var hPr = hoja(SHEET_PROJECTS, ENC_PROY);
+    if (data.id) {
+      var filaPr = filaPorId(SHEET_PROJECTS, data.id);
+      if (!filaPr) throw AdisError('NO_ENCONTRADO', 'Proyecto no encontrado.');
+      hPr.getRange(filaPr, 1, 1, ENC_PROY.length).setValues([[data.id, String(hPr.getRange(filaPr, 2).getValue()),
+        nombreP2, data.cliente_id || '', data.cliente || '', data.cotizacion_id || '', data.cotizacion_folio || '',
+        data.ubicacion || '', validarFecha(data.fecha_inicio) || hoy_(), validarFecha(data.fecha_fin) || '',
+        Number(data.presupuesto) || 0, validarMoneda(data.moneda || 'MXN'), data.estado || 'ACTIVO',
+        data.notas || '', USUARIO_ACTUAL, ahora_()]]);
+      log_('proyecto_editado', nombreP2);
+      return json({ ok: true, id: data.id });
+    }
+    var folioP2 = siguienteFolio('PRY', 'folio_proyecto', 4);
+    var idP2 = nuevoId();
+    hPr.appendRow([idP2, folioP2, nombreP2, data.cliente_id || '', data.cliente || '', data.cotizacion_id || '',
+      data.cotizacion_folio || '', data.ubicacion || '', validarFecha(data.fecha_inicio) || hoy_(),
+      validarFecha(data.fecha_fin) || '', Number(data.presupuesto) || 0, validarMoneda(data.moneda || 'MXN'),
+      'ACTIVO', data.notas || '', USUARIO_ACTUAL, ahora_()]);
+    log_('proyecto_creado', folioP2 + ' · ' + nombreP2);
+    return json({ ok: true, id: idP2, folio: folioP2 });
+  });
+
+  if (tipo === 'cambiar_estado_proyecto') return conLock(function () {
+    var transP = { ACTIVO: ['TERMINADO', 'CANCELADO'], TERMINADO: [], CANCELADO: [] };
+    var filaPE = filaPorId(SHEET_PROJECTS, data.id);
+    if (!filaPE) throw AdisError('NO_ENCONTRADO', 'Proyecto no encontrado.');
+    var hPE = ss().getSheetByName(SHEET_PROJECTS);
+    var estadoPE = String(hPE.getRange(filaPE, 12).getValue()) || 'ACTIVO';
+    var nuevoPE = String(data.estado || '').toUpperCase();
+    if ((transP[estadoPE] || []).indexOf(nuevoPE) === -1) {
+      throw AdisError('NO_PERMITIDO', 'No se puede pasar de ' + estadoPE + ' a ' + nuevoPE + '.');
+    }
+    hPE.getRange(filaPE, 12).setValue(nuevoPE);
+    if (nuevoPE === 'TERMINADO') hPE.getRange(filaPE, 10).setValue(hoy_());
+    hPE.getRange(filaPE, 16).setValue(ahora_());
+    log_('proyecto_estado', String(hPE.getRange(filaPE, 2).getValue()) + ': ' + estadoPE + ' -> ' + nuevoPE);
+    return json({ ok: true, estado: nuevoPE });
+  });
+
+  // Cobro: dinero REAL recibido contra una venta. Diferencia venta (contable)
+  // de cobro (efectivo). Actualiza estado_pago PENDIENTE/PARCIAL/PAGADA.
+  if (tipo === 'registrar_cobro') return conLock(function () {
+    var filaV = filaPorId(SHEET_SALES, data.venta_id);
+    if (!filaV) throw AdisError('NO_ENCONTRADO', 'Venta no encontrada (solo ventas nuevas con ID admiten cobros).');
+    var hV2 = ss().getSheetByName(SHEET_SALES);
+    var estadoV = String(hV2.getRange(filaV, 17).getValue()) || 'PENDIENTE';
+    if (estadoV === 'CANCELADA') throw AdisError('NO_PERMITIDO', 'La venta está cancelada; no admite cobros.');
+    var folioV2 = String(hV2.getRange(filaV, 13).getValue());
+    var totalV = Number(hV2.getRange(filaV, 5).getValue()) || 0;
+    var monedaV2 = String(hV2.getRange(filaV, 6).getValue()) || 'MXN';
+    var tc2 = Number(hV2.getRange(filaV, 7).getValue()) || Number(cfg('tipo_cambio', '18.5')) || 1;
+    var montoC = Number(data.monto);
+    if (!isFinite(montoC) || montoC <= 0) throw AdisError('VALIDACION', 'El monto del cobro debe ser mayor que cero.');
+    var monedaC = validarMoneda(data.moneda || monedaV2);
+    // cobrado previo en la moneda de la venta (aproximacion via monto_base si moneda distinta)
+    var cobradoPrev = 0, cobradoPrevBase = 0;
+    filasComoObjetos(SHEET_COBROS).forEach(function (c) {
+      if (String(c.venta_id) === String(data.venta_id)) {
+        cobradoPrevBase += Number(c.monto_base) || 0;
+        if (String(c.moneda) === monedaV2) cobradoPrev += Number(c.monto) || 0;
+      }
+    });
+    var totalBaseV = Number(hV2.getRange(filaV, 8).getValue()) || 0;
+    var montoBaseC = aBase(montoC, monedaC, tc2);
+    if (cobradoPrevBase + montoBaseC > totalBaseV + 0.001) {
+      throw AdisError('VALIDACION', 'El cobro excede el saldo pendiente de la venta ' + folioV2 + '.');
+    }
+    var folioCob = siguienteFolio('COB', 'folio_cobro', 4);
+    hoja(SHEET_COBROS, ENC_COBROS).appendRow([nuevoId(), folioCob, String(data.venta_id), folioV2,
+      String(hV2.getRange(filaV, 2).getValue()), String(hV2.getRange(filaV, 15).getValue()) || '',
+      validarFecha(data.fecha) || hoy_(), montoC, monedaC, montoBaseC,
+      data.metodo || '', data.notas || '', USUARIO_ACTUAL]);
+    var nuevoEstadoV = (cobradoPrevBase + montoBaseC >= totalBaseV - 0.001 && totalBaseV > 0) ? 'PAGADA' : 'PARCIAL';
+    hV2.getRange(filaV, 17).setValue(nuevoEstadoV);
+    log_('cobro_registrado', folioCob + ' · ' + folioV2 + ' · ' + montoC + ' ' + monedaC + ' · ' + nuevoEstadoV);
+    return json({ ok: true, folio: folioCob, estado_pago: nuevoEstadoV });
+  });
+
+  // Anulacion de venta: cancela y REGRESA la mercancia al almacen (trazable)
+  if (tipo === 'anular_venta') return conLock(function () {
+    var filaAV = filaPorId(SHEET_SALES, data.id);
+    if (!filaAV) throw AdisError('NO_ENCONTRADO', 'Venta no encontrada.');
+    var hAV = ss().getSheetByName(SHEET_SALES);
+    var estadoAV = String(hAV.getRange(filaAV, 17).getValue()) || 'PENDIENTE';
+    if (estadoAV === 'CANCELADA') return json({ ok: true, ya_cancelada: true });
+    var almacenIdAV = String(hAV.getRange(filaAV, 18).getValue());
+    if (!almacenIdAV) throw AdisError('NO_PERMITIDO', 'Esta venta es antigua (sin almacén registrado) y no puede anularse automáticamente.');
+    var folioAV = String(hAV.getRange(filaAV, 13).getValue());
+    var almacenAV = filasComoObjetos(SHEET_WAREHOUSES).filter(function (a) { return String(a.id) === almacenIdAV; })[0] || {};
+    // reingresar mercancia: los items se guardan como texto "Nombre xN"; sin
+    // producto_id no es posible revertir automaticamente -> se exige venta nueva
+    var itemsTxt = String(hAV.getRange(filaAV, 4).getValue() || '');
+    if (!itemsTxt) throw AdisError('NO_PERMITIDO', 'Venta sin partidas; no se puede anular automáticamente.');
+    // Las ventas nuevas guardan items_json (columna 19) para anulacion con reversa
+    var itemsJsonAV = String(hAV.getRange(filaAV, 19).getValue());
+    var partidasAV = [];
+    try { partidasAV = JSON.parse(itemsJsonAV); } catch (e) {}
+    if (!partidasAV.length || !partidasAV[0].producto_id) {
+      throw AdisError('NO_PERMITIDO', 'Esta venta fue registrada sin partidas estructuradas; revierte el stock manualmente con un movimiento de entrada documentado.');
+    }
+    partidasAV.forEach(function (it) {
+      aplicarMovimiento({ tipo: 'entrada', producto_id: it.producto_id, producto: it.producto || it.nombre || '',
+        almacen_id: almacenIdAV, almacen: almacenAV.nombre || '', cantidad: Number(it.cantidad) || 0,
+        moneda: String(hAV.getRange(filaAV, 6).getValue()) || 'MXN',
+        referencia: 'Anulación ' + folioAV, notas: data.motivo || 'Venta anulada',
+        doc_tipo: 'DEVOLUCION', doc_id: folioAV });
+    });
+    hAV.getRange(filaAV, 17).setValue('CANCELADA');
+    log_('venta_anulada', folioAV + (data.motivo ? ' · ' + data.motivo : ''));
+    return json({ ok: true, estado: 'CANCELADA' });
   });
 
   /* ================= COMPRAS (FASE 2) ================= */

@@ -57,6 +57,8 @@ Panel administrativo de ADIS | Diseños & Remodelaciones sobre arquitectura de
 | `gastos` | `{ok, gastos:[...]}` | Todos. |
 | `estado_resultados&mes=YYYY-MM` | `{ok, ingresos, costos, utilidad_bruta, gastos:{cat}, total_gastos, utilidad_neta, num_ventas, margen_bruto, margen_neto, moneda_base}` | |
 
+| `proyectos`, `cxc` | sí | Fase 4 |
+
 ### POST
 
 | tipo | Token | Escribe en | Lock |
@@ -81,6 +83,10 @@ Panel administrativo de ADIS | Diseños & Remodelaciones sobre arquitectura de
 | `gasto` | sí | Gastos, Log | sí |
 | `delete_gasto` | sí | Gastos | sí |
 
+| `save_proyecto`, `proyecto_mov`, `crear_proyecto_desde_cotizacion` | sí | Proyectos, Proyectos_Movs, Config, Log | sí |
+| `venta_pago` (registrar_cobro) | sí | Cobros, Ventas, Log | sí |
+| `venta_anular` | sí | Ventas, Stock, Movimientos, Log | sí |
+
 ### Contrato de errores (Fase 0)
 
 Éxito: `{ok:true, ...campos planos}` (forma heredada, se migra a envelope en fase de rediseño).
@@ -102,9 +108,15 @@ Columnas nuevas de la Fase 0 se agregaron **al final** (migración aditiva;
 | Almacenes | id, nombre, ubicacion, activo |
 | Stock | producto_id, almacen_id, cantidad |
 | Movimientos | fecha, tipo, producto_id, producto, almacen_id, almacen, cantidad, costo_unit, moneda, referencia, notas, **id, usuario, existencia_anterior, existencia_posterior, documento_tipo, documento_id** |
-| Ventas | fecha, cliente, almacen, items, total, moneda, tipo_cambio, total_base, costo_total_base, utilidad_base, notas, **id, folio, usuario** |
+| Ventas | fecha, cliente, almacen, items, total, moneda, tipo_cambio, total_base, costo_total_base, utilidad_base, notas, **id, folio, usuario, estado, cobrado, items_json, moneda_base, tipo_cambio_base, cliente_id, proyecto_id** |
 | Gastos | fecha, categoria, descripcion, monto, moneda, tipo_cambio, monto_base, **id, usuario** |
 | Reseñas | fecha, nombre, estrellas, texto, activa, **id, usuario** |
+| Proveedores | id, folio, nombre, contacto, telefono, email, ciudad, notas, **usuario** |
+| OrdenesCompra | id, folio, proveedor_id, fecha, estado, subtotal, iva, total, moneda, recibido, items_json, usuario, notas |
+| Clientes | id, folio, nombre, telefono, email, ciudad, tags, notas, **usuario, creado** |
+| Proyectos | id, folio, nombre, cliente_id, cotizacion_id, estado, moneda, presupuesto, cobrado, creado, usuario, notas |
+| Proyectos_Movs | id, proyecto_id, tipo, monto, moneda_base, tipo_cambio_base, monto_base, fecha, usuario, descripcion, doc_tipo, doc_id |
+| Cobros | id, venta_id, fecha, monto, moneda, tipo_cambio, monto_base, metodo, notas, usuario |
 | Cotizaciones | fecha, cliente, telefono, ciudad, items, total, notas, folio, proyecto, ubicacion, moneda, subtotal, iva, estado, datos, **id, usuario** |
 | Leads | fecha, nombre, telefono, email, ciudad, metros, producto, mensaje, pagina, idioma |
 | Visitas | fecha, hora, pagina, seccion, origen, referrer, idioma, dispositivo, navegador, ancho, ua |
@@ -124,6 +136,7 @@ Gastos, Stock, Visitas. **Ventas y Movimientos son histórico protegido.**
 | `folio_cotizacion` | 1 | consecutivo ADIS-AAAA-NNN |
 | `folio_venta` | 1 | consecutivo VEN-AAAA-NNNN |
 | `folio_movimiento` | 1 | consecutivo MOV-AAAA-NNNNN |
+| `folio_proyecto` | 1 | consecutivo PRY-NNNNNN |
 
 ## 4. Identificadores y folios
 
@@ -225,6 +238,8 @@ producto/almacén existen → aplicarMovimiento(doc AJUSTE) → Log
 
 | Fase | Punto de entrada en el backend |
 |---|---|
+| 3 Clientes/Cotizaciones | hoja Clientes (CLI-NNNNNN, tags lead/cliente), `save_cliente`, `lead_convertir`, `quote_estado` |
+| 4 Proyectos/Ventas 2.0 | hojas Proyectos, Proyectos_Movs, Cobros; `save_proyecto`, `proyecto_mov`, `crear_proyecto_desde_cot`, `venta_pago` (cobros parciales), `venta_anular` (devolucion trazable); Ventas con estado/cobrado/folio VEN-/items_json |
 | 2 Compras | nuevos tipos `orden_compra`, `recibir_oc` → `aplicarMovimiento(entrada, doc ORDEN_COMPRA)`; hojas Proveedores, OrdenesCompra |
 | 3 Clientes/Cotizaciones | hoja Clientes; `quote` estado → aprobada crea proyecto; unificar cotizadores en frontend |
 | 4 Proyectos/Ventas 2.0 | Ventas + `pagos` parciales (hoja Cobros); CxC calculado de Ventas−Cobros |
@@ -236,6 +251,7 @@ producto/almacén existen → aplicarMovimiento(doc AJUSTE) → Log
 
 | Script | Qué valida | Cuándo |
 |---|---|---|
+| `scripts/auditoria/test_fase4_api.py` | API (proyectos, cobros parciales, CxC, anulacion con repuesto de stock). | tras redeploy |
 | `scripts/auditoria/test_fase0_api.py` | API + concurrencia (ventas simultáneas, folios duplicados, errores por código). Auto-detecta backend viejo/nuevo. | tras redeploy del script |
 | `scripts/auditoria/test_fase0_regresion.py` | Playwright: login + las 10 pestañas + logout, 0 errores JS. | en cada cambio del panel |
 | `scripts/auditoria/test_flujo_cotizador.py` | Cotizador (backend simulado) | al tocar el cotizador |
