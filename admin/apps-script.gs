@@ -705,7 +705,7 @@ function doGetInterno(e) {
       pagos: pagosCp.slice(-100).reverse() });
   }
   if (action === 'flujo_caja') { // FASE 5: efectivo REAL = cobros entrados - pagos salidos
-    var desdeFc = String(params.desde || ''), hastaFc = String(params.hasta || '');
+    var desdeFc = String(e.parameter.desde || ''), hastaFc = String(e.parameter.hasta || '');
     if (!desdeFc || !hastaFc) {
       var ahoraFc = new Date();
       var yFc = ahoraFc.getFullYear(), mFc = ahoraFc.getMonth() + 1;
