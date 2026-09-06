@@ -58,6 +58,7 @@ Panel administrativo de ADIS | Diseños & Remodelaciones sobre arquitectura de
 | `estado_resultados&mes=YYYY-MM` | `{ok, ingresos, costos, utilidad_bruta, gastos:{cat}, total_gastos, utilidad_neta, num_ventas, margen_bruto, margen_neto, moneda_base}` | |
 
 | `proyectos`, `cxc` | sí | Fase 4 |
+| `alertas` | sí | Fase 6: stock negativo/bajo/cero, sin precio/costo, CxC/CxP >30 días, cotizaciones pendientes viejas, OCs por recibir (CRITICA>ALTA>MEDIA) |
 | `pagos`, `cxp`, `flujo_caja?desde=&hasta=` | sí | Fase 5: CxP y efectivo real (cobros−pagos) |
 
 ### POST
@@ -249,6 +250,7 @@ producto/almacén existen → aplicarMovimiento(doc AJUSTE) → Log
 | 2 Compras | nuevos tipos `orden_compra`, `recibir_oc` → `aplicarMovimiento(entrada, doc ORDEN_COMPRA)`; hojas Proveedores, OrdenesCompra |
 | 3 Clientes/Cotizaciones | hoja Clientes; `quote` estado → aprobada crea proyecto; unificar cotizadores en frontend |
 | 4 Proyectos/Ventas 2.0 | Ventas + `pagos` parciales (hoja Cobros); CxC calculado de Ventas−Cobros |
+| 6 Finanzas | `estado_resultados` con filtro `proyecto_id` (gastos = Proyectos_Movs del proyecto), utilidad operativa y márgenes, ventas CANCELADAS excluidas del ingreso; GET `alertas` priorizadas |
 | 5 Gastos/Pagos | estados pagado/pendiente en Gastos; hoja Pagos; flujo de efectivo = Cobros−Pagos por fecha |
 | 6 Finanzas | estado_resultados con niveles (bruta/operativa/neta) + rentabilidad por proyecto |
 | 7 Dashboard/rediseño | migración del contrato a envelope `{ok, data, error}`; sidebar; Lucide |
@@ -257,6 +259,7 @@ producto/almacén existen → aplicarMovimiento(doc AJUSTE) → Log
 
 | Script | Qué valida | Cuándo |
 |---|---|---|
+| `scripts/auditoria/test_fase6_api.py` | API (proyecto_mov, P&L por proyecto, exclusión de anuladas, alertas priorizadas). | tras redeploy |
 | `scripts/auditoria/test_fase5_api.py` | API (gasto con folio, pagos parciales, CxP, cancelar lógica, flujo de caja, P&L excluye cancelados). | tras redeploy |
 | `scripts/auditoria/test_fase4_api.py` | API (proyectos, cobros parciales, CxC, anulacion con repuesto de stock). | tras redeploy |
 | `scripts/auditoria/test_fase0_api.py` | API + concurrencia (ventas simultáneas, folios duplicados, errores por código). Auto-detecta backend viejo/nuevo. | tras redeploy del script |

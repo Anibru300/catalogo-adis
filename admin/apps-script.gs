@@ -61,6 +61,7 @@ var SHEET_CLIENTS    = 'Clientes';
 var SHEET_PROJECTS   = 'Proyectos';
 var SHEET_COBROS     = 'Cobros';
 var SHEET_PAGOS      = 'Pagos';
+var SHEET_PROY_MOVS  = 'Proyectos_Movs';
 var SHEET_PO         = 'OrdenesCompra';
 var SHEET_RECEP      = 'Recepciones';
 var VISITS_MAX_FILAS = 5000;   // activas; el excedente se ARCHIVA (no se borra)
@@ -89,6 +90,8 @@ var ENC_GASTOS = ['fecha', 'categoria', 'descripcion', 'monto', 'moneda', 'tipo_
   'id', 'usuario', 'folio', 'estado', 'pagado'];
 var ENC_PAGOS = ['id', 'folio', 'gasto_id', 'gasto_folio', 'categoria', 'fecha', 'monto', 'moneda',
   'monto_base', 'metodo', 'notas', 'usuario'];
+var ENC_PROY_MOVS = ['id', 'proyecto_id', 'tipo', 'monto', 'moneda', 'tipo_cambio', 'monto_base',
+  'fecha', 'descripcion', 'usuario'];
 var ENC_RESENAS = ['fecha', 'nombre', 'estrellas', 'texto', 'activa', 'id', 'usuario'];
 var ENC_PROV = ['id', 'nombre', 'contacto', 'telefono', 'email', 'direccion', 'notas', 'activo', 'fecha'];
 var ENC_CLIENTES = ['id', 'nombre', 'telefono', 'email', 'ciudad', 'direccion', 'notas', 'origen', 'fecha', 'activo'];
@@ -493,8 +496,24 @@ function doGetInterno(e) {
       var f = String(fecha).slice(0, 10);
       return f >= desde && f <= hasta;
     };
-    var ventas = filasComoObjetos(SHEET_SALES).filter(function (v) { return enRango(v.fecha); });
-    var gastos = filasComoObjetos(SHEET_EXPENSES).filter(function (g) { return enRango(g.fecha) && String(g.estado) !== 'CANCELADA'; });
+    var proyFiltro = String(e.parameter.proyecto_id || '');
+    var ventas = filasComoObjetos(SHEET_SALES).filter(function (v) {
+      if (String(v.estado_pago) === 'CANCELADA') return false; // FASE 6: las anuladas no son ingreso
+      if (proyFiltro && String(v.proyecto_id) !== proyFiltro) return false;
+      return enRango(v.fecha);
+    });
+    var gastos;
+    if (proyFiltro) { // FASE 6: en vista por proyecto, los gastos son los movimientos tipo 'gasto' del proyecto
+      gastos = filasComoObjetos('Proyectos_Movs').filter(function (m) {
+        return String(m.proyecto_id) === proyFiltro && String(m.tipo) === 'gasto' && enRango(m.fecha);
+      }).map(function (m) {
+        return { categoria: String(m.descripcion || 'Gasto de proyecto').slice(0, 40), monto_base: Number(m.monto_base) || 0, estado: 'ACTIVA' };
+      });
+    } else {
+      gastos = filasComoObjetos(SHEET_EXPENSES).filter(function (g) {
+        return enRango(g.fecha) && String(g.estado) !== 'CANCELADA';
+      });
+    }
     var ingresos = 0, costos = 0;
     ventas.forEach(function (v) { ingresos += Number(v.total_base) || 0; costos += Number(v.costo_total_base) || 0; });
     var porCategoria = {};
@@ -508,11 +527,67 @@ function doGetInterno(e) {
     var utilBruta = ingresos - costos;
     var utilNeta = utilBruta - totalGastos;
     return json({ ok: true, mes: mes || 'Todos', moneda_base: cfg('moneda_base', 'MXN'),
+      proyecto_id: proyFiltro || '',
       ingresos: ingresos, costos: costos, utilidad_bruta: utilBruta,
       gastos: porCategoria, total_gastos: totalGastos, utilidad_neta: utilNeta,
+      utilidad_operativa: utilNeta, // FASE 6: gastos operativos ya descontados
       num_ventas: ventas.length,
       margen_bruto: ingresos ? (utilBruta / ingresos * 100) : 0,
-      margen_neto: ingresos ? (utilNeta / ingresos * 100) : 0 });
+      margen_neto: ingresos ? (utilNeta / ingresos * 100) : 0,
+      margen_operativo: ingresos ? (utilNeta / ingresos * 100) : 0 });
+  }
+
+  // FASE 6: alertas priorizadas del negocio (stock, cobros, pagos, cotizaciones, compras)
+  if (action === 'alertas') {
+    var alertas = [];
+    var stockA = filasComoObjetos(SHEET_STOCK);
+    var productosA = filasComoObjetos(SHEET_PRODUCTS);
+    var existencias = {};
+    stockA.forEach(function (s) {
+      var k = String(s.producto_id);
+      existencias[k] = (existencias[k] || 0) + (Number(s.cantidad) || 0);
+    });
+    productosA.forEach(function (p) {
+      if (String(p.estado) === 'inactivo') return;
+      var ex = existencias[String(p.id)] || 0;
+      var min = Number(p.stock_minimo) || 0;
+      if (ex < 0) alertas.push({ prioridad: 'CRITICA', tipo: 'stock_negativo', detalle: p.nombre + ': existencia ' + ex + ' (revisar movimientos)' });
+      else if (min > 0 && ex <= min) alertas.push({ prioridad: 'ALTA', tipo: 'stock_bajo', detalle: p.nombre + ': ' + ex + ' en existencia (mínimo ' + min + ')' });
+      else if (ex === 0) alertas.push({ prioridad: 'ALTA', tipo: 'stock_cero', detalle: p.nombre + ': sin existencia' });
+      if (!(Number(p.precio) > 0)) alertas.push({ prioridad: 'ALTA', tipo: 'sin_precio', detalle: p.nombre + ': sin precio de venta' });
+      if (!(Number(p.costo) > 0)) alertas.push({ prioridad: 'MEDIA', tipo: 'sin_costo', detalle: p.nombre + ': sin costo (la utilidad no se calcula bien)' });
+    });
+    var hace30 = Utilities.formatDate(new Date(Date.now() - 30 * 864e5), 'America/Hermosillo', 'yyyy-MM-dd');
+    var cobrosA = filasComoObjetos(SHEET_COBROS);
+    filasComoObjetos(SHEET_SALES).forEach(function (v) {
+      if (String(v.estado_pago) === 'CANCELADA' || !v.id) return;
+      var cobrado = 0;
+      cobrosA.forEach(function (c) { if (String(c.venta_id) === String(v.id)) cobrado += Number(c.monto_base) || 0; });
+      var totalV = Number(v.total_base) || 0;
+      if (totalV - cobrado > 0.001 && String(v.fecha).slice(0, 10) < hace30)
+        alertas.push({ prioridad: 'ALTA', tipo: 'cxc_vencida', detalle: 'Venta ' + (v.folio || '') + ' · ' + (v.cliente || '') + ': saldo ' + (totalV - cobrado).toFixed(2) + ' desde ' + String(v.fecha).slice(0, 10) });
+    });
+    var pagosA = filasComoObjetos(SHEET_PAGOS);
+    filasComoObjetos(SHEET_EXPENSES).forEach(function (g) {
+      if (String(g.estado) === 'CANCELADA' || !g.id) return;
+      var pagado = 0;
+      pagosA.forEach(function (p) { if (String(p.gasto_id) === String(g.id)) pagado += Number(p.monto_base) || 0; });
+      var totalG = Number(g.monto_base) || 0;
+      if (totalG - pagado > 0.001 && String(g.fecha).slice(0, 10) < hace30)
+        alertas.push({ prioridad: 'MEDIA', tipo: 'cxp_vencida', detalle: 'Gasto ' + (g.folio || '') + ' · ' + (g.categoria || '') + ': saldo ' + (totalG - pagado).toFixed(2) + ' desde ' + String(g.fecha).slice(0, 10) });
+    });
+    filasComoObjetos(SHEET_QUOTES).forEach(function (q) {
+      if (String(q.estado) === 'Pendiente' && String(q.fecha).slice(0, 10) < hace30)
+        alertas.push({ prioridad: 'MEDIA', tipo: 'quote_vieja', detalle: 'Cotización ' + (q.folio || '') + ' · ' + (q.cliente || '') + ' sigue Pendiente desde ' + String(q.fecha).slice(0, 10) });
+    });
+    filasComoObjetos(SHEET_PO).forEach(function (oc) {
+      var stOC = String(oc.estado);
+      if (stOC === 'ENVIADA' || stOC === 'AUTORIZADA' || stOC === 'PARCIAL')
+        alertas.push({ prioridad: 'MEDIA', tipo: 'oc_por_recibir', detalle: 'OC ' + (oc.folio || '') + ' · ' + (oc.proveedor || '') + ': estado ' + stOC });
+    });
+    var pesoAlerta = { CRITICA: 0, ALTA: 1, MEDIA: 2 };
+    alertas.sort(function (a, b) { return pesoAlerta[a.prioridad] - pesoAlerta[b.prioridad]; });
+    return json({ ok: true, alertas: alertas, hoy: hoy_() });
   }
 
   if (action === 'clientes') {
@@ -551,6 +626,7 @@ function doGetInterno(e) {
   }
 
   if (action === 'proyectos') {
+    var movsProyectos = filasComoObjetos(SHEET_PROY_MOVS);
     var listaProy = filasComoObjetos(SHEET_PROJECTS).map(function (p) {
       // cobrado del proyecto = cobros de ventas vinculadas
       var cobrado = 0, cobradoBase = 0;
@@ -561,11 +637,20 @@ function doGetInterno(e) {
           if (String(c.venta_id) === String(v.id)) { cobrado += Number(c.monto) || 0; cobradoBase += Number(c.monto_base) || 0; }
         });
       });
+      // FASE 6: gastos/ingresos directos del proyecto (Proyectos_Movs)
+      var gastosProy = 0, ingresosProy = 0;
+      movsProyectos.forEach(function (m) {
+        if (String(m.proyecto_id) !== String(p.id)) return;
+        if (String(m.tipo) === 'gasto') gastosProy += Number(m.monto_base) || 0;
+        if (String(m.tipo) === 'ingreso') ingresosProy += Number(m.monto_base) || 0;
+      });
       return { id: p.id, folio: p.folio, nombre: p.nombre, cliente_id: p.cliente_id, cliente: p.cliente,
         cotizacion_id: p.cotizacion_id, cotizacion_folio: p.cotizacion_folio, ubicacion: p.ubicacion,
         fecha_inicio: p.fecha_inicio, fecha_fin: p.fecha_fin, presupuesto: Number(p.presupuesto) || 0,
         moneda: p.moneda, estado: p.estado, notas: p.notas, ventas_count: ventasProy.length,
-        cobrado: cobrado, cobrado_base: cobradoBase };
+        cobrado: cobrado, cobrado_base: cobradoBase,
+        gastos_real: gastosProy, ingresos_extra: ingresosProy,
+        utilidad_real: cobradoBase + ingresosProy - gastosProy };
     });
     return json({ ok: true, proyectos: listaProy });
   }
@@ -1235,6 +1320,31 @@ function doPostInterno(data) {
   });
 
   /* ================= PROYECTOS + COBROS (FASE 4) ================= */
+
+  // FASE 6: movimiento financiero directo de un proyecto (gasto/ingreso/presupuesto)
+  if (tipo === 'proyecto_mov') return conLock(function () {
+    var filaPM = filaPorId(SHEET_PROJECTS, data.proyecto_id);
+    if (!filaPM) throw AdisError('NO_ENCONTRADO', 'Proyecto no encontrado.');
+    var tipoPM = String(data.tipo || '').toLowerCase();
+    if (['gasto', 'ingreso', 'presupuesto'].indexOf(tipoPM) === -1) {
+      throw AdisError('VALIDACION', 'Tipo de movimiento inválido (gasto/ingreso/presupuesto).');
+    }
+    var montoPM = Number(data.monto);
+    if (!isFinite(montoPM) || montoPM <= 0) throw AdisError('VALIDACION', 'El monto debe ser mayor que cero.');
+    var monedaPM = validarMoneda(data.moneda || cfg('moneda_base', 'MXN'));
+    var tcPM = Number(data.tipo_cambio) || Number(cfg('tipo_cambio', '18.5')) || 1;
+    hoja(SHEET_PROY_MOVS, ENC_PROY_MOVS).appendRow([nuevoId(), String(data.proyecto_id), tipoPM, montoPM,
+      monedaPM, tcPM, aBase(montoPM, monedaPM, tcPM), validarFecha(data.fecha) || hoy_(),
+      data.descripcion || '', USUARIO_ACTUAL]);
+    // 'presupuesto' ajusta el presupuesto base del proyecto (columna 11)
+    if (tipoPM === 'presupuesto') {
+      var hPM = ss().getSheetByName(SHEET_PROJECTS);
+      var previoPM = Number(hPM.getRange(filaPM, 11).getValue()) || 0;
+      hPM.getRange(filaPM, 11).setValue(previoPM + montoPM);
+    }
+    log_('proyecto_mov', tipoPM + ' · ' + montoPM + ' ' + monedaPM + ' · proyecto ' + String(data.proyecto_id));
+    return json({ ok: true });
+  });
 
   // Crea un proyecto desde una cotizacion Aprobada (sin recapturar datos)
   if (tipo === 'crear_proyecto_desde_cotizacion') return conLock(function () {
