@@ -91,6 +91,18 @@
   .cmdk-item { padding:0.6rem 1rem; cursor:pointer; font-size:0.9rem; color:var(--white); }
   .cmdk-item:hover, .cmdk-item.sel { background:rgba(197,160,89,0.12); color:var(--gold); }
   .cmdk-hint { padding:0.4rem 1rem; font-size:0.7rem; color:var(--muted); border-top:1px solid rgba(197,160,89,0.15); }
+  /* FASE 8: ayuda */
+  .ayuda-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(300px,1fr)); gap:0.8rem; }
+  .ayuda-item { background:var(--card); border:1px solid rgba(197,160,89,0.18); border-radius:10px; padding:0.8rem 1rem; }
+  .ayuda-item summary { cursor:pointer; font-weight:600; color:var(--gold); font-size:0.92rem; list-style:none; }
+  .ayuda-item summary::-webkit-details-marker { display:none; }
+  .ayuda-item summary::before { content:'▸ '; color:var(--muted); }
+  .ayuda-item[open] summary::before { content:'▾ '; }
+  .ayuda-item p { margin:0.55rem 0 0; font-size:0.83rem; line-height:1.55; color:var(--muted); }
+  .ayuda-item p b, .ayuda-item p strong { color:var(--white); font-weight:600; }
+  .ayuda-flujo { display:flex; flex-wrap:wrap; gap:0.4rem; align-items:center; margin:0.4rem 0 0.2rem; }
+  .ayuda-flujo .paso { background:rgba(197,160,89,0.1); border:1px solid rgba(197,160,89,0.35); border-radius:20px; padding:0.25rem 0.7rem; font-size:0.75rem; color:var(--gold-soft); }
+  .ayuda-flujo .flecha { color:var(--muted); font-size:0.8rem; }
 
   .panel { padding:1.5rem; }
   .panel h2 { font-size:1.1rem; margin-bottom:1rem; }
@@ -297,6 +309,7 @@
       <button class="tab" data-tab="reviews" onclick="showTab('reviews')">⭐ Reseñas</button>
       <button class="tab" data-tab="analytics" onclick="showTab('analytics')">📊 Estadísticas</button>
       <button class="tab" data-tab="flow" onclick="showTab('flow')">🌊 Flujo</button>
+      <button class="tab" data-tab="ayuda" onclick="showTab('ayuda')">❓ Ayuda</button>
     </nav>
     <button class="btn btn-sm" onclick="logout()">Cerrar sesión</button>
   </header>
@@ -779,6 +792,61 @@
         <table><thead><tr><th>Fecha</th><th>Hora</th><th>Página</th><th>Apartado</th><th>Origen</th><th>Dispositivo</th><th>Navegador</th></tr></thead><tbody id="flowTabla"></tbody></table>
       </div>
     </section>
+
+    <!-- AYUDA (FASE 8: guia del dueno del negocio) -->
+    <section id="tab-ayuda" class="panel hidden">
+      <div class="toolbar"><h2 style="margin:0;">❓ Ayuda — ¿Para qué sirve cada sección?</h2></div>
+      <div class="card-box" style="margin-bottom:1rem;">
+        <h3 class="flow-h">🧭 El ciclo completo del negocio (en orden)</h3>
+        <div class="ayuda-flujo">
+          <span class="paso">1 · Cotizar (Cotizador)</span><span class="flecha">→</span>
+          <span class="paso">2 · Cliente aprueba (Cotizaciones → Aprobada)</span><span class="flecha">→</span>
+          <span class="paso">3 · Crear Proyecto</span><span class="flecha">→</span>
+          <span class="paso">4 · Comprar material (Compras/OC)</span><span class="flecha">→</span>
+          <span class="paso">5 · Registrar Venta</span><span class="flecha">→</span>
+          <span class="paso">6 · Cobrar (Cobros)</span><span class="flecha">→</span>
+          <span class="paso">7 · Pagar gastos (Gastos)</span><span class="flecha">→</span>
+          <span class="paso">8 · Revisar Resultados y Caja</span>
+        </div>
+        <p class="muted" style="margin:0.6rem 0 0; font-size:0.83rem;">No es obligatorio seguirlo al pie de la letra, pero así todos los números (utilidad, caja, alertas) cuadran solos.</p>
+      </div>
+
+      <h3 class="flow-h" style="margin:1rem 0 0.6rem;">📑 Secciones del panel</h3>
+      <div class="ayuda-grid" style="margin-bottom:1.2rem;">
+        <details class="ayuda-item"><summary>🏠 Resumen (inicio)</summary><p>Tu tablero ejecutivo: <b>ventas del mes, cobros reales, gastos y utilidad</b> de un vistazo, más las <b>alertas</b> importantes (stock bajo, dinero por cobrar/pagar atrasado, cotizaciones olvidadas). Recomendación: échale un ojo cada mañana.</p></details>
+        <details class="ayuda-item"><summary>📥 Leads</summary><p>Personas que <b>dejaron sus datos en el sitio web</b> (formulario de contacto). Aquí los atiendes: márcalos como contactados y, cuando te compren, <b>conviértelos en Cliente</b> con un botón.</p></details>
+        <details class="ayuda-item"><summary>👥 Clientes</summary><p>Directorio de clientes. El <b>teléfono es único</b>: si ya existe, el sistema avisa para no duplicar. Desde un cliente puedes cargar sus cotizaciones y ver todo su historial.</p></details>
+        <details class="ayuda-item"><summary>🧾 Cotizaciones</summary><p>Historial de cotizaciones con folio <b>ADIS-AAAA-NNN</b> (numeración automática, sin duplicados). Cambia su estado: <b>Activa → Aprobada</b> (el cliente aceptó) o Rechazada. <b>Solo una cotización Aprobada puede convertirse en Proyecto.</b></p></details>
+        <details class="ayuda-item"><summary>📝 Cotizador</summary><p>Arma cotizaciones profesionales: eliges productos, cantidades y el sistema calcula totales con IVA. Genera el <b>documento con folio para imprimir o mandar por PDF/WhatsApp</b>.</p></details>
+        <details class="ayuda-item"><summary>📦 Inventario</summary><p>Productos, almacenes y existencias. <b>Regla de oro: la existencia solo cambia con movimientos</b> (entrada / salida / ajuste), cada uno con fecha, usuario e folio. Así sabes exactamente qué pasó con tu material. Si intentas sacar más de lo que hay, el sistema lo bloquea (<b>STOCK_INSUFICIENTE</b>).</p></details>
+        <details class="ayuda-item"><summary>🛒 Compras (órdenes de compra)</summary><p>Pedidos a proveedores con folio <b>OC-</b>. Cuando te llega el material usas <b>Recibir</b> (puede ser parcial): lo recibido <b>entra automáticamente al inventario</b> como una entrada trazable. Comprar material NO es un gasto todavía: el gasto se registra cuando pagas.</p></details>
+        <details class="ayuda-item"><summary>💵 Ventas</summary><p>Registra la <b>salida de material</b> vendido. Puedes vincularla a un cliente y a un proyecto. Cada venta calcula su utilidad (precio − costo). Si te equivocas, <b>anula la venta</b>: revierte el stock y queda fuera de los resultados. Las ventas <b>no se borran</b>: se anulan, para mantener la bitácora.</p></details>
+        <details class="ayuda-item"><summary>🏗️ Proyectos</summary><p>Ficha financiera de cada obra: <b>presupuesto, cobrado, gastos directos del proyecto y utilidad real</b>. Puedes agregar movimientos directos (gasto / ingreso extra / ajuste de presupuesto). Estados: <b>ACTIVO → TERMINADO o CANCELADO</b>; un proyecto terminado no se reactiva (si se reabre, crea uno nuevo).</p></details>
+        <details class="ayuda-item"><summary>💰 Cobros</summary><p>Cuentas por cobrar: qué ventas tienen <b>saldo pendiente</b>. Registrar un cobro = <b>dinero real que te pagaron</b>. Una venta puede cobrarse en partes: <b>PENDIENTE → PARCIAL → PAGADA</b>. No se puede cobrar de más ni cobrar una venta anulada.</p></details>
+        <details class="ayuda-item"><summary>🧮 Caja</summary><p>Tu <b>efectivo real del mes</b>: suma de cobros que entraron menos pagos que salieron, desglosado por día. Ojo: <b>no es lo mismo que las ventas ni que el estado de resultados</b> — aquí solo entra dinero que efectivamente se movió.</p></details>
+        <details class="ayuda-item"><summary>📉 Gastos</summary><p>Gastos del negocio (renta, luz, gasolina, etc.) con folio <b>GAS-</b>. Conceptos clave: <b>gasto ≠ pago</b>. Registrar el gasto dice “me debo esto”; el <b>pago</b> (folio PAG-) es cuando sale el dinero. Puedes cancelar un gasto solo si aún no le has pagado nada.</p></details>
+        <details class="ayuda-item"><summary>📊 Resultados (P&amp;L)</summary><p>Estado de resultados por mes o por proyecto: <b>ingresos − costo de lo vendido − gastos = utilidad</b>. Las ventas anuladas no cuentan como ingreso. Incluye las <b>alertas</b> del negocio. Sirve para saber si el mes dejó ganancia de verdad.</p></details>
+        <details class="ayuda-item"><summary>⭐ Reseñas</summary><p>Las reseñas que dejan clientes en el sitio. Apruébalas para <b>publicarlas en la página</b> o desactívalas si no quieres mostrarlas.</p></details>
+        <details class="ayuda-item"><summary>📊 Estadísticas</summary><p>Espacio para el tablero de <b>Google Analytics / Looker Studio</b> del sitio web (se configura una sola vez con la URL del tablero).</p></details>
+        <details class="ayuda-item"><summary>🌊 Flujo</summary><p>Visitas del sitio web en tiempo casi real: <b>qué páginas ven, de dónde llegan (Google, Facebook…)</b>, con qué dispositivo, y las últimas visitas. Sirve para saber qué publicidad funciona.</p></details>
+      </div>
+
+      <h3 class="flow-h" style="margin:0 0 0.6rem;">💬 Preguntas frecuentes</h3>
+      <div class="ayuda-grid">
+        <details class="ayuda-item"><summary>¿Cotización, venta o cobro… qué uso?</summary><p><b>Cotización</b> = propuesta con precio (aún no hay dinero ni material que salga). <b>Venta</b> = ya entregaste material o facturaste (sale del inventario). <b>Cobro</b> = te pagaron. Una cotización puede existir sin venta; una venta sin cobro es una cuenta por cobrar.</p></details>
+        <details class="ayuda-item"><summary>¿Compra (OC), gasto o pago… qué uso?</summary><p><b>Orden de compra</b> = pediste material a un proveedor (al recibirlo entra al inventario). <b>Gasto</b> = registras que debes dinero por algo (renta, luz, honorarios). <b>Pago</b> = el dinero realmente salió. Comprar material no es gasto hasta que se paga; por eso la <b>Caja</b> solo muestra pagos.</p></details>
+        <details class="ayuda-item"><summary>¿Por qué Resultados no cuadra con mi Caja?</summary><p>Porque miden cosas distintas: <b>Resultados</b> es contable (ventas hechas y gastos devengados, aunque no se haya movido dinero). <b>Caja</b> es efectivo real (cobros recibidos menos pagos hechos). Ejemplo: vendes $10,000 hoy y cobras a 30 días → en Resultados ya hay utilidad; en Caja entra hasta que te paguen.</p></details>
+        <details class="ayuda-item"><summary>¿Puedo borrar un producto o una venta?</summary><p>Los productos <b>no se borran</b>: se desactivan (quedan ocultos pero con su historial) y se pueden <b>restaurar</b>. Las ventas y movimientos de inventario <b>jamás se borran</b>: si te equivocas, <b>anula la venta</b> y el sistema revierte el stock automáticamente. Así la bitácora siempre cuadra.</p></details>
+        <details class="ayuda-item"><summary>¿Cómo empiezo un proyecto?</summary><p>Crea la cotización en el <b>Cotizador</b>, marca la cotización como <b>Aprobada</b> (el cliente aceptó) y en Proyectos usa <b>“Crear desde cotización”</b>: se copia cliente, presupuesto y folio. Si lo creas dos veces, el sistema detecta que ya existe y no lo duplica.</p></details>
+        <details class="ayuda-item"><summary>Mi proyecto quedó TERMINADO por error, ¿y ahora?</summary><p>El diseño es a propósito: un proyecto terminado <b>no se reactiva</b> para proteger el historial financiero. Si la obra se reabre, crea un <b>nuevo proyecto</b> (puede ser del mismo cliente) y registra ahí lo nuevo.</p></details>
+        <details class="ayuda-item"><summary>Vendí más de lo que tengo en inventario, ¿puedo?</summary><p>No. El sistema bloquea la venta con <b>STOCK_INSUFICIENTE</b> y te dice cuánto hay. Primero registra la <b>entrada</b> del material (compra recibida o ajuste) y después la venta. Así tu inventario nunca queda negativo ni “pierde” material.</p></details>
+        <details class="ayuda-item"><summary>¿Dónde cambio el tipo de cambio USD/MXN o la moneda?</summary><p>En la hoja <b>Config</b> del archivo de Google Sheets (claves <code>moneda_base</code> y <code>tipo_cambio</code>). Todo lo registrado en dólares se convierte a pesos con ese tipo de cambio para los reportes.</p></details>
+        <details class="ayuda-item"><summary>¿Cada cuánto se cierra mi sesión?</summary><p>Cada <b>8 horas</b> por seguridad. Si ves “Sesión no válida o expirada”, simplemente vuelve a entrar con tu usuario y contraseña. Después de 5 intentos fallidos la entrada se bloquea 10 minutos.</p></details>
+        <details class="ayuda-item"><summary>¿Cómo navego rápido entre secciones?</summary><p>Presiona <b>Ctrl + K</b> (o Cmd + K en Mac) desde cualquier parte del panel: escribe el nombre de la sección y presiona Enter. También funciona la tecla <b>Esc</b> para cerrar.</p></details>
+        <details class="ayuda-item"><summary>¿Qué son las alertas que veo en Resumen y Resultados?</summary><p>Avisos automáticos ordenados por importancia: <b>stock bajo o sin existencia</b>, <b>ventas con más de 30 días sin cobrar</b>, gastos pendientes de pagar, cotizaciones aprobadas que no se han convertido y órdenes de compra por recibir. Atiende primero las <b>CRÍTICA</b> y <b>ALTA</b>.</p></details>
+        <details class="ayuda-item"><summary>¿Pueden entrar dos personas al mismo tiempo?</summary><p>Sí. El sistema usa <b>bloqueos automáticos</b>: si dos personas venden el último material al mismo tiempo, <b>una sola venta pasa</b> y la otra avisa que no hay existencia. Los folios (ADIS, VEN, OC, PRY…) tampoco se duplican nunca, aunque cotices dos veces a la vez.</p></details>
+      </div>
+    </section>
   </main>
 </div>
 
@@ -943,7 +1011,7 @@ const CMDK_TABS = [
   ['dash','🏠 Resumen'], ['leads','📥 Leads'], ['clientes','👥 Clientes'], ['quotes','🧾 Cotizaciones'],
   ['proposal','📝 Cotizador'], ['inventory','📦 Inventario'], ['oc','🛒 Compras'], ['sales','💵 Ventas'],
   ['proyectos','🏗️ Proyectos'], ['cobros','💰 Cobros'], ['flujocaja','🧮 Caja'], ['expenses','📉 Gastos'],
-  ['pnl','📊 Resultados'], ['reviews','⭐ Reseñas'], ['analytics','📊 Estadísticas'], ['flow','🌊 Flujo'],
+  ['pnl','📊 Resultados'], ['reviews','⭐ Reseñas'], ['analytics','📊 Estadísticas'], ['flow','🌊 Flujo'], ['ayuda','❓ Ayuda'],
 ];
 let cmdkSel = 0;
 function abrirCmdk(){
@@ -979,7 +1047,7 @@ document.addEventListener('keydown', e=>{
 
 function showTab(name){
   document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active', t.dataset.tab===name));
-  ['dash','leads','clientes','quotes','proposal','inventory','oc','sales','proyectos','cobros','expenses','pnl','reviews','analytics','flujocaja','flow'].forEach(n=>$('tab-'+n).classList.toggle('hidden', n!==name));
+  ['dash','leads','clientes','quotes','proposal','inventory','oc','sales','proyectos','cobros','expenses','pnl','reviews','analytics','flujocaja','flow','ayuda'].forEach(n=>$('tab-'+n).classList.toggle('hidden', n!==name));
   if (name==='dash') loadDash();
   if (name==='pnl' && !$('pnlCards').innerHTML) generarPNL();
   if (name==='flow') loadFlow();
