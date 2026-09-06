@@ -654,13 +654,30 @@ function notice(text, ok=true){
 }
 function fmtMoney(n){ return '$' + (Number(n)||0).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}); }
 function esc(s){ return String(s==null?'':s).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+// FASE 0: mensaje de error utilizable venga como string (backend viejo) o como
+// objeto {code, message} (backend nuevo). Centraliza el formato para el usuario.
+function errMsg(d, fallback){
+  if (d && d.error) {
+    if (typeof d.error === 'string') return d.error;
+    if (d.error.message) return d.error.message;
+  }
+  return fallback || 'Error. Intenta de nuevo.';
+}
+// FASE 0: si el backend rechaza el token, avisar y volver al login.
+function manejarSesion(d){
+  if (d && d.error && typeof d.error === 'object' && d.error.code === 'TOKEN_INVALIDO'){
+    notice('Tu sesión expiró. Entra de nuevo.', false);
+    setTimeout(logout, 1200);
+  }
+  return d;
+}
 function apiGet(action){
-  return fetch(CONFIG.API_URL + '?action=' + action + '&token=' + encodeURIComponent(token)).then(r=>r.json());
+  return fetch(CONFIG.API_URL + '?action=' + action + '&token=' + encodeURIComponent(token)).then(r=>r.json()).then(manejarSesion);
 }
 function apiPost(payload){
   payload.token = token;
   return fetch(CONFIG.API_URL, {method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'}, body:JSON.stringify(payload)})
-    .then(r=>r.json());
+    .then(r=>r.json()).then(manejarSesion);
 }
 
 /* ---------- autenticacion (usuario/contraseña, validada en el servidor) ---------- */
@@ -678,7 +695,7 @@ function login(){
         sessionStorage.setItem('adis_admin_user', u);
         enterApp(u);
       } else {
-        $('loginStatus').textContent = (d && d.error) || 'Usuario o contraseña incorrectos.';
+        $('loginStatus').textContent = errMsg(d, 'Usuario o contraseña incorrectos.');
         $('loginPass').value = '';
       }
     })
@@ -698,6 +715,7 @@ function enterApp(u){
   $('pnlMes').value = new Date().toISOString().slice(0,7);
 }
 function logout(){
+  try { apiPost({tipo:'logout'}); } catch(e) {} // FASE 0: revocar token en el servidor (best-effort)
   token = null; usuario = '';
   sessionStorage.removeItem('adis_admin_token');
   sessionStorage.removeItem('adis_admin_user');
@@ -1152,7 +1170,7 @@ function saveProposal(){
         prop.savedFolio = d.folio || prop.savedFolio;
         notice('Cotización <b>' + esc(prop.savedFolio) + '</b> guardada en Google Sheets.');
         loadQuotes(); renderProposal(); schedulePropDraft();
-      } else notice((d && d.error) || 'No se pudo guardar.', false);
+      } else notice(errMsg(d, 'No se pudo guardar.'), false);
     }).catch(()=>notice('Error de conexión al guardar.', false));
 }
 function printProposal(){ $('printArea').innerHTML = buildProposalHTML(); window.print(); }
@@ -1204,13 +1222,14 @@ function loadReviewsAdmin(){
     if (!data.reviews.length) { $('reviewsTable').innerHTML='<tr><td colspan="5" class="muted">Sin reseñas. Publica la primera.</td></tr>'; return; }
     $('reviewsTable').innerHTML = data.reviews.map((r,i)=>
       '<tr><td>'+esc(r.fecha)+'</td><td>'+esc(r.nombre)+'</td><td>'+'⭐'.repeat(Math.max(1,Math.min(5,parseInt(r.estrellas)||5)))+'</td>' +
-      '<td>'+esc(r.texto)+'</td><td><button class="btn btn-danger btn-sm" onclick="deleteReview('+(i+2)+')">✕</button></td></tr>'
+      '<td>'+esc(r.texto)+'</td><td><button class="btn btn-danger btn-sm" onclick="deleteReview('+(i+2)+',\''+esc(r.id||'')+'\')">✕</button></td></tr>'
     ).join('');
   }).catch(()=>{});
 }
-function deleteReview(row){
+function deleteReview(row, id){
   if (!confirm('¿Eliminar esta reseña del sitio?')) return;
-  apiPost({tipo:'delete_review', row}).then(d=>{ notice(d&&d.ok?'Reseña eliminada.':'No se pudo eliminar.', !!(d&&d.ok)); if(d&&d.ok) loadReviewsAdmin(); });
+  // FASE 0: se envia el ID estable (y la fila como respaldo para el backend viejo)
+  apiPost({tipo:'delete_review', row, id: id || ''}).then(d=>{ notice(d&&d.ok?'Reseña eliminada.':errMsg(d,'No se pudo eliminar.'), !!(d&&d.ok)); if(d&&d.ok) loadReviewsAdmin(); });
 }
 
 /* =====================================================================
@@ -1433,7 +1452,7 @@ function showAdjustForm(pid){
 function saveAdjust(pid){
   apiPost({tipo:'movimiento', tipo_mov:$('mTipo').value, producto_id:pid, almacen_id:$('mAlmacen').value,
     cantidad:parseFloat($('mCant').value)||0, notas:$('mNotas').value.trim()}).then(d=>{
-    notice(d&&d.ok?'Movimiento aplicado. Stock nuevo: '+(d.stock_nuevo!==undefined?d.stock_nuevo:'?'):(d&&d.error)||'Error', !!(d&&d.ok));
+    notice(d&&d.ok?'Movimiento aplicado. Stock nuevo: '+(d.stock_nuevo!==undefined?d.stock_nuevo:'?'):errMsg(d), !!(d&&d.ok));
     if(d&&d.ok){ closeBizForms(); loadBiz(); }
   });
 }
@@ -1476,7 +1495,7 @@ function saveSale(){
   apiPost({tipo:'venta', fecha:$('sFecha').value, cliente:$('sCliente').value.trim(),
     almacen_id:$('sAlmacen').value, moneda:$('sMoneda').value, items:saleItems, notas:$('sNotas').value.trim()})
     .then(d=>{
-      notice(d&&d.ok?'Venta guardada. Stock descontado.':(d&&d.error)||'Error', !!(d&&d.ok));
+      notice(d&&d.ok?'Venta '+(d.folio?d.folio+' ':'')+'guardada. Stock descontado.':errMsg(d), !!(d&&d.ok));
       if(d&&d.ok){ saleItems=[]; renderSaleItems(); $('sCliente').value=''; $('sNotas').value=''; loadBiz(); }
     });
 }
@@ -1502,11 +1521,12 @@ function renderExpenses(list){
   $('expTable').innerHTML = list.map((g,i)=>
     '<tr><td>'+esc(g.fecha)+'</td><td>'+esc(g.categoria)+'</td><td>'+esc(g.descripcion)+'</td>' +
     '<td class="gold">'+fmtMoney(g.monto)+' '+esc(g.moneda)+'</td>' +
-    '<td><button class="btn btn-danger btn-sm" onclick="deleteExpense('+(i+2)+')">✕</button></td></tr>').join('');
+    '<td><button class="btn btn-danger btn-sm" onclick="deleteExpense('+(i+2)+',\''+esc(g.id||'')+'\')">✕</button></td></tr>').join('');
 }
-function deleteExpense(row){
+function deleteExpense(row, id){
   if (!confirm('¿Eliminar este gasto?')) return;
-  apiPost({tipo:'delete_gasto', row}).then(d=>{ if(d&&d.ok) loadBiz(); });
+  // FASE 0: se envia el ID estable (y la fila como respaldo para el backend viejo)
+  apiPost({tipo:'delete_gasto', row, id: id || ''}).then(d=>{ if(d&&d.ok) loadBiz(); else notice(errMsg(d,'No se pudo eliminar.'), false); });
 }
 
 /* ----- estado de resultados ----- */
@@ -1515,7 +1535,7 @@ function generarPNL(){
   if (!mes) { notice('Selecciona un mes.', false); return; }
   fetch(CONFIG.API_URL + '?action=estado_resultados&mes=' + mes + '&token=' + encodeURIComponent(token))
     .then(r=>r.json()).then(d=>{
-      if (!d || !d.ok) { $('pnlCards').innerHTML='<p class="muted">'+(d&&d.error||'Error')+'</p>'; return; }
+      if (!d || !d.ok) { $('pnlCards').innerHTML='<p class="muted">'+esc(errMsg(d,'Error'))+'</p>'; return; }
       pnlData = d;
       const f = n => fmtMoney(n)+' '+d.moneda_base;
       const clsBruta = d.utilidad_bruta>=0?'good':'bad', clsNeta = d.utilidad_neta>=0?'good':'bad';

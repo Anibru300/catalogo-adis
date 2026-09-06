@@ -1,6 +1,15 @@
 # Handoff — ADIS Catálogo Web
 
-> Documento para la siguiente sesión. Última actualización: 2026-09-05 (Cotizador sec.03 + pestaña Flujo).
+> Documento para la siguiente sesión. Última actualización: 2026-09-06 (FASE 0 completada).
+
+## Novedades 2026-09-06 — FASE 0: cimientos del sistema administrativo
+
+- Se aprobó el Plan Maestro (8 fases, ver `docs/AUDITORIA_SISTEMA_2026-09-06.md` + `docs/ADMIN_ARCHITECTURE.md` nuevo).
+- **Backend reescrito** (`admin/apps-script.gs`): LockService en operaciones críticas (folios/stock/ventas — imposible duplicar folios o perder stock por concurrencia), errores JSON consistentes `{ok:false,error:{code,message}}` vía `conErrores`, Config con caché por ejecución, stock con snapshot (adiós N+1), movimientos trazables (id MOV-AAAA-NNNNN, usuario, existencia anterior/posterior, documento origen — la existencia SOLO cambia por `aplicarMovimiento`), stock negativo bloqueado (STOCK_INSUFICIENTE), folios VEN-0000/MOV-00000 nuevos, borrado por ID estable (filaPorId), venta con compensación best-effort, track con rate-limit+dedup+archivo (Visitas_Archivo, ya no se borra historial), login con límite de intentos + logout que revoca token, usuario admin fuera del Log, HOJAS_BORRABLES sin Ventas/Movimientos.
+- **Contrato de éxito**: sigue plano (compatibilidad); errores ya son `{code,message}`. Migración a envelope en Fase 7.
+- **Frontend**: 10 parches mínimos en `admin/index.html` (errMsg para ambos formatos de error, sesión expirada → re-login automático, logout revoca token, reseñas/gastos envían ID estable + fila como respaldo). Sin cambios visuales. Copiado a `public/admin.html`.
+- **Pruebas**: `scripts/auditoria/test_fase0_api.py` (suite API+concurrencia, auto-detecta backend viejo/nuevo — correr tras redeploy) y `test_fase0_regresion.py` (Playwright 13/13 PASS, 0 errores JS contra backend viejo). Sintaxis GS+JS validada con node.
+- ⚠️ **PENDIENTE DEL DUEÑO**: (1) rotar ADMIN_CLAVE en Apps Script, (2) redeploy con **✏️ Nueva versión** (la URL no debe cambiar), (3) avisar para correr la suite completa en vivo. Luego empezar Fase 1 (inventario transaccional: historial por producto, indicadores, márgenes).
 
 ## Novedades 2026-09-05
 
