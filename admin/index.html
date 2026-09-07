@@ -230,6 +230,7 @@
   .prop-items .del { background:none; border:1px solid rgba(231,76,60,0.5); color:#e74c3c; border-radius:6px; height:32px; cursor:pointer; width:100%; }
   .prop-tot { display:flex; justify-content:flex-end; gap:1.5rem; padding:0.6rem 0.2rem; font-size:0.9rem; border-top:1px solid rgba(197,160,89,0.25); margin-top:0.4rem; flex-wrap:wrap; }
   .prop-tot b { color:var(--gold); }
+  #pCosto { width:130px; display:inline-block; }
   .photo-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:0.6rem; margin-top:0.5rem; }
   .photo-slot { border:1.5px dashed rgba(197,160,89,0.5); border-radius:10px; padding:0.7rem; text-align:center; position:relative; min-height:110px; display:flex; flex-direction:column; justify-content:center; gap:0.4rem; }
   .photo-slot.filled { border-style:solid; }
@@ -523,29 +524,24 @@
             <div class="sec-body">
               <div class="row" style="align-items:end;">
                 <div>
+                  <label>Precio final de la cotización</label>
+                  <input type="number" id="pPrecioFinal" min="0" step="0.01" placeholder="0.00" oninput="prop.precioFinal=this.value;updateTotalsUI();scheduleProp();">
+                </div>
+                <div>
                   <label>Moneda</label>
-                  <select id="pMoneda" onchange="prop.moneda=this.value;renderItemRows();scheduleProp();">
+                  <select id="pMoneda" onchange="prop.moneda=this.value;updateTotalsUI();scheduleProp();">
                     <option value="MXN">MXN — Pesos mexicanos</option>
                     <option value="USD">USD — Dólares americanos</option>
                   </select>
                 </div>
-                <div>
-                  <label>&nbsp;</label>
-                  <div class="radio-row">
-                    <label><input type="checkbox" id="pIncluirIva" checked onchange="prop.incluirIva=this.checked;renderItemRows();scheduleProp();"> Incluir IVA</label>
-                    <label style="gap:0.2rem;">Tasa % <input type="number" id="pTasaIva" value="16" min="0" max="30" style="width:64px; display:inline-block;" oninput="prop.tasaIva=parseFloat(this.value)||0;renderItemRows();scheduleProp();"></label>
-                  </div>
-                </div>
               </div>
-              <label>Partidas (uso interno para calcular el total — NO salen en el documento; el PDF solo muestra la inversión total, como en el formato Word)</label>
-              <div class="table-scroll">
-                <table class="prop-items">
-                  <thead><tr><th style="min-width:170px;">Producto</th><th style="min-width:190px;">Descripción / especificaciones</th><th style="width:64px;">Cant.</th><th style="width:74px;">Unidad</th><th style="width:92px;">P. unit.</th><th style="width:92px;">Importe</th><th style="width:34px;"></th></tr></thead>
-                  <tbody id="pItems"></tbody>
-                </table>
+              <div class="prop-tot" id="pTotales" style="flex-direction:column; align-items:flex-start; gap:0.45rem;">
+                <span>INVERSIÓN TOTAL: <b class="gold" id="pTotalTxt"></b></span>
+                <span class="muted" style="display:flex; gap:0.6rem; align-items:center; flex-wrap:wrap;">Costo total (interno, opcional):
+                  <input type="number" id="pCosto" min="0" step="0.01" placeholder="0.00" oninput="prop.costo=this.value;renderUtilidad();scheduleProp();">
+                  <b id="pUtil"></b>
+                </span>
               </div>
-              <button class="btn btn-sm" style="margin-top:0.4rem;" onclick="addPropItem()">＋ Agregar partida</button>
-              <div class="prop-tot" id="pTotales"></div>
             </div>
           </details>
 
@@ -895,7 +891,7 @@
         <details class="ayuda-item"><summary>📥 Leads</summary><p>Personas que <b>dejaron sus datos en el sitio web</b> (formulario de contacto). Aquí los atiendes: márcalos como contactados y, cuando te compren, <b>conviértelos en Cliente</b> con un botón.</p></details>
         <details class="ayuda-item"><summary>👥 Clientes</summary><p>Directorio de clientes. El <b>teléfono es único</b>: si ya existe, el sistema avisa para no duplicar. Desde un cliente puedes cargar sus cotizaciones y ver todo su historial.</p></details>
         <details class="ayuda-item"><summary>🧾 Cotizaciones</summary><p>Historial de cotizaciones con folio <b>ADIS-AAAA-NNN</b> (numeración automática, sin duplicados). Cambia su estado: <b>Activa → Aprobada</b> (el cliente aceptó) o Rechazada. <b>Solo una cotización Aprobada puede convertirse en Proyecto.</b></p></details>
-        <details class="ayuda-item"><summary>📝 Cotizador</summary><p>Arma cotizaciones profesionales: eliges productos, cantidades y el sistema calcula totales con IVA. Captura el <b>costo total (manual)</b> para estimar tu utilidad; este dato es interno y <b>nunca</b> aparece en el documento del cliente. El botón <b>Enviar por WhatsApp</b> genera el PDF de la propuesta: en celular lo comparte directo, en computadora lo descarga y abre WhatsApp con el mensaje listo para adjuntarlo. También puedes <b>Imprimir</b> (sin hojas en blanco) o <b>Guardar</b> para seguimiento.</p></details>
+        <details class="ayuda-item"><summary>📝 Cotizador</summary><p>Arma cotizaciones profesionales con <b>un solo cuadro de precio final</b>: escribes la inversión total que le darás al cliente y el documento (PDF/imprimir/WhatsApp) la muestra en formato ADIS con folio, fotos y condiciones. El <b>costo total (manual)</b> es interno y opcional — solo te estima la utilidad, <b>nunca</b> sale en el documento. En <b>Enviar por WhatsApp</b> el PDF se comparte directo en celular o se descarga en computadora para adjuntarlo; también puedes <b>Imprimir</b> (sin hojas en blanco) o <b>Guardar</b> para seguimiento.</p></details>
         <details class="ayuda-item"><summary>📦 Inventario</summary><p>Productos, almacenes y existencias. <b>Regla de oro: la existencia solo cambia con movimientos</b> (entrada / salida / ajuste), cada uno con fecha, usuario e folio. Así sabes exactamente qué pasó con tu material. Si intentas sacar más de lo que hay, el sistema lo bloquea (<b>STOCK_INSUFICIENTE</b>).</p></details>
         <details class="ayuda-item"><summary>🛒 Compras (órdenes de compra)</summary><p>Pedidos a proveedores con folio <b>OC-</b>. Cuando te llega el material usas <b>Recibir</b> (puede ser parcial): lo recibido <b>entra automáticamente al inventario</b> como una entrada trazable. Comprar material NO es un gasto todavía: el gasto se registra cuando pagas.</p></details>
         <details class="ayuda-item"><summary>💵 Ventas</summary><p>Registra la <b>salida de material</b> vendido. Puedes vincularla a un cliente y a un proyecto. Cada venta calcula su utilidad (precio − costo). Si te equivocas, <b>anula la venta</b>: revierte el stock y queda fuera de los resultados. Las ventas <b>no se borran</b>: se anulan, para mantener la bitácora.</p></details>
@@ -1411,7 +1407,7 @@ function defaultProp(){
   return { folio:'', savedFolio:'', fecha:new Date().toISOString().slice(0,10), cliente:'', telefono:'', proyecto:'', ubicacion:'',
     elaboro:'Josías Espinoza · Gerente', vigencia:30,
     fotoProyecto:null, tipos:[], otroTipo:'', area:'', materiales:'', descripcion:'',
-    moneda:'MXN', costo:'', items:[{pid:'',codigo:'',descripcion:'',cantidad:1,unidad:'PZS',precio:0}], incluirIva:true, tasaIva:16,
+    moneda:'MXN', costo:'', precioFinal:'', items:[], incluirIva:true, tasaIva:16,
     fotos:[{data:null,desc:''},{data:null,desc:''},{data:null,desc:''}],
     especificaciones:'',
     formaPago:'50% al iniciar la instalación · 50% al finalizar el proyecto, contra entrega.',
@@ -1440,7 +1436,8 @@ function applyPropToForm(){
   $('pFecha').value = prop.fecha; $('pVigencia').value = prop.vigencia; $('pElaboro').value = prop.elaboro;
   $('pOtroTipo').value = prop.otroTipo; $('pArea').value = prop.area; $('pMateriales').value = prop.materiales;
   $('pDescripcion').value = prop.descripcion; $('pMoneda').value = prop.moneda;
-  $('pIncluirIva').checked = prop.incluirIva; $('pTasaIva').value = prop.tasaIva;
+  const pf = $('pPrecioFinal'); if (pf) pf.value = prop.precioFinal;
+  const ct = $('pCosto'); if (ct && document.activeElement !== ct) ct.value = prop.costo;
   $('pEspec').value = prop.especificaciones; $('pFormaPago').value = prop.formaPago;
   $('pTiempoEntrega').value = prop.tiempoEntrega; $('pAlcanceExtra').value = prop.alcanceExtra;
   $('pIncluirGarantia').checked = prop.incluirGarantia; $('pIncluirLogistica').checked = prop.incluirLogistica;
@@ -1549,7 +1546,8 @@ function productOptionsHTML(sel){
   return h;
 }
 function renderItemRows(){
-  $('pItems').innerHTML = prop.items.map((it,i)=>
+  const body = $('pItems'); if (!body) return; // la tabla de partidas se elimino del formulario
+  body.innerHTML = prop.items.map((it,i)=>
     '<tr>' +
     '<td><select onchange="itemProduct('+i+',this.value)">'+productOptionsHTML(it.pid)+'</select></td>' +
     '<td><input value="'+esc(it.descripcion)+'" placeholder="Descripción / especificaciones" oninput="prop.items['+i+'].descripcion=this.value;updItem('+i+');scheduleProp()"></td>' +
@@ -1575,20 +1573,17 @@ function itemProduct(i, pid){
 function updItem(i){ const it = prop.items[i]; $('pImp'+i).textContent = fmtMoney((Number(it.cantidad)||0)*(Number(it.precio)||0)); updateTotalsUI(); }
 function addPropItem(){ prop.items.push({pid:'',codigo:'',descripcion:'',cantidad:1,unidad:'PZS',precio:0}); renderItemRows(); schedulePropDraft(); }
 function calcTotals(){
+  // Precio final manual: un solo cuadro; si esta vacio, compat con borradores viejos que tengan partidas
+  const manual = parseFloat(prop.precioFinal);
+  if (isFinite(manual) && manual > 0) return { subtotal: manual, iva: 0, total: manual };
   const sub = prop.items.reduce((s,it)=> s + (String(it.descripcion).trim() ? (Number(it.cantidad)||0)*(Number(it.precio)||0) : 0), 0);
   const iva = prop.incluirIva ? sub * (Number(prop.tasaIva)||0) / 100 : 0;
   return { subtotal: sub, iva: iva, total: sub + iva };
 }
 function updateTotalsUI(){
+  // Solo actualiza textos: NUNCA re-renderiza inputs (destruiria el foco al teclear)
   const t = calcTotals();
-  prop.items.forEach((it,i)=>{ const el = $('pImp'+i); if (el) el.textContent = fmtMoney((Number(it.cantidad)||0)*(Number(it.precio)||0)); });
-  $('pTotales').innerHTML =
-    '<span class="muted">Subtotal: <b>'+fmtMoney(t.subtotal)+' '+prop.moneda+'</b></span>' +
-    (prop.incluirIva ? '<span class="muted">IVA ('+prop.tasaIva+'%): <b>'+fmtMoney(t.iva)+' '+prop.moneda+'</b></span>' : '') +
-    '<span>INVERSIÓN TOTAL: <b class="gold">'+fmtMoney(t.total)+' '+prop.moneda+'</b></span>' +
-    '<span class="muted" style="width:100%; margin-top:0.5rem; display:flex; gap:0.6rem; align-items:center; flex-wrap:wrap;">Costo total (interno, opcional): ' +
-    '<input type="number" id="pCosto" min="0" step="0.01" placeholder="0.00" value="'+esc(String(prop.costo))+'" style="width:130px; display:inline-block;" oninput="prop.costo=this.value;renderUtilidad();scheduleProp();"> ' +
-    '<b id="pUtil"></b></span>';
+  const el = $('pTotalTxt'); if (el) el.textContent = fmtMoney(t.total) + ' ' + prop.moneda;
   renderUtilidad();
 }
 function renderUtilidad(){
@@ -1689,7 +1684,7 @@ function renderProposal(){ const el = $('propPreview'); if (el) el.innerHTML = b
 /* ----- acciones ----- */
 function saveProposal(){
   if (!prop.cliente.trim()) { notice('Falta el nombre del cliente (sección 01).', false); return; }
-  if (!prop.items.some(it => String(it.descripcion).trim())) { notice('Agrega al menos una partida con descripción (sección 03).', false); return; }
+  if (!(parseFloat(prop.precioFinal) > 0) && !prop.items.some(it => String(it.descripcion).trim())) { notice('Escribe el precio final de la cotización (sección 03).', false); return; }
   const t = calcTotals();
   const datos = Object.assign({}, prop, {
     fotoProyecto: prop.fotoProyecto ? '(foto guardada en el borrador local del navegador)' : '',
@@ -1804,13 +1799,13 @@ function buildProposalPDF(){
     });
     y += 3;
   }
-  if (prop.incluirIva) {
+  if (t.iva > 0) {
     doc.setFontSize(8); doc.setTextColor(90); doc.setFont('helvetica','normal');
     doc.text('Subtotal: ' + fmtMoney(t.subtotal) + ' ' + prop.moneda + '    IVA (' + prop.tasaIva + '%): ' + fmtMoney(t.iva) + ' ' + prop.moneda, M, y);
     y += 5;
   }
   doc.setFont('helvetica','bold'); doc.setFontSize(10.5); doc.setTextColor(20);
-  doc.text('INVERSION TOTAL: ' + fmtMoney(t.total) + ' ' + prop.moneda + (prop.incluirIva ? ' (IVA incluido)' : ''), M, y);
+  doc.text('INVERSION TOTAL: ' + fmtMoney(t.total) + ' ' + prop.moneda + (t.iva > 0 ? ' (IVA incluido)' : ''), M, y);
   y += 8;
   doc.setFont('helvetica','normal'); doc.setFontSize(8); doc.setTextColor(40);
   const cond = function(label, val){
@@ -1840,7 +1835,7 @@ async function sendProposalWhatsApp(){
   txt += 'Cliente: ' + (prop.cliente || '-') + '\n';
   if (prop.proyecto) txt += 'Proyecto: ' + prop.proyecto + '\n';
   if (prop.ubicacion) txt += 'Ubicacion: ' + prop.ubicacion + '\n';
-  txt += 'Inversion total: ' + fmtMoney(t.total) + ' ' + prop.moneda + (prop.incluirIva ? ' (IVA incluido)' : '') + '\n';
+  txt += 'Inversion total: ' + fmtMoney(t.total) + ' ' + prop.moneda + (t.iva > 0 ? ' (IVA incluido)' : '') + '\n';
   txt += 'Vigencia: ' + (prop.vigencia || 30) + ' dias\n\n';
   txt += 'Te adjunto la propuesta completa en PDF con el detalle, fotos y condiciones. Quedo atento(a) a tus comentarios!';
   try {
