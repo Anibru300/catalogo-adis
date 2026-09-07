@@ -1677,6 +1677,75 @@ function doPostInterno(data) {
     return json({ ok: true, estado: nuevoEstado, folio: folioR });
   });
 
+  /* ---------- Purgar datos de prueba (solo admin, operacion de arranque) ----------
+     Requiere confirmacion explicita. Borra TODO lo que no sea inventario real:
+     cotizaciones, ventas, cobros, pagos, gastos, proyectos, movs de proyectos,
+     OC, recepciones, clientes, proveedores, movimientos de inventario de
+     prueba (2020-* / notas de limpieza) y productos TEST. Conserva: leads,
+     resenas, visitas, log, almacenes, productos reales, stock real y los
+     movimientos reales de inventario. Reinicia todos los folios a 1. */
+  if (tipo === 'admin_purge') return conLock(function () {
+    if (String(data.confirm) !== 'PURGAR') {
+      throw AdisError('VALIDACION', 'Operacion sensible: envia confirm:"PURGAR" para ejecutarla.');
+    }
+    var borrados = {};
+    var vaciar = function (nombre) {
+      var h = ss().getSheetByName(nombre);
+      if (!h) { borrados[nombre] = 0; return; }
+      var n = Math.max(0, h.getLastRow() - 1);
+      if (n > 0) h.deleteRows(2, n);
+      borrados[nombre] = n;
+    };
+    // Hojas 100% de prueba en esta etapa: se vacian por completo
+    ['Cotizaciones', 'Ventas', 'Cobros', 'Pagos', 'Gastos', 'Proyectos',
+     'Proyectos_Movs', 'OrdenesCompra', 'Recepciones', 'Clientes', 'Proveedores']
+      .forEach(vaciar);
+    // Movimientos de inventario: conservar los reales; quitar pruebas (2020-*, limpiezas)
+    var hM = ss().getSheetByName(SHEET_MOVES);
+    var movsBorrados = 0;
+    if (hM && hM.getLastRow() > 1) {
+      var valsM = hM.getDataRange().getValues();
+      var encM = valsM[0].map(String);
+      var colFechaM = encM.indexOf('fecha'), colNotasM = encM.indexOf('notas');
+      for (var iM = valsM.length - 1; iM >= 1; iM--) {
+        var fM = String(valsM[iM][colFechaM] || '').slice(0, 10);
+        var nM = String(valsM[iM][colNotasM] || '');
+        if (fM.indexOf('2020-') === 0 || nM.indexOf('Limpieza') !== -1 || nM.indexOf('alerta F6') !== -1) {
+          hM.deleteRow(iM + 1); movsBorrados++;
+        }
+      }
+    }
+    borrados['Movimientos(test)'] = movsBorrados;
+    // Productos TEST y su stock huerfano
+    var hP = ss().getSheetByName(SHEET_PRODUCTS);
+    var prodBorrados = 0, idsProd = {};
+    if (hP && hP.getLastRow() > 1) {
+      var valsP = hP.getDataRange().getValues();
+      for (var iP = valsP.length - 1; iP >= 1; iP--) {
+        var codP = String(valsP[iP][1] || '');
+        if (codP.toUpperCase().indexOf('TEST') === 0) { hP.deleteRow(iP + 1); prodBorrados++; }
+        else idsProd[String(valsP[iP][0])] = true;
+      }
+    }
+    borrados['Productos(test)'] = prodBorrados;
+    var hS = ss().getSheetByName(SHEET_STOCK);
+    var stockBorrados = 0;
+    if (hS && hS.getLastRow() > 1) {
+      var valsS = hS.getDataRange().getValues();
+      for (var iS = valsS.length - 1; iS >= 1; iS--) {
+        if (!idsProd[String(valsS[iS][0])]) { hS.deleteRow(iS + 1); stockBorrados++; }
+      }
+    }
+    borrados['Stock(huerfano)'] = stockBorrados;
+    // Reiniciar folios para arranque real
+    var folios = ['folio_cotizacion', 'folio_venta', 'folio_movimiento', 'folio_proyecto',
+      'folio_gasto', 'folio_pago', 'folio_cobro', 'folio_oc'];
+    folios.forEach(function (f) { cfgSet(f, '1'); });
+    STOCK_SNAP = null;
+    log_('purge_pruebas', 'PURGAR ejecutado: ' + JSON.stringify(borrados));
+    return json({ ok: true, purgado: borrados });
+  });
+
   throw AdisError('TIPO_DESCONOCIDO', 'Tipo desconocido: ' + tipo);
 }
 

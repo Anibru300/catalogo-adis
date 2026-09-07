@@ -184,22 +184,26 @@
 
   /* Impresion de cotizacion */
   #printArea { display:none; }
+  @page { margin: 1cm; }
   @media print {
-    body * { visibility:hidden; }
-    #printArea, #printArea * { visibility:visible; }
-    #printArea { display:block; position:absolute; top:0; left:0; width:100%; height:auto; background:#fff; color:#000; padding:1.5rem 2rem; font-family:'Montserrat',sans-serif; }
-    #printArea .qp { font-size:0.78rem; }
-    #printArea .qp-table th { font-size:0.68rem; }
-    #printArea .qp-table td { font-size:0.72rem; }
-    #printArea .qp-sec { page-break-inside:avoid; }
-    #printArea .qp-foto img { height:120px; }
-    #printArea h1 { color:#8a6d2f; font-size:1.5rem; margin-bottom:0.3rem; }
-    #printArea .pq-meta { font-size:0.85rem; color:#444; margin-bottom:1.5rem; }
-    #printArea table { width:100%; border-collapse:collapse; font-size:0.85rem; margin-top:1rem; }
-    #printArea th { background:#f5ead1; color:#8a6d2f; padding:0.5rem; border:1px solid #d8c692; text-align:left; }
-    #printArea td { padding:0.5rem; border:1px solid #ddd; color:#000; }
-    #printArea .pq-total { text-align:right; font-size:1.1rem; font-weight:700; margin-top:1rem; }
-    #printArea .pq-foot { margin-top:2.5rem; font-size:0.75rem; color:#666; border-top:1px solid #ccc; padding-top:0.8rem; }
+    /* Ocultar la app de verdad (display:none, no visibility): sin paginas en blanco */
+    body.imprimiendo #appView, body.imprimiendo #loginView { display:none !important; }
+    body.imprimiendo #printArea {
+      display:block; background:#fff; color:#000; padding:0;
+      font-family:'Montserrat',sans-serif; font-size:0.72rem; line-height:1.35;
+    }
+    #printArea .qp { font-size:0.72rem; }
+    #printArea .qp-sec { page-break-inside:avoid; margin-bottom:0.35rem; }
+    #printArea .qp-foto img { height:85px; }
+    #printArea h1 { color:#8a6d2f; font-size:1.15rem; margin-bottom:0.15rem; }
+    #printArea .pq-meta { font-size:0.75rem; color:#444; margin-bottom:0.6rem; }
+    #printArea table { width:100%; border-collapse:collapse; font-size:0.72rem; margin-top:0.4rem; }
+    #printArea .qp-table th { font-size:0.62rem; }
+    #printArea .qp-table td { font-size:0.66rem; }
+    #printArea th { background:#f5ead1; color:#8a6d2f; padding:0.3rem 0.4rem; border:1px solid #d8c692; text-align:left; }
+    #printArea td { padding:0.3rem 0.4rem; border:1px solid #ddd; color:#000; }
+    #printArea .pq-total { text-align:right; font-size:0.95rem; font-weight:700; margin-top:0.4rem; }
+    #printArea .pq-foot { margin-top:0.8rem; font-size:0.62rem; color:#666; border-top:1px solid #ccc; padding-top:0.4rem; }
   }
 
   /* ===== COTIZADOR PROFESIONAL ===== */
@@ -890,7 +894,7 @@
         <details class="ayuda-item"><summary>📥 Leads</summary><p>Personas que <b>dejaron sus datos en el sitio web</b> (formulario de contacto). Aquí los atiendes: márcalos como contactados y, cuando te compren, <b>conviértelos en Cliente</b> con un botón.</p></details>
         <details class="ayuda-item"><summary>👥 Clientes</summary><p>Directorio de clientes. El <b>teléfono es único</b>: si ya existe, el sistema avisa para no duplicar. Desde un cliente puedes cargar sus cotizaciones y ver todo su historial.</p></details>
         <details class="ayuda-item"><summary>🧾 Cotizaciones</summary><p>Historial de cotizaciones con folio <b>ADIS-AAAA-NNN</b> (numeración automática, sin duplicados). Cambia su estado: <b>Activa → Aprobada</b> (el cliente aceptó) o Rechazada. <b>Solo una cotización Aprobada puede convertirse en Proyecto.</b></p></details>
-        <details class="ayuda-item"><summary>📝 Cotizador</summary><p>Arma cotizaciones profesionales: eliges productos, cantidades y el sistema calcula totales con IVA. Genera el <b>documento con folio para imprimir o mandar por PDF/WhatsApp</b>.</p></details>
+        <details class="ayuda-item"><summary>📝 Cotizador</summary><p>Arma cotizaciones profesionales: eliges productos, cantidades y el sistema calcula totales con IVA. Captura el <b>costo total (manual)</b> para estimar tu utilidad; este dato es interno y <b>nunca</b> aparece en el documento del cliente. El botón <b>Enviar por WhatsApp</b> genera el PDF de la propuesta: en celular lo comparte directo, en computadora lo descarga y abre WhatsApp con el mensaje listo para adjuntarlo. También puedes <b>Imprimir</b> (sin hojas en blanco) o <b>Guardar</b> para seguimiento.</p></details>
         <details class="ayuda-item"><summary>📦 Inventario</summary><p>Productos, almacenes y existencias. <b>Regla de oro: la existencia solo cambia con movimientos</b> (entrada / salida / ajuste), cada uno con fecha, usuario e folio. Así sabes exactamente qué pasó con tu material. Si intentas sacar más de lo que hay, el sistema lo bloquea (<b>STOCK_INSUFICIENTE</b>).</p></details>
         <details class="ayuda-item"><summary>🛒 Compras (órdenes de compra)</summary><p>Pedidos a proveedores con folio <b>OC-</b>. Cuando te llega el material usas <b>Recibir</b> (puede ser parcial): lo recibido <b>entra automáticamente al inventario</b> como una entrada trazable. Comprar material NO es un gasto todavía: el gasto se registra cuando pagas.</p></details>
         <details class="ayuda-item"><summary>💵 Ventas</summary><p>Registra la <b>salida de material</b> vendido. Puedes vincularla a un cliente y a un proyecto. Cada venta calcula su utilidad (precio − costo). Si te equivocas, <b>anula la venta</b>: revierte el stock y queda fuera de los resultados. Las ventas <b>no se borran</b>: se anulan, para mantener la bitácora.</p></details>
@@ -1247,7 +1251,7 @@ function loadLeads(){
       const rev = leadsCache.length - 1 - i;
       return '<tr><td>'+esc(l.fecha)+'</td><td>'+esc(l.nombre)+'</td><td>'+esc(l.telefono)+'</td><td>'+esc(l.email)+'</td>' +
       '<td>'+esc(l.ciudad)+'</td><td>'+esc(l.metros)+'</td><td>'+esc(l.producto)+'</td><td>'+esc(l.mensaje)+'</td>' +
-      '<td style="white-space:nowrap;"><a class="btn btn-sm" target="_blank" href="https://wa.me/'+esc(String(l.telefono).replace(/\D/g,''))+'">WA</a> ' +
+      '<td style="white-space:nowrap;"><a class="btn btn-sm" target="_blank" href="https://wa.me/'+esc(waNum(l.telefono))+'">WA</a> ' +
       '<button class="btn btn-sm" title="Convertir en cliente" onclick="convertLead('+rev+')">→ Cliente</button></td></tr>';
     }).join('');
   }).catch(()=>{ $('leadsTable').innerHTML='<tr><td colspan="9" class="muted">Error de conexión.</td></tr>'; });
@@ -1406,7 +1410,7 @@ function defaultProp(){
   return { folio:'', savedFolio:'', fecha:new Date().toISOString().slice(0,10), cliente:'', telefono:'', proyecto:'', ubicacion:'',
     elaboro:'Josías Espinoza · Gerente', vigencia:30,
     fotoProyecto:null, tipos:[], otroTipo:'', area:'', materiales:'', descripcion:'',
-    moneda:'MXN', items:[{pid:'',codigo:'',descripcion:'',cantidad:1,unidad:'PZS',precio:0}], incluirIva:true, tasaIva:16,
+    moneda:'MXN', costo:'', items:[{pid:'',codigo:'',descripcion:'',cantidad:1,unidad:'PZS',precio:0}], incluirIva:true, tasaIva:16,
     fotos:[{data:null,desc:''},{data:null,desc:''},{data:null,desc:''}],
     especificaciones:'',
     formaPago:'50% al iniciar la instalación · 50% al finalizar el proyecto, contra entrega.',
@@ -1580,7 +1584,20 @@ function updateTotalsUI(){
   $('pTotales').innerHTML =
     '<span class="muted">Subtotal: <b>'+fmtMoney(t.subtotal)+' '+prop.moneda+'</b></span>' +
     (prop.incluirIva ? '<span class="muted">IVA ('+prop.tasaIva+'%): <b>'+fmtMoney(t.iva)+' '+prop.moneda+'</b></span>' : '') +
-    '<span>INVERSIÓN TOTAL: <b class="gold">'+fmtMoney(t.total)+' '+prop.moneda+'</b></span>';
+    '<span>INVERSIÓN TOTAL: <b class="gold">'+fmtMoney(t.total)+' '+prop.moneda+'</b></span>' +
+    '<span class="muted" style="width:100%; margin-top:0.5rem; display:flex; gap:0.6rem; align-items:center; flex-wrap:wrap;">Costo total (interno, opcional): ' +
+    '<input type="number" id="pCosto" min="0" step="0.01" placeholder="0.00" value="'+esc(String(prop.costo))+'" style="width:130px; display:inline-block;" oninput="prop.costo=this.value;renderUtilidad();scheduleProp();"> ' +
+    '<b id="pUtil"></b></span>';
+  renderUtilidad();
+}
+function renderUtilidad(){
+  const el = $('pUtil'); if (!el) return;
+  const c = parseFloat(prop.costo);
+  if (!isFinite(c) || c <= 0) { el.textContent = ''; el.className = ''; return; }
+  const t = calcTotals();
+  const u = t.total - c;
+  el.textContent = 'Utilidad estimada: ' + fmtMoney(u) + ' ' + prop.moneda + ' (' + (t.total ? Math.round(u / t.total * 100) : 0) + '%)';
+  el.className = u >= 0 ? 'gold' : 'stock-alert';
 }
 
 /* ----- vista previa / documento ----- */
@@ -1690,15 +1707,159 @@ function saveProposal(){
       } else notice(errMsg(d, 'No se pudo guardar.'), false);
     }).catch(()=>notice('Error de conexión al guardar.', false));
 }
-function printProposal(){ $('printArea').innerHTML = buildProposalHTML(); window.print(); }
-function sendProposalWhatsApp(){
+function printProposal(){
+  $('printArea').innerHTML = buildProposalHTML();
+  document.body.classList.add('imprimiendo');
+  const limpiar = ()=>document.body.classList.remove('imprimiendo');
+  window.onafterprint = limpiar;
+  setTimeout(()=>{ window.print(); setTimeout(limpiar, 2000); }, 80);
+}
+
+/* Normaliza un telefono a formato internacional para que funcione wa.me:
+   10 digitos = Mexico (+52) · 11 empezando en 1 = EEUU · ya con lada = igual */
+function waNum(tel){
+  let d = String(tel || '').replace(/\D/g, '');
+  if (d.indexOf('00') === 0) d = d.slice(2);
+  if (d.length === 12 && d.indexOf('521') === 0) return '52' + d.slice(3);
+  if (d.length === 12 && d.indexOf('52') === 0) return d;
+  if (d.length === 11 && d.charAt(0) === '1') return d;
+  if (d.length === 10) return '52' + d;
+  return d;
+}
+
+/* Carga perezosa de jsPDF (solo cuando se va a compartir/adjuntar) */
+function cargarJsPDF(){
+  return new Promise(function(res, rej){
+    if (window.jspdf && window.jspdf.jsPDF) return res(window.jspdf.jsPDF);
+    const s = document.createElement('script');
+    s.src = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js';
+    s.onload = function(){ (window.jspdf && window.jspdf.jsPDF) ? res(window.jspdf.jsPDF) : rej(new Error('jsPDF no cargo')); };
+    s.onerror = function(){ rej(new Error('Sin conexion al CDN de jsPDF')); };
+    document.head.appendChild(s);
+  });
+}
+
+/* PDF compacto de la propuesta para adjuntar por WhatsApp */
+function buildProposalPDF(){
+  const jsPDF = window.jspdf.jsPDF;
+  const doc = new jsPDF({ unit:'mm', format:'letter' });
+  const M = 12, PW = 215.9, W = PW - M * 2;
   const t = calcTotals();
-  const dest = (prop.telefono || '').replace(/\D/g, '') || CONFIG.WHATSAPP;
-  let txt = 'Propuesta ADIS ' + (prop.savedFolio || qpFolio()) + ' — ' + (prop.cliente || 'Cliente') + '\n';
-  txt += 'Proyecto: ' + (prop.proyecto || '—') + '\n';
-  txt += 'Inversión total: ' + fmtMoney(t.total) + ' ' + prop.moneda + '\n\n';
-  txt += 'Te envío la propuesta completa con la inversión total, fotos y condiciones. ¡Quedo atento(a)!';
-  window.open('https://wa.me/' + dest + '?text=' + encodeURIComponent(txt), '_blank');
+  const folio = prop.savedFolio || ('ADIS-' + new Date().getFullYear() + '-borrador');
+  let y = 14;
+  doc.setFont('helvetica','bold'); doc.setFontSize(14); doc.setTextColor(138,109,47);
+  doc.text('ADIS DISENOS & REMODELACIONES', M, y);
+  y += 5.5;
+  doc.setFontSize(9.5); doc.setTextColor(80);
+  doc.text('Propuesta ' + folio + '   -   ' + prop.fecha, M, y);
+  y += 5;
+  doc.setDrawColor(197,160,89); doc.setLineWidth(0.5); doc.line(M, y, PW - M, y);
+  y += 6;
+  doc.setFontSize(9); doc.setTextColor(20);
+  const linea = function(label, val){
+    if (!val) return;
+    doc.setFont('helvetica','bold'); doc.text(label + ': ', M, y);
+    const lw = doc.getTextWidth(label + ': ');
+    doc.setFont('helvetica','normal');
+    const lines = doc.splitTextToSize(String(val), W - lw);
+    doc.text(lines, M + lw, y);
+    y += lines.length * 4.2 + 1.2;
+  };
+  linea('Cliente', prop.cliente);
+  linea('Telefono', prop.telefono);
+  linea('Proyecto', prop.proyecto);
+  linea('Ubicacion', prop.ubicacion);
+  linea('Elaboro', prop.elaboro);
+  const items = prop.items.filter(function(it){ return String(it.descripcion).trim(); });
+  if (items.length) {
+    y += 2;
+    const c1 = M, c2 = M + W*0.54, c3 = M + W*0.66, c4 = M + W*0.77, c5 = M + W*0.89;
+    const head = function(hy){
+      doc.setFont('helvetica','bold'); doc.setFontSize(7.5); doc.setTextColor(138,109,47);
+      doc.setFillColor(245,234,209); doc.setDrawColor(216,198,146);
+      doc.rect(M, hy - 3.4, W, 5.2, 'FD');
+      doc.text('Concepto', c1 + 1, hy);
+      doc.text('Cant.', c2 + 1, hy);
+      doc.text('Unidad', c3 + 1, hy);
+      doc.text('P. unit.', c4 + 1, hy);
+      doc.text('Importe', c5 + 1, hy);
+      doc.setTextColor(20); doc.setFont('helvetica','normal');
+    };
+    head(y); y += 5.8;
+    items.forEach(function(it){
+      const imp = (Number(it.cantidad)||0) * (Number(it.precio)||0);
+      const desc = (it.codigo ? it.codigo + ' - ' : '') + it.descripcion;
+      const descLines = doc.splitTextToSize(desc, W*0.54 - 2);
+      const h = descLines.length * 3.6 + 2.6;
+      if (y + h > 258) { doc.addPage(); y = 16; head(y); y += 5.8; }
+      doc.setFontSize(7.5); doc.setDrawColor(225);
+      doc.rect(M, y - 3.2, W, h);
+      doc.text(descLines, c1 + 1, y);
+      doc.text(String(it.cantidad), c2 + 1, y);
+      doc.text(String(it.unidad || ''), c3 + 1, y);
+      doc.text(fmtMoney(it.precio), c4 + 1, y);
+      doc.text(fmtMoney(imp), c5 + 1, y);
+      y += h;
+    });
+    y += 3;
+  }
+  if (prop.incluirIva) {
+    doc.setFontSize(8); doc.setTextColor(90); doc.setFont('helvetica','normal');
+    doc.text('Subtotal: ' + fmtMoney(t.subtotal) + ' ' + prop.moneda + '    IVA (' + prop.tasaIva + '%): ' + fmtMoney(t.iva) + ' ' + prop.moneda, M, y);
+    y += 5;
+  }
+  doc.setFont('helvetica','bold'); doc.setFontSize(10.5); doc.setTextColor(20);
+  doc.text('INVERSION TOTAL: ' + fmtMoney(t.total) + ' ' + prop.moneda + (prop.incluirIva ? ' (IVA incluido)' : ''), M, y);
+  y += 8;
+  doc.setFont('helvetica','normal'); doc.setFontSize(8); doc.setTextColor(40);
+  const cond = function(label, val){
+    if (!val) return;
+    if (y > 250) { doc.addPage(); y = 16; }
+    doc.setFont('helvetica','bold'); doc.text(label, M, y); y += 4.2;
+    doc.setFont('helvetica','normal');
+    const lines = doc.splitTextToSize(String(val), W);
+    doc.text(lines, M, y);
+    y += lines.length * 3.8 + 2.5;
+  };
+  cond('FORMA DE PAGO', prop.formaPago);
+  cond('VIGENCIA', 'Vigente por ' + (prop.vigencia || 30) + ' dias naturales a partir de la fecha de emision.');
+  cond('TIEMPO DE ENTREGA', prop.tiempoEntrega);
+  if (prop.especificaciones) cond('ESPECIFICACIONES', prop.especificaciones);
+  cond('ALCANCE', prop.alcanceExtra);
+  doc.setFontSize(7); doc.setTextColor(130);
+  doc.text('Mexico: +52 631 120 4943  ·  USA: +1 520 839 2877  ·  adis-diseno.com  ·  adis.remodelacion@gmail.com', M, 272);
+  doc.text('Nogales, Sonora - Rio Rico, AZ - Creando espacios, reinventando hogares.', M, 276);
+  return doc;
+}
+async function sendProposalWhatsApp(){
+  const t = calcTotals();
+  const dest = waNum(prop.telefono) || CONFIG.WHATSAPP;
+  const folio = prop.savedFolio || qpFolio();
+  let txt = '*PROPUESTA ADIS ' + folio + '*\n';
+  txt += 'Cliente: ' + (prop.cliente || '-') + '\n';
+  if (prop.proyecto) txt += 'Proyecto: ' + prop.proyecto + '\n';
+  if (prop.ubicacion) txt += 'Ubicacion: ' + prop.ubicacion + '\n';
+  txt += 'Inversion total: ' + fmtMoney(t.total) + ' ' + prop.moneda + (prop.incluirIva ? ' (IVA incluido)' : '') + '\n';
+  txt += 'Vigencia: ' + (prop.vigencia || 30) + ' dias\n\n';
+  txt += 'Te adjunto la propuesta completa en PDF con el detalle, fotos y condiciones. Quedo atento(a) a tus comentarios!';
+  try {
+    await cargarJsPDF();
+    const doc = buildProposalPDF();
+    const nombre = 'Propuesta-ADIS-' + String(folio).replace(/[^A-Za-z0-9-]/g, '') + '.pdf';
+    const blob = doc.output('blob');
+    const file = new File([blob], nombre, { type: 'application/pdf' });
+    if (navigator.canShare && navigator.canShare({ files: [file] })) {
+      // Movil: el selector nativo permite enviar el PDF directo a WhatsApp
+      await navigator.share({ files: [file], text: txt, title: 'Propuesta ADIS ' + folio });
+      return;
+    }
+    // Escritorio: descargar el PDF y abrir WhatsApp con el mensaje
+    doc.save(nombre);
+    notice('PDF descargado. Adjuntalo en la conversacion de WhatsApp que se abre ahora.', true);
+    window.open('https://wa.me/' + dest + '?text=' + encodeURIComponent(txt), '_blank');
+  } catch (e) {
+    window.open('https://wa.me/' + dest + '?text=' + encodeURIComponent(txt), '_blank');
+  }
 }
 function loadProposalFromQuote(idx){
   const q = quotesCache[idx];
