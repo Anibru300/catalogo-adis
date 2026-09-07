@@ -1791,8 +1791,9 @@ function cargarPdfLibs(){
   return __pdfLibs;
 }
 
-/* Busca cortes de pagina en filas casi en blanco (para no partir texto/fotos) */
-function cortesDePaginaPDF(canvas, pagePx){
+/* Busca cortes de pagina en filas casi en blanco (para no partir texto/fotos).
+   protegidos: rangos Y que NO se pueden cortar (bloques que deben quedar juntos). */
+function cortesDePaginaPDF(canvas, pagePx, protegidos){
   try {
     const ctx = canvas.getContext('2d');
     const cortes = [];
@@ -1813,6 +1814,15 @@ function cortesDePaginaPDF(canvas, pagePx){
         if (score > mejorScore) { mejorScore = score; mejor = limite - margen + fila; }
         if (score > 0.995) break;
       }
+      // Keep-together: jamas cortar dentro de un bloque protegido (fotos, firmas)
+      for (let p = 0; p < protegidos.length; p++) {
+        const r = protegidos[p];
+        if (mejor > r.y0 && mejor < r.y1) {
+          if (r.y0 > y + pagePx * 0.3) mejor = r.y0; // cortar justo antes del bloque
+          else mejor = r.y1;                          // o justo despues
+        }
+      }
+      if (mejor <= y) mejor = limite; // seguridad anti-bucle
       cortes.push(mejor);
       y = mejor;
     }
@@ -1834,11 +1844,23 @@ async function buildProposalPDF(){
   holder.innerHTML = buildProposalHTML();
   await new Promise(function(r){ setTimeout(r, 250); }); // deja cargar fuentes e imagenes
   const canvas = await window.html2canvas(holder.firstElementChild, { scale: 2, backgroundColor: '#ffffff', useCORS: true, logging: false });
-  holder.innerHTML = '';
+  const rootEl = holder.firstElementChild;
   const M = 10, PW = 215.9, PH = 279.4, W = PW - 2 * M, H = PH - 2 * M;
   const doc = new jsPDF({ unit: 'mm', format: 'letter' });
   const pagePx = Math.max(1, Math.floor(canvas.width * H / W));
-  const cortes = cortesDePaginaPDF(canvas, pagePx);
+  // Bloques que deben quedar JUNTOS en una pagina: fotos de productos y firmas.
+  // Se miden ANTES de limpiar el holder (fuera del DOM los rects dan 0).
+  const escala = canvas.width / rootEl.offsetWidth;
+  const rootTop = rootEl.getBoundingClientRect().top;
+  const protegidos = [];
+  rootEl.querySelectorAll('.qp-fotos, .qp-firmas').forEach(function (el) {
+    const r = el.getBoundingClientRect();
+    const y0 = (r.top - rootTop) * escala;
+    const y1 = (r.bottom - rootTop) * escala;
+    if (y1 - y0 < pagePx * 0.85) protegidos.push({ y0: y0, y1: y1 });
+  });
+  holder.innerHTML = '';
+  const cortes = cortesDePaginaPDF(canvas, pagePx, protegidos);
   const trozos = cortes.concat([canvas.height]);
   let y0 = 0, first = true;
   for (let i = 0; i < trozos.length; i++) {
@@ -1866,14 +1888,25 @@ async function sendProposalWhatsApp(){
   txt += 'Inversion total: ' + fmtMoney(t.total) + ' ' + prop.moneda + (t.iva > 0 ? ' (IVA incluido)' : '') + '\n';
   txt += 'Vigencia: ' + (prop.vigencia || 30) + ' dias\n\n';
   txt += 'Te adjunto la propuesta completa en PDF con el detalle, fotos y condiciones. Quedo atento(a) a tus comentarios!';
+  // Hibrido: en movil el PDF va ADJUNTO en el menu Compartir (eliges WhatsApp -> contacto);
+  // en computadora se descarga el PDF y se abre el chat directo al numero con el mensaje.
+  const esMovil = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
   try {
     await cargarPdfLibs();
     const doc = await buildProposalPDF();
     const nombre = 'Propuesta-ADIS-' + String(folio).replace(/[^A-Za-z0-9-]/g, '') + '.pdf';
-    // Descarga el PDF COMPLETO y abre WhatsApp DIRECTO al numero del cliente
+    if (esMovil && navigator.canShare) {
+      const blob = doc.output('blob');
+      const file = new File([blob], nombre, { type: 'application/pdf' });
+      if (navigator.canShare({ files: [file] })) {
+        await navigator.share({ files: [file], text: txt, title: 'Propuesta ADIS ' + folio });
+        return;
+      }
+    }
     doc.save(nombre);
     notice('PDF descargado. Adjuntalo en el chat de WhatsApp que se abre ahora.', true);
   } catch (e) {
+    if (e && e.name === 'AbortError') return; // el usuario cancelo el menu Compartir
     notice('No se pudo generar el PDF; se abre WhatsApp con el mensaje de todos modos.', false);
   }
   window.open('https://wa.me/' + dest + '?text=' + encodeURIComponent(txt), '_blank');
