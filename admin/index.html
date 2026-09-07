@@ -194,9 +194,9 @@
       font-family:'Montserrat',sans-serif; font-size:0.72rem; line-height:1.35;
     }
     #printArea .qp { font-size:0.72rem; }
-    /* Las fotos se ESCALAN automaticamente: nunca desbordan ni empujan paginas en blanco */
-    #printArea .qp-photo-box img { max-width:100%; max-height:62mm; width:auto; height:auto; object-fit:contain; margin:0 auto; }
-    #printArea .qp-foto img { height:52px; max-height:52px; object-fit:cover; }
+    /* Las fotos se ESCALAN automaticamente a tamaño predefinido: nunca desbordan */
+    #printArea .qp-photo-box img { max-width:100%; max-height:64mm; width:auto; height:auto; object-fit:contain; margin:0 auto; }
+    #printArea .qp-foto img { width:100%; height:50mm; object-fit:contain; background:#fff; }
     /* Secciones pueden partirse entre paginas; solo tablas y titulos se mantienen juntos */
     #printArea .qp-sec { page-break-inside:auto; margin-bottom:0.35rem; }
     #printArea .qp-sec-t { page-break-after:avoid; }
@@ -268,10 +268,10 @@
   .qp-checks span.on { color:#1a1a1a; }
   .qp-checks span.on::before { content:'\2611\00a0 '; color:#8a6d2f; }
   .qp-photo-box { border:1.5px dashed #C5A059; text-align:center; color:#999; padding:1.4rem 0.8rem; font-size:0.62rem; margin:0.3rem 0; }
-  .qp-photo-box img { width:100%; display:block; }
+  .qp-photo-box img { max-width:100%; max-height:72mm; width:auto; height:auto; object-fit:contain; display:block; margin:0 auto; }
   .qp-fotos { display:grid; grid-template-columns:repeat(3,1fr); gap:0.55rem; }
-  .qp-foto { border:1px solid #ddd; padding:0.25rem; }
-  .qp-foto img { width:100%; height:85px; object-fit:cover; display:block; }
+  .qp-foto { border:1px solid #ddd; padding:0.25rem; display:flex; flex-direction:column; }
+  .qp-foto img { width:100%; height:56mm; object-fit:contain; background:#fff; display:block; }
   .qp-foto p { font-size:0.6rem; color:#444; margin-top:0.25rem; min-height:1.5em; }
   .qp-cond { display:grid; grid-template-columns:1fr 1fr; gap:0.55rem; }
   .qp-cond > div { border:1px solid #e2d3ac; border-left:3px solid #C5A059; padding:0.45rem 0.55rem; font-size:0.62rem; color:#333; }
