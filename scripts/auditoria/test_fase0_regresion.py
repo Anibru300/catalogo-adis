@@ -50,6 +50,14 @@ with sync_playwright() as p:
 
     for tab in TABS:
         try:
+            # FASE 9: los items viven dentro de <details class="mgroup">; abrir el grupo si esta cerrado
+            page.evaluate('''(name) => {
+                const el = document.querySelector('.tab[data-tab="' + name + '"]');
+                if (!el) return;
+                const g = el.closest('details.mgroup');
+                if (g && !g.open) g.open = true;
+            }''', tab)
+            page.wait_for_timeout(150)
             page.click('.tab[data-tab="%s"]' % tab)
             page.wait_for_timeout(1200)
             visible = page.locator('#tab-%s' % tab).is_visible()

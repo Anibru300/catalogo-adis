@@ -77,13 +77,27 @@
   .tab.active { color:var(--gold); border-color:rgba(197,160,89,0.4); background:rgba(197,160,89,0.08); }
   .tab:hover { color:var(--gold-soft); }
 
-  /* FASE 7: sidebar en escritorio */
-  @media (min-width: 1100px) {
-    header.app { flex-direction:column; align-items:stretch; position:fixed; left:0; top:0; bottom:0; width:225px; overflow-y:auto; border-right:1px solid rgba(197,160,89,0.25); border-bottom:none; padding:1.2rem 0.8rem; gap:0.6rem; z-index:20; }
-    header.app .tabs { flex-direction:column; flex-wrap:nowrap; gap:2px; }
-    header.app .tab { text-align:left; width:100%; padding:0.55rem 0.8rem; font-size:0.82rem; }
-    header.app .btn { width:100%; margin-top:auto; }
-    main.wrap { margin-left:225px; max-width:none; }
+  /* FASE 9: menu superior con submenus agrupados */
+  header.app { gap:0.6rem 1rem; }
+  header.app h1 { font-size:1.05rem; margin:0; }
+  nav.menu { display:flex; gap:2px; flex-wrap:nowrap; align-items:center; }
+  .mgroup { position:relative; }
+  .mgroup > summary { list-style:none; cursor:pointer; padding:0.5rem 0.65rem; border-radius:8px; border:1px solid transparent; color:var(--muted); font-size:0.82rem; font-weight:600; font-family:inherit; user-select:none; white-space:nowrap; }
+  .mgroup > summary::-webkit-details-marker { display:none; }
+  .mgroup > summary::after { content:' ▾'; font-size:0.65rem; color:var(--muted); }
+  .mgroup > summary:hover { color:var(--gold-soft); }
+  .mgroup[open] > summary, .mgroup.active > summary { color:var(--gold); border-color:rgba(197,160,89,0.4); background:rgba(197,160,89,0.08); }
+  .mdrop { position:absolute; top:calc(100% + 6px); left:0; min-width:250px; background:var(--dark); border:1px solid rgba(197,160,89,0.35); border-radius:10px; padding:0.35rem; box-shadow:0 14px 40px rgba(0,0,0,0.55); z-index:50; display:flex; flex-direction:column; gap:1px; }
+  .mdrop .tab { display:block; width:100%; text-align:left; border-radius:7px; padding:0.5rem 0.7rem; font-size:0.8rem; white-space:nowrap; }
+  .mdrop hr { border:none; border-top:1px solid rgba(197,160,89,0.15); margin:0.25rem 0; }
+  /* hamburguesa en pantallas medianas/pequenas */
+  #menuToggle { display:none; background:none; border:1px solid rgba(197,160,89,0.4); color:var(--gold); border-radius:8px; font-size:1.05rem; line-height:1; padding:0.4rem 0.7rem; cursor:pointer; }
+  @media (max-width: 1220px) {
+    #menuToggle { display:block; }
+    nav.menu { display:none; position:absolute; top:100%; left:0; right:0; background:var(--dark); border-bottom:1px solid rgba(197,160,89,0.3); padding:0.6rem; flex-direction:column; align-items:stretch; gap:2px; max-height:75vh; overflow-y:auto; z-index:60; }
+    nav.menu.open { display:flex; }
+    .mgroup > summary { padding:0.6rem 0.8rem; }
+    .mdrop { position:static; box-shadow:none; border:none; background:rgba(13,13,13,0.45); margin:0 0 0.3rem; }
   }
   /* FASE 7: buscador Ctrl+K */
   .cmdk-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.65); z-index:100; display:flex; align-items:flex-start; justify-content:center; padding-top:12vh; }
@@ -293,25 +307,84 @@
       <h1>ADIS <span class="gold">PANEL</span></h1>
       <p class="muted" id="userEmail" style="font-size:0.75rem;"></p>
     </div>
-    <nav class="tabs">
-      <button class="tab active" data-tab="dash" onclick="showTab('dash')">🏠 Resumen</button>
-      <button class="tab" data-tab="leads" onclick="showTab('leads')">📥 Leads</button>
-      <button class="tab" data-tab="clientes" onclick="showTab('clientes')">👥 Clientes</button>
-      <button class="tab" data-tab="quotes" onclick="showTab('quotes')">🧾 Cotizaciones</button>
-      <button class="tab" data-tab="proposal" onclick="showTab('proposal')">📝 Cotizador</button>
-      <button class="tab" data-tab="inventory" onclick="showTab('inventory')">📦 Inventario</button>
-      <button class="tab" data-tab="oc" onclick="showTab('oc')">🛒 Compras</button>
-      <button class="tab" data-tab="sales" onclick="showTab('sales')">💵 Ventas</button>
-      <button class="tab" data-tab="proyectos" onclick="showTab('proyectos')">🏗️ Proyectos</button>
-      <button class="tab" data-tab="cobros" onclick="showTab('cobros')">💰 Cobros</button>
-      <button class="tab" data-tab="flujocaja" onclick="showTab('flujocaja')">🧮 Caja</button>
-      <button class="tab" data-tab="expenses" onclick="showTab('expenses')">📉 Gastos</button>
-      <button class="tab" data-tab="pnl" onclick="showTab('pnl')">📊 Resultados</button>
-      <button class="tab" data-tab="reviews" onclick="showTab('reviews')">⭐ Reseñas</button>
-      <button class="tab" data-tab="analytics" onclick="showTab('analytics')">📊 Estadísticas</button>
-      <button class="tab" data-tab="flow" onclick="showTab('flow')">🌊 Flujo</button>
+    <nav class="menu" id="mainMenu">
+      <button class="tab" data-tab="dash" onclick="showTab('dash')">🏠 Resumen</button>
+      <details class="mgroup" data-group="proposal quotes">
+        <summary>🧾 Cotizaciones</summary>
+        <div class="mdrop">
+          <button class="tab" data-tab="proposal" onclick="showTab('proposal')">📝 Crear nueva cotización</button>
+          <button class="tab" data-tab="quotes" onclick="showTab('quotes')">📜 Historial de cotizaciones</button>
+        </div>
+      </details>
+      <details class="mgroup" data-group="leads clientes oc">
+        <summary>👥 Clientes</summary>
+        <div class="mdrop">
+          <button class="tab" data-tab="leads" onclick="showTab('leads')">📥 Leads (contactos del sitio)</button>
+          <button class="tab" data-tab="clientes" onclick="showTab('clientes')">👥 Directorio de clientes</button>
+          <hr>
+          <button class="tab" data-tab="oc" onclick="showTab('oc'); provScroll()">🚚 Proveedores</button>
+        </div>
+      </details>
+      <details class="mgroup" data-group="inventory">
+        <summary>📦 Inventario</summary>
+        <div class="mdrop">
+          <button class="tab" data-tab="inventory" onclick="showTab('inventory')">📋 Existencias y productos</button>
+          <hr>
+          <button class="tab" data-tab="inventory" onclick="showTab('inventory'); invMov('entrada')">📥 Entrada de material</button>
+          <button class="tab" data-tab="inventory" onclick="showTab('inventory'); invMov('salida')">📤 Salida de material</button>
+          <button class="tab" data-tab="inventory" onclick="showTab('inventory'); invMov('ajuste')">± Ajuste de existencia</button>
+          <hr>
+          <button class="tab" data-tab="inventory" onclick="showTab('inventory'); invEditar()">✏️ Editar producto (descripción y fotos)</button>
+          <button class="tab" data-tab="inventory" onclick="showTab('inventory'); showPricesForm()">💲 Cambio de códigos y precios</button>
+          <hr>
+          <button class="tab" data-tab="inventory" onclick="showTab('inventory'); showWarehouseForm()">🏬 Almacenes</button>
+          <button class="tab" data-tab="inventory" onclick="showTab('inventory'); showConfigForm()">⚙️ Moneda y configuración</button>
+        </div>
+      </details>
+      <details class="mgroup" data-group="oc">
+        <summary>🛒 Compras</summary>
+        <div class="mdrop">
+          <button class="tab" data-tab="oc" onclick="showTab('oc')">📋 Órdenes de compra</button>
+          <button class="tab" data-tab="oc" onclick="showTab('oc'); showOCForm()">＋ Nueva orden de compra</button>
+          <hr>
+          <button class="tab" data-tab="oc" onclick="showTab('oc'); provScroll()">🚚 Proveedores</button>
+        </div>
+      </details>
+      <details class="mgroup" data-group="sales">
+        <summary>💵 Ventas</summary>
+        <div class="mdrop">
+          <button class="tab" data-tab="sales" onclick="showTab('sales')">＋ Nueva venta</button>
+          <button class="tab" data-tab="sales" onclick="showTab('sales')">📜 Historial de ventas</button>
+        </div>
+      </details>
+      <details class="mgroup" data-group="proyectos">
+        <summary>🏗️ Proyectos</summary>
+        <div class="mdrop">
+          <button class="tab" data-tab="proyectos" onclick="showTab('proyectos')">📋 Lista de proyectos</button>
+          <button class="tab" data-tab="proyectos" onclick="showTab('proyectos'); showProyectoForm()">＋ Nuevo proyecto</button>
+        </div>
+      </details>
+      <details class="mgroup" data-group="cobros flujocaja expenses pnl">
+        <summary>💰 Dinero</summary>
+        <div class="mdrop">
+          <button class="tab" data-tab="cobros" onclick="showTab('cobros')">💵 Cobros / cuentas por cobrar</button>
+          <button class="tab" data-tab="flujocaja" onclick="showTab('flujocaja')">🧮 Caja (efectivo real)</button>
+          <hr>
+          <button class="tab" data-tab="expenses" onclick="showTab('expenses')">📉 Gastos / cuentas por pagar</button>
+          <button class="tab" data-tab="pnl" onclick="showTab('pnl')">📊 Resultados (P&amp;L y alertas)</button>
+        </div>
+      </details>
+      <details class="mgroup" data-group="reviews analytics flow">
+        <summary>📈 Sitio web</summary>
+        <div class="mdrop">
+          <button class="tab" data-tab="reviews" onclick="showTab('reviews')">⭐ Reseñas</button>
+          <button class="tab" data-tab="analytics" onclick="showTab('analytics')">📊 Estadísticas</button>
+          <button class="tab" data-tab="flow" onclick="showTab('flow')">🌊 Flujo de visitas</button>
+        </div>
+      </details>
       <button class="tab" data-tab="ayuda" onclick="showTab('ayuda')">❓ Ayuda</button>
     </nav>
+    <button id="menuToggle" onclick="document.getElementById('mainMenu').classList.toggle('open')" aria-label="Menú">☰</button>
     <button class="btn btn-sm" onclick="logout()">Cerrar sesión</button>
   </header>
 
@@ -549,7 +622,7 @@
           <tbody id="ocTable"><tr><td colspan="7" class="muted">Cargando…</td></tr></tbody>
         </table>
       </div>
-      <h2 style="margin-top:1.5rem;">Proveedores</h2>
+      <h2 style="margin-top:1.5rem;" id="provAnchor">Proveedores</h2>
       <div class="card-box table-scroll">
         <table>
           <thead><tr><th>Nombre</th><th>Contacto</th><th>Teléfono</th><th>Email</th><th></th></tr></thead>
@@ -1048,6 +1121,8 @@ document.addEventListener('keydown', e=>{
 
 function showTab(name){
   document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active', t.dataset.tab===name));
+  document.querySelectorAll('.mgroup').forEach(g=>{ g.removeAttribute('open'); g.classList.toggle('active', (g.dataset.group||'').split(' ').indexOf(name)!==-1); });
+  const nav = $('mainMenu'); if (nav) nav.classList.remove('open');
   ['dash','leads','clientes','quotes','proposal','inventory','oc','sales','proyectos','cobros','expenses','pnl','reviews','analytics','flujocaja','flow','ayuda'].forEach(n=>$('tab-'+n).classList.toggle('hidden', n!==name));
   if (name==='dash') loadDash();
   if (name==='pnl' && !$('pnlCards').innerHTML) generarPNL();
@@ -1059,6 +1134,44 @@ function showTab(name){
   if (name==='flujocaja') loadFlujoCaja();
   if (name==='pnl') loadAlertas();
 }
+
+/* ---------- selector de producto (para movimientos y edicion desde el menu) ---------- */
+function elegirProducto(cb){
+  const prods = (biz.productos||[]).filter(p=>p.estado!=='inactivo');
+  if (!prods.length) { notice('No hay productos activos. Crea uno primero en Inventario.', false); return; }
+  const ov = document.createElement('div');
+  ov.className = 'cmdk-overlay';
+  ov.innerHTML = '<div class="cmdk-box"><input id="pickInput" placeholder="Buscar producto (código o nombre)..." autocomplete="off"><div id="pickList"></div><div class="cmdk-hint">↑↓ seleccionar · Enter elegir · Esc cerrar</div></div>';
+  document.body.appendChild(ov);
+  const inp = $('pickInput');
+  let items = [], sel = 0;
+  const render = ()=>{
+    const q = inp.value.toLowerCase();
+    items = prods.filter(p=>!q || (String(p.codigo)+' '+String(p.nombre)).toLowerCase().indexOf(q)!==-1).slice(0,30);
+    if (sel >= items.length) sel = 0;
+    $('pickList').innerHTML = items.map((p,i)=>'<div class="cmdk-item'+(i===sel?' sel':'')+'" data-id="'+esc(p.id)+'"><span>'+esc(p.codigo)+' · '+esc(p.nombre)+'</span></div>').join('') || '<div class="cmdk-item muted">Sin coincidencias</div>';
+  };
+  const cerrar = ()=>ov.remove();
+  const elegir = (id)=>{ const p = prods.filter(x=>String(x.id)===String(id))[0]; cerrar(); if (p) cb(p.id); };
+  inp.addEventListener('input', ()=>{ sel=0; render(); });
+  inp.addEventListener('keydown', e=>{
+    if (e.key==='ArrowDown') { e.preventDefault(); sel=Math.min(sel+1, items.length-1); render(); }
+    else if (e.key==='ArrowUp') { e.preventDefault(); sel=Math.max(sel-1,0); render(); }
+    else if (e.key==='Enter') { e.preventDefault(); if (items[sel]) elegir(items[sel].id); }
+    else if (e.key==='Escape') { cerrar(); }
+  });
+  $('pickList').addEventListener('click', e=>{ const it = e.target.closest('[data-id]'); if (it) elegir(it.dataset.id); });
+  ov.addEventListener('click', e=>{ if (e.target===ov) cerrar(); });
+  render(); inp.focus();
+}
+function invMov(tipo){
+  elegirProducto(pid=>{
+    showAdjustForm(pid);
+    setTimeout(()=>{ const s=$('mTipo'); if (s) s.value=tipo; }, 80);
+  });
+}
+function invEditar(){ elegirProducto(pid=>showProductForm(pid)); }
+function provScroll(){ setTimeout(()=>{ const el=$('provAnchor'); if (el) el.scrollIntoView({behavior:'smooth', block:'start'}); }, 400); }
 
 /* ---------- flujo (visitas del sitio) ---------- */
 function fLocal(d){ d=d||new Date(); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
