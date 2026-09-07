@@ -1738,8 +1738,8 @@ async function descargarPDF(){
   if (!(parseFloat(prop.precioFinal) > 0) && !calcTotals().total) { notice('Escribe el precio final de la cotización (sección 03) antes de descargar.', false); return; }
   try {
     notice('Generando PDF…');
-    await cargarJsPDF();
-    const doc = buildProposalPDF();
+    await cargarPdfLibs();
+    const doc = await buildProposalPDF();
     const folio = prop.savedFolio || qpFolio();
     doc.save('Propuesta-ADIS-' + String(folio).replace(/[^A-Za-z0-9-]/g, '') + '.pdf');
     notice('PDF descargado.', true);
@@ -1766,108 +1766,91 @@ function waNum(tel){
   return d;
 }
 
-/* Carga perezosa de jsPDF (solo cuando se va a compartir/adjuntar) */
-function cargarJsPDF(){
+/* Carga perezosa de jsPDF + html2canvas (solo cuando se va a generar PDF) */
+function cargarScriptCDN(src){
   return new Promise(function(res, rej){
-    if (window.jspdf && window.jspdf.jsPDF) return res(window.jspdf.jsPDF);
     const s = document.createElement('script');
-    s.src = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js';
-    s.onload = function(){ (window.jspdf && window.jspdf.jsPDF) ? res(window.jspdf.jsPDF) : rej(new Error('jsPDF no cargo')); };
-    s.onerror = function(){ rej(new Error('Sin conexion al CDN de jsPDF')); };
+    s.src = src;
+    s.onload = function(){ res(); };
+    s.onerror = function(){ rej(new Error('Sin conexion al CDN: ' + src)); };
     document.head.appendChild(s);
   });
 }
+function cargarJsPDF(){
+  if (window.jspdf && window.jspdf.jsPDF) return Promise.resolve(window.jspdf.jsPDF);
+  return cargarScriptCDN('https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js')
+    .then(function(){ if (window.jspdf && window.jspdf.jsPDF) return window.jspdf.jsPDF; throw new Error('jsPDF no cargo'); });
+}
+let __pdfLibs = null;
+function cargarPdfLibs(){
+  if (!__pdfLibs) __pdfLibs = Promise.all([
+    cargarJsPDF(),
+    window.html2canvas ? Promise.resolve() : cargarScriptCDN('https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js')
+  ]);
+  return __pdfLibs;
+}
 
-/* PDF compacto de la propuesta para adjuntar por WhatsApp */
-function buildProposalPDF(){
+/* Busca cortes de pagina en filas casi en blanco (para no partir texto/fotos) */
+function cortesDePaginaPDF(canvas, pagePx){
+  try {
+    const ctx = canvas.getContext('2d');
+    const cortes = [];
+    let y = 0;
+    while (y + pagePx < canvas.height) {
+      const limite = y + pagePx;
+      const margen = Math.floor(pagePx * 0.12);
+      const datos = ctx.getImageData(0, limite - margen, canvas.width, margen).data;
+      let mejor = limite, mejorScore = -1;
+      for (let fila = margen - 1; fila >= 0; fila--) {
+        let blancos = 0, total = 0;
+        for (let x = 0; x < canvas.width; x += 4) {
+          const k = (fila * canvas.width + x) * 4;
+          total++;
+          if (datos[k] > 238 && datos[k+1] > 238 && datos[k+2] > 238) blancos++;
+        }
+        const score = blancos / total;
+        if (score > mejorScore) { mejorScore = score; mejor = limite - margen + fila; }
+        if (score > 0.995) break;
+      }
+      cortes.push(mejor);
+      y = mejor;
+    }
+    return cortes;
+  } catch (e) { return []; }
+}
+
+/* Genera el PDF desde el MISMO documento completo de la vista previa / impresion
+   (secciones 01-09, fotos, garantia, logistica, firmas) — nunca un resumen. */
+async function buildProposalPDF(){
   const jsPDF = window.jspdf.jsPDF;
-  const doc = new jsPDF({ unit:'mm', format:'letter' });
-  const M = 12, PW = 215.9, W = PW - M * 2;
-  const t = calcTotals();
-  const folio = prop.savedFolio || ('ADIS-' + new Date().getFullYear() + '-borrador');
-  let y = 14;
-  doc.setFont('helvetica','bold'); doc.setFontSize(14); doc.setTextColor(138,109,47);
-  doc.text('ADIS DISENOS & REMODELACIONES', M, y);
-  y += 5.5;
-  doc.setFontSize(9.5); doc.setTextColor(80);
-  doc.text('Propuesta ' + folio + '   -   ' + prop.fecha, M, y);
-  y += 5;
-  doc.setDrawColor(197,160,89); doc.setLineWidth(0.5); doc.line(M, y, PW - M, y);
-  y += 6;
-  doc.setFontSize(9); doc.setTextColor(20);
-  const linea = function(label, val){
-    if (!val) return;
-    doc.setFont('helvetica','bold'); doc.text(label + ': ', M, y);
-    const lw = doc.getTextWidth(label + ': ');
-    doc.setFont('helvetica','normal');
-    const lines = doc.splitTextToSize(String(val), W - lw);
-    doc.text(lines, M + lw, y);
-    y += lines.length * 4.2 + 1.2;
-  };
-  linea('Cliente', prop.cliente);
-  linea('Telefono', prop.telefono);
-  linea('Proyecto', prop.proyecto);
-  linea('Ubicacion', prop.ubicacion);
-  linea('Elaboro', prop.elaboro);
-  const items = prop.items.filter(function(it){ return String(it.descripcion).trim(); });
-  if (items.length) {
-    y += 2;
-    const c1 = M, c2 = M + W*0.54, c3 = M + W*0.66, c4 = M + W*0.77, c5 = M + W*0.89;
-    const head = function(hy){
-      doc.setFont('helvetica','bold'); doc.setFontSize(7.5); doc.setTextColor(138,109,47);
-      doc.setFillColor(245,234,209); doc.setDrawColor(216,198,146);
-      doc.rect(M, hy - 3.4, W, 5.2, 'FD');
-      doc.text('Concepto', c1 + 1, hy);
-      doc.text('Cant.', c2 + 1, hy);
-      doc.text('Unidad', c3 + 1, hy);
-      doc.text('P. unit.', c4 + 1, hy);
-      doc.text('Importe', c5 + 1, hy);
-      doc.setTextColor(20); doc.setFont('helvetica','normal');
-    };
-    head(y); y += 5.8;
-    items.forEach(function(it){
-      const imp = (Number(it.cantidad)||0) * (Number(it.precio)||0);
-      const desc = (it.codigo ? it.codigo + ' - ' : '') + it.descripcion;
-      const descLines = doc.splitTextToSize(desc, W*0.54 - 2);
-      const h = descLines.length * 3.6 + 2.6;
-      if (y + h > 258) { doc.addPage(); y = 16; head(y); y += 5.8; }
-      doc.setFontSize(7.5); doc.setDrawColor(225);
-      doc.rect(M, y - 3.2, W, h);
-      doc.text(descLines, c1 + 1, y);
-      doc.text(String(it.cantidad), c2 + 1, y);
-      doc.text(String(it.unidad || ''), c3 + 1, y);
-      doc.text(fmtMoney(it.precio), c4 + 1, y);
-      doc.text(fmtMoney(imp), c5 + 1, y);
-      y += h;
-    });
-    y += 3;
+  let holder = document.getElementById('pdfRenderHolder');
+  if (!holder) {
+    holder = document.createElement('div');
+    holder.id = 'pdfRenderHolder';
+    holder.style.cssText = 'position:fixed;left:-10000px;top:0;width:820px;background:#fff;z-index:-1;';
+    document.body.appendChild(holder);
   }
-  if (t.iva > 0) {
-    doc.setFontSize(8); doc.setTextColor(90); doc.setFont('helvetica','normal');
-    doc.text('Subtotal: ' + fmtMoney(t.subtotal) + ' ' + prop.moneda + '    IVA (' + prop.tasaIva + '%): ' + fmtMoney(t.iva) + ' ' + prop.moneda, M, y);
-    y += 5;
+  holder.innerHTML = buildProposalHTML();
+  await new Promise(function(r){ setTimeout(r, 250); }); // deja cargar fuentes e imagenes
+  const canvas = await window.html2canvas(holder.firstElementChild, { scale: 2, backgroundColor: '#ffffff', useCORS: true, logging: false });
+  holder.innerHTML = '';
+  const M = 10, PW = 215.9, PH = 279.4, W = PW - 2 * M, H = PH - 2 * M;
+  const doc = new jsPDF({ unit: 'mm', format: 'letter' });
+  const pagePx = Math.max(1, Math.floor(canvas.width * H / W));
+  const cortes = cortesDePaginaPDF(canvas, pagePx);
+  const trozos = cortes.concat([canvas.height]);
+  let y0 = 0, first = true;
+  for (let i = 0; i < trozos.length; i++) {
+    const sliceH = trozos[i] - y0;
+    if (sliceH <= 0) continue;
+    const c2 = document.createElement('canvas');
+    c2.width = canvas.width; c2.height = sliceH;
+    c2.getContext('2d').drawImage(canvas, 0, y0, canvas.width, sliceH, 0, 0, canvas.width, sliceH);
+    if (!first) doc.addPage();
+    doc.addImage(c2.toDataURL('image/jpeg', 0.92), 'JPEG', M, M, W, sliceH * W / canvas.width);
+    y0 = trozos[i];
+    first = false;
   }
-  doc.setFont('helvetica','bold'); doc.setFontSize(10.5); doc.setTextColor(20);
-  doc.text('INVERSION TOTAL: ' + fmtMoney(t.total) + ' ' + prop.moneda + (t.iva > 0 ? ' (IVA incluido)' : ''), M, y);
-  y += 8;
-  doc.setFont('helvetica','normal'); doc.setFontSize(8); doc.setTextColor(40);
-  const cond = function(label, val){
-    if (!val) return;
-    if (y > 250) { doc.addPage(); y = 16; }
-    doc.setFont('helvetica','bold'); doc.text(label, M, y); y += 4.2;
-    doc.setFont('helvetica','normal');
-    const lines = doc.splitTextToSize(String(val), W);
-    doc.text(lines, M, y);
-    y += lines.length * 3.8 + 2.5;
-  };
-  cond('FORMA DE PAGO', prop.formaPago);
-  cond('VIGENCIA', 'Vigente por ' + (prop.vigencia || 30) + ' dias naturales a partir de la fecha de emision.');
-  cond('TIEMPO DE ENTREGA', prop.tiempoEntrega);
-  if (prop.especificaciones) cond('ESPECIFICACIONES', prop.especificaciones);
-  cond('ALCANCE', prop.alcanceExtra);
-  doc.setFontSize(7); doc.setTextColor(130);
-  doc.text('Mexico: +52 631 120 4943  ·  USA: +1 520 839 2877  ·  adis-diseno.com  ·  adis.remodelacion@gmail.com', M, 272);
-  doc.text('Nogales, Sonora - Rio Rico, AZ - Creando espacios, reinventando hogares.', M, 276);
   return doc;
 }
 async function sendProposalWhatsApp(){
@@ -1883,23 +1866,16 @@ async function sendProposalWhatsApp(){
   txt += 'Vigencia: ' + (prop.vigencia || 30) + ' dias\n\n';
   txt += 'Te adjunto la propuesta completa en PDF con el detalle, fotos y condiciones. Quedo atento(a) a tus comentarios!';
   try {
-    await cargarJsPDF();
-    const doc = buildProposalPDF();
+    await cargarPdfLibs();
+    const doc = await buildProposalPDF();
     const nombre = 'Propuesta-ADIS-' + String(folio).replace(/[^A-Za-z0-9-]/g, '') + '.pdf';
-    const blob = doc.output('blob');
-    const file = new File([blob], nombre, { type: 'application/pdf' });
-    if (navigator.canShare && navigator.canShare({ files: [file] })) {
-      // Movil: el selector nativo permite enviar el PDF directo a WhatsApp
-      await navigator.share({ files: [file], text: txt, title: 'Propuesta ADIS ' + folio });
-      return;
-    }
-    // Escritorio: descargar el PDF y abrir WhatsApp con el mensaje
+    // Descarga el PDF COMPLETO y abre WhatsApp DIRECTO al numero del cliente
     doc.save(nombre);
-    notice('PDF descargado. Adjuntalo en la conversacion de WhatsApp que se abre ahora.', true);
-    window.open('https://wa.me/' + dest + '?text=' + encodeURIComponent(txt), '_blank');
+    notice('PDF descargado. Adjuntalo en el chat de WhatsApp que se abre ahora.', true);
   } catch (e) {
-    window.open('https://wa.me/' + dest + '?text=' + encodeURIComponent(txt), '_blank');
+    notice('No se pudo generar el PDF; se abre WhatsApp con el mensaje de todos modos.', false);
   }
+  window.open('https://wa.me/' + dest + '?text=' + encodeURIComponent(txt), '_blank');
 }
 function loadProposalFromQuote(idx){
   const q = quotesCache[idx];

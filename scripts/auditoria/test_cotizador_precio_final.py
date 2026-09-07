@@ -82,11 +82,17 @@ with sync_playwright() as p:
     sin_partidas = 'P. unit' not in doc and 'Importe' not in doc
     print(('  PASS ' if sin_partidas else '  FAIL ') + 'documento sin tabla de partidas')
 
-    # 8. Descargar PDF descarga un .pdf REAL (no abre el dialogo de imprimir)
+    # 8. Descargar PDF descarga un .pdf REAL del documento COMPLETO (secciones 01-09)
     page.fill('#pPrecioFinal', '45000')
     page.evaluate('() => { prop.precioFinal="45000"; }')
     page.wait_for_timeout(200)
-    with page.expect_download(timeout=30000) as dl_info:
+    paginas = page.evaluate('''async () => {
+      await cargarPdfLibs();
+      const doc = await buildProposalPDF();
+      return doc.getNumberOfPages();
+    }''')
+    print(('  PASS ' if paginas >= 2 else '  FAIL ') + 'PDF contiene documento completo: %d paginas' % paginas)
+    with page.expect_download(timeout=60000) as dl_info:
         page.evaluate('() => descargarPDF()')
     dl = dl_info.value
     nombre_pdf = dl.suggested_filename
