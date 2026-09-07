@@ -82,6 +82,36 @@ with sync_playwright() as p:
     sin_partidas = 'P. unit' not in doc and 'Importe' not in doc
     print(('  PASS ' if sin_partidas else '  FAIL ') + 'documento sin tabla de partidas')
 
+    # 8. Descargar PDF descarga un .pdf REAL (no abre el dialogo de imprimir)
+    page.fill('#pPrecioFinal', '45000')
+    page.evaluate('() => { prop.precioFinal="45000"; }')
+    page.wait_for_timeout(200)
+    with page.expect_download(timeout=30000) as dl_info:
+        page.evaluate('() => descargarPDF()')
+    dl = dl_info.value
+    nombre_pdf = dl.suggested_filename
+    dl.path()  # materializa
+    print(('  PASS ' if nombre_pdf.endswith('.pdf') else '  FAIL ') + 'descargarPDF descarga: ' + nombre_pdf)
+
+    # 9. Blindaje syncFormToProp: cambiar el formulario SIN pasar por prop y compartir
+    page.fill('#pCliente', 'Cliente Prueba Sync')
+    page.evaluate('() => { prop.cliente = "CLIENTE VIEJO ERRONEO"; }')  # simula borrador desincronizado
+    page.wait_for_timeout(150)
+    page.fill('#pTelefono', '631 120 4943')
+    page.evaluate('''() => {
+      window.__wa_url = null;
+      window.open = function(url){ window.__wa_url = url; return null; };
+    }''')
+    wa_url = ''
+    with page.expect_download(timeout=30000) as dl2:
+        page.evaluate('() => sendProposalWhatsApp()')
+    dl2.value.path()
+    page.wait_for_timeout(500)
+    wa_url = page.evaluate('() => window.__wa_url') or ''
+    txt_cliente = page.evaluate('() => prop.cliente')
+    print(('  PASS ' if txt_cliente == 'Cliente Prueba Sync' else '  FAIL ') + 'syncFormToProp corrigio prop.cliente: ' + txt_cliente)
+    print(('  PASS ' if 'wa.me/526311204943' in wa_url else '  FAIL ') + 'WhatsApp abrio al numero del cliente: ' + wa_url[:110])
+
     browser.close()
 
 print('Errores de JS capturados: %d' % len(errores))
