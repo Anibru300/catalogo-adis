@@ -662,10 +662,19 @@
         </aside>
       </div>
       <h2>Movimientos recientes</h2>
+      <div class="toolbar" style="margin-bottom:0.5rem;">
+        <input type="date" id="movFDesde" onchange="renderMovFiltered()" title="Desde" style="width:145px;">
+        <input type="date" id="movFHasta" onchange="renderMovFiltered()" title="Hasta" style="width:145px;">
+        <select id="movFTipo" onchange="renderMovFiltered()" style="width:150px;"><option value="">Todos los tipos</option><option value="entrada">Entrada</option><option value="salida">Salida</option><option value="ajuste">Ajuste</option></select>
+        <select id="movFAlmacen" onchange="renderMovFiltered()" style="width:170px;"></select>
+        <input id="movFBuscar" placeholder="Buscar producto, nota, ref..." oninput="renderMovFiltered()" style="width:190px;">
+        <button class="btn btn-sm" onclick="movCSV()">⬇ CSV</button>
+        <button class="btn btn-sm" onclick="printMovs()">🖨 Imprimir</button>
+      </div>
       <div class="card-box table-scroll">
         <table>
-          <thead><tr><th>Fecha</th><th>Tipo</th><th>Producto</th><th>Almacén</th><th>Cant.</th><th>Existencia</th><th>Documento</th><th>Notas</th></tr></thead>
-          <tbody id="movTable"><tr><td colspan="8" class="muted">Cargando…</td></tr></tbody>
+          <thead><tr><th>Fecha</th><th>Tipo</th><th>Producto</th><th>Almacén</th><th>Cant.</th><th>Existencia</th><th>Documento</th><th>Ref/Proveedor</th><th>Notas</th></tr></thead>
+          <tbody id="movTable"><tr><td colspan="9" class="muted">Cargando…</td></tr></tbody>
         </table>
       </div>
     </section>
@@ -898,7 +907,7 @@
         <details class="ayuda-item"><summary>👥 Clientes</summary><p>Directorio de clientes. El <b>teléfono es único</b>: si ya existe, el sistema avisa para no duplicar. Desde un cliente puedes cargar sus cotizaciones y ver todo su historial.</p></details>
         <details class="ayuda-item"><summary>🧾 Cotizaciones</summary><p>Historial de cotizaciones con folio <b>ADIS-AAAA-NNN</b> (numeración automática, sin duplicados). Cambia su estado: <b>Activa → Aprobada</b> (el cliente aceptó) o Rechazada. <b>Solo una cotización Aprobada puede convertirse en Proyecto.</b></p></details>
         <details class="ayuda-item"><summary>📝 Cotizador</summary><p>Arma cotizaciones profesionales con <b>un solo cuadro de precio final</b>: escribes la inversión total que le darás al cliente y el documento (PDF/imprimir/WhatsApp) la muestra en formato ADIS con folio, fotos y condiciones. El <b>costo total (manual)</b> es interno y opcional — solo te estima la utilidad, <b>nunca</b> sale en el documento. En <b>Enviar por WhatsApp</b> el PDF se comparte directo en celular o se descarga en computadora para adjuntarlo; también puedes <b>Imprimir</b> (sin hojas en blanco) o <b>Guardar</b> para seguimiento.</p></details>
-        <details class="ayuda-item"><summary>📦 Inventario</summary><p>Productos, almacenes y existencias. <b>Regla de oro: la existencia solo cambia con movimientos</b> (entrada / salida / ajuste), cada uno con fecha, usuario e folio. Así sabes exactamente qué pasó con tu material. Si intentas sacar más de lo que hay, el sistema lo bloquea (<b>STOCK_INSUFICIENTE</b>).</p></details>
+        <details class="ayuda-item"><summary>📦 Inventario</summary><p>Productos, almacenes y existencias. <b>Regla de oro: la existencia solo cambia con movimientos</b> (entrada / salida / ajuste), cada uno con fecha, usuario e folio. Así sabes exactamente qué pasó con tu material. Si intentas sacar más de lo que hay, el sistema lo bloquea (<b>STOCK_INSUFICIENTE</b>). La entrada y la salida admiten <b>varios productos en una sola operación</b> (lote con folio LOTE-), con proveedor, factura de referencia y fecha; la salida puede <b>ligarse a un proyecto</b>. En "Movimientos recientes" filtra por fecha, tipo o almacén y exporta a CSV.</p></details>
         <details class="ayuda-item"><summary>🛒 Compras (órdenes de compra)</summary><p>Pedidos a proveedores con folio <b>OC-</b>. Cuando te llega el material usas <b>Recibir</b> (puede ser parcial): lo recibido <b>entra automáticamente al inventario</b> como una entrada trazable. Comprar material NO es un gasto todavía: el gasto se registra cuando pagas.</p></details>
         <details class="ayuda-item"><summary>💵 Ventas</summary><p>Registra la <b>salida de material</b> vendido. Puedes vincularla a un cliente y a un proyecto. Cada venta calcula su utilidad (precio − costo). Si te equivocas, <b>anula la venta</b>: revierte el stock y queda fuera de los resultados. Las ventas <b>no se borran</b>: se anulan, para mantener la bitácora.</p></details>
         <details class="ayuda-item"><summary>🏗️ Proyectos</summary><p>Ficha financiera de cada obra: <b>presupuesto, cobrado, gastos directos del proyecto y utilidad real</b>. Puedes agregar movimientos directos (gasto / ingreso extra / ajuste de presupuesto). Estados: <b>ACTIVO → TERMINADO o CANCELADO</b>; un proyecto terminado no se reactiva (si se reabre, crea uno nuevo).</p></details>
@@ -1171,10 +1180,8 @@ function elegirProducto(cb){
   render(); inp.focus();
 }
 function invMov(tipo){
-  elegirProducto(pid=>{
-    showAdjustForm(pid);
-    setTimeout(()=>{ const s=$('mTipo'); if (s) s.value=tipo; }, 80);
-  });
+  if (tipo==='ajuste'){ elegirProducto(pid=>showAdjustForm(pid)); return; }
+  showMovForm(tipo);
 }
 function invEditar(){ elegirProducto(pid=>showProductForm(pid)); }
 function provScroll(){ setTimeout(()=>{ const el=$('provAnchor'); if (el) el.scrollIntoView({behavior:'smooth', block:'start'}); }, 400); }
@@ -1983,6 +1990,7 @@ function fillWarehouseSelects(){
   const opts = biz.almacenes.map(a=>'<option value="'+esc(a.id)+'">'+esc(a.nombre)+'</option>').join('');
   $('invAlmacen').innerHTML = '<option value="">Todos los almacenes</option>'+opts;
   $('sAlmacen').innerHTML = '<option value="">— Selecciona —</option>'+opts;
+  if ($('movFAlmacen')) $('movFAlmacen').innerHTML = '<option value="">Todos los almacenes</option>'+opts;
 }
 
 function stockTotal(pid){
@@ -2093,7 +2101,7 @@ function loadProductHistory(pid){
       movs.slice().reverse().slice(0,30).map(m=>
         '<tr><td>'+esc(String(m.fecha||'').slice(0,16))+'</td><td>'+esc(m.tipo)+'</td><td>'+esc(m.cantidad)+'</td>' +
         '<td>'+(m.existencia_anterior!==undefined && m.existencia_anterior!=='' ? esc(m.existencia_anterior)+' → '+esc(m.existencia_posterior) : '—')+'</td>' +
-        '<td>'+esc(m.documento_tipo||m.referencia||'—')+(m.id?' <span class="muted">'+esc(m.id)+'</span>':'')+'</td></tr>').join('') +
+        '<td>'+movDocTxt(m)+(m.referencia?' <span class="muted">'+esc(m.referencia)+'</span>':'')+(m.id?' <span class="muted">'+esc(m.id)+'</span>':'')+'</td></tr>').join('') +
       '</tbody></table>' +
       (movs.length>30 ? '<p class="muted" style="font-size:0.7rem;margin-top:0.3rem;">Mostrando los últimos 30 de '+movs.length+' movimientos.</p>' : '');
   }).catch(()=>{ box.innerHTML='<p class="muted" style="font-size:0.72rem;">No se pudo cargar el historial.</p>'; });
@@ -2106,13 +2114,79 @@ function restoreProduct(id){
   });
 }
 
-function renderMovs(list){
-  if (!list.length) { $('movTable').innerHTML='<tr><td colspan="8" class="muted">Sin movimientos.</td></tr>'; return; }
-  $('movTable').innerHTML = list.slice().reverse().map(m=>
-    '<tr><td>'+esc(m.fecha)+'</td><td>'+esc(m.tipo)+'</td><td>'+esc(m.producto)+'</td><td>'+esc(m.almacen)+'</td>' +
+/* ---------- Movimientos recientes: cache + filtros + CSV + imprimir ---------- */
+let movsCache = [];
+function renderMovs(list){ movsCache = list || []; renderMovFiltered(); }
+function movFiltered(){
+  const desde = $('movFDesde').value, hasta = $('movFHasta').value, tipo = $('movFTipo').value,
+    alm = $('movFAlmacen').value, q = ($('movFBuscar').value||'').trim().toLowerCase();
+  return movsCache.filter(m=>{
+    const f = String(m.fecha||'').slice(0,10);
+    if (desde && f < desde) return false;
+    if (hasta && f > hasta) return false;
+    if (tipo && String(m.tipo)!==tipo) return false;
+    if (alm && String(m.almacen_id)!==String(alm)) return false;
+    if (q){
+      const hay = (String(m.producto||'')+' '+String(m.notas||'')+' '+String(m.referencia||'')+' '+String(m.proveedor||'')+' '+String(m.id||'')).toLowerCase();
+      if (hay.indexOf(q)===-1) return false;
+    }
+    return true;
+  });
+}
+function movDocTxt(m){
+  const dt = String(m.documento_tipo||''), did = String(m.documento_id||'');
+  let txt;
+  if (dt==='PROYECTO' && did) {
+    const p = (typeof proyCache!=='undefined' ? proyCache : []).filter(x=>String(x.id)===did)[0];
+    txt = '🏗 '+(p ? esc(p.folio)+' · '+esc(p.nombre) : 'Proyecto '+esc(did));
+  }
+  else if (dt==='LOTE' && did) txt = 'Lote '+esc(did);
+  else if (dt==='ORDEN_COMPRA' && did) txt = 'OC '+esc(did);
+  else txt = dt ? esc(dt) : '—';
+  if (m.lote && dt!=='LOTE') txt += ' <span class="muted">· Lote '+esc(m.lote)+'</span>';
+  return txt;
+}
+function renderMovFiltered(){
+  const list = movFiltered().slice().reverse();
+  if (!list.length) { $('movTable').innerHTML='<tr><td colspan="9" class="muted">Sin movimientos'+(movsCache.length?' con estos filtros.':'.')+'</td></tr>'; return; }
+  $('movTable').innerHTML = list.map(m=>
+    '<tr><td>'+esc(String(m.fecha||'').slice(0,16))+'</td><td>'+esc(m.tipo)+'</td><td>'+esc(m.producto)+'</td><td>'+esc(m.almacen)+'</td>' +
     '<td>'+esc(m.cantidad)+'</td>' +
     '<td>'+(m.existencia_anterior!==undefined && m.existencia_anterior!=='' ? esc(m.existencia_anterior)+' → '+esc(m.existencia_posterior) : '—')+'</td>' +
-    '<td>'+esc(m.documento_tipo||m.referencia||'')+'</td><td>'+esc(m.notas)+'</td></tr>').join('');
+    '<td>'+movDocTxt(m)+(m.id?' <span class="muted">'+esc(m.id)+'</span>':'')+'</td>' +
+    '<td>'+(m.referencia?esc(m.referencia)+' ':'')+(m.proveedor?'<span class="muted">'+esc(m.proveedor)+'</span>':'—')+'</td>' +
+    '<td>'+esc(m.notas||'')+'</td></tr>').join('');
+}
+function movCSVEsc(v){ v=String(v===undefined||v===null?'':v); return /[",\n]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v; }
+function movCSV(){
+  const rows = movFiltered();
+  if (!rows.length) { notice('No hay movimientos con estos filtros.', false); return; }
+  const docTxt = m=>{ const dt=String(m.documento_tipo||''),did=String(m.documento_id||'');
+    return dt==='LOTE'?'Lote '+did: dt==='PROYECTO'?'Proyecto '+did: dt==='ORDEN_COMPRA'?'OC '+did: dt; };
+  const cab = ['Fecha','Tipo','Producto','Almacen','Cantidad','Exist. anterior','Exist. posterior','Documento','Lote','Referencia','Proveedor','Folio mov.','Usuario','Notas'];
+  const txt = '\ufeff'+cab.join(',')+'\n'+rows.map(m=>
+    [m.fecha,m.tipo,m.producto,m.almacen,m.cantidad,m.existencia_anterior,m.existencia_posterior,
+     docTxt(m),m.lote||'',m.referencia,m.proveedor,m.id,m.usuario,m.notas].map(movCSVEsc).join(',')).join('\n');
+  const blob = new Blob([txt],{type:'text/csv;charset=utf-8'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'movimientos_'+fHoyLocal()+'.csv';
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(()=>URL.revokeObjectURL(a.href), 5000);
+}
+function printMovs(){
+  const rows = movFiltered().slice().reverse();
+  if (!rows.length) { notice('No hay movimientos con estos filtros.', false); return; }
+  const w = window.open('', '_blank');
+  if (!w) { notice('El navegador bloqueó la ventana de impresión.', false); return; }
+  w.document.write('<!doctype html><html><head><meta charset="utf-8"><title>Movimientos de inventario</title>' +
+    '<style>body{font-family:Arial,sans-serif;font-size:11px;padding:20px;}h1{font-size:16px;margin:0 0 4px;}p{margin:0 0 12px;color:#555;}table{width:100%;border-collapse:collapse;}th,td{border:1px solid #bbb;padding:4px 6px;text-align:left;vertical-align:top;}th{background:#eee;}</style></head><body>' +
+    '<h1>ADIS — Movimientos de inventario ('+rows.length+')</h1><p>Generado: '+new Date().toLocaleString()+'</p>' +
+    '<table><thead><tr><th>Fecha</th><th>Tipo</th><th>Producto</th><th>Almacén</th><th>Cant.</th><th>Existencia</th><th>Documento</th><th>Referencia</th><th>Proveedor</th><th>Notas</th></tr></thead><tbody>' +
+    rows.map(m=>'<tr><td>'+esc(String(m.fecha||'').slice(0,16))+'</td><td>'+esc(m.tipo)+'</td><td>'+esc(m.producto)+'</td><td>'+esc(m.almacen)+'</td><td>'+esc(m.cantidad)+'</td><td>'+esc(m.existencia_anterior)+' → '+esc(m.existencia_posterior)+'</td><td>'+movDocTxt(m)+'</td><td>'+esc(m.referencia||'')+'</td><td>'+esc(m.proveedor||'')+'</td><td>'+esc(m.notas||'')+'</td></tr>').join('') +
+    '</tbody></table></body></html>');
+  w.document.close();
+  w.focus(); setTimeout(()=>{ w.print(); }, 400);
 }
 
 /* ----- formularios dinamicos (producto / almacen / config / ajuste) ----- */
@@ -2268,6 +2342,98 @@ function saveAdjust(pid){
   apiPost({tipo:'movimiento', tipo_mov:$('mTipo').value, producto_id:pid, almacen_id:$('mAlmacen').value,
     cantidad:parseFloat($('mCant').value)||0, notas:$('mNotas').value.trim()}).then(d=>{
     notice(d&&d.ok?'Movimiento aplicado. Stock nuevo: '+(d.stock_nuevo!==undefined?d.stock_nuevo:'?'):errMsg(d), !!(d&&d.ok));
+    if(d&&d.ok){ closeBizForms(); loadBiz(); }
+  });
+}
+
+/* ---------- Entrada / salida multi-producto (LOTE trazable) ----------
+   Una sola operacion con N productos. El backend aplica todo bajo un lock
+   con folio LOTE-AAAA-NNNN compartido; si algo falla no se mueve nada. */
+let movItems = [];
+function fHoyLocal(){ const d=new Date(); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
+function showMovForm(tipo){
+  if (!biz.almacenes.length) { notice('Primero crea un almacén.', false); return; }
+  movItems = [];
+  const esEntrada = tipo==='entrada';
+  const hoy = fHoyLocal();
+  apiGet('proveedores').then(d=>{ if(d&&d.ok){ provCache=d.proveedores||[]; const s=$('mProv'); if(s) s.innerHTML='<option value="">— Ninguno —</option>'+provCache.filter(p=>String(p.activo)!=='no').map(p=>'<option value="'+esc(p.nombre)+'">'+esc(p.nombre)+'</option>').join(''); } });
+  apiGet('proyectos').then(d=>{ if(d&&d.ok){ proyCache=d.proyectos||[]; const s=$('mProy'); if(s) s.innerHTML='<option value="">— Ninguna (uso general) —</option>'+proyCache.filter(p=>p.estado==='ACTIVO').map(p=>'<option value="'+esc(p.id)+'">'+esc(p.folio)+' · '+esc(p.nombre)+'</option>').join(''); } });
+  $('bizForms').innerHTML = '<div class="card-box">' +
+    '<div class="toolbar" style="margin-bottom:0.5rem;"><strong>'+(esEntrada?'📥 Entrada de material':'📤 Salida de material')+'</strong>' +
+    '<span class="muted">Puedes incluir varios productos en una sola operación</span></div>' +
+    '<div class="row">' +
+    '<div><label>Fecha</label><input type="date" id="mFecha" value="'+hoy+'" max="'+hoy+'"></div>' +
+    '<div><label>Almacén *</label><select id="mAlmacen">'+biz.almacenes.map(a=>'<option value="'+esc(a.id)+'">'+esc(a.nombre)+'</option>').join('')+'</select></div>' +
+    (esEntrada
+      ? '<div><label>Proveedor</label><select id="mProv"><option value="">— Ninguno —</option></select></div>' +
+        '<div><label>Documento (factura/remisión)</label><input id="mRef" placeholder="Ej. FAC-1234"></div>'
+      : '<div><label>Proyecto / obra</label><select id="mProy"><option value="">— Ninguna (uso general) —</option></select></div>' +
+        '<div><label>Motivo / referencia</label><input id="mRef" placeholder="Ej. Merma, uso en obra..."></div>') +
+    '<div><label>Moneda</label><select id="mMoneda"><option value="MXN">MXN</option><option value="USD">USD</option></select></div>' +
+    '</div>' +
+    '<label>Agregar producto (del inventario)</label>' +
+    '<div class="search-results"><input id="mSearch" placeholder="Escribe el nombre o código del producto..." autocomplete="off" oninput="searchMovProducts()"><div id="mSearchResults"></div></div>' +
+    '<div class="items" id="mItems"></div>' +
+    '<div class="total-line"><span class="muted" id="mTotalTxt">Piezas: 0</span></div>' +
+    '<label>Notas</label><input id="mNotas" placeholder="Observaciones...">' +
+    '<div class="toolbar" style="margin-top:1rem;">' +
+    '<button class="btn btn-solid btn-sm" onclick="saveMovLote(\''+tipo+'\')">💾 Aplicar '+(esEntrada?'entrada':'salida')+'</button> ' +
+    '<button class="btn btn-sm" onclick="closeBizForms()">Cancelar</button></div></div>';
+  renderMovItems();
+  setTimeout(()=>{ const el=$('bizForms'); if (el) el.scrollIntoView({behavior:'smooth', block:'start'}); }, 100);
+}
+function movEsEntrada(){ return !!document.getElementById('mProv'); }
+function searchMovProducts(){
+  const q = $('mSearch').value.trim().toLowerCase();
+  const box = $('mSearchResults');
+  if (q.length < 2) { box.innerHTML=''; return; }
+  const matches = biz.productos.filter(p => p.estado!=='inactivo' && ((p.nombre||'')+' '+(p.codigo||'')+' '+(p.categoria||'')).toLowerCase().includes(q)).slice(0,8);
+  box.innerHTML = '<div class="sr-list">' + (matches.length
+    ? matches.map(p=>'<div class="sr-item" onclick="movAddProduct(\''+p.id+'\')"><span>'+esc(p.codigo||'')+' · '+esc(p.nombre)+'</span><span class="gold">stock: '+stockTotal(p.id)+'</span></div>').join('')
+    : '<div class="sr-item muted">Sin resultados</div>') + '</div>';
+}
+function movAddProduct(pid){
+  const p = biz.productos.filter(x=>String(x.id)===String(pid))[0];
+  if (!p) return;
+  if (movItems.some(it=>String(it.producto_id)===String(pid))) { notice('Ese producto ya está en la lista.', false); return; }
+  movItems.push({producto_id:p.id, codigo:p.codigo||'', nombre:p.nombre, cantidad:1, costo_unit:(Number(p.costo)||0)});
+  $('mSearch').value=''; $('mSearchResults').innerHTML='';
+  renderMovItems();
+}
+function renderMovItems(){
+  const box = $('mItems');
+  if (!box) return;
+  const conCosto = movEsEntrada();
+  box.innerHTML = (movItems.length ? '<div class="item-row" style="opacity:.65;"><input value="Producto" disabled>' +
+    '<input type="text" value="Cantidad" disabled>' +
+    (conCosto?'<input type="text" value="Costo unit." disabled>':'') +
+    '<input type="text" value="" disabled></div>' : '<p class="muted" style="font-size:0.75rem;">Sin productos todavía. Búscalos arriba para agregarlos.</p>') +
+    movItems.map((it,i)=>'<div class="item-row">' +
+      '<input value="'+esc(it.codigo?it.codigo+' · ':'')+esc(it.nombre)+'" disabled>' +
+      '<input type="number" min="0.01" step="0.01" value="'+it.cantidad+'" onchange="movItems['+i+'].cantidad=parseFloat(this.value)||1; renderMovTotals()">' +
+      (conCosto?'<input type="number" min="0" step="0.01" value="'+it.costo_unit+'" onchange="movItems['+i+'].costo_unit=parseFloat(this.value)||0; renderMovTotals()">':'') +
+      '<button class="del" onclick="movItems.splice('+i+',1); renderMovItems()">✕</button></div>').join('');
+  renderMovTotals();
+}
+function renderMovTotals(){
+  const n = movItems.reduce((s,it)=>s+(Number(it.cantidad)||0),0);
+  const el = $('mTotalTxt');
+  if (!el) return;
+  let txt = 'Piezas: '+n;
+  if (movEsEntrada() && n>0) txt += ' · Costo total: '+fmtMoney(movItems.reduce((s,it)=>s+(Number(it.cantidad)||0)*(Number(it.costo_unit)||0),0))+' '+$('mMoneda').value;
+  el.textContent = txt;
+}
+function saveMovLote(tipo){
+  if (!$('mAlmacen').value) { notice('Selecciona un almacén.', false); return; }
+  if (!movItems.length) { notice('Agrega al menos un producto.', false); return; }
+  const items = movItems.map(it=>({producto_id:it.producto_id, cantidad:it.cantidad,
+    costo_unit: tipo==='entrada' ? (it.costo_unit||0) : ''}));
+  apiPost({tipo:'movimiento', tipo_mov:tipo, almacen_id:$('mAlmacen').value, fecha:$('mFecha').value,
+    referencia:$('mRef').value.trim(), notas:$('mNotas').value.trim(), moneda:$('mMoneda').value,
+    proveedor: tipo==='entrada' ? $('mProv').value : '',
+    proyecto_id: tipo==='salida' ? $('mProy').value : '',
+    items}).then(d=>{
+    notice(d&&d.ok?((d.lote?('Lote '+d.lote+' aplicado ('+items.length+' producto(s)). '):'Movimiento aplicado. ')+'Stock actualizado.'):errMsg(d), !!(d&&d.ok));
     if(d&&d.ok){ closeBizForms(); loadBiz(); }
   });
 }

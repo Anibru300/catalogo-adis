@@ -82,7 +82,8 @@ var ENC_PROD = ['id', 'codigo', 'nombre', 'descripcion', 'categoria', 'subcatego
   'costo', 'precio', 'unidad', 'stock_minimo', 'moneda', 'foto', 'estado', 'notas', 'fecha_actualizacion'];
 var ENC_MOV = ['fecha', 'tipo', 'producto_id', 'producto', 'almacen_id', 'almacen', 'cantidad',
   'costo_unit', 'moneda', 'referencia', 'notas',
-  'id', 'usuario', 'existencia_anterior', 'existencia_posterior', 'documento_tipo', 'documento_id'];
+  'id', 'usuario', 'existencia_anterior', 'existencia_posterior', 'documento_tipo', 'documento_id',
+  'proveedor', 'lote'];
 var ENC_VENTAS = ['fecha', 'cliente', 'almacen', 'items', 'total', 'moneda', 'tipo_cambio',
   'total_base', 'costo_total_base', 'utilidad_base', 'notas', 'id', 'folio', 'usuario',
   'cliente_id', 'proyecto_id', 'estado_pago', 'almacen_id', 'items_json'];
@@ -399,7 +400,8 @@ function aplicarMovimiento(m) {
   hoja(SHEET_MOVES, ENC_MOV).appendRow([
     m.fecha || ahora_(), m.tipo, m.producto_id, m.producto || '', m.almacen_id, m.almacen || '',
     m.cantidad, m.costo_unit || '', m.moneda || cfg('moneda_base', 'MXN'), m.referencia || '', m.notas || '',
-    movId, USUARIO_ACTUAL, anterior, posterior, m.doc_tipo || 'AJUSTE', m.doc_id || ''
+    movId, USUARIO_ACTUAL, anterior, posterior, m.doc_tipo || 'AJUSTE', m.doc_id || '', m.proveedor || '',
+    m.lote || ''
   ]);
   return posterior;
 }
@@ -474,15 +476,23 @@ function doGetInterno(e) {
     return json({ ok: true, stock: detalle });
   }
   if (action === 'movimientos') {
-    // FASE 1: filtro opcional por producto (historial completo hasta 500);
-    // sin filtro, ultimos 100 como antes.
+    // Filtros opcionales: producto_id, desde/hasta (AAAA-MM-DD), tipo, almacen_id.
+    // Con cualquier filtro devuelve hasta 500; sin filtros, ultimos 100 como antes.
     var filtroPid = e.parameter.producto_id;
-    var todosMovs = filasComoObjetos(SHEET_MOVES);
-    if (filtroPid) {
-      var filtrados = todosMovs.filter(function (m) { return String(m.producto_id) === String(filtroPid); });
-      return json({ ok: true, movimientos: filtrados.slice(-500) });
-    }
-    return json({ ok: true, movimientos: todosMovs.slice(-100) });
+    var fDesde = validarFecha(e.parameter.desde);
+    var fHasta = validarFecha(e.parameter.hasta);
+    var fTipo = String(e.parameter.tipo || '').trim().toLowerCase();
+    var fAlm = e.parameter.almacen_id;
+    var hayFiltro = !!(filtroPid || fDesde || fHasta || fTipo || fAlm);
+    var movsFil = filasComoObjetos(SHEET_MOVES).filter(function (m) {
+      if (filtroPid && String(m.producto_id) !== String(filtroPid)) return false;
+      if (fTipo && String(m.tipo).toLowerCase() !== fTipo) return false;
+      if (fAlm && String(m.almacen_id) !== String(fAlm)) return false;
+      if (fDesde && String(m.fecha).slice(0, 10) < fDesde) return false;
+      if (fHasta && String(m.fecha).slice(0, 10) > fHasta) return false;
+      return true;
+    });
+    return json({ ok: true, movimientos: hayFiltro ? movsFil.slice(-500) : movsFil.slice(-100) });
   }
   if (action === 'ventas') return json({ ok: true, ventas: filasComoObjetos(SHEET_SALES).slice(-100) });
   if (action === 'gastos') return json({ ok: true, gastos: filasComoObjetos(SHEET_EXPENSES) });
@@ -1058,26 +1068,105 @@ function doPostInterno(data) {
     return json({ ok: true });
   });
 
-  /* ---------- Entrada / salida / ajuste de inventario ---------- */
+  /* ---------- Entrada / salida / ajuste de inventario ----------
+     Simple: producto_id + cantidad (como antes, retrocompatible).
+     LOTE: items:[{producto_id, cantidad, costo_unit?}] aplicados todos bajo el
+     MISMO lock con folio LOTE-AAAA-NNNN compartido (documento_tipo/documento_id).
+     Campos comunes opcionales: fecha (AAAA-MM-DD, no futura), referencia (factura/
+     remision), proveedor, moneda, notas y proyecto_id (salida ligada a obra). */
   if (tipo === 'movimiento') return conLock(function () {
     if (TIPOS_MOVIMIENTO.indexOf(data.tipo_mov) === -1) {
       throw AdisError('TIPO_MOVIMIENTO_INVALIDO', 'Tipo de movimiento no permitido: ' + data.tipo_mov);
     }
+    var esAjuste = data.tipo_mov === 'ajuste';
     var alm = filasComoObjetos(SHEET_WAREHOUSES).filter(function (a) { return String(a.id) === String(data.almacen_id); })[0] || {};
     if (!alm.id) throw AdisError('NO_ENCONTRADO', 'Almacén no encontrado.');
-    var prod = filasComoObjetos(SHEET_PRODUCTS).filter(function (p) { return String(p.id) === String(data.producto_id); })[0] || {};
-    if (!prod.id) throw AdisError('NO_ENCONTRADO', 'Producto no encontrado.');
-    var cant = Math.abs(Number(data.cantidad));
-    if (!isFinite(cant) || cant <= 0) throw AdisError('VALIDACION', 'La cantidad debe ser mayor que cero.');
-    var nueva = aplicarMovimiento({
-      tipo: data.tipo_mov, producto_id: data.producto_id, producto: prod.nombre,
-      almacen_id: data.almacen_id, almacen: alm.nombre, cantidad: cant,
-      costo_unit: data.costo_unit || prod.costo || '',
-      moneda: validarMoneda(data.moneda || prod.moneda), notas: data.notas || '',
-      doc_tipo: 'AJUSTE', doc_id: ''
+
+    // Fecha: la capturada en el formulario (pasado permitido, futuro no)
+    var fechaMov = ahora_();
+    var fRecibida = validarFecha(data.fecha);
+    if (data.fecha && !fRecibida) throw AdisError('VALIDACION', 'Fecha inválida (usa formato AAAA-MM-DD).');
+    if (fRecibida && fRecibida > hoy_()) throw AdisError('VALIDACION', 'La fecha del movimiento no puede ser futura.');
+    if (fRecibida) fechaMov = fRecibida + ' ' + ahora_().slice(11);
+
+    var monedaMov = validarMoneda(data.moneda);
+    var prodsMov = filasComoObjetos(SHEET_PRODUCTS);
+    function prodMov(id) {
+      return prodsMov.filter(function (p) { return String(p.id) === String(id); })[0] || null;
+    }
+
+    // Documento origen: el PROYECTO (obra) tiene prioridad; si no hay proyecto
+    // pero es lote multi-producto, documento = LOTE (el folio tambien va en la
+    // columna 'lote' de cada movimiento para agruparlos aunque tengan proyecto).
+    var loteId = '';
+    var itemsMov = (Array.isArray(data.items) && data.items.length) ? data.items : null;
+    if (itemsMov) {
+      if (esAjuste) throw AdisError('VALIDACION', 'El ajuste solo admite un producto a la vez (cantidad exacta).');
+      if (itemsMov.length > 100) throw AdisError('VALIDACION', 'Máximo 100 productos por operación.');
+      loteId = siguienteFolio('LOTE', 'folio_lote', 4);
+    }
+    var docTipo = 'AJUSTE', docId = '';
+    if (data.proyecto_id) {
+      if (!filaPorId(SHEET_PROJECTS, data.proyecto_id)) throw AdisError('NO_ENCONTRADO', 'Proyecto no encontrado.');
+      docTipo = 'PROYECTO'; docId = String(data.proyecto_id);
+    } else if (loteId) {
+      docTipo = 'LOTE'; docId = loteId;
+    }
+
+    // PRE-VALIDACION completa del plan (nada se escribe si algo esta mal)
+    var plan = [];
+    function planItem(productoId, cantidad, costoItem) {
+      var prod = prodMov(productoId);
+      if (!prod) throw AdisError('NO_ENCONTRADO', 'Producto no encontrado: ' + productoId);
+      var cant = Math.abs(Number(cantidad));
+      if (!isFinite(cant) || cant <= 0) throw AdisError('VALIDACION', 'La cantidad debe ser mayor que cero (' + (prod.nombre || productoId) + ').');
+      var costo = (costoItem !== undefined && costoItem !== '') ? costoItem : (data.costo_unit || prod.costo || '');
+      plan.push({ tipo: data.tipo_mov, producto_id: prod.id, producto: prod.nombre,
+        almacen_id: data.almacen_id, almacen: alm.nombre, cantidad: cant,
+        costo_unit: costo, moneda: monedaMov, fecha: fechaMov,
+        referencia: data.referencia || '', notas: data.notas || '', proveedor: data.proveedor || '',
+        lote: loteId, doc_tipo: docTipo, doc_id: docId });
+    }
+    if (itemsMov) itemsMov.forEach(function (it) { planItem(it.producto_id, it.cantidad, it.costo_unit); });
+    else planItem(data.producto_id, data.cantidad, data.costo_unit);
+
+    // Salida: verificar stock TOTAL por producto+almacen ANTES de mover nada
+    // (el lote es todo-o-nada: no se descuenta a medias).
+    if (data.tipo_mov === 'salida') {
+      var consumo = {};
+      plan.forEach(function (m) {
+        var k = String(m.producto_id) + '|' + String(m.almacen_id);
+        consumo[k] = (consumo[k] || 0) + m.cantidad;
+      });
+      Object.keys(consumo).forEach(function (k) {
+        var partes = k.split('|');
+        var ant = stockSnapDe(partes[0], partes[1]).cantidad;
+        if (ant - consumo[k] < 0) {
+          var nom = plan.filter(function (m) { return String(m.producto_id) === partes[0]; })[0].producto;
+          throw AdisError('STOCK_INSUFICIENTE', 'Existencia insuficiente de "' + nom + '": hay ' + ant + ', se piden ' + consumo[k] + '.');
+        }
+      });
+    }
+
+    // APLICAR: cada item trazable con su MOV-AAAA-NNNNN; entrada con costo
+    // actualiza el ultimo costo del producto (igual que la recepcion de OC).
+    var stockNuevo = {};
+    plan.forEach(function (m) {
+      stockNuevo[String(m.producto_id)] = aplicarMovimiento(m);
+      if (m.tipo === 'entrada' && m.costo_unit !== '' && isFinite(Number(m.costo_unit))) {
+        var filaP = filaPorId(SHEET_PRODUCTS, m.producto_id);
+        if (filaP) {
+          var hp = ss().getSheetByName(SHEET_PRODUCTS);
+          hp.getRange(filaP, 8).setValue(Number(m.costo_unit)); // ultimo costo
+          hp.getRange(filaP, 16).setValue(ahora_());
+        }
+      }
     });
-    log_('movimiento_' + data.tipo_mov, prod.nombre + ' x' + cant + ' en ' + alm.nombre);
-    return json({ ok: true, stock_nuevo: nueva });
+    log_('movimiento_' + data.tipo_mov + (loteId ? '_lote' : ''),
+      (loteId ? loteId + ' · ' : '') +
+      plan.map(function (m) { return m.producto + ' x' + m.cantidad; }).join(', ') +
+      ' en ' + alm.nombre + (docTipo === 'PROYECTO' ? ' · Proyecto ' + docId : ''));
+    return json({ ok: true, stock_nuevo: stockNuevo, lote: loteId });
   });
 
   /* ---------- Venta (atomica bajo lock + compensacion best-effort) ----------
@@ -1739,7 +1828,7 @@ function doPostInterno(data) {
     borrados['Stock(huerfano)'] = stockBorrados;
     // Reiniciar folios para arranque real
     var folios = ['folio_cotizacion', 'folio_venta', 'folio_movimiento', 'folio_proyecto',
-      'folio_gasto', 'folio_pago', 'folio_cobro', 'folio_oc'];
+      'folio_gasto', 'folio_pago', 'folio_cobro', 'folio_oc', 'folio_lote'];
     folios.forEach(function (f) { cfgSet(f, '1'); });
     STOCK_SNAP = null;
     log_('purge_pruebas', 'PURGAR ejecutado: ' + JSON.stringify(borrados));

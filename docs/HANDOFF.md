@@ -1,6 +1,14 @@
 # Handoff — ADIS Catálogo Web
 
-> Documento para la siguiente sesión. Última actualización: 2026-09-06 (FASE 0 completada).
+> Documento para la siguiente sesión. Última actualización: 2026-09-07 (Fase 1B: entrada/salida multi-producto).
+
+## Novedades 2026-09-07 — Entrada/Salida de material mejorada (Fase 1B)
+
+- **Backend (`admin/apps-script.gs`)**: handler `movimiento` reescrito y retrocompatible — fecha editable (no futura), referencia, proveedor, moneda, `proyecto_id` (salida ligada a obra, documento PROYECTO con prioridad sobre LOTE), **lote multi-producto** `items[]` todo-o-nada con folio `LOTE-AAAA-NNNN` (columna `lote` + contador `folio_lote`, incluido en purga), entrada con costo actualiza último costo del producto. `ENC_MOV` +2 columnas (`proveedor`, `lote`, migración aditiva). GET `movimientos` con filtros `desde/hasta/tipo/almacen_id`.
+- **Frontend (`admin/index.html` → `public/admin.html`)**: formulario unificado de Entrada/Salida multi-producto (proveedor+factura en entrada, proyecto en salida, costos y totales); ajuste sigue siendo 1 producto. Historial con filtros, columnas Documento/Ref-Proveedor, **CSV** e **imprimir**.
+- **Pruebas**: `test_movimientos_ui.py` (Playwright+mock) 21/21 PASS, 0 errores JS; regresión Fase 0 contra backend vivo 19/19 PASS. `test_movimientos_lote_api.py` listo para el backend nuevo.
+- ✅ **REDEPLOY HECHO (2026-09-07 noche)**: suite API en vivo `test_movimientos_lote_api.py` **19/19 PASS** (lotes, proyecto, filtros, validaciones todo-o-nada). Detalle en `docs/RESUMEN_SESION_2026-09-07.md`.
+- **Pendiente**: `git push` de `public/admin.html` (el admin en línea sigue viejo hasta el push).
 
 ## Novedades 2026-09-06 — FASE 0: cimientos del sistema administrativo
 
