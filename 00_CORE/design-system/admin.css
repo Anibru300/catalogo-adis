@@ -144,7 +144,11 @@
   .pnl-card.bad .v { color:#c0392b; }
   .stock-alert { color:#c0392b; font-weight:700; }
   .inv-layout { display:grid; grid-template-columns:1fr 290px; gap:1.2rem; align-items:start; }
-  @media (max-width: 950px) { .inv-layout { grid-template-columns:1fr; } .inv-photo { position:static !important; } }
+  /* La lista tiene scroll propio: la foto del lado derecho se queda SIEMPRE
+     visible, sin depender del sticky ni del alto de la pagina. */
+  .inv-layout > .card-box.table-scroll { max-height:calc(100vh - 320px); min-height:280px; overflow-y:auto; }
+  .inv-layout thead th { position:sticky; top:0; background:var(--surface); z-index:2; }
+  @media (max-width: 950px) { .inv-layout { grid-template-columns:1fr; } .inv-photo { position:static !important; } .inv-layout > .card-box.table-scroll { max-height:none; } }
   .inv-photo { position:sticky; top:80px; background:var(--surface); border:1px solid var(--line); border-radius:10px; padding:1rem; text-align:center; }
   .inv-photo img { width:100%; border-radius:8px; display:block; background:#F1EDE3; min-height:120px; object-fit:cover; }
   .inv-photo .ph-code { font-size:0.7rem; color:var(--gold-strong); letter-spacing:1px; margin-top:0.7rem; }

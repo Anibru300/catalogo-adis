@@ -384,33 +384,55 @@ function fHoyLocal(){ const d=new Date(); return d.getFullYear()+'-'+String(d.ge
 function showMovForm(tipo){
   if (!biz.almacenes.length) { notice('Primero crea un almacén.', false); return; }
   movItems = [];
-  const esEntrada = tipo==='entrada';
   const hoy = fHoyLocal();
-  apiGet('proveedores').then(d=>{ if(d&&d.ok){ provCache=d.proveedores||[]; const s=$('mProv'); if(s) s.innerHTML='<option value="">— Ninguno —</option>'+provCache.filter(p=>String(p.activo)!=='no').map(p=>'<option value="'+esc(p.nombre)+'">'+esc(p.nombre)+'</option>').join(''); } });
-  apiGet('proyectos').then(d=>{ if(d&&d.ok){ proyCache=d.proyectos||[]; const s=$('mProy'); if(s) s.innerHTML='<option value="">— Ninguna (uso general) —</option>'+proyCache.filter(p=>p.estado==='ACTIVO').map(p=>'<option value="'+esc(p.id)+'">'+esc(p.folio)+' · '+esc(p.nombre)+'</option>').join(''); } });
+  apiGet('proveedores').then(d=>{ if(d&&d.ok){ provCache=d.proveedores||[]; movPoblarVars(); } });
+  apiGet('proyectos').then(d=>{ if(d&&d.ok){ proyCache=d.proyectos||[]; movPoblarVars(); } });
   $('bizForms').innerHTML = '<div class="card-box">' +
-    '<div class="toolbar" style="margin-bottom:0.5rem;"><strong>'+(esEntrada?'📥 Entrada de material':'📤 Salida de material')+'</strong>' +
+    '<div class="toolbar" style="margin-bottom:0.5rem;"><strong id="mTitulo">Movimiento de material</strong>' +
     '<span class="muted">Puedes incluir varios productos en una sola operación</span></div>' +
     '<div class="row">' +
+    '<div><label>Tipo de movimiento *</label><select id="mTipoMov" onchange="movTipoCambio()">' +
+    '<option value="entrada">Entrada (compra / mercancía que llega)</option>' +
+    '<option value="salida">Salida (merma / material que se usa)</option>' +
+    '<option value="ajuste">Ajuste (fijar la cantidad exacta)</option></select></div>' +
     '<div><label>Fecha</label><input type="date" id="mFecha" value="'+hoy+'" max="'+hoy+'"></div>' +
     '<div><label>Almacén *</label><select id="mAlmacen">'+biz.almacenes.map(a=>'<option value="'+esc(a.id)+'">'+esc(a.nombre)+'</option>').join('')+'</select></div>' +
-    (esEntrada
-      ? '<div><label>Proveedor</label><select id="mProv"><option value="">— Ninguno —</option></select></div>' +
-        '<div><label>Documento (factura/remisión)</label><input id="mRef" placeholder="Ej. FAC-1234"></div>'
-      : '<div><label>Proyecto / obra</label><select id="mProy"><option value="">— Ninguna (uso general) —</option></select></div>' +
-        '<div><label>Motivo / referencia</label><input id="mRef" placeholder="Ej. Merma, uso en obra..."></div>') +
-    '<div><label>Moneda</label><select id="mMoneda"><option value="MXN">MXN</option><option value="USD">USD</option></select></div>' +
     '</div>' +
+    '<div class="row" id="mVars"></div>' +
     '<label>Agregar producto (del inventario)</label>' +
     '<div class="search-results"><input id="mSearch" placeholder="Escribe el nombre o código del producto..." autocomplete="off" oninput="searchMovProducts()"><div id="mSearchResults"></div></div>' +
     '<div class="items" id="mItems"></div>' +
     '<div class="total-line"><span class="muted" id="mTotalTxt">Piezas: 0</span></div>' +
     '<label>Notas</label><input id="mNotas" placeholder="Observaciones...">' +
     '<div class="toolbar" style="margin-top:1rem;">' +
-    '<button class="btn btn-solid btn-sm" onclick="saveMovLote(\''+tipo+'\')">💾 Aplicar '+(esEntrada?'entrada':'salida')+'</button> ' +
+    '<button class="btn btn-solid btn-sm" id="mApplyBtn" onclick="saveMovLote()">Aplicar movimiento</button> ' +
     '<button class="btn btn-sm" onclick="closeBizForms()">Cancelar</button></div></div>';
-  renderMovItems();
+  if (tipo) $('mTipoMov').value = tipo;
+  movTipoCambio();
   setTimeout(()=>{ const el=$('bizForms'); if (el) el.scrollIntoView({behavior:'smooth', block:'start'}); }, 100);
+}
+/* Recambia los campos variables (proveedor/documento/moneda vs proyecto/motivo)
+   segun el tipo elegido. Asi un solo formulario sirve para entrada, salida y ajuste. */
+function movTipoCambio(){
+  const t = $('mTipoMov').value;
+  $('mTitulo').textContent = t==='entrada' ? 'Entrada de material' : t==='salida' ? 'Salida de material' : 'Ajuste de existencia';
+  $('mApplyBtn').textContent = 'Aplicar ' + t;
+  const vars = $('mVars');
+  if (t==='entrada') vars.innerHTML =
+    '<div><label>Proveedor</label><select id="mProv"><option value="">— Ninguno —</option></select></div>' +
+    '<div><label>Documento (factura/remisión)</label><input id="mRef" placeholder="Ej. FAC-1234"></div>' +
+    '<div><label>Moneda</label><select id="mMoneda"><option value="MXN">MXN</option><option value="USD">USD</option></select></div>';
+  else if (t==='salida') vars.innerHTML =
+    '<div><label>Proyecto / obra</label><select id="mProy"><option value="">— Ninguna (uso general) —</option></select></div>' +
+    '<div><label>Motivo / referencia</label><input id="mRef" placeholder="Ej. Merma, uso en obra..."></div>';
+  else vars.innerHTML =
+    '<div><label>En el ajuste</label><p class="muted" style="margin:0.3rem 0 0;font-size:0.78rem;">La cantidad de cada producto será la existencia <b>exacta</b> que quede registrada (no se suma ni se resta). Úsalo para corregir diferencias tras un conteo físico.</p></div>';
+  movPoblarVars();
+  renderMovItems();
+}
+function movPoblarVars(){
+  if (typeof provCache!=='undefined' && provCache.length && $('mProv')) $('mProv').innerHTML = '<option value="">— Ninguno —</option>'+provCache.filter(p=>String(p.activo)!=='no').map(p=>'<option value="'+esc(p.nombre)+'">'+esc(p.nombre)+'</option>').join('');
+  if (typeof proyCache!=='undefined' && proyCache.length && $('mProy')) $('mProy').innerHTML = '<option value="">— Ninguna (uso general) —</option>'+proyCache.filter(p=>p.estado==='ACTIVO').map(p=>'<option value="'+esc(p.id)+'">'+esc(p.folio)+' · '+esc(p.nombre)+'</option>').join('');
 }
 function movEsEntrada(){ return !!document.getElementById('mProv'); }
 function searchMovProducts(){
@@ -434,8 +456,9 @@ function renderMovItems(){
   const box = $('mItems');
   if (!box) return;
   const conCosto = movEsEntrada();
+  const ajuste = $('mTipoMov') && $('mTipoMov').value==='ajuste';
   box.innerHTML = (movItems.length ? '<div class="item-row" style="opacity:.65;"><input value="Producto" disabled>' +
-    '<input type="text" value="Cantidad" disabled>' +
+    '<input type="text" value="'+(ajuste?'Cantidad exacta':'Cantidad')+'" disabled>' +
     (conCosto?'<input type="text" value="Costo unit." disabled>':'') +
     '<input type="text" value="" disabled></div>' : '<p class="muted" style="font-size:0.75rem;">Sin productos todavía. Búscalos arriba para agregarlos.</p>') +
     movItems.map((it,i)=>'<div class="item-row">' +
@@ -450,18 +473,19 @@ function renderMovTotals(){
   const el = $('mTotalTxt');
   if (!el) return;
   let txt = 'Piezas: '+n;
-  if (movEsEntrada() && n>0) txt += ' · Costo total: '+fmtMoney(movItems.reduce((s,it)=>s+(Number(it.cantidad)||0)*(Number(it.costo_unit)||0),0))+' '+$('mMoneda').value;
+  if (movEsEntrada() && n>0 && $('mMoneda')) txt += ' · Costo total: '+fmtMoney(movItems.reduce((s,it)=>s+(Number(it.cantidad)||0)*(Number(it.costo_unit)||0),0))+' '+$('mMoneda').value;
   el.textContent = txt;
 }
-function saveMovLote(tipo){
+function saveMovLote(){
+  const tipo = $('mTipoMov').value;
   if (!$('mAlmacen').value) { notice('Selecciona un almacén.', false); return; }
   if (!movItems.length) { notice('Agrega al menos un producto.', false); return; }
   const items = movItems.map(it=>({producto_id:it.producto_id, cantidad:it.cantidad,
     costo_unit: tipo==='entrada' ? (it.costo_unit||0) : ''}));
   apiPost({tipo:'movimiento', tipo_mov:tipo, almacen_id:$('mAlmacen').value, fecha:$('mFecha').value,
-    referencia:$('mRef').value.trim(), notas:$('mNotas').value.trim(), moneda:$('mMoneda').value,
-    proveedor: tipo==='entrada' ? $('mProv').value : '',
-    proyecto_id: tipo==='salida' ? $('mProy').value : '',
+    referencia:$('mRef').value.trim(), notas:$('mNotas').value.trim(), moneda:$('mMoneda')?$('mMoneda').value:'MXN',
+    proveedor: (tipo==='entrada' && $('mProv')) ? $('mProv').value : '',
+    proyecto_id: (tipo==='salida' && $('mProy')) ? $('mProy').value : '',
     items}).then(d=>{
     notice(d&&d.ok?((d.lote?('Lote '+d.lote+' aplicado ('+items.length+' producto(s)). '):'Movimiento aplicado. ')+'Stock actualizado.'):errMsg(d), !!(d&&d.ok));
     if(d&&d.ok){ closeBizForms(); loadBiz(); }
