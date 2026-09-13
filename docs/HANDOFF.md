@@ -1,3 +1,10 @@
+> ⚠️ **DOCUMENTO HISTÓRICO — NO ES LA FUENTE OFICIAL.**
+> Última sesión descrita: 2026-09-07. El estado actual del código (incl. fases 2–7
+> ya implementadas) está documentado en `00_CORE/CONTEXTO_GLOBAL.md` y los
+> `CONTEXTO.md` de cada módulo. Análisis: `99_DOCUMENTACION/ANALISIS_DOCS_LEGACY.md`.
+> Este archivo se conserva como bitácora de sesiones; las notas técnicas vigentes
+> viven en CONTEXTO_GLOBAL §15 (lecciones).
+
 # Handoff — ADIS Catálogo Web
 
 > Documento para la siguiente sesión. Última actualización: 2026-09-07 (Fase 1B: entrada/salida multi-producto).

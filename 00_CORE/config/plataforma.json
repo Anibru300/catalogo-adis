@@ -1,0 +1,14 @@
+{
+  "url_backend": "https://script.google.com/macros/s/AKfycbxq47t5I3eSqPmJ7zCnk47_RlHGfIwov8mcI1tJ92yNVvSsUXHU5Pe7DQ2Nx_h1wPP2/exec",
+  "site_url": "https://xn--adis-diseo-19a.com/",
+  "whatsapp": "15208392877",
+  "looker_studio_url": "",
+  "catalog_dir": "G:\\Mi unidad\\ADIS DISEÑO\\CATALOGO FINAL",
+  "material_media_dir": "G:\\Mi unidad\\ADIS DISEÑO\\Material de Facebock",
+  "notas": {
+    "url_backend": "Fuente UNICA de la URL del Apps Script. Si cambia el redeploy, actualizar SOLO aqui.",
+    "whatsapp": "Numero del negocio (CTA del sitio y panel).",
+    "catalog_dir": "Carpeta del catalogo fuente en Google Drive (solo lectura). Usada por scan_catalog/sync_images.",
+    "material_media_dir": "Carpeta local fuente de public/media (sin tracking en git). Usada por sync_media. En M3 la ruta quedara solo en config."
+  }
+}

@@ -1,53 +1,858 @@
-<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><link rel="icon" type="image/png" href="LOGO ADIS.png"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="theme-color" content="#0F0F0F"><meta property="og:site_name" content="ADIS Diseño & Remodelación"><meta property="og:locale" content="es_MX"><meta property="og:locale:alternate" content="en_US"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="preconnect" href="https://www.googletagmanager.com"><link rel="preload" href="style.css" as="style"><link rel="preload" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&family=Playfair+Display:wght@400;700&display=swap" as="style"><title>Aviso de Privacidad | ADIS Diseño & Remodelación</title><meta name="description" content="Aviso de privacidad de ADIS Diseño & Remodelación. Conoce como protegemos tus datos personales."><meta name="keywords" content="aviso de privacidad ADIS, proteccion de datos, privacidad Nogales, privacy notice"><meta property="og:title" content="Aviso de Privacidad | ADIS Diseño & Remodelación"><meta property="og:description" content="Aviso de privacidad de ADIS Diseño & Remodelación. Conoce como protegemos tus datos personales."><meta property="og:image" content="https://xn--adis-diseo-19a.com/LOGO%20ADIS.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta name="twitter:image" content="https://xn--adis-diseo-19a.com/LOGO%20ADIS.png"><meta name="twitter:card" content="summary_large_image"><meta property="og:url" content="https://xn--adis-diseo-19a.com/aviso-de-privacidad.html"><meta property="og:type" content="website"><meta name="twitter:title" content="Aviso de Privacidad | ADIS Diseño & Remodelación"><meta name="twitter:description" content="Aviso de privacidad de ADIS Diseño & Remodelación. Conoce como protegemos tus datos personales."><link rel="canonical" href="https://xn--adis-diseo-19a.com/aviso-de-privacidad.html"><link rel="alternate" hreflang="es" href="https://xn--adis-diseo-19a.com/aviso-de-privacidad.html"><link rel="alternate" hreflang="en" href="https://xn--adis-diseo-19a.com/en/aviso-de-privacidad.html"><link rel="alternate" hreflang="x-default" href="https://xn--adis-diseo-19a.com/aviso-de-privacidad.html"><link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet"><link rel="stylesheet" href="style.css"><script async src="https://www.googletagmanager.com/gtag/js?id=G-6DL4217NSC"></script><script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-6DL4217NSC');
-  </script><script>
-    (function() {
-      function unescapeHtml(str) {
+# -*- coding: utf-8 -*-
+"""Componentes: estilos, header/footer, chatbot, buscador, tarjetas, modales. Extraido de generar_web.py en M3 (salida byte-identica)."""
+from . import infra
+from .infra import *  # noqa
+from .datos import *  # noqa
+from .datos import _ensure_webp  # guion bajo: no sale en import *
+from .seo import *  # noqa
+
+
+def translate_script(page_file='index.html'):
+    """Toggle ES/EN: navega a la página contraparte real (/en/ o raíz).
+    Mantiene el swap JS data-i18n como respaldo para contenido dinámico."""
+    if infra.CUR_LANG == 'en':
+        link = '../' + page_file
+        label, aria = 'ES', 'Cambiar a español'
+    else:
+        link = 'en/' + page_file
+        label, aria = 'EN', 'Switch to English'
+    return f'''
+  <!-- ADIS i18n Toggle -->
+  <script>
+    (function() {{
+      function unescapeHtml(str) {{
         return str.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&');
-      }
-      window.adisSetLang = function(lang) {
+      }}
+      window.adisSetLang = function(lang) {{
         localStorage.setItem('adis_lang', lang);
-        document.querySelectorAll('[data-i18n]').forEach(function(el) {
+        document.querySelectorAll('[data-i18n]').forEach(function(el) {{
           var raw = el.getAttribute('data-' + lang);
           if (raw === null) return;
           var text = unescapeHtml(raw);
-          if (el.hasAttribute('data-i18n-html')) {
+          if (el.hasAttribute('data-i18n-html')) {{
             el.innerHTML = text;
-          } else {
+          }} else {{
             el.textContent = text;
-          }
-        });
-        if (typeof gtag === 'function') {
-          gtag('event', 'cambiar_idioma', { idioma: lang, location: 'translate_toggle' });
-        }
-      };
-      document.addEventListener('DOMContentLoaded', function() {
-        // La URL manda: esta página es 'es'. Se sincroniza localStorage
+          }}
+        }});
+        if (typeof gtag === 'function') {{
+          gtag('event', 'cambiar_idioma', {{ idioma: lang, location: 'translate_toggle' }});
+        }}
+      }};
+      document.addEventListener('DOMContentLoaded', function() {{
+        // La URL manda: esta página es '{infra.CUR_LANG}'. Se sincroniza localStorage
         // para que chatbot y buscador usen el mismo idioma de la página.
-        adisSetLang('es');
+        adisSetLang('{infra.CUR_LANG}');
+      }});
+    }})();
+  </script>
+  <link rel="prefetch" href="{link}" as="document">
+  <!-- End ADIS i18n Toggle -->
+'''
+
+
+
+
+def translate_toggle(page_file='index.html'):
+    """Botón ES/EN visible en el header (arriba a la derecha), mobile-first."""
+    if infra.CUR_LANG == 'en':
+        link = '../' + page_file
+        label, aria, hl = 'ES', 'Cambiar a español', 'es'
+    else:
+        link = 'en/' + page_file
+        label, aria, hl = 'EN', 'Switch to English', 'en'
+    globe = svg_icon('globe', size=15, color='currentColor')
+    return (f'<a id="translateToggle" class="translate-toggle" href="{link}" '
+            f'hreflang="{hl}" aria-label="{aria}" title="{aria}">{globe}<span>{label}</span></a>')
+
+
+
+
+def tracking_script():
+    """Script de tracking de eventos para Google Analytics 4."""
+    return '''
+  <script>
+    (function() {
+      function gtagEvent(name, params) {
+        if (typeof gtag === 'function') {
+          gtag('event', name, params || {});
+        }
+      }
+      
+      // WhatsApp flotante
+      var waFloat = document.querySelector('.whatsapp-float');
+      if (waFloat) {
+        waFloat.addEventListener('click', function() {
+          gtagEvent('whatsapp_click', { location: 'float' });
+        });
+      }
+      
+      // Botones Cotizar por WhatsApp en tarjetas
+      document.querySelectorAll('.btn-cotizar').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          gtagEvent('cotizar_click', { location: 'product_card' });
+        });
+      });
+      
+      // Envio del modal de cotizacion
+      var waModalForm = document.getElementById('waModalForm');
+      if (waModalForm) {
+        waModalForm.addEventListener('submit', function() {
+          gtagEvent('enviar_cotizacion', { location: 'modal' });
+        });
+      }
+      
+      // Descargas de PDF
+      document.querySelectorAll('a[download]').forEach(function(link) {
+        link.addEventListener('click', function() {
+          gtagEvent('pdf_download', { file: link.getAttribute('href') });
+        });
+      });
+      
+      // Boton WhatsApp en hero de categoria
+      document.querySelectorAll('.hero-cat-actions .btn-primary').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          gtagEvent('whatsapp_click', { location: 'hero_categoria' });
+        });
+      });
+      
+      // Buscador desktop
+      var searchInput = document.getElementById('searchInput');
+      if (searchInput) {
+        searchInput.addEventListener('change', function() {
+          var term = searchInput.value.trim();
+          if (term) gtagEvent('busqueda', { term: term });
+        });
+      }
+      
+      // Buscador mobile
+      var searchInputMobile = document.getElementById('searchInputMobile');
+      if (searchInputMobile) {
+        searchInputMobile.addEventListener('change', function() {
+          var term = searchInputMobile.value.trim();
+          if (term) gtagEvent('busqueda', { term: term, location: 'mobile' });
+        });
+      }
+      
+      // Tarjetas de categoria
+      document.querySelectorAll('.cat-card').forEach(function(card) {
+        card.addEventListener('click', function() {
+          gtagEvent('ver_categoria', { categoria: card.querySelector('h3') ? card.querySelector('h3').textContent : '' });
+        });
+      });
+      
+      // Tarjetas de producto estrella
+      document.querySelectorAll('.featured-card').forEach(function(card) {
+        card.addEventListener('click', function() {
+          gtagEvent('ver_producto_estrella', { producto: card.querySelector('h3') ? card.querySelector('h3').textContent : '' });
+        });
+      });
+      
+      // Links de contacto (telefono/email)
+      document.querySelectorAll('a[href^="tel:"], a[href^="mailto:"]').forEach(function(link) {
+        link.addEventListener('click', function() {
+          gtagEvent('contacto_click', { tipo: link.getAttribute('href').split(':')[0] });
+        });
       });
     })();
-  </script><link rel="prefetch" href="en/aviso-de-privacidad.html" as="document"><script type="application/ld+json">{"@context":"https://schema.org","@type":["Organization","LocalBusiness"],"@id":"https://xn--adis-diseo-19a.com/#organization","name":"ADIS Diseño & Remodelación","alternateName":"ADIS","url":"https://xn--adis-diseo-19a.com/","logo":"https://xn--adis-diseo-19a.com/LOGO%20ADIS.png","image":"https://xn--adis-diseo-19a.com/LOGO%20ADIS.png","telephone":"+52 631-120-4943","email":"adis.remodelacion@gmail.com","address":{"@type":"PostalAddress","streetAddress":"C. Alfonso Acosta 16 Local 3, Col. 5 de Mayo, 84000 Heroica Nogales, Sonora","addressLocality":"Heroica Nogales","addressRegion":"Sonora","postalCode":"84000","addressCountry":"MX"},"geo":{"@type":"GeoCoordinates","latitude":"31.3014","longitude":"-110.9386"},"hasMap":"https://maps.app.goo.gl/Q3raWUzhCj2rvhjm8","openingHoursSpecification":[{"@type":"OpeningHoursSpecification","dayOfWeek":["Tuesday","Wednesday","Thursday","Friday","Saturday"],"opens":"10:00","closes":"19:00"},{"@type":"OpeningHoursSpecification","dayOfWeek":"Sunday","opens":"10:00","closes":"19:00"}],"sameAs":["https://www.facebook.com/p/Adis-Dise%C3%B1o-Remodelaci%C3%B3n-61579849591594/"],"priceRange":"$$","paymentAccepted":"Efectivo, tarjeta, transferencia","currenciesAccepted":"MXN, USD","areaServed":[{"@type":"City","name":"Heroica Nogales","addressCountry":"MX"},{"@type":"City","name":"Nogales","addressCountry":"US"},{"@type":"City","name":"Rio Rico","addressCountry":"US"},{"@type":"City","name":"Tucson","addressCountry":"US"},{"@type":"City","name":"Phoenix","addressCountry":"US"},{"@type":"City","name":"León","addressCountry":"MX"}],"contactPoint":[{"@type":"ContactPoint","telephone":"+52 631-120-4943","contactType":"sales","areaServed":"MX","availableLanguage":["Spanish"]},{"@type":"ContactPoint","telephone":"+1 (520) 839-2877","contactType":"sales","areaServed":"US","availableLanguage":["Spanish","English"]}]}</script><script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Inicio","item":"https://xn--adis-diseo-19a.com/"},{"@type":"ListItem","position":2,"name":"Aviso de privacidad","item":"https://xn--adis-diseo-19a.com/aviso-de-privacidad.html"}]}</script></head><body><script>document.documentElement.classList.add('js-enabled');</script><canvas id="bg-canvas"></canvas><header><div class="topbar"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="var(--black)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg><span><span data-i18n="topbar_text" data-es="Envíos a Nogales y Tucson · Cotización gratis hoy" data-en="We ship to Nogales & Tucson · Free quote today">Envíos a Nogales y Tucson · Cotización gratis hoy</span></span></div><div class="header-inner"><a href="index.html" class="logo"><picture><source srcset="LOGO%20ADIS.webp" type="image/webp"><img src="LOGO ADIS.png" alt="ADIS Logo"></picture></a><a href="admin.html" class="admin-link" title="Panel administrativo" aria-label="Panel administrativo"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="var(--gold)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></a><nav class="desktop-nav"><a href="index.html"><span data-i18n="nav_back_home" data-es="← Inicio" data-en="← Home">← Inicio</span></a><a href="index.html#categorias" class="mega-trigger"><span data-i18n="nav_catalog" data-es="Catálogo" data-en="Catalog">Catálogo</span><div class="mega-menu"><a href="1-placas-pvc.html" class="mega-item"><picture><source srcset="img/1-placas-pvc/11-placas-pvc-tipo-madera/Adler.webp" type="image/webp"><source srcset="img/1-placas-pvc/11-placas-pvc-tipo-madera/Adler-600w.webp" media="(max-width: 600px)" type="image/webp"><img src="img/1-placas-pvc/11-placas-pvc-tipo-madera/Adler.jpg" alt="Placas PVC" loading="lazy"></picture><span><span data-i18n="menu_placas_pvc" data-es="Placas PVC" data-en="PVC Panels">Placas PVC</span></span></a><a href="2-lambrin-wpc.html" class="mega-item"><picture><source srcset="img/2-lambrin-wpc/21-lambrin-interior/AMANECHER.webp" type="image/webp"><source srcset="img/2-lambrin-wpc/21-lambrin-interior/AMANECHER-600w.webp" media="(max-width: 600px)" type="image/webp"><img src="img/2-lambrin-wpc/21-lambrin-interior/AMANECHER.jpg" alt="Lambrín WPC" loading="lazy"></picture><span><span data-i18n="menu_lambrin_wpc" data-es="Lambrín WPC" data-en="WPC Slats">Lambrín WPC</span></span></a><a href="3-revestimiento-flexible.html" class="mega-item"><picture><source srcset="img/3-revestimiento-flexible/CONCRETO%20Aparente.webp" type="image/webp"><source srcset="img/3-revestimiento-flexible/CONCRETO%20Aparente-600w.webp" media="(max-width: 600px)" type="image/webp"><img src="img/3-revestimiento-flexible/CONCRETO%20Aparente.jpg" alt="Revestimiento Flexible" loading="lazy"></picture><span><span data-i18n="menu_revestimiento" data-es="Revestimiento Flexible" data-en="Flexible Cladding">Revestimiento Flexible</span></span></a><a href="4-plafon-pvc.html" class="mega-item"><picture><source srcset="img/4-plafon-pvc/41-plafon-pvc-laminado/SHERWOOD.webp" type="image/webp"><source srcset="img/4-plafon-pvc/41-plafon-pvc-laminado/SHERWOOD-600w.webp" media="(max-width: 600px)" type="image/webp"><img src="img/4-plafon-pvc/41-plafon-pvc-laminado/SHERWOOD.jpg" alt="Plafón PVC" loading="lazy"></picture><span><span data-i18n="menu_plafon" data-es="Plafón PVC" data-en="PVC Ceiling">Plafón PVC</span></span></a><a href="5-paneles-tridimensionales.html" class="mega-item"><picture><source srcset="img/5-paneles-tridimensionales/51-blanco/Austin.webp" type="image/webp"><source srcset="img/5-paneles-tridimensionales/51-blanco/Austin-600w.webp" media="(max-width: 600px)" type="image/webp"><img src="img/5-paneles-tridimensionales/51-blanco/Austin.jpg" alt="Paneles 3D" loading="lazy"></picture><span><span data-i18n="menu_paneles_3d" data-es="Paneles 3D" data-en="3D Panels">Paneles 3D</span></span></a><a href="6-vigas-pvc.html" class="mega-item"><picture><source srcset="img/6-vigas-pvc/61-interior/BAHIA%201.webp" type="image/webp"><source srcset="img/6-vigas-pvc/61-interior/BAHIA%201-600w.webp" media="(max-width: 600px)" type="image/webp"><img src="img/6-vigas-pvc/61-interior/BAHIA%201.jpg" alt="Vigas PVC" loading="lazy"></picture><span><span data-i18n="menu_vigas" data-es="Vigas PVC" data-en="PVC Beams">Vigas PVC</span></span></a><a href="7-pisos.html" class="mega-item"><picture><source srcset="img/7-pisos/71-laminado/ACONCAGUA.webp" type="image/webp"><source srcset="img/7-pisos/71-laminado/ACONCAGUA-600w.webp" media="(max-width: 600px)" type="image/webp"><img src="img/7-pisos/71-laminado/ACONCAGUA.jpg" alt="Pisos" loading="lazy"></picture><span><span data-i18n="menu_pisos" data-es="Pisos" data-en="Flooring">Pisos</span></span></a><a href="8-zacate.html" class="mega-item"><picture><source srcset="img/8-zacate/81-follaje-sintetico/AMAZONAS-A.webp" type="image/webp"><source srcset="img/8-zacate/81-follaje-sintetico/AMAZONAS-A-600w.webp" media="(max-width: 600px)" type="image/webp"><img src="img/8-zacate/81-follaje-sintetico/AMAZONAS-A.jpg" alt="Zacate" loading="lazy"></picture><span><span data-i18n="menu_zacate" data-es="Zacate" data-en="Synthetic Grass">Zacate</span></span></a><a href="9-cladding.html" class="mega-item"><picture><source srcset="img/9-cladding/91-placa-tipo-roca/BLACK.webp" type="image/webp"><source srcset="img/9-cladding/91-placa-tipo-roca/BLACK-600w.webp" media="(max-width: 600px)" type="image/webp"><img src="img/9-cladding/91-placa-tipo-roca/BLACK.jpg" alt="Cladding" loading="lazy"></picture><span><span data-i18n="menu_cladding" data-es="Cladding" data-en="Cladding">Cladding</span></span></a></div></a><a href="sabias-que.html" class="mega-trigger"><span data-i18n="nav_did_you_know" data-es="¿Sabías que?" data-en="Did you know?">¿Sabías que?</span><div class="nav-dropdown"><a href="sabias-que-pvc.html" class="dropdown-item"><span><span data-i18n="menu_placas_pvc" data-es="Placas PVC" data-en="PVC Panels">Placas PVC</span></span></a><a href="sabias-que-wpc.html" class="dropdown-item"><span><span data-i18n="menu_lambrin_wpc" data-es="Lambrín WPC" data-en="WPC Slats">Lambrín WPC</span></span></a><a href="sabias-que-revestimiento.html" class="dropdown-item"><span><span data-i18n="menu_revestimiento" data-es="Revestimiento Flexible" data-en="Flexible Cladding">Revestimiento Flexible</span></span></a><a href="sabias-que-plafon.html" class="dropdown-item"><span><span data-i18n="menu_plafon" data-es="Plafón PVC" data-en="PVC Ceiling">Plafón PVC</span></span></a><a href="sabias-que-3d.html" class="dropdown-item"><span><span data-i18n="menu_paneles_3d" data-es="Paneles 3D" data-en="3D Panels">Paneles 3D</span></span></a><a href="sabias-que-vigas.html" class="dropdown-item"><span><span data-i18n="menu_vigas" data-es="Vigas PVC" data-en="PVC Beams">Vigas PVC</span></span></a><a href="sabias-que-pisos.html" class="dropdown-item"><span><span data-i18n="menu_pisos" data-es="Pisos" data-en="Flooring">Pisos</span></span></a><a href="sabias-que-zacate.html" class="dropdown-item"><span><span data-i18n="menu_zacate" data-es="Zacate" data-en="Synthetic Grass">Zacate</span></span></a><a href="sabias-que-cladding.html" class="dropdown-item"><span><span data-i18n="menu_cladding" data-es="Cladding" data-en="Cladding">Cladding</span></span></a></div></a><a href="proyectos.html"><span data-i18n="nav_projects" data-es="Proyectos" data-en="Projects">Proyectos</span></a><a href="nosotros.html"><span data-i18n="nav_about" data-es="Nosotros" data-en="About us">Nosotros</span></a><a href="contacto.html"><span data-i18n="nav_contact" data-es="Contacto" data-en="Contact">Contacto</span></a><div class="search-box"><input type="text" id="searchInput" placeholder="Buscar producto..." autocomplete="off" title="Presiona / para buscar desde cualquier página"><button onclick="openSpotlight()"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="var(--gold)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></button><div class="search-dropdown" id="searchDropdown"></div></div></nav><div class="header-actions"><a id="translateToggle" class="translate-toggle" href="en/aviso-de-privacidad.html" hreflang="en" aria-label="Switch to English" title="Switch to English"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg><span>EN</span></a><button class="menu-btn" onclick="toggleMenu()"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="var(--gold)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button></div></div></header><div class="mobile-menu" id="mobileMenu"><button class="close-menu" onclick="toggleMenu()"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="var(--gold)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button><a href="index.html" onclick="toggleMenu()"><span data-i18n="nav_home" data-es="Inicio" data-en="Home">Inicio</span></a><a href="index.html#categorias" onclick="toggleMenu()"><span data-i18n="nav_catalog" data-es="Catálogo" data-en="Catalog">Catálogo</span></a><a href="sabias-que.html" onclick="toggleMenu()"><span data-i18n="nav_did_you_know" data-es="¿Sabías que?" data-en="Did you know?">¿Sabías que?</span></a><a href="proyectos.html" onclick="toggleMenu()"><span data-i18n="nav_projects" data-es="Proyectos" data-en="Projects">Proyectos</span></a><a href="nosotros.html" onclick="toggleMenu()"><span data-i18n="nav_about" data-es="Nosotros" data-en="About us">Nosotros</span></a><a href="contacto.html" onclick="toggleMenu()"><span data-i18n="nav_contact" data-es="Contacto" data-en="Contact">Contacto</span></a><div class="mobile-menu-cats"><a href="1-placas-pvc.html" onclick="toggleMenu()"><span data-i18n="menu_placas_pvc" data-es="Placas PVC" data-en="PVC Panels">Placas PVC</span></a><a href="2-lambrin-wpc.html" onclick="toggleMenu()"><span data-i18n="menu_lambrin_wpc" data-es="Lambrín WPC" data-en="WPC Slats">Lambrín WPC</span></a><a href="3-revestimiento-flexible.html" onclick="toggleMenu()"><span data-i18n="menu_revestimiento" data-es="Revestimiento Flexible" data-en="Flexible Cladding">Revestimiento Flexible</span></a><a href="4-plafon-pvc.html" onclick="toggleMenu()"><span data-i18n="menu_plafon" data-es="Plafón PVC" data-en="PVC Ceiling">Plafón PVC</span></a><a href="5-paneles-tridimensionales.html" onclick="toggleMenu()"><span data-i18n="menu_paneles_3d" data-es="Paneles 3D" data-en="3D Panels">Paneles 3D</span></a><a href="6-vigas-pvc.html" onclick="toggleMenu()"><span data-i18n="menu_vigas" data-es="Vigas PVC" data-en="PVC Beams">Vigas PVC</span></a><a href="7-pisos.html" onclick="toggleMenu()"><span data-i18n="menu_pisos" data-es="Pisos" data-en="Flooring">Pisos</span></a><a href="8-zacate.html" onclick="toggleMenu()"><span data-i18n="menu_zacate" data-es="Zacate" data-en="Synthetic Grass">Zacate</span></a><a href="9-cladding.html" onclick="toggleMenu()"><span data-i18n="menu_cladding" data-es="Cladding" data-en="Cladding">Cladding</span></a></div><div class="mobile-menu-lang"><a id="translateToggle" class="translate-toggle" href="en/aviso-de-privacidad.html" hreflang="en" aria-label="Switch to English" title="Switch to English"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg><span>EN</span></a></div><div class="search-box" style="margin-top:0.5rem;"><input type="text" id="searchInputMobile" placeholder="Buscar producto..." autocomplete="off" style="width:220px;"><button onclick="performSearchMobile()"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="var(--gold)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></button><div class="search-dropdown" id="searchDropdownMobile"></div></div></div><div class="spotlight-overlay" id="spotlightOverlay" onclick="closeSpotlight(event)"><button class="spotlight-close" onclick="closeSpotlight(event)"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="var(--gold)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button><div class="spotlight-box"><div class="spotlight-input-wrap"><span class="spotlight-icon"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="var(--gold)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span><input type="text" class="spotlight-input" id="spotlightInput" placeholder="Buscar producto..." autocomplete="off"></div><div class="spotlight-results" id="spotlightResults"></div></div></div><nav class="breadcrumbs breadcrumbs-page" aria-label="Breadcrumb"><a href="index.html">Inicio</a><span>/</span><span>Aviso de privacidad</span></nav><section class="hero-cat" style="padding-top: 8rem;"><h1><span data-i18n="privacy_title" data-es="Aviso de Privacidad" data-en="Privacy Notice">Aviso de Privacidad</span></h1><p><span data-i18n="privacy_subtitle" data-es="En ADIS Diseño & Remodelación protegemos tu información personal." data-en="At ADIS Design & Remodeling we protect your personal information.">En ADIS Diseño & Remodelación protegemos tu información personal.</span></p></section><section class="privacy-section reveal"><div class="privacy-document"><h1><span data-i18n="privacy_title" data-es="Aviso de Privacidad" data-en="Privacy Notice">Aviso de Privacidad</span></h1><span class="effective"><span data-i18n="privacy_effective" data-es="Última actualización: 13/09/2026" data-en="Last updated: 13/09/2026">Última actualización: 13/09/2026</span></span><h2><span data-i18n="privacy_responsible_title" data-es="Responsable del tratamiento de datos" data-en="Data controller">Responsable del tratamiento de datos</span></h2><p><span data-i18n="privacy_responsible_text" data-es="ADI'S DISEÑO & REMODELACIÓN, con domicilio en Nogales, Sonora, es responsable de recabar, usar y proteger tus datos personales." data-en="ADI'S DESIGN & REMODELING, located in Nogales, Sonora, is responsible for collecting, using and protecting your personal data.">ADI'S DISEÑO & REMODELACIÓN, con domicilio en Nogales, Sonora, es responsable de recabar, usar y proteger tus datos personales.</span></p><h2><span data-i18n="privacy_data_title" data-es="Datos que recabamos" data-en="Data we collect">Datos que recabamos</span></h2><p><span data-i18n="privacy_data_text" data-es="Nombre, teléfono, correo electrónico, dirección del proyecto y datos necesarios para cotizar e instalar los productos contratados." data-en="Name, phone, email, project address and data necessary to quote and install the contracted products.">Nombre, teléfono, correo electrónico, dirección del proyecto y datos necesarios para cotizar e instalar los productos contratados.</span></p><h2><span data-i18n="privacy_purpose_title" data-es="Finalidades del uso de datos" data-en="Purposes of data use">Finalidades del uso de datos</span></h2><p><span data-i18n="privacy_purpose_text" data-es="Proveer cotizaciones, coordinar entregas e instalaciones, dar seguimiento a tu proyecto y enviar información promocional (solo si autorizas)." data-en="Provide quotes, coordinate deliveries and installations, follow up on your project and send promotional information (only if authorized).">Proveer cotizaciones, coordinar entregas e instalaciones, dar seguimiento a tu proyecto y enviar información promocional (solo si autorizas).</span></p><h2><span data-i18n="privacy_arco_title" data-es="Derechos ARCO" data-en="ARCO rights">Derechos ARCO</span></h2><p><span data-i18n="privacy_arco_text" data-es="Tienes derecho a Acceder, Rectificar, Cancelar u Oponerte al uso de tus datos. Para ejercerlos, escríbenos por WhatsApp o correo electrónico." data-en="You have the right to Access, Rectify, Cancel or Oppose the use of your data. To exercise them, write to us via WhatsApp or email.">Tienes derecho a Acceder, Rectificar, Cancelar u Oponerte al uso de tus datos. Para ejercerlos, escríbenos por WhatsApp o correo electrónico.</span></p><h2><span data-i18n="privacy_security_title" data-es="Seguridad de la información" data-en="Information security">Seguridad de la información</span></h2><p><span data-i18n="privacy_security_text" data-es="Implementamos medidas administrativas, técnicas y físicas para proteger tus datos contra daño, pérdida o uso no autorizado." data-en="We implement administrative, technical and physical measures to protect your data against damage, loss or unauthorized use.">Implementamos medidas administrativas, técnicas y físicas para proteger tus datos contra daño, pérdida o uso no autorizado.</span></p><h2><span data-i18n="privacy_changes_title" data-es="Cambios al aviso" data-en="Changes to this notice">Cambios al aviso</span></h2><p><span data-i18n="privacy_changes_text" data-es="Cualquier modificación a este aviso se publicará en esta página. Te recomendamos revisarla periódicamente." data-en="Any modification to this notice will be published on this page. We recommend reviewing it periodically.">Cualquier modificación a este aviso se publicará en esta página. Te recomendamos revisarla periódicamente.</span></p><h2><span data-i18n="privacy_contact_title" data-es="Contacto" data-en="Contact">Contacto</span></h2><p><span data-i18n="privacy_contact_text" data-es="WhatsApp: 15208392877 | Email: adis.remodelacion@gmail.com | Ubicación: Nogales, Sonora · Rio Rico, AZ" data-en="WhatsApp: 15208392877 | Email: adis.remodelacion@gmail.com | Location: Nogales, Sonora · Rio Rico, AZ">WhatsApp: 15208392877 | Email: adis.remodelacion@gmail.com | Ubicación: Nogales, Sonora · Rio Rico, AZ</span></p></div></section><footer><div class="footer-logo"><picture><source srcset="LOGO%20ADIS.webp" type="image/webp"><img src="LOGO ADIS.png" alt="ADIS Logo"></picture></div><div class="footer-info"><strong>ADI&#39;S DISEÑO & REMODELACIÓN</strong><br><span data-i18n="footer_slogan" data-es="Creando espacios, reinventando hogares." data-en="Creating spaces, reinventing homes.">Creando espacios, reinventando hogares.</span><br>
-      Nogales, Sonora · Rio Rico, AZ<br><a href="tel:+526311204943">Tel. MX: +52 631-120-4943</a> · <a href="tel:+15208392877">Tel. USA: +1 (520) 839-2877</a><br><a href="mailto:adis.remodelacion@gmail.com">adis.remodelacion@gmail.com</a></div><div class="footer-social"><a href="https://wa.me/15208392877?text=Hola%20ADIS,%20vi%20el%20catálogo%20y%20me%20interesa%20obtener%20información%20sobre%20sus%20productos." target="_blank" title="WhatsApp"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7A8.38 8.38 0 0 1 4 11.5a8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></a><a href="https://www.facebook.com/p/Adis-Dise%C3%B1o-Remodelaci%C3%B3n-61579849591594/" target="_blank" title="Facebook"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></a></div><div class="footer-links"><span><span data-i18n="footer_links_legal" data-es="Legal" data-en="Legal">Legal</span>:</span><a href="nosotros.html"><span data-i18n="footer_links_about" data-es="Nosotros" data-en="About us">Nosotros</span></a><a href="aviso-de-privacidad.html"><span data-i18n="footer_links_privacy" data-es="Aviso de privacidad" data-en="Privacy notice">Aviso de privacidad</span></a></div><div class="copyright">© <span id="footer-year"></span><span data-i18n="footer_copyright_suffix" data-es="ADIS DISEÑO & REMODELACIÓN. TODOS LOS DERECHOS RESERVADOS." data-en="ADIS DESIGN & REMODELING. ALL RIGHTS RESERVED.">ADIS DISEÑO & REMODELACIÓN. TODOS LOS DERECHOS RESERVADOS.</span></div></footer><script>
-    (function(){
-      var y = new Date().getFullYear();
-      var el = document.getElementById('footer-year');
-      if (el) el.textContent = y;
+  </script>'''
+
+
+
+
+
+def generate_research_html(cat_name):
+    """Genera seccion HTML con datos curiosos y FAQs de la investigacion."""
+    if not RESEARCH_DATA:
+        return ''
+    # Buscar categoria por nombre aproximado
+    research_key = None
+    for key in RESEARCH_DATA:
+        if cat_name.upper().replace(' ', '') in key.upper().replace(' ', '') or key.upper().replace(' ', '') in cat_name.upper().replace(' ', ''):
+            research_key = key
+            break
+    if not research_key:
+        return ''
+    
+    data = research_data(research_key)
+    html_parts = []
+    
+    # Datos curiosos
+    if data.get('curiosos'):
+        html_parts.append(f'''
+  <section class="research-section">
+    <div class="section-header">
+      <h2>{t('bc_sabias')}</h2>
+      <div class="divider"></div>
+      <p>{t('research_curiosos_sub')}</p>
+    </div>
+    <div class="research-content">
+''')
+        # Convertir datos curiosos a items
+        curiosos_text = data['curiosos']
+        # Dividir por parrafos que empiezan con **
+        import re
+        items = re.split(r'\n\n(?=\*\*)', curiosos_text)
+        for item in items:
+            item = item.strip()
+            if item:
+                html_parts.append(f'      <div class="research-item">{md_to_html(item)}</div>')
+        html_parts.append('    </div>\n  </section>')
+    
+    # FAQs
+    if data.get('faqs'):
+        html_parts.append(f'''
+  <section class="research-section">
+    <div class="section-header">
+      <h2>{t('research_faqs_title')}</h2>
+      <div class="divider"></div>
+      <p>{t('research_faqs_sub')}</p>
+    </div>
+    <div class="research-faqs">
+''')
+        faqs_text = data['faqs']
+        # Extraer preguntas y respuestas
+        qa_pairs = re.findall(r'\*\*❓\s*(.+?)\*\*\s*\n?>\s*(.+?)(?=\n\n\*\*❓|\Z)', faqs_text, re.DOTALL)
+        for q, a in qa_pairs:
+            q_clean = q.strip()
+            a_clean = a.strip().replace('\n', ' ')
+            html_parts.append(f'''      <div class="faq-item">
+        <div class="faq-question">{q_clean}</div>
+        <div class="faq-answer">{a_clean}</div>
+      </div>''')
+        html_parts.append('    </div>\n  </section>')
+    
+    return '\n'.join(html_parts)
+
+
+
+
+# ========== CSS COMPLETO ==========
+CSS = (CORE_DIR / 'design-system' / 'sitio-publico.css').read_text(encoding='utf-8')
+
+
+
+
+
+
+
+def generate_style():
+    """Escribe el CSS completo en style.css."""
+    css_path = OUTPUT_DIR / 'style.css'
+    css_min = minify_css(CSS.strip())
+    with open(css_path, 'w', encoding='utf-8') as f:
+        f.write(css_min)
+    print(f"  style.css generado ({len(css_min):,} caracteres)")
+
+
+
+
+# ========== PARTICLES JS ==========
+PARTICLES_JS = '''(function() {
+  const canvas = document.getElementById('bg-canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  let w, h, particles = [], rafId = null;
+  const COUNT = window.innerWidth < 768 ? 30 : 70;
+  const CONNECT_DIST = 140;
+  const COLOR = 'rgba(197, 160, 89, ';
+  function resize() {
+    w = canvas.width = window.innerWidth;
+    h = canvas.height = window.innerHeight;
+  }
+  window.addEventListener('resize', resize);
+  resize();
+  class Particle {
+    constructor() {
+      this.x = Math.random() * w;
+      this.y = Math.random() * h;
+      this.vx = (Math.random() - 0.5) * 0.5;
+      this.vy = (Math.random() - 0.5) * 0.5;
+      this.r = Math.random() * 2.5 + 0.8;
+    }
+    update() {
+      this.x += this.vx;
+      this.y += this.vy;
+      if (this.x < 0 || this.x > w) this.vx *= -1;
+      if (this.y < 0 || this.y > h) this.vy *= -1;
+    }
+    draw() {
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
+      ctx.fillStyle = COLOR + '0.6)';
+      ctx.fill();
+    }
+  }
+  for (let i = 0; i < COUNT; i++) particles.push(new Particle());
+  function animate() {
+    ctx.clearRect(0, 0, w, h);
+    for (let p of particles) { p.update(); p.draw(); }
+    for (let i = 0; i < particles.length; i++) {
+      for (let j = i + 1; j < particles.length; j++) {
+        let dx = particles[i].x - particles[j].x;
+        let dy = particles[i].y - particles[j].y;
+        let dist = Math.sqrt(dx*dx + dy*dy);
+        if (dist < CONNECT_DIST) {
+          ctx.beginPath();
+          ctx.moveTo(particles[i].x, particles[i].y);
+          ctx.lineTo(particles[j].x, particles[j].y);
+          ctx.strokeStyle = COLOR + (0.2 * (1 - dist/CONNECT_DIST)) + ')';
+          ctx.lineWidth = 0.8;
+          ctx.stroke();
+        }
+      }
+    }
+    rafId = requestAnimationFrame(animate);
+  }
+  // Eficiencia: no animar con reduced-motion; pausar cuando la pestaña no es visible
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (!reduceMotion) {
+    animate();
+    document.addEventListener('visibilitychange', function() {
+      if (document.hidden) {
+        if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
+      } else if (!rafId) {
+        animate();
+      }
+    });
+  }
+})();'''
+
+
+
+
+def transformations_html(images):
+    """Grid de fotos reales de proyectos (UGC) con lightbox."""
+    if not images:
+        return ''
+    items = '\n'.join(
+        f'      <div class="transform-item">{picture_tag(f"media/{img}", t("trans_title"), onclick=f"openLightbox(\'{p("media/" + img)}\', \'{t("trans_title")}\')")}</div>'
+        for img in images)
+    return f'''  <!-- TRANSFORMACIONES REALES -->
+  <section class="section-wrap-alt reveal" id="transformaciones">
+    <div class="section-header">
+      <h2>{i18n('trans_title')}</h2>
+      <div class="divider"></div>
+      <p>{i18n('trans_subtitle')}</p>
+    </div>
+    <div class="transform-grid">
+{items}
+    </div>
+    <div class="transform-cta">
+      <a href="{p('proyectos.html')}" class="btn-secondary">{i18n('trans_cta')}</a>
+    </div>
+  </section>
+'''
+
+
+
+
+def calculator_html(categories, preselect=None):
+    """Sección calculadora de m² con CTA a WhatsApp (i18n)."""
+    options = '\n'.join(
+        f'        <option value="{cat_display(c["name"])}"{" selected" if preselect and c["name"] == preselect else ""}>{cat_display(c["name"])}</option>'
+        for c in categories)
+    return f'''  <!-- CALCULADORA DE MATERIAL -->
+  <section class="section-wrap calc-section reveal" id="calculadora">
+    <div class="calc-box">
+      <div class="section-header">
+        <h2>{i18n('calc_title')}</h2>
+        <div class="divider"></div>
+        <p>{i18n('calc_subtitle')}</p>
+      </div>
+      <div class="calc-grid">
+        <div class="calc-field"><label for="calcAlto">{i18n('calc_height')}</label><input type="number" id="calcAlto" min="0" step="0.1" placeholder="2.4" inputmode="decimal"></div>
+        <div class="calc-field"><label for="calcAncho">{i18n('calc_width')}</label><input type="number" id="calcAncho" min="0" step="0.1" placeholder="3.0" inputmode="decimal"></div>
+        <div class="calc-field"><label for="calcCat">{i18n('calc_product')}</label><select id="calcCat">
+{options}
+        </select></div>
+      </div>
+      <button type="button" class="btn-primary calc-btn" onclick="adisCalc()">{i18n('calc_button')}</button>
+      <div class="calc-result" id="calcResult" style="display:none;">
+        <div class="calc-m2"><span id="calcM2">0</span> m²</div>
+        <p id="calcNote"></p>
+        <a href="#" id="calcWa" class="btn-primary btn-wa" target="_blank" onclick="gtag('event','whatsapp_click',{{'location':'calculadora'}})">{i18n('cta_quote_whatsapp')}</a>
+      </div>
+    </div>
+  </section>
+  <script>
+    function adisCalc() {{
+      var alto = parseFloat(document.getElementById('calcAlto').value) || 0;
+      var ancho = parseFloat(document.getElementById('calcAncho').value) || 0;
+      var cat = document.getElementById('calcCat').value;
+      var res = document.getElementById('calcResult');
+      res.style.display = 'block';
+      var area = alto * ancho;
+      if (area <= 0) {{
+        document.getElementById('calcM2').textContent = '—';
+        document.getElementById('calcNote').textContent = '{t('calc_error')}';
+        document.getElementById('calcWa').style.display = 'none';
+        return;
+      }}
+      var total = Math.round(area * 1.1 * 10) / 10;
+      document.getElementById('calcM2').textContent = total.toFixed(1);
+      document.getElementById('calcNote').textContent = '{t('calc_note_tpl')}'.replace('{{m}}', area.toFixed(1));
+      var msg = '{t('calc_wa_msg')}'.replace('{{c}}', cat).replace('{{a}}', alto).replace('{{b}}', ancho).replace('{{m}}', area.toFixed(1)).replace('{{t}}', total.toFixed(1));
+      var wa = document.getElementById('calcWa');
+      wa.href = 'https://wa.me/{CONTACTO['whatsapp']}?text=' + encodeURIComponent(msg);
+      wa.style.display = 'inline-flex';
+    }}
+  </script>
+'''
+
+
+
+
+def modal_cotizar_html():
+    """Modal único de cotización por WhatsApp. Se inyecta una vez por página."""
+    return f'''
+  <!-- MODAL COTIZAR WHATSAPP -->
+  <div class="wa-modal" id="waModal" onclick="closeWaModal(event)">
+    <div class="wa-modal-box" onclick="event.stopPropagation()">
+      <button class="wa-modal-close" onclick="closeWaModal()">{svg_icon('x', size=20, color='var(--gold)')}</button>
+      <h3>{i18n('modal_title')}</h3>
+      <p class="wa-modal-subtitle">{i18n('modal_subtitle')}</p>
+      <form id="waModalForm" onsubmit="sendWaModal(event)">
+        <input type="hidden" id="waModalProduct" value="">
+        <input type="hidden" id="waModalCategory" value="">
+        <input type="hidden" id="waModalSubcategory" value="">
+        <div class="wa-modal-field">
+          <label for="waModalNombre">{i18n('modal_name')}</label>
+          <input type="text" id="waModalNombre" placeholder="{t('modal_name_placeholder')}" required>
+        </div>
+        <div class="wa-modal-field">
+          <label for="waModalCiudad">{i18n('modal_city')}</label>
+          <input type="text" id="waModalCiudad" placeholder="{t('modal_city_placeholder')}" required>
+        </div>
+        <div class="wa-modal-row">
+          <div class="wa-modal-field">
+            <label for="waModalMetros">{i18n('modal_sqm')}</label>
+            <input type="number" id="waModalMetros" placeholder="{t('modal_sqm_placeholder')}" min="1" step="0.1">
+          </div>
+          <div class="wa-modal-field">
+            <label for="waModalUso">{i18n('modal_use')}</label>
+            <select id="waModalUso">
+              <option value="Residencial">{t('modal_use_residential')}</option>
+              <option value="Comercial">{t('modal_use_commercial')}</option>
+              <option value="Otro">{t('modal_use_other')}</option>
+            </select>
+          </div>
+        </div>
+        <div class="wa-modal-field">
+          <label for="waModalComentario">{i18n('modal_comment')}</label>
+          <textarea id="waModalComentario" rows="3" placeholder="{t('modal_comment_placeholder')}"></textarea>
+        </div>
+        <div class="wa-modal-product" id="waModalProductLabel"></div>
+        <button type="submit" class="wa-modal-submit">{i18n('modal_submit')}</button>
+      </form>
+    </div>
+  </div>
+''' + '''
+  <!-- LIGHTBOX -->
+  <div class="lightbox" id="lightbox" onclick="closeLightbox(event)">
+    <button class="lightbox-close" onclick="closeLightbox(event)"><svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="var(--gold)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    <img src="" alt="" id="lightboxImg">
+    <button class="lightbox-nav prev" onclick="navLightbox(-1, event)" aria-label="Anterior">&#10094;</button>
+    <button class="lightbox-nav next" onclick="navLightbox(1, event)" aria-label="Siguiente">&#10095;</button>
+    <div class="lightbox-caption" id="lightboxCaption"></div>
+  </div>
+  <script>
+    function openWaModal(product, category, subcategory) {
+      document.getElementById('waModalProduct').value = product || '';
+      document.getElementById('waModalCategory').value = category || '';
+      document.getElementById('waModalSubcategory').value = subcategory || '';
+      document.getElementById('waModalProductLabel').textContent = product + (subcategory ? ' - ' + subcategory : '');
+      document.getElementById('waModal').classList.add('active');
+      setTimeout(function() { document.getElementById('waModalNombre').focus(); }, 100);
+    }
+    function closeWaModal(e) {
+      if (e && e.target !== e.currentTarget) return;
+      document.getElementById('waModal').classList.remove('active');
+    }
+    function sendWaModal(e) {
+      e.preventDefault();
+      var phone = '15208392877';
+      var product = document.getElementById('waModalProduct').value;
+      var category = document.getElementById('waModalCategory').value;
+      var subcategory = document.getElementById('waModalSubcategory').value;
+      var nombre = document.getElementById('waModalNombre').value.trim();
+      var ciudad = document.getElementById('waModalCiudad').value.trim();
+      var metros = document.getElementById('waModalMetros').value.trim();
+      var uso = document.getElementById('waModalUso').value;
+      var comentario = document.getElementById('waModalComentario').value.trim();
+      var msg = 'Hola ADIS, soy ' + (nombre || 'un cliente interesado') + '. Me interesa cotizar:\\nProducto: ' + product + '\\nCategoria: ' + category;
+      if (subcategory) msg += '\\nSubcategoria: ' + subcategory;
+      if (ciudad) msg += '\\nUbicacion de la obra: ' + ciudad;
+      if (metros) msg += '\\nMetros cuadrados aproximados: ' + metros;
+      msg += '\\nUso: ' + uso;
+      if (comentario) msg += '\\nComentario: ' + comentario;
+      msg += '\\nFavor de contactarme para mas detalles. ¡Gracias!';
+      window.open('https://wa.me/' + phone + '?text=' + encodeURIComponent(msg), '_blank');
+      closeWaModal();
+      e.target.reset();
+    }
+    // Lightbox con navegación (flechas, teclado y swipe táctil)
+    var lbImages = [];
+    var lbIndex = 0;
+    function lbCollect() {
+      lbImages = [];
+      document.querySelectorAll('[onclick*="openLightbox"]').forEach(function(el) {
+        var m = el.getAttribute('onclick').match(/openLightbox\\('([^']*)'\\s*(?:,\\s*'([^']*)')?/);
+        if (m) lbImages.push({ src: m[1], caption: m[2] || '' });
+      });
+    }
+    function lbShow(i) {
+      var item = lbImages[i];
+      if (!item) return;
+      document.getElementById('lightboxImg').src = item.src;
+      document.getElementById('lightboxCaption').textContent = item.caption;
+      var showNav = lbImages.length > 1;
+      document.querySelectorAll('.lightbox-nav').forEach(function(b) {
+        b.classList.toggle('visible', showNav);
+      });
+    }
+    function openLightbox(src, caption) {
+      var lb = document.getElementById('lightbox');
+      if (!lb) return;
+      if (!lbImages.length) lbCollect();
+      lbIndex = 0;
+      for (var i = 0; i < lbImages.length; i++) { if (lbImages[i].src === src) { lbIndex = i; break; } }
+      lbShow(lbIndex);
+      lb.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+    function navLightbox(dir, e) {
+      if (e) e.stopPropagation();
+      if (lbImages.length < 2) return;
+      lbIndex = (lbIndex + dir + lbImages.length) % lbImages.length;
+      lbShow(lbIndex);
+    }
+    function closeLightbox(e) {
+      var lb = document.getElementById('lightbox');
+      if (!lb) return;
+      if (e && e.target !== e.currentTarget && !e.target.classList.contains('lightbox-close')) return;
+      lb.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+    document.addEventListener('keydown', function(e) {
+      var lb = document.getElementById('lightbox');
+      if (!lb || !lb.classList.contains('active')) return;
+      if (e.key === 'Escape') closeLightbox();
+      if (e.key === 'ArrowLeft') navLightbox(-1);
+      if (e.key === 'ArrowRight') navLightbox(1);
+    });
+    (function() {
+      var lb = document.getElementById('lightbox');
+      if (!lb) return;
+      var x0 = null;
+      lb.addEventListener('touchstart', function(e) { x0 = e.touches[0].clientX; }, { passive: true });
+      lb.addEventListener('touchend', function(e) {
+        if (x0 === null) return;
+        var dx = e.changedTouches[0].clientX - x0;
+        if (Math.abs(dx) > 40) navLightbox(dx < 0 ? 1 : -1);
+        x0 = null;
+      }, { passive: true });
     })();
-  </script><nav class="mobile-bottom-nav"><a href="index.html"><span><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></span><span><span data-i18n="mobile_nav_home" data-es="Inicio" data-en="Home">Inicio</span></span></a><a href="index.html#categorias"><span><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></span><span><span data-i18n="mobile_nav_catalog" data-es="Catálogo" data-en="Catalog">Catálogo</span></span></a><a href="proyectos.html"><span><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></span><span><span data-i18n="mobile_nav_projects" data-es="Proyectos" data-en="Projects">Proyectos</span></span></a><a href="contacto.html"><span><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.56 12.56 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.56 12.56 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg></span><span><span data-i18n="mobile_nav_contact" data-es="Contacto" data-en="Contact">Contacto</span></span></a></nav><a href="https://wa.me/15208392877?text=Hola%20ADIS,%20vi%20el%20catálogo%20y%20me%20interesa%20obtener%20información%20sobre%20sus%20productos." class="whatsapp-float" target="_blank" title="Cotiza gratis por WhatsApp" aria-label="WhatsApp"><svg viewBox="0 0 24 24" width="32" height="32" fill="white" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.008-.57-.008-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg><span class="wa-tooltip"><span data-i18n="wa_tooltip" data-es="Cotiza gratis por WhatsApp" data-en="Free quote via WhatsApp">Cotiza gratis por WhatsApp</span></span></a><button class="chatbot-float" onclick="toggleChat()" title="Asistente ADIS"><svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="#0F0F0F" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="10" rx="2"/><circle cx="12" cy="5" r="2"/><path d="M12 7v4"/><line x1="8" y1="16" x2="8" y2="16"/><line x1="16" y1="16" x2="16" y2="16"/></svg><span class="chatbot-badge" id="chatBadge">0</span></button><div class="chatbot-window" id="chatbotWindow"><div class="chatbot-header"><h4><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#C5A059" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="10" rx="2"/><circle cx="12" cy="5" r="2"/><path d="M12 7v4"/><line x1="8" y1="16" x2="8" y2="16"/><line x1="16" y1="16" x2="16" y2="16"/></svg><span data-i18n="chatbot_title" data-es="Asistente ADIS" data-en="ADIS Assistant">Asistente ADIS</span></h4><div class="chat-header-actions"><button class="chat-clear" onclick="clearAllChat()" title="Nueva conversación"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#E8D5A3" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button><button class="chatbot-close" onclick="toggleChat()" title="Cerrar"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#E8D5A3" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div></div><div class="chatbot-body" id="chatbotBody"></div></div><script>
-    var ADIS_PREFIX = '';
-    var ADIS_DEFAULT_LANG = 'es';
-    var ADIS_LEADS_URL = 'https://script.google.com/macros/s/AKfycbxq47t5I3eSqPmJ7zCnk47_RlHGfIwov8mcI1tJ92yNVvSsUXHU5Pe7DQ2Nx_h1wPP2/exec';
-    var ADIS_REVIEWS_URL = 'https://script.google.com/macros/s/AKfycbxq47t5I3eSqPmJ7zCnk47_RlHGfIwov8mcI1tJ92yNVvSsUXHU5Pe7DQ2Nx_h1wPP2/exec';
+  </script>
+'''
+
+
+
+
+def _extract_keywords(name):
+    """Extrae palabras clave normalizadas de un nombre de producto."""
+    name_norm = unicodedata.normalize('NFKD', name).encode('ASCII', 'ignore').decode('ASCII').lower()
+    tokens = re.findall(r'[a-z]+', name_norm)
+    stopwords = {'de', 'del', 'la', 'el', 'en', 'y', 'o', 'con', 'sin', 'para', 'por', 'un', 'una', 'los', 'las'}
+    return [t for t in tokens if t not in stopwords and len(t) > 2]
+
+
+
+
+def category_filters_html(cat):
+    """Genera panel de filtros facetados para una categoría."""
+    chips = [f'<button class="filter-chip active" data-subcategory="all">{i18n("filter_all")}</button>']
+    for sub in cat["subcategories"]:
+        if sub["products"]:
+            chips.append(f'<button class="filter-chip" data-subcategory="{sub["name"].lower()}">{sub["name"]}</button>')
+    has_direct = bool(cat["direct_products"])
+    if has_direct:
+        chips.append('<button class="filter-chip" data-subcategory="general">General</button>')
+    if not cat["subcategories"] and not has_direct:
+        return ''
+    total = len(cat["direct_products"]) + sum(len(s["products"]) for s in cat["subcategories"])
+    return f'''  <!-- FILTROS FACETADOS -->
+  <section class="cat-filters reveal">
+    <div class="cat-filters-inner">
+      <input type="text" class="cat-filter-search" id="catFilterSearch" placeholder="{t('filter_placeholder')}" autocomplete="off">
+      <div class="cat-filter-chips">
+        {''.join(chips)}
+      </div>
+      <div class="cat-filter-count" id="catFilterCount">{total} <span data-i18n="filter_count_unit" data-es="productos" data-en="products">productos</span></div>
+    </div>
+  </section>
+'''
+
+
+
+
+def category_filters_js():
+    """JavaScript para manejar los filtros facetados de categoría."""
+    return '''
+  <script>
+    (function() {
+      const search = document.getElementById('catFilterSearch');
+      if (!search) return;
+      const chips = document.querySelectorAll('.filter-chip');
+      const cards = document.querySelectorAll('.product-card');
+      const countEl = document.getElementById('catFilterCount');
+      let activeSubcategory = 'all';
+      function normalize(str) {
+        return (str || '').toLowerCase().normalize('NFD').replace(/[\\u0300-\\u036f]/g, '');
+      }
+      function filter() {
+        const term = normalize(search.value);
+        let visible = 0;
+        cards.forEach(function(card) {
+          const name = normalize(card.dataset.name);
+          const sub = card.dataset.subcategory || '';
+          const keywords = normalize(card.dataset.keywords);
+          const matchSearch = name.indexOf(term) !== -1 || keywords.indexOf(term) !== -1;
+          const matchSub = activeSubcategory === 'all' || sub === activeSubcategory;
+          const show = matchSearch && matchSub;
+          card.style.display = show ? '' : 'none';
+          if (show) visible++;
+        });
+        document.querySelectorAll('.subcat-section').forEach(function(sec) {
+          const visibleCards = sec.querySelectorAll('.product-card:not([style*="display: none"])');
+          sec.style.display = visibleCards.length ? '' : 'none';
+        });
+        if (countEl) countEl.innerHTML = visible + ' <span data-i18n="filter_count_unit" data-es="productos" data-en="products">' + (visible !== 1 ? 'productos' : 'producto') + '</span>';
+      }
+      search.addEventListener('input', filter);
+      chips.forEach(function(chip) {
+        chip.addEventListener('click', function() {
+          activeSubcategory = chip.dataset.subcategory;
+          chips.forEach(function(c) { c.classList.remove('active'); });
+          chip.classList.add('active');
+          filter();
+        });
+      });
+    })();
+  </script>'''
+
+
+
+
+def webp_srcset(img_path):
+    """Devuelve rutas WebP para una imagen relativa si existen (URL-encoded para srcset)."""
+    p = Path(img_path)
+    webp = p.with_suffix('.webp').as_posix().replace(' ', '%20')
+    webp600 = (p.parent / (p.stem + '-600w.webp')).as_posix().replace(' ', '%20')
+    return webp, webp600
+
+
+
+
+def ensure_logo_webp():
+    """Genera versión WebP ligera del logo (287KB PNG -> ~20-30KB WebP)."""
+    if not HAS_PIL:
+        return
+    src = OUTPUT_DIR / 'LOGO ADIS.png'
+    dst = OUTPUT_DIR / 'LOGO ADIS.webp'
+    if src.exists() and (not dst.exists() or src.stat().st_mtime > dst.stat().st_mtime):
+        _ensure_webp(src, dst, max_width=320, quality=85)
+
+
+
+
+def logo_tag():
+    """Logo con WebP optimizado y fallback PNG (header, hero, footer)."""
+    webp = p('LOGO ADIS.webp').replace(' ', '%20')
+    png = p('LOGO ADIS.png')
+    return (f'<picture><source srcset="{webp}" type="image/webp">'
+            f'<img src="{png}" alt="ADIS Logo"></picture>')
+
+
+
+
+def picture_tag(img_path, alt, loading='lazy', onclick=None, cls=''):
+    """Genera un tag <picture> con fallback WebP."""
+    webp_path, webp600 = webp_srcset(img_path)
+    attrs = f' onclick="{onclick}"' if onclick else ''
+    cls_attr = f' class="{cls}"' if cls else ''
+    return f'''<picture{cls_attr}>
+            <source srcset="{p(webp_path)}" type="image/webp">
+            <source srcset="{p(webp600)}" media="(max-width: 600px)" type="image/webp">
+            <img src="{p(img_path)}" alt="{alt}" loading="{loading}"{attrs}>
+          </picture>'''
+
+
+
+
+def product_card_html(prod_file, cat, sub=None):
+    """Genera tarjeta de producto con CTA unificado a WhatsApp via modal."""
+    prod_name = os.path.splitext(prod_file)[0]
+    img_path = "img/{cat_slug}/{sub_slug}/{prod_file}".format(
+        cat_slug=cat["slug"],
+        sub_slug=sub["slug"] if sub else "",
+        prod_file=prod_file
+    ) if sub else "img/{cat_slug}/{prod_file}".format(cat_slug=cat["slug"], prod_file=prod_file)
+    webp_path, webp600 = webp_srcset(img_path)
+    sub_name = sub["name"] if sub else None
+    sub_arg = "'" + sub_name + "'" if sub_name else "null"
+    cat_name = cat["name"]
+    prod_name_disp = product_display(prod_name)
+    cat_name_disp = cat_display(cat_name)
+    sub_name_disp = subcat_display(sub_name) if sub_name else None
+    prod_name_lower = prod_name.lower()
+    sub_name_lower = sub_name.lower() if sub_name else 'general'
+    keywords = ' '.join(_extract_keywords(prod_name))
+    button_html = f'<button type="button" class="btn-cotizar" onclick="openWaModal(\'{prod_name_disp}\', \'{cat_name_disp}\', {sub_arg})">{i18n("modal_title")}</button>'
+    return f'''      <div class="product-card reveal" data-name="{prod_name_lower}" data-category="{cat_name_disp}" data-subcategory="{sub_name_lower}" data-keywords="{keywords}">
+        <div class="product-gallery" onclick="openLightbox('{p(img_path)}', '{prod_name_disp}')">
+          {picture_tag(img_path, prod_name_disp)}
+        </div>
+        <div class="product-info">
+          <div class="product-name">{prod_name_disp}</div>
+          <div class="product-actions">
+            {button_html}
+          </div>
+        </div>
+      </div>
+'''
+
+
+
+
+def generate_header(current_page='index', page_file='index.html'):
+    """Genera el header HTML con mega-menu, search mejorado y toggle de idioma."""
+    
+    MEGA_ITEMS = [
+        ('1-placas-pvc.html', 'img/1-placas-pvc/11-placas-pvc-tipo-madera/Adler.jpg', 'menu_placas_pvc'),
+        ('2-lambrin-wpc.html', 'img/2-lambrin-wpc/21-lambrin-interior/AMANECHER.jpg', 'menu_lambrin_wpc'),
+        ('3-revestimiento-flexible.html', 'img/3-revestimiento-flexible/CONCRETO%20Aparente.jpg', 'menu_revestimiento'),
+        ('4-plafon-pvc.html', 'img/4-plafon-pvc/41-plafon-pvc-laminado/SHERWOOD.jpg', 'menu_plafon'),
+        ('5-paneles-tridimensionales.html', 'img/5-paneles-tridimensionales/51-blanco/Austin.jpg', 'menu_paneles_3d'),
+        ('6-vigas-pvc.html', 'img/6-vigas-pvc/61-interior/BAHIA%201.jpg', 'menu_vigas'),
+        ('7-pisos.html', 'img/7-pisos/71-laminado/ACONCAGUA.jpg', 'menu_pisos'),
+        ('8-zacate.html', 'img/8-zacate/81-follaje-sintetico/AMAZONAS-A.jpg', 'menu_zacate'),
+        ('9-cladding.html', 'img/9-cladding/91-placa-tipo-roca/BLACK.jpg', 'menu_cladding'),
+    ]
+    mega_html = '\n'.join([f'        <a href="{p(u)}" class="mega-item">{picture_tag(i, t(k))}<span>{i18n(k)}</span></a>' for u, i, k in MEGA_ITEMS])
+    
+    SABIAS_ITEMS = [
+        ('sabias-que-pvc.html', 'menu_placas_pvc'),
+        ('sabias-que-wpc.html', 'menu_lambrin_wpc'),
+        ('sabias-que-revestimiento.html', 'menu_revestimiento'),
+        ('sabias-que-plafon.html', 'menu_plafon'),
+        ('sabias-que-3d.html', 'menu_paneles_3d'),
+        ('sabias-que-vigas.html', 'menu_vigas'),
+        ('sabias-que-pisos.html', 'menu_pisos'),
+        ('sabias-que-zacate.html', 'menu_zacate'),
+        ('sabias-que-cladding.html', 'menu_cladding'),
+    ]
+    sabias_html = '\n'.join([f'        <a href="{p(u)}" class="dropdown-item"><span>{i18n(k)}</span></a>' for u, k in SABIAS_ITEMS])
+    
+    nav_links = f'''<a href="{p('index.html')}">{i18n("nav_home")}</a>
+        <a href="{p('index.html#categorias')}" class="mega-trigger">{i18n("nav_catalog")}
+          <div class="mega-menu">
+{mega_html}
+          </div>
+        </a>
+        <a href="{p('sabias-que.html')}" class="mega-trigger">{i18n("nav_did_you_know")}
+          <div class="nav-dropdown">
+{sabias_html}
+          </div>
+        </a>
+        <a href="{p('proyectos.html')}">{i18n("nav_projects")}</a>
+        <a href="{p('nosotros.html')}">{i18n("nav_about")}</a>
+        <a href="{p('contacto.html')}">{i18n("nav_contact")}</a>'''
+    if current_page != 'index':
+        nav_links = f'''<a href="{p('index.html')}">{i18n("nav_back_home")}</a>
+        <a href="{p('index.html#categorias')}" class="mega-trigger">{i18n("nav_catalog")}
+          <div class="mega-menu">
+{mega_html}
+          </div>
+        </a>
+        <a href="{p('sabias-que.html')}" class="mega-trigger">{i18n("nav_did_you_know")}
+          <div class="nav-dropdown">
+{sabias_html}
+          </div>
+        </a>
+        <a href="{p('proyectos.html')}">{i18n("nav_projects")}</a>
+        <a href="{p('nosotros.html')}">{i18n("nav_about")}</a>
+        <a href="{p('contacto.html')}">{i18n("nav_contact")}</a>'''
+    mobile_cats = '\n'.join([f'      <a href="{p(u)}" onclick="toggleMenu()">{i18n(k)}</a>' for u, i, k in MEGA_ITEMS])
+
+    return f'''  <header>
+    <div class="topbar">{svg_icon('truck', size=15, color='var(--black)')}<span>{i18n('topbar_text')}</span></div>
+    <div class="header-inner">
+      <a href="{p('index.html')}" class="logo">{logo_tag()}</a>
+      <a href="{p('admin.html')}" class="admin-link" title="Panel administrativo" aria-label="Panel administrativo">{svg_icon('shield', size=20, color='var(--gold)')}</a>
+      <nav class="desktop-nav">
+        {nav_links}
+        <div class="search-box">
+          <input type="text" id="searchInput" placeholder="{t('search_placeholder')}" autocomplete="off" title="{t('search_hint')}">
+          <button onclick="openSpotlight()">{svg_icon('search', size=18, color='var(--gold)')}</button>
+          <div class="search-dropdown" id="searchDropdown"></div>
+        </div>
+      </nav>
+      <div class="header-actions">
+        {translate_toggle(page_file)}
+        <button class="menu-btn" onclick="toggleMenu()">{svg_icon('menu', size=22, color='var(--gold)')}</button>
+      </div>
+    </div>
+  </header>
+
+  <div class="mobile-menu" id="mobileMenu">
+    <button class="close-menu" onclick="toggleMenu()">{svg_icon('x', size=22, color='var(--gold)')}</button>
+    <a href="{p('index.html')}" onclick="toggleMenu()">{i18n("nav_home")}</a>
+    <a href="{p('index.html#categorias')}" onclick="toggleMenu()">{i18n("nav_catalog")}</a>
+    <a href="{p('sabias-que.html')}" onclick="toggleMenu()">{i18n("nav_did_you_know")}</a>
+    <a href="{p('proyectos.html')}" onclick="toggleMenu()">{i18n("nav_projects")}</a>
+    <a href="{p('nosotros.html')}" onclick="toggleMenu()">{i18n("nav_about")}</a>
+    <a href="{p('contacto.html')}" onclick="toggleMenu()">{i18n("nav_contact")}</a>
+    <div class="mobile-menu-cats">
+{mobile_cats}
+    </div>
+    <div class="mobile-menu-lang">{translate_toggle(page_file)}</div>
+    <div class="search-box" style="margin-top:0.5rem;">
+      <input type="text" id="searchInputMobile" placeholder="{t('search_mobile_placeholder')}" autocomplete="off" style="width:220px;">
+      <button onclick="performSearchMobile()">{svg_icon('search', size=18, color='var(--gold)')}</button>
+      <div class="search-dropdown" id="searchDropdownMobile"></div>
+    </div>
+  </div>
+  
+  <!-- SPOTLIGHT OVERLAY -->
+  <div class="spotlight-overlay" id="spotlightOverlay" onclick="closeSpotlight(event)">
+    <button class="spotlight-close" onclick="closeSpotlight(event)">{svg_icon('x', size=24, color='var(--gold)')}</button>
+    <div class="spotlight-box">
+      <div class="spotlight-input-wrap">
+        <span class="spotlight-icon">{svg_icon('search', size=20, color='var(--gold)')}</span>
+        <input type="text" class="spotlight-input" id="spotlightInput" placeholder="{t('search_placeholder')}" autocomplete="off">
+      </div>
+      <div class="spotlight-results" id="spotlightResults"></div>
+    </div>
+  </div>
+'''
+
+
+
+
+def generate_footer():
+    chatbot_js = '''
+  <script>
+    var ADIS_PREFIX = '__ADIS_PREFIX__';
+    var ADIS_DEFAULT_LANG = '__ADIS_LANG__';
+    var ADIS_LEADS_URL = '__ADIS_LEADS_URL__';
+    var ADIS_REVIEWS_URL = '__ADIS_REVIEWS_URL__';
 
     // --- Tracker de visitas (pestaña Flujo del panel admin) ---
     (function() {
       try {
         var TRACK_URL = (typeof ADIS_LEADS_URL === 'string') ? ADIS_LEADS_URL : '';
-        if (!TRACK_URL || /admin\.html$/i.test(location.pathname)) return;
+        if (!TRACK_URL || /admin\\.html$/i.test(location.pathname)) return;
         var enviados = {};
         try { enviados = JSON.parse(sessionStorage.getItem('adis_trk_sess') || '{}'); } catch (e) {}
         function enviar(seccion) {
@@ -79,7 +884,7 @@
               var el = en.target, nombre = el.id || '';
               if (!nombre) {
                 var h2 = el.querySelector('h2');
-                nombre = h2 ? h2.textContent.trim().toLowerCase().replace(/\s+/g, '-').slice(0, 60) : '';
+                nombre = h2 ? h2.textContent.trim().toLowerCase().replace(/\\s+/g, '-').slice(0, 60) : '';
               }
               if (nombre && !vistos[nombre]) { vistos[nombre] = 1; enviar(nombre); }
               io.unobserve(el);
@@ -262,7 +1067,7 @@
   'bye': {es: '¡Hasta luego! 👋 Gracias por contactar a ADIS Diseño & Remodelación. Recuerda que puedes volver cuando quieras o escribirnos al WhatsApp. ¡Éxito con tu proyecto! 🏠✨', en: 'Goodbye! 👋 Thank you for contacting ADIS Design & Remodeling. Remember you can come back anytime or write to us on WhatsApp. Success with your project! 🏠✨'},
   'negation': {es: 'Perfecto, ¿en qué más puedo ayudarte? Puedo:<br>• Mostrarte productos 📦<br>• Darte precios 💰<br>• Contarte horarios 🕐<br>• Explicarte envíos 📍<br>• Ayudarte con una cotización 📝', en: 'Great, what else can I help you with? I can:<br>• Show you products 📦<br>• Give you prices 💰<br>• Tell you our hours 🕐<br>• Explain shipping 📍<br>• Help you with a quote 📝'},
   'help': {es: '¡Claro! Puedo ayudarte con:<br>• Productos y catálogo 📦<br>• Precios y cotizaciones 💰<br>• Horarios de atención 🕐<br>• Ubicación y envíos 📍<br>• Formas de pago 💳<br>• Instalación 🛠️<br><br>Escribe tu pregunta o usa los botones de abajo.', en: 'Of course! I can help you with:<br>• Products and catalog 📦<br>• Prices and quotes 💰<br>• Business hours 🕐<br>• Location and shipping 📍<br>• Payment methods 💳<br>• Installation 🛠️<br><br>Type your question or use the buttons below.'},
-  'fallback': {es: 'Disculpa, no entendí muy bien. 😅 Puedo ayudarte con:<br><br>• Productos y catálogo 📦<br>• Precios y cotizaciones 💰<br>• Horarios de atención 🕐<br>• Ubicación y envíos 📍<br>• Formas de pago 💳<br>• Instalación 🛠️<br><br>Escribe tu pregunta o usa los botones de abajo.', en: 'Sorry, I didn\'t quite understand. 😅 I can help you with:<br><br>• Products and catalog 📦<br>• Prices and quotes 💰<br>• Business hours 🕐<br>• Location and shipping 📍<br>• Payment methods 💳<br>• Installation 🛠️<br><br>Type your question or use the buttons below.'},
+  'fallback': {es: 'Disculpa, no entendí muy bien. 😅 Puedo ayudarte con:<br><br>• Productos y catálogo 📦<br>• Precios y cotizaciones 💰<br>• Horarios de atención 🕐<br>• Ubicación y envíos 📍<br>• Formas de pago 💳<br>• Instalación 🛠️<br><br>Escribe tu pregunta o usa los botones de abajo.', en: 'Sorry, I didn\\'t quite understand. 😅 I can help you with:<br><br>• Products and catalog 📦<br>• Prices and quotes 💰<br>• Business hours 🕐<br>• Location and shipping 📍<br>• Payment methods 💳<br>• Installation 🛠️<br><br>Type your question or use the buttons below.'},
   'def_pvc_title': {es: '📜 ¿Qué es PVC?', en: '📜 What is PVC?'},
   'def_pvc_text': {es: 'Policloruro de Vinilo. Es un tipo de plástico muy usado en letreros, hojas rígidas, tuberías, anuncios y materiales de impresión porque es resistente, ligero y económico.', en: 'Polyvinyl Chloride. It is a type of plastic widely used in signs, rigid sheets, pipes, advertisements and printing materials because it is resistant, lightweight and economical.'},
   'def_pvc_usage': {es: 'En ADIS lo usamos para placas decorativas, plafones y vigas con acabados que imitan madera, espejo y texturas.', en: 'At ADIS we use it for decorative panels, ceilings and beams with finishes that imitate wood, mirror and textures.'},
@@ -288,7 +1093,7 @@
   'uses_overview_title': {es: '🏠 Usos por material:', en: '🏠 Uses by material:'},
   'uses_overview_points': {es: '• <strong>Placas PVC:</strong> Muros interiores (baños, cocinas, salas, recepciones)<br>• <strong>Lambrín WPC:</strong> Muros interior y exterior, fachadas<br>• <strong>Pisos SPC/WPC:</strong> Interiores residenciales y comerciales<br>• <strong>Plafón PVC:</strong> Techos y cielos falsos<br>• <strong>Paneles 3D:</strong> Muros de acento, fondos de TV<br>• <strong>Vigas:</strong> Decoración de techos y pérgolas<br>• <strong>Zacate:</strong> Jardines, terrazas, balcones<br>• <strong>Cladding:</strong> Fachadas, muros exteriores', en: '• <strong>PVC Panels:</strong> Indoor walls (bathrooms, kitchens, living rooms, receptions)<br>• <strong>WPC Slats:</strong> Indoor and outdoor walls, facades<br>• <strong>SPC/WPC Flooring:</strong> Residential and commercial interiors<br>• <strong>PVC Ceilings:</strong> Ceilings and drop ceilings<br>• <strong>3D Panels:</strong> Accent walls, TV backdrops<br>• <strong>Beams:</strong> Ceiling and pergola decoration<br>• <strong>Synthetic Grass:</strong> Gardens, terraces, balconies<br>• <strong>Cladding:</strong> Facades, exterior walls'},
   'uses_tip': {es: '💡 Dime para qué espacio lo necesitas y te recomiendo el mejor material.', en: '💡 Tell me what space you need it for and I will recommend the best material.'},
-  'no_data_for_product': {es: '🤔 No tengo ese dato confirmado en la información de <strong>{name}</strong>, pero puedo ayudarte a contactar a un asesor para validarlo.<br><br>📱 <strong>{whatsapp}</strong><br><br>Un experto te responderá en menos de 24 horas.', en: '🤔 I don\'t have that data confirmed for <strong>{name}</strong>, but I can help you contact an advisor to verify it.<br><br>📱 <strong>{whatsapp}</strong><br><br>An expert will answer in less than 24 hours.'},
+  'no_data_for_product': {es: '🤔 No tengo ese dato confirmado en la información de <strong>{name}</strong>, pero puedo ayudarte a contactar a un asesor para validarlo.<br><br>📱 <strong>{whatsapp}</strong><br><br>Un experto te responderá en menos de 24 horas.', en: '🤔 I don\\'t have that data confirmed for <strong>{name}</strong>, but I can help you contact an advisor to verify it.<br><br>📱 <strong>{whatsapp}</strong><br><br>An expert will answer in less than 24 hours.'},
   'found_products': {es: '🔎 <strong>Encontré estos productos:</strong><br><br>{cards}{urgency}<br>¿Te gustaría cotizar alguno?', en: '🔎 <strong>I found these products:</strong><br><br>{cards}{urgency}<br>Would you like to quote any of them?'},
   'other_options': {es: '✨ <strong>Otras opciones similares:</strong><br><br>{cards}<br>¿Alguna de estas te interesa?', en: '✨ <strong>Other similar options:</strong><br><br>{cards}<br>Does any of these interest you?'},
   'product_info': {es: 'Aquí tienes más información de <strong>{name}</strong>:<br><br>{card}', en: 'Here is more information about <strong>{name}</strong>:<br><br>{card}'},
@@ -334,7 +1139,7 @@
   'suggest_20m2': {es: '20 m²', en: '20 m²'},
   'suggest_30m2': {es: '30 m²', en: '30 m²'},
   'suggest_50m2': {es: '50 m²', en: '50 m²'},
-  'suggest_dont_know': {es: 'No sé, ayúdame', en: 'I don\'t know, help me'},
+  'suggest_dont_know': {es: 'No sé, ayúdame', en: 'I don\\'t know, help me'},
   'suggest_with_install': {es: 'Sí, con instalación', en: 'Yes, with installation'},
   'suggest_only_material': {es: 'No, solo material', en: 'No, only material'},
   'suggest_advice': {es: 'Quiero que me asesoren', en: 'I want advice'},
@@ -446,21 +1251,7 @@
   'overview_ask_more': {es: '¿Te gustaría saber más sobre colores, instalación o mantenimiento?', en: 'Would you like to know more about colors, installation or maintenance?'},
   'research_answer': {es: '{icon} <strong>{label} — {category}</strong><br><br><strong>{title}</strong><br><br>{content}', en: '{icon} <strong>{label} — {category}</strong><br><br><strong>{title}</strong><br><br>{content}'},
   'product_price_label': {es: 'por', en: 'per'},
-  'wa_quote_summary': {es: `Hola ADIS, solicito cotización guiada desde el catálogo:
-
-• Producto: {category}
-• Espacio: {space}
-• Metraje: {m2}
-• Instalación: {install}
-• Ubicación: {location}
-{contact}Quedo atento a su respuesta. Gracias.`, en: `Hello ADIS, I request a guided quote from the catalog:
-
-• Product: {category}
-• Space: {space}
-• Square meters: {m2}
-• Installation: {install}
-• Location: {location}
-{contact}I look forward to your response. Thank you.`},
+  'wa_quote_summary': {es: `Hola ADIS, solicito cotización guiada desde el catálogo:\n\n• Producto: {category}\n• Espacio: {space}\n• Metraje: {m2}\n• Instalación: {install}\n• Ubicación: {location}\n{contact}Quedo atento a su respuesta. Gracias.`, en: `Hello ADIS, I request a guided quote from the catalog:\n\n• Product: {category}\n• Space: {space}\n• Square meters: {m2}\n• Installation: {install}\n• Location: {location}\n{contact}I look forward to your response. Thank you.`},
 
   'warranty_pvc_label': {es: 'Placas PVC:', en: 'PVC Panels:'},
   'warranty_wpc_label': {es: 'Lambrín WPC:', en: 'WPC Slats:'},
@@ -626,17 +1417,17 @@
       };
       
       function detectQuestionType(q) {
-        if (/\b(medida|dimension|tamano|largo|ancho|grueso|espesor|cuanto mide|que tan grande|que tan ancho)\b/.test(q)) return 'medidas';
-        if (/\b(agua|mojar|moja|humedad|moho|impermeable|resistente al agua|resiste agua|se puede mojar|llover|lluvia)\b/.test(q)) return 'agua';
-        if (/\b(exterior|interior|afuera|adentro|intemperie|sol|uv|exterior|exterio|afuera)\b/.test(q)) return 'exterior';
-        if (/\b(material|de que esta hecho|de que es|composicion|compuesto|que tiene)\b/.test(q)) return 'material';
-        if (/\b(instalar|instalacion|colocar|colocacion|poner|como se pone|como se instala)\b/.test(q)) return 'instalacion';
-        if (/\b(color|colores|tono|tonalidad|acabado|diseño|modelo|hay en|tienen en)\b/.test(q)) return 'colores';
-        if (/\b(precio|cuesta|cuanto|valor|costo|dinero|barato|caro)\b/.test(q)) return 'precio';
-        if (/\b(mantenimiento|limpiar|limpieza|cuidado|conservar|durar|vida util)\b/.test(q)) return 'mantenimiento';
-        if (/\b(uso|usar|donde se usa|para que sirve|aplicacion|aplicar|para que es|en que se usa)\b/.test(q)) return 'usos';
-        if (/\b(garantia|garantiza|garantizar|cuanto dura la garantia)\b/.test(q)) return 'garantia';
-        if (/\b(diferencia|comparar|versus|vs|mejor que|peor que|diferente a)\b/.test(q)) return 'comparar';
+        if (/\\b(medida|dimension|tamano|largo|ancho|grueso|espesor|cuanto mide|que tan grande|que tan ancho)\\b/.test(q)) return 'medidas';
+        if (/\\b(agua|mojar|moja|humedad|moho|impermeable|resistente al agua|resiste agua|se puede mojar|llover|lluvia)\\b/.test(q)) return 'agua';
+        if (/\\b(exterior|interior|afuera|adentro|intemperie|sol|uv|exterior|exterio|afuera)\\b/.test(q)) return 'exterior';
+        if (/\\b(material|de que esta hecho|de que es|composicion|compuesto|que tiene)\\b/.test(q)) return 'material';
+        if (/\\b(instalar|instalacion|colocar|colocacion|poner|como se pone|como se instala)\\b/.test(q)) return 'instalacion';
+        if (/\\b(color|colores|tono|tonalidad|acabado|diseño|modelo|hay en|tienen en)\\b/.test(q)) return 'colores';
+        if (/\\b(precio|cuesta|cuanto|valor|costo|dinero|barato|caro)\\b/.test(q)) return 'precio';
+        if (/\\b(mantenimiento|limpiar|limpieza|cuidado|conservar|durar|vida util)\\b/.test(q)) return 'mantenimiento';
+        if (/\\b(uso|usar|donde se usa|para que sirve|aplicacion|aplicar|para que es|en que se usa)\\b/.test(q)) return 'usos';
+        if (/\\b(garantia|garantiza|garantizar|cuanto dura la garantia)\\b/.test(q)) return 'garantia';
+        if (/\\b(diferencia|comparar|versus|vs|mejor que|peor que|diferente a)\\b/.test(q)) return 'comparar';
         return null;
       }
       
@@ -749,33 +1540,33 @@
       
       // === NORMALIZACIÓN Y CORRECCIÓN ===
       const SYNONYMS = [
-        {from: /\b(meddia|medidas|medicion|mediciones|medir)\b/g, to: 'medida'},
-        {from: /\b(especif|caciones|especificasiones|espeficaciones|caracteristicas)\b/g, to: 'especificacion'},
-        {from: /\b(dimensiones|tamano|tamaño|tamanos|largo|ancho|grueso|espesor)\b/g, to: 'dimension'},
-        {from: /\b(hojas|laminas|láminas|planchas)\b/g, to: 'placa'},
-        {from: /\b(precio|precios|cuanto cuesta|cuanto valen|valor|costo|costos)\b/g, to: 'precio'},
-        {from: /\b(cotizar|cotizacion|cotización|presupuesto|presupuestar)\b/g, to: 'cotizacion'},
-        {from: /\b(envio|envíos|entrega|mandan|envian|domicilio|llevan|paqueteria)\b/g, to: 'envio'},
-        {from: /\b(instalacion|instalan|colocan|ponen|colocacion|instalador)\b/g, to: 'instalacion'},
-        {from: /\b(horario|horarios|hora|abierto|atencion|cierran|abren)\b/g, to: 'horario'},
-        {from: /\b(ubicacion|direccion|donde|ubicados|showroom|tienda|local|direccion)\b/g, to: 'ubicacion'},
-        {from: /\b(whatsapp|telefono|celular|numero|contacto|llamar|hablar|correo|email)\b/g, to: 'contacto'},
-        {from: /\b(garantia|garantiza|garantias)\b/g, to: 'garantia'},
-        {from: /\b(pago|pagos|tarjeta|credito|efectivo|transferencia|meses|debito|deposito)\b/g, to: 'pago'},
-        {from: /\b(producto|catalogo|materiales|venden|tienen|ofrecen|disponen)\b/g, to: 'producto'},
-        {from: /\b(mantenimiento|limpiar|limpieza|cuidado|conservar)\b/g, to: 'mantenimiento'},
-        {from: /\b(gracias|thank|perfecto|excelente|muy amable)\b/g, to: 'agradecimiento'},
-        {from: /\b(adios|bye|hasta luego|nos vemos|chao)\b/g, to: 'despedida'},
-        {from: /\b(no|no es|otra cosa|cambio de tema|no gracias|nada mas|eso es todo)\b/g, to: 'negacion'},
-        {from: /\b(ayuda|help|auxilio|soporte|asistencia)\b/g, to: 'ayuda'},
-        {from: /\b(agua|mojar|moja|humedad|moho|impermeable|resistente al agua|resiste agua|se puede mojar|lloviendo|lluvia)\b/g, to: 'resistencia_agua'},
-        {from: /\b(exterior|interior|interiores|exteriores|pared|muro|techo|piso|suelo|fachada)\b/g, to: 'uso_espacio'}
+        {from: /\\b(meddia|medidas|medicion|mediciones|medir)\\b/g, to: 'medida'},
+        {from: /\\b(especif|caciones|especificasiones|espeficaciones|caracteristicas)\\b/g, to: 'especificacion'},
+        {from: /\\b(dimensiones|tamano|tamaño|tamanos|largo|ancho|grueso|espesor)\\b/g, to: 'dimension'},
+        {from: /\\b(hojas|laminas|láminas|planchas)\\b/g, to: 'placa'},
+        {from: /\\b(precio|precios|cuanto cuesta|cuanto valen|valor|costo|costos)\\b/g, to: 'precio'},
+        {from: /\\b(cotizar|cotizacion|cotización|presupuesto|presupuestar)\\b/g, to: 'cotizacion'},
+        {from: /\\b(envio|envíos|entrega|mandan|envian|domicilio|llevan|paqueteria)\\b/g, to: 'envio'},
+        {from: /\\b(instalacion|instalan|colocan|ponen|colocacion|instalador)\\b/g, to: 'instalacion'},
+        {from: /\\b(horario|horarios|hora|abierto|atencion|cierran|abren)\\b/g, to: 'horario'},
+        {from: /\\b(ubicacion|direccion|donde|ubicados|showroom|tienda|local|direccion)\\b/g, to: 'ubicacion'},
+        {from: /\\b(whatsapp|telefono|celular|numero|contacto|llamar|hablar|correo|email)\\b/g, to: 'contacto'},
+        {from: /\\b(garantia|garantiza|garantias)\\b/g, to: 'garantia'},
+        {from: /\\b(pago|pagos|tarjeta|credito|efectivo|transferencia|meses|debito|deposito)\\b/g, to: 'pago'},
+        {from: /\\b(producto|catalogo|materiales|venden|tienen|ofrecen|disponen)\\b/g, to: 'producto'},
+        {from: /\\b(mantenimiento|limpiar|limpieza|cuidado|conservar)\\b/g, to: 'mantenimiento'},
+        {from: /\\b(gracias|thank|perfecto|excelente|muy amable)\\b/g, to: 'agradecimiento'},
+        {from: /\\b(adios|bye|hasta luego|nos vemos|chao)\\b/g, to: 'despedida'},
+        {from: /\\b(no|no es|otra cosa|cambio de tema|no gracias|nada mas|eso es todo)\\b/g, to: 'negacion'},
+        {from: /\\b(ayuda|help|auxilio|soporte|asistencia)\\b/g, to: 'ayuda'},
+        {from: /\\b(agua|mojar|moja|humedad|moho|impermeable|resistente al agua|resiste agua|se puede mojar|lloviendo|lluvia)\\b/g, to: 'resistencia_agua'},
+        {from: /\\b(exterior|interior|interiores|exteriores|pared|muro|techo|piso|suelo|fachada)\\b/g, to: 'uso_espacio'}
       ];
       
       function normalizeQuery(raw) {
-        let q = raw.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+        let q = raw.toLowerCase().normalize('NFD').replace(/[\\u0300-\\u036f]/g, '');
         SYNONYMS.forEach(s => { q = q.replace(s.from, s.to); });
-        return q.replace(/[^\w\s]/g, ' ').replace(/\s+/g, ' ').trim();
+        return q.replace(/[^\\w\\s]/g, ' ').replace(/\\s+/g, ' ').trim();
       }
       
       // === SCORING DE INTENCIONES ===
@@ -838,18 +1629,18 @@
       }
       
       function isContextualQuestion(q, original) {
-        const contextualStarters = /^(y|y las|y los|y el|y la|tambien|también|cuéntame|cuentame|más|mas|info|informacion|información|detalles|el primero|el segundo|el tercero|ese|esa|aquel|esa de|el de|las de|los de)\b/;
-        const followUpPatterns = /\b(cuanto cuestan|cuanto valen|el precio|los precios|las medidas|las dimensiones|cuanto miden|mide|el color|los colores|tienen stock|hay stock|esta disponible|estan disponibles|no me gusta|no me gustaron|no es eso|otra cosa|algo mas|mostrame mas|ver mas|y eso|de esos|de estas|de esas)\b/;
+        const contextualStarters = /^(y|y las|y los|y el|y la|tambien|también|cuéntame|cuentame|más|mas|info|informacion|información|detalles|el primero|el segundo|el tercero|ese|esa|aquel|esa de|el de|las de|los de)\\b/;
+        const followUpPatterns = /\\b(cuanto cuestan|cuanto valen|el precio|los precios|las medidas|las dimensiones|cuanto miden|mide|el color|los colores|tienen stock|hay stock|esta disponible|estan disponibles|no me gusta|no me gustaron|no es eso|otra cosa|algo mas|mostrame mas|ver mas|y eso|de esos|de estas|de esas)\\b/;
         return contextualStarters.test(q) || followUpPatterns.test(q) || q.length < 20 || original.length < 28;
       }
       
       function applyContext(q) {
         if (!chatContext.lastTopic && !chatContext.lastIntent && !chatContext.activeProduct) return q;
         const topic = chatContext.activeProduct || chatContext.lastTopic;
-        if (/\b(cuanto cuestan|cuanto valen|el precio|los precios|las medidas|las dimensiones|cuanto miden|mide|grueso|espesor|largo|ancho|detalles|info|informacion|agua|mojar|humedad|impermeable|resistente|exterior|interior|material|instalacion|colocar|color|colores|mantenimiento|limpiar|uso|usar|garantia|donde se usa|para que sirve)\b/.test(q) && topic) {
+        if (/\\b(cuanto cuestan|cuanto valen|el precio|los precios|las medidas|las dimensiones|cuanto miden|mide|grueso|espesor|largo|ancho|detalles|info|informacion|agua|mojar|humedad|impermeable|resistente|exterior|interior|material|instalacion|colocar|color|colores|mantenimiento|limpiar|uso|usar|garantia|donde se usa|para que sirve)\\b/.test(q) && topic) {
           return topic.name.replace(/_/g,' ') + ' ' + q;
         }
-        if (/^y\b/.test(q) || q.includes('tambien') || q.includes('también') || q.includes('cuentame') || q.includes('cuéntame') || q.includes('mas informacion') || q.includes('más información')) {
+        if (/^y\\b/.test(q) || q.includes('tambien') || q.includes('también') || q.includes('cuentame') || q.includes('cuéntame') || q.includes('mas informacion') || q.includes('más información')) {
           let prefix = '';
           if (topic) prefix += topic.name.replace(/_/g,' ') + ' ';
           return (prefix + q).trim();
@@ -925,7 +1716,7 @@
         if (!replies || replies.length === 0) replies = [ct('view_products'), ct('hours'), ct('quotation'), ct('location')];
         const opts = document.createElement('div');
         opts.className = 'chat-options';
-        opts.innerHTML = replies.map(r => `<button class="chat-option-btn" onclick="chatBotProcess('${r.replace(/'/g, "\'")}')">${r}</button>`).join('');
+        opts.innerHTML = replies.map(r => `<button class="chat-option-btn" onclick="chatBotProcess('${r.replace(/'/g, "\\'")}')">${r}</button>`).join('');
         chatBody.appendChild(opts);
         chatBody.scrollTop = chatBody.scrollHeight;
       }
@@ -945,16 +1736,25 @@
       function formatProductCard(m) {
         const waText = encodeURIComponent(ct('wa_product_interest', {name: m.name}));
         const priceTag = m.price ? `<div style="color:var(--gold);font-size:0.75rem;font-weight:600;margin-top:0.25rem;">💰 ${m.price} <span style="opacity:0.7;font-weight:400;">${ct('product_price_label')} ${m.price_unit || 'pieza'}</span></div>` : '';
-        return `<div class="chat-product-card"><img src="${ADIS_PREFIX + m.thumb}" alt="${(getLang()==='en' && m.name_en) ? m.name_en : m.name}" loading="lazy"><div class="chat-product-info"><a href="${m.url}" target="_blank">${(getLang()==='en' && m.name_en) ? m.name_en : m.name}</a><div class="chat-product-cat">${m.category}${m.subcategory ? ' / ' + m.subcategory : ''}</div>
+        return `<div class="chat-product-card">
+          <img src="${ADIS_PREFIX + m.thumb}" alt="${(getLang()==='en' && m.name_en) ? m.name_en : m.name}" loading="lazy">
+          <div class="chat-product-info">
+            <a href="${m.url}" target="_blank">${(getLang()==='en' && m.name_en) ? m.name_en : m.name}</a>
+            <div class="chat-product-cat">${m.category}${m.subcategory ? ' / ' + m.subcategory : ''}</div>
             ${priceTag}
-            <div class="chat-product-actions"><a href="${m.url}" class="primary" target="_blank">${ct('view_product')}</a><a href="https://wa.me/15208392877?text=${waText}" class="secondary" target="_blank">${ct('quote')}</a></div></div></div>`;
+            <div class="chat-product-actions">
+              <a href="${m.url}" class="primary" target="_blank">${ct('view_product')}</a>
+              <a href="https://wa.me/15208392877?text=${waText}" class="secondary" target="_blank">${ct('quote')}</a>
+            </div>
+          </div>
+        </div>`;
       }
       
       function findProductMatches(q, excludeIds) {
         if (!allProducts.length) return [];
-        const terms = q.split(/\s+/).filter(t => t.length > 2);
+        const terms = q.split(/\\s+/).filter(t => t.length > 2);
         // Búsqueda por nombre exacto (incluso con términos cortos como "gris", "negro")
-        const shortTerms = q.split(/\s+/).filter(t => t.length >= 3);
+        const shortTerms = q.split(/\\s+/).filter(t => t.length >= 3);
         return allProducts.map(p => {
           if (excludeIds && excludeIds.includes(p.name)) return { p, score: 0 };
           const text = normalizeQuery(p.name + ' ' + p.category + ' ' + (p.subcategory || '') + ' ' + (p.name_en || '') + ' ' + (p.category_en || '') + ' ' + (p.subcategory_en || ''));
@@ -998,7 +1798,7 @@
       // === BÚSQUEDA EN "SABÍAS QUE" ===
       function searchResearch(q, category) {
         if (!researchData || Object.keys(researchData).length === 0) return null;
-        const terms = q.split(/\s+/).filter(t => t.length > 2);
+        const terms = q.split(/\\s+/).filter(t => t.length > 2);
         if (terms.length === 0) return null;
         
         let best = null, bestScore = 0;
@@ -1432,7 +2232,7 @@
         }
         
         // === 7. Recomendador inteligente (solo si NO hay producto activo o el usuario pide explícitamente recomendación) ===
-        if (!activeProduct || /\b(recomienda|recomiendame|recomendar|que me recomiendas|que sugieres|sugerencia|mejor opcion|mejor opción)\b/.test(normalized)) {
+        if (!activeProduct || /\\b(recomienda|recomiendame|recomendar|que me recomiendas|que sugieres|sugerencia|mejor opcion|mejor opción)\\b/.test(normalized)) {
           const recommendation = getRecommendation(normalized, category);
           if (recommendation) {
             return { text: recommendation.text, suggestions: recommendation.suggestions };
@@ -1440,7 +2240,7 @@
         }
         
         // === 8. Comparaciones (SOLO si el usuario lo pide explícitamente) ===
-        if (/\b(diferencia|comparar|versus|vs|mejor que|peor que|diferente a|comparacion|comparación)\b/.test(normalized)) {
+        if (/\\b(diferencia|comparar|versus|vs|mejor que|peor que|diferente a|comparacion|comparación)\\b/.test(normalized)) {
           if ((normalized.includes('wpc') && normalized.includes('pvc')) || (normalized.includes('pvc') && normalized.includes('wpc'))) {
             return {
               text: ct('compare_pvc_wpc_title') + '<br><br>' + ct('compare_pvc_wpc_wpc') + '<br><br>' + ct('compare_pvc_wpc_pvc') + '<br><br>' + ct('compare_pvc_wpc_tip'),
@@ -1489,7 +2289,7 @@
         }
         
         // === 11. Memoria profunda: "otro", "otro color", "otro similar" ===
-        if (/\b(otro|otra|otros|otras|otro color|otro modelo|otro diseño|otra opcion|otra opción|algo similar|parecido|mas de esos|más de esos|muestrame mas|mostrame mas)\b/.test(normalized) && chatContext.lastProducts.length > 0) {
+        if (/\\b(otro|otra|otros|otras|otro color|otro modelo|otro diseño|otra opcion|otra opción|algo similar|parecido|mas de esos|más de esos|muestrame mas|mostrame mas)\\b/.test(normalized) && chatContext.lastProducts.length > 0) {
           const related = findRelatedProducts(chatContext.lastProducts);
           if (related.length > 0) {
             chatContext.lastProducts = related;
@@ -1504,7 +2304,7 @@
         }
         
         // === 12. Manejar rechazos / negaciones ===
-        if (/\b(no me gusta|no me gustaron|no es eso|no eso|otra cosa|algo diferente|no quiero eso|no es lo que busco|busco otra)\b/.test(normalized)) {
+        if (/\\b(no me gusta|no me gustaron|no es eso|no eso|otra cosa|algo diferente|no quiero eso|no es lo que busco|busco otra)\\b/.test(normalized)) {
           if (activeProduct || chatContext.lastTopic) {
             chatContext.activeProduct = null;
             chatContext.lastTopic = null;
@@ -1520,7 +2320,7 @@
         
         // === 13. Respuestas concisas para preguntas simples después de ver productos ===
         if (original.length < 35 && !category && activeProduct && chatContext.lastResponseType === 'products') {
-          if (/\b(precio|cuesta|valen)\b/.test(normalized)) {
+          if (/\\b(precio|cuesta|valen)\\b/.test(normalized)) {
             const lastProds = chatContext.lastProducts;
             const priceInfo = lastProds.length > 0 && lastProds[0].price ? 
               '<br><br>💰 Rango de estos modelos: <strong>' + lastProds[0].price + '</strong> por ' + (lastProds[0].price_unit || 'pieza') + '.' : '';
@@ -1532,7 +2332,7 @@
         }
         
         // === 14. Detección de urgencia ===
-        const urgencyWords = /\b(urgente|urgencia|prisa|rapido|rápido|ya|ahora|hoy|mañana|lo antes posible|express|express)\b/;
+        const urgencyWords = /\\b(urgente|urgencia|prisa|rapido|rápido|ya|ahora|hoy|mañana|lo antes posible|express|express)\\b/;
         const isUrgent = urgencyWords.test(normalized);
         
         // === 15. Búsqueda de productos (solo si no es pregunta directa de info) ===
@@ -1677,7 +2477,7 @@
       function sendQuoteToWhatsApp() {
         const data = chatContext.quoteData;
         if (!data || !data.category) return;
-        const contactStr = (data.contact && data.contact !== ct('quote_prefers_not') && data.contact !== ct('quote_whatsapp_only')) ? '• Contacto: ' + data.contact + '\n' : '';
+        const contactStr = (data.contact && data.contact !== ct('quote_prefers_not') && data.contact !== ct('quote_whatsapp_only')) ? '• Contacto: ' + data.contact + '\\n' : '';
         const msg = ct('wa_quote_summary', {category: data.category, space: data.space, m2: data.m2, install: data.install, location: data.location, contact: contactStr});
         window.open('https://wa.me/15208392877?text=' + encodeURIComponent(msg), '_blank');
       }
@@ -1755,7 +2555,7 @@
         saveHistory(text, true);
         removeInputs();
         
-        const q = text.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+        const q = text.toLowerCase().normalize('NFD').replace(/[\\u0300-\\u036f]/g, '');
         
         // Manejar acciones especiales de botones
         if (text === ct('send_quote_whatsapp')) {
@@ -1892,19 +2692,19 @@
       }
       
       function normalize(str) {
-        return (str || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+        return (str || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
       }
       
       function highlight(text, term) {
         if (!term) return text;
-        const safe = term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        const safe = term.replace(/[.*+?^${}()|[\\]\\\\]/g, '\\\\$&');
         return text.replace(new RegExp('(' + safe + ')', 'gi'), '<mark>$1</mark>');
       }
       
       function scoreProducts(term, limit) {
         if (!term || term.length < 2 || !searchProducts.length) return [];
         const normTerm = normalize(term);
-        const terms = normTerm.split(/\s+/).filter(Boolean);
+        const terms = normTerm.split(/\\s+/).filter(Boolean);
         return searchProducts.map(p => {
           const text = normalize(p.name + ' ' + p.category + ' ' + (p.subcategory || '') + ' ' + (p.name_en || '') + ' ' + (p.category_en || '') + ' ' + (p.subcategory_en || ''));
           let score = 0;
@@ -1922,7 +2722,13 @@
         const dCat = (getLang() === 'en' && p.category_en) ? p.category_en : p.category;
         const dSub = (getLang() === 'en' && p.subcategory_en) ? p.subcategory_en : p.subcategory;
         const waText = encodeURIComponent((getLang() === 'en' ? 'Hello ADIS, I saw the ' : 'Hola ADIS, vi el ') + dName + (getLang() === 'en' ? ' in the catalog and I am interested in a quote' : ' en el catálogo y me interesa cotizar'));
-        return `<a href="${p.url}" class="search-item" onclick="closeSpotlight && closeSpotlight();"><img src="${ADIS_PREFIX + p.thumb}" alt="${dName}" loading="lazy" onerror="this.style.display='none'"><div class="search-item-info"><span class="search-item-name">${highlight(dName, term)}</span><span class="search-item-cat">${dCat}${dSub ? ' / ' + dSub : ''}</span></div></a>`;
+        return `<a href="${p.url}" class="search-item" onclick="closeSpotlight && closeSpotlight();">
+          <img src="${ADIS_PREFIX + p.thumb}" alt="${dName}" loading="lazy" onerror="this.style.display='none'">
+          <div class="search-item-info">
+            <span class="search-item-name">${highlight(dName, term)}</span>
+            <span class="search-item-cat">${dCat}${dSub ? ' / ' + dSub : ''}</span>
+          </div>
+        </a>`;
       }
       
       // Desktop header search dropdown
@@ -2065,4 +2871,375 @@
       }
     })();
 
-  </script></body></html>
+  </script>
+'''
+    return f"""  <footer>
+    <div class="footer-logo">{logo_tag()}</div>
+    <div class="footer-info">
+      <strong>ADI&#39;S DISEÑO & REMODELACIÓN</strong><br>
+      {i18n('footer_slogan')}<br>
+      {CONTACTO['ubicacion']}<br>
+      <a href="tel:{CONTACTO['tel_mx_link']}">Tel. MX: {CONTACTO['tel_mx']}</a> · <a href="tel:{CONTACTO['tel_usa_link']}">Tel. USA: {CONTACTO['tel_usa']}</a><br>
+      <a href="mailto:{CONTACTO['email']}">{CONTACTO['email']}</a>
+    </div>
+    <div class="footer-social">
+      <a href="https://wa.me/{CONTACTO['whatsapp']}?text={CONTACTO["whatsapp_msg"].replace(' ', '%20')}" target="_blank" title="{t('footer_whatsapp')}">{svg_icon('whatsapp', size=22, color='currentColor')}</a>
+      <a href="{CONTACTO['facebook']}" target="_blank" title="{t('footer_facebook')}">{svg_icon('facebook', size=22, color='currentColor')}</a>
+    </div>
+    <div class="footer-links">
+      <span>{i18n('footer_links_legal')}:</span>
+      <a href="{p('nosotros.html')}">{i18n('footer_links_about')}</a>
+      <a href="{p('aviso-de-privacidad.html')}">{i18n('footer_links_privacy')}</a>
+    </div>
+    <div class="copyright">© <span id="footer-year"></span> {i18n('footer_copyright_suffix')}</div>
+  </footer>
+  <script>
+    (function(){{
+      var y = new Date().getFullYear();
+      var el = document.getElementById('footer-year');
+      if (el) el.textContent = y;
+    }})();
+  </script>
+
+  <!-- MOBILE BOTTOM NAV -->
+  <nav class="mobile-bottom-nav">
+    <a href="{p('index.html')}"><span>{svg_icon('home', size=22, color='currentColor')}</span><span>{i18n('mobile_nav_home')}</span></a>
+    <a href="{p('index.html#categorias')}"><span>{svg_icon('grid', size=22, color='currentColor')}</span><span>{i18n('mobile_nav_catalog')}</span></a>
+    <a href="{p('proyectos.html')}"><span>{svg_icon('image', size=22, color='currentColor')}</span><span>{i18n('mobile_nav_projects')}</span></a>
+    <a href="{p('contacto.html')}"><span>{svg_icon('phone', size=22, color='currentColor')}</span><span>{i18n('mobile_nav_contact')}</span></a>
+  </nav>
+
+  <a href="https://wa.me/{CONTACTO['whatsapp']}?text={CONTACTO["whatsapp_msg"].replace(' ', '%20')}" class="whatsapp-float" target="_blank" title="{t('wa_tooltip')}" aria-label="WhatsApp">
+    <svg viewBox="0 0 24 24" width="32" height="32" fill="white" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.008-.57-.008-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+    <span class="wa-tooltip">{i18n('wa_tooltip')}</span>
+  </a>
+
+  <button class="chatbot-float" onclick="toggleChat()" title="{t('chatbot_title')}">{svg_icon('robot', size=28, color='#0F0F0F')}<span class="chatbot-badge" id="chatBadge">{t('chatbot_badge')}</span></button>
+  <div class="chatbot-window" id="chatbotWindow">
+    <div class="chatbot-header">
+      <h4>{svg_icon('robot', size=20, color='#C5A059')} {i18n('chatbot_title')}</h4>
+      <div class="chat-header-actions">
+        <button class="chat-clear" onclick="clearAllChat()" title="{t('chatbot_new_chat')}">{svg_icon('trash', size=18, color='#E8D5A3')}</button>
+        <button class="chatbot-close" onclick="toggleChat()" title="{t('chatbot_close')}">{svg_icon('x', size=18, color='#E8D5A3')}</button>
+      </div>
+    </div>
+    <div class="chatbot-body" id="chatbotBody"></div>
+  </div>
+
+
+{chatbot_js.replace('__ADIS_PREFIX__', infra.CUR_PREFIX).replace('__ADIS_LANG__', infra.CUR_LANG).replace('__ADIS_LEADS_URL__', LEADS_URL).replace('__ADIS_REVIEWS_URL__', REVIEWS_URL)}"""
+
+
+
+
+def generate_lead_banner():
+    """Genera banner de captacion de leads que envia a WhatsApp."""
+    return f'''
+  <!-- LEAD CAPTURE -->
+  <section class="lead-section reveal" id="cotizar">
+    <div class="lead-container">
+      <h2>{i18n('lead_title')}</h2>
+      <p>{i18n('lead_subtitle')}</p>
+      <form class="lead-form" onsubmit="sendLead(event)">
+        <input type="text" id="leadName" placeholder="{t('lead_name')}" required>
+        <input type="tel" id="leadPhone" placeholder="{t('lead_phone')}" required>
+        <textarea id="leadProject" rows="3" placeholder="{t('lead_project_placeholder')}" required></textarea>
+        <button type="submit" class="btn-primary btn-wa">{svg_icon('whatsapp', size=18, color='currentColor')} {i18n('lead_button')}</button>
+      </form>
+      <p class="lead-note">{i18n('lead_note')}</p>
+    </div>
+  </section>
+  <script>
+    function sendLead(e) {{
+      e.preventDefault();
+      const name = document.getElementById('leadName').value.trim();
+      const phone = document.getElementById('leadPhone').value.trim();
+      const project = document.getElementById('leadProject').value.trim();
+      const msg = 'Hola ADIS, mi nombre es ' + name + ' y mi telefono es ' + phone + '. Tengo un proyecto de: ' + project + '. Me gustaria recibir asesoria.';
+      window.open('https://wa.me/{CONTACTO['whatsapp']}?text=' + encodeURIComponent(msg), '_blank');
+      if (typeof gtag !== 'undefined') gtag('event','lead_whatsapp',{{'location':'lead_banner'}});
+      e.target.reset();
+    }}
+  </script>
+'''
+
+
+
+
+def generate_testimonios():
+    """Genera formulario de testimonios que envía a WhatsApp para revisión manual."""
+    return f'''
+  <!-- TESTIMONIOS -->
+  <section class="section-wrap reveal" style="padding-top: 2rem;">
+    <div class="section-header">
+      <h2>{i18n('testimonials_title')}</h2>
+      <div class="divider"></div>
+      <p>{i18n('testimonials_subtitle', html=True)}</p>
+    </div>
+    <div id="reviewsGrid" style="max-width: 1100px; margin: 0 auto; padding: 0 2rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr)); gap: 1.5rem; margin-bottom: 3rem;">
+      <div style="background: rgba(42,42,42,0.7); backdrop-filter: blur(10px); border: 1px solid rgba(197,160,89,0.2); border-radius: 12px; padding: 1.8rem; position: relative;">
+        <div style="font-size: 3rem; color: var(--gold); opacity: 0.3; position: absolute; top: 0.5rem; right: 1rem; font-family: Georgia, serif;">"</div>
+        <span class="review-badge">{i18n('reviews_badge')}</span>
+        <p style="font-size: 0.9rem; color: rgba(245,245,245,0.8); line-height: 1.7; margin-bottom: 1rem; font-style: italic;">{i18n('testimonial_maria_text', html=True)}</p>
+        <div style="display: flex; align-items: center; gap: 0.8rem;">
+          <div style="width: 40px; height: 40px; border-radius: 50%; background: var(--gold); display: flex; align-items: center; justify-content: center; color: var(--black); font-weight: 700; font-size: 0.9rem;">MG</div>
+          <div>
+            <div style="font-size: 0.85rem; color: var(--white); font-weight: 600;">{i18n('testimonial_maria_name')}</div>
+            <div style="font-size: 0.75rem; color: var(--gold);">&#11088;&#11088;&#11088;&#11088;&#11088; — {i18n('testimonial_maria_meta')}</div>
+          </div>
+        </div>
+      </div>
+      <div style="background: rgba(42,42,42,0.7); backdrop-filter: blur(10px); border: 1px solid rgba(197,160,89,0.2); border-radius: 12px; padding: 1.8rem; position: relative;">
+        <div style="font-size: 3rem; color: var(--gold); opacity: 0.3; position: absolute; top: 0.5rem; right: 1rem; font-family: Georgia, serif;">"</div>
+        <span class="review-badge">{i18n('reviews_badge')}</span>
+        <p style="font-size: 0.9rem; color: rgba(245,245,245,0.8); line-height: 1.7; margin-bottom: 1rem; font-style: italic;">{i18n('testimonial_carlos_text', html=True)}</p>
+        <div style="display: flex; align-items: center; gap: 0.8rem;">
+          <div style="width: 40px; height: 40px; border-radius: 50%; background: var(--gold); display: flex; align-items: center; justify-content: center; color: var(--black); font-weight: 700; font-size: 0.9rem;">CR</div>
+          <div>
+            <div style="font-size: 0.85rem; color: var(--white); font-weight: 600;">{i18n('testimonial_carlos_name')}</div>
+            <div style="font-size: 0.75rem; color: var(--gold);">&#11088;&#11088;&#11088;&#11088;&#11088; — {i18n('testimonial_carlos_meta')}</div>
+          </div>
+        </div>
+      </div>
+      <div style="background: rgba(42,42,42,0.7); backdrop-filter: blur(10px); border: 1px solid rgba(197,160,89,0.2); border-radius: 12px; padding: 1.8rem; position: relative;">
+        <div style="font-size: 3rem; color: var(--gold); opacity: 0.3; position: absolute; top: 0.5rem; right: 1rem; font-family: Georgia, serif;">"</div>
+        <span class="review-badge">{i18n('reviews_badge')}</span>
+        <p style="font-size: 0.9rem; color: rgba(245,245,245,0.8); line-height: 1.7; margin-bottom: 1rem; font-style: italic;">{i18n('testimonial_lopez_text', html=True)}</p>
+        <div style="display: flex; align-items: center; gap: 0.8rem;">
+          <div style="width: 40px; height: 40px; border-radius: 50%; background: var(--gold); display: flex; align-items: center; justify-content: center; color: var(--black); font-weight: 700; font-size: 0.9rem;">FL</div>
+          <div>
+            <div style="font-size: 0.85rem; color: var(--white); font-weight: 600;">{i18n('testimonial_lopez_name')}</div>
+            <div style="font-size: 0.75rem; color: var(--gold);">&#11088;&#11088;&#11088;&#11088;&#11088; — {i18n('testimonial_lopez_meta')}</div>
+          </div>
+        </div>
+      </div>
+      <div style="background: rgba(42,42,42,0.7); backdrop-filter: blur(10px); border: 1px solid rgba(197,160,89,0.2); border-radius: 12px; padding: 1.8rem; position: relative;">
+        <div style="font-size: 3rem; color: var(--gold); opacity: 0.3; position: absolute; top: 0.5rem; right: 1rem; font-family: Georgia, serif;">"</div>
+        <span class="review-badge">{i18n('reviews_badge')}</span>
+        <p style="font-size: 0.9rem; color: rgba(245,245,245,0.8); line-height: 1.7; margin-bottom: 1rem; font-style: italic;">{i18n('testimonial_roberto_text', html=True)}</p>
+        <div style="display: flex; align-items: center; gap: 0.8rem;">
+          <div style="width: 40px; height: 40px; border-radius: 50%; background: var(--gold); display: flex; align-items: center; justify-content: center; color: var(--black); font-weight: 700; font-size: 0.9rem;">RM</div>
+          <div>
+            <div style="font-size: 0.85rem; color: var(--white); font-weight: 600;">{i18n('testimonial_roberto_name')}</div>
+            <div style="font-size: 0.75rem; color: var(--gold);">&#11088;&#11088;&#11088;&#11088;&#11088; — {i18n('testimonial_roberto_meta')}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div style="max-width: 600px; margin: 0 auto; padding: 0 1rem;">
+      <form id="testimonioForm" onsubmit="enviarTestimonio(event)" style="display: flex; flex-direction: column; gap: 1rem;">
+        <input type="text" id="tNombre" placeholder="{t('testimonials_name')}" required
+          style="padding: 0.9rem 1.2rem; background: rgba(42,42,42,0.8); border: 1px solid rgba(197,160,89,0.3); border-radius: 8px; color: var(--white); font-family: 'Montserrat', sans-serif; font-size: 0.9rem; backdrop-filter: blur(8px); transition: all 0.3s;"
+          onfocus="this.style.borderColor='var(--gold)';this.style.boxShadow='0 0 15px rgba(197,160,89,0.15)'" onblur="this.style.borderColor='rgba(197,160,89,0.3)';this.style.boxShadow='none'">
+        <textarea id="tComentario" placeholder="{t('testimonials_comment')}" required rows="4"
+          style="padding: 0.9rem 1.2rem; background: rgba(42,42,42,0.8); border: 1px solid rgba(197,160,89,0.3); border-radius: 8px; color: var(--white); font-family: 'Montserrat', sans-serif; font-size: 0.9rem; backdrop-filter: blur(8px); resize: vertical; transition: all 0.3s;"
+          onfocus="this.style.borderColor='var(--gold)';this.style.boxShadow='0 0 15px rgba(197,160,89,0.15)'" onblur="this.style.borderColor='rgba(197,160,89,0.3)';this.style.boxShadow='none'"></textarea>
+        <input type="text" id="tProducto" placeholder="{t('testimonials_product')}"
+          style="padding: 0.9rem 1.2rem; background: rgba(42,42,42,0.8); border: 1px solid rgba(197,160,89,0.3); border-radius: 8px; color: var(--white); font-family: 'Montserrat', sans-serif; font-size: 0.9rem; backdrop-filter: blur(8px); transition: all 0.3s;"
+          onfocus="this.style.borderColor='var(--gold)';this.style.boxShadow='0 0 15px rgba(197,160,89,0.15)'" onblur="this.style.borderColor='rgba(197,160,89,0.3)';this.style.boxShadow='none'">
+        <button type="submit" class="btn-primary" style="align-self: center; margin-top: 0.5rem; display:inline-flex; align-items:center; gap:0.5rem;">{svg_icon('send', size=18, color='currentColor')} {i18n('testimonials_send')}</button>
+      </form>
+      <div style="text-align: center; margin-top: 1.2rem; font-size: 0.8rem; color: rgba(245,245,245,0.5); line-height: 1.6;">
+        {i18n('testimonials_review', html=True)}<br>
+        {i18n('testimonials_whatsapp', html=True)}
+        <a href="https://wa.me/15208392877?text=Hola%20ADIS,%20quiero%20dejar%20un%20testimonio" target="_blank" style="color: var(--gold); text-decoration: none; font-weight: 600; display:inline-flex; align-items:center; gap:0.3rem;">{svg_icon('chat', size=14)} WhatsApp</a>
+      </div>
+    </div>
+    <div class="reviews-cta">
+      <a href="{CONTACTO.get('google_business_url') or 'https://www.google.com/search?q=ADIS+Dise%C3%B1o+y+Remodelaci%C3%B3n+Nogales+rese%C3%B1as'}" target="_blank" class="btn-outline" onclick="gtag('event','google_reviews_click',{{'location':'testimonials'}})">{i18n('reviews_google_cta')}</a>
+    </div>
+  </section>
+  <script>
+    function enviarTestimonio(e) {{
+      e.preventDefault();
+      const nombre = document.getElementById('tNombre').value.trim();
+      const comentario = document.getElementById('tComentario').value.trim();
+      const producto = document.getElementById('tProducto').value.trim();
+      let msg = 'Hola ADIS, soy ' + nombre + '. Quiero dejar un testimonio:';
+      msg += '%0A%0A' + comentario;
+      msg += '%0A%0AProducto/Categoría: ' + (producto || 'No especificado');
+      msg += '%0A%0APágina: ' + window.location.href;
+      window.open('https://wa.me/15208392877?text=' + encodeURIComponent(msg.replace(/%0A/g, '\\n')), '_blank');
+      alert('{t("testimonial_thanks")}' + nombre + '{t("testimonial_thanks_end")}');
+      e.target.reset();
+    }}
+
+    // Resenas en vivo desde Google Sheets (via Apps Script). Si falla o no hay URL
+    // configurada, se conservan las tarjetas estaticas generadas.
+    (function() {{
+      var grid = document.getElementById('reviewsGrid');
+      if (!grid || typeof ADIS_REVIEWS_URL !== 'string' || !ADIS_REVIEWS_URL) return;
+      var CARD = 'background: rgba(42,42,42,0.7); backdrop-filter: blur(10px); border: 1px solid rgba(197,160,89,0.2); border-radius: 12px; padding: 1.8rem; position: relative;';
+      var QUOTE = 'font-size: 3rem; color: var(--gold); opacity: 0.3; position: absolute; top: 0.5rem; right: 1rem; font-family: Georgia, serif;';
+      var TEXT = 'font-size: 0.9rem; color: rgba(245,245,245,0.8); line-height: 1.7; margin-bottom: 1rem; font-style: italic;';
+      var AVATAR = 'width: 40px; height: 40px; border-radius: 50%; background: var(--gold); display: flex; align-items: center; justify-content: center; color: var(--black); font-weight: 700; font-size: 0.9rem;';
+      var tried = false;
+      function esc(s) {{ return String(s == null ? '' : s).replace(/[&<>"']/g, function(c) {{ return {{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}}[c]; }}); }}
+      function cardHtml(r) {{
+        var words = String(r.nombre || '?').trim().split(/\\s+/);
+        var initials = words.map(function(w) {{ return w.charAt(0); }}).join('').substring(0, 2).toUpperCase();
+        var n = Math.max(1, Math.min(5, parseInt(r.estrellas, 10) || 5));
+        var stars = '';
+        for (var i = 0; i < n; i++) stars += '\u2B50';
+        return '<div style="' + CARD + '">' +
+          '<div style="' + QUOTE + '">"</div>' +
+          '<span class="review-badge">Google</span>' +
+          '<p style="' + TEXT + '">' + esc(r.texto) + '</p>' +
+          '<div style="display: flex; align-items: center; gap: 0.8rem;">' +
+            '<div style="' + AVATAR + '">' + esc(initials) + '</div>' +
+            '<div><div style="font-size: 0.85rem; color: var(--white); font-weight: 600;">' + esc(r.nombre) + '</div>' +
+            '<div style="font-size: 0.75rem; color: var(--gold);">' + stars + (r.fecha ? ' — ' + esc(r.fecha) : '') + '</div></div>' +
+          '</div></div>';
+      }}
+      function load() {{
+        if (tried) return; tried = true;
+        fetch(ADIS_REVIEWS_URL + '?action=reviews').then(function(res) {{ return res.json(); }}).then(function(data) {{
+          if (data && data.ok && data.reviews && data.reviews.length) {{
+            grid.innerHTML = data.reviews.map(cardHtml).join('');
+          }}
+        }}).catch(function() {{}});
+      }}
+      if ('IntersectionObserver' in window) {{
+        var io = new IntersectionObserver(function(entries) {{
+          entries.forEach(function(en) {{ if (en.isIntersecting) {{ load(); io.disconnect(); }} }});
+        }}, {{ rootMargin: '300px' }});
+        io.observe(grid);
+      }} else {{ load(); }}
+    }})();
+  </script>
+'''
+
+
+
+def _extract_curiosos_cards(text):
+    """Extrae tarjetas de datos curiosos del texto markdown."""
+    import re
+    clean_text = text.replace('---', '').strip()
+    items = re.split(r'\n\n+(?=#{2,3} |\*\*)', clean_text)
+    cards = ''
+    item_count = 0
+    for item in items:
+        item = item.strip()
+        if not item or len(item) < 20:
+            continue
+        title = None
+        title_match = re.search(r'#{2,3}\s*(.+?)(?:\n|$)', item)
+        if title_match:
+            title = title_match.group(1)
+        else:
+            title_match = re.search(r'^\*\*\s*(.+?)\s*\*\*', item)
+            if title_match:
+                title = title_match.group(1)
+        if not title:
+            continue
+        title = re.sub(r'^[\s\U0001F300-\U0001F9FF]+', '', title).strip()
+        if not title:
+            continue
+        if title_match and title_match.group(0).startswith('#'):
+            desc = re.sub(r'#{2,3}\s*.+?(?:\n|$)', '', item, count=1)
+        else:
+            desc = re.sub(r'^\*\*\s*' + re.escape(title) + r'\s*\*\*', '', item)
+        desc = desc.strip()
+        desc = re.sub(r'\s+', ' ', desc)
+        if not desc:
+            continue
+        desc = re.sub(r'\*\*(.+?)\*\*', r'<strong>\1</strong>', desc)
+        item_count += 1
+        if len(desc) > 130:
+            desc_trunc = desc[:127] + '...'
+            card_p = f'''<p class="sq-card-text">
+      <span class="sq-short">{desc_trunc}</span>
+      <span class="sq-full" style="display:none">{desc}</span>
+      <span class="sq-card-readmore" onclick="sqToggle(this)">{t('sq_card_readmore')}</span>
+    </p>'''
+        else:
+            card_p = f'<p class="sq-card-text">{desc}</p>'
+        cards += f'''      <div class="sq-card">
+        <span class="sq-card-number">{item_count:02d}</span>
+        <h3>{title}</h3>
+        {card_p}
+      </div>
+'''
+    return cards
+
+
+
+
+def _extract_faqs_html(text):
+    """Extrae FAQs del texto markdown."""
+    import re
+    clean_faqs = text.replace('---', '').strip()
+    qa_pairs = re.findall(r'\*\*❓\s*(.+?)\*\*\s*\n?>?\s*(.+?)(?=\n\n\*\*❓|\Z)', clean_faqs, re.DOTALL)
+    if not qa_pairs:
+        qa_pairs = re.findall(r'#{2,3}\s*(.+?)(?:\n|$)\s*\n?(.+?)(?=\n#{2,3}|\Z)', clean_faqs, re.DOTALL)
+    faqs = ''
+    for q, a in qa_pairs:
+        q_clean = q.strip()
+        a_clean = a.strip().replace('\n', ' ')
+        a_clean = re.sub(r'\*\*(.+?)\*\*', r'<strong>\1</strong>', a_clean)
+        if len(a_clean) > 200:
+            a_clean = a_clean[:197] + '...'
+        faqs += f'''      <div class="sq-faq-item">
+        <div class="sq-faq-q" onclick="this.parentElement.classList.toggle('open')">{q_clean}</div>
+        <div class="sq-faq-a">{a_clean}</div>
+      </div>
+'''
+    return faqs
+
+
+
+
+def _extract_curiosos_data(text):
+    """Extrae datos curiosos como lista de diccionarios {title, content} para el chatbot."""
+    import re
+    clean_text = text.replace('---', '').strip()
+    items = re.split(r'\n\n+(?=#{2,3} |\*\*)', clean_text)
+    result = []
+    for item in items:
+        item = item.strip()
+        if not item or len(item) < 20:
+            continue
+        title = None
+        title_match = re.search(r'#{2,3}\s*(.+?)(?:\n|$)', item)
+        if title_match:
+            title = title_match.group(1)
+        else:
+            title_match = re.search(r'^\*\*\s*(.+?)\s*\*\*', item)
+            if title_match:
+                title = title_match.group(1)
+        if not title:
+            continue
+        title = re.sub(r'^[\s\U0001F300-\U0001F9FF]+', '', title).strip()
+        if not title:
+            continue
+        if title_match and title_match.group(0).startswith('#'):
+            desc = re.sub(r'#{2,3}\s*.+?(?:\n|$)', '', item, count=1)
+        else:
+            desc = re.sub(r'^\*\*\s*' + re.escape(title) + r'\s*\*\*', '', item)
+        desc = desc.strip()
+        desc = re.sub(r'\s+', ' ', desc)
+        if not desc:
+            continue
+        desc = re.sub(r'\*\*(.+?)\*\*', r'\1', desc)
+        result.append({'title': title, 'content': desc})
+    return result
+
+
+
+
+def _extract_faqs_data(text):
+    """Extrae FAQs como lista de diccionarios {q, a} para el chatbot."""
+    import re
+    clean_faqs = text.replace('---', '').strip()
+    qa_pairs = re.findall(r'\*\*❓\s*(.+?)\*\*\s*\n?>?\s*(.+?)(?=\n\n\*\*❓|\Z)', clean_faqs, re.DOTALL)
+    if not qa_pairs:
+        qa_pairs = re.findall(r'#{2,3}\s*(.+?)(?:\n|$)\s*\n?(.+?)(?=\n#{2,3}|\Z)', clean_faqs, re.DOTALL)
+    result = []
+    for q, a in qa_pairs:
+        q_clean = q.strip()
+        a_clean = a.strip().replace('\n', ' ')
+        a_clean = re.sub(r'\*\*(.+?)\*\*', r'\1', a_clean)
+        result.append({'q': q_clean, 'a': a_clean})
+    return result
+
+

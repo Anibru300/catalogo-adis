@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Panel · ADIS Diseño & Remodelación</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/*__ADMIN_CSS__*/</style>
+</head>
+<body>
+
+<!-- ============ VISTA: LOGIN ============ -->
+<div id="loginView">
+  <div class="login-card">
+    <img src="LOGO%20ADIS.webp" onerror="this.onerror=null;this.src='LOGO%20ADIS.png'" alt="ADIS Diseño &amp; Remodelación" class="login-logo">
+    <div class="login-title">Panel <span class="gold">Administrativo</span></div>
+    <div class="login-sub">ADIS Diseño &amp; Remodelación</div>
+    <label for="loginUser">Usuario</label>
+    <input id="loginUser" autocomplete="username" autocapitalize="off" spellcheck="false">
+    <label for="loginPass">Contraseña</label>
+    <input id="loginPass" type="password" autocomplete="current-password" onkeydown="if(event.key==='Enter')login()">
+    <button class="btn btn-solid" style="justify-content:center; margin-top:1.3rem; width:100%; padding:0.85rem;" onclick="login()">Entrar al panel</button>
+    <p id="loginStatus"></p>
+    <div class="login-foot">Acceso exclusivo para administración</div>
+  </div>
+</div>
+
+<!-- ============ VISTA: APP ============ -->
+<div id="appView" class="hidden">
+  <header class="app">
+    <div>
+      <h1>ADIS <span class="gold">PANEL</span></h1>
+      <p class="muted" id="userEmail" style="font-size:0.75rem;"></p>
+    </div>
+    <nav class="menu" id="mainMenu">
+      <button class="tab" data-tab="dash" onclick="showTab('dash')">🏠 Resumen</button>
+      <details class="mgroup" data-group="proposal quotes">
+        <summary>🧾 Cotizaciones</summary>
+        <div class="mdrop">
+          <button class="tab" data-tab="proposal" onclick="showTab('proposal')">📝 Crear nueva cotización</button>
+          <button class="tab" data-tab="quotes" onclick="showTab('quotes')">📜 Historial de cotizaciones</button>
+        </div>
+      </details>
+      <details class="mgroup" data-group="leads clientes oc">
+        <summary>👥 Clientes</summary>
+        <div class="mdrop">
+          <button class="tab" data-tab="leads" onclick="showTab('leads')">📥 Leads (contactos del sitio)</button>
+          <button class="tab" data-tab="clientes" onclick="showTab('clientes')">👥 Directorio de clientes</button>
+          <hr>
+          <button class="tab" data-tab="oc" onclick="showTab('oc'); provScroll()">🚚 Proveedores</button>
+        </div>
+      </details>
+      <details class="mgroup" data-group="inventory">
+        <summary>📦 Inventario</summary>
+        <div class="mdrop">
+          <button class="tab" data-tab="inventory" onclick="showTab('inventory')">📋 Existencias y productos</button>
+          <hr>
+          <button class="tab" data-tab="inventory" onclick="showTab('inventory'); invMov('entrada')">📥 Entrada de material</button>
+          <button class="tab" data-tab="inventory" onclick="showTab('inventory'); invMov('salida')">📤 Salida de material</button>
+          <button class="tab" data-tab="inventory" onclick="showTab('inventory'); invMov('ajuste')">± Ajuste de existencia</button>
+          <hr>
+          <button class="tab" data-tab="inventory" onclick="showTab('inventory'); invEditar()">✏️ Editar producto (descripción y fotos)</button>
+          <button class="tab" data-tab="inventory" onclick="showTab('inventory'); showPricesForm()">💲 Cambio de códigos y precios</button>
+          <hr>
+          <button class="tab" data-tab="inventory" onclick="showTab('inventory'); showWarehouseForm()">🏬 Almacenes</button>
+          <button class="tab" data-tab="inventory" onclick="showTab('inventory'); showConfigForm()">⚙️ Moneda y configuración</button>
+        </div>
+      </details>
+      <details class="mgroup" data-group="oc">
+        <summary>🛒 Compras</summary>
+        <div class="mdrop">
+          <button class="tab" data-tab="oc" onclick="showTab('oc')">📋 Órdenes de compra</button>
+          <button class="tab" data-tab="oc" onclick="showTab('oc'); showOCForm()">＋ Nueva orden de compra</button>
+          <hr>
+          <button class="tab" data-tab="oc" onclick="showTab('oc'); provScroll()">🚚 Proveedores</button>
+        </div>
+      </details>
+      <details class="mgroup" data-group="sales">
+        <summary>💵 Ventas</summary>
+        <div class="mdrop">
+          <button class="tab" data-tab="sales" onclick="showTab('sales')">＋ Nueva venta</button>
+          <button class="tab" data-tab="sales" onclick="showTab('sales')">📜 Historial de ventas</button>
+        </div>
+      </details>
+      <details class="mgroup" data-group="proyectos">
+        <summary>🏗️ Proyectos</summary>
+        <div class="mdrop">
+          <button class="tab" data-tab="proyectos" onclick="showTab('proyectos')">📋 Lista de proyectos</button>
+          <button class="tab" data-tab="proyectos" onclick="showTab('proyectos'); showProyectoForm()">＋ Nuevo proyecto</button>
+        </div>
+      </details>
+      <details class="mgroup" data-group="cobros flujocaja expenses pnl">
+        <summary>💰 Dinero</summary>
+        <div class="mdrop">
+          <button class="tab" data-tab="cobros" onclick="showTab('cobros')">💵 Cobros / cuentas por cobrar</button>
+          <button class="tab" data-tab="flujocaja" onclick="showTab('flujocaja')">🧮 Caja (efectivo real)</button>
+          <hr>
+          <button class="tab" data-tab="expenses" onclick="showTab('expenses')">📉 Gastos / cuentas por pagar</button>
+          <button class="tab" data-tab="pnl" onclick="showTab('pnl')">📊 Resultados (P&amp;L y alertas)</button>
+        </div>
+      </details>
+      <details class="mgroup" data-group="reviews analytics flow">
+        <summary>📈 Sitio web</summary>
+        <div class="mdrop">
+          <button class="tab" data-tab="reviews" onclick="showTab('reviews')">⭐ Reseñas</button>
+          <button class="tab" data-tab="analytics" onclick="showTab('analytics')">📊 Estadísticas</button>
+          <button class="tab" data-tab="flow" onclick="showTab('flow')">🌊 Flujo de visitas</button>
+        </div>
+      </details>
+      <button class="tab" data-tab="ayuda" onclick="showTab('ayuda')">❓ Ayuda</button>
+    </nav>
+    <button id="menuToggle" onclick="document.getElementById('mainMenu').classList.toggle('open')" aria-label="Menú">☰</button>
+    <button class="btn btn-sm" onclick="logout()">Cerrar sesión</button>
+  </header>
+
+  <main class="wrap">
+    <div id="notice"></div>
+
+    <!-- RESUMEN (FASE 7: dashboard ejecutivo) -->
+    <section id="tab-dash" class="panel">
+      <div class="toolbar">
+        <h2 style="margin:0;">Resumen del negocio</h2>
+        <span class="muted" id="dashFecha"></span>
+        <button class="btn btn-sm" onclick="loadDash()">↻ Actualizar</button>
+      </div>
+      <div class="pnl-cards" id="dashKpis"></div>
+      <div class="card-box" id="dashAlertas" style="margin-top:1rem;"></div>
+      <div class="toolbar" style="margin-top:1rem;">
+        <span class="muted">Accesos rápidos:</span>
+        <button class="btn btn-sm" onclick="showTab('proposal')">＋ Nueva cotización</button>
+        <button class="btn btn-sm" onclick="showTab('sales')">＋ Nueva venta</button>
+        <button class="btn btn-sm" onclick="showTab('cobros')">Cobrar</button>
+        <button class="btn btn-sm" onclick="showTab('expenses')">Registrar gasto</button>
+        <button class="btn btn-sm" onclick="showTab('oc')">Nueva compra</button>
+        <button class="btn btn-sm" onclick="showTab('flujocaja')">Ver caja</button>
+      </div>
+    </section>
+
+    <!-- LEADS -->
+    <section id="tab-leads" class="panel hidden">
+      <div class="toolbar">
+        <h2 style="margin:0;">Leads del formulario</h2>
+        <button class="btn btn-sm" onclick="loadLeads()">↻ Actualizar</button>
+        <span class="muted" id="leadsCount"></span>
+      </div>
+      <div class="card-box table-scroll">
+        <table>
+          <thead><tr><th>Fecha</th><th>Nombre</th><th>Teléfono</th><th>Email</th><th>Ciudad</th><th>m²</th><th>Producto</th><th>Mensaje</th><th></th></tr></thead>
+          <tbody id="leadsTable"><tr><td colspan="9" class="muted">Cargando…</td></tr></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- CLIENTES -->
+
+    <!-- CLIENTES -->
+    <section id="tab-clientes" class="panel hidden">
+      <div class="toolbar">
+        <h2 style="margin:0;">Clientes</h2>
+        <button class="btn btn-sm" onclick="showClienteForm()">＋ Cliente</button>
+        <span class="muted" id="cliCount"></span>
+      </div>
+      <div id="cliForms"></div>
+      <div class="card-box table-scroll">
+        <table>
+          <thead><tr><th>Nombre</th><th>Teléfono</th><th>Email</th><th>Ciudad</th><th>Origen</th><th></th></tr></thead>
+          <tbody id="cliTable"><tr><td colspan="6" class="muted">Cargando…</td></tr></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- COTIZACIONES -->
+    <section id="tab-quotes" class="panel hidden">
+      <div class="toolbar">
+        <h2 style="margin:0;">Cotizaciones</h2>
+        <button class="btn btn-sm" onclick="showTab('proposal')">＋ Nueva cotización (Cotizador)</button>
+      </div>
+      <p class="muted" style="font-size:0.78rem;margin-bottom:0.8rem;">La captura de cotizaciones ahora vive en el <strong>Cotizador profesional</strong> (formato ADIS con folio, fotos y PDF). Aquí administras las guardadas.</p>
+      <h2>Cotizaciones guardadas</h2>
+      <div class="card-box table-scroll">
+        <table>
+          <thead><tr><th>Fecha</th><th>Folio</th><th>Cliente</th><th>Teléfono</th><th>Total</th><th>Estado</th><th>Acción</th></tr></thead>
+          <tbody id="quotesTable"><tr><td colspan="7" class="muted">Cargando…</td></tr></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- COTIZADOR PROFESIONAL -->
+    <section id="tab-proposal" class="panel hidden">
+      <div class="toolbar">
+        <h2 style="margin:0;">📝 Cotizador · Propuesta de remodelación</h2>
+        <span style="flex:1;"></span>
+        <button class="btn" onclick="newProposal()">🆕 Nueva</button>
+        <button class="btn" onclick="descargarPDF()">⬇️ Descargar PDF</button>
+        <button class="btn" onclick="printProposal()">🖨️ Imprimir</button>
+        <button class="btn" onclick="sendProposalWhatsApp()">🟢 WhatsApp</button>
+        <button class="btn btn-solid" onclick="saveProposal()">💾 Guardar cotización</button>
+      </div>
+      <div class="prop-layout">
+        <div>
+          <details class="prop-sec" open>
+            <summary>01 · Datos del cliente y del proyecto</summary>
+            <div class="sec-body">
+              <div class="row">
+                <div><label>Cliente *</label><input id="pCliente" list="pClientesList" placeholder="Nombre del cliente" oninput="prop.cliente=this.value;matchLead();scheduleProp();"><datalist id="pClientesList"></datalist></div>
+                <div><label>Teléfono</label><input id="pTelefono" placeholder="+1 520 ..." oninput="prop.telefono=this.value;scheduleProp();"></div>
+              </div>
+              <div class="row">
+                <div><label>Proyecto</label><input id="pProyecto" placeholder="Ej. Remodelación de cocina" oninput="prop.proyecto=this.value;scheduleProp();"></div>
+                <div><label>Ubicación</label><input id="pUbicacion" placeholder="Nogales, Sonora" oninput="prop.ubicacion=this.value;scheduleProp();"></div>
+              </div>
+              <div class="row">
+                <div><label>Fecha</label><input id="pFecha" type="date" oninput="prop.fecha=this.value;scheduleProp();"></div>
+                <div><label>Vigencia (días)</label><input id="pVigencia" type="number" min="1" oninput="prop.vigencia=parseInt(this.value)||30;scheduleProp();"></div>
+                <div><label>Elaboró</label><input id="pElaboro" oninput="prop.elaboro=this.value;scheduleProp();"></div>
+              </div>
+            </div>
+          </details>
+
+          <details class="prop-sec" open>
+            <summary>02 · Alcance del proyecto</summary>
+            <div class="sec-body">
+              <label>Fotografía / render del proyecto</label>
+              <div class="photo-grid" style="grid-template-columns:1fr;">
+                <div class="photo-slot" id="pFotoProySlot">
+                  <input type="file" id="pFotoProy" accept="image/*" onchange="setFotoProyecto(this)">
+                </div>
+              </div>
+              <label>Tipo de proyecto (marca los que apliquen)</label>
+              <div class="tipos-grid" id="pTipos"></div>
+              <div class="row">
+                <div><label>Otro (especificar)</label><input id="pOtroTipo" placeholder="Ej. Techo de pergola" oninput="prop.otroTipo=this.value;scheduleProp();"></div>
+              </div>
+              <div class="row">
+                <div><label>Área a transformar</label><input id="pArea" placeholder="Ej. Muro principal de sala, 12 m²" oninput="prop.area=this.value;scheduleProp();"></div>
+                <div><label>Materiales principales</label><input id="pMateriales" placeholder="Ej. Placa PVC mármol Carrara, zoclos WPC" oninput="prop.materiales=this.value;scheduleProp();"></div>
+              </div>
+              <label>Descripción breve del proyecto</label>
+              <textarea id="pDescripcion" rows="2" placeholder="Resumen de lo que se hará..." oninput="prop.descripcion=this.value;scheduleProp();"></textarea>
+            </div>
+          </details>
+
+          <details class="prop-sec" open>
+            <summary>03 · Inversión total del proyecto</summary>
+            <div class="sec-body">
+              <div class="row" style="align-items:end;">
+                <div>
+                  <label>Precio final de la cotización</label>
+                  <input type="number" id="pPrecioFinal" min="0" step="0.01" placeholder="0.00" oninput="prop.precioFinal=this.value;updateTotalsUI();scheduleProp();">
+                </div>
+                <div>
+                  <label>Moneda</label>
+                  <select id="pMoneda" onchange="prop.moneda=this.value;updateTotalsUI();scheduleProp();">
+                    <option value="MXN">MXN — Pesos mexicanos</option>
+                    <option value="USD">USD — Dólares americanos</option>
+                  </select>
+                </div>
+              </div>
+              <div class="prop-tot" id="pTotales" style="flex-direction:column; align-items:flex-start; gap:0.45rem;">
+                <span>INVERSIÓN TOTAL: <b class="gold" id="pTotalTxt"></b></span>
+                <span class="muted" style="display:flex; gap:0.6rem; align-items:center; flex-wrap:wrap;">Costo total (interno, opcional):
+                  <input type="number" id="pCosto" min="0" step="0.01" placeholder="0.00" oninput="prop.costo=this.value;renderUtilidad();scheduleProp();">
+                  <b id="pUtil"></b>
+                </span>
+              </div>
+            </div>
+          </details>
+
+          <details class="prop-sec">
+            <summary>04 · Fotografías de productos y materiales</summary>
+            <div class="sec-body">
+              <label>Sube las fotos de los productos que se incluirán en la propuesta</label>
+              <div class="photo-grid" id="pFotosGrid"></div>
+              <button class="btn btn-sm" style="margin-top:0.5rem;" onclick="addFotoSlot()">＋ Agregar foto</button>
+            </div>
+          </details>
+
+          <details class="prop-sec">
+            <summary>05 · Especificaciones técnicas y notas</summary>
+            <div class="sec-body">
+              <textarea id="pEspec" rows="3" placeholder="Acabados, medidas, marcas, colores u observaciones relevantes para el cliente..." oninput="prop.especificaciones=this.value;scheduleProp();"></textarea>
+            </div>
+          </details>
+
+          <details class="prop-sec">
+            <summary>06 · Condiciones comerciales</summary>
+            <div class="sec-body">
+              <label>Forma de pago</label>
+              <input id="pFormaPago" oninput="prop.formaPago=this.value;scheduleProp();">
+              <label>Tiempo de entrega (días de trabajo)</label>
+              <input id="pTiempoEntrega" type="number" min="0" placeholder="Ej. 5" oninput="prop.tiempoEntrega=this.value;scheduleProp();">
+              <label>Alcance y trabajos adicionales</label>
+              <textarea id="pAlcanceExtra" rows="2" oninput="prop.alcanceExtra=this.value;scheduleProp();"></textarea>
+              <label>Secciones del documento</label>
+              <div class="radio-row" style="flex-wrap:wrap; gap:1.2rem;">
+                <label><input type="checkbox" id="pIncluirGarantia" checked onchange="prop.incluirGarantia=this.checked;scheduleProp();"> 07 Garantía</label>
+                <label><input type="checkbox" id="pIncluirLogistica" checked onchange="prop.incluirLogistica=this.checked;scheduleProp();"> 08 Logística premium</label>
+                <label><input type="checkbox" id="pIncluirAceptacion" checked onchange="prop.incluirAceptacion=this.checked;scheduleProp();"> 09 Aceptación (firmas)</label>
+              </div>
+            </div>
+          </details>
+        </div>
+        <div class="prop-preview" id="propPreview"></div>
+      </div>
+    </section>
+
+    <!-- RESEÑAS -->
+    <section id="tab-reviews" class="panel hidden">
+      <div class="toolbar"><h2 style="margin:0;">Publicar reseña en el sitio</h2></div>
+      <div class="card-box">
+        <div class="row">
+          <div><label>Nombre *</label><input id="rNombre" placeholder="Nombre del cliente"></div>
+          <div><label>Calificación</label><div class="stars-input" id="rStars"></div></div>
+        </div>
+        <label>Texto de la reseña *</label>
+        <textarea id="rTexto" rows="3" placeholder="Copia aquí la reseña de Google..."></textarea>
+        <div class="toolbar" style="margin-top:1rem;">
+          <button class="btn btn-solid" onclick="addReview()">⭐ Publicar</button>
+          <span class="muted">Se muestra en la sección de testimonios de todo el sitio.</span>
+        </div>
+      </div>
+      <h2>Reseñas publicadas</h2>
+      <div class="card-box table-scroll">
+        <table>
+          <thead><tr><th>Fecha</th><th>Nombre</th><th>Estrellas</th><th>Texto</th><th></th></tr></thead>
+          <tbody id="reviewsTable"><tr><td colspan="5" class="muted">Cargando…</td></tr></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- INVENTARIO -->
+    <section id="tab-oc" class="panel hidden">
+      <div class="toolbar">
+        <h2 style="margin:0;">Órdenes de compra</h2>
+        <select id="ocFiltro" onchange="renderOC()"><option value="">Todos los estados</option><option>BORRADOR</option><option>AUTORIZADA</option><option>ENVIADA</option><option>PARCIAL</option><option>RECIBIDA</option><option>CANCELADA</option></select>
+        <button class="btn btn-sm" onclick="showOCForm()">＋ Orden de compra</button>
+        <button class="btn btn-sm" onclick="showProvForm()">＋ Proveedor</button>
+      </div>
+      <div id="ocForms"></div>
+      <div class="card-box table-scroll">
+        <table>
+          <thead><tr><th>Folio</th><th>Fecha</th><th>Proveedor</th><th>Almacén</th><th>Total</th><th>Estado</th><th></th></tr></thead>
+          <tbody id="ocTable"><tr><td colspan="7" class="muted">Cargando…</td></tr></tbody>
+        </table>
+      </div>
+      <h2 style="margin-top:1.5rem;" id="provAnchor">Proveedores</h2>
+      <div class="card-box table-scroll">
+        <table>
+          <thead><tr><th>Nombre</th><th>Contacto</th><th>Teléfono</th><th>Email</th><th></th></tr></thead>
+          <tbody id="provTable"><tr><td colspan="5" class="muted">Cargando…</td></tr></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="tab-inventory" class="panel hidden">
+      <div class="toolbar">
+        <h2 style="margin:0;">Inventario</h2>
+        <input id="invSearch" placeholder="Buscar código o nombre..." oninput="renderInventory()" style="width:200px;">
+        <select id="invAlmacen" onchange="renderInventory()"></select>
+        <label style="margin:0;display:flex;gap:0.35rem;align-items:center;font-size:0.75rem;"><input type="checkbox" id="invVerInactivos" onchange="renderInventory()" style="width:auto;">Ver inactivos</label>
+        <button class="btn btn-sm" onclick="showProductForm()">＋ Producto</button>
+        <button class="btn btn-sm" onclick="showPricesForm()">💲 Precios</button>
+        <button class="btn btn-sm" onclick="showWarehouseForm()">＋ Almacén</button>
+        <button class="btn btn-sm" onclick="showConfigForm()">⚙ Moneda</button>
+      </div>
+      <div id="invDash" class="pnl-cards inv-dash"></div>
+      <div id="bizForms"></div>
+      <div class="inv-layout">
+        <div class="card-box table-scroll">
+          <table>
+            <thead><tr><th>Código</th><th>Producto</th><th>Categoría</th><th>Costo</th><th>Precio</th><th>Margen</th><th>Stock</th><th>Mín</th><th></th></tr></thead>
+            <tbody id="invTable"><tr><td colspan="9" class="muted">Cargando…</td></tr></tbody>
+          </table>
+        </div>
+        <aside class="inv-photo" id="invPhoto">
+          <p class="muted" style="margin-top:2rem;margin-bottom:2rem;">👆 Toca un producto<br>para ver su foto</p>
+        </aside>
+      </div>
+      <h2>Movimientos recientes</h2>
+      <div class="toolbar" style="margin-bottom:0.5rem;">
+        <input type="date" id="movFDesde" onchange="renderMovFiltered()" title="Desde" style="width:145px;">
+        <input type="date" id="movFHasta" onchange="renderMovFiltered()" title="Hasta" style="width:145px;">
+        <select id="movFTipo" onchange="renderMovFiltered()" style="width:150px;"><option value="">Todos los tipos</option><option value="entrada">Entrada</option><option value="salida">Salida</option><option value="ajuste">Ajuste</option></select>
+        <select id="movFAlmacen" onchange="renderMovFiltered()" style="width:170px;"></select>
+        <input id="movFBuscar" placeholder="Buscar producto, nota, ref..." oninput="renderMovFiltered()" style="width:190px;">
+        <button class="btn btn-sm" onclick="movCSV()">⬇ CSV</button>
+        <button class="btn btn-sm" onclick="printMovs()">🖨 Imprimir</button>
+      </div>
+      <div class="card-box table-scroll">
+        <table>
+          <thead><tr><th>Fecha</th><th>Tipo</th><th>Producto</th><th>Almacén</th><th>Cant.</th><th>Existencia</th><th>Documento</th><th>Ref/Proveedor</th><th>Notas</th></tr></thead>
+          <tbody id="movTable"><tr><td colspan="9" class="muted">Cargando…</td></tr></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- VENTAS -->
+    <section id="tab-sales" class="panel hidden">
+      <div class="toolbar"><h2 style="margin:0;">Registrar venta</h2></div>
+      <div class="card-box">
+        <div class="row">
+          <div><label>Fecha</label><input type="date" id="sFecha"></div>
+          <div><label>Cliente</label><input id="sCliente" placeholder="Nombre del cliente"></div>
+          <div><label>Almacén *</label><select id="sAlmacen"></select></div>
+          <div><label>Moneda</label><select id="sMoneda"><option value="MXN">MXN</option><option value="USD">USD</option></select></div>
+          <div><label>Cliente (directorio)</label><select id="sClienteSel" onchange="if(this.value){$('sCliente').value=this.options[this.selectedIndex].text.replace(/^[^ ]+ /,'');}"><option value="">— Mostrador —</option></select></div>
+          <div><label>Proyecto</label><select id="sProyectoSel"><option value="">— Ninguno —</option></select></div>
+        </div>
+        <label>Agregar producto (del inventario)</label>
+        <div class="search-results">
+          <input id="sSearch" placeholder="Escribe el nombre del producto..." autocomplete="off" oninput="searchSaleProducts()">
+          <div id="sSearchResults"></div>
+        </div>
+        <div class="items" id="sItems"></div>
+        <div class="total-line"><span class="muted">Total:</span><strong class="gold" id="sTotal">$0.00</strong></div>
+        <label>Notas</label>
+        <textarea id="sNotas" rows="2" placeholder="Observaciones..."></textarea>
+        <div class="toolbar" style="margin-top:1rem;">
+          <button class="btn btn-solid" onclick="saveSale()">💾 Guardar venta (descuenta stock)</button>
+        </div>
+      </div>
+      <h2>Ventas recientes</h2>
+      <div class="card-box table-scroll">
+        <table>
+          <thead><tr><th>Fecha</th><th>Cliente</th><th>Almacén</th><th>Productos</th><th>Total</th><th>Estado pago</th><th>Utilidad</th><th></th></tr></thead>
+          <tbody id="salesTable"><tr><td colspan="8" class="muted">Cargando…</td></tr></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- PROYECTOS -->
+    <section id="tab-proyectos" class="panel hidden">
+      <div class="toolbar">
+        <h2 style="margin:0;">Proyectos</h2>
+        <select id="proyDesdeCot"></select>
+        <button class="btn btn-sm" onclick="crearProyectoDesdeSelect()">＋ Desde cotización aprobada</button>
+        <button class="btn btn-sm" onclick="showProyectoForm()">＋ Proyecto manual</button>
+      </div>
+      <div id="proyForms"></div>
+      <div id="proyDash" class="pnl-cards" style="margin-bottom:1rem;"></div>
+      <div class="card-box table-scroll">
+        <table>
+          <thead><tr><th>Folio</th><th>Proyecto</th><th>Cliente</th><th>Presupuesto</th><th>Cobrado</th><th>Estado</th><th></th></tr></thead>
+          <tbody id="proyTable"><tr><td colspan="7" class="muted">Cargando…</td></tr></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- COBROS / CUENTAS POR COBRAR -->
+    <section id="tab-cobros" class="panel hidden">
+      <div class="toolbar"><h2 style="margin:0;">Cuentas por cobrar</h2><button class="btn btn-sm" onclick="loadCXC()">↻ Actualizar</button></div>
+      <div id="cxcDash" class="pnl-cards" style="margin-bottom:1rem;"></div>
+      <div id="cobForms"></div>
+      <h2>Saldo por venta</h2>
+      <div class="card-box table-scroll">
+        <table>
+          <thead><tr><th>Folio</th><th>Fecha</th><th>Cliente</th><th>Total</th><th>Cobrado</th><th>Saldo</th><th>Estado</th><th></th></tr></thead>
+          <tbody id="cxcTable"><tr><td colspan="8" class="muted">Cargando…</td></tr></tbody>
+        </table>
+      </div>
+      <h2 style="margin-top:1.5rem;">Cobros recientes</h2>
+      <div class="card-box table-scroll">
+        <table>
+          <thead><tr><th>Folio</th><th>Fecha</th><th>Venta</th><th>Cliente</th><th>Monto</th><th>Método</th></tr></thead>
+          <tbody id="cobrosTable"><tr><td colspan="6" class="muted">Cargando…</td></tr></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- GASTOS -->
+    <section id="tab-expenses" class="panel hidden">
+      <div class="toolbar"><h2 style="margin:0;">Registrar gasto</h2></div>
+      <div class="card-box">
+        <div class="row">
+          <div><label>Fecha</label><input type="date" id="gFecha"></div>
+          <div><label>Categoría *</label><input id="gCategoria" list="gCatList" placeholder="Renta, Luz, Nómina..."><datalist id="gCatList"><option>Renta</option><option>Luz</option><option>Agua</option><option>Nómina</option><option>Gasolina</option><option>Publicidad</option><option>Mantenimiento</option><option>Envíos</option><option>Otro</option></datalist></div>
+          <div><label>Monto *</label><input type="number" id="gMonto" min="0" step="0.01" placeholder="0.00"></div>
+          <div><label>Moneda</label><select id="gMoneda"><option value="MXN">MXN</option><option value="USD">USD</option></select></div>
+        </div>
+        <label>Descripción</label>
+        <input id="gDesc" placeholder="Ej. Recibo CFE local Nogales">
+        <div class="toolbar" style="margin-top:1rem;">
+          <button class="btn btn-solid" onclick="addExpense()">💾 Guardar gasto</button>
+        </div>
+      </div>
+      <h2>Gastos registrados</h2>
+      <div id="cxpDash" class="pnl-cards" style="margin-bottom:1rem;"></div>
+      <div id="pagoForms"></div>
+      <div class="card-box table-scroll">
+        <table>
+          <thead><tr><th>Folio</th><th>Fecha</th><th>Categoría</th><th>Descripción</th><th>Monto</th><th>Pagado</th><th>Saldo</th><th>Estado</th><th></th></tr></thead>
+          <tbody id="expTable"><tr><td colspan="9" class="muted">Cargando…</td></tr></tbody>
+        </table>
+      </div>
+      <h2 style="margin-top:1.5rem;">Cuentas por pagar</h2>
+      <div class="card-box table-scroll">
+        <table>
+          <thead><tr><th>Folio</th><th>Fecha</th><th>Categoría</th><th>Total</th><th>Pagado</th><th>Saldo</th><th>Estado</th><th></th></tr></thead>
+          <tbody id="cxpTable"><tr><td colspan="8" class="muted">Cargando…</td></tr></tbody>
+        </table>
+      </div>
+      <h2 style="margin-top:1.5rem;">Pagos recientes</h2>
+      <div class="card-box table-scroll">
+        <table>
+          <thead><tr><th>Folio</th><th>Fecha</th><th>Gasto</th><th>Categoría</th><th>Monto</th><th>Método</th></tr></thead>
+          <tbody id="pagosTable"><tr><td colspan="6" class="muted">Cargando…</td></tr></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- RESULTADOS -->
+    <section id="tab-pnl" class="panel hidden">
+      <div class="toolbar">
+        <h2 style="margin:0;">Estado de resultados</h2>
+        <input type="month" id="pnlMes" style="width:auto;">
+        <select id="pnlProyecto" style="width:auto;"><option value="">Todo el negocio</option></select>
+        <button class="btn btn-sm btn-solid" onclick="generarPNL()">Generar</button>
+        <button class="btn btn-sm" onclick="printPNL()">🖨️ Imprimir</button>
+      </div>
+      <div id="alertasBox" style="margin-bottom:1rem;"></div>
+      <div id="pnlCards"></div>
+      <div class="card-box table-scroll" id="pnlBox" style="display:none;">
+        <table><thead><tr><th>Concepto</th><th style="text-align:right;">Monto</th></tr></thead><tbody id="pnlTable"></tbody></table>
+      </div>
+    </section>
+
+    <!-- ANALYTICS -->
+    <section id="tab-analytics" class="panel hidden">
+      <div class="toolbar"><h2 style="margin:0;">Estadísticas del sitio</h2></div>
+      <div id="analyticsBox" class="card-box">
+        <p class="muted">Configura <code>LOOKER_STUDIO_URL</code> en este archivo (ver admin/GUIA_CONFIGURACION.md, paso 6) para ver aquí el tablero de Google Analytics.</p>
+      </div>
+    </section>
+
+    <!-- FLUJO DE EFECTIVO (FASE 5: entradas = cobros reales, salidas = pagos reales) -->
+    <section id="tab-flujocaja" class="panel hidden">
+      <div class="toolbar">
+        <h2 style="margin:0;">Flujo de efectivo</h2>
+        <select id="flujoRango" onchange="loadFlujoCaja()" style="width:auto;">
+          <option value="hoy">Hoy</option>
+          <option value="semana">Últimos 7 días</option>
+          <option value="mes" selected>Este mes</option>
+        </select>
+        <button class="btn btn-sm" onclick="loadFlujoCaja()">↻ Actualizar</button>
+      </div>
+      <p class="muted" style="margin:0 0 0.5rem;">Entradas = cobros registrados · Salidas = pagos registrados (efectivo real, no ventas/gastos de crédito).</p>
+      <div class="pnl-cards" id="flujoKpis"></div>
+      <div class="card-box" style="margin-top:1rem;">
+        <h3 class="flow-h">Entradas vs salidas por día</h3>
+        <div id="flujoDiario" class="flow-bars"></div>
+        <div id="flujoDiarioLeyenda" class="muted" style="font-size:0.75rem;margin-top:0.4rem;"></div>
+      </div>
+      <div class="card-box table-scroll" style="margin-top:1rem;">
+        <h3 class="flow-h">Movimientos de caja</h3>
+        <table>
+          <thead><tr><th>Fecha</th><th>Folio</th><th>Concepto</th><th>Tipo</th><th>Monto</th><th>Método</th></tr></thead>
+          <tbody id="flujoMovs"><tr><td colspan="6" class="muted">Cargando…</td></tr></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- FLUJO (visitas del sitio, alimentado por el tracker) -->
+    <section id="tab-flow" class="panel hidden">
+      <div class="toolbar">
+        <h2 style="margin:0;">🌊 Flujo del sitio</h2>
+        <span class="muted" id="flowRango"></span>
+        <button class="btn btn-sm" onclick="loadFlow()">↻ Actualizar</button>
+      </div>
+      <div class="pnl-cards" id="flowKpis"></div>
+      <div class="flow-grid">
+        <div class="card-box">
+          <h3 class="flow-h">📈 Visitas por día (últimos 30 días)</h3>
+          <div id="flowDiario" class="flow-bars"></div>
+        </div>
+        <div class="card-box">
+          <h3 class="flow-h">🌍 ¿De dónde nos visitan?</h3>
+          <div id="flowOrigen"></div>
+        </div>
+        <div class="card-box">
+          <h3 class="flow-h">📱 ¿Quién nos visita?</h3>
+          <div id="flowDisp"></div>
+          <h3 class="flow-h" style="margin-top:1rem;">🧭 Navegador</h3>
+          <div id="flowNav"></div>
+          <h3 class="flow-h" style="margin-top:1rem;">🗣️ Idioma</h3>
+          <div id="flowLang"></div>
+        </div>
+        <div class="card-box">
+          <h3 class="flow-h">🔝 Páginas más visitadas</h3>
+          <div id="flowPaginas"></div>
+          <h3 class="flow-h" style="margin-top:1rem;">👁️ Apartados más vistos en las páginas</h3>
+          <div id="flowSecciones"></div>
+        </div>
+      </div>
+      <div class="card-box table-scroll">
+        <h3 class="flow-h">🕘 Últimas visitas</h3>
+        <table><thead><tr><th>Fecha</th><th>Hora</th><th>Página</th><th>Apartado</th><th>Origen</th><th>Dispositivo</th><th>Navegador</th></tr></thead><tbody id="flowTabla"></tbody></table>
+      </div>
+    </section>
+
+    <!-- AYUDA (FASE 8: guia del dueno del negocio) -->
+    <section id="tab-ayuda" class="panel hidden">
+      <div class="toolbar"><h2 style="margin:0;">❓ Ayuda — ¿Para qué sirve cada sección?</h2></div>
+      <div class="card-box" style="margin-bottom:1rem;">
+        <h3 class="flow-h">🧭 El ciclo completo del negocio (en orden)</h3>
+        <div class="ayuda-flujo">
+          <span class="paso">1 · Cotizar (Cotizador)</span><span class="flecha">→</span>
+          <span class="paso">2 · Cliente aprueba (Cotizaciones → Aprobada)</span><span class="flecha">→</span>
+          <span class="paso">3 · Crear Proyecto</span><span class="flecha">→</span>
+          <span class="paso">4 · Comprar material (Compras/OC)</span><span class="flecha">→</span>
+          <span class="paso">5 · Registrar Venta</span><span class="flecha">→</span>
+          <span class="paso">6 · Cobrar (Cobros)</span><span class="flecha">→</span>
+          <span class="paso">7 · Pagar gastos (Gastos)</span><span class="flecha">→</span>
+          <span class="paso">8 · Revisar Resultados y Caja</span>
+        </div>
+        <p class="muted" style="margin:0.6rem 0 0; font-size:0.83rem;">No es obligatorio seguirlo al pie de la letra, pero así todos los números (utilidad, caja, alertas) cuadran solos.</p>
+      </div>
+
+      <h3 class="flow-h" style="margin:1rem 0 0.6rem;">📑 Secciones del panel</h3>
+      <div class="ayuda-grid" style="margin-bottom:1.2rem;">
+        <details class="ayuda-item"><summary>🏠 Resumen (inicio)</summary><p>Tu tablero ejecutivo: <b>ventas del mes, cobros reales, gastos y utilidad</b> de un vistazo, más las <b>alertas</b> importantes (stock bajo, dinero por cobrar/pagar atrasado, cotizaciones olvidadas). Recomendación: échale un ojo cada mañana.</p></details>
+        <details class="ayuda-item"><summary>📥 Leads</summary><p>Personas que <b>dejaron sus datos en el sitio web</b> (formulario de contacto). Aquí los atiendes: márcalos como contactados y, cuando te compren, <b>conviértelos en Cliente</b> con un botón.</p></details>
+        <details class="ayuda-item"><summary>👥 Clientes</summary><p>Directorio de clientes. El <b>teléfono es único</b>: si ya existe, el sistema avisa para no duplicar. Desde un cliente puedes cargar sus cotizaciones y ver todo su historial.</p></details>
+        <details class="ayuda-item"><summary>🧾 Cotizaciones</summary><p>Historial de cotizaciones con folio <b>ADIS-AAAA-NNN</b> (numeración automática, sin duplicados). Cambia su estado: <b>Activa → Aprobada</b> (el cliente aceptó) o Rechazada. <b>Solo una cotización Aprobada puede convertirse en Proyecto.</b></p></details>
+        <details class="ayuda-item"><summary>📝 Cotizador</summary><p>Arma cotizaciones profesionales con <b>un solo cuadro de precio final</b>: escribes la inversión total que le darás al cliente y el documento (PDF/imprimir/WhatsApp) la muestra en formato ADIS con folio, fotos y condiciones. El <b>costo total (manual)</b> es interno y opcional — solo te estima la utilidad, <b>nunca</b> sale en el documento. En <b>Enviar por WhatsApp</b> el PDF se comparte directo en celular o se descarga en computadora para adjuntarlo; también puedes <b>Imprimir</b> (sin hojas en blanco) o <b>Guardar</b> para seguimiento.</p></details>
+        <details class="ayuda-item"><summary>📦 Inventario</summary><p>Productos, almacenes y existencias. <b>Regla de oro: la existencia solo cambia con movimientos</b> (entrada / salida / ajuste), cada uno con fecha, usuario e folio. Así sabes exactamente qué pasó con tu material. Si intentas sacar más de lo que hay, el sistema lo bloquea (<b>STOCK_INSUFICIENTE</b>). La entrada y la salida admiten <b>varios productos en una sola operación</b> (lote con folio LOTE-), con proveedor, factura de referencia y fecha; la salida puede <b>ligarse a un proyecto</b>. En "Movimientos recientes" filtra por fecha, tipo o almacén y exporta a CSV.</p></details>
+        <details class="ayuda-item"><summary>🛒 Compras (órdenes de compra)</summary><p>Pedidos a proveedores con folio <b>OC-</b>. Cuando te llega el material usas <b>Recibir</b> (puede ser parcial): lo recibido <b>entra automáticamente al inventario</b> como una entrada trazable. Comprar material NO es un gasto todavía: el gasto se registra cuando pagas.</p></details>
+        <details class="ayuda-item"><summary>💵 Ventas</summary><p>Registra la <b>salida de material</b> vendido. Puedes vincularla a un cliente y a un proyecto. Cada venta calcula su utilidad (precio − costo). Si te equivocas, <b>anula la venta</b>: revierte el stock y queda fuera de los resultados. Las ventas <b>no se borran</b>: se anulan, para mantener la bitácora.</p></details>
+        <details class="ayuda-item"><summary>🏗️ Proyectos</summary><p>Ficha financiera de cada obra: <b>presupuesto, cobrado, gastos directos del proyecto y utilidad real</b>. Puedes agregar movimientos directos (gasto / ingreso extra / ajuste de presupuesto). Estados: <b>ACTIVO → TERMINADO o CANCELADO</b>; un proyecto terminado no se reactiva (si se reabre, crea uno nuevo).</p></details>
+        <details class="ayuda-item"><summary>💰 Cobros</summary><p>Cuentas por cobrar: qué ventas tienen <b>saldo pendiente</b>. Registrar un cobro = <b>dinero real que te pagaron</b>. Una venta puede cobrarse en partes: <b>PENDIENTE → PARCIAL → PAGADA</b>. No se puede cobrar de más ni cobrar una venta anulada.</p></details>
+        <details class="ayuda-item"><summary>🧮 Caja</summary><p>Tu <b>efectivo real del mes</b>: suma de cobros que entraron menos pagos que salieron, desglosado por día. Ojo: <b>no es lo mismo que las ventas ni que el estado de resultados</b> — aquí solo entra dinero que efectivamente se movió.</p></details>
+        <details class="ayuda-item"><summary>📉 Gastos</summary><p>Gastos del negocio (renta, luz, gasolina, etc.) con folio <b>GAS-</b>. Conceptos clave: <b>gasto ≠ pago</b>. Registrar el gasto dice “me debo esto”; el <b>pago</b> (folio PAG-) es cuando sale el dinero. Puedes cancelar un gasto solo si aún no le has pagado nada.</p></details>
+        <details class="ayuda-item"><summary>📊 Resultados (P&amp;L)</summary><p>Estado de resultados por mes o por proyecto: <b>ingresos − costo de lo vendido − gastos = utilidad</b>. Las ventas anuladas no cuentan como ingreso. Incluye las <b>alertas</b> del negocio. Sirve para saber si el mes dejó ganancia de verdad.</p></details>
+        <details class="ayuda-item"><summary>⭐ Reseñas</summary><p>Las reseñas que dejan clientes en el sitio. Apruébalas para <b>publicarlas en la página</b> o desactívalas si no quieres mostrarlas.</p></details>
+        <details class="ayuda-item"><summary>📊 Estadísticas</summary><p>Espacio para el tablero de <b>Google Analytics / Looker Studio</b> del sitio web (se configura una sola vez con la URL del tablero).</p></details>
+        <details class="ayuda-item"><summary>🌊 Flujo</summary><p>Visitas del sitio web en tiempo casi real: <b>qué páginas ven, de dónde llegan (Google, Facebook…)</b>, con qué dispositivo, y las últimas visitas. Sirve para saber qué publicidad funciona.</p></details>
+      </div>
+
+      <h3 class="flow-h" style="margin:0 0 0.6rem;">💬 Preguntas frecuentes</h3>
+      <div class="ayuda-grid">
+        <details class="ayuda-item"><summary>¿Cotización, venta o cobro… qué uso?</summary><p><b>Cotización</b> = propuesta con precio (aún no hay dinero ni material que salga). <b>Venta</b> = ya entregaste material o facturaste (sale del inventario). <b>Cobro</b> = te pagaron. Una cotización puede existir sin venta; una venta sin cobro es una cuenta por cobrar.</p></details>
+        <details class="ayuda-item"><summary>¿Compra (OC), gasto o pago… qué uso?</summary><p><b>Orden de compra</b> = pediste material a un proveedor (al recibirlo entra al inventario). <b>Gasto</b> = registras que debes dinero por algo (renta, luz, honorarios). <b>Pago</b> = el dinero realmente salió. Comprar material no es gasto hasta que se paga; por eso la <b>Caja</b> solo muestra pagos.</p></details>
+        <details class="ayuda-item"><summary>¿Por qué Resultados no cuadra con mi Caja?</summary><p>Porque miden cosas distintas: <b>Resultados</b> es contable (ventas hechas y gastos devengados, aunque no se haya movido dinero). <b>Caja</b> es efectivo real (cobros recibidos menos pagos hechos). Ejemplo: vendes $10,000 hoy y cobras a 30 días → en Resultados ya hay utilidad; en Caja entra hasta que te paguen.</p></details>
+        <details class="ayuda-item"><summary>¿Puedo borrar un producto o una venta?</summary><p>Los productos <b>no se borran</b>: se desactivan (quedan ocultos pero con su historial) y se pueden <b>restaurar</b>. Las ventas y movimientos de inventario <b>jamás se borran</b>: si te equivocas, <b>anula la venta</b> y el sistema revierte el stock automáticamente. Así la bitácora siempre cuadra.</p></details>
+        <details class="ayuda-item"><summary>¿Cómo empiezo un proyecto?</summary><p>Crea la cotización en el <b>Cotizador</b>, marca la cotización como <b>Aprobada</b> (el cliente aceptó) y en Proyectos usa <b>“Crear desde cotización”</b>: se copia cliente, presupuesto y folio. Si lo creas dos veces, el sistema detecta que ya existe y no lo duplica.</p></details>
+        <details class="ayuda-item"><summary>Mi proyecto quedó TERMINADO por error, ¿y ahora?</summary><p>El diseño es a propósito: un proyecto terminado <b>no se reactiva</b> para proteger el historial financiero. Si la obra se reabre, crea un <b>nuevo proyecto</b> (puede ser del mismo cliente) y registra ahí lo nuevo.</p></details>
+        <details class="ayuda-item"><summary>Vendí más de lo que tengo en inventario, ¿puedo?</summary><p>No. El sistema bloquea la venta con <b>STOCK_INSUFICIENTE</b> y te dice cuánto hay. Primero registra la <b>entrada</b> del material (compra recibida o ajuste) y después la venta. Así tu inventario nunca queda negativo ni “pierde” material.</p></details>
+        <details class="ayuda-item"><summary>¿Dónde cambio el tipo de cambio USD/MXN o la moneda?</summary><p>En la hoja <b>Config</b> del archivo de Google Sheets (claves <code>moneda_base</code> y <code>tipo_cambio</code>). Todo lo registrado en dólares se convierte a pesos con ese tipo de cambio para los reportes.</p></details>
+        <details class="ayuda-item"><summary>¿Cada cuánto se cierra mi sesión?</summary><p>Cada <b>8 horas</b> por seguridad. Si ves “Sesión no válida o expirada”, simplemente vuelve a entrar con tu usuario y contraseña. Después de 5 intentos fallidos la entrada se bloquea 10 minutos.</p></details>
+        <details class="ayuda-item"><summary>¿Cómo navego rápido entre secciones?</summary><p>Presiona <b>Ctrl + K</b> (o Cmd + K en Mac) desde cualquier parte del panel: escribe el nombre de la sección y presiona Enter. También funciona la tecla <b>Esc</b> para cerrar.</p></details>
+        <details class="ayuda-item"><summary>¿Qué son las alertas que veo en Resumen y Resultados?</summary><p>Avisos automáticos ordenados por importancia: <b>stock bajo o sin existencia</b>, <b>ventas con más de 30 días sin cobrar</b>, gastos pendientes de pagar, cotizaciones aprobadas que no se han convertido y órdenes de compra por recibir. Atiende primero las <b>CRÍTICA</b> y <b>ALTA</b>.</p></details>
+        <details class="ayuda-item"><summary>¿Pueden entrar dos personas al mismo tiempo?</summary><p>Sí. El sistema usa <b>bloqueos automáticos</b>: si dos personas venden el último material al mismo tiempo, <b>una sola venta pasa</b> y la otra avisa que no hay existencia. Los folios (ADIS, VEN, OC, PRY…) tampoco se duplican nunca, aunque cotices dos veces a la vez.</p></details>
+      </div>
+    </section>
+  </main>
+</div>
+
+<!-- Area de impresion -->
+<div id="printArea"></div>
+
+<script>
+/*__ADMIN_JS__*/</script>
+</body>
+</html>

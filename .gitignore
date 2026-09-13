@@ -8,3 +8,9 @@ backups/
 test_chars.txt
 screenshots/
 venv/
+
+# (P2 2026-09-13) Material de Facebock/ fue movida a CATALOG_DIR en Google Drive
+# (G:\Mi unidad\ADIS DISEÑO\CATALOGO FINAL\Material de Facebock). Si alguien la
+# vuelve a copiar al repo, estas entradas evitan trackearla:
+Material_de_Facebock/
+Material de Facebock/

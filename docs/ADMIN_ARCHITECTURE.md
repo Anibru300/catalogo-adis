@@ -1,3 +1,12 @@
+> ⚠️ **DOCUMENTO HISTÓRICO — NO ES LA FUENTE OFICIAL.**
+> Estado del código que describe: Fase 0/1 (2026-09-06). El código actual ya incluye
+> fases 2–7 (Compras, Clientes, Proyectos, Cobros/CxC, Pagos/CxP, Flujo de caja,
+> Alertas, admin_purge, sidebar, dashboard, cmdk) y esquemas ENC_* distintos.
+> **Fuentes oficiales vigentes (2026-09-13):** `00_CORE/CONTEXTO_GLOBAL.md`,
+> `00_CORE/MAPA_DEPENDENCIAS.md` y el `CONTEXTO.md` de cada módulo.
+> Análisis de validez: `99_DOCUMENTACION/ANALISIS_DOCS_LEGACY.md`.
+> Se conserva por historial; no actualizar, reemplazar las fuentes oficiales.
+
 # ADMIN_ARCHITECTURE.md — Arquitectura del Sistema Administrativo ADIS
 
 > Documento maestro del sistema. Última actualización: **Fase 0 — 6 de septiembre de 2026**.

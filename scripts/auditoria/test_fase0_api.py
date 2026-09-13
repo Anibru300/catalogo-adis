@@ -18,7 +18,16 @@ TEST queda identificada como eliminable en la hoja Ventas.
 """
 import json, sys, time, urllib.request, urllib.error, concurrent.futures, pathlib
 
-API = 'https://script.google.com/macros/s/AKfycbxq47t5I3eSqPmJ7zCnk47_RlHGfIwov8mcI1tJ92yNVvSsUXHU5Pe7DQ2Nx_h1wPP2/exec'
+def _url_backend():
+    """M1: URL desde 00_CORE/config/plataforma.json (fuente unica), con fallback."""
+    try:
+        cfg = json.loads((pathlib.Path(__file__).resolve().parents[2] / '00_CORE' / 'config' / 'plataforma.json').read_text(encoding='utf-8'))
+        return cfg['url_backend']
+    except Exception:
+        return 'https://script.google.com/macros/s/AKfycbxq47t5I3eSqPmJ7zCnk47_RlHGfIwov8mcI1tJ92yNVvSsUXHU5Pe7DQ2Nx_h1wPP2/exec'
+
+
+API = _url_backend()
 USUARIO, CLAVE = 'Adis', 'Adisdiseño2026'
 
 resultados = []
