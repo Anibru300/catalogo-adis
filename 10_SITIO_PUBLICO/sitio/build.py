@@ -34,6 +34,10 @@ def main():
     generate_robots()
 
     # Panel de administracion (archivo estatico; no se traduce ni va al sitemap)
+    # M4 fix: ensamblar admin/index.html desde los modulos ANTES de copiarlo,
+    # para que los cambios en los .js/plantilla se reflejen en cada build.
+    import subprocess, sys
+    subprocess.run([sys.executable, str(BASE_DIR / '50_BUILD' / 'build_admin.py')], check=True)
     admin_src = BASE_DIR / 'admin' / 'index.html'
     if admin_src.exists():
         # M1: inyectar config central en la copia (salida identica si los valores no cambiaron)

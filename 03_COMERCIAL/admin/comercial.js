@@ -5,7 +5,7 @@ function loadLeads(){
     if (!data || !data.ok) { $('leadsTable').innerHTML='<tr><td colspan="9" class="muted">Sin acceso o error de conexión.</td></tr>'; return; }
     leadsCache = data.leads || [];
     $('leadsCount').textContent = leadsCache.length + ' registro(s)';
-    if (!leadsCache.length) { $('leadsTable').innerHTML='<tr><td colspan="9" class="muted">Aún no hay leads captados.</td></tr>'; return; }
+    if (!leadsCache.length) { $('leadsTable').innerHTML='<tr><td colspan="9" class="muted">Aún no hay contactos del formulario.</td></tr>'; return; }
     $('leadsTable').innerHTML = leadsCache.slice().reverse().map((l,i)=>{
       const rev = leadsCache.length - 1 - i;
       return '<tr><td>'+esc(l.fecha)+'</td><td>'+esc(l.nombre)+'</td><td>'+esc(l.telefono)+'</td><td>'+esc(l.email)+'</td>' +
@@ -24,10 +24,10 @@ function loadClientes(){
     clientesCache = d.clientes || [];
     $('cliCount').textContent = clientesCache.length + ' cliente(s)';
     fillSaleLinks();
-    if (!clientesCache.length) { $('cliTable').innerHTML='<tr><td colspan="6" class="muted">Sin clientes todavía. Convierte un lead o crea uno.</td></tr>'; return; }
+    if (!clientesCache.length) { $('cliTable').innerHTML='<tr><td colspan="6" class="muted">Sin clientes todavía. Convierte un contacto o crea uno.</td></tr>'; return; }
     $('cliTable').innerHTML = clientesCache.map(c=>
       '<tr><td>'+esc(c.nombre)+'</td><td>'+esc(c.telefono||'—')+'</td><td>'+esc(c.email||'—')+'</td>' +
-      '<td>'+esc(c.ciudad||'—')+'</td><td>'+(c.origen==='lead'?'Lead':'Manual')+'</td>' +
+      '<td>'+esc(c.ciudad||'—')+'</td><td>'+(c.origen==='lead'?'Formulario':'Manual')+'</td>' +
       '<td><button class="btn btn-danger btn-sm" onclick="deleteCliente(\''+c.id+'\')">✕</button></td></tr>').join('');
   }).catch(()=>{ $('cliTable').innerHTML='<tr><td colspan="6" class="muted">Error de conexión.</td></tr>'; });
 }
@@ -54,7 +54,7 @@ function saveCliente(datos){
 function convertLead(idx){
   const l = leadsCache[idx];
   if (!l) return;
-  if (!confirma('lead-'+idx, 'Convertir a '+l.nombre+' en cliente (se crea en el directorio; el lead se conserva como histórico).')) return;
+  if (!confirma('lead-'+idx, 'Convertir a '+l.nombre+' en cliente (se crea en el directorio; el contacto se conserva como histórico).')) return;
   saveCliente({ nombre:l.nombre, telefono:l.telefono, email:l.email, ciudad:l.ciudad, notas:'Convertido desde lead: '+(l.producto||''), origen:'lead' });
 }
 function deleteCliente(id){

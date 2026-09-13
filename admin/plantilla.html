@@ -36,81 +36,79 @@
       <p class="muted" id="userEmail" style="font-size:0.75rem;"></p>
     </div>
     <nav class="menu" id="mainMenu">
-      <button class="tab" data-tab="dash" onclick="showTab('dash')">🏠 Resumen</button>
+          <button class="tab" data-tab="dash" onclick="showTab('dash')">Resumen</button>
       <details class="mgroup" data-group="proposal quotes">
-        <summary>🧾 Cotizaciones</summary>
+        <summary>Cotizaciones</summary>
         <div class="mdrop">
-          <button class="tab" data-tab="proposal" onclick="showTab('proposal')">📝 Crear nueva cotización</button>
-          <button class="tab" data-tab="quotes" onclick="showTab('quotes')">📜 Historial de cotizaciones</button>
+          <button class="tab" data-tab="proposal" onclick="showTab('proposal')">Crear nueva cotización</button>
+          <button class="tab" data-tab="quotes" onclick="showTab('quotes')">Historial de cotizaciones</button>
         </div>
       </details>
-      <details class="mgroup" data-group="leads clientes oc">
-        <summary>👥 Clientes</summary>
+      <details class="mgroup" data-group="leads clientes">
+        <summary>Clientes</summary>
         <div class="mdrop">
-          <button class="tab" data-tab="leads" onclick="showTab('leads')">📥 Leads (contactos del sitio)</button>
-          <button class="tab" data-tab="clientes" onclick="showTab('clientes')">👥 Directorio de clientes</button>
-          <hr>
-          <button class="tab" data-tab="oc" onclick="showTab('oc'); provScroll()">🚚 Proveedores</button>
+          <button class="tab" data-tab="leads" onclick="showTab('leads')">Contactos del formulario</button>
+          <button class="tab" data-tab="clientes" onclick="showTab('clientes')">Directorio de clientes</button>
         </div>
       </details>
       <details class="mgroup" data-group="inventory">
-        <summary>📦 Inventario</summary>
+        <summary>Inventario</summary>
         <div class="mdrop">
-          <button class="tab" data-tab="inventory" onclick="showTab('inventory')">📋 Existencias y productos</button>
+          <button class="tab" data-tab="inventory" onclick="showTab('inventory')">Existencias y productos</button>
           <hr>
-          <button class="tab" data-tab="inventory" onclick="showTab('inventory'); invMov('entrada')">📥 Entrada de material</button>
-          <button class="tab" data-tab="inventory" onclick="showTab('inventory'); invMov('salida')">📤 Salida de material</button>
+          <button class="tab" data-tab="inventory" onclick="showTab('inventory'); invMov('entrada')">Entrada de material</button>
+          <button class="tab" data-tab="inventory" onclick="showTab('inventory'); invMov('salida')">Salida de material</button>
           <button class="tab" data-tab="inventory" onclick="showTab('inventory'); invMov('ajuste')">± Ajuste de existencia</button>
           <hr>
-          <button class="tab" data-tab="inventory" onclick="showTab('inventory'); invEditar()">✏️ Editar producto (descripción y fotos)</button>
-          <button class="tab" data-tab="inventory" onclick="showTab('inventory'); showPricesForm()">💲 Cambio de códigos y precios</button>
+          <button class="tab" data-tab="inventory" onclick="showTab('inventory'); invEditar()">Editar producto (descripción y fotos)</button>
+          <button class="tab" data-tab="inventory" onclick="showTab('inventory'); showPricesForm()">Cambio de códigos y precios</button>
           <hr>
-          <button class="tab" data-tab="inventory" onclick="showTab('inventory'); showWarehouseForm()">🏬 Almacenes</button>
-          <button class="tab" data-tab="inventory" onclick="showTab('inventory'); showConfigForm()">⚙️ Moneda y configuración</button>
+          <button class="tab" data-tab="inventory" onclick="showTab('inventory'); showWarehouseForm()">Almacenes</button>
+          <button class="tab" data-tab="inventory" onclick="showTab('inventory'); showConfigForm()">Moneda y configuración</button>
         </div>
       </details>
       <details class="mgroup" data-group="oc">
-        <summary>🛒 Compras</summary>
+        <summary>Compras</summary>
         <div class="mdrop">
-          <button class="tab" data-tab="oc" onclick="showTab('oc')">📋 Órdenes de compra</button>
+          <button class="tab" data-tab="oc" onclick="showTab('oc')">Órdenes de compra</button>
           <button class="tab" data-tab="oc" onclick="showTab('oc'); showOCForm()">＋ Nueva orden de compra</button>
           <hr>
-          <button class="tab" data-tab="oc" onclick="showTab('oc'); provScroll()">🚚 Proveedores</button>
+          <button class="tab" data-tab="oc" onclick="showTab('oc'); provScroll()">Proveedores</button>
         </div>
       </details>
       <details class="mgroup" data-group="sales">
-        <summary>💵 Ventas</summary>
+        <summary>Ventas</summary>
         <div class="mdrop">
           <button class="tab" data-tab="sales" onclick="showTab('sales')">＋ Nueva venta</button>
-          <button class="tab" data-tab="sales" onclick="showTab('sales')">📜 Historial de ventas</button>
+          <button class="tab" data-tab="sales" onclick="showTab('sales')">Historial de ventas</button>
         </div>
       </details>
       <details class="mgroup" data-group="proyectos">
-        <summary>🏗️ Proyectos</summary>
+        <summary>Proyectos</summary>
         <div class="mdrop">
-          <button class="tab" data-tab="proyectos" onclick="showTab('proyectos')">📋 Lista de proyectos</button>
+          <button class="tab" data-tab="proyectos" onclick="showTab('proyectos')">Lista de proyectos</button>
           <button class="tab" data-tab="proyectos" onclick="showTab('proyectos'); showProyectoForm()">＋ Nuevo proyecto</button>
         </div>
       </details>
       <details class="mgroup" data-group="cobros flujocaja expenses pnl">
-        <summary>💰 Dinero</summary>
+        <summary>Dinero</summary>
         <div class="mdrop">
-          <button class="tab" data-tab="cobros" onclick="showTab('cobros')">💵 Cobros / cuentas por cobrar</button>
-          <button class="tab" data-tab="flujocaja" onclick="showTab('flujocaja')">🧮 Caja (efectivo real)</button>
+          <button class="tab" data-tab="cobros" onclick="showTab('cobros')">Cobros / cuentas por cobrar</button>
+          <button class="tab" data-tab="flujocaja" onclick="showTab('flujocaja')">Caja (efectivo real)</button>
           <hr>
-          <button class="tab" data-tab="expenses" onclick="showTab('expenses')">📉 Gastos / cuentas por pagar</button>
-          <button class="tab" data-tab="pnl" onclick="showTab('pnl')">📊 Resultados (P&amp;L y alertas)</button>
+          <button class="tab" data-tab="expenses" onclick="showTab('expenses')">Gastos / cuentas por pagar</button>
+          <button class="tab" data-tab="pnl" onclick="showTab('pnl')">Resultados (P&amp;L y alertas)</button>
         </div>
       </details>
       <details class="mgroup" data-group="reviews analytics flow">
-        <summary>📈 Sitio web</summary>
+        <summary>Sitio web</summary>
         <div class="mdrop">
-          <button class="tab" data-tab="reviews" onclick="showTab('reviews')">⭐ Reseñas</button>
-          <button class="tab" data-tab="analytics" onclick="showTab('analytics')">📊 Estadísticas</button>
-          <button class="tab" data-tab="flow" onclick="showTab('flow')">🌊 Flujo de visitas</button>
+          <button class="tab" data-tab="reviews" onclick="showTab('reviews')">Reseñas</button>
+          <button class="tab" data-tab="analytics" onclick="showTab('analytics')">Estadísticas</button>
+          <button class="tab" data-tab="flow" onclick="showTab('flow')">Flujo de visitas</button>
         </div>
       </details>
-      <button class="tab" data-tab="ayuda" onclick="showTab('ayuda')">❓ Ayuda</button>
+          <button class="tab" data-tab="ayuda" onclick="showTab('ayuda')">Ayuda</button>
     </nav>
     <button id="menuToggle" onclick="document.getElementById('mainMenu').classList.toggle('open')" aria-label="Menú">☰</button>
     <button class="btn btn-sm" onclick="logout()">Cerrar sesión</button>
@@ -142,7 +140,7 @@
     <!-- LEADS -->
     <section id="tab-leads" class="panel hidden">
       <div class="toolbar">
-        <h2 style="margin:0;">Leads del formulario</h2>
+        <h2 style="margin:0;">Contactos del formulario</h2>
         <button class="btn btn-sm" onclick="loadLeads()">↻ Actualizar</button>
         <span class="muted" id="leadsCount"></span>
       </div>
@@ -362,9 +360,9 @@
         <select id="invAlmacen" onchange="renderInventory()"></select>
         <label style="margin:0;display:flex;gap:0.35rem;align-items:center;font-size:0.75rem;"><input type="checkbox" id="invVerInactivos" onchange="renderInventory()" style="width:auto;">Ver inactivos</label>
         <button class="btn btn-sm" onclick="showProductForm()">＋ Producto</button>
-        <button class="btn btn-sm" onclick="showPricesForm()">💲 Precios</button>
+        <button class="btn btn-sm" onclick="showPricesForm()">Precios</button>
         <button class="btn btn-sm" onclick="showWarehouseForm()">＋ Almacén</button>
-        <button class="btn btn-sm" onclick="showConfigForm()">⚙ Moneda</button>
+        <button class="btn btn-sm" onclick="showConfigForm()">Moneda</button>
       </div>
       <div id="invDash" class="pnl-cards inv-dash"></div>
       <div id="bizForms"></div>
@@ -376,7 +374,7 @@
           </table>
         </div>
         <aside class="inv-photo" id="invPhoto">
-          <p class="muted" style="margin-top:2rem;margin-bottom:2rem;">👆 Toca un producto<br>para ver su foto</p>
+          <p class="muted" style="margin-top:2rem;margin-bottom:2rem;">Toca un producto<br>para ver su foto</p>
         </aside>
       </div>
       <h2>Movimientos recientes</h2>

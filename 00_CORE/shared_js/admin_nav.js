@@ -1,7 +1,7 @@
 /* ---------- FASE 7: navegación rápida Ctrl+K ---------- */
 const CMDK_TABS = [
-  ['dash','🏠 Resumen'], ['leads','📥 Leads'], ['clientes','👥 Clientes'], ['quotes','🧾 Cotizaciones'],
-  ['proposal','📝 Cotizador'], ['inventory','📦 Inventario'], ['oc','🛒 Compras'], ['sales','💵 Ventas'],
+  ['dash','Resumen'], ['leads','Contactos'], ['clientes','Clientes'], ['quotes','Cotizaciones'],
+  ['proposal','Cotizador'], ['inventory','Inventario'], ['oc','Compras'], ['sales','Ventas'],
   ['proyectos','🏗️ Proyectos'], ['cobros','💰 Cobros'], ['flujocaja','🧮 Caja'], ['expenses','📉 Gastos'],
   ['pnl','📊 Resultados'], ['reviews','⭐ Reseñas'], ['analytics','📊 Estadísticas'], ['flow','🌊 Flujo'], ['ayuda','❓ Ayuda'],
 ];
