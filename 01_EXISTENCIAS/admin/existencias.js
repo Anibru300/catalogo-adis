@@ -114,10 +114,11 @@ function renderInventory(){
     '<div class="pnl-card '+(revision?'bad':'')+'"><div class="k">Revisión manual</div><div class="v">'+revision+'</div></div>';
   let lista = biz.productos.filter(p=>{
     if (!verInactivos && p.estado==='inactivo') return false;
+    if (aid && stockEn(p.id, aid)===0) return false; // solo productos con existencia en ese almacén
     if (q && !(String(p.codigo||'').toLowerCase().includes(q) || String(p.nombre||'').toLowerCase().includes(q))) return false;
     return true;
   });
-  if (!lista.length) { $('invTable').innerHTML='<tr><td colspan="10" class="muted">Sin productos. Dale a "＋ Producto" o importa tu lista.</td></tr>'; return; }
+  if (!lista.length) { $('invTable').innerHTML='<tr><td colspan="10" class="muted">'+(aid?'Sin productos con existencia en este almacén.':'Sin productos. Dale a "＋ Producto" o importa tu lista.')+'</td></tr>'; return; }
   $('invTable').innerHTML = lista.map(p=>{
     const costo=Number(p.costo)||0, precio=Number(p.precio)||0;
     const margen = precio ? ((precio-costo)/precio*100).toFixed(0)+'%' : '—';
@@ -132,7 +133,7 @@ function renderInventory(){
     const inact = p.estado==='inactivo';
     const revision = String(p.notas||'').indexOf('REVISION')>=0;
     return '<tr data-pid="'+p.id+'" onclick="selectProduct(\''+p.id+'\')" class="'+(inact?'inv-inactive ':'')+(selectedProdId===p.id?'inv-selected':'')+'">' +
-      '<td style="white-space:nowrap;">'+esc(p.codigo||'—')+(revision?' <span class="badge-revision">REVISAR</span>':'')+'</td>' +
+      '<td>'+esc(p.codigo||'—')+(revision?' <span class="badge-revision">REVISAR</span>':'')+'</td>' +
       '<td>'+esc(p.nombre)+'</td><td>'+esc(p.categoria)+(p.subcategoria?' <span class="muted">/'+esc(p.subcategoria)+'</span>':'')+'</td>' +
       '<td>'+fmtMoney(costo)+' '+mon+'</td><td>'+fmtMoney(precio)+' '+mon+'</td><td>'+margen+'</td>' +
       '<td class="'+alerta+'">'+st+'</td><td class="col-almacen">'+almacenTxt+'</td><td>'+(min||'—')+'</td>' +

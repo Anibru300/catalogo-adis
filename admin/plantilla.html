@@ -365,11 +365,17 @@
       <div id="invDash" class="pnl-cards inv-dash"></div>
       <div id="bizForms"></div>
       <div class="inv-layout">
-        <div class="card-box table-scroll">
-          <table>
+        <div class="card-box inv-table-wrap">
+          <table class="inv-head-tbl">
+            <colgroup><col style="width:100px"><col><col style="width:130px"><col style="width:86px"><col style="width:86px"><col style="width:74px"><col style="width:62px"><col style="width:156px"><col style="width:52px"><col style="width:104px"></colgroup>
             <thead><tr><th>Código</th><th>Producto</th><th>Categoría</th><th>Costo</th><th>Precio</th><th>Margen</th><th>Stock</th><th title="Click en un almacén para trasladar existencia a otro almacén">Almacén</th><th>Mín</th><th></th></tr></thead>
-            <tbody id="invTable"><tr><td colspan="9" class="muted">Cargando…</td></tr></tbody>
           </table>
+          <div class="inv-body-scroll">
+            <table>
+              <colgroup><col style="width:100px"><col><col style="width:130px"><col style="width:86px"><col style="width:86px"><col style="width:74px"><col style="width:62px"><col style="width:156px"><col style="width:52px"><col style="width:104px"></colgroup>
+              <tbody id="invTable"><tr><td colspan="10" class="muted">Cargando…</td></tr></tbody>
+            </table>
+          </div>
         </div>
         <aside class="inv-photo" id="invPhoto">
           <p class="muted" style="margin-top:2rem;margin-bottom:2rem;">Toca un producto<br>para ver su foto</p>

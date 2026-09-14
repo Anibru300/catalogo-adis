@@ -144,11 +144,17 @@
   .pnl-card.bad .v { color:#c0392b; }
   .stock-alert { color:#c0392b; font-weight:700; }
   .inv-layout { display:grid; grid-template-columns:1fr 290px; gap:1.2rem; align-items:start; }
-  /* La lista tiene scroll propio: la foto del lado derecho se queda SIEMPRE
-     visible, sin depender del sticky ni del alto de la pagina. */
-  .inv-layout > .card-box.table-scroll { max-height:calc(100vh - 320px); min-height:280px; overflow-y:auto; }
-  .inv-layout thead th { position:sticky; top:0; background:var(--surface); z-index:2; }
-  @media (max-width: 950px) { .inv-layout { grid-template-columns:1fr; } .inv-photo { position:static !important; } .inv-layout > .card-box.table-scroll { max-height:none; } }
+  /* Encabezado FUERA del cuadro de scroll: arriba siempre visible y sin
+     solaparse con las filas al bajar. El cuerpo tiene scroll propio y
+     comparte <colgroup> con la tabla de encabezados para alinear columnas. */
+  .inv-table-wrap { padding:0; overflow:hidden; }
+  .inv-table-wrap table { table-layout:fixed; }
+  .inv-head-tbl th { border-bottom:2px solid var(--gold-soft); }
+  .inv-head-tbl { margin-bottom:0; }
+  #invAlmacen { width:auto; min-width:170px; }
+  #invTable td { overflow:hidden; }
+  .inv-body-scroll { max-height:calc(100vh - 250px); min-height:340px; overflow-y:auto; }
+  @media (max-width: 950px) { .inv-layout { grid-template-columns:1fr; } .inv-photo { position:static !important; } .inv-body-scroll { max-height:none; } }
   .inv-photo { position:sticky; top:80px; background:var(--surface); border:1px solid var(--line); border-radius:10px; padding:1rem; text-align:center; }
   /* Caja de foto de tamaño FIJO: todas las imagenes (verticales, horizontales,
      cuadradas) ocupan el mismo espacio y se ven completas, sin distorsion. */

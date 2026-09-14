@@ -154,11 +154,17 @@
   .pnl-card.bad .v { color:#c0392b; }
   .stock-alert { color:#c0392b; font-weight:700; }
   .inv-layout { display:grid; grid-template-columns:1fr 290px; gap:1.2rem; align-items:start; }
-  /* La lista tiene scroll propio: la foto del lado derecho se queda SIEMPRE
-     visible, sin depender del sticky ni del alto de la pagina. */
-  .inv-layout > .card-box.table-scroll { max-height:calc(100vh - 320px); min-height:280px; overflow-y:auto; }
-  .inv-layout thead th { position:sticky; top:0; background:var(--surface); z-index:2; }
-  @media (max-width: 950px) { .inv-layout { grid-template-columns:1fr; } .inv-photo { position:static !important; } .inv-layout > .card-box.table-scroll { max-height:none; } }
+  /* Encabezado FUERA del cuadro de scroll: arriba siempre visible y sin
+     solaparse con las filas al bajar. El cuerpo tiene scroll propio y
+     comparte <colgroup> con la tabla de encabezados para alinear columnas. */
+  .inv-table-wrap { padding:0; overflow:hidden; }
+  .inv-table-wrap table { table-layout:fixed; }
+  .inv-head-tbl th { border-bottom:2px solid var(--gold-soft); }
+  .inv-head-tbl { margin-bottom:0; }
+  #invAlmacen { width:auto; min-width:170px; }
+  #invTable td { overflow:hidden; }
+  .inv-body-scroll { max-height:calc(100vh - 250px); min-height:340px; overflow-y:auto; }
+  @media (max-width: 950px) { .inv-layout { grid-template-columns:1fr; } .inv-photo { position:static !important; } .inv-body-scroll { max-height:none; } }
   .inv-photo { position:sticky; top:80px; background:var(--surface); border:1px solid var(--line); border-radius:10px; padding:1rem; text-align:center; }
   /* Caja de foto de tamaño FIJO: todas las imagenes (verticales, horizontales,
      cuadradas) ocupan el mismo espacio y se ven completas, sin distorsion. */
@@ -662,11 +668,17 @@
       <div id="invDash" class="pnl-cards inv-dash"></div>
       <div id="bizForms"></div>
       <div class="inv-layout">
-        <div class="card-box table-scroll">
-          <table>
+        <div class="card-box inv-table-wrap">
+          <table class="inv-head-tbl">
+            <colgroup><col style="width:100px"><col><col style="width:130px"><col style="width:86px"><col style="width:86px"><col style="width:74px"><col style="width:62px"><col style="width:156px"><col style="width:52px"><col style="width:104px"></colgroup>
             <thead><tr><th>Código</th><th>Producto</th><th>Categoría</th><th>Costo</th><th>Precio</th><th>Margen</th><th>Stock</th><th title="Click en un almacén para trasladar existencia a otro almacén">Almacén</th><th>Mín</th><th></th></tr></thead>
-            <tbody id="invTable"><tr><td colspan="9" class="muted">Cargando…</td></tr></tbody>
           </table>
+          <div class="inv-body-scroll">
+            <table>
+              <colgroup><col style="width:100px"><col><col style="width:130px"><col style="width:86px"><col style="width:86px"><col style="width:74px"><col style="width:62px"><col style="width:156px"><col style="width:52px"><col style="width:104px"></colgroup>
+              <tbody id="invTable"><tr><td colspan="10" class="muted">Cargando…</td></tr></tbody>
+            </table>
+          </div>
         </div>
         <aside class="inv-photo" id="invPhoto">
           <p class="muted" style="margin-top:2rem;margin-bottom:2rem;">Toca un producto<br>para ver su foto</p>
@@ -2095,10 +2107,11 @@ function renderInventory(){
     '<div class="pnl-card '+(revision?'bad':'')+'"><div class="k">Revisión manual</div><div class="v">'+revision+'</div></div>';
   let lista = biz.productos.filter(p=>{
     if (!verInactivos && p.estado==='inactivo') return false;
+    if (aid && stockEn(p.id, aid)===0) return false; // solo productos con existencia en ese almacén
     if (q && !(String(p.codigo||'').toLowerCase().includes(q) || String(p.nombre||'').toLowerCase().includes(q))) return false;
     return true;
   });
-  if (!lista.length) { $('invTable').innerHTML='<tr><td colspan="10" class="muted">Sin productos. Dale a "＋ Producto" o importa tu lista.</td></tr>'; return; }
+  if (!lista.length) { $('invTable').innerHTML='<tr><td colspan="10" class="muted">'+(aid?'Sin productos con existencia en este almacén.':'Sin productos. Dale a "＋ Producto" o importa tu lista.')+'</td></tr>'; return; }
   $('invTable').innerHTML = lista.map(p=>{
     const costo=Number(p.costo)||0, precio=Number(p.precio)||0;
     const margen = precio ? ((precio-costo)/precio*100).toFixed(0)+'%' : '—';
@@ -2113,7 +2126,7 @@ function renderInventory(){
     const inact = p.estado==='inactivo';
     const revision = String(p.notas||'').indexOf('REVISION')>=0;
     return '<tr data-pid="'+p.id+'" onclick="selectProduct(\''+p.id+'\')" class="'+(inact?'inv-inactive ':'')+(selectedProdId===p.id?'inv-selected':'')+'">' +
-      '<td style="white-space:nowrap;">'+esc(p.codigo||'—')+(revision?' <span class="badge-revision">REVISAR</span>':'')+'</td>' +
+      '<td>'+esc(p.codigo||'—')+(revision?' <span class="badge-revision">REVISAR</span>':'')+'</td>' +
       '<td>'+esc(p.nombre)+'</td><td>'+esc(p.categoria)+(p.subcategoria?' <span class="muted">/'+esc(p.subcategoria)+'</span>':'')+'</td>' +
       '<td>'+fmtMoney(costo)+' '+mon+'</td><td>'+fmtMoney(precio)+' '+mon+'</td><td>'+margen+'</td>' +
       '<td class="'+alerta+'">'+st+'</td><td class="col-almacen">'+almacenTxt+'</td><td>'+(min||'—')+'</td>' +
