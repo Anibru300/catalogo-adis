@@ -159,3 +159,25 @@ Flujo documentado (correr en la PC del dueño):
   `DriveApp` exige re-autorización en redeploy; `MailApp` no pide scope extra.
 - El sitio público se alimenta del filesystem del catálogo local, no de la hoja ERP —
   cualquier foto nueva necesita el paso de sync local.
+
+## Cierre de la sesión (noche) — commits fbd15bf + 9bedec4
+
+- **El redeploy del fix 70d8570 nunca llegó a producción en su momento**: el backend
+  activo siguió siendo el pre-fix y cada `save_product` piso estado/notas/fecha
+  (cols 14-16) con foto_2..4 vacios. Las 263 filas quedaron con las 3 columnas vacias.
+- Diagnóstico con endpoint temporal `debug_hoja` (ya eliminado): la hoja tenia 19
+  columnas con encabezados DUPLICADOS ('estado/notas/fecha_actualizacion' en 17-19,
+  escritos por `hoja()` con el esquema viejo). Las columnas 17-19 estaban vacias en
+  todas las filas → no hubo que migrar datos, solo renombrar encabezados.
+- **Recuperación completa** via `reparar_esquema` (rellena solo celdas vacias desde
+  `60_DATA/dataset_maestro.json` + renombra 17-19 a foto_2/3/4 solo si la columna
+  entera esta vacia). Verificado: 0 estados/fechas vacias, foto_2..4 presentes,
+  fila Adler (HJPVC-101) íntegra, E2E con subida de foto real OK, regresion 19/19.
+- `apiGet/apiPost` ahora reintentan una vez ante respuesta no-JSON (propagación
+  post-deploy ya no deja el inventario atascado en 'Cargando').
+- **Lección clave**: tras un redeploy, verificar que el código NUEVO está activo con
+  una prueba concreta (el `reparar_esquema` respondio `reparados:0` en una ventana
+  de versiones mixtas; el ground truth se confirma leyendo la hoja, no la respuesta).
+- Pendiente de fondo: limpiar fotos de prueba (~1KB) de la carpeta Drive
+  'ADIS FOTOS PRODUCTOS' (ID 1rHAcV3weAqKyuZEZZqEGJwN230MSZBEd), y probar el flujo
+  completo foto→web pública (sync_fotos_drive.py → exportar_productos.py → build → push).
