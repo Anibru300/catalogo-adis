@@ -60,31 +60,35 @@ with sync_playwright() as pw:
     page.screenshot(path=OUT + r"\post_deploy_1_subida.png")
 
     # --- 2) re-guardar el MISMO producto con sus datos (extiende hoja a 19 cols) ---
-    prod = page.evaluate("(function(){const p=biz.productos.find(x=>x.codigo==='HJPVC-101');return p;})()")
+    prod = page.evaluate("(function(){const pid=document.querySelector('#invTable tr').dataset.pid;return biz.productos.find(x=>String(x.id)===pid);})()")
+    print("Producto de prueba:", prod.get("codigo"))
     r = page.evaluate("""async (prod) => {
-      const resp = await apiPost({tipo:'save_product', id: prod.id, codigo: prod.codigo, nombre: prod.nombre,
+      const login2 = await apiPost({tipo:'login', usuario:'Adis', clave:'Adisdiseño2026'});
+      if (!login2.ok) return {save: login2, cols: null};
+      const tok = login2.token;
+      const post = (payload) => fetch(CONFIG.API_URL, {method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'}, body: JSON.stringify({...payload, token: tok})}).then(x=>x.json());
+      const resp = await post({tipo:'save_product', id: prod.id, codigo: prod.codigo, nombre: prod.nombre,
         categoria: prod.categoria||'', subcategoria: prod.subcategoria||'', proveedor: prod.proveedor||'',
         costo: prod.costo||0, precio: prod.precio||0, unidad: prod.unidad||'pieza',
         stock_minimo: prod.stock_minimo||0, moneda: prod.moneda||'MXN', foto: prod.foto||'',
         foto_2:'', foto_3:'', foto_4:'', estado: prod.estado||'activo',
         descripcion: prod.descripcion||'', notas: prod.notas||''});
-      return resp;
+      const g = await (await fetch(CONFIG.API_URL + '?action=productos&token=' + encodeURIComponent(tok))).json();
+      const yo = (g.productos||[]).filter(x=>String(x.id)===String(prod.id))[0] || {};
+      return {save: resp, cols: {k_foto2:'foto_2' in yo, k_foto3:'foto_3' in yo, k_foto4:'foto_4' in yo}, foto: yo.foto};
     }""", prod)
-    print("save_product (re-guardado igual):", json.dumps(r, ensure_ascii=False)[:200])
-
-    # --- 3) verificar que GET productos ya trae foto_2..4 ---
-    d = page.evaluate("async () => await apiGet('productos')")
-    p101 = [p for p in d["productos"] if p.get("codigo") == "HJPVC-101"][0]
-    tiene_cols = {k: (k in p101) for k in ["foto", "foto_2", "foto_3", "foto_4"]}
-    print("Columnas en GET productos:", tiene_cols, "| foto:", p101.get("foto"))
+    print("save_product (re-guardado igual):", json.dumps(r.get("save"), ensure_ascii=False)[:200])
+    print("Columnas foto_2..4 presentes:", r.get("cols"), "| foto:", r.get("foto"))
+    tiene_cols = {"foto": True, **{k.replace("k_", ""): v for k, v in (r.get("cols") or {}).items()}}
+    p101_ok = all((r.get("cols") or {}).values())
     page.evaluate("closeBizForms()")
     b.close()
 
 if TMP.exists():
     TMP.unlink()
 
-ok = (resp.status == 200 and "drive.google.com" in url_foto and r.get("ok")
-      and all(tiene_cols.values()) and not errors)
+ok = (resp.status == 200 and "drive.google.com" in url_foto and r.get("save", {}).get("ok")
+      and p101_ok and not errors)
 print("RESULTADO:", "OK" if ok else "FALLO")
 print("Errores JS:", len(errors))
 for e in errors[:5]: print(" -", e[:200])

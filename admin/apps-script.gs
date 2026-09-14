@@ -88,8 +88,8 @@ var TIPOS_MOVIMIENTO = ['entrada', 'salida', 'ajuste'];
 var ENC_COTIZ = ['fecha', 'cliente', 'telefono', 'ciudad', 'items', 'total', 'notas',
   'folio', 'proyecto', 'ubicacion', 'moneda', 'subtotal', 'iva', 'estado', 'datos', 'id', 'usuario', 'cliente_id'];
 var ENC_PROD = ['id', 'codigo', 'nombre', 'descripcion', 'categoria', 'subcategoria', 'proveedor',
-  'costo', 'precio', 'unidad', 'stock_minimo', 'moneda', 'foto', 'foto_2', 'foto_3', 'foto_4',
-  'estado', 'notas', 'fecha_actualizacion'];
+  'costo', 'precio', 'unidad', 'stock_minimo', 'moneda', 'foto', 'estado', 'notas', 'fecha_actualizacion',
+  'foto_2', 'foto_3', 'foto_4'];
 var ENC_MOV = ['fecha', 'tipo', 'producto_id', 'producto', 'almacen_id', 'almacen', 'cantidad',
   'costo_unit', 'moneda', 'referencia', 'notas',
   'id', 'usuario', 'existencia_anterior', 'existencia_posterior', 'documento_tipo', 'documento_id',
@@ -952,8 +952,9 @@ function doPostInterno(data) {
     var fila = [data.id || nuevoId(), codigo, String(data.nombre).trim(), data.descripcion || '',
       data.categoria || '', data.subcategoria || '', data.proveedor || '',
       Number(data.costo) || 0, Number(data.precio) || 0, data.unidad || 'pieza',
-      Number(data.stock_minimo) || 0, monedaP, data.foto || '', data.foto_2 || '', data.foto_3 || '', data.foto_4 || '',
-      data.estado === 'inactivo' ? 'inactivo' : 'activo', data.notas || '', ahora_()];
+      Number(data.stock_minimo) || 0, monedaP, data.foto || '',
+      data.estado === 'inactivo' ? 'inactivo' : 'activo', data.notas || '', ahora_(),
+      data.foto_2 || '', data.foto_3 || '', data.foto_4 || ''];
     if (filaExistente) hp.getRange(filaExistente, 1, 1, ENC_PROD.length).setValues([fila]);
     else hp.appendRow(fila);
     log_(filaExistente ? 'producto_editado' : 'producto_creado', codigo + ' - ' + data.nombre);
@@ -1047,8 +1048,8 @@ function doPostInterno(data) {
       codigosVistos[cod.toLowerCase()] = true;
       himp.appendRow([nuevoId(), cod, r.nombre, r.descripcion || '', r.categoria || '', r.subcategoria || '',
         r.proveedor || '', Number(r.costo) || 0, Number(r.precio) || 0, r.unidad || 'pieza',
-        Number(r.stock_minimo) || 0, r.moneda || 'MXN', r.foto || '', r.foto_2 || '', r.foto_3 || '', r.foto_4 || '',
-        r.estado || 'activo', r.notas || '', ahora_()]);
+        Number(r.stock_minimo) || 0, r.moneda || 'MXN', r.foto || '', r.estado || 'activo',
+        r.notas || '', ahora_(), r.foto_2 || '', r.foto_3 || '', r.foto_4 || '']);
       count++;
     });
     // Stock por almacen: cada existencia inicial es un MOVIMIENTO trazable (doc IMPORTACION)
