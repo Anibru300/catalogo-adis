@@ -15,7 +15,7 @@
   }
   * { margin:0; padding:0; box-sizing:border-box; }
   body { font-family:'Montserrat',sans-serif; background:var(--bg); color:var(--ink); min-height:100vh; }
-  .wrap { max-width:1100px; margin:0 auto; padding:1.5rem; }
+  .wrap { max-width:1280px; margin:0 auto; padding:1.5rem; }
   .hidden { display:none !important; }
   h1 { font-size:1.4rem; letter-spacing:0.5px; }
   .gold { color:var(--gold-strong); }
@@ -160,7 +160,15 @@
   .inv-layout thead th { position:sticky; top:0; background:var(--surface); z-index:2; }
   @media (max-width: 950px) { .inv-layout { grid-template-columns:1fr; } .inv-photo { position:static !important; } .inv-layout > .card-box.table-scroll { max-height:none; } }
   .inv-photo { position:sticky; top:80px; background:var(--surface); border:1px solid var(--line); border-radius:10px; padding:1rem; text-align:center; }
-  .inv-photo img { width:100%; border-radius:8px; display:block; background:#F1EDE3; min-height:120px; object-fit:cover; }
+  /* Caja de foto de tamaño FIJO: todas las imagenes (verticales, horizontales,
+     cuadradas) ocupan el mismo espacio y se ven completas, sin distorsion. */
+  .inv-photo img { width:100%; height:240px; object-fit:contain; border-radius:8px; display:block; background:#F1EDE3; }
+  /* Columnas de la tabla de inventario: categoria con elipsis, dinero y numeros
+     en una sola linea para que nada se amontone. */
+  #invTable td:nth-child(3) { max-width:150px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  #invTable td:nth-child(2) { max-width:180px; overflow:hidden; text-overflow:ellipsis; }
+  #invTable td, #invTable th { padding-left:0.5rem; padding-right:0.5rem; }
+  #invTable td:nth-child(4), #invTable td:nth-child(5) { white-space:nowrap; font-size:0.74rem; }
   .inv-photo .ph-code { font-size:0.7rem; color:var(--gold-strong); letter-spacing:1px; margin-top:0.7rem; }
   .inv-photo .ph-name { font-size:0.9rem; font-weight:600; margin-top:0.15rem; }
   .inv-photo .ph-meta { font-size:0.72rem; color:var(--muted); margin-top:0.2rem; line-height:1.5; }
