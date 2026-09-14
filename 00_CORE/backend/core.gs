@@ -961,6 +961,42 @@ function doPostInterno(data) {
     return json({ ok: true, id: fila[0] });
   });
 
+  /* ---------- Reparacion one-time (post 70d8570) ----------
+     La version desplegada previa al fix escribia foto_2..4 en las posiciones 14-16,
+     pisando estado/notas/fecha_actualizacion con vacios en cada save_product.
+     Este endpoint SOLO rellena celdas vacias (nunca sobrescribe valores existentes)
+     y aprovecha para extender los encabezados de la hoja a las 19 columnas. */
+  if (tipo === 'reparar_esquema') return conLock(function () {
+    var datosR = data.datos || {}; // {codigo: {estado, notas}}
+    var hr = hoja(SHEET_PRODUCTS, ENC_PROD);
+    var valsR = hr.getDataRange().getValues();
+    var encR = valsR[0].map(String);
+    var iCodR = encR.indexOf('codigo'), iEstR = encR.indexOf('estado'),
+        iNotR = encR.indexOf('notas'), iFecR = encR.indexOf('fecha_actualizacion');
+    var reparados = 0;
+    for (var i = 1; i < valsR.length; i++) {
+      var codR = String(valsR[i][iCodR] || '').trim();
+      var mR = datosR[codR] || {};
+      var celda = {};
+      if (iEstR >= 0 && !String(valsR[i][iEstR] || '').trim())
+        celda[iEstR + 1] = mR.estado || 'activo'; // fallback: activo
+      if (iNotR >= 0 && !String(valsR[i][iNotR] || '').trim() && mR.notas)
+        celda[iNotR + 1] = mR.notas;
+      if (iFecR >= 0 && !String(valsR[i][iFecR] || '').trim())
+        celda[iFecR + 1] = ahora_();
+      var colsR = Object.keys(celda).map(Number);
+      if (colsR.length) {
+        var minR = Math.min.apply(null, colsR), maxR = Math.max.apply(null, colsR);
+        var filaVals = valsR[i].slice(minR - 1, maxR);
+        colsR.forEach(function (c) { filaVals[c - minR] = celda[c]; });
+        hr.getRange(i + 1, minR, 1, maxR - minR + 1).setValues([filaVals]);
+        reparados++;
+      }
+    }
+    log_('reparar_esquema', reparados + ' filas reparadas');
+    return json({ ok: true, reparados: reparados, filas: valsR.length - 1 });
+  });
+
   /* ---------- Actualizacion de precios/costos por lote (FASE 1) ----------
      Dos pasadas: primero se valida TODO, despues se escribe (si un precio
      es invalido no se actualiza nada). Columnas resueltas por nombre de

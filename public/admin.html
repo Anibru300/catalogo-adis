@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex, nofollow">
 <title>Panel · ADIS Diseño & Remodelación</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230B0B0D'/%3E%3Ctext x='16' y='22' font-family='Arial' font-size='14' font-weight='bold' fill='%23B08C3D' text-anchor='middle'%3EAD%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -1023,13 +1024,23 @@ function manejarSesion(d){
   }
   return d;
 }
+function _fetchJson(url, opciones, reintento){
+  return fetch(url, opciones)
+    .then(function(r){ return r.json().catch(function(){ return null; }); })
+    .then(function(d){
+      /* respuesta no-JSON (propagación/302 a HTML): reintentar una vez antes de fallar */
+      if (d === null && !reintento){
+        return new Promise(function(res){ setTimeout(function(){ res(_fetchJson(url, opciones, true)); }, 2500); });
+      }
+      return manejarSesion(d);
+    });
+}
 function apiGet(action){
-  return fetch(CONFIG.API_URL + '?action=' + action + '&token=' + encodeURIComponent(token)).then(r=>r.json()).then(manejarSesion);
+  return _fetchJson(CONFIG.API_URL + '?action=' + action + '&token=' + encodeURIComponent(token));
 }
 function apiPost(payload){
   payload.token = token;
-  return fetch(CONFIG.API_URL, {method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'}, body:JSON.stringify(payload)})
-    .then(r=>r.json()).then(manejarSesion);
+  return _fetchJson(CONFIG.API_URL, {method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'}, body:JSON.stringify(payload)});
 }
 
 /* ---------- autenticacion (usuario/contraseña, validada en el servidor) ---------- */

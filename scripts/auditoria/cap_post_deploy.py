@@ -47,6 +47,9 @@ with sync_playwright() as pw:
     # --- 1) subida REAL de foto al producto HJPVC-101 (sin guardar el producto) ---
     page.evaluate("showProductForm(document.querySelector('#invTable tr').dataset.pid)")
     time.sleep(0.8)
+    # refrescar sesion (los tokens del cache de Apps Script se evictan bajo carga de pruebas)
+    page.evaluate("login()")
+    time.sleep(1.5)
     hacer_jpeg()
     page.set_input_files("#pFotoFile", str(TMP))
     # esperar a que el slot se llene con URL de Drive

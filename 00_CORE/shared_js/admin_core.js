@@ -38,13 +38,23 @@ function manejarSesion(d){
   }
   return d;
 }
+function _fetchJson(url, opciones, reintento){
+  return fetch(url, opciones)
+    .then(function(r){ return r.json().catch(function(){ return null; }); })
+    .then(function(d){
+      /* respuesta no-JSON (propagación/302 a HTML): reintentar una vez antes de fallar */
+      if (d === null && !reintento){
+        return new Promise(function(res){ setTimeout(function(){ res(_fetchJson(url, opciones, true)); }, 2500); });
+      }
+      return manejarSesion(d);
+    });
+}
 function apiGet(action){
-  return fetch(CONFIG.API_URL + '?action=' + action + '&token=' + encodeURIComponent(token)).then(r=>r.json()).then(manejarSesion);
+  return _fetchJson(CONFIG.API_URL + '?action=' + action + '&token=' + encodeURIComponent(token));
 }
 function apiPost(payload){
   payload.token = token;
-  return fetch(CONFIG.API_URL, {method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'}, body:JSON.stringify(payload)})
-    .then(r=>r.json()).then(manejarSesion);
+  return _fetchJson(CONFIG.API_URL, {method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'}, body:JSON.stringify(payload)});
 }
 
 /* ---------- autenticacion (usuario/contraseña, validada en el servidor) ---------- */
