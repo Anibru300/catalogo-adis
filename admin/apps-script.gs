@@ -993,6 +993,21 @@ function doPostInterno(data) {
         reparados++;
       }
     }
+    /* Limpieza final: la version pre-fix dejo encabezados duplicados
+       'estado/notas/fecha_actualizacion' en las columnas 17-19 (escritos por
+       hoja() con el esquema viejo). Se renombran a foto_2/3/4 SOLO si la
+       columna entera esta vacia (nunca se pisan datos). */
+    var encF = hr.getRange(1, 1, 1, ENC_PROD.length).getValues()[0].map(String);
+    ['foto_2', 'foto_3', 'foto_4'].forEach(function (nombreF, ixF) {
+      var colF = ENC_PROD.length - 3 + ixF + 1; // 17, 18, 19
+      if (encF[colF - 1] !== nombreF) {
+        var nFilasF = Math.max(hr.getLastRow() - 1, 1);
+        var vaciaF = hr.getRange(2, colF, nFilasF, 1).getValues()
+          .every(function (filaF) { return !String(filaF[0] || '').trim(); });
+        if (vaciaF) hr.getRange(1, colF).setValue(nombreF);
+        else log_('reparar_bloqueado', 'col ' + colF + ' (' + nombreF + ') tiene datos; no se renombro');
+      }
+    });
     log_('reparar_esquema', reparados + ' filas reparadas');
     return json({ ok: true, reparados: reparados, filas: valsR.length - 1 });
   });
