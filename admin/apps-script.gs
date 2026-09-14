@@ -1899,6 +1899,20 @@ function doPostInterno(data) {
   throw AdisError('TIPO_DESCONOCIDO', 'Tipo desconocido: ' + tipo);
 }
 
+/* Funcion de mantenimiento (se corre a mano desde el editor, una sola vez
+   tras el redeploy): crea la carpeta de fotos y, sobre todo, FUERZA la
+   pantalla de autorizacion de Google Drive que el despliegue solo no dispara.
+   Sin esto, upload_foto falla con ERROR_INTERNO la primera vez. */
+function autorizarDrive() {
+  var p = PropertiesService.getScriptProperties();
+  var id = p.getProperty('FOTOS_FOLDER_ID');
+  if (id) { Logger.log('Ya autorizado. Carpeta: ' + id); return; }
+  var f = DriveApp.createFolder('ADIS FOTOS PRODUCTOS');
+  f.setSharing(DriveApp.Access.ANYONE_WITH_LINK, DriveApp.Permission.VIEW);
+  p.setProperty('FOTOS_FOLDER_ID', f.getId());
+  Logger.log('Autorizacion OK. Carpeta creada: ' + f.getId());
+}
+
 /* ---------- Tracking protegido (anti-abuso + retencion con archivo) ----------
    Defensas: rate-limit por huella (120 eventos / 10 min), deduplicacion de
    eventos repetidos (45 s) y, al superar el tope de filas activas, el
