@@ -5,7 +5,7 @@
   }
   * { margin:0; padding:0; box-sizing:border-box; }
   body { font-family:'Montserrat',sans-serif; background:var(--bg); color:var(--ink); min-height:100vh; }
-  .wrap { max-width:1280px; margin:0 auto; padding:1.5rem; }
+  .wrap { max-width:none; margin:0 auto; padding:1.2rem 1.8rem; }
   .hidden { display:none !important; }
   h1 { font-size:1.4rem; letter-spacing:0.5px; }
   .gold { color:var(--gold-strong); }
@@ -156,9 +156,14 @@
   /* Columnas de la tabla de inventario: categoria con elipsis, dinero y numeros
      en una sola linea para que nada se amontone. */
   #invTable td:nth-child(3) { max-width:150px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-  #invTable td:nth-child(2) { max-width:180px; overflow:hidden; text-overflow:ellipsis; }
-  #invTable td, #invTable th { padding-left:0.5rem; padding-right:0.5rem; }
+  #invTable td:nth-child(2) { max-width:150px; overflow:hidden; text-overflow:ellipsis; }
+  #invTable td, #invTable th { padding-left:0.45rem; padding-right:0.45rem; }
+  #invTable td { padding-top:0.35rem; padding-bottom:0.35rem; }
+  #invTable th { font-size:0.66rem; }
   #invTable td:nth-child(4), #invTable td:nth-child(5) { white-space:nowrap; font-size:0.74rem; }
+  /* Chips de almacen: click = trasladar existencia */
+  .wh-chip { display:inline-block; background:rgba(176,140,61,0.08); border:1px solid var(--gold-soft); color:var(--gold-strong); border-radius:12px; padding:0.08rem 0.5rem; font-size:0.68rem; font-family:inherit; cursor:pointer; margin:0.05rem 0; white-space:nowrap; }
+  .wh-chip:hover { background:var(--gold); color:#fff; }
   .inv-photo .ph-code { font-size:0.7rem; color:var(--gold-strong); letter-spacing:1px; margin-top:0.7rem; }
   .inv-photo .ph-name { font-size:0.9rem; font-weight:600; margin-top:0.15rem; }
   .inv-photo .ph-meta { font-size:0.72rem; color:var(--muted); margin-top:0.2rem; line-height:1.5; }

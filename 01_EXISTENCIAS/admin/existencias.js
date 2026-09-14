@@ -32,6 +32,52 @@ function stockEn(pid, aid){
   const s = biz.stock.filter(x=>String(x.producto_id)===String(pid)&&String(x.almacen_id)===String(aid))[0];
   return s ? Number(s.cantidad)||0 : 0;
 }
+/* Desglose de existencias por almacen (solo almacenes con cantidad <> 0). */
+function stockPorAlmacen(pid){
+  return biz.stock
+    .filter(s=>String(s.producto_id)===String(pid)&&(Number(s.cantidad)||0)!==0)
+    .map(s=>({almacen_id:s.almacen_id, cantidad:Number(s.cantidad)||0,
+              nombre:(biz.almacenes.filter(a=>String(a.id)===String(s.almacen_id))[0]||{}).nombre||'Almacén'}));
+}
+/* Traslado de existencia entre almacenes: sale del origen y entra al destino
+   con la misma referencia. Usa los endpoints existentes (sin cambio de backend). */
+function transferForm(pid, fromAid){
+  const p = biz.productos.filter(x=>String(x.id)===String(pid))[0];
+  if (!p) return;
+  const origen = biz.almacenes.filter(a=>String(a.id)===String(fromAid))[0];
+  const destinos = biz.almacenes.filter(a=>String(a.id)!==String(fromAid));
+  if (!destinos.length) { notice('Necesitas al menos otro almacén de destino. Crea uno con "＋ Almacén".', false); return; }
+  const disp = stockEn(pid, fromAid);
+  $('bizForms').innerHTML = '<div class="card-box"><p style="margin-bottom:0.5rem;"><strong>Trasladar: '+esc(p.nombre)+'</strong></p><div class="row">' +
+    '<div><label>De (almacén origen)</label><input value="'+esc(origen?origen.nombre:'—')+'" disabled></div>' +
+    '<div><label>A (almacén destino) *</label><select id="tDestino">'+destinos.map(a=>'<option value="'+esc(a.id)+'">'+esc(a.nombre)+'</option>').join('')+'</select></div>' +
+    '<div><label>Cantidad *</label><input type="number" id="tCant" min="0.01" step="0.01" max="'+disp+'" value="'+disp+'"></div>' +
+    '</div><p class="muted" style="margin-top:0.5rem;font-size:0.75rem;">Disponible en origen: '+disp+' pieza(s).</p><div class="toolbar" style="margin-top:0.8rem;">' +
+    '<button class="btn btn-solid btn-sm" onclick="applyTransfer(\''+p.id+'\',\''+fromAid+'\')">Aplicar traslado</button> ' +
+    '<button class="btn btn-sm" onclick="closeBizForms()">Cancelar</button></div></div>';
+  $('bizForms').scrollIntoView({behavior:'smooth', block:'start'});
+}
+function applyTransfer(pid, fromAid){
+  const p = biz.productos.filter(x=>String(x.id)===String(pid))[0];
+  const destino = biz.almacenes.filter(a=>String(a.id)===String($('tDestino').value))[0];
+  const origen = biz.almacenes.filter(a=>String(a.id)===String(fromAid))[0];
+  const cant = parseFloat($('tCant').value)||0;
+  if (!destino || !p) return;
+  if (!(cant>0)) { notice('Escribe una cantidad mayor que cero.', false); return; }
+  if (cant > stockEn(pid, fromAid)) { notice('No hay suficiente existencia en el almacén origen.', false); return; }
+  const ref = 'Traslado: '+origen.nombre+' → '+destino.nombre;
+  apiPost({tipo:'movimiento', tipo_mov:'salida', almacen_id:fromAid, fecha:fHoyLocal(),
+    referencia:ref, notas:'Traslado entre almacenes', moneda:p.moneda||'MXN',
+    items:[{producto_id:pid, cantidad:cant, costo_unit:''}]}).then(d=>{
+    if (!d || !d.ok) { notice(errMsg(d,'No se pudo sacar del almacén origen.'), false); return; }
+    apiPost({tipo:'movimiento', tipo_mov:'entrada', almacen_id:destino.id, fecha:fHoyLocal(),
+      referencia:ref, notas:'Traslado entre almacenes', moneda:p.moneda||'MXN',
+      items:[{producto_id:pid, cantidad:cant, costo_unit:Number(p.costo)||0}]}).then(d2=>{
+      notice(d2&&d2.ok ? 'Traslado aplicado: '+cant+' pieza(s) de '+origen.nombre+' a '+destino.nombre+'.' : errMsg(d2,'Entró al origen pero falló la entrada al destino. Revisa y registra la entrada manualmente.'), !!(d2&&d2.ok));
+      closeBizForms(); loadBiz();
+    });
+  });
+}
 
 let selectedProdId = null;
 
@@ -71,11 +117,15 @@ function renderInventory(){
     if (q && !(String(p.codigo||'').toLowerCase().includes(q) || String(p.nombre||'').toLowerCase().includes(q))) return false;
     return true;
   });
-  if (!lista.length) { $('invTable').innerHTML='<tr><td colspan="9" class="muted">Sin productos. Dale a "＋ Producto" o importa tu lista.</td></tr>'; return; }
+  if (!lista.length) { $('invTable').innerHTML='<tr><td colspan="10" class="muted">Sin productos. Dale a "＋ Producto" o importa tu lista.</td></tr>'; return; }
   $('invTable').innerHTML = lista.map(p=>{
     const costo=Number(p.costo)||0, precio=Number(p.precio)||0;
     const margen = precio ? ((precio-costo)/precio*100).toFixed(0)+'%' : '—';
     const st = stockEn(p.id, aid);
+    const porAlmacen = stockPorAlmacen(p.id);
+    const almacenTxt = porAlmacen.length
+      ? porAlmacen.map(s=>'<button class="wh-chip" title="Trasladar desde '+esc(s.nombre)+'" onclick="event.stopPropagation();transferForm(\''+p.id+'\',\''+s.almacen_id+'\')">'+esc(s.nombre)+': '+s.cantidad+'</button>').join(' ')
+      : '<span class="muted">—</span>';
     const min = Number(p.stock_minimo)||0;
     const alerta = min && st<=min ? ' stock-alert' : '';
     const mon = esc(p.moneda||'MXN');
@@ -85,7 +135,7 @@ function renderInventory(){
       '<td style="white-space:nowrap;">'+esc(p.codigo||'—')+(revision?' <span class="badge-revision">REVISAR</span>':'')+'</td>' +
       '<td>'+esc(p.nombre)+'</td><td>'+esc(p.categoria)+(p.subcategoria?' <span class="muted">/'+esc(p.subcategoria)+'</span>':'')+'</td>' +
       '<td>'+fmtMoney(costo)+' '+mon+'</td><td>'+fmtMoney(precio)+' '+mon+'</td><td>'+margen+'</td>' +
-      '<td class="'+alerta+'">'+st+'</td><td>'+(min||'—')+'</td>' +
+      '<td class="'+alerta+'">'+st+'</td><td class="col-almacen">'+almacenTxt+'</td><td>'+(min||'—')+'</td>' +
       '<td style="white-space:nowrap;">' +
       '<button class="btn btn-sm" onclick="event.stopPropagation();showProductForm(\''+p.id+'\')">✎</button> ' +
       '<button class="btn btn-sm" onclick="event.stopPropagation();showAdjustForm(\''+p.id+'\')">±</button> ' +
