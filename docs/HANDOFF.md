@@ -7,7 +7,16 @@
 
 # Handoff — ADIS Catálogo Web
 
-> Documento para la siguiente sesión. Última actualización: 2026-09-07 (Fase 1B: entrada/salida multi-producto).
+> Documento para la siguiente sesión. Última actualización: 2026-09-13 (Inventario: fotos a Drive, galería, alertas y Excel profesional).
+
+## Novedades 2026-09-13 — Inventario: fotos a Drive, galería, alertas, Excel pro
+
+- **Commits** `3ace024` + `bef7c6e` (pusheados): tabla de inventario reparada (una sola tabla sticky, filtro por almacén real, miniaturas, Excel profesional .xlsx con gráfica/formato condicional).
+- **Backend** (`core.gs`, 1 983 líneas concatenadas): `ENC_PROD` 16→19 columnas (`foto_2..foto_4`, auto-extensión), endpoint `upload_foto` (sube a Drive, carpeta auto `ADIS FOTOS PRODUCTOS`, property `FOTOS_FOLDER_ID`), endpoint `localizar_fotos` (sync web), alertas stock bajo (`alertasStockBajo` + correo vía `MailApp` a property `ALERTAS_EMAIL`), handlers `movimiento`/`venta` devuelven `alertas`.
+- **Frontend**: galería 4 fotos (Examinar múltiple + drag&drop + slots), miniaturas en tabla, alertas en panel, `invExcel()` con ExcelJS lazy-CDN (hoja Inventario con formato condicional + hoja Resumen tipo pivote + gráfica PNG incrustada), `printInventory`.
+- **Sync a web pública**: `60_DATA/sync_fotos_drive.py` (baja fotos Drive → catálogo local → `localizar_fotos` → build). El sitio público se alimenta del filesystem del catálogo, NO de la hoja.
+- **Pruebas**: regresión 19/19 + 0 errores JS; Excel verificado con descarga real (`scripts/auditoria/cap_excel.py`).
+- ⏳ **PENDIENTE: REDEPLOY del backend por el dueño** (pegar `admin/apps-script.gs`, nueva versión, autorizar Drive; opcional property `ALERTAS_EMAIL`). Detalle completo en `docs/RESUMEN_SESION_2026-09-13.md`.
 
 ## Novedades 2026-09-07 — Entrada/Salida de material mejorada (Fase 1B)
 
