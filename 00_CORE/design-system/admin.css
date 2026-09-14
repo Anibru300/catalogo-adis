@@ -144,13 +144,13 @@
   .pnl-card.bad .v { color:#c0392b; }
   .stock-alert { color:#c0392b; font-weight:700; }
   .inv-layout { display:grid; grid-template-columns:1fr 290px; gap:1.2rem; align-items:start; }
-  /* Encabezado FUERA del cuadro de scroll: arriba siempre visible y sin
-     solaparse con las filas al bajar. El cuerpo tiene scroll propio y
-     comparte <colgroup> con la tabla de encabezados para alinear columnas. */
+  /* Tabla UNICA con encabezado sticky: las columnas no pueden desalinearse.
+     border-spacing:0 evita el bug de sticky con border-collapse. El fondo
+     blanco opaco + box-shadow hacen la linea divisoria sin transparentar. */
   .inv-table-wrap { padding:0; overflow:hidden; }
-  .inv-table-wrap table { table-layout:fixed; }
-  .inv-head-tbl th { border-bottom:2px solid var(--gold-soft); }
-  .inv-head-tbl { margin-bottom:0; }
+  .inv-table-wrap table { table-layout:fixed; border-collapse:separate; border-spacing:0; }
+  .inv-body-scroll { max-height:calc(100vh - 250px); min-height:340px; overflow:auto; }
+  .inv-body-scroll thead th { position:sticky; top:0; background:#FFFFFF; z-index:2; border-bottom:none; box-shadow:0 2px 0 0 var(--gold-soft); }
   #invAlmacen { width:auto; min-width:170px; }
   #invTable td { overflow:hidden; }
   .inv-body-scroll { max-height:calc(100vh - 250px); min-height:340px; overflow-y:auto; }
@@ -160,13 +160,15 @@
      cuadradas) ocupan el mismo espacio y se ven completas, sin distorsion. */
   .inv-photo img { width:100%; height:240px; object-fit:contain; border-radius:8px; display:block; background:#F1EDE3; }
   /* Columnas de la tabla de inventario: categoria con elipsis, dinero y numeros
-     en una sola linea para que nada se amontone. */
-  #invTable td:nth-child(3) { max-width:150px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-  #invTable td:nth-child(2) { max-width:150px; overflow:hidden; text-overflow:ellipsis; }
+     en una sola linea para que nada se amontone. (Col 1 = miniatura foto.) */
+  #invTable td:nth-child(4) { max-width:150px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  #invTable td:nth-child(3) { max-width:150px; overflow:hidden; text-overflow:ellipsis; }
   #invTable td, #invTable th { padding-left:0.45rem; padding-right:0.45rem; }
   #invTable td { padding-top:0.35rem; padding-bottom:0.35rem; }
   #invTable th { font-size:0.66rem; }
-  #invTable td:nth-child(4), #invTable td:nth-child(5) { white-space:nowrap; font-size:0.74rem; }
+  #invTable td:nth-child(5), #invTable td:nth-child(6) { white-space:nowrap; font-size:0.74rem; }
+  /* Miniatura de foto dentro de la tabla */
+  .inv-thumb img { width:44px; height:44px; object-fit:contain; border-radius:6px; background:#fff; border:1px solid var(--line); display:block; }
   /* Chips de almacen: click = trasladar existencia */
   .wh-chip { display:inline-block; background:rgba(176,140,61,0.08); border:1px solid var(--gold-soft); color:var(--gold-strong); border-radius:12px; padding:0.08rem 0.5rem; font-size:0.68rem; font-family:inherit; cursor:pointer; margin:0.05rem 0; white-space:nowrap; }
   .wh-chip:hover { background:var(--gold); color:#fff; }
@@ -174,6 +176,22 @@
   .inv-photo .ph-name { font-size:0.9rem; font-weight:600; margin-top:0.15rem; }
   .inv-photo .ph-meta { font-size:0.72rem; color:var(--muted); margin-top:0.2rem; line-height:1.5; }
   .badge-revision { background:rgba(192,57,43,0.08); color:#c0392b; border:1px solid rgba(192,57,43,0.3); padding:0.05rem 0.4rem; border-radius:6px; font-size:0.62rem; white-space:nowrap; }
+  /* Subida de fotografia de producto: galeria de 4 + drag&drop */
+  .foto-uprow { display:flex; gap:0.5rem; align-items:center; flex-wrap:wrap; }
+  .foto-pick { margin:0; cursor:pointer; white-space:nowrap; }
+  .gal-grid { display:grid; grid-template-columns:repeat(4, minmax(0,1fr)); gap:0.6rem; }
+  .gal-slot { position:relative; height:110px; border:1px dashed var(--line); border-radius:10px; background:var(--surface-2); display:flex; align-items:center; justify-content:center; overflow:hidden; }
+  .gal-slot img { width:100%; height:100%; object-fit:contain; background:#fff; }
+  .gal-slot .muted { font-size:0.7rem; text-align:center; line-height:1.4; }
+  .gal-x { position:absolute; top:4px; right:4px; width:22px; height:22px; padding:0 !important; border-radius:50% !important; background:var(--err,#C0392B); color:#fff; border:none; cursor:pointer; font-size:0.7rem; line-height:22px; }
+  .gal-x:hover { opacity:0.85; }
+  .gal-drop { flex:1; min-width:200px; border:2px dashed var(--gold-soft); border-radius:10px; padding:0.6rem 0.9rem; font-size:0.75rem; color:var(--muted); text-align:center; background:rgba(176,140,61,0.04); }
+  .gal-drop.over { border-color:var(--gold); background:rgba(176,140,61,0.14); color:var(--gold-strong); }
+  /* Miniaturas de angulos debajo de la foto grande del panel lateral */
+  .ph-thumbs { display:flex; gap:0.4rem; justify-content:center; margin-top:0.5rem; flex-wrap:wrap; }
+  .ph-thumbs img { width:52px; height:52px; object-fit:contain; border:2px solid var(--line); border-radius:8px; background:#fff; cursor:pointer; }
+  .ph-thumbs img.on { border-color:var(--gold); }
+  .ph-thumbs img:hover { border-color:var(--gold-soft); }
   tr.inv-selected td { background:rgba(176,140,61,0.10) !important; }
   tr.inv-inactive td { opacity:0.45; }
   .inv-dash { margin-bottom:1rem; }

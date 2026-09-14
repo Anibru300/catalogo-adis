@@ -118,7 +118,8 @@ function renderInventory(){
     if (q && !(String(p.codigo||'').toLowerCase().includes(q) || String(p.nombre||'').toLowerCase().includes(q))) return false;
     return true;
   });
-  if (!lista.length) { $('invTable').innerHTML='<tr><td colspan="10" class="muted">'+(aid?'Sin productos con existencia en este almacén.':'Sin productos. Dale a "＋ Producto" o importa tu lista.')+'</td></tr>'; return; }
+  if (!lista.length) { $('invTable').innerHTML='<tr><td colspan="11" class="muted">'+(aid?'Sin productos con existencia en este almacén.':'Sin productos. Dale a "＋ Producto" o importa tu lista.')+'</td></tr>'; return; }
+  invListaCache = lista;
   $('invTable').innerHTML = lista.map(p=>{
     const costo=Number(p.costo)||0, precio=Number(p.precio)||0;
     const margen = precio ? ((precio-costo)/precio*100).toFixed(0)+'%' : '—';
@@ -133,6 +134,7 @@ function renderInventory(){
     const inact = p.estado==='inactivo';
     const revision = String(p.notas||'').indexOf('REVISION')>=0;
     return '<tr data-pid="'+p.id+'" onclick="selectProduct(\''+p.id+'\')" class="'+(inact?'inv-inactive ':'')+(selectedProdId===p.id?'inv-selected':'')+'">' +
+      '<td class="inv-thumb">'+(p.foto?'<img loading="lazy" src="'+esc(p.foto)+'" alt="">':'<span class="muted">—</span>')+'</td>' +
       '<td>'+esc(p.codigo||'—')+(revision?' <span class="badge-revision">REVISAR</span>':'')+'</td>' +
       '<td>'+esc(p.nombre)+'</td><td>'+esc(p.categoria)+(p.subcategoria?' <span class="muted">/'+esc(p.subcategoria)+'</span>':'')+'</td>' +
       '<td>'+fmtMoney(costo)+' '+mon+'</td><td>'+fmtMoney(precio)+' '+mon+'</td><td>'+margen+'</td>' +
@@ -153,9 +155,15 @@ function selectProduct(id){
   if (!p) return;
   renderInventory();
   const st = stockTotal(p.id);
+  const fotosP = [p.foto, p.foto_2, p.foto_3, p.foto_4].filter(Boolean);
   $('invPhoto').innerHTML =
-    (p.foto ? '<img src="'+esc(p.foto)+'" alt="'+esc(p.nombre)+'" onerror="this.style.display=\'none\'">'
-            : '<div style="padding:2rem 0.5rem;color:var(--muted);font-size:0.75rem;">Sin fotografía<br>(Fase 2: podrás subirla aquí)</div>') +
+    (fotosP.length ? '<img id="phBig" src="'+esc(fotosP[0])+'" alt="'+esc(p.nombre)+'" onerror="this.style.display=\'none\'">'
+            : '<div style="padding:2rem 0.5rem;color:var(--muted);font-size:0.75rem;">Sin fotografía</div>') +
+    (fotosP.length > 1
+            ? '<div class="ph-thumbs">' + fotosP.map(function (f, i) {
+                return '<img src="' + esc(f) + '" onclick="document.getElementById(\'phBig\').src=this.src;this.parentNode.querySelectorAll(\'img\').forEach(function(x){x.classList.remove(\'on\')});this.classList.add(\'on\')" class="' + (i === 0 ? 'on' : '') + '" alt="">';
+              }).join('') + '</div>'
+            : '') +
     '<div class="ph-code">'+esc(p.codigo||'')+'</div>' +
     '<div class="ph-name">'+esc(p.nombre)+'</div>' +
     '<div class="ph-meta">'+esc(p.categoria)+(p.subcategoria?' · '+esc(p.subcategoria):'')+'<br>' +
@@ -270,6 +278,194 @@ function printMovs(){
   w.focus(); setTimeout(()=>{ w.print(); }, 400);
 }
 
+/* ----- Exportar / imprimir el inventario filtrado (Excel + PDF) ----- */
+/* ----- Exportar el inventario filtrado a Excel profesional (.xlsx) -----
+   Hoja "Inventario": tabla con encabezado dorado, autofiltro, congelar
+   encabezado, formato condicional (stock bajo en rojo, sin precio en ámbar).
+   Hoja "Resumen": tabla tipo pivote por categoría + gráfica de barras.
+   ExcelJS se carga bajo demanda desde CDN (mismo patron que jsPDF). */
+function invExcel(){
+  if (!invListaCache.length) { notice('No hay productos con estos filtros.', false); return; }
+  notice('Generando Excel profesional…', true);
+  cargarScriptCDN('https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.4.0/exceljs.min.js').then(function(){
+    const wb = new ExcelJS.Workbook();
+    wb.creator = 'ADIS PANEL';
+    const ws = wb.addWorksheet('Inventario');
+    ws.columns = [
+      { header: 'Código', key: 'codigo', width: 14 },
+      { header: 'Producto', key: 'nombre', width: 38 },
+      { header: 'Categoría', key: 'categoria', width: 22 },
+      { header: 'Subcategoría', key: 'subcategoria', width: 22 },
+      { header: 'Proveedor', key: 'proveedor', width: 18 },
+      { header: 'Costo', key: 'costo', width: 12 },
+      { header: 'Precio', key: 'precio', width: 12 },
+      { header: 'Moneda', key: 'moneda', width: 8 },
+      { header: 'Existencia', key: 'stock', width: 11 },
+      { header: 'Por almacén', key: 'poralmacen', width: 26 },
+      { header: 'Stock mínimo', key: 'min', width: 12 },
+      { header: 'Estado', key: 'estado', width: 10 }
+    ];
+    const head = ws.getRow(1);
+    head.font = { bold: true, color: { argb: 'FFFFFFFF' }, size: 11 };
+    head.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFB08C3D' } };
+    head.alignment = { vertical: 'middle' };
+    head.height = 20;
+    ws.views = [{ state: 'frozen', ySplit: 1 }];
+    ws.autoFilter = { from: 'A1', to: 'L1' };
+    invListaCache.forEach(p=>{
+      ws.addRow({
+        codigo: p.codigo || '', nombre: p.nombre || '', categoria: p.categoria || '',
+        subcategoria: p.subcategoria || '', proveedor: p.proveedor || '',
+        costo: Number(p.costo) || 0, precio: Number(p.precio) || 0, moneda: p.moneda || 'MXN',
+        stock: stockTotal(p.id),
+        poralmacen: stockPorAlmacen(p.id).map(s=>s.nombre + ': ' + s.cantidad).join(' | '),
+        min: Number(p.stock_minimo) || 0,
+        estado: p.estado === 'inactivo' ? 'Inactivo' : 'Activo'
+      });
+    });
+    const n = invListaCache.length;
+    for (let i = 2; i <= n + 1; i++) {
+      ws.getCell('F' + i).numFmt = '#,##0.00';
+      ws.getCell('G' + i).numFmt = '#,##0.00';
+    }
+    // Formato condicional: stock en/bajo el mínimo = rojo; activo sin precio = ámbar.
+    ws.addConditionalFormatting({
+      ref: 'A2:L' + (n + 1),
+      rules: [
+        { type: 'formula', formulae: ['AND($K2>0,$I2<=$K2)'],
+          style: { fill: { type: 'pattern', pattern: 'solid', bgColor: { argb: 'FFF8CBAD' } },
+                   font: { color: { argb: 'FF9C0006' }, bold: true } } },
+        { type: 'formula', formulae: ['AND($G2=0,$L2="Activo")'],
+          style: { fill: { type: 'pattern', pattern: 'solid', bgColor: { argb: 'FFFFEB9C' } },
+                   font: { color: { argb: 'FF9C6500' } } } }
+      ]
+    });
+
+    /* ----- Hoja Resumen: pivote por categoría (todo convertido a MXN) ----- */
+    const tc = Number(biz.config.tipo_cambio) || 18.5;
+    const agg = {};
+    invListaCache.forEach(p=>{
+      const c = p.categoria || 'Sin categoría';
+      const st = stockTotal(p.id);
+      const co = Number(p.costo) || 0;
+      const valor = (p.moneda === 'USD' ? co * tc : co) * st;
+      if (!agg[c]) agg[c] = { productos: 0, existencias: 0, valor: 0 };
+      agg[c].productos++;
+      agg[c].existencias += st;
+      agg[c].valor += valor;
+    });
+    let items = Object.keys(agg).map(c=>({ label: c, ...agg[c] })).sort((a,b)=>b.valor - a.valor);
+    let otros = null;
+    if (items.length > 12) {
+      const top = items.slice(0, 12), resto = items.slice(12);
+      otros = resto.reduce((o, i)=>({ productos: o.productos + i.productos, existencias: o.existencias + i.existencias, valor: o.valor + i.valor }), { productos: 0, existencias: 0, valor: 0 });
+      items = top;
+    }
+    const res = wb.addWorksheet('Resumen');
+    res.getCell('A1').value = 'Resumen de inventario por categoría (valores en MXN)';
+    res.getCell('A1').font = { bold: true, size: 14 };
+    res.mergeCells('A1:D1');
+    const rh = res.getRow(3);
+    ['Categoría', 'Productos', 'Existencias', 'Valor inventario (MXN)'].forEach((t, i)=>{
+      const cel = rh.getCell(i + 1);
+      cel.value = t;
+      cel.font = { bold: true, color: { argb: 'FFFFFFFF' } };
+      cel.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFB08C3D' } };
+    });
+    res.columns = [{ width: 30 }, { width: 12 }, { width: 13 }, { width: 22 }];
+    let filaR = 4;
+    items.forEach(it=>{
+      res.getCell('A' + filaR).value = it.label;
+      res.getCell('B' + filaR).value = it.productos;
+      res.getCell('C' + filaR).value = it.existencias;
+      res.getCell('D' + filaR).value = Math.round(it.valor * 100) / 100;
+      res.getCell('D' + filaR).numFmt = '$#,##0.00';
+      filaR++;
+    });
+    if (otros) {
+      res.getCell('A' + filaR).value = 'Otras categorías';
+      res.getCell('B' + filaR).value = otros.productos;
+      res.getCell('C' + filaR).value = otros.existencias;
+      res.getCell('D' + filaR).value = Math.round(otros.valor * 100) / 100;
+      res.getCell('D' + filaR).numFmt = '$#,##0.00';
+      filaR++;
+    }
+    const tot = items.reduce((o, i)=>({ p: o.p + i.productos, e: o.e + i.existencias, v: o.v + i.valor }), { p: 0, e: 0, v: 0 });
+    if (otros) { tot.p += otros.productos; tot.e += otros.existencias; tot.v += otros.valor; }
+    const rt = res.getRow(filaR);
+    rt.getCell(1).value = 'TOTAL';
+    rt.getCell(2).value = tot.p;
+    rt.getCell(3).value = tot.e;
+    rt.getCell(4).value = Math.round(tot.v * 100) / 100;
+    rt.getCell(4).numFmt = '$#,##0.00';
+    rt.font = { bold: true };
+    rt.eachCell(c=>{ c.border = { top: { style: 'thin' } }; });
+    // Gráfica de barras dibujada en canvas e incrustada como imagen.
+    const graf = dibujarGraficaBarras(items.map(it=>({ label: it.label, valor: it.valor })));
+    if (graf) {
+      const imgId = wb.addImage({ base64: graf, extension: 'png' });
+      res.addImage(imgId, { tl: { col: 0, row: filaR + 2 }, ext: { width: 760, height: Math.max(160, items.length * 34 + 50) } });
+    }
+    return wb.xlsx.writeBuffer();
+  }).then(function(buf){
+    const blob = new Blob([buf], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'inventario_adis_' + fHoyLocal() + '.xlsx';
+    document.body.appendChild(a); a.click(); a.remove();
+    notice('Excel descargado: ' + invListaCache.length + ' productos (Inventario + Resumen con gráfica).', true);
+  }).catch(function(e){
+    notice('No se pudo generar el Excel: ' + (e && e.message ? e.message : e), false);
+  });
+}
+/* Barra horizontal simple dibujada en canvas para incrustar en el .xlsx. */
+function dibujarGraficaBarras(items){
+  if (!items || !items.length) return null;
+  try {
+    const W = 780, rowH = 34, H = Math.max(140, items.length * rowH + 56);
+    const c = document.createElement('canvas');
+    c.width = W; c.height = H;
+    const x = c.getContext('2d');
+    x.fillStyle = '#FFFFFF'; x.fillRect(0, 0, W, H);
+    x.fillStyle = '#231F18'; x.font = 'bold 17px Arial';
+    x.fillText('Valor de inventario por categoría (MXN)', 16, 28);
+    const max = Math.max.apply(null, items.map(i=>i.valor).concat([1]));
+    const labelW = 210, barMax = W - labelW - 130;
+    items.forEach((it, i)=>{
+      const y = 48 + i * rowH;
+      x.fillStyle = '#5F5748'; x.font = '12px Arial';
+      x.fillText(it.label.length > 30 ? it.label.slice(0, 29) + '…' : it.label, 16, y + 16);
+      x.fillStyle = '#EFE6CF'; x.fillRect(labelW, y, barMax, 22);
+      const wBar = Math.max(2, barMax * it.valor / max);
+      x.fillStyle = '#C5A059'; x.fillRect(labelW, y, wBar, 22);
+      x.fillStyle = '#231F18'; x.font = 'bold 12px Arial';
+      x.fillText('$' + Math.round(it.valor).toLocaleString('es-MX'), labelW + wBar + 8, y + 16);
+    });
+    return c.toDataURL('image/png').split(',')[1];
+  } catch (e) { return null; }
+}
+function printInventory(){
+  if (!invListaCache.length) { notice('No hay productos con estos filtros.', false); return; }
+  const w = window.open('', '_blank');
+  if (!w) { notice('El navegador bloqueó la ventana de impresión.', false); return; }
+  w.document.write('<!doctype html><html><head><meta charset="utf-8"><title>Inventario ADIS</title>' +
+    '<style>body{font-family:Arial,sans-serif;font-size:11px;padding:20px;}h1{font-size:16px;margin:0 0 4px;}p{margin:0 0 12px;color:#555;}table{width:100%;border-collapse:collapse;}th,td{border:1px solid #bbb;padding:4px 6px;text-align:left;vertical-align:top;}th{background:#eee;}td.num{text-align:right;white-space:nowrap;}</style></head><body>' +
+    '<h1>ADIS — Inventario ('+invListaCache.length+' productos)</h1><p>Generado: '+new Date().toLocaleString()+'</p>' +
+    '<table><thead><tr><th>Código</th><th>Producto</th><th>Categoría</th><th class="num">Costo</th><th class="num">Precio</th><th class="num">Existencia</th><th class="num">Mín</th></tr></thead><tbody>' +
+    invListaCache.map(p=>{
+      const min = Number(p.stock_minimo)||0, st = stockTotal(p.id);
+      const bajo = min>0 && st<=min;
+      return '<tr><td>'+esc(p.codigo||'')+'</td><td>'+esc(p.nombre)+'</td><td>'+esc(p.categoria||'')+'</td>' +
+        '<td class="num">'+fmtMoney(Number(p.costo)||0)+' '+esc(p.moneda||'MXN')+'</td>' +
+        '<td class="num">'+fmtMoney(Number(p.precio)||0)+' '+esc(p.moneda||'MXN')+'</td>' +
+        '<td class="num"'+(bajo?' style="color:#c0392b;font-weight:bold;"':'')+'>'+st+'</td>' +
+        '<td class="num">'+(min||'—')+'</td></tr>';
+    }).join('') +
+    '</tbody></table></body></html>');
+  w.document.close();
+  w.focus(); setTimeout(()=>{ w.print(); }, 400);
+}
+
 /* ----- formularios dinamicos (producto / almacen / config / ajuste) ----- */
 function closeBizForms(){ $('bizForms').innerHTML=''; }
 
@@ -332,14 +528,65 @@ function showProductForm(id){
     '<div><label>Moneda</label><select id="pMoneda"><option value="MXN"'+((!p||p.moneda==='MXN')?' selected':'')+'>MXN</option><option value="USD"'+(p&&p.moneda==='USD'?' selected':'')+'>USD</option></select></div>' +
     '<div><label>Estado</label><select id="pEstado"><option value="activo"'+((!p||p.estado!=='inactivo')?' selected':'')+'>Activo</option><option value="inactivo"'+(p&&p.estado==='inactivo'?' selected':'')+'>Inactivo</option></select></div>' +
     '</div>' +
-    '<label>Fotografía (ruta en la web, ej: img/1-placas-pvc/.../foto.jpg)</label>' +
-    '<input id="pFoto" value="'+esc(p?p.foto:'')+'" placeholder="img/...">' +
+    '<label>Fotografías (la 1ª es la principal; hasta 4 ángulos)</label>' +
+    '<div class="gal-grid" id="galSlots"></div>' +
+    '<div class="foto-uprow" style="margin-top:0.6rem;">' +
+    '<label class="btn btn-sm foto-pick">📁 Examinar<input type="file" id="pFotoFile" accept="image/*" multiple style="display:none" onchange="subirFotosGaleria(this.files);this.value=\'\';"></label>' +
+    '<div class="gal-drop" id="galDrop" ondragover="event.preventDefault();this.classList.add(\'over\')" ondragleave="this.classList.remove(\'over\')" ondrop="event.preventDefault();this.classList.remove(\'over\');if(event.dataTransfer.files.length)subirFotosGaleria(event.dataTransfer.files)">Arrastra las fotos aquí</div>' +
+    '</div>' +
     '<label>Descripción</label><textarea id="pDesc" rows="2">'+esc(p?p.descripcion:'')+'</textarea>' +
     '<label>Notas internas</label><input id="pNotas" value="'+esc(p?p.notas:'')+'">' +
     '<div class="toolbar" style="margin-top:1rem;">' +
     '<button class="btn btn-solid btn-sm" onclick="saveProduct(\''+(p?p.id:'')+'\')">💾 Guardar</button> ' +
     '<button class="btn btn-sm" onclick="closeBizForms()">Cancelar</button></div></div>';
+  galeriaInit(p);
   (p ? $('pCodigo') : $('pCodigo')).focus();
+}
+
+/* ----- Galeria de fotos del producto (principal + 3 angulos) -----
+   Las fotos se suben una a una a la carpeta de Drive del negocio
+   (endpoint upload_foto) y se guardan en foto, foto_2, foto_3, foto_4. */
+let galeriaFotos = ['','','',''];
+let invListaCache = [];
+function galeriaInit(p){
+  galeriaFotos = [(p&&p.foto)||'', (p&&p.foto_2)||'', (p&&p.foto_3)||'', (p&&p.foto_4)||''];
+  renderGaleriaSlots();
+}
+function renderGaleriaSlots(){
+  if (!$('galSlots')) return;
+  $('galSlots').innerHTML = galeriaFotos.map((f,i)=>
+    '<div class="gal-slot">' +
+    (f ? '<img src="'+esc(f)+'" alt="">' +
+         '<button type="button" class="gal-x" onclick="quitarFotoSlot('+i+')" title="Quitar foto">✕</button>'
+       : '<span class="muted">'+(i===0?'Principal':'Ángulo '+(i+1))+'<br>sin foto</span>') +
+    '</div>').join('');
+}
+function quitarFotoSlot(i){ galeriaFotos[i]=''; renderGaleriaSlots(); }
+function subirFotosGaleria(files){
+  const imgs = Array.from(files||[]).filter(f=>/^image\//.test(f.type));
+  if (!imgs.length) { notice('Solo se aceptan imágenes (JPG, PNG, WebP...).', false); return; }
+  let k = 0;
+  function siguiente(){
+    const slot = galeriaFotos.indexOf('');
+    if (slot === -1) { notice('Máximo 4 fotos por producto. Quita una para subir otra.', false); return; }
+    if (k >= imgs.length) { notice('Fotos listas. Pulsa «Guardar» para asignarlas al producto.', true); return; }
+    const f = imgs[k++];
+    const drop = $('galDrop'); const previo = drop.textContent;
+    drop.textContent = '⏳ Subiendo ' + f.name + '…';
+    fileToDataURL(f, function(dataUrl){
+      apiPost({tipo:'upload_foto', foto_base64:dataUrl, nombre:($('pCodigo').value||'producto')}).then(d=>{
+        drop.textContent = previo;
+        if (d && d.ok && d.foto) { galeriaFotos[slot] = d.foto; renderGaleriaSlots(); }
+        else {
+          const err = d && d.error;
+          notice('Falló la subida de ' + f.name + ': ' + (err ? (err.message || err) : 'error de conexión') +
+            ' (si el backend no está actualizado, falta el redeploy).', false);
+        }
+        siguiente();
+      });
+    });
+  }
+  siguiente();
 }
 
 function saveProduct(id){
@@ -350,7 +597,8 @@ function saveProduct(id){
     subcategoria:$('pSubcat').value.trim(), proveedor:$('pProv').value.trim(),
     costo:parseFloat($('pCosto').value)||0, precio:parseFloat($('pPrecio').value)||0,
     unidad:$('pUnidad').value.trim()||'pieza', stock_minimo:parseFloat($('pMin').value)||0,
-    moneda:$('pMoneda').value, foto:$('pFoto').value.trim(), estado:$('pEstado').value,
+    moneda:$('pMoneda').value, foto: galeriaFotos[0]||'', foto_2: galeriaFotos[1]||'',
+    foto_3: galeriaFotos[2]||'', foto_4: galeriaFotos[3]||'', estado:$('pEstado').value,
     descripcion:$('pDesc').value.trim(), notas:$('pNotas').value.trim()}).then(d=>{
     notice(d&&d.ok?'Producto guardado.':(d&&d.error)||'No se pudo guardar.', !!(d&&d.ok));
     if(d&&d.ok){ closeBizForms(); loadBiz(); }
@@ -419,11 +667,19 @@ function showAdjustForm(pid){
     '<button class="btn btn-sm" onclick="closeBizForms()">Cancelar</button></div></div>';
 }
 
+/* Aviso en el panel cuando el backend reporta productos en/bajo su mínimo. */
+function avisoAlertasStock(d){
+  if (d && d.alertas && d.alertas.length) {
+    notice('⚠️ Stock bajo: ' + d.alertas.slice(0,4).map(a=>a.codigo+' '+a.producto+' ('+a.stock+')').join(' · ') +
+      (d.alertas.length>4 ? ' +'+(d.alertas.length-4)+' más' : ''), false);
+  }
+}
+
 function saveAdjust(pid){
   apiPost({tipo:'movimiento', tipo_mov:$('mTipo').value, producto_id:pid, almacen_id:$('mAlmacen').value,
     cantidad:parseFloat($('mCant').value)||0, notas:$('mNotas').value.trim()}).then(d=>{
     notice(d&&d.ok?'Movimiento aplicado. Stock nuevo: '+(d.stock_nuevo!==undefined?d.stock_nuevo:'?'):errMsg(d), !!(d&&d.ok));
-    if(d&&d.ok){ closeBizForms(); loadBiz(); }
+    if(d&&d.ok){ avisoAlertasStock(d); closeBizForms(); loadBiz(); }
   });
 }
 
@@ -539,7 +795,7 @@ function saveMovLote(){
     proyecto_id: (tipo==='salida' && $('mProy')) ? $('mProy').value : '',
     items}).then(d=>{
     notice(d&&d.ok?((d.lote?('Lote '+d.lote+' aplicado ('+items.length+' producto(s)). '):'Movimiento aplicado. ')+'Stock actualizado.'):errMsg(d), !!(d&&d.ok));
-    if(d&&d.ok){ closeBizForms(); loadBiz(); }
+    if(d&&d.ok){ avisoAlertasStock(d); closeBizForms(); loadBiz(); }
   });
 }
 

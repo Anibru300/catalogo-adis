@@ -41,10 +41,16 @@ for fila in hoja:
     por_foto.setdefault(str(fila.get('foto', '')).strip(), []).append(fila)
 
 errores_web, ok_web = [], 0
+externas = 0
 for prod in web:
     thumb = str(prod.get('thumb', '')).strip()
     if thumb not in por_foto:
         errores_web.append(f"WEB sin hoja: {prod.get('name')!r} ({thumb})")
+        continue
+    # Foto externa (subida a Drive desde el panel): no existe en public/img por diseno.
+    if thumb.startswith(('http://', 'https://')):
+        externas += 1
+        ok_web += 1
         continue
     if not (BASE / 'public' / thumb.replace('/', '\\')).exists() and not (BASE / 'public' / thumb).exists():
         errores_web.append(f"WEB foto perdida: {prod.get('name')!r} -> public/{thumb}")
@@ -53,6 +59,7 @@ for prod in web:
 
 en_web = {str(p.get('thumb', '')).strip() for p in web}
 huerfanas, revisar, activas_no_web = [], 0, []
+externas_no_web = 0
 for foto, filas in por_foto.items():
     if not foto:
         revisar += sum(1 for f in filas if not str(f.get('notas', '')).strip().upper().startswith('REVISAR'))
@@ -60,6 +67,11 @@ for foto, filas in por_foto.items():
     for f in filas:
         if 'REVISAR' in str(f.get('notas', '')).upper():
             revisar += 1
+            continue
+        if foto.startswith(('http://', 'https://')):
+            # Foto en Drive: valida por definicion; solo avisa si aun no llega a la web.
+            if foto not in en_web:
+                externas_no_web += 1
             continue
         if foto not in en_web:
             rel = BASE / 'public' / foto
@@ -73,10 +85,12 @@ if activas_no_web:
     avisos.append(f"{len(activas_no_web)} fila(s) activa(s) de hoja con foto valida que NO se publican: " + '; '.join(activas_no_web[:5]) + (' ...' if len(activas_no_web) > 5 else ''))
 if revisar:
     avisos.append(f"{revisar} fila(s) de hoja sin foto / marcadas REVISAR (solo-Excel, esperado).")
+if externas_no_web:
+    avisos.append(f"{externas_no_web} foto(s) de Drive aun no reflejada(s) en la web (correr exportar_productos.py + build).")
 
 print(f'Hoja (ERP):      {len(hoja)} productos')
 print(f'Web (products.json): {len(web)} productos')
-print(f'Cruce foto==thumb OK: {ok_web}/{len(web)}')
+print(f'Cruce foto==thumb OK: {ok_web}/{len(web)}' + (f' ({externas} externa(s) en Drive)' if externas else ''))
 print()
 for a in avisos:
     print('AVISO:', a)

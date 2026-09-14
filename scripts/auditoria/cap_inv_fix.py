@@ -22,11 +22,27 @@ with sync_playwright() as pw:
     time.sleep(1.5)
     page.screenshot(path=OUT + r"\inv_fix_1_inicial.png")
 
-    # scroll dentro del cuadro: los titulos deben quedarse ARRIBA, sin tapar filas
+    # scroll dentro del cuadro: el encabezado sticky debe quedarse opaco arriba
     page.evaluate("document.querySelector('.inv-body-scroll').scrollTop = 400")
     time.sleep(0.6)
     page.screenshot(path=OUT + r"\inv_fix_2_scrolleado.png")
     n_total = page.evaluate("document.getElementById('invTable').children.length")
+
+    # VERIFICACION DE ALINEACION: cada th vs su td (misma posicion X)
+    alineacion = page.evaluate("""() => {
+      const ths = document.querySelectorAll('#invTable') && document.querySelectorAll('.inv-body-scroll thead th');
+      const tds = document.querySelectorAll('#invTable tr:first-child td');
+      if (!ths.length || !tds.length || ths.length !== tds.length) return ['columnas=' + ths.length + '/' + tds.length];
+      const out = [];
+      ths.forEach((th, i) => {
+        const d = Math.abs(th.getBoundingClientRect().left - tds[i].getBoundingClientRect().left);
+        out.push(th.textContent.trim() + '=' + d.toFixed(1) + 'px');
+      });
+      return out;
+    }""")
+    print("Alineacion th/td:", alineacion)
+    header_ok = page.evaluate("!!document.querySelector('.inv-body-scroll thead th') && document.querySelectorAll('.inv-body-scroll thead th')[6].textContent.trim()==='Existencia'")
+    print("Header 'Existencia':", header_ok)
 
     # filtro almacen Nogales
     opts = page.evaluate("Array.from(document.getElementById('invAlmacen').options).map(o=>[o.value,o.text])")

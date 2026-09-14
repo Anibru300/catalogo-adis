@@ -88,7 +88,8 @@ var TIPOS_MOVIMIENTO = ['entrada', 'salida', 'ajuste'];
 var ENC_COTIZ = ['fecha', 'cliente', 'telefono', 'ciudad', 'items', 'total', 'notas',
   'folio', 'proyecto', 'ubicacion', 'moneda', 'subtotal', 'iva', 'estado', 'datos', 'id', 'usuario', 'cliente_id'];
 var ENC_PROD = ['id', 'codigo', 'nombre', 'descripcion', 'categoria', 'subcategoria', 'proveedor',
-  'costo', 'precio', 'unidad', 'stock_minimo', 'moneda', 'foto', 'estado', 'notas', 'fecha_actualizacion'];
+  'costo', 'precio', 'unidad', 'stock_minimo', 'moneda', 'foto', 'foto_2', 'foto_3', 'foto_4',
+  'estado', 'notas', 'fecha_actualizacion'];
 var ENC_MOV = ['fecha', 'tipo', 'producto_id', 'producto', 'almacen_id', 'almacen', 'cantidad',
   'costo_unit', 'moneda', 'referencia', 'notas',
   'id', 'usuario', 'existencia_anterior', 'existencia_posterior', 'documento_tipo', 'documento_id',
@@ -379,6 +380,40 @@ function aplicarMovimiento(m) {
     m.lote || ''
   ]);
   return posterior;
+}
+
+/* Productos activos cuyo stock TOTAL quedo en o bajo su minimo.
+   Se consulta despues de movimientos y ventas: el panel muestra el aviso
+   y, si existe la Script Property ALERTAS_EMAIL, se manda correo al dueño. */
+function alertasStockBajo() {
+  var prods = filasComoObjetos(SHEET_PRODUCTS);
+  var stockR = filasComoObjetos(SHEET_STOCK);
+  var alertas = [];
+  prods.forEach(function (p) {
+    if (String(p.estado) === 'inactivo') return;
+    var min = Number(p.stock_minimo) || 0;
+    if (min <= 0) return;
+    var total = stockR.filter(function (s) { return String(s.producto_id) === String(p.id); })
+      .reduce(function (sum, s) { return sum + (Number(s.cantidad) || 0); }, 0);
+    if (total <= min) alertas.push({ codigo: p.codigo || '', producto: p.nombre || '', stock: total, minimo: min });
+  });
+  return alertas;
+}
+function notificarAlertasStock(contexto, alertas) {
+  if (!alertas || !alertas.length) return;
+  try {
+    var dest = PropertiesService.getScriptProperties().getProperty('ALERTAS_EMAIL');
+    if (!dest) {
+      log_('alertas_stock_sin_email', alertas.length + ' alerta(s) tras ' + contexto +
+        '. Define la propiedad ALERTAS_EMAIL para recibir correo.');
+      return;
+    }
+    var cuerpo = 'Quedaron en o bajo su mínimo tras: ' + contexto + '\n\n' +
+      alertas.map(function (a) { return '• ' + a.codigo + ' ' + a.producto + ': ' + a.stock + ' (mínimo ' + a.minimo + ')'; }).join('\n') +
+      '\n\n— Panel ADIS';
+    MailApp.sendEmail(dest, 'Stock bajo: ' + alertas.length + ' producto(s) — ADIS', cuerpo);
+    log_('alertas_stock_enviadas', alertas.length + ' a ' + dest + ' (' + contexto + ')');
+  } catch (eA) { log_('alertas_stock_error', String(eA)); }
 }
 
 // Localiza la fila de un registro por su ID estable (columna 'id').
@@ -784,6 +819,53 @@ function doPostInterno(data) {
   /* ----- a partir de aqui se exige token valido ----- */
   exigirToken(data);
 
+  if (tipo === 'upload_foto') {
+    // Subida de fotografia de producto a la carpeta de Drive del negocio.
+    // La carpeta se crea sola la primera vez y su ID se recuerda en
+    // Script Properties (FOTOS_FOLDER_ID). Requiere permiso drive.file.
+    var b64 = String(data.foto_base64 || '').replace(/^data:image\/[a-zA-Z]+;base64,/, '');
+    if (!b64) throw AdisError('VALIDACION', 'No llegó ninguna imagen.');
+    if (b64.length > 8 * 1024 * 1024) {
+      throw AdisError('FOTO_MUY_GRANDE', 'La imagen es demasiado grande (máximo ~6 MB). Intenta con una foto más pequeña.');
+    }
+    var bytesFoto = Utilities.base64Decode(b64);
+    var props = PropertiesService.getScriptProperties();
+    var carpeta = null;
+    var folderId = props.getProperty('FOTOS_FOLDER_ID');
+    if (folderId) {
+      try { carpeta = DriveApp.getFolderById(folderId); } catch (e1) { carpeta = null; }
+    }
+    if (!carpeta) {
+      carpeta = DriveApp.createFolder('ADIS FOTOS PRODUCTOS');
+      carpeta.setSharing(DriveApp.Access.ANYONE_WITH_LINK, DriveApp.Permission.VIEW);
+      props.setProperty('FOTOS_FOLDER_ID', carpeta.getId());
+    }
+    var nombreBase = String(data.nombre || 'producto').replace(/[^\w\-]+/g, '_').slice(0, 60) || 'producto';
+    var stamp = Utilities.formatDate(new Date(), Session.getScriptTimeZone(), 'yyyyMMdd-HHmmss');
+    var archivo = carpeta.createFile(Utilities.newBlob(bytesFoto, 'image/jpeg', nombreBase + '_' + stamp + '.jpg'));
+    archivo.setSharing(DriveApp.Access.ANYONE_WITH_LINK, DriveApp.Permission.VIEW);
+    log_('foto', nombreBase + ' → ' + archivo.getId());
+    return json({ ok: true, foto: 'https://drive.google.com/thumbnail?id=' + archivo.getId() + '&sz=w1200' });
+  }
+
+  if (tipo === 'localizar_fotos') {
+    // Sincronizador Drive→catálogo: tras bajar la foto a la carpeta local del
+    // catálogo, este endpoint reescribe los campos foto..foto_4 del producto
+    // con la ruta local (la hoja vuelve a ser consistente con el sitio web).
+    var filaLF = filaPorId(SHEET_PRODUCTS, data.id);
+    if (!filaLF) throw AdisError('NO_ENCONTRADO', 'Producto no encontrado.');
+    var hpLF = ss().getSheetByName(SHEET_PRODUCTS);
+    ['foto', 'foto_2', 'foto_3', 'foto_4'].forEach(function (campoLF) {
+      if (data[campoLF] !== undefined) {
+        var colLF = ENC_PROD.indexOf(campoLF) + 1;
+        if (colLF > 0) hpLF.getRange(filaLF, colLF).setValue(String(data[campoLF] || ''));
+      }
+    });
+    hpLF.getRange(filaLF, ENC_PROD.indexOf('fecha_actualizacion') + 1).setValue(ahora_());
+    log_('fotos_localizadas', String(data.id));
+    return json({ ok: true });
+  }
+
   if (tipo === 'quote') return conLock(function () {
     var hCot = hoja(SHEET_QUOTES, ENC_COTIZ); // esquema garantizado (corrige extension condicional)
     var cliente = String(data.cliente || '').trim();
@@ -870,7 +952,7 @@ function doPostInterno(data) {
     var fila = [data.id || nuevoId(), codigo, String(data.nombre).trim(), data.descripcion || '',
       data.categoria || '', data.subcategoria || '', data.proveedor || '',
       Number(data.costo) || 0, Number(data.precio) || 0, data.unidad || 'pieza',
-      Number(data.stock_minimo) || 0, monedaP, data.foto || '',
+      Number(data.stock_minimo) || 0, monedaP, data.foto || '', data.foto_2 || '', data.foto_3 || '', data.foto_4 || '',
       data.estado === 'inactivo' ? 'inactivo' : 'activo', data.notas || '', ahora_()];
     if (filaExistente) hp.getRange(filaExistente, 1, 1, ENC_PROD.length).setValues([fila]);
     else hp.appendRow(fila);
@@ -925,8 +1007,8 @@ function doPostInterno(data) {
     var fila = filaPorId(SHEET_PRODUCTS, data.id);
     if (!fila) throw AdisError('NO_ENCONTRADO', 'Producto no encontrado.');
     var hp = ss().getSheetByName(SHEET_PRODUCTS);
-    hp.getRange(fila, 14).setValue('inactivo'); // baja logica, nunca se borra
-    hp.getRange(fila, 16).setValue(ahora_());
+    hp.getRange(fila, ENC_PROD.indexOf('estado') + 1).setValue('inactivo'); // baja logica, nunca se borra
+    hp.getRange(fila, ENC_PROD.indexOf('fecha_actualizacion') + 1).setValue(ahora_());
     log_('producto_desactivado', String(data.id));
     return json({ ok: true });
   });
@@ -965,8 +1047,8 @@ function doPostInterno(data) {
       codigosVistos[cod.toLowerCase()] = true;
       himp.appendRow([nuevoId(), cod, r.nombre, r.descripcion || '', r.categoria || '', r.subcategoria || '',
         r.proveedor || '', Number(r.costo) || 0, Number(r.precio) || 0, r.unidad || 'pieza',
-        Number(r.stock_minimo) || 0, r.moneda || 'MXN', r.foto || '', r.estado || 'activo',
-        r.notas || '', ahora_()]);
+        Number(r.stock_minimo) || 0, r.moneda || 'MXN', r.foto || '', r.foto_2 || '', r.foto_3 || '', r.foto_4 || '',
+        r.estado || 'activo', r.notas || '', ahora_()]);
       count++;
     });
     // Stock por almacen: cada existencia inicial es un MOVIMIENTO trazable (doc IMPORTACION)
@@ -1133,7 +1215,7 @@ function doPostInterno(data) {
         if (filaP) {
           var hp = ss().getSheetByName(SHEET_PRODUCTS);
           hp.getRange(filaP, 8).setValue(Number(m.costo_unit)); // ultimo costo
-          hp.getRange(filaP, 16).setValue(ahora_());
+          hp.getRange(filaP, ENC_PROD.indexOf('fecha_actualizacion') + 1).setValue(ahora_());
         }
       }
     });
@@ -1141,7 +1223,9 @@ function doPostInterno(data) {
       (loteId ? loteId + ' · ' : '') +
       plan.map(function (m) { return m.producto + ' x' + m.cantidad; }).join(', ') +
       ' en ' + alm.nombre + (docTipo === 'PROYECTO' ? ' · Proyecto ' + docId : ''));
-    return json({ ok: true, stock_nuevo: stockNuevo, lote: loteId });
+    var alertasMov = alertasStockBajo();
+    notificarAlertasStock('movimiento ' + data.tipo_mov + (loteId ? ' ' + loteId : ''), alertasMov);
+    return json({ ok: true, stock_nuevo: stockNuevo, lote: loteId, alertas: alertasMov });
   });
 
   /* ---------- Venta (atomica bajo lock + compensacion best-effort) ----------
@@ -1220,7 +1304,9 @@ function doPostInterno(data) {
           return { producto_id: p2.id || it2.producto_id, producto: p2.nombre || '', cantidad: Number(it2.cantidad) || 0 };
         }))]);
       log_('venta_registrada', folioV + ' · ' + (data.cliente || 'mostrador') + ' · ' + items.length + ' items');
-      return json({ ok: true, id: ventaId, folio: folioV, total: total, utilidad: totalBase - costoBase });
+      var alertasV = alertasStockBajo();
+      notificarAlertasStock('venta ' + folioV, alertasV);
+      return json({ ok: true, id: ventaId, folio: folioV, total: total, utilidad: totalBase - costoBase, alertas: alertasV });
     } catch (errV) {
       // Compensacion: revertir el stock movido para no dejar venta a medias.
       aplicados.forEach(function (a) {
@@ -1722,7 +1808,7 @@ function doPostInterno(data) {
       if (filaProd) {
         var hp2 = ss().getSheetByName(SHEET_PRODUCTS);
         hp2.getRange(filaProd, 8).setValue(rc.costo_unit); // ultimo costo
-        hp2.getRange(filaProd, 16).setValue(ahora_());
+        hp2.getRange(filaProd, ENC_PROD.indexOf('fecha_actualizacion') + 1).setValue(ahora_());
       }
     });
     hoja(SHEET_RECEP, ENC_RECEP).appendRow([nuevoId(), data.oc_id, folioR, ahora_(),

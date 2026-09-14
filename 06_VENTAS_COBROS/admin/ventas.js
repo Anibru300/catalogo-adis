@@ -39,7 +39,7 @@ function saveSale(){
     items:saleItems, notas:$('sNotas').value.trim()})
     .then(d=>{
       notice(d&&d.ok?'Venta '+(d.folio?d.folio+' ':'')+'guardada. Stock descontado.':errMsg(d), !!(d&&d.ok));
-      if(d&&d.ok){ saleItems=[]; renderSaleItems(); $('sCliente').value=''; $('sNotas').value=''; loadBiz(); }
+      if(d&&d.ok){ avisoAlertasStock(d); saleItems=[]; renderSaleItems(); $('sCliente').value=''; $('sNotas').value=''; loadBiz(); }
     });
 }
 function renderSales(list){
