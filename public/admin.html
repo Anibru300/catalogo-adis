@@ -424,8 +424,8 @@
         <summary>Sitio web</summary>
         <div class="mdrop">
           <button class="tab" data-tab="reviews" onclick="showTab('reviews')">Reseñas</button>
-          <button class="tab" data-tab="analytics" onclick="showTab('analytics')">Estadísticas</button>
-          <button class="tab" data-tab="flow" onclick="showTab('flow')">Flujo de visitas</button>
+          <button class="tab" data-tab="analytics" onclick="showTab('analytics')">Negocio</button>
+          <button class="tab" data-tab="flow" onclick="showTab('flow')">Sitio web</button>
         </div>
       </details>
           <button class="tab" data-tab="ayuda" onclick="showTab('ayuda')">Ayuda</button>
@@ -850,25 +850,16 @@
       </div>
     </section>
 
-    <!-- ANALYTICS (dashboard nativo; Looker Studio opcional vía LOOKER_STUDIO_URL) -->
+    <!-- NEGOCIO (finanzas: ingresos, utilidad y flujo de efectivo — nada de tráfico web) -->
     <section id="tab-analytics" class="panel hidden">
       <div class="toolbar">
-        <h2 style="margin:0;">📊 Estadísticas</h2>
-        <span class="muted" id="estRango"></span>
+        <h2 style="margin:0;">💼 Negocio</h2>
+        <span class="muted">Ingresos, utilidad y flujo de efectivo</span>
         <button class="btn btn-sm" onclick="loadEstadisticas()">↻ Actualizar</button>
       </div>
-      <div id="analyticsBox"></div>
       <div id="estNativo">
         <div class="pnl-cards" id="estKpis"></div>
         <div class="flow-grid" style="margin-top:1rem;">
-          <div class="card-box">
-            <h3 class="flow-h">📈 Visitas por día (últimos 30 días)</h3>
-            <canvas id="estVisitasLine" height="230"></canvas>
-          </div>
-          <div class="card-box">
-            <h3 class="flow-h">🌍 ¿De dónde nos visitan?</h3>
-            <canvas id="estOrigenDough" height="230"></canvas>
-          </div>
           <div class="card-box">
             <h3 class="flow-h">💵 Ventas por mes</h3>
             <canvas id="estVentasBar" height="230"></canvas>
@@ -912,22 +903,24 @@
       </div>
     </section>
 
-    <!-- FLUJO (visitas del sitio, alimentado por el tracker) -->
+    <!-- SITIO WEB (analítica del sitio, alimentada por el tracker; Looker Studio opcional) -->
     <section id="tab-flow" class="panel hidden">
       <div class="toolbar">
-        <h2 style="margin:0;">🌊 Flujo del sitio</h2>
+        <h2 style="margin:0;">🌐 Sitio web</h2>
         <span class="muted" id="flowRango"></span>
         <button class="btn btn-sm" onclick="loadFlow()">↻ Actualizar</button>
       </div>
+      <div id="analyticsBox"></div>
+      <div id="flowNativo">
       <div class="pnl-cards" id="flowKpis"></div>
       <div class="flow-grid">
         <div class="card-box">
           <h3 class="flow-h">📈 Visitas por día (últimos 30 días)</h3>
-          <div id="flowDiario" class="flow-bars"></div>
+          <div id="flowChartDiarioBox"><canvas id="flowChartDiario" height="230"></canvas></div>
         </div>
         <div class="card-box">
           <h3 class="flow-h">🌍 ¿De dónde nos visitan?</h3>
-          <div id="flowOrigen"></div>
+          <div id="flowChartOrigenBox"><canvas id="flowChartOrigen" height="230"></canvas></div>
         </div>
         <div class="card-box">
           <h3 class="flow-h">📱 ¿Quién nos visita?</h3>
@@ -947,6 +940,7 @@
       <div class="card-box table-scroll">
         <h3 class="flow-h">🕘 Últimas visitas</h3>
         <table><thead><tr><th>Fecha</th><th>Hora</th><th>Página</th><th>Apartado</th><th>Origen</th><th>Dispositivo</th><th>Navegador</th></tr></thead><tbody id="flowTabla"></tbody></table>
+      </div>
       </div>
     </section>
 
@@ -984,8 +978,8 @@
         <details class="ayuda-item"><summary>📉 Gastos</summary><p>Gastos del negocio (renta, luz, gasolina, etc.) con folio <b>GAS-</b>. Conceptos clave: <b>gasto ≠ pago</b>. Registrar el gasto dice “me debo esto”; el <b>pago</b> (folio PAG-) es cuando sale el dinero. Puedes cancelar un gasto solo si aún no le has pagado nada.</p></details>
         <details class="ayuda-item"><summary>📊 Resultados (P&amp;L)</summary><p>Estado de resultados por mes o por proyecto: <b>ingresos − costo de lo vendido − gastos = utilidad</b>. Las ventas anuladas no cuentan como ingreso. Incluye las <b>alertas</b> del negocio. Sirve para saber si el mes dejó ganancia de verdad.</p></details>
         <details class="ayuda-item"><summary>⭐ Reseñas</summary><p>Las reseñas que dejan clientes en el sitio. Apruébalas para <b>publicarlas en la página</b> o desactívalas si no quieres mostrarlas.</p></details>
-        <details class="ayuda-item"><summary>📊 Estadísticas</summary><p>Espacio para el tablero de <b>Google Analytics / Looker Studio</b> del sitio web (se configura una sola vez con la URL del tablero).</p></details>
-        <details class="ayuda-item"><summary>🌊 Flujo</summary><p>Visitas del sitio web en tiempo casi real: <b>qué páginas ven, de dónde llegan (Google, Facebook…)</b>, con qué dispositivo, y las últimas visitas. Sirve para saber qué publicidad funciona.</p></details>
+        <details class="ayuda-item"><summary>💼 Negocio</summary><p>Las finanzas de un vistazo: <b>ventas del mes, utilidad neta, flujo de efectivo de los últimos 30 días, gastos por categoría y cotizaciones del mes</b>. Son las mismas cifras del estado de resultados y la caja, dibujadas en gráficas.</p></details>
+        <details class="ayuda-item"><summary>🌐 Sitio web</summary><p>La analítica de tu página en tiempo casi real: <b>cuántas visitas hay hoy y en 7/30 días, de dónde llegan (Google, Facebook…)</b>, con qué dispositivo y navegador, qué páginas y apartados ven, y el registro de las últimas visitas. Sirve para saber qué publicidad funciona. Si configuras Looker Studio se muestra ese tablero en su lugar.</p></details>
       </div>
 
       <h3 class="flow-h" style="margin:0 0 0.6rem;">💬 Preguntas frecuentes</h3>
@@ -1175,7 +1169,7 @@ const CMDK_TABS = [
   ['dash','Resumen'], ['leads','Contactos'], ['clientes','Clientes'], ['quotes','Cotizaciones'],
   ['proposal','Cotizador'], ['inventory','Inventario'], ['oc','Compras'], ['sales','Ventas'],
   ['proyectos','🏗️ Proyectos'], ['cobros','💰 Cobros'], ['flujocaja','🧮 Caja'], ['expenses','📉 Gastos'],
-  ['pnl','📊 Resultados'], ['reviews','⭐ Reseñas'], ['analytics','📊 Estadísticas'], ['flow','🌊 Flujo'], ['ayuda','❓ Ayuda'],
+  ['pnl','📊 Resultados'], ['reviews','⭐ Reseñas'], ['analytics','💼 Negocio'], ['flow','🌐 Sitio web'], ['ayuda','❓ Ayuda'],
 ];
 let cmdkSel = 0;
 function abrirCmdk(){
@@ -1262,7 +1256,12 @@ function invMov(tipo){
 function invEditar(){ elegirProducto(pid=>showProductForm(pid)); }
 function provScroll(){ setTimeout(()=>{ const el=$('provAnchor'); if (el) el.scrollIntoView({behavior:'smooth', block:'start'}); }, 400); }
 
-/* ---------- flujo (visitas del sitio) ---------- */
+/* ---------- sitio web (analítica del sitio, alimentada por el tracker) ----------
+   Todo lo que es tráfico web vive aquí: KPIs de visitas, gráfica diaria
+   (Chart.js), orígenes, dispositivos, navegadores, páginas y tabla reciente.
+   Si se configura CONFIG.LOOKER_STUDIO_URL, muestra ese iframe en su lugar.
+   Los helpers de Chart.js (_estChart, cargarChartJS, _estUltimos30Dias) viven
+   en estadisticas.js, que se carga en el mismo bundle. */
 function fLocal(d){ d=d||new Date(); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
 function contarPor(arr, fn){
   const m = {};
@@ -1279,13 +1278,25 @@ function flowBarras(contados, max){
     '<span class="n">'+r[1]+'</span></div>').join('');
 }
 function loadFlow(){
+  // Looker Studio configurado → iframe (comportamiento clásico)
+  if (CONFIG.LOOKER_STUDIO_URL) {
+    $('flowNativo').style.display = 'none';
+    $('analyticsBox').innerHTML = '<iframe id="analyticsFrame" src="' + esc(CONFIG.LOOKER_STUDIO_URL) + '" frameborder="0" allowfullscreen></iframe>';
+    return;
+  }
+  $('analyticsBox').innerHTML = '';
+  $('flowNativo').style.display = '';
   $('flowKpis').innerHTML = '<p class="muted">Cargando…</p>';
   apiGet('visitas').then(d=>{
     if (!d || !d.ok) { $('flowKpis').innerHTML='<p class="muted">Sin acceso o error de conexión. Si acabas de actualizar el script, despliega una <b>nueva versión</b> en Apps Script.</p>'; return; }
     const v = (d.visitas || []).filter(x => !x.pagina || String(x.pagina).indexOf('admin') === -1);
+    // Limpia gráficas previas (por si se reentra al tab)
+    ['flowChartDiario','flowChartOrigen'].forEach(id => { if (_estCharts[id]) { try { _estCharts[id].destroy(); } catch(e) {} delete _estCharts[id]; } });
     if (!v.length) {
       $('flowKpis').innerHTML = '<p class="muted">Aún no hay visitas registradas. El tracker se activa al regenerar y publicar el sitio; entra tú mismo a la página para generar los primeros datos.</p>';
-      ['flowDiario','flowOrigen','flowDisp','flowNav','flowLang','flowPaginas','flowSecciones'].forEach(id=>$(id).innerHTML='');
+      $('flowChartDiarioBox').innerHTML = '<p class="muted">Sin datos todavía.</p>';
+      $('flowChartOrigenBox').innerHTML = '<p class="muted">Sin datos todavía.</p>';
+      ['flowDisp','flowNav','flowLang','flowPaginas','flowSecciones'].forEach(id=>$(id).innerHTML='');
       $('flowTabla').innerHTML = ''; $('flowRango').textContent = '';
       return;
     }
@@ -1295,28 +1306,30 @@ function loadFlow(){
     const vistas = v.filter(x => !x.seccion);            // vistas de página completa
     const apartados = v.filter(x => x.seccion);          // apartados vistos
     $('flowRango').textContent = v.length + ' registro(s) en la hoja';
-    const topPag = contarPor(vistas, x=>String(x.pagina).replace(/^\/+/, ''))[0] || ['—', 0];
+    const nomPag = x => { const p = String(x.pagina || '').replace(/^\/+/, '').replace(/^index\.html$/, ''); return p || 'Inicio'; };
+    const topPag = contarPor(vistas, nomPag)[0] || ['—', 0];
     $('flowKpis').innerHTML = [
       ['Visitas a páginas', vistas.length],
       ['Hoy', vistas.filter(x=>String(x.fecha)===hoy).length],
       ['Últimos 7 días', vistas.filter(x=>String(x.fecha)>=hace7).length],
+      ['Últimos 30 días', vistas.filter(x=>String(x.fecha)>=hace30).length],
       ['Apartados vistos', apartados.length],
       ['Página más vista', topPag[0] + ' (' + topPag[1] + ')']
     ].map(k=>'<div class="pnl-card"><div class="k">'+k[0]+'</div><div class="v" style="font-size:0.95rem;">'+esc(String(k[1]))+'</div></div>').join('');
-    // Diario (30 días)
-    const porDia = {};
-    vistas.forEach(x => { const f = String(x.fecha).slice(0,10); if (f >= hace30) porDia[f] = (porDia[f]||0)+1; });
-    const dias = [];
-    for (let i=29; i>=0; i--) { const f = fLocal(new Date(Date.now()-i*864e5)); dias.push([f, porDia[f]||0]); }
-    const mxD = Math.max(1, ...dias.map(x=>x[1]));
-    $('flowDiario').innerHTML = dias.map(x=>'<div class="flow-bar" style="height:'+Math.max(3,Math.round(x[1]/mxD*100))+'%;"><span class="tip">'+x[0]+' · '+x[1]+' visita(s)</span></div>').join('');
+    // Gráficas principales con Chart.js (fallback a barras CSS si el CDN falla)
+    cargarChartJS().then(function () {
+      _flowPintarDiario(vistas, hace30);
+      _flowPintarOrigen(vistas);
+    }).catch(function () {
+      $('flowChartDiarioBox').innerHTML = flowBarras(contarPor(vistas, x=>String(x.fecha).slice(0,10)), 10);
+      $('flowChartOrigenBox').innerHTML = flowBarras(contarPor(vistas, x=>x.origen), 10);
+    });
     // Origen, dispositivo, navegador, idioma
-    $('flowOrigen').innerHTML = flowBarras(contarPor(vistas, x=>x.origen), 10);
     $('flowDisp').innerHTML = flowBarras(contarPor(vistas, x=>x.dispositivo), 5);
     $('flowNav').innerHTML = flowBarras(contarPor(vistas, x=>x.navegador), 6);
     $('flowLang').innerHTML = flowBarras(contarPor(vistas, x=>x.idioma==='en'?'Inglés':'Español'), 3);
     // Páginas y apartados
-    $('flowPaginas').innerHTML = flowBarras(contarPor(vistas, x=>String(x.pagina).replace(/^\/+/, '')), 10);
+    $('flowPaginas').innerHTML = flowBarras(contarPor(vistas, nomPag), 10);
     $('flowSecciones').innerHTML = flowBarras(contarPor(apartados, x=>x.seccion), 10);
     // Tabla reciente
     $('flowTabla').innerHTML = v.slice(-25).reverse().map(x=>
@@ -1325,11 +1338,60 @@ function loadFlow(){
   }).catch(()=>{ $('flowKpis').innerHTML='<p class="muted">Error de conexión.</p>'; });
 }
 
-/* ---------- estadísticas del sitio (dashboard nativo, sin Looker Studio) ----------
-   Consume los mismos endpoints que ya alimentan el negocio (visitas, ventas,
-   estado de resultados y flujo de caja) y los dibuja con Chart.js (lazy-load
-   vía cargarScriptCDN, tema marfil+oro del panel). Si se configura
-   CONFIG.LOOKER_STUDIO_URL, muestra ese iframe en su lugar. */
+function _flowPintarDiario(vistas, hace30) {
+  const porDia = {};
+  vistas.forEach(x => {
+    if (String(x.fecha) < hace30) return;
+    const f = String(x.fecha).slice(0, 10); // fecha trae hora (yyyy-MM-dd HH:mm)
+    porDia[f] = (porDia[f] || 0) + 1;
+  });
+  const datos = _estUltimos30Dias(f => porDia[f] || 0);
+  const ctx = $('flowChartDiario').getContext('2d');
+  const grad = ctx.createLinearGradient(0, 0, 0, 240);
+  grad.addColorStop(0, 'rgba(176,140,61,0.45)');
+  grad.addColorStop(1, 'rgba(176,140,61,0.02)');
+  _estChart('flowChartDiario', {
+    type: 'line',
+    data: {
+      labels: datos.map(d => d[0].slice(5)),
+      datasets: [{
+        label: 'Visitas', data: datos.map(d => d[1]),
+        borderColor: '#B08C3D', backgroundColor: grad, fill: true,
+        tension: 0.35, pointRadius: 2, pointBackgroundColor: '#8A6D2F', borderWidth: 2
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: true,
+      plugins: { legend: { display: false } },
+      scales: { y: { beginAtZero: true, ticks: { precision: 0 } } }
+    }
+  });
+}
+
+function _flowPintarOrigen(vistas) {
+  const c = contarPor(vistas, x => x.origen || 'Directo').slice(0, 7);
+  const items = c.length ? c : [['Sin datos', 0]];
+  _estChart('flowChartOrigen', {
+    type: 'doughnut',
+    data: {
+      labels: items.map(i => i[0]),
+      datasets: [{
+        data: items.map(i => i[1]),
+        backgroundColor: c.length ? EST_COLORS.slice(0, items.length) : ['#E5DDCC'],
+        borderColor: '#F6F3EC', borderWidth: 2
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: true, cutout: '58%',
+      plugins: { legend: { position: 'right', labels: { boxWidth: 12, padding: 10 } } }
+    }
+  });
+}
+/* ---------- mi negocio (ingresos, utilidad y flujo de efectivo) ----------
+   Dashboard financiero: consume los endpoints del negocio (estado de
+   resultados, ventas, flujo de caja y cotizaciones) y los dibuja con
+   Chart.js (lazy-load vía cargarScriptCDN, tema marfil+oro del panel).
+   Lo de tráfico web vive en flujo.js (tab "Sitio web"). */
 const EST_COLORS = ['#B08C3D', '#8A6D2F', '#E4D2A8', '#1e7a46', '#c0392b', '#8ab4e8', '#6b5b3e', '#d9a441', '#7a6a4f', '#3e7a5b'];
 const _estCharts = {};
 
@@ -1343,15 +1405,21 @@ function cargarChartJS() {
   return cargarScriptCDN('https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js');
 }
 
-function loadEstadisticas() {
-  // Looker Studio configurado → iframe (comportamiento clásico)
-  if (CONFIG.LOOKER_STUDIO_URL) {
-    $('estNativo').style.display = 'none';
-    $('analyticsBox').innerHTML = '<iframe id="analyticsFrame" src="' + esc(CONFIG.LOOKER_STUDIO_URL) + '" frameborder="0" allowfullscreen></iframe>';
-    return;
+// dinero en formato mexicano consistente dentro de este tab
+function _estMoney(n) {
+  return '$' + (Number(n) || 0).toLocaleString('es-MX', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+
+function _estUltimos30Dias(contarFn) {
+  const out = [];
+  for (let i = 29; i >= 0; i--) {
+    const f = fLocal(new Date(Date.now() - i * 864e5));
+    out.push([f, contarFn(f)]);
   }
-  $('analyticsBox').innerHTML = '';
-  $('estNativo').style.display = '';
+  return out;
+}
+
+function loadEstadisticas() {
   $('estKpis').innerHTML = '<p class="muted">Cargando…</p>';
 
   cargarChartJS().then(function () {
@@ -1366,147 +1434,69 @@ function loadEstadisticas() {
     const getj = url => fetch(url).then(r => r.json()).catch(() => null);
 
     Promise.all([
-      apiGet('visitas'),
       getj(base + '&action=estado_resultados&mes=' + mes),
       apiGet('ventas'),
       getj(base + '&action=flujo_caja&desde=' + hace29 + '&hasta=' + hoy),
       apiGet('quotes'),
-    ]).then(function ([vis, pnl, ventas, flujo, quotes]) {
-      const sinConexion = !vis && !pnl && !ventas && !flujo && !quotes;
+    ]).then(function ([pnl, ventas, flujo, quotes]) {
+      const sinConexion = !pnl && !ventas && !flujo && !quotes;
       if (sinConexion) {
         $('estKpis').innerHTML = '<p class="muted">Sin acceso o error de conexión. Si acabas de actualizar el script, despliega una <b>nueva versión</b> en Apps Script.</p>';
         return;
       }
-      _estPintarKpis(vis, pnl, ventas, flujo, quotes, hoy, mes);
-      _estPintarVisitas(vis, hace29);
-      _estPintarOrigen(vis);
+      _estPintarKpis(pnl, ventas, flujo, quotes, mes);
       _estPintarVentas(ventas);
       _estPintarGastos(pnl);
-      _estPintarFlujo(flujo);
+      _estPintarFlujo(flujo, hace29, hoy);
     });
   }).catch(function () {
     $('estKpis').innerHTML = '<p class="muted">No se pudo cargar la librería de gráficas (sin conexión al CDN). Revisa tu internet y vuelve a intentar.</p>';
   });
 }
 
-function _estPintarKpis(vis, pnl, ventas, flujo, quotes, hoy, mes) {
+function _estPintarKpis(pnl, ventas, flujo, quotes, mes) {
   const moneda = (pnl && pnl.moneda_base) || 'MXN';
-  const v = ((vis && vis.visitas) || []).filter(x => !x.pagina || String(x.pagina).indexOf('admin') === -1);
-  const vistas = v.filter(x => !x.seccion);
-  const hace7 = fLocal(new Date(Date.now() - 6 * 864e5));
-  const hace30 = fLocal(new Date(Date.now() - 29 * 864e5));
-  const num = (n, suf) => '<div class="v">' + (Number(n) || 0).toLocaleString('es-MX') + (suf || '') + '</div>';
-  $('estRango').textContent = v.length ? v.length + ' visita(s) registrada(s)' : '';
   let html = '';
-  html += '<div class="pnl-card"><div class="k">Visitas últimos 30 días</div>' + num(vistas.filter(x => String(x.fecha) >= hace30).length) + '</div>';
-  html += '<div class="pnl-card"><div class="k">Visitas últimos 7 días</div>' + num(vistas.filter(x => String(x.fecha) >= hace7).length) + '</div>';
   if (pnl && pnl.ok) {
-    html += '<div class="pnl-card"><div class="k">Ventas del mes (' + (pnl.num_ventas || 0) + ')</div><div class="v">' + fmtMoney(pnl.ingresos) + ' ' + moneda + '</div></div>';
-    html += '<div class="pnl-card ' + ((Number(pnl.utilidad_neta) || 0) >= 0 ? 'good' : 'bad') + '"><div class="k">Utilidad neta del mes</div><div class="v">' + fmtMoney(pnl.utilidad_neta) + ' ' + moneda + '</div></div>';
+    html += '<div class="pnl-card"><div class="k">Ventas del mes (' + (pnl.num_ventas || 0) + ')</div><div class="v">' + _estMoney(pnl.ingresos) + ' ' + moneda + '</div></div>';
+    html += '<div class="pnl-card ' + ((Number(pnl.utilidad_neta) || 0) >= 0 ? 'good' : 'bad') + '"><div class="k">Utilidad neta del mes</div><div class="v">' + _estMoney(pnl.utilidad_neta) + ' ' + moneda + '</div></div>';
   }
   if (flujo && flujo.ok) {
-    html += '<div class="pnl-card ' + ((Number(flujo.neto) || 0) >= 0 ? 'good' : 'bad') + '"><div class="k">Flujo neto 30 días</div><div class="v">' + fmtMoney(flujo.neto) + ' ' + (flujo.moneda_base || moneda) + '</div></div>';
+    html += '<div class="pnl-card ' + ((Number(flujo.neto) || 0) >= 0 ? 'good' : 'bad') + '"><div class="k">Flujo neto 30 días</div><div class="v">' + _estMoney(flujo.neto) + ' ' + (flujo.moneda_base || moneda) + '</div></div>';
   }
   const cotMes = ((quotes && quotes.quotes) || []).filter(q => String(q.fecha || '').indexOf(mes) === 0).length;
-  html += '<div class="pnl-card"><div class="k">Cotizaciones del mes</div>' + num(cotMes) + '</div>';
-  $('estKpis').innerHTML = html;
-}
-
-function _estUltimos30Dias(contarFn) {
-  const out = [];
-  for (let i = 29; i >= 0; i--) {
-    const f = fLocal(new Date(Date.now() - i * 864e5));
-    out.push([f, contarFn(f)]);
-  }
-  return out;
-}
-
-function _estPintarVisitas(vis, hace30) {
-  let datos = [];
-  if (vis && vis.ok) {
-    const vistas = (vis.visitas || []).filter(x => !x.pagina || String(x.pagina).indexOf('admin') === -1);
-    const porDia = {};
-    vistas.forEach(x => {
-      if (String(x.fecha) < hace30) return;
-      const f = String(x.fecha).slice(0, 10); // fecha trae hora (yyyy-MM-dd HH:mm)
-      porDia[f] = (porDia[f] || 0) + 1;
-    });
-    datos = _estUltimos30Dias(f => porDia[f] || 0);
-  } else {
-    datos = _estUltimos30Dias(() => 0);
-  }
-  const ctx = $('estVisitasLine').getContext('2d');
-  const grad = ctx.createLinearGradient(0, 0, 0, 240);
-  grad.addColorStop(0, 'rgba(176,140,61,0.45)');
-  grad.addColorStop(1, 'rgba(176,140,61,0.02)');
-  _estChart('estVisitasLine', {
-    type: 'line',
-    data: {
-      labels: datos.map(d => d[0].slice(5)),
-      datasets: [{
-        label: 'Visitas', data: datos.map(d => d[1]),
-        borderColor: '#B08C3D', backgroundColor: grad, fill: true,
-        tension: 0.35, pointRadius: 2, pointBackgroundColor: '#8A6D2F', borderWidth: 2
-      }]
-    },
-    options: {
-      responsive: true, maintainAspectRatio: true,
-      plugins: { legend: { display: false } },
-      scales: { y: { beginAtZero: true, suggestedMax: 5, ticks: { precision: 0 } } }
-    }
-  });
-}
-
-function _estPintarOrigen(vis) {
-  let items = [['Sin datos', 1]];
-  if (vis && vis.ok) {
-    const vistas = (vis.visitas || []).filter(x => !x.pagina || String(x.pagina).indexOf('admin') === -1);
-    const c = contarPor(vistas, x => x.origen || 'Directo');
-    if (c.length) items = c.slice(0, 7);
-  }
-  _estChart('estOrigenDough', {
-    type: 'doughnut',
-    data: {
-      labels: items.map(i => i[0]),
-      datasets: [{
-        data: items.map(i => i[1]),
-        backgroundColor: EST_COLORS.slice(0, items.length),
-        borderColor: '#F6F3EC', borderWidth: 2
-      }]
-    },
-    options: {
-      responsive: true, maintainAspectRatio: true, cutout: '58%',
-      plugins: { legend: { position: 'right', labels: { boxWidth: 12, padding: 10 } } }
-    }
-  });
+  html += '<div class="pnl-card"><div class="k">Cotizaciones del mes</div><div class="v">' + cotMes.toLocaleString('es-MX') + '</div></div>';
+  $('estKpis').innerHTML = html || '<p class="muted">Sin datos todavía.</p>';
 }
 
 function _estPintarVentas(ventas) {
-  const porMes = {};
-  let hay = false;
-  ((ventas && ventas.ventas) || []).forEach(function (v) {
-    const m = String(v.fecha || '').slice(0, 7);
-    if (!m || m.length !== 7) return;
-    porMes[m] = (porMes[m] || 0) + (Number(v.total) || 0);
-    hay = true;
-  });
+  // Preferimos el agregado por mes del backend (exacto, sin límite de filas);
+  // si aún no está desplegado, caemos a calcularlo desde las últimas ventas.
+  let porMes = (ventas && ventas.porMes) || null;
+  if (!porMes) {
+    porMes = {};
+    ((ventas && ventas.ventas) || []).forEach(function (v) {
+      const m = String(v.fecha || '').slice(0, 7);
+      if (!m || m.length !== 7) return;
+      porMes[m] = (porMes[m] || 0) + (Number(v.total) || 0);
+    });
+  }
   const meses = Object.keys(porMes).sort().slice(-6);
-  const labels = hay ? meses : ['Sin datos'];
-  const data = hay ? meses.map(m => porMes[m]) : [0];
+  const hay = meses.length > 0;
   _estChart('estVentasBar', {
     type: 'bar',
     data: {
-      labels: labels,
+      labels: hay ? meses : ['Sin datos'],
       datasets: [{
-        label: 'Ventas', data: data,
+        label: 'Ventas', data: hay ? meses.map(m => porMes[m]) : [0],
         backgroundColor: 'rgba(176,140,61,0.75)', borderColor: '#8A6D2F', borderWidth: 1,
         borderRadius: 6, maxBarThickness: 46
       }]
     },
     options: {
       responsive: true, maintainAspectRatio: true,
-      plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => fmtMoney(c.parsed.y) } } },
-      scales: { y: { beginAtZero: true, suggestedMax: 10, ticks: { callback: v => '$' + Number(v).toLocaleString('es-MX') } } }
+      plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => _estMoney(c.parsed.y) } } },
+      scales: { y: { beginAtZero: true, ticks: { callback: v => '$' + Number(v).toLocaleString('es-MX') } } }
     }
   });
 }
@@ -1525,28 +1515,38 @@ function _estPintarGastos(pnl) {
     },
     options: {
       indexAxis: 'y', responsive: true, maintainAspectRatio: true,
-      plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => fmtMoney(c.parsed.x) } } },
-      scales: { x: { beginAtZero: true, suggestedMax: 10, ticks: { callback: v => '$' + Number(v).toLocaleString('es-MX') } } }
+      plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => _estMoney(c.parsed.x) } } },
+      scales: { x: { beginAtZero: true, ticks: { callback: v => '$' + Number(v).toLocaleString('es-MX') } } }
     }
   });
 }
 
-function _estPintarFlujo(flujo) {
-  const dias = (flujo && flujo.ok && flujo.dias && flujo.dias.length) ? flujo.dias : [];
+function _estPintarFlujo(flujo, desde, hasta) {
+  // El backend solo devuelve días con movimientos; rellenamos los huecos con 0
+  let dias = [];
+  if (flujo && flujo.ok && flujo.dias && flujo.dias.length) {
+    const mapa = {};
+    flujo.dias.forEach(d => { mapa[String(d.fecha).slice(0, 10)] = d; });
+    for (let i = 29; i >= 0; i--) {
+      const f = fLocal(new Date(Date.now() - i * 864e5));
+      const d = mapa[f];
+      dias.push({ fecha: f, entradas: d ? Number(d.entradas) || 0 : 0, salidas: d ? Number(d.salidas) || 0 : 0 });
+    }
+  }
   const labels = dias.length ? dias.map(d => String(d.fecha).slice(5)) : ['Sin datos'];
   _estChart('estFlujoBar', {
     type: 'bar',
     data: {
       labels: labels,
       datasets: [
-        { label: 'Entradas', data: dias.length ? dias.map(d => Number(d.entradas) || 0) : [0], backgroundColor: 'rgba(30,122,70,0.75)', borderRadius: 4, maxBarThickness: 14 },
-        { label: 'Salidas', data: dias.length ? dias.map(d => Number(d.salidas) || 0) : [0], backgroundColor: 'rgba(192,57,43,0.7)', borderRadius: 4, maxBarThickness: 14 }
+        { label: 'Entradas', data: dias.length ? dias.map(d => d.entradas) : [0], backgroundColor: 'rgba(30,122,70,0.75)', borderRadius: 4, maxBarThickness: 14 },
+        { label: 'Salidas', data: dias.length ? dias.map(d => d.salidas) : [0], backgroundColor: 'rgba(192,57,43,0.7)', borderRadius: 4, maxBarThickness: 14 }
       ]
     },
     options: {
       responsive: true, maintainAspectRatio: true,
-      plugins: { legend: { position: 'top', labels: { boxWidth: 12 } }, tooltip: { callbacks: { label: c => c.dataset.label + ': ' + fmtMoney(c.parsed.y) } } },
-      scales: { y: { beginAtZero: true, suggestedMax: 10, ticks: { callback: v => '$' + Number(v).toLocaleString('es-MX') } } }
+      plugins: { legend: { position: 'top', labels: { boxWidth: 12 } }, tooltip: { callbacks: { label: c => c.dataset.label + ': ' + _estMoney(c.parsed.y) } } },
+      scales: { y: { beginAtZero: true, ticks: { callback: v => '$' + Number(v).toLocaleString('es-MX') } } }
     }
   });
 }
