@@ -77,18 +77,24 @@ def main():
             valores = {c: str(p.get(c, '') or '').strip() for c, _ in CAMPOS}
             if not any(_es_drive(v) for v in valores.values()):
                 continue
-            # Carpeta destino: se toma de una foto LOCAL del producto (si tiene).
+            # Carpeta destino REAL: se localiza el archivo de una foto LOCAL del
+            # producto (busqueda por nombre en CATALOGO FINAL; las carpetas reales
+            # son p. ej. "1. Placas PVC", no los slugs web img/1-placas-pvc/...).
             locales = [v for v in valores.values() if v and not _es_drive(v)]
             if not locales:
                 saltados += 1
                 print(f"  SALTADO {p.get('codigo')}: sin foto local de referencia (¿producto nuevo? "
                       f"ponle la primera foto en el panel o en el catalogo).")
                 continue
+            base = next(catalog_dir.rglob(Path(locales[0].replace('\\', '/')).name), None)
+            if base is None:
+                saltados += 1
+                print(f"  SALTADO {p.get('codigo')}: no se encontro {Path(locales[0]).name} en el catalogo local.")
+                continue
+            dir_destino = base.parent
             ruta_local = Path(locales[0].replace('\\', '/'))
-            dir_rel = ruta_local.parent                      # img/<cat>/<sub>
-            dir_destino = catalog_dir / dir_rel.relative_to('img')
-            dir_destino.mkdir(parents=True, exist_ok=True)
-            codigo = _safe(p.get('codigo') or p.get('nombre'))
+            dir_rel = ruta_local.parent                      # img/<cat>/<sub> (para reescribir la hoja)
+            stem_base = base.stem                            # p. ej. 'Adler' -> extras 'Adler-2.jpg'
 
             cambios = {}
             for campo, sufijo in CAMPOS:
@@ -99,7 +105,12 @@ def main():
                 if not fid:
                     errores.append(f"{p.get('codigo')} {campo}: URL sin id: {val}")
                     continue
-                nombre_arch = f'{codigo}{sufijo}.jpg'
+                # Convencion de galeria del sitio: 'Adler-2.jpg' (sufijo '_2' -> '-2').
+                # La foto principal conserva su nombre de catalogo existente.
+                if campo == 'foto':
+                    nombre_arch = base.name
+                else:
+                    nombre_arch = f"{stem_base}{sufijo.replace('_', '-')}.jpg"
                 destino = dir_destino / nombre_arch
                 try:
                     resp = pg.request.get(f'https://drive.google.com/thumbnail?id={fid}&sz=w2000')

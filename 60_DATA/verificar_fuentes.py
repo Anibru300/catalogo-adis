@@ -60,6 +60,7 @@ for prod in web:
 en_web = {str(p.get('thumb', '')).strip() for p in web}
 huerfanas, revisar, activas_no_web = [], 0, []
 externas_no_web = 0
+extra_externas, extra_perdidas = 0, []
 for foto, filas in por_foto.items():
     if not foto:
         revisar += sum(1 for f in filas if not str(f.get('notas', '')).strip().upper().startswith('REVISAR'))
@@ -80,6 +81,22 @@ for foto, filas in por_foto.items():
             else:
                 errores.append(f"HOJA foto perdida en build: {f.get('nombre')!r} -> public/{foto}")
 
+# Fotos extra de galería (foto_2/3/4): ruta local debe existir en public/img;
+# URL de Drive aun no sincronizada -> solo aviso.
+for f in hoja:
+    for campo in ('foto_2', 'foto_3', 'foto_4'):
+        val = str(f.get(campo, '') or '').strip()
+        if not val:
+            continue
+        if val.startswith(('http://', 'https://')):
+            extra_externas += 1
+            continue
+        if not (BASE / 'public' / val.replace('/', '\\')).exists() and not (BASE / 'public' / val).exists():
+            extra_perdidas.append(f"{f.get('nombre')!r} {campo} -> public/{val}")
+
+for e in extra_perdidas:
+    errores.append(f'HOJA {e} (foto extra perdida en build; correr sync_fotos_drive.py)')
+
 errores.extend(errores_web)
 if activas_no_web:
     avisos.append(f"{len(activas_no_web)} fila(s) activa(s) de hoja con foto valida que NO se publican: " + '; '.join(activas_no_web[:5]) + (' ...' if len(activas_no_web) > 5 else ''))
@@ -87,6 +104,10 @@ if revisar:
     avisos.append(f"{revisar} fila(s) de hoja sin foto / marcadas REVISAR (solo-Excel, esperado).")
 if externas_no_web:
     avisos.append(f"{externas_no_web} foto(s) de Drive aun no reflejada(s) en la web (correr exportar_productos.py + build).")
+if extra_externas:
+    avisos.append(f"{extra_externas} foto(s) extra de galeria (foto_2/3/4) aun en Drive; correr sync_fotos_drive.py para llevarlas al sitio.")
+if extra_perdidas:
+    avisos.append(f"{len(extra_perdidas)} foto(s) extra con ruta local que no existe en public/img.")
 
 print(f'Hoja (ERP):      {len(hoja)} productos')
 print(f'Web (products.json): {len(web)} productos')

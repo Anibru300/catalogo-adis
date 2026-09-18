@@ -1611,6 +1611,37 @@ footer {
 .product-card:hover .product-gallery::after {
   opacity: 1;
 }
+/* Miniaturas de galería (fotos extra foto_2/3/4) */
+.card-thumbs {
+  display: flex;
+  gap: 0.4rem;
+  padding: 0.5rem 0.6rem;
+  background: rgba(15,15,15,0.6);
+  border-top: 1px solid rgba(197,160,89,0.15);
+  overflow-x: auto;
+}
+.card-thumb {
+  flex: 0 0 auto;
+  width: 52px;
+  height: 52px;
+  border-radius: 6px;
+  overflow: hidden;
+  border: 1px solid rgba(197,160,89,0.25);
+  cursor: pointer;
+  transition: border-color 0.3s, transform 0.3s;
+}
+.card-thumb:hover,
+.card-thumb:focus-visible {
+  border-color: var(--gold);
+  transform: scale(1.06);
+  outline: none;
+}
+.card-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
 .product-info {
   padding: 1.5rem;
   text-align: center;

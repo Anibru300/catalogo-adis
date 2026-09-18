@@ -934,15 +934,16 @@ def generate_category_page(cat, categories):
             else:
                 main_products.append(prod_file)
         
+        cat_gallery = cat.get("gallery", {})
         for prod_file in main_products:
             if is_dup(prod_file):
                 continue
-            direct_products_html += product_card_html(prod_file, cat)
+            direct_products_html += product_card_html(prod_file, cat, gallery=cat_gallery.get(prod_file))
         
         for prod_file in acc_products:
             if is_dup(prod_file):
                 continue
-            accessories_html += product_card_html(prod_file, cat)
+            accessories_html += product_card_html(prod_file, cat, gallery=cat_gallery.get(prod_file))
         
         cat_specs = generate_specs_table('Placas PVC Tipo espejo')
         sections_html += f'''  <section class="subcat-section reveal">
@@ -964,10 +965,11 @@ def generate_category_page(cat, categories):
         specs_html = generate_specs_table(sub["name"])
 
         products_html = ''
+        sub_gallery = sub.get("gallery", {})
         for prod_file in sub["products"]:
             if is_dup(prod_file):
                 continue
-            products_html += product_card_html(prod_file, cat, sub)
+            products_html += product_card_html(prod_file, cat, sub, gallery=sub_gallery.get(prod_file))
 
         sections_html += f'''  <section class="subcat-section reveal" id="{sub["slug"]}">
     <div class="subcat-header">
@@ -998,10 +1000,11 @@ def generate_category_page(cat, categories):
     # Productos directos para otras categorías (no Placas PVC que ya se mostró arriba)
     if cat["name"] != 'Placas PVC' and cat["direct_products"]:
         direct_products_html = ''
+        cat_gallery = cat.get("gallery", {})
         for prod_file in cat["direct_products"]:
             if is_dup(prod_file):
                 continue
-            direct_products_html += product_card_html(prod_file, cat)
+            direct_products_html += product_card_html(prod_file, cat, gallery=cat_gallery.get(prod_file))
 
         # Clave de specs para productos directos según categoría
         direct_specs_map = {
@@ -1057,19 +1060,23 @@ def generate_category_page(cat, categories):
     cat_slug_pdf = cat["name"].lower().replace(' ', '-').replace('ñ','n').replace('á','a').replace('é','e').replace('í','i').replace('ó','o').replace('ú','u')
     pdf_url = f"catalogos/pdf/catalogo_{cat_slug_pdf}.pdf"
 
-    # Schemas de productos para esta categoría
+    # Schemas de productos para esta categoría (image = array: principal + galería)
     product_schemas_html = ''
     for sub in cat["subcategories"]:
+        sub_gallery = sub.get("gallery", {})
         for prod_file in sub["products"]:
             prod_name = os.path.splitext(prod_file)[0]
-            img_url = f"{SITE_URL}img/{cat['slug']}/{sub['slug']}/{prod_file}"
+            base_url = f"{SITE_URL}img/{cat['slug']}/{sub['slug']}/"
+            img_urls = [base_url + prod_file] + [base_url + e for e in sub_gallery.get(prod_file, [])]
             prod_url = f"{SITE_URL}{cat['filename']}#{sub['slug']}"
-            product_schemas_html += product_schema(prod_name, cat["name"], sub["name"], img_url, prod_url) + '\n'
+            product_schemas_html += product_schema(prod_name, cat["name"], sub["name"], img_urls, prod_url) + '\n'
+    cat_gallery = cat.get("gallery", {})
     for prod_file in cat["direct_products"]:
         prod_name = os.path.splitext(prod_file)[0]
-        img_url = f"{SITE_URL}img/{cat['slug']}/{prod_file}"
+        base_url = f"{SITE_URL}img/{cat['slug']}/"
+        img_urls = [base_url + prod_file] + [base_url + e for e in cat_gallery.get(prod_file, [])]
         prod_url = f"{SITE_URL}{cat['filename']}"
-        product_schemas_html += product_schema(prod_name, cat["name"], None, img_url, prod_url) + '\n'
+        product_schemas_html += product_schema(prod_name, cat["name"], None, img_urls, prod_url) + '\n'
 
     breadcrumb_html = breadcrumb_schema([
         (t('bc_home'), SITE_URL),

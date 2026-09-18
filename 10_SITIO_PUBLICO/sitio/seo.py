@@ -218,8 +218,11 @@ def breadcrumb_schema(items):
 def product_schema(name, category, subcategory, image, url, description=''):
     """Schema.org de Product para una tarjeta de producto.
     No incluye precio porque la política es cotizar por WhatsApp.
+    `image` acepta una URL (str) o una lista de URLs (galería).
     """
     cat_path = category + (f" > {subcategory}" if subcategory else "")
+    if isinstance(image, str):
+        image = [image]
     return json_ld({
         "@context": "https://schema.org",
         "@type": "Product",

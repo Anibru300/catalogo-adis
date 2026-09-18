@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 """Datos: catalogo (Drive), imagenes, media, investigacion. Extraido de generar_web.py en M3 (salida byte-identica)."""
+import re
+
 from . import infra
 from .infra import *  # noqa
 
@@ -125,6 +127,22 @@ def sync_images(categories):
             webp, webp600 = _webp_path_for(dst)
             if webp.exists():
                 webp_total += 1
+
+        # Copiar fotos extra de galería (Nombre-2.jpg, ...)
+        for base, extras in cat.get("gallery", {}).items():
+            for extra in extras:
+                src = cat["path"] / extra
+                dst = cat_img_dir / extra
+                expected.add(dst.resolve())
+                if not src.exists():
+                    errors.append(f"  [ERROR] No existe: {src}")
+                    continue
+                copied = _generate_image_variants(src, dst)
+                if copied:
+                    total += 1
+                webp, webp600 = _webp_path_for(dst)
+                if webp.exists():
+                    webp_total += 1
         
         # Copiar productos de subcategorias
         for sub in cat["subcategories"]:
@@ -143,6 +161,20 @@ def sync_images(categories):
                 webp, webp600 = _webp_path_for(dst)
                 if webp.exists():
                     webp_total += 1
+            for base, extras in sub.get("gallery", {}).items():
+                for extra in extras:
+                    src = sub["path"] / extra
+                    dst = sub_img_dir / extra
+                    expected.add(dst.resolve())
+                    if not src.exists():
+                        errors.append(f"  [ERROR] No existe: {src}")
+                        continue
+                    copied = _generate_image_variants(src, dst)
+                    if copied:
+                        total += 1
+                    webp, webp600 = _webp_path_for(dst)
+                    if webp.exists():
+                        webp_total += 1
     
     if errors:
         print(f"ADVERTENCIA: {len(errors)} imagenes no se pudieron copiar:")
@@ -154,15 +186,40 @@ def sync_images(categories):
 
 
 
-def get_products(folder_path):
-    """Lista productos (imágenes que NO son fichas técnicas)."""
+GALLERY_RE = re.compile(r'^(?P<base>.+)-(?P<n>[2-9])$')
+
+
+def split_gallery(files):
+    """Separa fotos extra de productos: 'Adler-2.jpg' -> galeria de 'Adler.jpg'.
+
+    Solo agrupa si existe el archivo base en la misma lista y no es ficha;
+    si no, el archivo se comporta como producto normal (p. ej. 'Modelo-2.jpg'
+    sin 'Modelo.jpg'). Devuelve (productos, galeria) donde galeria es
+    {archivo_base: [fotos_extra ordenadas por N]}.
+    """
+    productos = [f for f in files if not GALLERY_RE.match(os.path.splitext(f)[0])]
+    base_stems = {os.path.splitext(f)[0] for f in productos}
+    galeria = {}
+    for f in files:
+        m = GALLERY_RE.match(os.path.splitext(f)[0])
+        if not m or m.group('base') not in base_stems:
+            continue
+        galeria.setdefault(next(p for p in productos if os.path.splitext(p)[0] == m.group('base')), []).append(f)
+    for base in galeria:
+        galeria[base].sort(key=lambda f: int(GALLERY_RE.match(os.path.splitext(f)[0]).group('n')))
+    return productos, galeria
+
+
+def list_product_images(folder_path):
+    """Lista TODAS las imágenes que no son fichas (productos + fotos extra de galería)."""
     if not os.path.isdir(folder_path):
         return []
-    files = []
-    for f in sorted(os.listdir(folder_path)):
-        if is_image(f) and not is_ficha(f):
-            files.append(f)
-    return files
+    return [f for f in sorted(os.listdir(folder_path)) if is_image(f) and not is_ficha(f)]
+
+
+def get_products(folder_path):
+    """Lista productos (imágenes que NO son fichas técnicas ni fotos extra de galería)."""
+    return split_gallery(list_product_images(folder_path))[0]
 
 
 
@@ -193,24 +250,29 @@ def scan_catalog():
 
         subcategories = []
         direct_products = []
+        gallery = {}
 
         for item in sorted(os.listdir(cat_path)):
             item_path = cat_path / item
             if item_path.is_dir():
                 sub_name = clean_name(item)
                 sub_slug = slugify(item)
-                products = get_products(item_path)
+                products, sub_gallery = split_gallery(list_product_images(item_path))
                 ficha = get_ficha(item_path)
                 subcategories.append({
                     'folder': item,
                     'name': sub_name,
                     'slug': sub_slug,
                     'products': products,
+                    'gallery': sub_gallery,
                     'ficha': ficha,
                     'path': item_path
                 })
             elif is_image(item) and not is_ficha(item):
                 direct_products.append(item)
+
+        # Galería de productos directos (fotos extra tipo 'Nombre-2.jpg')
+        direct_products, gallery = split_gallery(direct_products)
 
         # Imagen representativa = primera imagen disponible
         thumb = None
@@ -229,6 +291,7 @@ def scan_catalog():
             'filename': cat_filename,
             'subcategories': subcategories,
             'direct_products': sorted(direct_products),
+            'gallery': gallery,
             'ficha': get_ficha(cat_path),
             'thumb': thumb,
             'path': cat_path

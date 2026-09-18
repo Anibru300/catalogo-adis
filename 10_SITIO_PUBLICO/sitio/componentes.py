@@ -690,8 +690,12 @@ def picture_tag(img_path, alt, loading='lazy', onclick=None, cls=''):
 
 
 
-def product_card_html(prod_file, cat, sub=None):
-    """Genera tarjeta de producto con CTA unificado a WhatsApp via modal."""
+def product_card_html(prod_file, cat, sub=None, gallery=None):
+    """Genera tarjeta de producto con CTA unificado a WhatsApp via modal.
+
+    gallery: lista opcional de fotos extra (Nombre-2.jpg, ...) renderizadas
+    como miniaturas clicables que abren el lightbox.
+    """
     prod_name = os.path.splitext(prod_file)[0]
     img_path = "img/{cat_slug}/{sub_slug}/{prod_file}".format(
         cat_slug=cat["slug"],
@@ -709,10 +713,20 @@ def product_card_html(prod_file, cat, sub=None):
     sub_name_lower = sub_name.lower() if sub_name else 'general'
     keywords = ' '.join(_extract_keywords(prod_name))
     button_html = f'<button type="button" class="btn-cotizar" onclick="openWaModal(\'{prod_name_disp}\', \'{cat_name_disp}\', {sub_arg})">{i18n("modal_title")}</button>'
+    thumbs_html = ''
+    if gallery:
+        thumbs = []
+        for i, extra in enumerate(gallery[:3], start=2):
+            extra_path = img_path.rsplit('/', 1)[0] + '/' + extra if '/' in img_path else 'img/' + cat["slug"] + '/' + extra
+            thumbs.append(
+                f'<div class="card-thumb" onclick="openLightbox(\'{p(extra_path)}\', \'{prod_name_disp} foto {i}\')" role="button" tabindex="0" aria-label="{prod_name_disp} foto {i}">'
+                f'<img src="{p(extra_path)}" alt="{prod_name_disp} foto {i}" loading="lazy"></div>'
+            )
+        thumbs_html = f'\n        <div class="card-thumbs">{"".join(thumbs)}</div>'
     return f'''      <div class="product-card reveal" data-name="{prod_name_lower}" data-category="{cat_name_disp}" data-subcategory="{sub_name_lower}" data-keywords="{keywords}">
         <div class="product-gallery" onclick="openLightbox('{p(img_path)}', '{prod_name_disp}')">
           {picture_tag(img_path, prod_name_disp)}
-        </div>
+        </div>{thumbs_html}
         <div class="product-info">
           <div class="product-name">{prod_name_disp}</div>
           <div class="product-actions">
