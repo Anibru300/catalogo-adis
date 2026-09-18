@@ -77,6 +77,28 @@
   puro, sin librerías): KPIs, 30 días, orígenes, dispositivos, páginas.
 - **Estadísticas** (`analytics`): placeholder — iframe Looker Studio solo si
   `CONFIG.LOOKER_STUDIO_URL` está configurada (vacío hoy).
+
+### SEPARACIÓN Negocio / Sitio web (2026-09-17)
+
+Los tabs quedaron divididos por dominio, sin solapamiento:
+
+- **💼 Negocio** (`analytics`, `estadisticas.js`): finanzas — KPIs de ventas
+  del mes, utilidad neta, flujo neto 30d y cotizaciones; gráficas Chart.js de
+  ventas por mes, gastos por categoría y flujo de caja (zero-fill de días sin
+  movimiento). Dinero en formato es-MX (`_estMoney`). La gráfica de ventas
+  prefiere el agregado `porMes` del endpoint `ventas` (exacto, sin límite de
+  filas) y cae a calcularlo del cliente si el backend aún no se redepliega.
+- **🌐 Sitio web** (`flow`, `flujo.js`): analítica del tracker — KPIs de
+  visitas (hoy/7/30d, apartados, página más vista), gráfica diaria Chart.js
+  (`flowChartDiario`), doughnut de orígenes (`flowChartOrigen`), barras CSS de
+  dispositivo/navegador/idioma/páginas/apartados y tabla de últimas 25. Si se
+  configura `CONFIG.LOOKER_STUDIO_URL` muestra ese iframe en su lugar (la
+  rama Looker se movió aquí desde Estadísticas).
+- Helpers Chart.js compartidos (`_estChart`, `cargarChartJS`,
+  `_estUltimos30Dias`, `EST_COLORS`) viven en `estadisticas.js`; ambos
+  archivos van en el mismo bundle (`flujo.js` antes de `estadisticas.js`).
+- Menú, Ctrl+K (admin_nav.js) y Ayuda renombrados: "Negocio" y "Sitio web".
+- Smoke test: `scripts/auditoria/cap_estadisticas.py` cubre ambos tabs.
 - **Tracker** (en el sitio): snippet dentro de `generate_footer()`
   (`generar_web.py` L4424–4532): sendBeacon/fetch con dedup por sesión;
   clasificadores `origenDe_`/`dispositivoDe_`/`navegadorDe_` en el backend.

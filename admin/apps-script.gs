@@ -509,7 +509,17 @@ function doGetInterno(e) {
     });
     return json({ ok: true, movimientos: hayFiltro ? movsFil.slice(-500) : movsFil.slice(-100) });
   }
-  if (action === 'ventas') return json({ ok: true, ventas: filasComoObjetos(SHEET_SALES).slice(-100) });
+  // Agregado por mes (exacto, sin límite de filas) + últimas 100 para listados
+  if (action === 'ventas') {
+    var vs = filasComoObjetos(SHEET_SALES);
+    var porMes = {};
+    vs.forEach(function (v) {
+      var m = String(v.fecha || '').slice(0, 7);
+      if (m.length !== 7) return;
+      porMes[m] = (porMes[m] || 0) + (Number(v.total) || 0);
+    });
+    return json({ ok: true, porMes: porMes, ventas: vs.slice(-100) });
+  }
   if (action === 'gastos') return json({ ok: true, gastos: filasComoObjetos(SHEET_EXPENSES) });
 
   if (action === 'estado_resultados') {

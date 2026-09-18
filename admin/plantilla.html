@@ -103,8 +103,8 @@
         <summary>Sitio web</summary>
         <div class="mdrop">
           <button class="tab" data-tab="reviews" onclick="showTab('reviews')">Reseñas</button>
-          <button class="tab" data-tab="analytics" onclick="showTab('analytics')">Estadísticas</button>
-          <button class="tab" data-tab="flow" onclick="showTab('flow')">Flujo de visitas</button>
+          <button class="tab" data-tab="analytics" onclick="showTab('analytics')">Negocio</button>
+          <button class="tab" data-tab="flow" onclick="showTab('flow')">Sitio web</button>
         </div>
       </details>
           <button class="tab" data-tab="ayuda" onclick="showTab('ayuda')">Ayuda</button>
@@ -529,25 +529,16 @@
       </div>
     </section>
 
-    <!-- ANALYTICS (dashboard nativo; Looker Studio opcional vía LOOKER_STUDIO_URL) -->
+    <!-- NEGOCIO (finanzas: ingresos, utilidad y flujo de efectivo — nada de tráfico web) -->
     <section id="tab-analytics" class="panel hidden">
       <div class="toolbar">
-        <h2 style="margin:0;">📊 Estadísticas</h2>
-        <span class="muted" id="estRango"></span>
+        <h2 style="margin:0;">💼 Negocio</h2>
+        <span class="muted">Ingresos, utilidad y flujo de efectivo</span>
         <button class="btn btn-sm" onclick="loadEstadisticas()">↻ Actualizar</button>
       </div>
-      <div id="analyticsBox"></div>
       <div id="estNativo">
         <div class="pnl-cards" id="estKpis"></div>
         <div class="flow-grid" style="margin-top:1rem;">
-          <div class="card-box">
-            <h3 class="flow-h">📈 Visitas por día (últimos 30 días)</h3>
-            <canvas id="estVisitasLine" height="230"></canvas>
-          </div>
-          <div class="card-box">
-            <h3 class="flow-h">🌍 ¿De dónde nos visitan?</h3>
-            <canvas id="estOrigenDough" height="230"></canvas>
-          </div>
           <div class="card-box">
             <h3 class="flow-h">💵 Ventas por mes</h3>
             <canvas id="estVentasBar" height="230"></canvas>
@@ -591,22 +582,24 @@
       </div>
     </section>
 
-    <!-- FLUJO (visitas del sitio, alimentado por el tracker) -->
+    <!-- SITIO WEB (analítica del sitio, alimentada por el tracker; Looker Studio opcional) -->
     <section id="tab-flow" class="panel hidden">
       <div class="toolbar">
-        <h2 style="margin:0;">🌊 Flujo del sitio</h2>
+        <h2 style="margin:0;">🌐 Sitio web</h2>
         <span class="muted" id="flowRango"></span>
         <button class="btn btn-sm" onclick="loadFlow()">↻ Actualizar</button>
       </div>
+      <div id="analyticsBox"></div>
+      <div id="flowNativo">
       <div class="pnl-cards" id="flowKpis"></div>
       <div class="flow-grid">
         <div class="card-box">
           <h3 class="flow-h">📈 Visitas por día (últimos 30 días)</h3>
-          <div id="flowDiario" class="flow-bars"></div>
+          <div id="flowChartDiarioBox"><canvas id="flowChartDiario" height="230"></canvas></div>
         </div>
         <div class="card-box">
           <h3 class="flow-h">🌍 ¿De dónde nos visitan?</h3>
-          <div id="flowOrigen"></div>
+          <div id="flowChartOrigenBox"><canvas id="flowChartOrigen" height="230"></canvas></div>
         </div>
         <div class="card-box">
           <h3 class="flow-h">📱 ¿Quién nos visita?</h3>
@@ -626,6 +619,7 @@
       <div class="card-box table-scroll">
         <h3 class="flow-h">🕘 Últimas visitas</h3>
         <table><thead><tr><th>Fecha</th><th>Hora</th><th>Página</th><th>Apartado</th><th>Origen</th><th>Dispositivo</th><th>Navegador</th></tr></thead><tbody id="flowTabla"></tbody></table>
+      </div>
       </div>
     </section>
 
@@ -663,8 +657,8 @@
         <details class="ayuda-item"><summary>📉 Gastos</summary><p>Gastos del negocio (renta, luz, gasolina, etc.) con folio <b>GAS-</b>. Conceptos clave: <b>gasto ≠ pago</b>. Registrar el gasto dice “me debo esto”; el <b>pago</b> (folio PAG-) es cuando sale el dinero. Puedes cancelar un gasto solo si aún no le has pagado nada.</p></details>
         <details class="ayuda-item"><summary>📊 Resultados (P&amp;L)</summary><p>Estado de resultados por mes o por proyecto: <b>ingresos − costo de lo vendido − gastos = utilidad</b>. Las ventas anuladas no cuentan como ingreso. Incluye las <b>alertas</b> del negocio. Sirve para saber si el mes dejó ganancia de verdad.</p></details>
         <details class="ayuda-item"><summary>⭐ Reseñas</summary><p>Las reseñas que dejan clientes en el sitio. Apruébalas para <b>publicarlas en la página</b> o desactívalas si no quieres mostrarlas.</p></details>
-        <details class="ayuda-item"><summary>📊 Estadísticas</summary><p>Espacio para el tablero de <b>Google Analytics / Looker Studio</b> del sitio web (se configura una sola vez con la URL del tablero).</p></details>
-        <details class="ayuda-item"><summary>🌊 Flujo</summary><p>Visitas del sitio web en tiempo casi real: <b>qué páginas ven, de dónde llegan (Google, Facebook…)</b>, con qué dispositivo, y las últimas visitas. Sirve para saber qué publicidad funciona.</p></details>
+        <details class="ayuda-item"><summary>💼 Negocio</summary><p>Las finanzas de un vistazo: <b>ventas del mes, utilidad neta, flujo de efectivo de los últimos 30 días, gastos por categoría y cotizaciones del mes</b>. Son las mismas cifras del estado de resultados y la caja, dibujadas en gráficas.</p></details>
+        <details class="ayuda-item"><summary>🌐 Sitio web</summary><p>La analítica de tu página en tiempo casi real: <b>cuántas visitas hay hoy y en 7/30 días, de dónde llegan (Google, Facebook…)</b>, con qué dispositivo y navegador, qué páginas y apartados ven, y el registro de las últimas visitas. Sirve para saber qué publicidad funciona. Si configuras Looker Studio se muestra ese tablero en su lugar.</p></details>
       </div>
 
       <h3 class="flow-h" style="margin:0 0 0.6rem;">💬 Preguntas frecuentes</h3>

@@ -3,7 +3,7 @@ const CMDK_TABS = [
   ['dash','Resumen'], ['leads','Contactos'], ['clientes','Clientes'], ['quotes','Cotizaciones'],
   ['proposal','Cotizador'], ['inventory','Inventario'], ['oc','Compras'], ['sales','Ventas'],
   ['proyectos','🏗️ Proyectos'], ['cobros','💰 Cobros'], ['flujocaja','🧮 Caja'], ['expenses','📉 Gastos'],
-  ['pnl','📊 Resultados'], ['reviews','⭐ Reseñas'], ['analytics','📊 Estadísticas'], ['flow','🌊 Flujo'], ['ayuda','❓ Ayuda'],
+  ['pnl','📊 Resultados'], ['reviews','⭐ Reseñas'], ['analytics','💼 Negocio'], ['flow','🌐 Sitio web'], ['ayuda','❓ Ayuda'],
 ];
 let cmdkSel = 0;
 function abrirCmdk(){

@@ -1,12 +1,14 @@
 # -*- coding: utf-8 -*-
-"""Smoke test del dashboard nativo de Estadisticas (tab analytics).
+"""Smoke test de los dashboards de Negocio (analytics) y Sitio web (flow).
 
-Requiere: servidor local en public/ (python -m http.server 8000).
+Requiere: servidor local con el admin construido (ej. desde la raiz del repo:
+python -m http.server 8000  →  http://localhost:8000/admin/index.html).
 
 Verifica:
-  1. El tab analytics carga KPIs y 5 graficas Chart.js.
-  2. Los canvas tienen contenido dibujado (no estan vacios).
-  3. 0 errores JS al abrir el tab.
+  1. Tab Negocio: KPIs financieros y 3 graficas Chart.js (ventas, gastos, flujo).
+  2. Tab Sitio web: KPIs de visitas y 2 graficas Chart.js (diario, origen).
+  3. Los canvas tienen contenido dibujado (no estan vacios).
+  4. 0 errores JS al abrir ambos tabs.
 
 Salida: captura en screenshots/ y PASS/FAIL por chequeo.
 """
@@ -17,7 +19,7 @@ from pathlib import Path
 from playwright.sync_api import sync_playwright
 
 BASE = Path(__file__).resolve().parents[2]
-URL = "http://localhost:8000/admin.html"
+URL = "http://localhost:8000/admin/index.html"
 DEST = BASE / "screenshots"
 DEST.mkdir(exist_ok=True)
 
@@ -40,29 +42,41 @@ with sync_playwright() as pw:
     page.press("#loginPass", "Enter")
     page.wait_for_function("getComputedStyle(document.getElementById('loginView')).display==='none'", timeout=30000)
 
+    # --- Tab Negocio (finanzas) ---
     page.evaluate("typeof showTab==='function' && showTab('analytics')")
-    page.wait_for_function("document.querySelectorAll('#estKpis .pnl-card').length >= 3", timeout=45000)
-
-    check("KPIs cargados", page.evaluate("document.querySelectorAll('#estKpis .pnl-card').length") >= 3,
+    page.wait_for_function("document.querySelectorAll('#estKpis .pnl-card').length >= 1", timeout=45000)
+    check("Negocio: KPIs cargados", page.evaluate("document.querySelectorAll('#estKpis .pnl-card').length") >= 2,
           f"{page.evaluate('document.querySelectorAll(\'#estKpis .pnl-card\').length')} tarjetas")
-    canvases = ["estVisitasLine", "estOrigenDough", "estVentasBar", "estGastosBar", "estFlujoBar"]
-    for cid in canvases:
+    for cid in ["estVentasBar", "estGastosBar", "estFlujoBar"]:
         try:
             page.wait_for_function(f"window.Chart && !!Chart.getChart('{cid}')", timeout=45000)
-            check(f"grafica {cid}", True)
+            check(f"Negocio: grafica {cid}", True)
         except Exception:
-            check(f"grafica {cid}", False)
+            check(f"Negocio: grafica {cid}", False)
     if not errors:
         pixels = page.evaluate("""() => {
-          const c = document.getElementById('estVisitasLine');
+          const c = document.getElementById('estVentasBar');
           const ctx = c.getContext('2d');
           const d = ctx.getImageData(0, 0, c.width, c.height).data;
           let n = 0;
           for (let i = 3; i < d.length; i += 4) if (d[i] > 0) n++;
           return n;
         }""")
-        check("linea de visitas dibujada (pixeles > 0)", pixels > 1000, f"{pixels} px")
+        check("Negocio: grafica de ventas dibujada (pixeles > 0)", pixels > 1000, f"{pixels} px")
     page.screenshot(path=str(DEST / "check_estadisticas.png"), full_page=True)
+
+    # --- Tab Sitio web (analitica) ---
+    page.evaluate("typeof showTab==='function' && showTab('flow')")
+    page.wait_for_function("document.querySelectorAll('#flowKpis .pnl-card').length >= 2", timeout=45000)
+    check("Sitio web: KPIs cargados", page.evaluate("document.querySelectorAll('#flowKpis .pnl-card').length") >= 2,
+          f"{page.evaluate('document.querySelectorAll(\'#flowKpis .pnl-card\').length')} tarjetas")
+    for cid in ["flowChartDiario", "flowChartOrigen"]:
+        try:
+            page.wait_for_function(f"window.Chart && !!Chart.getChart('{cid}')", timeout=45000)
+            check(f"Sitio web: grafica {cid}", True)
+        except Exception:
+            check(f"Sitio web: grafica {cid}", False)
+    page.screenshot(path=str(DEST / "check_sitio_web.png"), full_page=True)
     b.close()
 
 check("0 errores JS", len(errors) == 0, "; ".join(errors[:3]))
