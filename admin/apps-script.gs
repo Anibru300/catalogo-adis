@@ -464,7 +464,12 @@ function doGetInterno(e) {
   if (action === 'reviews_admin') return json({ ok: true, reviews: filasComoObjetos(SHEET_REVIEWS) });
 
   if (action === 'config') {
-    return json({ ok: true, moneda_base: cfg('moneda_base', 'MXN'), tipo_cambio: cfg('tipo_cambio', '18.5') });
+    return json({
+      ok: true,
+      moneda_base: cfg('moneda_base', 'MXN'),
+      tipo_cambio: cfg('tipo_cambio', '18.5'),
+      alertas_email: PropertiesService.getScriptProperties().getProperty('ALERTAS_EMAIL') || ''
+    });
   }
   if (action === 'productos') {
     return json({ ok: true, productos: filasComoObjetos(SHEET_PRODUCTS) }); // activos e inactivos
@@ -864,6 +869,48 @@ function doPostInterno(data) {
     hpLF.getRange(filaLF, ENC_PROD.indexOf('fecha_actualizacion') + 1).setValue(ahora_());
     log_('fotos_localizadas', String(data.id));
     return json({ ok: true });
+  }
+
+  if (tipo === 'config_alertas') {
+    // Configura desde el panel el correo que recibe las alertas de stock bajo
+    // (Script Property ALERTAS_EMAIL). Vacío = solo bitácora, sin correos.
+    var emailA = String(data.email || '').trim();
+    if (emailA && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailA)) {
+      throw AdisError('VALIDACION', 'Escribe un correo válido o deja el campo vacío.');
+    }
+    var propsA = PropertiesService.getScriptProperties();
+    if (emailA) propsA.setProperty('ALERTAS_EMAIL', emailA);
+    else propsA.deleteProperty('ALERTAS_EMAIL');
+    log_('alertas_email', emailA ? 'configurado: ' + emailA : 'desactivado');
+    return json({ ok: true, email: emailA });
+  }
+
+  if (tipo === 'limpiar_fotos_drive') {
+    // Manda a la papelera los archivos de la carpeta de fotos que NINGUN producto
+    // referencia en foto..foto_4 (huérfanos de pruebas). dry_run por defecto:
+    // solo reporta; con data.ejecutar=true realmente los borra.
+    var propsF = PropertiesService.getScriptProperties();
+    var folderIdF = propsF.getProperty('FOTOS_FOLDER_ID');
+    if (!folderIdF) return json({ ok: true, dry_run: true, total: 0, candidatos: [] });
+    var enUso = {};
+    filasComoObjetos(SHEET_PRODUCTS).forEach(function (pF) {
+      ['foto', 'foto_2', 'foto_3', 'foto_4'].forEach(function (cF) {
+        var mF = /[?&]id=([\w-]+)/.exec(String(pF[cF] || ''));
+        if (mF) enUso[mF[1]] = true;
+      });
+    });
+    var dryRun = data.ejecutar ? false : true;
+    var candidatos = [];
+    var archivos = DriveApp.getFolderById(folderIdF).getFiles();
+    while (archivos.hasNext()) {
+      var aF = archivos.next();
+      if (!enUso[aF.getId()]) {
+        candidatos.push(aF.getName() + ' (' + Math.round(aF.getSize() / 1024) + ' KB)');
+        if (!dryRun) aF.setTrashed(true);
+      }
+    }
+    log_('limpiar_fotos_drive', (dryRun ? 'simulacion: ' : 'papelera: ') + candidatos.length + ' archivo(s)');
+    return json({ ok: true, dry_run: dryRun, total: candidatos.length, candidatos: candidatos.slice(0, 50) });
   }
 
   if (tipo === 'quote') return conLock(function () {

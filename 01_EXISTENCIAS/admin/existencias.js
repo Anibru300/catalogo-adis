@@ -642,16 +642,62 @@ function showConfigForm(){
   $('bizForms').innerHTML = '<div class="card-box"><div class="row">' +
     '<div><label>Moneda base (para resultados)</label><select id="cBase"><option value="MXN"'+(biz.config.moneda_base==='MXN'?' selected':'')+'>MXN — Pesos</option><option value="USD"'+(biz.config.moneda_base==='USD'?' selected':'')+'>USD — Dólares</option></select></div>' +
     '<div><label>Tipo de cambio (1 USD = ? en moneda base)</label><input type="number" id="cTC" min="0" step="0.01" value="'+esc(biz.config.tipo_cambio)+'"></div>' +
+    '<div><label>Correo para alertas de stock bajo (vacío = sin correos)</label><input type="email" id="cAlertasEmail" placeholder="tucorreo@gmail.com" value="'+esc(biz.config.alertas_email||'')+'"></div>' +
     '</div><div class="toolbar" style="margin-top:1rem;">' +
     '<button class="btn btn-solid btn-sm" onclick="saveConfig()">💾 Guardar</button> ' +
     '<button class="btn btn-sm" onclick="closeBizForms()">Cerrar</button></div>' +
-    '<p class="muted">Ejemplo: si la moneda base es MXN y 1 dólar = $18.50 pesos, escribe 18.50. Las ventas y gastos en USD se convertirán automáticamente.</p></div>';
+    '<p class="muted">Ejemplo: si la moneda base es MXN y 1 dólar = $18.50 pesos, escribe 18.50. Las ventas y gastos en USD se convertirán automáticamente.</p></div>' +
+    '<div class="card-box" style="margin-top:1rem;"><h3 class="flow-h" style="margin-top:0;">🧹 Fotos de productos en Drive</h3>' +
+    '<p class="muted">Las fotos subidas desde el panel se guardan en Google Drive. Con el tiempo pueden quedar archivos de prueba que ningún producto usa. Aquí puedes revisarlos y mandarlos a la papelera.</p>' +
+    '<div class="toolbar"><button class="btn btn-sm" onclick="revisarFotosDrive()">🔍 Revisar fotos huérfanas</button>' +
+    '<button class="btn btn-sm" id="btnLimpiarFotos" style="display:none;" onclick="limpiarFotosDrive()">🗑️ Confirmar limpieza</button></div>' +
+    '<div id="fotosDriveResult" style="margin-top:0.5rem;"></div></div>';
 }
 
 function saveConfig(){
+  const email = $('cAlertasEmail') ? $('cAlertasEmail').value.trim() : null;
   apiPost({tipo:'config', moneda_base:$('cBase').value, tipo_cambio:parseFloat($('cTC').value)||1}).then(d=>{
-    notice(d&&d.ok?'Configuración guardada.':'No se pudo guardar.', !!(d&&d.ok));
-    if(d&&d.ok){ biz.config=d; closeBizForms(); }
+    if (!(d&&d.ok)) { notice('No se pudo guardar.', false); return; }
+    biz.config=d;
+    if (email !== null) {
+      return apiPost({tipo:'config_alertas', email}).then(d2=>{
+        if (d2 && d2.ok) { biz.config.alertas_email = d2.email; notice('Configuración guardada.' + (d2.email ? ' Alertas de stock se enviarán a ' + d2.email + '.' : ' Alertas por correo desactivadas.'), true); }
+        else notice('Configuración guardada, pero el correo de alertas no se pudo guardar.', false);
+        closeBizForms();
+      });
+    }
+    notice('Configuración guardada.', true);
+    closeBizForms();
+  });
+}
+
+/* Revisión y limpieza de fotos huérfanas en la carpeta Drive (requiere backend
+   con los endpoints limpiar_fotos_drive/config_alertas — ver GUIA_CONFIGURACION). */
+function revisarFotosDrive(){
+  $('fotosDriveResult').innerHTML = '<p class="muted">Revisando…</p>';
+  apiPost({tipo:'limpiar_fotos_drive'}).then(d=>{
+    if (!d || !d.ok) { $('fotosDriveResult').innerHTML = '<p class="muted">No se pudo revisar. Si acabas de actualizar el script, despliega una nueva versión en Apps Script.</p>'; return; }
+    if (!d.total) {
+      $('fotosDriveResult').innerHTML = '<p class="muted">✅ No hay fotos huérfanas. La carpeta de Drive está limpia.</p>';
+      $('btnLimpiarFotos').style.display = 'none';
+      return;
+    }
+    $('fotosDriveResult').innerHTML = '<p><strong>' + d.total + ' archivo(s) sin uso:</strong></p><ul style="margin:0.3rem 0 0 1.2rem;max-height:200px;overflow:auto;">' +
+      d.candidatos.map(c => '<li style="font-size:0.85rem;">' + esc(c) + '</li>').join('') +
+      (d.total > d.candidatos.length ? '<li style="font-size:0.85rem;">… y ' + (d.total - d.candidatos.length) + ' más</li>' : '') + '</ul>';
+    $('btnLimpiarFotos').style.display = '';
+  });
+}
+function limpiarFotosDrive(){
+  if (!confirma('limpiar-fotos', 'Mandar ' + 'a la papelera las fotos listadas (se pueden recuperar desde la papelera de Drive)')) return;
+  apiPost({tipo:'limpiar_fotos_drive', ejecutar:true}).then(d=>{
+    if (d && d.ok) {
+      notice(d.total + ' foto(s) enviada(s) a la papelera de Drive.', true);
+      $('fotosDriveResult').innerHTML = '<p class="muted">🗑️ ' + d.total + ' foto(s) enviada(s) a la papelera.</p>';
+      $('btnLimpiarFotos').style.display = 'none';
+    } else {
+      notice('No se pudo limpiar.', false);
+    }
   });
 }
 

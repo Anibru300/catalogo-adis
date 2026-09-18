@@ -529,11 +529,38 @@
       </div>
     </section>
 
-    <!-- ANALYTICS -->
+    <!-- ANALYTICS (dashboard nativo; Looker Studio opcional vía LOOKER_STUDIO_URL) -->
     <section id="tab-analytics" class="panel hidden">
-      <div class="toolbar"><h2 style="margin:0;">Estadísticas del sitio</h2></div>
-      <div id="analyticsBox" class="card-box">
-        <p class="muted">Configura <code>LOOKER_STUDIO_URL</code> en este archivo (ver admin/GUIA_CONFIGURACION.md, paso 6) para ver aquí el tablero de Google Analytics.</p>
+      <div class="toolbar">
+        <h2 style="margin:0;">📊 Estadísticas</h2>
+        <span class="muted" id="estRango"></span>
+        <button class="btn btn-sm" onclick="loadEstadisticas()">↻ Actualizar</button>
+      </div>
+      <div id="analyticsBox"></div>
+      <div id="estNativo">
+        <div class="pnl-cards" id="estKpis"></div>
+        <div class="flow-grid" style="margin-top:1rem;">
+          <div class="card-box">
+            <h3 class="flow-h">📈 Visitas por día (últimos 30 días)</h3>
+            <canvas id="estVisitasLine" height="230"></canvas>
+          </div>
+          <div class="card-box">
+            <h3 class="flow-h">🌍 ¿De dónde nos visitan?</h3>
+            <canvas id="estOrigenDough" height="230"></canvas>
+          </div>
+          <div class="card-box">
+            <h3 class="flow-h">💵 Ventas por mes</h3>
+            <canvas id="estVentasBar" height="230"></canvas>
+          </div>
+          <div class="card-box">
+            <h3 class="flow-h">📉 Gastos del mes por categoría</h3>
+            <canvas id="estGastosBar" height="230"></canvas>
+          </div>
+          <div class="card-box" style="grid-column:1/-1;">
+            <h3 class="flow-h">🧮 Flujo de caja: entradas vs salidas (30 días)</h3>
+            <canvas id="estFlujoBar" height="190"></canvas>
+          </div>
+        </div>
       </div>
     </section>
 

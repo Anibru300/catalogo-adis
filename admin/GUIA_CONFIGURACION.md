@@ -119,11 +119,20 @@ Ya está hecho en el código, pero conviene saberlo:
 
 ---
 
-## Paso 6 — Estadísticas (Google Analytics en el panel)
+## Paso 6 — Estadísticas (funciona sin configurar nada)
+
+El panel trae un **dashboard nativo** (SITIO WEB → Estadísticas): visitas por día,
+origen, ventas por mes, gastos por categoría y flujo de caja, dibujados con los
+datos que el sitio y el ERP ya guardan. **No necesita configuración.**
+
+Opcional — Google Analytics 4 (medición adicional del sitio público):
 
 1. Entra a <https://analytics.google.com> con la cuenta de ADIS y crea la propiedad para `https://xn--adis-diseo-19a.com/` (si ya existe GA4, úsala). Copia el ID de medición (`G-XXXXXXXXXX`).
 2. Dámelo y yo lo configuro en `generar_web.py` (la etiqueta ya se inyecta en todas las páginas).
-3. Para ver las gráficas **dentro del panel admin**: entra a <https://lookerstudio.google.com> → crear informe → conecta GA4 → **Compartir → insertar informe** → copia el enlace de iframe y pégalo en `LOOKER_STUDIO_URL` dentro de `admin/index.html`.
+3. (Opcional) Si prefieres ver un informe de Looker Studio dentro del panel en
+   lugar del dashboard nativo: <https://lookerstudio.google.com> → crear informe →
+   conecta GA4 → **Compartir → insertar informe** → pega el enlace en
+   `LOOKER_STUDIO_URL` en `00_CORE/shared_js/admin_core.js`.
 
 ---
 
@@ -134,12 +143,26 @@ Ya está hecho en el código, pero conviene saberlo:
 
 ---
 
+## Paso 8 — Extras del ERP (después de redeploy del backend)
+
+1. **Correo de alertas de stock:** INVENTARIO → ⚙️ Configuración → escribe el
+   correo en "Correo para alertas de stock bajo" → Guardar. Recibirás un correo
+   cada vez que un producto quede en o bajo su mínimo tras una venta o movimiento.
+2. **Limpiar fotos de prueba en Drive:** INVENTARIO → ⚙️ Configuración →
+   "🔍 Revisar fotos huérfanas" (lista los archivos que ningún producto usa) →
+   "🗑️ Confirmar limpieza" (los manda a la papelera de Drive, recuperables 30 días).
+   También desde consola: `python 60_DATA/limpiar_fotos_drive.py` (simula) y
+   `python 60_DATA/limpiar_fotos_drive.py --ejecutar` (borra).
+
+---
+
 ## Resumen de lo que hay que hacer (checklist)
 
 - [ ] Crear hoja de Google
 - [ ] Pegar `apps-script.gs`, cambiar usuario/clave
 - [ ] Desplegar como app web (acceso: cualquier persona)
 - [ ] Pasarme la URL `/exec` → yo la conecto al sitio y al panel
-- [ ] (Opcional) ID de GA4 → estadísticas en el panel
-- [ ] (Opcional) URL de Looker Studio → gráficas dentro del panel
+- [ ] (Opcional) ID de GA4 → medición adicional del sitio
+- [ ] (Opcional) URL de Looker Studio → informe embebido en lugar del dashboard nativo
 - [ ] (Opcional) URL de la ficha de Google → botón de reseñas
+- [ ] (Opcional, tras redeploy) Correo de alertas de stock y limpieza de fotos Drive

@@ -82,9 +82,6 @@ function enterApp(u){
   $('loginView').classList.add('hidden');
   $('appView').classList.remove('hidden');
   $('userEmail').textContent = 'Sesión: ' + u;
-  if (CONFIG.LOOKER_STUDIO_URL) {
-    $('analyticsBox').innerHTML = '<iframe id="analyticsFrame" src="' + esc(CONFIG.LOOKER_STUDIO_URL) + '" frameborder="0" allowfullscreen></iframe>';
-  }
   loadLeads(); loadQuotes(); loadReviewsAdmin(); loadProducts(); loadBiz(); loadClientes();
   initProposal();
   $('sFecha').value = new Date().toISOString().slice(0,10);

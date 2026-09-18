@@ -45,6 +45,7 @@ function showTab(name){
   if (name==='dash') loadDash();
   if (name==='pnl' && !$('pnlCards').innerHTML) generarPNL();
   if (name==='flow') loadFlow();
+  if (name==='analytics') loadEstadisticas();
   if (name==='oc') loadOC();
   if (name==='clientes') loadClientes();
   if (name==='proyectos') loadProyectos();

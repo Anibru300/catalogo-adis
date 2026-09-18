@@ -55,6 +55,32 @@ def main():
     productos = dataset['productos']
 
     bajadas, saltados, errores = 0, 0, []
+    borradas = 0
+
+    # ---- Pase de borrado (sin red): si en el panel se quitó una foto extra
+    # (campo foto_2/3/4 vacío en la hoja) pero el archivo local Nombre-N.jpg
+    # sigue en el catálogo, se elimina para que desaparezca de la web.
+    indice = {f.name.lower(): f for f in catalog_dir.rglob('*') if f.is_file() and f.suffix.lower() in ('.jpg', '.jpeg', '.png')}
+    for p in productos:
+        valores = {c: str(p.get(c, '') or '').strip() for c, _ in CAMPOS}
+        ref = next((v for v in valores.values() if v and not _es_drive(v)), None)
+        if not ref:
+            continue
+        base = indice.get(Path(ref.replace('\\', '/')).name.lower())
+        if base is None:
+            continue
+        for campo, sufijo in CAMPOS[1:]:
+            if valores[campo]:
+                continue  # la foto sigue asignada: no tocar
+            extra = base.parent / f"{base.stem}{sufijo.replace('_', '-')}.jpg"
+            if extra.exists():
+                extra.unlink()
+                borradas += 1
+                print(f"  BORRADA {p.get('codigo')} {campo} -> {extra.name} (quitada en el panel)")
+    if borradas:
+        print(f"Fotos extra borradas del catálogo: {borradas}")
+        print('Aplica el cambio en la web con: python generar_web.py && git push')
+        print()
 
     with sync_playwright() as pw:
         br = pw.chromium.launch()

@@ -20,6 +20,7 @@ MANIFIESTO = [
     '08_RESULTADOS/admin/dashboard.js',
     '00_CORE/shared_js/admin_nav.js',
     '09_MARKETING/admin/flujo.js',
+    '09_MARKETING/admin/estadisticas.js',
     '03_COMERCIAL/admin/comercial.js',
     '04_COTIZADOR/admin/cotizador_simple.js',
     '04_COTIZADOR/admin/cotizador_pro.js',

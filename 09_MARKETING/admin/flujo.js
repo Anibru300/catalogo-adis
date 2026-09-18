@@ -41,7 +41,7 @@ function loadFlow(){
     ].map(k=>'<div class="pnl-card"><div class="k">'+k[0]+'</div><div class="v" style="font-size:0.95rem;">'+esc(String(k[1]))+'</div></div>').join('');
     // Diario (30 días)
     const porDia = {};
-    vistas.forEach(x => { const f = String(x.fecha); if (f >= hace30) porDia[f] = (porDia[f]||0)+1; });
+    vistas.forEach(x => { const f = String(x.fecha).slice(0,10); if (f >= hace30) porDia[f] = (porDia[f]||0)+1; });
     const dias = [];
     for (let i=29; i>=0; i--) { const f = fLocal(new Date(Date.now()-i*864e5)); dias.push([f, porDia[f]||0]); }
     const mxD = Math.max(1, ...dias.map(x=>x[1]));
