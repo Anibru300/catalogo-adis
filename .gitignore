@@ -14,3 +14,8 @@ venv/
 # vuelve a copiar al repo, estas entradas evitan trackearla:
 Material_de_Facebock/
 Material de Facebock/
+
+# (2026-10-18) Archivo legacy de trabajos anteriores (docs/scripts viejos).
+# No es codigo de la plataforma; vive solo en disco local. Se ignora para que
+# no aparezca como "cambios pendientes" en GitHub Desktop.
+ARCHIVO_ADIS/
