@@ -128,6 +128,12 @@ Se agregó la categoría **10. Persianas y Cortinas** al sitio completa:
 - **Verificación**: smoke `scripts/auditoria/cap_persianas.py` 10/10 PASS
   (página ES/EN, 7 tarjetas, galería, modal Cotizar→WhatsApp, mega-menú, home);
   `verificar_fuentes.py` FUENTES CONSISTENTES; build 10 categorías / 258 prods.
+- ✅ **SENZ registrado como proveedor** (COMPRAS → Proveedores, id 479c6c63) con
+  notas completas: qué surte (6 persianas + cortinas + papel tapiz próximo),
+  sitio, códigos de producto ligados (SENZ-ENR-01..COR-07 ya llevan
+  proveedor='SENZ' en la hoja) y pendientes (contacto de ventas, lista de
+  precios, kit de marca). Verificación en vivo: página 200 en producción,
+  home la muestra, proveedor visible en el panel, 0 errores JS.
 - **Pendiente**: papel tapiz (próxima tanda, avisó el dueño), PDF de catálogo
   (hoy el link descarga 404 igual que vigas/zacate), precios por m² cuando el
   dueño los defina, y ~14 alertas nuevas de panel (sin precio/costo/stock).
