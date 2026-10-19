@@ -145,7 +145,14 @@ conviene tenerla como sugerencia).
   (ING-0001..0005) + 18 pagos (PAG-0001..0018). Cifras finales: ingresos
   $24,775 · gastos $44,179.82 · flujo neto −$19,404.82 · por pagar $0.
   Días sin datos declarados: 09–14, 16–18 oct (se cargan después si los hay).
-- Categorías nuevas usadas que conviene agregar al catálogo tras el 2º redeploy:
+- ✅ **Cambio de modelo (18-oct tarde)**: los ingresos sin venta ahora llevan
+  campo `tipo` en Cobros (`venta` por DEFAULT, `otro` = reembolsos/activos).
+  Los 5 ingresos cargados (ING-0001..0005) cuentan como **Ventas del mes** —
+  el dueño confirmó que todos son ventas. P&L/dashboard muestran: Ventas (5)
+  $24,775, Otros ingresos $0. Requiere REDEPLOY (apps-script.gs 2209 líneas,
+  commit `e46658a`). El formulario del panel ahora tiene selector Tipo:
+  Venta / Otro ingreso.
+- Categorías nuevas usadas que conviene agregar al catálogo tras el redeploy:
   Honorarios, Gastos personales, Compra de inventario, Alimentos, Materiales,
   Equipos, Muestrario.
 - ⚠️ **Bug encontrado al probar el endpoint de categorías** (campo `tipo` usado
