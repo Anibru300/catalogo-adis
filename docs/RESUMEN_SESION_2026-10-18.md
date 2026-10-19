@@ -1,222 +1,129 @@
 # Resumen de sesión — 2026-10-18
 
-## Contexto
+## Contexto / dinámica acordada
 
-Dinámica acordada con el dueño: **capturar los ingresos y egresos de Adis,
-catalogarlos y presentarlos en el dashboard**, dejando todo asentado en la mesa
-para que cada sesión continúe sin re-explicar el sistema.
+El dueño pasa sus movimientos en crudo → se **capturan en la plataforma** (ingresos
+y egresos con folio), se **catalogan** (categorías configurables) y se **presentan
+en el dashboard**. Todo queda en la hoja ERP (fuente maestra). Reglas de captura:
+**todo es MXN salvo indicación de USD; todo gasto ya está pagado salvo indicación
+de "por pagar"** (entonces el pago se registra después).
 
-Diagnóstico de entrada: la captura de egresos ya existía (tab Gastos, folios
-GAS-/PAG-), pero no había forma de registrar **ingresos que no vienen de una
-venta** (reembolsos, venta de activos), las **categorías eran una lista fija
-hardcodeada** en el HTML, y el dashboard solo mostraba el mes corriente (sin
-evolución histórica de ingresos vs egresos).
+---
 
-## 1. Backend (`00_CORE/backend/core.gs` → `admin/apps-script.gs` vía `concat_backend.py`)
+## ➡️ PRÓXIMOS PASOS (continuar aquí)
 
-**Fase 0 — drift resuelto:** el desplegado tenía `ventas.porMes` que el canónico
-no tenía; se portó a `core.gs`. `core.gs + analitica.gs == apps-script.gs` otra vez.
+1. **REDEPLOY pendiente del dueño** (el único). Activar dos cosas que ya están
+   en el código (commit `e46658a`, archivo `admin/apps-script.gs`, 2209 líneas):
+   - Fix del endpoint de categorías (campo `clase`; sin esto el gestor de
+     INVENTARIO → Configuración falla).
+   - Los ingresos sin venta pasan a contar como **Ventas del mes** (campo
+     `tipo=venta|otro` en Cobros; sin redeploy siguen apareciendo como "Otros
+     ingresos").
+   Pasos: Hoja ERP → Extensiones > Apps Script → borrar todo, pegar el archivo
+   fresco del disco → Implementar > Administrar implementaciones > ✏️ >
+   **Nueva versión** > Implementar (NUNCA "Nueva implementación") → esperar
+   2-5 min → avisar para verificación en vivo.
+2. **Tras ese redeploy**: (a) agregar al catálogo las categorías usadas:
+   Honorarios, Gastos personales, Compra de inventario, Alimentos, Materiales,
+   Equipos, Muestrario; (b) verificar que el dashboard muestre Ventas (5)
+   $24,775 y Otros ingresos $0; (c) capturar un gasto/ingreso de prueba.
+3. **Papel tapiz** — siguiente tanda del catálogo SENZ (avisó el dueño: "pa no
+   atacarlo le mando eso primero"). Mismo procedimiento que persianas.
+4. **Fichas técnicas SENZ** — no son públicas (su "CATÁLOGO PDF" lleva al portal
+   de distribuidores con login). El dueño debe pedir a SENZ: catálogos PDF por
+   línea, fichas técnicas y kit de marca. La web ya tiene el slot listo:
+   soltar el PDF en `public/catalogos/pdf/catalogo_persianas-y-cortinas.pdf`
+   y la tarjeta de descarga funciona sola.
+5. Días **09–14 y 16–18 oct sin datos** — cargar con su fecha real si el dueño
+   los pasa.
+6. Decisión pendiente: **"Gastos personales"** ($3,303.72 acumulados) bajan la
+   utilidad del negocio en el P&L. Si el dueño prefiere llevarlos aparte, se
+   cancelan (baja lógica, no se borran).
 
-**Endpoints nuevos (requieren REDEPLOY para activarse):**
+---
 
-- `POST tipo:'ingreso'` `{fecha, concepto, monto, moneda, metodo?, notas?}`
-  → folio `ING-AAAA-NNNN` (contador `folio_ingreso` en Config). Escribe en la
-  hoja **Cobros** con `venta_id=''` — flujo de caja ya lo cuenta como entrada.
-- `POST tipo:'categoria'` `{accion:'agregar'|'quitar', tipo:'gastos'|'ingresos', nombre}`
-  → catálogo configurable en hoja `Config` (`categorias_gastos` /
-  `categorias_ingresos`, separados por comas). Normaliza nombre (trim +
-  mayúscula inicial), rechaza duplicados (case-insensitive). Quitar NO toca
-  registros ya capturados.
-- `GET action='finanzas_mensual'` → últimos 12 meses en un solo request:
-  `{moneda_base, meses:[{mes, ingresos, gastos, por_categoria:{cat:monto}}]}`.
-- `GET action='config'` → ahora también devuelve `categorias_gastos[]` y
-  `categorias_ingresos[]` (defaults: las 9 de gasto históricas; `Venta de
-  activos, Reembolso, Otro ingreso, Otro` para ingresos).
+## 1. Finanzas — backend (`00_CORE/backend/core.gs`)
 
-**Refactor:** la lógica de `estado_resultados` se extrajo al helper
-`calcularEstadoResultados(mes, proyFiltro)` (reutilizado por `finanzas_mensual`).
-Cambio funcional clave: en vista global (sin `proyecto_id`) los **cobros sin
-`venta_id` se suman a `ingresos`** (`ingresos_extra`, `num_ingresos_extra`)
-**sin doble conteo** — los cobros de ventas ya estaban contados vía hoja Ventas.
+- Drift con el desplegado resuelto (`ventas.porMes` portado al canónico).
+- Nuevo helper `calcularEstadoResultados(mes, proyFiltro)` usado por
+  `estado_resultados` y `finanzas_mensual`.
+- Endpoints: `POST ingreso` (folio ING-, escribe en Cobros sin venta_id),
+  `POST categoria` (catálogo configurable en Config; campo `clase`),
+  `GET finanzas_mensual` (12 meses en un request), `GET config` ahora devuelve
+  `categorias_gastos/ingresos`.
+- Cobros sin venta: campo `tipo` (`venta` default | `otro`). Los ingresos del
+  dueño son ventas → cuentan en Ventas del mes, no en Otros ingresos.
+- `verificar_fuentes.py` FUENTES CONSISTENTES; drift 0 core↔deploy.
 
-## 2. Panel admin
+## 2. Finanzas — panel
 
-- **DINERO → Cobros**: tarjeta "➕ Otro ingreso" (Fecha, Concepto con datalist,
-  Monto, Moneda, Método, Notas) → `addIngreso()` (gastos.js).
-- **INVENTARIO → ⚙️ Configuración**: nueva tarjeta "🏷️ Categorías de gastos e
-  ingresos" — chips con ✕ (doble clic = confirmar) + alta por tipo
-  (`pintarCategoriasConfig`/`agregarCategoria`/`quitarCategoria`).
-- **Tab Gastos**: el `<datalist id="gCatList">` ya no está hardcodeado; se llena
-  desde config con `poblarCategorias()` (invocado en `loadBiz`). La captura
-  sigue aceptando texto libre.
-- **Tab Negocio (analytics)**: dos gráficas Chart.js nuevas alimentadas por
-  `finanzas_mensual`:
-  - `estFinanzasBar` — Ingresos (ventas + otros ingresos) vs Egresos, 12 meses.
-  - `estGastosMesBar` — Gastos apilados por categoría (top 5 + Otro), 12 meses.
-  - Degradación elegante: si el endpoint aún no existe (sin redeploy), se
-    omiten sin error (patrón ya usado en `loadEstadisticas`).
+- DINERO → Cobros: formulario "Registrar ingreso" con selector Tipo
+  (Venta / Otro ingreso) → `addIngreso()`.
+- INVENTARIO → ⚙️ Configuración: gestor de categorías (chips con ✕ doble-clic,
+  alta por tipo) — **activo tras el redeploy**.
+- Tab Gastos: datalist de categorías se llena desde config (`poblarCategorias`).
+- SITIO WEB → Negocio: 2 gráficas Chart.js de 12 meses (`finanzas_mensual`):
+  Ingresos vs Egresos y Gastos por categoría apilados. Dashboard (Resumen)
+  separa Ventas de Otros ingresos.
+- ⚠️ El panel en vivo es `public/admin.html` (copia de `admin/index.html` en el
+  build del sitio) — cualquier cambio al panel exige regenerar o se ve viejo.
 
-## 3. Verificación
+## 3. Finanzas — carga real del dueño (VERIFICADO EN PRODUCCIÓN)
 
-| Prueba | Resultado |
-|---|---|
-| `node --check` de `core.gs` / `admin/apps-script.gs` / JS ensamblado | ✅ |
-| `python 50_BUILD/concat_backend.py` + `build_admin.py` | ✅ (drift 0) |
-| Smoke `cap_estadisticas.py` (extendido: 2 canvas nuevos en DOM) | ✅ 11/11 PASS, 0 errores JS (gráficas nuevas SKIP hasta redeploy) |
-| Nuevo `cap_tabs_finanzas.py` (Gastos/Cobros/Config) | ✅ forms y gestor renderizan, 0 errores JS |
-| Regresión `test_fase0_regresion.py` | ✅ 19/19 PASS, 0 errores JS |
-| `60_DATA/verificar_fuentes.py` | ✅ FUENTES CONSISTENTES |
-| Capturas | `check_cobros_otro_ingreso.png`, `check_config_categorias.png`, `check_gastos_categorias.png`, `check_estadisticas.png` |
+06→15 oct: **18 gastos (GAS-0001..0018) + 5 ingresos (ING-0001..0005) + 18
+pagos (PAG-0001..0018)**. Octubre: ingresos $24,775 · gastos $44,179.82 ·
+flujo neto **−$19,404.82** (el día 15 concentró $21k de materiales/inventario) ·
+por pagar $0.
 
-## Pendiente CRÍTICO (lo hace el dueño): REDEPLOY del backend
+Herramienta: `60_DATA/capturar_movimiento.py` (gasto/ingreso/pago, batch JSON;
+`pago` liquida por `gasto_folio`). Archivos: `movimientos_2026-10-*.json`,
+`pagos_2026-10-*.json`, `pendientes_ingresos_2026-10-06.json` (ya subidos).
 
-Activa `ingreso`, `categoria`, `finanzas_mensual` y `categorias_*` en config:
+## 4. Web — categoría 10 "Persianas y Cortinas" (proveedor SENZ)
 
-1. Hoja ERP → **Extensiones > Apps Script**.
-2. Borrar todo el código y pegar `admin/apps-script.gs` (regenerado, ~2199 líneas).
-   ⚠️ Copiar el archivo **recién abierto del disco**.
-3. **Implementar > Administrar implementaciones > ✏️ > Versión: Nueva versión > Implementar**
-   (NUNCA "Nueva implementación").
-4. Esperar 2-5 min de propagación; Ctrl+F `finanzas_mensual` para verificar.
-5. Después: INVENTARIO → ⚙️ Configuración → revisar categorías sugeridas
-   (aparecen las defaults) y ajustar al gusto; capturar un ingreso de prueba
-   en DINERO → Cobros; abrir SITIO WEB → Negocio y ver las 2 gráficas 12m.
+- **EN VIVO**: `adis-diseño.com/10-persianas-y-cortinas.html` (+ `/en/`).
+  6 persianas (Enrollables, Duo Sheer Elegance, Romana, Panel Japonés, Vienna,
+  Cellular) + Cortinas Personalizadas. 28 fotos oficiales de senz.com.mx,
+  galería por producto, botón Cotizar→WhatsApp, sin precios (a medida, por m²).
+- Fotos: `60_DATA/importar_persianas_senz.py` → `CATALOGO FINAL\10. Persianas y
+  Cortinas\` (Drive). Slugs: cat `10-persianas-y-cortinas`, subs `101-persianas`,
+  `102-cortinas`.
+- ERP: productos SENZ-ENR-01..SENZ-COR-07 (precio/costo 0, proveedor SENZ).
+- Generador: MEGA_ITEMS + `menu_persianas` + icono `blinds` (web_utils.py) +
+  traducciones ES→EN. Lección anotada en `10_SITIO_PUBLICO/CONTEXTO.md`: qué
+  tocar para agregar una categoría nueva.
+- Verificación: smoke `cap_persianas.py` 10/10 PASS; página 200 en producción;
+  home y mega-menú la muestran; 0 errores JS.
 
-## 4. Primera carga de datos reales del dueño (06/10/2026)
+## 5. Proveedores
 
-El dueño pasó movimientos en crudo; se acomodaron y subieron con el nuevo
-script de consola `60_DATA/capturar_movimiento.py` (login + POST a la API,
-lee API_URL de admin_core.js; también sirve para captura manual futura).
+- **SENZ (Persianas y Cortinas)** registrado (COMPRAS → Proveedores, id
+  479c6c63): qué surte, sitio, productos ligados, pendientes (ventas/precios/kit).
+- Los 7 productos SENZ llevan `proveedor='SENZ'` en la hoja — base del catálogo
+  de proveedores (info + productos que surte).
 
-**Egresos del 06/10/2026 — YA EN LA BASE DE DATOS** (`movimientos_2026-10-06.json`):
+## Verificación del día
 
-| Folio | Categoría | Monto | Descripción |
-|---|---|---|---|
-| GAS-2026-0001 | Honorarios | $1,500 MXN | Pago al contador |
-| GAS-2026-0002 | Gasolina | $500 MXN | Gasolina |
-| GAS-2026-0003 | Mantenimiento | $837 MXN | Compra Home Depot |
+node --check ✅ · builds ✅ · regresión fase0 19/19 ✅ · smoke estadísticas
+11/11 ✅ · smoke tabs finanzas ✅ · smoke persianas 10/10 ✅ · verificar_fuentes
+✅ · producción (página viva, home, panel) 4/4 ✅ · 0 errores JS en todo.
 
-**Ingresos del 06/10/2026 — PENDIENTES DE REDEPLOY** (`pendientes_ingresos_2026-10-06.json`):
+## Archivos tocados (todos commiteados, rama main)
 
-| Concepto | Monto | Nota |
-|---|---|---|
-| Otro ingreso | $950 USD | el dueño no dio detalle; pendiente de precisar |
-| Otro ingreso | $1,600 MXN | pendiente de precisar |
-| Venta de esquineros | $560 MXN | |
+`00_CORE/backend/core.gs`, `admin/apps-script.gs`, `admin/index.html`,
+`public/admin.html`, `admin/plantilla.html`, `07_GASTOS_PAGOS/admin/gastos.js`,
+`01_EXISTENCIAS/admin/existencias.js`, `08_RESULTADOS/admin/dashboard.js`,
+`09_MARKETING/admin/estadisticas.js`, `00_CORE/shared/web_utils.py`,
+`00_CORE/i18n/translations.py`, `00_CORE/i18n/traducciones_productos.json`,
+`10_SITIO_PUBLICO/sitio/{componentes,paginas}.py`, `public/` completo,
+`60_DATA/` (capturar_movimiento, importar_persianas_senz, dataset, lotes),
+`scripts/auditoria/` (cap_estadisticas, cap_tabs_finanzas, cap_persianas),
+docs: este resumen, `07_GASTOS_PAGOS/CONTEXTO.md`, `08_RESULTADOS/CONTEXTO.md`,
+`10_SITIO_PUBLICO/CONTEXTO.md`, `docs/ADMIN_ARCHITECTURE.md`,
+`00_CORE/CONTEXTO_GLOBAL.md`.
 
-Subirlos en cuanto el backend se redeploye (comando listo en la sección
-"Estado de la mesa"). Después del redeploy también conviene agregar
-"Honorarios" al catálogo de categorías (la captura acepta texto libre, pero
-conviene tenerla como sugerencia).
+## Pendientes de fondo (sin cambio)
 
-## 5. Nueva categoría web: Persianas y Cortinas (proveedor SENZ)
-
-El dueño anunció la línea nueva de persianas y cortinas (proveedor
-senz.com.mx, ref. https://senz.com.mx/website/persianas/sheer-elegance).
-Se agregó la categoría **10. Persianas y Cortinas** al sitio completa:
-
-- **Fotos**: `60_DATA/importar_persianas_senz.py` descarga las oficiales de Senz
-  (28 fotos) a `G:\...\CATALOGO FINAL\10. Persianas y Cortinas\` (6 persianas
-  + cortinas, con galería -2/3/4 por producto).
-- **ERP**: 7 productos dados de alta en la hoja (SENZ-ENR-01..SENZ-COR-07),
-  precio/costo 0 (se cotiza por m²), proveedor SENZ, foto local en
-  `img/10-persianas-y-cortinas/{101-persianas,102-cortinas}/`.
-- **Generador**: `MEGA_ITEMS` + `menu_persianas` (translations.py) + icono
-  `blinds` nuevo (web_utils.py) + CAT_ICONS + traducciones_productos.json
-  (categoría/subcategorías/nombres ES→EN). Slugs: cat `10-persianas-y-cortinas`,
-  subs `101-persianas`, `102-cortinas`.
-- **Verificación**: smoke `scripts/auditoria/cap_persianas.py` 10/10 PASS
-  (página ES/EN, 7 tarjetas, galería, modal Cotizar→WhatsApp, mega-menú, home);
-  `verificar_fuentes.py` FUENTES CONSISTENTES; build 10 categorías / 258 prods.
-- ✅ **SENZ registrado como proveedor** (COMPRAS → Proveedores, id 479c6c63) con
-  notas completas: qué surte (6 persianas + cortinas + papel tapiz próximo),
-  sitio, códigos de producto ligados (SENZ-ENR-01..COR-07 ya llevan
-  proveedor='SENZ' en la hoja) y pendientes (contacto de ventas, lista de
-  precios, kit de marca). Verificación en vivo: página 200 en producción,
-  home la muestra, proveedor visible en el panel, 0 errores JS.
-- **Pendiente**: papel tapiz (próxima tanda, avisó el dueño), PDF de catálogo
-  (hoy el link descarga 404 igual que vigas/zacate), precios por m² cuando el
-  dueño los defina, y ~14 alertas nuevas de panel (sin precio/costo/stock).
-
-## Estado de la mesa (para la próxima sesión)
-
-- ✅ **REDEPLOY HECHO (18-oct)**: `finanzas_mensual`, `ingreso` y `categorias_*`
-  en config YA ESTÁN ACTIVOS en producción. Verificado en vivo.
-- ✅ **Cargado el día 06/10/2026 completo**: 3 egresos (GAS-0001..0003) + 3
-  ingresos (ING-2026-0001: 950 USD, ING-2026-0002: 1,600 MXN, ING-2026-0003:
-  560 MXN esquineros) + **sus 3 pagos** (PAG-2026-0001..0003, mismo día 06/10 —
-  el dueño confirmó que ya se habían pagado). Octubre: entradas $19,735,
-  salidas $2,837, flujo neto $16,898, por pagar $0.
-- ✅ **Cargado también el 07/10/2026**: GAS-0004 (Gastos personales casa
-  $1,353.72), GAS-0005 (Compra inventario $1,055.47), GAS-0006 (28 lambrines
-  $3,640) + pagos PAG-0004..0006 mismo día. Acumulado octubre: ingresos
-  $19,735, gastos $8,886.19.
-- **REGLAS acordadas de captura**: todo es MXN salvo que el dueño indique USD;
-  todo gasto YA está pagado salvo que indique "por pagar" (entonces se captura
-  el pago después).
-- ⚠️ "Gastos personales" entra al P&L como egreso y baja la utilidad del
-  negocio — si el dueño prefiere llevarlos fuera, se cancelan (baja lógica) y
-  listo. Pendiente de decisión.
-- ✅ **Cargado también el 08/10/2026**: GAS-0007 (Desayuno $750), GAS-0008
-  (Paquetería $500), GAS-0009 (Remodelación casa personal $1,600), GAS-0010
-  (Insumos personales $350), ingreso ING-2026-0004 (Venta 15 lambrines cerezo
-  macapa $2,240) + pagos PAG-0007..0010. Acumulado octubre: ingresos
-  $21,975, gastos $12,086.19, flujo neto $9,888.81, por pagar $0.
-- ✅ **Cargado también el 15/10/2026** (8 gastos + 1 ingreso, todos pagados):
-  teléfono 200 USD (→$3,700 base), combustible/viáticos Hermosillo $2,500,
-  materiales $7,093.63 + $10,700, nómina $1,500, muestrario cortinas $2,500,
-  chuchucos $200, 6 placas PVC $3,900; ingreso venta $2,800 (ING-2026-0005).
-  GAS-0011..0018, PAG-0011..0018. Acumulado octubre: ingresos $24,775,
-  gastos $44,179.82, flujo neto **−$19,404.82** (el 15 fue día de compras
-  grandes de material). Por pagar $0.
-- ✅ **Carga de movimientos del dueño COMPLETA** (06→15 oct, todo lo capturado a
-  la fecha de hoy 18-oct): 18 gastos (GAS-0001..0018) + 5 ingresos
-  (ING-0001..0005) + 18 pagos (PAG-0001..0018). Cifras finales: ingresos
-  $24,775 · gastos $44,179.82 · flujo neto −$19,404.82 · por pagar $0.
-  Días sin datos declarados: 09–14, 16–18 oct (se cargan después si los hay).
-- ✅ **Cambio de modelo (18-oct tarde)**: los ingresos sin venta ahora llevan
-  campo `tipo` en Cobros (`venta` por DEFAULT, `otro` = reembolsos/activos).
-  Los 5 ingresos cargados (ING-0001..0005) cuentan como **Ventas del mes** —
-  el dueño confirmó que todos son ventas. P&L/dashboard muestran: Ventas (5)
-  $24,775, Otros ingresos $0. Requiere REDEPLOY (apps-script.gs 2209 líneas,
-  commit `e46658a`). El formulario del panel ahora tiene selector Tipo:
-  Venta / Otro ingreso.
-- Categorías nuevas usadas que conviene agregar al catálogo tras el redeploy:
-  Honorarios, Gastos personales, Compra de inventario, Alimentos, Materiales,
-  Equipos, Muestrario.
-- ⚠️ **Bug encontrado al probar el endpoint de categorías** (campo `tipo` usado
-  como despachador y como clase → choque). Corregido a `clase` (backend +
-  frontend + docs, commit `e3c8126`). **Requiere UN SEGUNDO REDEPLOY** (mismos
-  pasos, el archivo a pegar sigue siendo `admin/apps-script.gs`, ahora 2201
-  líneas). Sin este segundo redeploy, el gestor de categorías del panel
-  (INVENTARIO → Configuración) falla; TODO LO DEMÁS ya funciona.
-- Tras el segundo redeploy: probar agregar/quitar categoría desde el panel, y
-  precisar con el dueño el detalle de los ingresos ING-0001/0002 ("Otro
-  ingreso").
-- Pendientes de fondo (sin cambio): escáner de código de barras, conteo físico
-  asistido, historial de precios, exportar movimientos a Excel, GA4.
-- ⚠️ **Lección (repetida 2 veces ya)**: el panel EN VIVO es `public/admin.html`
-  (lo copia `10_SITIO_PUBLICO/sitio/build.py` desde `admin/index.html` con
-  config inyectada). Tras cualquier cambio al panel hay que regenerar/copiar o
-  el dueño ve version vieja — pasó hoy: el fix de KPIs no se veía hasta el
-  sync (commit `93b00a2`). Config coincide (url_backend/whatsapp), así que la
-  copia directa es equivalente al build completo.
-
-## Archivos tocados
-
-- `00_CORE/backend/core.gs` — helper `calcularEstadoResultados`, `ingreso`,
-  `categoria`, `finanzas_mensual`, config + categorías, drift `ventas.porMes`.
-- `admin/apps-script.gs` — regenerado (artefacto de despliegue).
-- `admin/plantilla.html` — form otro ingreso, datalist vacío, 2 canvas nuevos.
-- `07_GASTOS_PAGOS/admin/gastos.js` — `addIngreso`, `poblarCategorias`,
-  gestor de categorías.
-- `01_EXISTENCIAS/admin/existencias.js` — `loadBiz` pobla categorías;
-  `showConfigForm` con tarjeta de categorías.
-- `09_MARKETING/admin/estadisticas.js` — `_estPintarFinanzas`,
-  `_estPintarGastosMes`, `_estLabelMes`.
-- `scripts/auditoria/cap_estadisticas.py` (extendido), `cap_tabs_finanzas.py` (nuevo).
-- `60_DATA/capturar_movimiento.py` (nuevo — carga manual/lote de movimientos),
-  `60_DATA/movimientos_2026-10-06.json` (egresos capturados),
-  `60_DATA/pendientes_ingresos_2026-10-06.json` (a subir tras redeploy).
-- Docs: este resumen, `07_GASTOS_PAGOS/CONTEXTO.md`, `08_RESULTADOS/CONTEXTO.md`,
-  `docs/ADMIN_ARCHITECTURE.md`, `00_CORE/CONTEXTO_GLOBAL.md`.
+Escáner de código de barras, conteo físico asistido, historial de precios,
+exportar movimientos a Excel, GA4, compras de mercancía por flujo COMPRAS
+(para que también suba inventario — hoy solo se registran como gasto).
