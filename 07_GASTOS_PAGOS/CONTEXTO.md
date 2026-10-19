@@ -65,7 +65,7 @@
 | `gasto_cancelar` | POST | Baja lógica (estado CANCELADA) |
 | `delete_gasto` | POST | Borrado físico (legado; acepta id + row como respaldo) |
 | `ingreso` | POST | `{fecha, concepto, monto, moneda, metodo?, notas}` → folio ING-; escribe en **Cobros** sin `venta_id` (otros ingresos: reembolsos, venta de activos) |
-| `categoria` | POST | `{accion:'agregar'\|'quitar', tipo:'gastos'\|'ingresos', nombre}` → catálogo configurable en `Config` (`categorias_gastos`/`categorias_ingresos`, separados por comas) |
+| `categoria` | POST | `{accion:'agregar'\|'quitar', clase:'gastos'\|'ingresos', nombre}` → catálogo configurable en `Config` (`categorias_gastos`/`categorias_ingresos`, separados por comas). OJO: el campo es `clase`, no `tipo` (`tipo` es el despachador) |
 
 - `GET action=config` también devuelve `categorias_gastos` y `categorias_ingresos`
   (arrays; defaults en `CATEGORIAS_*_DEFAULT` de core.gs).

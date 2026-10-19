@@ -29,12 +29,12 @@ function pintarCategoriasConfig(){
   box('catIngresosBox', 'ingresos', (biz.config.categorias_ingresos)||[]);
 }
 function agregarCategoria(){
-  const nombre=$('catNombre').value.trim(), tipo=$('catTipo').value;
+  const nombre=$('catNombre').value.trim(), clase=$('catTipo').value;
   if (!nombre) { notice('Escribe el nombre de la categoría.', false); return; }
-  apiPost({tipo:'categoria', accion:'agregar', tipo, nombre}).then(d=>{
+  apiPost({tipo:'categoria', accion:'agregar', clase, nombre}).then(d=>{
     notice(d&&d.ok?'Categoría agregada.':errMsg(d,'No se pudo agregar.'), !!(d&&d.ok));
     if(d&&d.ok){
-      biz.config[tipo==='ingresos'?'categorias_ingresos':'categorias_gastos'] = d.categorias;
+      biz.config[clase==='ingresos'?'categorias_ingresos':'categorias_gastos'] = d.categorias;
       $('catNombre').value='';
       pintarCategoriasConfig(); poblarCategorias();
     }
@@ -42,16 +42,16 @@ function agregarCategoria(){
 }
 // doble paso sin confirm(): el ✕ pide confirmacion a si mismo
 function quitarCategoria(el){
-  const tipo=el.dataset.tipo, nombre=el.dataset.cat;
+  const clase=el.dataset.tipo, nombre=el.dataset.cat;
   if (el.dataset.confirm!=='1') {
     el.dataset.confirm='1'; el.textContent='¿Seguro?';
     setTimeout(()=>{ if(el.isConnected){ el.dataset.confirm=''; el.textContent='✕'; } }, 3000);
     return;
   }
-  apiPost({tipo:'categoria', accion:'quitar', tipo, nombre}).then(d=>{
+  apiPost({tipo:'categoria', accion:'quitar', clase, nombre}).then(d=>{
     notice(d&&d.ok?('Categoría "'+nombre+'" eliminada del catálogo.'):errMsg(d), !!(d&&d.ok));
     if(d&&d.ok){
-      biz.config[tipo==='ingresos'?'categorias_ingresos':'categorias_gastos'] = d.categorias;
+      biz.config[clase==='ingresos'?'categorias_ingresos':'categorias_gastos'] = d.categorias;
       pintarCategoriasConfig(); poblarCategorias();
     }
   });

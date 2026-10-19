@@ -100,7 +100,7 @@ Panel administrativo de ADIS | Diseños & Remodelaciones sobre arquitectura de
 | `gasto_cancelar` / `delete_gasto` (alias, baja lógica) | sí | Gastos, Log | sí |
 | `venta_pago` (registrar_cobro) | sí | Cobros, Ventas, Log | sí |
 | `ingreso` | sí | Cobros (sin venta_id), Config (folio ING-), Log | sí |
-| `categoria` | sí | Config (`categorias_gastos`/`categorias_ingresos`), Log | sí |
+| `categoria` | sí | Config (`categorias_gastos`/`categorias_ingresos`), Log | sí | campo `clase` = gastos\|ingresos (no `tipo`, es el despachador) |
 | `venta_anular` | sí | Ventas, Stock, Movimientos, Log | sí |
 
 ### Contrato de errores (Fase 0)

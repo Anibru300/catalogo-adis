@@ -1795,8 +1795,10 @@ function doPostInterno(data) {
 
   // Catalogo configurable de categorias (gastos / ingresos) en hoja Config.
   // Solo afecta las sugerencias del panel; los datos ya capturados no se tocan.
+  // OJO: el campo `clase` (no `tipo`) indica gastos|ingresos; `tipo` es el
+  // despachador del endpoint y no se puede reusar.
   if (tipo === 'categoria') return conLock(function () {
-    var esIngC = String(data.tipo) === 'ingresos';
+    var esIngC = String(data.clase) === 'ingresos';
     var claveC = esIngC ? 'categorias_ingresos' : 'categorias_gastos';
     var defectoC = esIngC ? CATEGORIAS_INGRESOS_DEFAULT : CATEGORIAS_GASTOS_DEFAULT;
     var nombreC = normalizarCategoria_(data.nombre);
