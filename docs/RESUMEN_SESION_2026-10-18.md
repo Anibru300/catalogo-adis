@@ -159,10 +159,12 @@ conviene tenerla como sugerencia).
   ingreso").
 - Pendientes de fondo (sin cambio): escáner de código de barras, conteo físico
   asistido, historial de precios, exportar movimientos a Excel, GA4.
-- Lección de sesión: los endpoints nuevos deben tener degradación elegante en el
-  frontend hasta el redeploy (patrón reutilizado), y el drift core.gs ↔
-  apps-script.gs se detecta con un diff simple — conviene hacerlo cada sesión
-  que toque backend.
+- ⚠️ **Lección (repetida 2 veces ya)**: el panel EN VIVO es `public/admin.html`
+  (lo copia `10_SITIO_PUBLICO/sitio/build.py` desde `admin/index.html` con
+  config inyectada). Tras cualquier cambio al panel hay que regenerar/copiar o
+  el dueño ve version vieja — pasó hoy: el fix de KPIs no se veía hasta el
+  sync (commit `93b00a2`). Config coincide (url_backend/whatsapp), así que la
+  copia directa es equivalente al build completo.
 
 ## Archivos tocados
 
