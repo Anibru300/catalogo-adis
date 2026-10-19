@@ -1,0 +1,7 @@
+[
+  {"tipo": "gasto", "fecha": "2026-10-08", "categoria": "Alimentos", "monto": 750, "moneda": "MXN", "descripcion": "Desayuno"},
+  {"tipo": "gasto", "fecha": "2026-10-08", "categoria": "Envíos", "monto": 500, "moneda": "MXN", "descripcion": "Paquetería"},
+  {"tipo": "ingreso", "fecha": "2026-10-08", "concepto": "Venta de 15 lambrines cerezo macapa", "monto": 2240, "moneda": "MXN"},
+  {"tipo": "gasto", "fecha": "2026-10-08", "categoria": "Gastos personales", "monto": 1600, "moneda": "MXN", "descripcion": "Remodelación de casa personal"},
+  {"tipo": "gasto", "fecha": "2026-10-08", "categoria": "Gastos personales", "monto": 350, "moneda": "MXN", "descripcion": "Insumos personales"}
+]

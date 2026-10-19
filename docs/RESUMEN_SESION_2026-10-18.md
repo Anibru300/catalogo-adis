@@ -128,8 +128,13 @@ conviene tenerla como sugerencia).
 - ⚠️ "Gastos personales" entra al P&L como egreso y baja la utilidad del
   negocio — si el dueño prefiere llevarlos fuera, se cancelan (baja lógica) y
   listo. Pendiente de decisión.
+- ✅ **Cargado también el 08/10/2026**: GAS-0007 (Desayuno $750), GAS-0008
+  (Paquetería $500), GAS-0009 (Remodelación casa personal $1,600), GAS-0010
+  (Insumos personales $350), ingreso ING-2026-0004 (Venta 15 lambrines cerezo
+  macapa $2,240) + pagos PAG-0007..0010. Acumulado octubre: ingresos
+  $21,975, gastos $12,086.19, flujo neto $9,888.81, por pagar $0.
 - Categorías nuevas usadas que conviene agregar al catálogo tras el 2º redeploy:
-  Honorarios, Gastos personales, Compra de inventario.
+  Honorarios, Gastos personales, Compra de inventario, Alimentos.
 - ⚠️ **Bug encontrado al probar el endpoint de categorías** (campo `tipo` usado
   como despachador y como clase → choque). Corregido a `clase` (backend +
   frontend + docs, commit `e3c8126`). **Requiere UN SEGUNDO REDEPLOY** (mismos

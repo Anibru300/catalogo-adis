@@ -1,0 +1,6 @@
+[
+  {"tipo": "pago", "fecha": "2026-10-08", "gasto_folio": "GAS-2026-0007", "monto": 750, "moneda": "MXN", "metodo": "Otro"},
+  {"tipo": "pago", "fecha": "2026-10-08", "gasto_folio": "GAS-2026-0008", "monto": 500, "moneda": "MXN", "metodo": "Otro"},
+  {"tipo": "pago", "fecha": "2026-10-08", "gasto_folio": "GAS-2026-0009", "monto": 1600, "moneda": "MXN", "metodo": "Otro"},
+  {"tipo": "pago", "fecha": "2026-10-08", "gasto_folio": "GAS-2026-0010", "monto": 350, "moneda": "MXN", "metodo": "Otro"}
+]
