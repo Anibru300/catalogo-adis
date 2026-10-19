@@ -57,14 +57,15 @@ Panel administrativo de ADIS | Diseños & Remodelaciones sobre arquitectura de
 | `quotes` | `{ok, quotes:[...]}` | |
 | `reviews_admin` | `{ok, reviews:[...]}` | Todas (activas e inactivas). |
 | `visitas` | `{ok, visitas:[...]}` | Hasta 5000 activas (ver retención §6). |
-| `config` | `{ok, moneda_base, tipo_cambio}` | |
+| `config` | `{ok, moneda_base, tipo_cambio, alertas_email, categorias_gastos[], categorias_ingresos[]}` | |
 | `productos` | `{ok, productos:[...]}` | Activos e inactivos. |
 | `almacenes` | `{ok, almacenes:[...]}` | Solo activos. |
 | `stock` | `{ok, stock:[{producto_id,producto,almacen_id,almacen,cantidad}]}` | |
 | `movimientos` | `{ok, movimientos:[...]}` | Últimos 100. |
-| `ventas` | `{ok, ventas:[...]}` | Últimas 100. |
+| `ventas` | `{ok, ventas:[...], porMes:{YYYY-MM:total}}` | Últimas 100 + agregado por mes. |
 | `gastos` | `{ok, gastos:[...]}` | Todos. |
-| `estado_resultados&mes=YYYY-MM` | `{ok, ingresos, costos, utilidad_bruta, gastos:{cat}, total_gastos, utilidad_neta, num_ventas, margen_bruto, margen_neto, moneda_base}` | |
+| `estado_resultados&mes=YYYY-MM` | `{ok, ingresos, ingresos_extra, num_ingresos_extra, costos, utilidad_bruta, gastos:{cat}, total_gastos, utilidad_neta, num_ventas, margen_bruto, margen_neto, moneda_base}` | ingresos_extra = cobros sin venta_id (otros ingresos), sin doble conteo; solo sin filtro proyecto_id |
+| `finanzas_mensual` | `{ok, moneda_base, meses:[{mes, ingresos, gastos, por_categoria:{cat:monto}}]}` | Últimos 12 meses en un request (helper `calcularEstadoResultados`) |
 
 | `proyectos`, `cxc` | sí | Fase 4 |
 | `alertas` | sí | Fase 6: stock negativo/bajo/cero, sin precio/costo, CxC/CxP >30 días, cotizaciones pendientes viejas, OCs por recibir (CRITICA>ALTA>MEDIA) |
@@ -98,6 +99,8 @@ Panel administrativo de ADIS | Diseños & Remodelaciones sobre arquitectura de
 | `gasto_pago` (registrar_pago) | sí | Pagos, Gastos, Log | sí |
 | `gasto_cancelar` / `delete_gasto` (alias, baja lógica) | sí | Gastos, Log | sí |
 | `venta_pago` (registrar_cobro) | sí | Cobros, Ventas, Log | sí |
+| `ingreso` | sí | Cobros (sin venta_id), Config (folio ING-), Log | sí |
+| `categoria` | sí | Config (`categorias_gastos`/`categorias_ingresos`), Log | sí |
 | `venta_anular` | sí | Ventas, Stock, Movimientos, Log | sí |
 
 ### Contrato de errores (Fase 0)

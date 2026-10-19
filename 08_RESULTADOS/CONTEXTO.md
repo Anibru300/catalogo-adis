@@ -58,8 +58,9 @@
 
 | Endpoint | Tipo | Detalle |
 |---|---|---|
-| `estado_resultados&mes=YYYY-MM` | GET | `{ingresos, costos, utilidad_bruta, gastos:{cat}, total_gastos, utilidad_neta, num_ventas, margen_bruto, margen_neto, moneda_base}`; fase 6: filtro `proyecto_id`, niveles bruta/operativa/neta |
-| `flujo_caja?desde=&hasta=` | GET | `{cobros, pagos, neto}` por fecha real (Cobros−Pagos) |
+| `estado_resultados&mes=YYYY-MM` | GET | `{ingresos, costos, utilidad_bruta, gastos:{cat}, total_gastos, utilidad_neta, num_ventas, margen_bruto, margen_neto, moneda_base}`; fase 6: filtro `proyecto_id`, niveles bruta/operativa/neta. **Incluye `ingresos_extra`/`num_ingresos_extra`**: cobros sin `venta_id` (otros ingresos) sumados a `ingresos` SIN doble conteo; solo en vista global (sin `proyecto_id`) |
+| `finanzas_mensual` | GET | Últimos 12 meses en un request: `{moneda_base, meses:[{mes, ingresos, gastos, por_categoria:{cat:monto}}]}` (usa el helper `calcularEstadoResultados`) |
+| `flujo_caja?desde=&hasta=` | GET | `{cobros, pagos, neto}` por fecha real (Cobros−Pagos; los cobros sin venta de 07 entran como entrada) |
 | `alertas` | GET | Lista priorizada con tipo y detalle |
 
 - Handlers: `apps-script.gs` L500–607 (P&L), L722–760 (flujo), L556–607
@@ -69,6 +70,10 @@
 
 - **Dashboard** (`dash`): KPIs, top alertas (enlace a pnl), accesos rápidos;
   `loadDash` L1052; buscador Ctrl+K `abrirCmdk/pintarCmdk/irCmdk` L1106–1131.
+- **Negocio (analytics)**: además de las gráficas del mes, dos gráficas de
+  evolución 12 meses con `finanzas_mensual` (`_estPintarFinanzas` comparativa
+  ingresos vs egresos; `_estPintarGastosMes` apilada top-5 + Otro) — se
+  omiten elegantemente hasta que el backend se redeploya.
 - **P&L**: `generarPNL` L3039 (selectores mes/proyecto, tabla niveles,
   márgenes), `printPNL` L3069, `fillPnlProyectos` L2990, `loadAlertas` L2972.
 - **Flujo de caja**: `loadFlujoCaja` L2937 (rango, barras CSS, totales).

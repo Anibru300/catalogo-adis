@@ -63,6 +63,23 @@ with sync_playwright() as pw:
           return n;
         }""")
         check("Negocio: grafica de ventas dibujada (pixeles > 0)", pixels > 1000, f"{pixels} px")
+
+    # --- Graficas nuevas de evolucion 12 meses (requieren endpoint finanzas_mensual) ---
+    for cid in ["estFinanzasBar", "estGastosMesBar"]:
+        existe_canvas = page.evaluate(f"!!document.getElementById('{cid}')")
+        check(f"Negocio: canvas {cid} en el DOM", existe_canvas)
+        creada = page.evaluate(f"window.Chart && !!Chart.getChart('{cid}')")
+        if creada:
+            pixels = page.evaluate(f"""() => {{
+              const c = document.getElementById('{cid}');
+              const d = c.getContext('2d').getImageData(0, 0, c.width, c.height).data;
+              let n = 0;
+              for (let i = 3; i < d.length; i += 4) if (d[i] > 0) n++;
+              return n;
+            }}""")
+            check(f"Negocio: grafica {cid} dibujada (pixeles > 0)", pixels > 1000, f"{pixels} px")
+        else:
+            print(f"SKIP {cid} — endpoint finanzas_mensual aun no despleado (se activa con el redeploy)")
     page.screenshot(path=str(DEST / "check_estadisticas.png"), full_page=True)
 
     # --- Tab Sitio web (analitica) ---

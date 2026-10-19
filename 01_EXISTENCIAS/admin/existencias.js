@@ -13,7 +13,7 @@ function loadBiz(){
   apiGet('ventas').then(d=>{ if(d&&d.ok) renderSales(d.ventas); });
   apiGet('gastos').then(d=>{ if(d&&d.ok) renderExpenses(d.gastos); });
   apiGet('cxp').then(d=>{ if(d&&d.ok){ cxpCache = d.cxp || []; pagosCache = d.pagos || []; renderCXP(d); } });
-  apiGet('config').then(d=>{ if(d&&d.ok) biz.config=d; });
+  apiGet('config').then(d=>{ if(d&&d.ok){ biz.config=d; poblarCategorias(); if($('catGastosBox')) pintarCategoriasConfig(); } });
 }
 
 function fillWarehouseSelects(){
@@ -651,7 +651,17 @@ function showConfigForm(){
     '<p class="muted">Las fotos subidas desde el panel se guardan en Google Drive. Con el tiempo pueden quedar archivos de prueba que ningún producto usa. Aquí puedes revisarlos y mandarlos a la papelera.</p>' +
     '<div class="toolbar"><button class="btn btn-sm" onclick="revisarFotosDrive()">🔍 Revisar fotos huérfanas</button>' +
     '<button class="btn btn-sm" id="btnLimpiarFotos" style="display:none;" onclick="limpiarFotosDrive()">🗑️ Confirmar limpieza</button></div>' +
-    '<div id="fotosDriveResult" style="margin-top:0.5rem;"></div></div>';
+    '<div id="fotosDriveResult" style="margin-top:0.5rem;"></div></div>' +
+    '<div class="card-box" style="margin-top:1rem;"><h3 class="flow-h" style="margin-top:0;">🏷️ Categorías de gastos e ingresos</h3>' +
+    '<p class="muted">Sugerencias que aparecen al capturar gastos y otros ingresos. Quitar una categoría no afecta los registros ya capturados.</p>' +
+    '<div id="catGastosBox"></div><div id="catIngresosBox"></div>' +
+    '<div class="row" style="margin-top:0.5rem;">' +
+    '<div><label>Tipo</label><select id="catTipo"><option value="gastos">Gasto</option><option value="ingresos">Ingreso</option></select></div>' +
+    '<div><label>Nueva categoría</label><input id="catNombre" placeholder="Ej. Honorarios"></div>' +
+    '</div>' +
+    '<div class="toolbar" style="margin-top:0.6rem;"><button class="btn btn-sm btn-solid" onclick="agregarCategoria()">＋ Agregar categoría</button></div>' +
+    '<div id="catResult" style="margin-top:0.4rem;"></div></div>';
+  pintarCategoriasConfig();
 }
 
 function saveConfig(){

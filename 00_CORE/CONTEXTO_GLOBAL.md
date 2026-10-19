@@ -51,8 +51,8 @@ El sitio público solo usa 3 endpoints **públicos** del backend: `lead`, `track
 | `04_COTIZADOR` | Cotizador profesional + historial | `quotes`,`quote`,`set_estado_quote`,`crear_proyecto_desde_cotizacion` | `proposal`, `quotes` |
 | `05_PROYECTOS` | Proyectos / obras | `proyectos`,`save_proyecto`,`proyecto_mov`,`cambiar_estado_proyecto` | `proyectos` |
 | `06_VENTAS_COBROS` | Ventas, cobros, CxC | `ventas`,`venta`,`cxc`,`registrar_cobro`,`anular_venta` | `sales`, `cobros` |
-| `07_GASTOS_PAGOS` | Gastos, pagos, CxP | `gastos`,`gasto`,`gasto_pago`,`registrar_pago`,`gasto_cancelar`,`delete_gasto`,`pagos`,`cxp` | `expenses` |
-| `08_RESULTADOS` | P&L, flujo de caja, alertas, dashboard | `estado_resultados`,`flujo_caja`,`alertas` | `pnl`, `flujocaja`, `dash` |
+| `07_GASTOS_PAGOS` | Gastos, pagos, CxP, otros ingresos, catálogo de categorías | `gastos`,`gasto`,`gasto_pago`,`registrar_pago`,`gasto_cancelar`,`delete_gasto`,`pagos`,`cxp`,`ingreso`,`categoria` | `expenses` (+formulario otro ingreso en `cobros`) |
+| `08_RESULTADOS` | P&L, flujo de caja, alertas, dashboard, evolución 12m | `estado_resultados`,`finanzas_mensual`,`flujo_caja`,`alertas` | `pnl`, `flujocaja`, `dash` |
 | `09_MARKETING` | Reseñas y analítica web | `reviews`,`reviews_admin`,`review`,`delete_review`,`visitas` + público `track` | `reviews`, `flow`, `analytics` |
 | `10_SITIO_PUBLICO` | Sitio web, chatbot, buscador, tracker | (los 3 públicos) | — |
 | `11_SISTEMA` | Config, bitácora, ayuda, purga | `config`,`delete_row`,`admin_purge`,`getLog` | `ayuda` + formularios de config |
@@ -125,6 +125,7 @@ duplicado imposible). IDs internos: UUID 8 chars.
 | Orden de compra | `OC-AAAA-NNNN` | `folio_oc` | 02_COMPRAS |
 | Proyecto | `PRY-AAAA-NNNN` | `folio_proyecto` | 05_PROYECTOS |
 | Gasto | `GAS-AAAA-NNNN` | `folio_gasto` | 07_GASTOS_PAGOS |
+| Otro ingreso | `ING-AAAA-NNNN` | `folio_ingreso` | 07_GASTOS_PAGOS |
 | Pago | `PAG-AAAA-NNNN` | `folio_pago` | 07_GASTOS_PAGOS |
 | Cobro | `COB-AAAA-NNNN` | `folio_cobro` | 06_VENTAS_COBROS |
 

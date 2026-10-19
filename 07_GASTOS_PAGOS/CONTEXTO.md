@@ -64,7 +64,11 @@
 | `gasto_pago` / `registrar_pago` | POST | `{gasto_id, monto, moneda, metodo, notas}` → folio PAG-; actualiza `pagado`/estado |
 | `gasto_cancelar` | POST | Baja lógica (estado CANCELADA) |
 | `delete_gasto` | POST | Borrado físico (legado; acepta id + row como respaldo) |
+| `ingreso` | POST | `{fecha, concepto, monto, moneda, metodo?, notas}` → folio ING-; escribe en **Cobros** sin `venta_id` (otros ingresos: reembolsos, venta de activos) |
+| `categoria` | POST | `{accion:'agregar'\|'quitar', tipo:'gastos'\|'ingresos', nombre}` → catálogo configurable en `Config` (`categorias_gastos`/`categorias_ingresos`, separados por comas) |
 
+- `GET action=config` también devuelve `categorias_gastos` y `categorias_ingresos`
+  (arrays; defaults en `CATEGORIAS_*_DEFAULT` de core.gs).
 - Handlers: `apps-script.gs` L1267–1360. Errores: `VALIDACION` (monto > 0),
   `NO_ENCONTRADO`.
 
@@ -73,6 +77,11 @@
 - **Vista**: tabla de gastos con estado, CxP con saldos y botón Pagar.
 - **Funciones clave**: `addExpense` L2849, `renderExpenses` L2859, `renderCXP`
   L2878, `showPagoForm` L2901, `savePago` L2914, `cancelarGasto` L2924.
+- **Categorías**: el `<datalist id="gCatList">` se llena por JS desde
+  `poblarCategorias()` (config del backend); la captura de otros ingresos
+  (`addIngreso`, tab `cobros`) usa `#ingCatList` igual. Gestión (agregar/quitar)
+  en INVENTARIO → ⚙️ Configuración → “Categorías de gastos e ingresos”
+  (`pintarCategoriasConfig`/`agregarCategoria`/`quitarCategoria`, en gastos.js).
 - **Estados**: cache de gastos en cliente; filtros por categoría/fecha en UI.
 
 ## PERMISOS

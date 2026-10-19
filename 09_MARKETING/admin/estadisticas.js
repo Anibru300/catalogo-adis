@@ -49,7 +49,8 @@ function loadEstadisticas() {
       apiGet('ventas'),
       getj(base + '&action=flujo_caja&desde=' + hace29 + '&hasta=' + hoy),
       apiGet('quotes'),
-    ]).then(function ([pnl, ventas, flujo, quotes]) {
+      getj(base + '&action=finanzas_mensual'),
+    ]).then(function ([pnl, ventas, flujo, quotes, finanzas]) {
       const sinConexion = !pnl && !ventas && !flujo && !quotes;
       if (sinConexion) {
         $('estKpis').innerHTML = '<p class="muted">Sin acceso o error de conexión. Si acabas de actualizar el script, despliega una <b>nueva versión</b> en Apps Script.</p>';
@@ -59,6 +60,11 @@ function loadEstadisticas() {
       _estPintarVentas(ventas);
       _estPintarGastos(pnl);
       _estPintarFlujo(flujo, hace29, hoy);
+      // Evolución 12 meses: solo si el backend ya tiene el endpoint (redeploy)
+      if (finanzas && finanzas.ok && finanzas.meses) {
+        _estPintarFinanzas(finanzas);
+        _estPintarGastosMes(finanzas);
+      }
     });
   }).catch(function () {
     $('estKpis').innerHTML = '<p class="muted">No se pudo cargar la librería de gráficas (sin conexión al CDN). Revisa tu internet y vuelve a intentar.</p>';
@@ -128,6 +134,79 @@ function _estPintarGastos(pnl) {
       indexAxis: 'y', responsive: true, maintainAspectRatio: true,
       plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => _estMoney(c.parsed.x) } } },
       scales: { x: { beginAtZero: true, ticks: { callback: v => '$' + Number(v).toLocaleString('es-MX') } } }
+    }
+  });
+}
+
+function _estLabelMes(m) {
+  const MESES_CORTOS = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+  const p = String(m || '').split('-');
+  return MESES_CORTOS[(Number(p[1]) || 1) - 1] + ' ' + String(p[0] || '').slice(2);
+}
+
+// Ingresos (ventas + otros ingresos) vs egresos (gastos), últimos 12 meses
+function _estPintarFinanzas(fm) {
+  const meses = (fm.meses || []).map(x => x.mes);
+  const hay = meses.length > 0;
+  _estChart('estFinanzasBar', {
+    type: 'bar',
+    data: {
+      labels: hay ? meses.map(_estLabelMes) : ['Sin datos'],
+      datasets: [
+        { label: 'Ingresos', data: hay ? fm.meses.map(x => Number(x.ingresos) || 0) : [0],
+          backgroundColor: 'rgba(30,122,70,0.75)', borderRadius: 5, maxBarThickness: 26 },
+        { label: 'Egresos', data: hay ? fm.meses.map(x => Number(x.gastos) || 0) : [0],
+          backgroundColor: 'rgba(192,57,43,0.7)', borderRadius: 5, maxBarThickness: 26 }
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: true,
+      plugins: { legend: { position: 'top', labels: { boxWidth: 12 } },
+        tooltip: { callbacks: { label: c => c.dataset.label + ': ' + _estMoney(c.parsed.y) } } },
+      scales: { y: { beginAtZero: true, ticks: { callback: v => '$' + Number(v).toLocaleString('es-MX') } } }
+    }
+  });
+}
+
+// Gastos apilados por categoría (top 5 + Otro), últimos 12 meses
+function _estPintarGastosMes(fm) {
+  const meses = (fm.meses || []).map(x => x.mes);
+  // categorías ordenadas por total acumulado del año
+  const totales = {};
+  (fm.meses || []).forEach(x => {
+    Object.keys(x.por_categoria || {}).forEach(k => {
+      totales[k] = (totales[k] || 0) + (Number(x.por_categoria[k]) || 0);
+    });
+  });
+  const top = Object.keys(totales).sort((a, b) => totales[b] - totales[a]).slice(0, 5);
+  const cats = top.length ? top.concat(['Otro']) : [];
+  const series = cats.map(cat => ({
+    label: cat,
+    data: meses.map(m => {
+      const x = fm.meses.filter(y => y.mes === m)[0];
+      if (!x) return 0;
+      if (cat === 'Otro') {
+        return Object.keys(x.por_categoria || {})
+          .filter(k => top.indexOf(k) === -1)
+          .reduce((s, k) => s + (Number(x.por_categoria[k]) || 0), 0);
+      }
+      return Number((x.por_categoria || {})[cat]) || 0;
+    }),
+    backgroundColor: EST_COLORS[cats.indexOf(cat) % EST_COLORS.length]
+  }));
+  const hay = meses.length > 0 && cats.length > 0;
+  _estChart('estGastosMesBar', {
+    type: 'bar',
+    data: {
+      labels: hay ? meses.map(_estLabelMes) : ['Sin datos'],
+      datasets: hay ? series : [{ label: 'Gastos', data: [0], backgroundColor: EST_COLORS[0] }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: true,
+      scales: { x: { stacked: true }, y: { stacked: true, beginAtZero: true,
+        ticks: { callback: v => '$' + Number(v).toLocaleString('es-MX') } } },
+      plugins: { legend: { position: 'top', labels: { boxWidth: 12 } },
+        tooltip: { callbacks: { label: c => c.dataset.label + ': ' + _estMoney(c.parsed.y) } } }
     }
   });
 }

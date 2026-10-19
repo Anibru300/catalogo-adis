@@ -1,0 +1,5 @@
+[
+  {"tipo": "ingreso", "fecha": "2026-10-06", "concepto": "Otro ingreso", "monto": 950, "moneda": "USD", "notas": "Dólares — pendiente detalle del dueño"},
+  {"tipo": "ingreso", "fecha": "2026-10-06", "concepto": "Otro ingreso", "monto": 1600, "moneda": "MXN", "notas": "Pendiente detalle del dueño"},
+  {"tipo": "ingreso", "fecha": "2026-10-06", "concepto": "Venta de esquineros", "monto": 560, "moneda": "MXN"}
+]

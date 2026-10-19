@@ -775,6 +775,21 @@
     <!-- COBROS / CUENTAS POR COBRAR -->
     <section id="tab-cobros" class="panel hidden">
       <div class="toolbar"><h2 style="margin:0;">Cuentas por cobrar</h2><button class="btn btn-sm" onclick="loadCXC()">↻ Actualizar</button></div>
+      <div class="card-box" style="margin-bottom:1rem;">
+        <h3 class="flow-h" style="margin-top:0;">➕ Otro ingreso <span class="muted">(reembolso, venta de activos… — no es cobro de una venta)</span></h3>
+        <div class="row">
+          <div><label>Fecha</label><input type="date" id="ingFecha"></div>
+          <div><label>Concepto *</label><input id="ingConcepto" list="ingCatList" placeholder="Reembolso, venta de activos..."><datalist id="ingCatList"></datalist></div>
+          <div><label>Monto *</label><input type="number" id="ingMonto" min="0" step="0.01" placeholder="0.00"></div>
+          <div><label>Moneda</label><select id="ingMoneda"><option value="MXN">MXN</option><option value="USD">USD</option></select></div>
+          <div><label>Método</label><select id="ingMetodo"><option>Efectivo</option><option>Transferencia</option><option>Tarjeta</option><option>Depósito</option><option>Otro</option></select></div>
+        </div>
+        <label>Notas</label>
+        <input id="ingNotas" placeholder="Opcional">
+        <div class="toolbar" style="margin-top:0.6rem;">
+          <button class="btn btn-solid btn-sm" onclick="addIngreso()">💾 Guardar ingreso</button>
+        </div>
+      </div>
       <div id="cxcDash" class="pnl-cards" style="margin-bottom:1rem;"></div>
       <div id="cobForms"></div>
       <h2>Saldo por venta</h2>
@@ -799,7 +814,7 @@
       <div class="card-box">
         <div class="row">
           <div><label>Fecha</label><input type="date" id="gFecha"></div>
-          <div><label>Categoría *</label><input id="gCategoria" list="gCatList" placeholder="Renta, Luz, Nómina..."><datalist id="gCatList"><option>Renta</option><option>Luz</option><option>Agua</option><option>Nómina</option><option>Gasolina</option><option>Publicidad</option><option>Mantenimiento</option><option>Envíos</option><option>Otro</option></datalist></div>
+          <div><label>Categoría *</label><input id="gCategoria" list="gCatList" placeholder="Renta, Luz, Nómina..."><datalist id="gCatList"></datalist></div>
           <div><label>Monto *</label><input type="number" id="gMonto" min="0" step="0.01" placeholder="0.00"></div>
           <div><label>Moneda</label><select id="gMoneda"><option value="MXN">MXN</option><option value="USD">USD</option></select></div>
         </div>
@@ -867,6 +882,14 @@
           <div class="card-box">
             <h3 class="flow-h">📉 Gastos del mes por categoría</h3>
             <canvas id="estGastosBar" height="230"></canvas>
+          </div>
+          <div class="card-box">
+            <h3 class="flow-h">📊 Ingresos vs egresos (12 meses)</h3>
+            <canvas id="estFinanzasBar" height="230"></canvas>
+          </div>
+          <div class="card-box">
+            <h3 class="flow-h">🗂️ Gastos por categoría (12 meses)</h3>
+            <canvas id="estGastosMesBar" height="230"></canvas>
           </div>
           <div class="card-box" style="grid-column:1/-1;">
             <h3 class="flow-h">🧮 Flujo de caja: entradas vs salidas (30 días)</h3>
@@ -1438,7 +1461,8 @@ function loadEstadisticas() {
       apiGet('ventas'),
       getj(base + '&action=flujo_caja&desde=' + hace29 + '&hasta=' + hoy),
       apiGet('quotes'),
-    ]).then(function ([pnl, ventas, flujo, quotes]) {
+      getj(base + '&action=finanzas_mensual'),
+    ]).then(function ([pnl, ventas, flujo, quotes, finanzas]) {
       const sinConexion = !pnl && !ventas && !flujo && !quotes;
       if (sinConexion) {
         $('estKpis').innerHTML = '<p class="muted">Sin acceso o error de conexión. Si acabas de actualizar el script, despliega una <b>nueva versión</b> en Apps Script.</p>';
@@ -1448,6 +1472,11 @@ function loadEstadisticas() {
       _estPintarVentas(ventas);
       _estPintarGastos(pnl);
       _estPintarFlujo(flujo, hace29, hoy);
+      // Evolución 12 meses: solo si el backend ya tiene el endpoint (redeploy)
+      if (finanzas && finanzas.ok && finanzas.meses) {
+        _estPintarFinanzas(finanzas);
+        _estPintarGastosMes(finanzas);
+      }
     });
   }).catch(function () {
     $('estKpis').innerHTML = '<p class="muted">No se pudo cargar la librería de gráficas (sin conexión al CDN). Revisa tu internet y vuelve a intentar.</p>';
@@ -1517,6 +1546,79 @@ function _estPintarGastos(pnl) {
       indexAxis: 'y', responsive: true, maintainAspectRatio: true,
       plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => _estMoney(c.parsed.x) } } },
       scales: { x: { beginAtZero: true, ticks: { callback: v => '$' + Number(v).toLocaleString('es-MX') } } }
+    }
+  });
+}
+
+function _estLabelMes(m) {
+  const MESES_CORTOS = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+  const p = String(m || '').split('-');
+  return MESES_CORTOS[(Number(p[1]) || 1) - 1] + ' ' + String(p[0] || '').slice(2);
+}
+
+// Ingresos (ventas + otros ingresos) vs egresos (gastos), últimos 12 meses
+function _estPintarFinanzas(fm) {
+  const meses = (fm.meses || []).map(x => x.mes);
+  const hay = meses.length > 0;
+  _estChart('estFinanzasBar', {
+    type: 'bar',
+    data: {
+      labels: hay ? meses.map(_estLabelMes) : ['Sin datos'],
+      datasets: [
+        { label: 'Ingresos', data: hay ? fm.meses.map(x => Number(x.ingresos) || 0) : [0],
+          backgroundColor: 'rgba(30,122,70,0.75)', borderRadius: 5, maxBarThickness: 26 },
+        { label: 'Egresos', data: hay ? fm.meses.map(x => Number(x.gastos) || 0) : [0],
+          backgroundColor: 'rgba(192,57,43,0.7)', borderRadius: 5, maxBarThickness: 26 }
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: true,
+      plugins: { legend: { position: 'top', labels: { boxWidth: 12 } },
+        tooltip: { callbacks: { label: c => c.dataset.label + ': ' + _estMoney(c.parsed.y) } } },
+      scales: { y: { beginAtZero: true, ticks: { callback: v => '$' + Number(v).toLocaleString('es-MX') } } }
+    }
+  });
+}
+
+// Gastos apilados por categoría (top 5 + Otro), últimos 12 meses
+function _estPintarGastosMes(fm) {
+  const meses = (fm.meses || []).map(x => x.mes);
+  // categorías ordenadas por total acumulado del año
+  const totales = {};
+  (fm.meses || []).forEach(x => {
+    Object.keys(x.por_categoria || {}).forEach(k => {
+      totales[k] = (totales[k] || 0) + (Number(x.por_categoria[k]) || 0);
+    });
+  });
+  const top = Object.keys(totales).sort((a, b) => totales[b] - totales[a]).slice(0, 5);
+  const cats = top.length ? top.concat(['Otro']) : [];
+  const series = cats.map(cat => ({
+    label: cat,
+    data: meses.map(m => {
+      const x = fm.meses.filter(y => y.mes === m)[0];
+      if (!x) return 0;
+      if (cat === 'Otro') {
+        return Object.keys(x.por_categoria || {})
+          .filter(k => top.indexOf(k) === -1)
+          .reduce((s, k) => s + (Number(x.por_categoria[k]) || 0), 0);
+      }
+      return Number((x.por_categoria || {})[cat]) || 0;
+    }),
+    backgroundColor: EST_COLORS[cats.indexOf(cat) % EST_COLORS.length]
+  }));
+  const hay = meses.length > 0 && cats.length > 0;
+  _estChart('estGastosMesBar', {
+    type: 'bar',
+    data: {
+      labels: hay ? meses.map(_estLabelMes) : ['Sin datos'],
+      datasets: hay ? series : [{ label: 'Gastos', data: [0], backgroundColor: EST_COLORS[0] }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: true,
+      scales: { x: { stacked: true }, y: { stacked: true, beginAtZero: true,
+        ticks: { callback: v => '$' + Number(v).toLocaleString('es-MX') } } },
+      plugins: { legend: { position: 'top', labels: { boxWidth: 12 } },
+        tooltip: { callbacks: { label: c => c.dataset.label + ': ' + _estMoney(c.parsed.y) } } }
     }
   });
 }
@@ -2284,7 +2386,7 @@ function loadBiz(){
   apiGet('ventas').then(d=>{ if(d&&d.ok) renderSales(d.ventas); });
   apiGet('gastos').then(d=>{ if(d&&d.ok) renderExpenses(d.gastos); });
   apiGet('cxp').then(d=>{ if(d&&d.ok){ cxpCache = d.cxp || []; pagosCache = d.pagos || []; renderCXP(d); } });
-  apiGet('config').then(d=>{ if(d&&d.ok) biz.config=d; });
+  apiGet('config').then(d=>{ if(d&&d.ok){ biz.config=d; poblarCategorias(); if($('catGastosBox')) pintarCategoriasConfig(); } });
 }
 
 function fillWarehouseSelects(){
@@ -2922,7 +3024,17 @@ function showConfigForm(){
     '<p class="muted">Las fotos subidas desde el panel se guardan en Google Drive. Con el tiempo pueden quedar archivos de prueba que ningún producto usa. Aquí puedes revisarlos y mandarlos a la papelera.</p>' +
     '<div class="toolbar"><button class="btn btn-sm" onclick="revisarFotosDrive()">🔍 Revisar fotos huérfanas</button>' +
     '<button class="btn btn-sm" id="btnLimpiarFotos" style="display:none;" onclick="limpiarFotosDrive()">🗑️ Confirmar limpieza</button></div>' +
-    '<div id="fotosDriveResult" style="margin-top:0.5rem;"></div></div>';
+    '<div id="fotosDriveResult" style="margin-top:0.5rem;"></div></div>' +
+    '<div class="card-box" style="margin-top:1rem;"><h3 class="flow-h" style="margin-top:0;">🏷️ Categorías de gastos e ingresos</h3>' +
+    '<p class="muted">Sugerencias que aparecen al capturar gastos y otros ingresos. Quitar una categoría no afecta los registros ya capturados.</p>' +
+    '<div id="catGastosBox"></div><div id="catIngresosBox"></div>' +
+    '<div class="row" style="margin-top:0.5rem;">' +
+    '<div><label>Tipo</label><select id="catTipo"><option value="gastos">Gasto</option><option value="ingresos">Ingreso</option></select></div>' +
+    '<div><label>Nueva categoría</label><input id="catNombre" placeholder="Ej. Honorarios"></div>' +
+    '</div>' +
+    '<div class="toolbar" style="margin-top:0.6rem;"><button class="btn btn-sm btn-solid" onclick="agregarCategoria()">＋ Agregar categoría</button></div>' +
+    '<div id="catResult" style="margin-top:0.4rem;"></div></div>';
+  pintarCategoriasConfig();
 }
 
 function saveConfig(){
@@ -3521,6 +3633,65 @@ function renderSales(list){
       '<td><span style="color:'+col+';font-weight:600;font-size:0.72rem;">'+esc(ep)+'</span></td>' +
       '<td style="color:#7ce3a1;">'+fmtMoney(v.utilidad_base)+' '+esc(biz.config.moneda_base||'')+'</td>' +
       '<td style="white-space:nowrap;">'+acciones+'</td></tr>';}).join('');
+}
+
+/* ----- otros ingresos (reembolsos, venta de activos...) ----- */
+function addIngreso(){
+  const concepto=$('ingConcepto').value.trim(), monto=parseFloat($('ingMonto').value)||0;
+  if (!concepto || !monto) { notice('Falta el concepto o el monto.', false); return; }
+  apiPost({tipo:'ingreso', fecha:$('ingFecha').value, concepto,
+    monto, moneda:$('ingMoneda').value, metodo:$('ingMetodo').value, notas:$('ingNotas').value.trim()}).then(d=>{
+    notice(d&&d.ok?('Ingreso '+(d.folio||'')+' guardado.'):errMsg(d,'No se pudo guardar.'), !!(d&&d.ok));
+    if(d&&d.ok){ $('ingMonto').value=''; $('ingNotas').value=''; loadCXC(); }
+  });
+}
+
+/* ----- catalogo de categorias (configurable desde INVENTARIO > Configuracion) ----- */
+function poblarCategorias(){
+  const cg = (biz.config && biz.config.categorias_gastos) || [];
+  const ci = (biz.config && biz.config.categorias_ingresos) || [];
+  if ($('gCatList')) $('gCatList').innerHTML = cg.map(c=>'<option value="'+esc(c)+'"></option>').join('');
+  if ($('ingCatList')) $('ingCatList').innerHTML = ci.map(c=>'<option value="'+esc(c)+'"></option>').join('');
+}
+function pintarCategoriasConfig(){
+  const box = (id, tipo, lista) => {
+    if (!$(id)) return;
+    $(id).innerHTML = '<p class="muted" style="margin:0.3rem 0;">'+(tipo==='gastos'?'Gastos':'Ingresos')+':</p><div>' +
+      (lista.length ? lista.map(c=>
+        '<span style="display:inline-block;border:1px solid #3a3428;border-radius:10px;padding:1px 8px;margin:2px;font-size:0.75rem;">'+esc(c)+
+        ' <a href="javascript:void(0)" data-tipo="'+tipo+'" data-cat="'+esc(c)+'" onclick="quitarCategoria(this)" style="color:#e37c7c;text-decoration:none;">✕</a></span>'
+      ).join('') : '<span class="muted">(sin categorías)</span>') + '</div>';
+  };
+  box('catGastosBox', 'gastos', (biz.config.categorias_gastos)||[]);
+  box('catIngresosBox', 'ingresos', (biz.config.categorias_ingresos)||[]);
+}
+function agregarCategoria(){
+  const nombre=$('catNombre').value.trim(), tipo=$('catTipo').value;
+  if (!nombre) { notice('Escribe el nombre de la categoría.', false); return; }
+  apiPost({tipo:'categoria', accion:'agregar', tipo, nombre}).then(d=>{
+    notice(d&&d.ok?'Categoría agregada.':errMsg(d,'No se pudo agregar.'), !!(d&&d.ok));
+    if(d&&d.ok){
+      biz.config[tipo==='ingresos'?'categorias_ingresos':'categorias_gastos'] = d.categorias;
+      $('catNombre').value='';
+      pintarCategoriasConfig(); poblarCategorias();
+    }
+  });
+}
+// doble paso sin confirm(): el ✕ pide confirmacion a si mismo
+function quitarCategoria(el){
+  const tipo=el.dataset.tipo, nombre=el.dataset.cat;
+  if (el.dataset.confirm!=='1') {
+    el.dataset.confirm='1'; el.textContent='¿Seguro?';
+    setTimeout(()=>{ if(el.isConnected){ el.dataset.confirm=''; el.textContent='✕'; } }, 3000);
+    return;
+  }
+  apiPost({tipo:'categoria', accion:'quitar', tipo, nombre}).then(d=>{
+    notice(d&&d.ok?('Categoría "'+nombre+'" eliminada del catálogo.'):errMsg(d), !!(d&&d.ok));
+    if(d&&d.ok){
+      biz.config[tipo==='ingresos'?'categorias_ingresos':'categorias_gastos'] = d.categorias;
+      pintarCategoriasConfig(); poblarCategorias();
+    }
+  });
 }
 
 /* ----- gastos ----- */

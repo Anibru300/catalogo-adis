@@ -454,6 +454,21 @@
     <!-- COBROS / CUENTAS POR COBRAR -->
     <section id="tab-cobros" class="panel hidden">
       <div class="toolbar"><h2 style="margin:0;">Cuentas por cobrar</h2><button class="btn btn-sm" onclick="loadCXC()">↻ Actualizar</button></div>
+      <div class="card-box" style="margin-bottom:1rem;">
+        <h3 class="flow-h" style="margin-top:0;">➕ Otro ingreso <span class="muted">(reembolso, venta de activos… — no es cobro de una venta)</span></h3>
+        <div class="row">
+          <div><label>Fecha</label><input type="date" id="ingFecha"></div>
+          <div><label>Concepto *</label><input id="ingConcepto" list="ingCatList" placeholder="Reembolso, venta de activos..."><datalist id="ingCatList"></datalist></div>
+          <div><label>Monto *</label><input type="number" id="ingMonto" min="0" step="0.01" placeholder="0.00"></div>
+          <div><label>Moneda</label><select id="ingMoneda"><option value="MXN">MXN</option><option value="USD">USD</option></select></div>
+          <div><label>Método</label><select id="ingMetodo"><option>Efectivo</option><option>Transferencia</option><option>Tarjeta</option><option>Depósito</option><option>Otro</option></select></div>
+        </div>
+        <label>Notas</label>
+        <input id="ingNotas" placeholder="Opcional">
+        <div class="toolbar" style="margin-top:0.6rem;">
+          <button class="btn btn-solid btn-sm" onclick="addIngreso()">💾 Guardar ingreso</button>
+        </div>
+      </div>
       <div id="cxcDash" class="pnl-cards" style="margin-bottom:1rem;"></div>
       <div id="cobForms"></div>
       <h2>Saldo por venta</h2>
@@ -478,7 +493,7 @@
       <div class="card-box">
         <div class="row">
           <div><label>Fecha</label><input type="date" id="gFecha"></div>
-          <div><label>Categoría *</label><input id="gCategoria" list="gCatList" placeholder="Renta, Luz, Nómina..."><datalist id="gCatList"><option>Renta</option><option>Luz</option><option>Agua</option><option>Nómina</option><option>Gasolina</option><option>Publicidad</option><option>Mantenimiento</option><option>Envíos</option><option>Otro</option></datalist></div>
+          <div><label>Categoría *</label><input id="gCategoria" list="gCatList" placeholder="Renta, Luz, Nómina..."><datalist id="gCatList"></datalist></div>
           <div><label>Monto *</label><input type="number" id="gMonto" min="0" step="0.01" placeholder="0.00"></div>
           <div><label>Moneda</label><select id="gMoneda"><option value="MXN">MXN</option><option value="USD">USD</option></select></div>
         </div>
@@ -546,6 +561,14 @@
           <div class="card-box">
             <h3 class="flow-h">📉 Gastos del mes por categoría</h3>
             <canvas id="estGastosBar" height="230"></canvas>
+          </div>
+          <div class="card-box">
+            <h3 class="flow-h">📊 Ingresos vs egresos (12 meses)</h3>
+            <canvas id="estFinanzasBar" height="230"></canvas>
+          </div>
+          <div class="card-box">
+            <h3 class="flow-h">🗂️ Gastos por categoría (12 meses)</h3>
+            <canvas id="estGastosMesBar" height="230"></canvas>
           </div>
           <div class="card-box" style="grid-column:1/-1;">
             <h3 class="flow-h">🧮 Flujo de caja: entradas vs salidas (30 días)</h3>

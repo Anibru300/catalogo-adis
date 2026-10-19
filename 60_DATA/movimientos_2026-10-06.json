@@ -1,0 +1,4 @@
+[
+  {"tipo": "gasto", "fecha": "2026-10-06", "categoria": "Gasolina", "monto": 500, "moneda": "MXN", "descripcion": "Gasolina"},
+  {"tipo": "gasto", "fecha": "2026-10-06", "categoria": "Mantenimiento", "monto": 837, "moneda": "MXN", "descripcion": "Compra Home Depot"}
+]

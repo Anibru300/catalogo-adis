@@ -433,6 +433,90 @@ function filaPorId(nombreHoja, id) {
   return null;
 }
 
+/* ---------- Finanzas: catalogo de categorias + estado de resultados ----------
+   Catalogo configurable en hoja Config (separado por comas). Los defaults
+   reproducen la lista historica del panel. */
+var CATEGORIAS_GASTOS_DEFAULT = 'Renta,Luz,Agua,Nómina,Gasolina,Publicidad,Mantenimiento,Envíos,Otro';
+var CATEGORIAS_INGRESOS_DEFAULT = 'Venta de activos,Reembolso,Otro ingreso,Otro';
+function listaCfg_(clave, defecto) {
+  return String(cfg(clave, defecto)).split(',').map(function (s) { return s.trim(); })
+    .filter(function (s) { return !!s; });
+}
+function normalizarCategoria_(nombre) {
+  var n = String(nombre || '').trim().replace(/\s+/g, ' ');
+  if (!n) return '';
+  return n.charAt(0).toUpperCase() + n.slice(1);
+}
+
+/* Estado de resultados de UN mes (mes = 'YYYY-MM' o vacio = todos).
+   Ventas (no canceladas) = ingresos contables; Gastos (no cancelados) =
+   egresos. Sin filtro de proyecto, los cobros SIN venta_id son "otros
+   ingresos" (reembolsos, venta de activos) y se suman a ingresos SIN doble
+   conteo: los cobros ligados a ventas ya estan contados via hoja Ventas.
+   Reutilizado por GET estado_resultados y GET finanzas_mensual. */
+function calcularEstadoResultados(mes, proyFiltro) {
+  var desde = mes ? mes + '-01' : null;
+  var hasta = null;
+  if (mes && /^\d{4}-\d{2}$/.test(mes)) {
+    var partes = mes.split('-');
+    var fin = new Date(Number(partes[0]), Number(partes[1]), 0);
+    hasta = Utilities.formatDate(fin, 'America/Hermosillo', 'yyyy-MM-dd');
+  }
+  var enRango = function (fecha) {
+    if (!desde || !hasta) return true;
+    var f = String(fecha).slice(0, 10);
+    return f >= desde && f <= hasta;
+  };
+  var ventas = filasComoObjetos(SHEET_SALES).filter(function (v) {
+    if (String(v.estado_pago) === 'CANCELADA') return false; // FASE 6: las anuladas no son ingreso
+    if (proyFiltro && String(v.proyecto_id) !== proyFiltro) return false;
+    return enRango(v.fecha);
+  });
+  var gastos;
+  if (proyFiltro) { // FASE 6: en vista por proyecto, los gastos son los movimientos tipo 'gasto' del proyecto
+    gastos = filasComoObjetos('Proyectos_Movs').filter(function (m) {
+      return String(m.proyecto_id) === proyFiltro && String(m.tipo) === 'gasto' && enRango(m.fecha);
+    }).map(function (m) {
+      return { categoria: String(m.descripcion || 'Gasto de proyecto').slice(0, 40), monto_base: Number(m.monto_base) || 0, estado: 'ACTIVA' };
+    });
+  } else {
+    gastos = filasComoObjetos(SHEET_EXPENSES).filter(function (g) {
+      return enRango(g.fecha) && String(g.estado) !== 'CANCELADA';
+    });
+  }
+  var ingresosExtra = 0, numIngresosExtra = 0;
+  if (!proyFiltro) { // cobros sin venta = otros ingresos (solo vista global)
+    filasComoObjetos(SHEET_COBROS).forEach(function (c) {
+      if (String(c.venta_id || '') !== '') return;
+      if (!enRango(c.fecha)) return;
+      ingresosExtra += Number(c.monto_base) || 0;
+      numIngresosExtra++;
+    });
+  }
+  var ingresos = ingresosExtra, costos = 0;
+  ventas.forEach(function (v) { ingresos += Number(v.total_base) || 0; costos += Number(v.costo_total_base) || 0; });
+  var porCategoria = {};
+  var totalGastos = 0;
+  gastos.forEach(function (g) {
+    var m = Number(g.monto_base) || 0;
+    totalGastos += m;
+    var cat = g.categoria || 'Otro';
+    porCategoria[cat] = (porCategoria[cat] || 0) + m;
+  });
+  var utilBruta = ingresos - costos;
+  var utilNeta = utilBruta - totalGastos;
+  return { ok: true, mes: mes || 'Todos', moneda_base: cfg('moneda_base', 'MXN'),
+    proyecto_id: proyFiltro || '',
+    ingresos: ingresos, ingresos_extra: ingresosExtra, num_ingresos_extra: numIngresosExtra,
+    costos: costos, utilidad_bruta: utilBruta,
+    gastos: porCategoria, total_gastos: totalGastos, utilidad_neta: utilNeta,
+    utilidad_operativa: utilNeta, // FASE 6: gastos operativos ya descontados
+    num_ventas: ventas.length,
+    margen_bruto: ingresos ? (utilBruta / ingresos * 100) : 0,
+    margen_neto: ingresos ? (utilNeta / ingresos * 100) : 0,
+    margen_operativo: ingresos ? (utilNeta / ingresos * 100) : 0 };
+}
+
 /* ============================ GET (lectura) ============================ */
 
 function doGet(e) {
@@ -468,7 +552,9 @@ function doGetInterno(e) {
       ok: true,
       moneda_base: cfg('moneda_base', 'MXN'),
       tipo_cambio: cfg('tipo_cambio', '18.5'),
-      alertas_email: PropertiesService.getScriptProperties().getProperty('ALERTAS_EMAIL') || ''
+      alertas_email: PropertiesService.getScriptProperties().getProperty('ALERTAS_EMAIL') || '',
+      categorias_gastos: listaCfg_('categorias_gastos', CATEGORIAS_GASTOS_DEFAULT),
+      categorias_ingresos: listaCfg_('categorias_ingresos', CATEGORIAS_INGRESOS_DEFAULT)
     });
   }
   if (action === 'productos') {
@@ -509,62 +595,37 @@ function doGetInterno(e) {
     });
     return json({ ok: true, movimientos: hayFiltro ? movsFil.slice(-500) : movsFil.slice(-100) });
   }
-  if (action === 'ventas') return json({ ok: true, ventas: filasComoObjetos(SHEET_SALES).slice(-100) });
+  // Agregado por mes (exacto, sin límite de filas) + últimas 100 para listados
+  if (action === 'ventas') {
+    var vs = filasComoObjetos(SHEET_SALES);
+    var porMes = {};
+    vs.forEach(function (v) {
+      var m = String(v.fecha || '').slice(0, 7);
+      if (m.length !== 7) return;
+      porMes[m] = (porMes[m] || 0) + (Number(v.total) || 0);
+    });
+    return json({ ok: true, porMes: porMes, ventas: vs.slice(-100) });
+  }
   if (action === 'gastos') return json({ ok: true, gastos: filasComoObjetos(SHEET_EXPENSES) });
 
   if (action === 'estado_resultados') {
-    var mes = e.parameter.mes; // formato YYYY-MM
-    var desde = mes ? mes + '-01' : null;
-    var hasta = null;
-    if (mes && /^\d{4}-\d{2}$/.test(mes)) {
-      var partes = mes.split('-');
-      var fin = new Date(Number(partes[0]), Number(partes[1]), 0);
-      hasta = Utilities.formatDate(fin, 'America/Hermosillo', 'yyyy-MM-dd');
+    return json(calcularEstadoResultados(e.parameter.mes, String(e.parameter.proyecto_id || '')));
+  }
+
+  // Finanzas 12 meses: ingresos vs egresos + gastos por categoria, un solo
+  // request (el panel no hace 12 llamadas a estado_resultados).
+  if (action === 'finanzas_mensual') {
+    var ahoraFm = new Date();
+    var mesesFm = [];
+    for (var iFm = 11; iFm >= 0; iFm--) {
+      var dFm = new Date(ahoraFm.getFullYear(), ahoraFm.getMonth() - iFm, 1);
+      mesesFm.push(dFm.getFullYear() + '-' + (dFm.getMonth() + 1 < 10 ? '0' : '') + (dFm.getMonth() + 1));
     }
-    var enRango = function (fecha) {
-      if (!desde || !hasta) return true;
-      var f = String(fecha).slice(0, 10);
-      return f >= desde && f <= hasta;
-    };
-    var proyFiltro = String(e.parameter.proyecto_id || '');
-    var ventas = filasComoObjetos(SHEET_SALES).filter(function (v) {
-      if (String(v.estado_pago) === 'CANCELADA') return false; // FASE 6: las anuladas no son ingreso
-      if (proyFiltro && String(v.proyecto_id) !== proyFiltro) return false;
-      return enRango(v.fecha);
+    var serieFm = mesesFm.map(function (mFm) {
+      var rFm = calcularEstadoResultados(mFm, '');
+      return { mes: mFm, ingresos: rFm.ingresos, gastos: rFm.total_gastos, por_categoria: rFm.gastos };
     });
-    var gastos;
-    if (proyFiltro) { // FASE 6: en vista por proyecto, los gastos son los movimientos tipo 'gasto' del proyecto
-      gastos = filasComoObjetos('Proyectos_Movs').filter(function (m) {
-        return String(m.proyecto_id) === proyFiltro && String(m.tipo) === 'gasto' && enRango(m.fecha);
-      }).map(function (m) {
-        return { categoria: String(m.descripcion || 'Gasto de proyecto').slice(0, 40), monto_base: Number(m.monto_base) || 0, estado: 'ACTIVA' };
-      });
-    } else {
-      gastos = filasComoObjetos(SHEET_EXPENSES).filter(function (g) {
-        return enRango(g.fecha) && String(g.estado) !== 'CANCELADA';
-      });
-    }
-    var ingresos = 0, costos = 0;
-    ventas.forEach(function (v) { ingresos += Number(v.total_base) || 0; costos += Number(v.costo_total_base) || 0; });
-    var porCategoria = {};
-    var totalGastos = 0;
-    gastos.forEach(function (g) {
-      var m = Number(g.monto_base) || 0;
-      totalGastos += m;
-      var cat = g.categoria || 'Otro';
-      porCategoria[cat] = (porCategoria[cat] || 0) + m;
-    });
-    var utilBruta = ingresos - costos;
-    var utilNeta = utilBruta - totalGastos;
-    return json({ ok: true, mes: mes || 'Todos', moneda_base: cfg('moneda_base', 'MXN'),
-      proyecto_id: proyFiltro || '',
-      ingresos: ingresos, costos: costos, utilidad_bruta: utilBruta,
-      gastos: porCategoria, total_gastos: totalGastos, utilidad_neta: utilNeta,
-      utilidad_operativa: utilNeta, // FASE 6: gastos operativos ya descontados
-      num_ventas: ventas.length,
-      margen_bruto: ingresos ? (utilBruta / ingresos * 100) : 0,
-      margen_neto: ingresos ? (utilNeta / ingresos * 100) : 0,
-      margen_operativo: ingresos ? (utilNeta / ingresos * 100) : 0 });
+    return json({ ok: true, moneda_base: cfg('moneda_base', 'MXN'), meses: serieFm });
   }
 
   // FASE 6: alertas priorizadas del negocio (stock, cobros, pagos, cotizaciones, compras)
@@ -1711,6 +1772,48 @@ function doPostInterno(data) {
     hV2.getRange(filaV, 17).setValue(nuevoEstadoV);
     log_('cobro_registrado', folioCob + ' · ' + folioV2 + ' · ' + montoC + ' ' + monedaC + ' · ' + nuevoEstadoV);
     return json({ ok: true, folio: folioCob, estado_pago: nuevoEstadoV });
+  });
+
+  // Otro ingreso: dinero REAL recibido que NO viene de una venta (reembolso,
+  // venta de activos, etc.). Se asienta en Cobros sin venta_id: flujo_caja lo
+  // cuenta como entrada y estado_resultados lo suma a ingresos sin doble conteo.
+  if (tipo === 'ingreso') return conLock(function () {
+    var conceptoI = String(data.concepto || '').trim();
+    if (!conceptoI) throw AdisError('VALIDACION', 'El ingreso necesita un concepto.');
+    var montoI = Number(data.monto);
+    if (!isFinite(montoI) || montoI <= 0) throw AdisError('VALIDACION', 'El monto debe ser mayor que cero.');
+    var monedaI = validarMoneda(data.moneda || cfg('moneda_base', 'MXN'));
+    var tcI = Number(data.tipo_cambio) || Number(cfg('tipo_cambio', '18.5')) || 1;
+    var fechaI = validarFecha(data.fecha) || hoy_();
+    var folioI = siguienteFolio('ING', 'folio_ingreso', 4);
+    hoja(SHEET_COBROS, ENC_COBROS).appendRow([nuevoId(), folioI, '', '',
+      conceptoI, '', fechaI, montoI, monedaI, aBase(montoI, monedaI, tcI),
+      data.metodo || '', data.notas || '', USUARIO_ACTUAL]);
+    log_('ingreso_registrado', folioI + ' · ' + conceptoI + ' · ' + montoI + ' ' + monedaI);
+    return json({ ok: true, folio: folioI });
+  });
+
+  // Catalogo configurable de categorias (gastos / ingresos) en hoja Config.
+  // Solo afecta las sugerencias del panel; los datos ya capturados no se tocan.
+  if (tipo === 'categoria') return conLock(function () {
+    var esIngC = String(data.tipo) === 'ingresos';
+    var claveC = esIngC ? 'categorias_ingresos' : 'categorias_gastos';
+    var defectoC = esIngC ? CATEGORIAS_INGRESOS_DEFAULT : CATEGORIAS_GASTOS_DEFAULT;
+    var nombreC = normalizarCategoria_(data.nombre);
+    if (!nombreC) throw AdisError('VALIDACION', 'Escribe el nombre de la categoría.');
+    var listaC = listaCfg_(claveC, defectoC);
+    var existeC = listaC.some(function (x) { return x.toLowerCase() === nombreC.toLowerCase(); });
+    if (data.accion === 'quitar') {
+      if (!existeC) throw AdisError('NO_ENCONTRADO', 'La categoría no está en el catálogo.');
+      listaC = listaC.filter(function (x) { return x.toLowerCase() !== nombreC.toLowerCase(); });
+    } else {
+      if (existeC) throw AdisError('VALIDACION', 'Esa categoría ya existe.');
+      listaC.push(nombreC);
+    }
+    cfgSet(claveC, listaC.join(','));
+    log_('categoria_' + (data.accion === 'quitar' ? 'eliminada' : 'agregada'),
+      (esIngC ? 'ingresos' : 'gastos') + ': ' + nombreC);
+    return json({ ok: true, tipo: esIngC ? 'ingresos' : 'gastos', categorias: listaC });
   });
 
   // Anulacion de venta: cancela y REGRESA la mercancia al almacen (trazable)

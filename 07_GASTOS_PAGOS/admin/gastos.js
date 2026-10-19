@@ -1,3 +1,62 @@
+/* ----- otros ingresos (reembolsos, venta de activos...) ----- */
+function addIngreso(){
+  const concepto=$('ingConcepto').value.trim(), monto=parseFloat($('ingMonto').value)||0;
+  if (!concepto || !monto) { notice('Falta el concepto o el monto.', false); return; }
+  apiPost({tipo:'ingreso', fecha:$('ingFecha').value, concepto,
+    monto, moneda:$('ingMoneda').value, metodo:$('ingMetodo').value, notas:$('ingNotas').value.trim()}).then(d=>{
+    notice(d&&d.ok?('Ingreso '+(d.folio||'')+' guardado.'):errMsg(d,'No se pudo guardar.'), !!(d&&d.ok));
+    if(d&&d.ok){ $('ingMonto').value=''; $('ingNotas').value=''; loadCXC(); }
+  });
+}
+
+/* ----- catalogo de categorias (configurable desde INVENTARIO > Configuracion) ----- */
+function poblarCategorias(){
+  const cg = (biz.config && biz.config.categorias_gastos) || [];
+  const ci = (biz.config && biz.config.categorias_ingresos) || [];
+  if ($('gCatList')) $('gCatList').innerHTML = cg.map(c=>'<option value="'+esc(c)+'"></option>').join('');
+  if ($('ingCatList')) $('ingCatList').innerHTML = ci.map(c=>'<option value="'+esc(c)+'"></option>').join('');
+}
+function pintarCategoriasConfig(){
+  const box = (id, tipo, lista) => {
+    if (!$(id)) return;
+    $(id).innerHTML = '<p class="muted" style="margin:0.3rem 0;">'+(tipo==='gastos'?'Gastos':'Ingresos')+':</p><div>' +
+      (lista.length ? lista.map(c=>
+        '<span style="display:inline-block;border:1px solid #3a3428;border-radius:10px;padding:1px 8px;margin:2px;font-size:0.75rem;">'+esc(c)+
+        ' <a href="javascript:void(0)" data-tipo="'+tipo+'" data-cat="'+esc(c)+'" onclick="quitarCategoria(this)" style="color:#e37c7c;text-decoration:none;">✕</a></span>'
+      ).join('') : '<span class="muted">(sin categorías)</span>') + '</div>';
+  };
+  box('catGastosBox', 'gastos', (biz.config.categorias_gastos)||[]);
+  box('catIngresosBox', 'ingresos', (biz.config.categorias_ingresos)||[]);
+}
+function agregarCategoria(){
+  const nombre=$('catNombre').value.trim(), tipo=$('catTipo').value;
+  if (!nombre) { notice('Escribe el nombre de la categoría.', false); return; }
+  apiPost({tipo:'categoria', accion:'agregar', tipo, nombre}).then(d=>{
+    notice(d&&d.ok?'Categoría agregada.':errMsg(d,'No se pudo agregar.'), !!(d&&d.ok));
+    if(d&&d.ok){
+      biz.config[tipo==='ingresos'?'categorias_ingresos':'categorias_gastos'] = d.categorias;
+      $('catNombre').value='';
+      pintarCategoriasConfig(); poblarCategorias();
+    }
+  });
+}
+// doble paso sin confirm(): el ✕ pide confirmacion a si mismo
+function quitarCategoria(el){
+  const tipo=el.dataset.tipo, nombre=el.dataset.cat;
+  if (el.dataset.confirm!=='1') {
+    el.dataset.confirm='1'; el.textContent='¿Seguro?';
+    setTimeout(()=>{ if(el.isConnected){ el.dataset.confirm=''; el.textContent='✕'; } }, 3000);
+    return;
+  }
+  apiPost({tipo:'categoria', accion:'quitar', tipo, nombre}).then(d=>{
+    notice(d&&d.ok?('Categoría "'+nombre+'" eliminada del catálogo.'):errMsg(d), !!(d&&d.ok));
+    if(d&&d.ok){
+      biz.config[tipo==='ingresos'?'categorias_ingresos':'categorias_gastos'] = d.categorias;
+      pintarCategoriasConfig(); poblarCategorias();
+    }
+  });
+}
+
 /* ----- gastos ----- */
 function addExpense(){
   const cat=$('gCategoria').value.trim(), monto=parseFloat($('gMonto').value)||0;
