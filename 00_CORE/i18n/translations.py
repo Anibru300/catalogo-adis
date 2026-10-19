@@ -16,6 +16,7 @@ TRANSLATIONS = {
     'menu_pisos': {'es': 'Pisos', 'en': 'Flooring'},
     'menu_zacate': {'es': 'Zacate', 'en': 'Synthetic Grass'},
     'menu_cladding': {'es': 'Cladding', 'en': 'Cladding'},
+    'menu_persianas': {'es': 'Persianas y Cortinas', 'en': 'Blinds & Curtains'},
     'nav_projects': {'es': 'Proyectos', 'en': 'Projects'},
     'nav_contact': {'es': 'Contacto', 'en': 'Contact'},
     'nav_back_home': {'es': '← Inicio', 'en': '← Home'},

@@ -752,6 +752,7 @@ def generate_header(current_page='index', page_file='index.html'):
         ('7-pisos.html', 'img/7-pisos/71-laminado/ACONCAGUA.jpg', 'menu_pisos'),
         ('8-zacate.html', 'img/8-zacate/81-follaje-sintetico/AMAZONAS-A.jpg', 'menu_zacate'),
         ('9-cladding.html', 'img/9-cladding/91-placa-tipo-roca/BLACK.jpg', 'menu_cladding'),
+        ('10-persianas-y-cortinas.html', 'img/10-persianas-y-cortinas/101-persianas/Cortina%20Duo%20Sheer%20Elegance.jpg', 'menu_persianas'),
     ]
     mega_html = '\n'.join([f'        <a href="{p(u)}" class="mega-item">{picture_tag(i, t(k))}<span>{i18n(k)}</span></a>' for u, i, k in MEGA_ITEMS])
     

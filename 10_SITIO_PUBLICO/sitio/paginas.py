@@ -109,6 +109,7 @@ def generate_index(categories):
         'Pisos': svg_icon('grid', size=28),
         'Zacate': svg_icon('leaf', size=28),
         'Cladding': svg_icon('mountain', size=28),
+        'Persianas y Cortinas': svg_icon('blinds', size=28),
     }
 
     # Tarjetas de descarga por categoría

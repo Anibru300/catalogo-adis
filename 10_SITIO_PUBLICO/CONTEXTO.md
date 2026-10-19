@@ -62,6 +62,13 @@
 6. `public/` se regenera siempre; **no editar a mano** (se pierde en el
    próximo build).
 7. Los nombres de imagen con espacios requieren URL-encoding en srcset.
+8. **Agregar una categoría nueva toca**: carpeta numerada en `CATALOGO FINAL`
+   (fuente del scan), entrada en `MEGA_ITEMS` (componentes.py, el menú es
+   HARDCODEADO), clave `menu_*` en `00_CORE/i18n/translations.py`, traducciones
+   en `traducciones_productos.json` y (opcional) `CAT_ICONS`. Home/sitemap/
+   tarjetas son automáticos. Referencia implementada: categoría 10
+   "Persianas y Cortinas" (oct-2026, proveedor SENZ, vía
+   `60_DATA/importar_persianas_senz.py`).
 
 ## API / BACKEND (solo consume 3 endpoints públicos)
 

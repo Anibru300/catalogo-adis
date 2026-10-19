@@ -109,6 +109,29 @@ Subirlos en cuanto el backend se redeploye (comando listo en la sección
 "Honorarios" al catálogo de categorías (la captura acepta texto libre, pero
 conviene tenerla como sugerencia).
 
+## 5. Nueva categoría web: Persianas y Cortinas (proveedor SENZ)
+
+El dueño anunció la línea nueva de persianas y cortinas (proveedor
+senz.com.mx, ref. https://senz.com.mx/website/persianas/sheer-elegance).
+Se agregó la categoría **10. Persianas y Cortinas** al sitio completa:
+
+- **Fotos**: `60_DATA/importar_persianas_senz.py` descarga las oficiales de Senz
+  (28 fotos) a `G:\...\CATALOGO FINAL\10. Persianas y Cortinas\` (6 persianas
+  + cortinas, con galería -2/3/4 por producto).
+- **ERP**: 7 productos dados de alta en la hoja (SENZ-ENR-01..SENZ-COR-07),
+  precio/costo 0 (se cotiza por m²), proveedor SENZ, foto local en
+  `img/10-persianas-y-cortinas/{101-persianas,102-cortinas}/`.
+- **Generador**: `MEGA_ITEMS` + `menu_persianas` (translations.py) + icono
+  `blinds` nuevo (web_utils.py) + CAT_ICONS + traducciones_productos.json
+  (categoría/subcategorías/nombres ES→EN). Slugs: cat `10-persianas-y-cortinas`,
+  subs `101-persianas`, `102-cortinas`.
+- **Verificación**: smoke `scripts/auditoria/cap_persianas.py` 10/10 PASS
+  (página ES/EN, 7 tarjetas, galería, modal Cotizar→WhatsApp, mega-menú, home);
+  `verificar_fuentes.py` FUENTES CONSISTENTES; build 10 categorías / 258 prods.
+- **Pendiente**: papel tapiz (próxima tanda, avisó el dueño), PDF de catálogo
+  (hoy el link descarga 404 igual que vigas/zacate), precios por m² cuando el
+  dueño los defina, y ~14 alertas nuevas de panel (sin precio/costo/stock).
+
 ## Estado de la mesa (para la próxima sesión)
 
 - ✅ **REDEPLOY HECHO (18-oct)**: `finanzas_mensual`, `ingreso` y `categorias_*`
