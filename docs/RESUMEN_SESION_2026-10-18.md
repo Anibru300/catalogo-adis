@@ -118,10 +118,18 @@ conviene tenerla como sugerencia).
   560 MXN esquineros) + **sus 3 pagos** (PAG-2026-0001..0003, mismo día 06/10 —
   el dueño confirmó que ya se habían pagado). Octubre: entradas $19,735,
   salidas $2,837, flujo neto $16,898, por pagar $0.
-- El script `capturar_movimiento.py` ahora acepta `{"tipo":"pago",
-  "gasto_folio":"GAS-..."}` (busca el gasto por folio y liquida el saldo;
-  `monto` opcional). **Regla de captura**: cuando el dueño diga que un gasto
-  YA se pagó, se registra gasto + pago con la misma fecha.
+- ✅ **Cargado también el 07/10/2026**: GAS-0004 (Gastos personales casa
+  $1,353.72), GAS-0005 (Compra inventario $1,055.47), GAS-0006 (28 lambrines
+  $3,640) + pagos PAG-0004..0006 mismo día. Acumulado octubre: ingresos
+  $19,735, gastos $8,886.19.
+- **REGLAS acordadas de captura**: todo es MXN salvo que el dueño indique USD;
+  todo gasto YA está pagado salvo que indique "por pagar" (entonces se captura
+  el pago después).
+- ⚠️ "Gastos personales" entra al P&L como egreso y baja la utilidad del
+  negocio — si el dueño prefiere llevarlos fuera, se cancelan (baja lógica) y
+  listo. Pendiente de decisión.
+- Categorías nuevas usadas que conviene agregar al catálogo tras el 2º redeploy:
+  Honorarios, Gastos personales, Compra de inventario.
 - ⚠️ **Bug encontrado al probar el endpoint de categorías** (campo `tipo` usado
   como despachador y como clase → choque). Corregido a `clase` (backend +
   frontend + docs, commit `e3c8126`). **Requiere UN SEGUNDO REDEPLOY** (mismos

@@ -1,0 +1,5 @@
+[
+  {"tipo": "gasto", "fecha": "2026-10-07", "categoria": "Gastos personales", "monto": 1353.72, "moneda": "MXN", "descripcion": "Gastos personales de la casa"},
+  {"tipo": "gasto", "fecha": "2026-10-07", "categoria": "Compra de inventario", "monto": 1055.47, "moneda": "MXN", "descripcion": "5 lambrines negros + 4 Brasil a inventario"},
+  {"tipo": "gasto", "fecha": "2026-10-07", "categoria": "Compra de inventario", "monto": 3640, "moneda": "MXN", "descripcion": "14 lambrines cerezo macapa + 14 lambrines negros"}
+]
