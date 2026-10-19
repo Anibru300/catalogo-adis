@@ -34,6 +34,11 @@ de "por pagar"** (entonces el pago se registra después).
    línea, fichas técnicas y kit de marca. La web ya tiene el slot listo:
    soltar el PDF en `public/catalogos/pdf/catalogo_persianas-y-cortinas.pdf`
    y la tarjeta de descarga funciona sola.
+   ⚠️ **REGLA DEL DUEÑO: nunca publicar logo ni marca del proveedor.** Antes de
+   subir cualquier PDF/ficha: quitar logos, marcas de agua y menciones a SENZ
+   (o generar PDFs propios con marca ADIS usando las especificaciones). Las 28
+   fotos ya publicadas fueron revisadas: limpias, sin marca. `products.json`
+   tampoco expone proveedor/código (solo nombre/categoría/foto/precio).
 5. Días **09–14 y 16–18 oct sin datos** — cargar con su fecha real si el dueño
    los pasa.
 6. Decisión pendiente: **"Gastos personales"** ($3,303.72 acumulados) bajan la

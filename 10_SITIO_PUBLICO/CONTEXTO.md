@@ -69,6 +69,12 @@
    tarjetas son automáticos. Referencia implementada: categoría 10
    "Persianas y Cortinas" (oct-2026, proveedor SENZ, vía
    `60_DATA/importar_persianas_senz.py`).
+9. **NUNCA publicar logo ni marca del proveedor** (regla del dueño, oct-2026):
+   fotos, PDFs y fichas técnicas se publican white-label (sin marca de agua,
+   logos ni menciones al proveedor; si el material viene marcado, se limpia o
+   se regenera con marca ADIS). El nombre del proveedor vive solo en el ERP
+   (hoja/panel), jamás en `public/`. `products.json` ya lo respeta (no expone
+   proveedor/código/costo).
 
 ## API / BACKEND (solo consume 3 endpoints públicos)
 
