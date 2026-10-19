@@ -92,6 +92,7 @@ def capturar(mov, token):
     elif tipo == "ingreso":
         payload = dict(base, tipo="ingreso", concepto=mov.get("concepto", mov.get("categoria", "")),
                        metodo=mov.get("metodo", ""), notas=mov.get("notas", mov.get("descripcion", "")),
+                       tipo_ingreso=mov.get("tipo_ingreso", "venta"),
                        monto=mov.get("monto"))
     elif tipo == "pago":
         folio = mov.get("gasto_folio", "")

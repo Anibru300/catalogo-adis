@@ -109,7 +109,7 @@ var ENC_CLIENTES = ['id', 'nombre', 'telefono', 'email', 'ciudad', 'direccion', 
 var ENC_PROY = ['id', 'folio', 'nombre', 'cliente_id', 'cliente', 'cotizacion_id', 'cotizacion_folio',
   'ubicacion', 'fecha_inicio', 'fecha_fin', 'presupuesto', 'moneda', 'estado', 'notas', 'usuario', 'fecha_actualizacion'];
 var ENC_COBROS = ['id', 'folio', 'venta_id', 'venta_folio', 'cliente', 'proyecto_id', 'fecha', 'monto',
-  'moneda', 'monto_base', 'metodo', 'notas', 'usuario'];
+  'moneda', 'monto_base', 'metodo', 'notas', 'usuario', 'tipo']; // tipo: venta|otro (cobros sin venta_id)
 var ENC_OC = ['id', 'folio', 'proveedor_id', 'proveedor', 'fecha', 'fecha_esperada', 'almacen_id', 'almacen',
   'moneda', 'subtotal', 'iva', 'descuento', 'total', 'estado', 'notas', 'usuario', 'fecha_actualizacion', 'partidas'];
 var ENC_RECEP = ['id', 'oc_id', 'oc_folio', 'fecha', 'items', 'usuario'];
@@ -484,13 +484,19 @@ function calcularEstadoResultados(mes, proyFiltro) {
       return enRango(g.fecha) && String(g.estado) !== 'CANCELADA';
     });
   }
-  var ingresosExtra = 0, numIngresosExtra = 0;
-  if (!proyFiltro) { // cobros sin venta = otros ingresos (solo vista global)
+  var ingresosExtra = 0, numIngresosExtra = 0, numVentasExtra = 0;
+  if (!proyFiltro) { // cobros sin venta: por default son VENTAS (dinero de
+    // productos/servicios); solo cuentan como "otros ingresos" los que se
+    // marcaron explicitamente tipo='otro' (reembolsos, venta de activos).
     filasComoObjetos(SHEET_COBROS).forEach(function (c) {
       if (String(c.venta_id || '') !== '') return;
       if (!enRango(c.fecha)) return;
-      ingresosExtra += Number(c.monto_base) || 0;
-      numIngresosExtra++;
+      if (String(c.tipo || 'venta') === 'otro') {
+        ingresosExtra += Number(c.monto_base) || 0;
+        numIngresosExtra++;
+      } else {
+        numVentasExtra++;
+      }
     });
   }
   var ingresos = ingresosExtra, costos = 0;
@@ -507,11 +513,11 @@ function calcularEstadoResultados(mes, proyFiltro) {
   var utilNeta = utilBruta - totalGastos;
   return { ok: true, mes: mes || 'Todos', moneda_base: cfg('moneda_base', 'MXN'),
     proyecto_id: proyFiltro || '',
-    ingresos: ingresos, ingresos_extra: ingresosExtra, num_ingresos_extra: numIngresosExtra,
-    costos: costos, utilidad_bruta: utilBruta,
+    ingresos: ingresos, ventas_extra: ventasExtra, num_ventas_extra: numVentasExtra,
+    ingresos_extra: ingresosExtra, num_ingresos_extra: numIngresosExtra, costos: costos, utilidad_bruta: utilBruta,
     gastos: porCategoria, total_gastos: totalGastos, utilidad_neta: utilNeta,
     utilidad_operativa: utilNeta, // FASE 6: gastos operativos ya descontados
-    num_ventas: ventas.length,
+    num_ventas: ventas.length + numVentasExtra,
     margen_bruto: ingresos ? (utilBruta / ingresos * 100) : 0,
     margen_neto: ingresos ? (utilNeta / ingresos * 100) : 0,
     margen_operativo: ingresos ? (utilNeta / ingresos * 100) : 0 };
@@ -1788,7 +1794,9 @@ function doPostInterno(data) {
     var folioI = siguienteFolio('ING', 'folio_ingreso', 4);
     hoja(SHEET_COBROS, ENC_COBROS).appendRow([nuevoId(), folioI, '', '',
       conceptoI, '', fechaI, montoI, monedaI, aBase(montoI, monedaI, tcI),
-      data.metodo || '', data.notas || '', USUARIO_ACTUAL]);
+      data.metodo || '', data.notas || '', USUARIO_ACTUAL,
+      String(data.tipo_ingreso || 'venta') === 'otro' ? 'otro' : 'venta']);
+    log_('ingreso_registrado', folioI + ' · ' + conceptoI + ' · ' + montoI + ' ' + monedaI + ' · ' + (String(data.tipo_ingreso || 'venta') === 'otro' ? 'otro ingreso' : 'venta')); 
     log_('ingreso_registrado', folioI + ' · ' + conceptoI + ' · ' + montoI + ' ' + monedaI);
     return json({ ok: true, folio: folioI });
   });

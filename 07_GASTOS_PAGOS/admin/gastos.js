@@ -3,7 +3,8 @@ function addIngreso(){
   const concepto=$('ingConcepto').value.trim(), monto=parseFloat($('ingMonto').value)||0;
   if (!concepto || !monto) { notice('Falta el concepto o el monto.', false); return; }
   apiPost({tipo:'ingreso', fecha:$('ingFecha').value, concepto,
-    monto, moneda:$('ingMoneda').value, metodo:$('ingMetodo').value, notas:$('ingNotas').value.trim()}).then(d=>{
+    monto, moneda:$('ingMoneda').value, metodo:$('ingMetodo').value, notas:$('ingNotas').value.trim(),
+    tipo_ingreso: $('ingTipo') ? $('ingTipo').value : 'venta'}).then(d=>{
     notice(d&&d.ok?('Ingreso '+(d.folio||'')+' guardado.'):errMsg(d,'No se pudo guardar.'), !!(d&&d.ok));
     if(d&&d.ok){ $('ingMonto').value=''; $('ingNotas').value=''; loadCXC(); }
   });
