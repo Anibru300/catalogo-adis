@@ -140,8 +140,11 @@ conviene tenerla como sugerencia).
   GAS-0011..0018, PAG-0011..0018. Acumulado octubre: ingresos $24,775,
   gastos $44,179.82, flujo neto **−$19,404.82** (el 15 fue día de compras
   grandes de material). Por pagar $0.
-- ⚠️ **Sin datos del 09/10 al 14/10** — si hubo movimientos esos días, el dueño
-  los pasa después y se cargan con su fecha real (sin problema).
+- ✅ **Carga de movimientos del dueño COMPLETA** (06→15 oct, todo lo capturado a
+  la fecha de hoy 18-oct): 18 gastos (GAS-0001..0018) + 5 ingresos
+  (ING-0001..0005) + 18 pagos (PAG-0001..0018). Cifras finales: ingresos
+  $24,775 · gastos $44,179.82 · flujo neto −$19,404.82 · por pagar $0.
+  Días sin datos declarados: 09–14, 16–18 oct (se cargan después si los hay).
 - Categorías nuevas usadas que conviene agregar al catálogo tras el 2º redeploy:
   Honorarios, Gastos personales, Compra de inventario, Alimentos, Materiales,
   Equipos, Muestrario.
