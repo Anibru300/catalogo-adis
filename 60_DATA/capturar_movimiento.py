@@ -15,13 +15,18 @@ Uso:
 
 Formato del batch (lista):
   [{"tipo":"gasto","fecha":"2026-10-06","categoria":"Gasolina","monto":500,"moneda":"MXN","descripcion":""},
-   {"tipo":"ingreso","fecha":"2026-10-06","concepto":"Reembolso","monto":950,"moneda":"USD","notas":""}]
+   {"tipo":"ingreso","fecha":"2026-10-06","concepto":"Reembolso","monto":950,"moneda":"USD","notas":""},
+   {"tipo":"pago","fecha":"2026-10-06","gasto_folio":"GAS-2026-0001","monto":1500,"moneda":"MXN","metodo":"Transferencia"}]
 
 Notas:
 - Moneda por defecto: MXN. tipo_cambio: el de Config (fallback 18.5).
 - fecha en yyyy-MM-dd (si se omite, hoy).
 - `gasto` requiere endpoint ya desplegado (existe desde fase 5).
 - `ingreso` requiere el redeploy de oct-2026 (folio ING-).
+- `pago` liquida un gasto por folio (gasto_folio); si se omite el monto, paga
+  el saldo completo. La hoja registra el folio PAG- y baja el saldo del gasto.
+- Cuando el dueño confirme que un gasto YA se pagó, capturar el gasto y su
+  pago con la misma fecha (así el flujo de caja refleja la salida real).
 """
 import argparse
 import json
@@ -88,8 +93,19 @@ def capturar(mov, token):
         payload = dict(base, tipo="ingreso", concepto=mov.get("concepto", mov.get("categoria", "")),
                        metodo=mov.get("metodo", ""), notas=mov.get("notas", mov.get("descripcion", "")),
                        monto=mov.get("monto"))
+    elif tipo == "pago":
+        folio = mov.get("gasto_folio", "")
+        gastos = get("gastos", token).get("gastos", [])
+        g = next((x for x in gastos if str(x.get("folio", "")) == folio), None)
+        if not g:
+            return False, f"pago RECHAZADO: no existe gasto con folio {folio!r}"
+        saldo = float(g.get("monto") or 0) - float(g.get("pagado") or 0)
+        payload = dict(base, tipo="gasto_pago", gasto_id=g.get("id"),
+                       monto=mov.get("monto") or saldo,
+                       metodo=mov.get("metodo", ""), notas=mov.get("notas", ""))
+        tipo = f"pago({folio})"
     else:
-        return False, f"tipo desconocido: {tipo!r} (usa gasto|ingreso)"
+        return False, f"tipo desconocido: {tipo!r} (usa gasto|ingreso|pago)"
     try:
         d = post(payload)
     except Exception as e:

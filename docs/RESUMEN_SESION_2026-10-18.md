@@ -115,8 +115,13 @@ conviene tenerla como sugerencia).
   en config YA ESTÁN ACTIVOS en producción. Verificado en vivo.
 - ✅ **Cargado el día 06/10/2026 completo**: 3 egresos (GAS-0001..0003) + 3
   ingresos (ING-2026-0001: 950 USD, ING-2026-0002: 1,600 MXN, ING-2026-0003:
-  560 MXN esquineros). Octubre ya muestra $2,837 MXN de gastos en
-  `finanzas_mensual`.
+  560 MXN esquineros) + **sus 3 pagos** (PAG-2026-0001..0003, mismo día 06/10 —
+  el dueño confirmó que ya se habían pagado). Octubre: entradas $19,735,
+  salidas $2,837, flujo neto $16,898, por pagar $0.
+- El script `capturar_movimiento.py` ahora acepta `{"tipo":"pago",
+  "gasto_folio":"GAS-..."}` (busca el gasto por folio y liquida el saldo;
+  `monto` opcional). **Regla de captura**: cuando el dueño diga que un gasto
+  YA se pagó, se registra gasto + pago con la misma fecha.
 - ⚠️ **Bug encontrado al probar el endpoint de categorías** (campo `tipo` usado
   como despachador y como clase → choque). Corregido a `clase` (backend +
   frontend + docs, commit `e3c8126`). **Requiere UN SEGUNDO REDEPLOY** (mismos
