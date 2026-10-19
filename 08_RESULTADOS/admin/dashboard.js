@@ -20,7 +20,9 @@ function loadDash(){
     const porCobrar = cxc ? Number(cxc.por_cobrar_base)||0 : 0;
     const porPagar = cxp ? Number(cxp.por_pagar_base)||0 : 0;
     const neto = flujo ? Number(flujo.neto)||0 : 0;
-    const ventasMes = pnl ? Number(pnl.ingresos)||0 : 0;
+    const ventasMes = pnl ? (Number(pnl.ingresos)||0) - (Number(pnl.ingresos_extra)||0) : 0;
+    const otrosIng = pnl ? Number(pnl.ingresos_extra)||0 : 0;
+    const nOtrosIng = pnl ? Number(pnl.num_ingresos_extra)||0 : 0;
     const utilOp = pnl ? Number(pnl.utilidad_operativa != null ? pnl.utilidad_operativa : pnl.utilidad_neta)||0 : 0;
     const margen = pnl ? Number(pnl.margen_operativo != null ? pnl.margen_operativo : pnl.margen_neto)||0 : 0;
     const als = (alertas && alertas.alertas) || [];
@@ -29,6 +31,7 @@ function loadDash(){
     const nProy = proys ? (proys.proyectos||[]).filter(p=>p.estado==='ACTIVO').length : 0;
     $('dashKpis').innerHTML =
       '<div class="pnl-card"><div class="k">Ventas del mes ('+(pnl?pnl.num_ventas:0)+')</div><div class="v">'+f(ventasMes)+' '+moneda+'</div></div>' +
+      (otrosIng > 0 ? '<div class="pnl-card"><div class="k">Otros ingresos del mes ('+nOtrosIng+')</div><div class="v">'+f(otrosIng)+' '+moneda+'</div></div>' : '') +
       '<div class="pnl-card '+(utilOp>=0?'good':'bad')+'"><div class="k">Utilidad operativa</div><div class="v">'+f(utilOp)+' <small style="font-size:0.7rem;">'+margen.toFixed(1)+'%</small></div></div>' +
       '<div class="pnl-card '+(porCobrar?'bad':'good')+'"><div class="k">Por cobrar</div><div class="v">'+f(porCobrar)+' '+moneda+'</div></div>' +
       '<div class="pnl-card '+(porPagar?'bad':'good')+'"><div class="k">Por pagar</div><div class="v">'+f(porPagar)+' '+moneda+'</div></div>' +
