@@ -111,19 +111,21 @@ conviene tenerla como sugerencia).
 
 ## Estado de la mesa (para la próxima sesión)
 
-- **Listo para usar tras redeploy**: ingresos manuales, categorías configurables,
-  evolución 12m en el dashboard.
-- **PRIMERO QUE HAY QUE HACER**: redeploy (pasos arriba) y luego subir los
-  ingresos pendientes del 06/10:
-  `python 60_DATA/capturar_movimiento.py --batch 60_DATA/pendientes_ingresos_2026-10-06.json --listo`
-- La dinámica de carga quedó establecida: el dueño pasa movimientos en crudo →
-  se acomodan en archivos `60_DATA/movimientos_AAAA-MM-DD.json` (egresos) y
-  `60_DATA/pendientes_ingresos_*.json` (ingresos) → se suben con
-  `capturar_movimiento.py`. Verificar duplicados con `GET gastos` antes de
-  reintentar un batch que falló a la mitad (los POSTs ya hechos SÍ se guardan).
-- Tras redeploy conviene probar de punta a punta: alta de categoría →
-  capturar gasto con ella → verla en `estGastosBar`/`estGastosMesBar`; capturar
-  otro ingreso → verlo en flujo de caja y en `estFinanzasBar`.
+- ✅ **REDEPLOY HECHO (18-oct)**: `finanzas_mensual`, `ingreso` y `categorias_*`
+  en config YA ESTÁN ACTIVOS en producción. Verificado en vivo.
+- ✅ **Cargado el día 06/10/2026 completo**: 3 egresos (GAS-0001..0003) + 3
+  ingresos (ING-2026-0001: 950 USD, ING-2026-0002: 1,600 MXN, ING-2026-0003:
+  560 MXN esquineros). Octubre ya muestra $2,837 MXN de gastos en
+  `finanzas_mensual`.
+- ⚠️ **Bug encontrado al probar el endpoint de categorías** (campo `tipo` usado
+  como despachador y como clase → choque). Corregido a `clase` (backend +
+  frontend + docs, commit `e3c8126`). **Requiere UN SEGUNDO REDEPLOY** (mismos
+  pasos, el archivo a pegar sigue siendo `admin/apps-script.gs`, ahora 2201
+  líneas). Sin este segundo redeploy, el gestor de categorías del panel
+  (INVENTARIO → Configuración) falla; TODO LO DEMÁS ya funciona.
+- Tras el segundo redeploy: probar agregar/quitar categoría desde el panel, y
+  precisar con el dueño el detalle de los ingresos ING-0001/0002 ("Otro
+  ingreso").
 - Pendientes de fondo (sin cambio): escáner de código de barras, conteo físico
   asistido, historial de precios, exportar movimientos a Excel, GA4.
 - Lección de sesión: los endpoints nuevos deben tener degradación elegante en el
