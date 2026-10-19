@@ -1,0 +1,11 @@
+[
+  {"tipo": "gasto", "fecha": "2026-10-15", "categoria": "Equipos", "monto": 200, "moneda": "USD", "descripcion": "Compra de teléfono"},
+  {"tipo": "gasto", "fecha": "2026-10-15", "categoria": "Gasolina", "monto": 2500, "moneda": "MXN", "descripcion": "Combustible y viáticos a Hermosillo"},
+  {"tipo": "gasto", "fecha": "2026-10-15", "categoria": "Materiales", "monto": 7093.63, "moneda": "MXN", "descripcion": "Compra de materiales"},
+  {"tipo": "gasto", "fecha": "2026-10-15", "categoria": "Materiales", "monto": 10700, "moneda": "MXN", "descripcion": "Compra de material"},
+  {"tipo": "gasto", "fecha": "2026-10-15", "categoria": "Nómina", "monto": 1500, "moneda": "MXN", "descripcion": "Pago de empleados"},
+  {"tipo": "ingreso", "fecha": "2026-10-15", "concepto": "Venta", "monto": 2800, "moneda": "MXN"},
+  {"tipo": "gasto", "fecha": "2026-10-15", "categoria": "Muestrario", "monto": 2500, "moneda": "MXN", "descripcion": "Compra de muestrario de cortinas"},
+  {"tipo": "gasto", "fecha": "2026-10-15", "categoria": "Alimentos", "monto": 200, "moneda": "MXN", "descripcion": "Chuchucos y Monster"},
+  {"tipo": "gasto", "fecha": "2026-10-15", "categoria": "Compra de inventario", "monto": 3900, "moneda": "MXN", "descripcion": "Pago de 6 placas PVC"}
+]

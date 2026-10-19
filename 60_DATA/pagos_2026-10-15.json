@@ -1,0 +1,10 @@
+[
+  {"tipo": "pago", "fecha": "2026-10-15", "gasto_folio": "GAS-2026-0011", "monto": 200, "moneda": "USD", "metodo": "Otro"},
+  {"tipo": "pago", "fecha": "2026-10-15", "gasto_folio": "GAS-2026-0012", "monto": 2500, "moneda": "MXN", "metodo": "Otro"},
+  {"tipo": "pago", "fecha": "2026-10-15", "gasto_folio": "GAS-2026-0013", "monto": 7093.63, "moneda": "MXN", "metodo": "Otro"},
+  {"tipo": "pago", "fecha": "2026-10-15", "gasto_folio": "GAS-2026-0014", "monto": 10700, "moneda": "MXN", "metodo": "Otro"},
+  {"tipo": "pago", "fecha": "2026-10-15", "gasto_folio": "GAS-2026-0015", "monto": 1500, "moneda": "MXN", "metodo": "Otro"},
+  {"tipo": "pago", "fecha": "2026-10-15", "gasto_folio": "GAS-2026-0016", "monto": 2500, "moneda": "MXN", "metodo": "Otro"},
+  {"tipo": "pago", "fecha": "2026-10-15", "gasto_folio": "GAS-2026-0017", "monto": 200, "moneda": "MXN", "metodo": "Otro"},
+  {"tipo": "pago", "fecha": "2026-10-15", "gasto_folio": "GAS-2026-0018", "monto": 3900, "moneda": "MXN", "metodo": "Otro"}
+]

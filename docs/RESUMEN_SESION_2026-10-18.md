@@ -133,8 +133,18 @@ conviene tenerla como sugerencia).
   (Insumos personales $350), ingreso ING-2026-0004 (Venta 15 lambrines cerezo
   macapa $2,240) + pagos PAG-0007..0010. Acumulado octubre: ingresos
   $21,975, gastos $12,086.19, flujo neto $9,888.81, por pagar $0.
+- ✅ **Cargado también el 15/10/2026** (8 gastos + 1 ingreso, todos pagados):
+  teléfono 200 USD (→$3,700 base), combustible/viáticos Hermosillo $2,500,
+  materiales $7,093.63 + $10,700, nómina $1,500, muestrario cortinas $2,500,
+  chuchucos $200, 6 placas PVC $3,900; ingreso venta $2,800 (ING-2026-0005).
+  GAS-0011..0018, PAG-0011..0018. Acumulado octubre: ingresos $24,775,
+  gastos $44,179.82, flujo neto **−$19,404.82** (el 15 fue día de compras
+  grandes de material). Por pagar $0.
+- ⚠️ **Sin datos del 09/10 al 14/10** — si hubo movimientos esos días, el dueño
+  los pasa después y se cargan con su fecha real (sin problema).
 - Categorías nuevas usadas que conviene agregar al catálogo tras el 2º redeploy:
-  Honorarios, Gastos personales, Compra de inventario, Alimentos.
+  Honorarios, Gastos personales, Compra de inventario, Alimentos, Materiales,
+  Equipos, Muestrario.
 - ⚠️ **Bug encontrado al probar el endpoint de categorías** (campo `tipo` usado
   como despachador y como clase → choque). Corregido a `clase` (backend +
   frontend + docs, commit `e3c8126`). **Requiere UN SEGUNDO REDEPLOY** (mismos
