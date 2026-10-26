@@ -6,9 +6,17 @@
    `ing.carlosurbona300@gmail.com`, proyecto con código, vía ✏️ Nueva versión).
    Verificado en vivo: bitácora, 18 categorías, gastos fijos (fechas exactas,
    sin corrimiento de día), "Ya lo pagué" (gasto+pago en un paso), log_cliente.
-2. **Pendiente del dueño (uso real)**: probar en producción un gasto con
-   "Sí, ya lo pagué" y programar sus gastos fijos reales (renta, internet...).
-   La Bitácora (Sistema → Bitácora) ya registra errores si algo falla.
+2. ~~Pendiente del dueño (uso real): probar en producción un gasto con
+   "Sí, ya lo pagué"~~ ✅ Probado por el asistente y por el dueño (GAS-0020
+   pagado $4,330 en vivo).
+3. ✅ **NUEVO (2026-10-25 tarde)**: el dueño pidió y quedó funcionando:
+   - "¿Ya lo pagaste?" ELIMINADO: todo gasto capturado queda PAGADO de
+     inmediato; lo no pagado va en Gastos fijos (programados).
+   - Botón **✏️ Editar** en gastos (gasto_editar) y en ingresos/cobros sin
+     venta (ingreso_editar). Verificado en vivo + protección monto>=pagado.
+   - Concepto de ingreso ahora es lista desplegable (igual que categoría de
+     gasto) con opción "✏️ Otra".
+   - Requiere redeploy hecho (el dueño ya lo hizo; verificado).
 3. Días **09–14 y 16–18 oct siguen sin datos** — cargarlos con el dueño usando
    los formularios del panel.
 
