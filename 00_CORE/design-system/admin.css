@@ -124,11 +124,15 @@
   .msg.ok { background:rgba(39,174,96,0.10); border:1px solid rgba(39,174,96,0.35); color:#1e7a46; }
   .msg.err { background:rgba(192,57,43,0.08); border:1px solid rgba(192,57,43,0.35); color:#c0392b; }
   /* Avisos flotantes: visibles desde cualquier punto del panel (antes quedaban
-     arriba de todo y se perdian si el usuario tenia el scroll abajo). */
-  #notice { position:fixed; top:14px; left:50%; transform:translateX(-50%); z-index:999;
+     arriba de todo y se perdian si el usuario tenia el scroll abajo). Fondo
+     SOLIDO y z-index altisimo: nada debe taparlos ni verse el texto detras. */
+  #notice { position:fixed; top:14px; left:50%; transform:translateX(-50%); z-index:100000;
     width:min(92%,540px); pointer-events:none; }
   #notice:empty { display:none; }
-  #notice .msg { margin-bottom:0; box-shadow:0 8px 28px rgba(0,0,0,0.35); }
+  #notice .msg { position:relative; margin-bottom:0; box-shadow:0 10px 30px rgba(0,0,0,0.4);
+    border-width:1px; border-style:solid; }
+  #notice .msg.ok { background:#e9f9ef; border-color:#27ae60; color:#1e7a46; }
+  #notice .msg.err { background:#fdf1ef; border-color:#c0392b; color:#c0392b; }
   .toolbar { display:flex; gap:0.6rem; align-items:center; flex-wrap:wrap; margin-bottom:1rem; }
   /* Cuadro de ayuda contextual: cada seccion explica para que sirve y como usarla.
      Componente reutilizable: <details class="helpbox"><summary>…</summary><p>…</p></details> */

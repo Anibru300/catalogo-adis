@@ -2,6 +2,7 @@
 function addIngreso(){
   const concepto=$('ingConcepto').value.trim(), monto=parseFloat($('ingMonto').value)||0;
   if (!concepto || !monto) { notice('Falta el concepto o el monto.', false); return; }
+  notice('⏳ Guardando ingreso…', true);
   apiPost({tipo:'ingreso', fecha:$('ingFecha').value, concepto,
     monto, moneda:$('ingMoneda').value, metodo:$('ingMetodo').value, notas:$('ingNotas').value.trim(),
     tipo_ingreso: $('ingTipo') ? $('ingTipo').value : 'venta'}).then(d=>{
@@ -75,6 +76,7 @@ function quitarCategoria(el){
 function addExpense(){
   const cat=$('gCategoria').value.trim(), monto=parseFloat($('gMonto').value)||0;
   if (!cat || !monto) { notice('Falta la categoría o el monto.', false); return; }
+  notice('⏳ Guardando gasto…', true);
   const yaPagado = $('gPagado') && $('gPagado').value==='si';
   const monedaG = $('gMoneda').value;
   apiPost({tipo:'gasto', fecha:$('gFecha').value, categoria:cat, descripcion:$('gDesc').value.trim(),
@@ -86,6 +88,7 @@ function addExpense(){
       return;
     }
     // "Ya lo pagué": gasto y pago registrados en un solo paso
+    notice('⏳ Registrando el pago…', true);
     apiPost({tipo:'gasto_pago', gasto_id:d.id, fecha:fLocal(), monto, moneda:monedaG,
       metodo:$('gMetodo')?$('gMetodo').value:'Transferencia', notas:''}).then(p=>{
       if (!(p&&p.ok)) logCliente('error','gasto_pago_auto', 'gasto '+(d.folio||'—')+' (id='+d.id+') sin pago: '+errMsg(p,'respuesta sin ok'));
@@ -160,6 +163,7 @@ function showPagoForm(gastoId){
 function savePago(gastoId){
   const monto = parseFloat($('pgMonto').value)||0;
   if (monto <= 0) { notice('El monto debe ser mayor que cero.', false); return; }
+  notice('⏳ Registrando pago…', true);
   apiPost({tipo:'gasto_pago', gasto_id:gastoId, fecha:$('pgFecha').value, monto,
     moneda:$('pgMoneda').value, metodo:$('pgMetodo').value, notas:$('pgNotas').value.trim()}).then(d=>{
     notice(d&&d.ok?('Pago '+(d.folio||'')+' registrado. Gasto ahora: '+d.estado_pago+'.'):errMsg(d), !!(d&&d.ok));
@@ -262,6 +266,7 @@ function addFijo(){
   const concepto=$('fConcepto').value.trim(), monto=parseFloat($('fMonto').value)||0;
   if (!concepto || !monto) { notice('Falta el concepto o el monto.', false); return; }
   if (!$('fProxima').value) { notice('Elige la fecha del próximo pago.', false); return; }
+  notice('⏳ Guardando gasto fijo…', true);
   apiPost({tipo:'gasto_fijo', accion:'agregar', concepto, categoria:$('fCategoria').value.trim(),
     monto, moneda:$('fMoneda').value, frecuencia:$('fFrecuencia').value,
     proxima_fecha:$('fProxima').value, notas:$('fNotas').value.trim()}).then(d=>{
@@ -279,6 +284,7 @@ function generarFijo(id, btn){
     setTimeout(()=>{ if (btn.isConnected){ btn.dataset.confirm=''; btn.textContent='Generar gasto'; } }, 3000);
     return;
   }
+  notice('⏳ Generando gasto…', true);
   apiPost({tipo:'gasto_fijo', accion:'generar', id}).then(d=>{
     notice(d&&d.ok
       ? '✅ Gasto '+(d.folio||'—')+' generado (quedó POR PAGAR). Próximo pago programado: '+d.proxima_fecha+'.'
