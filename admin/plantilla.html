@@ -509,7 +509,7 @@
         <h3 class="flow-h" style="margin-top:0;">➕ Ingreso recibido <span class="muted">(por default cuenta como venta del mes)</span></h3>
         <div class="row">
           <div><label>Fecha</label><input type="date" id="ingFecha"></div>
-          <div><label>Concepto *</label><input id="ingConcepto" list="ingCatList" placeholder="Venta de ..."><datalist id="ingCatList"></datalist></div>
+          <div><label>Concepto / Categoría *</label><select id="ingConcepto" onchange="editCategoriaCambiada_('ingConcepto','ingConceptoOtra')"></select><input id="ingConceptoOtra" placeholder="Escribe el concepto..." style="display:none;margin-top:0.4rem;"><datalist id="ingCatList"></datalist></div>
           <div><label>Tipo</label><select id="ingTipo"><option value="venta">Venta</option><option value="otro">Otro ingreso (reembolso, activo...)</option></select></div>
           <div><label>Monto *</label><div class="monto-wrap"><span class="monto-sign">$</span><input type="text" inputmode="decimal" class="monto" id="ingMonto" placeholder="0.00" oninput="mascaraMonto(this)"></div></div>
           <div><label>Moneda</label><select id="ingMoneda"><option value="MXN">MXN</option><option value="USD">USD</option></select></div>
@@ -533,8 +533,8 @@
       <h2 style="margin-top:1.5rem;">Cobros recientes</h2>
       <div class="card-box table-scroll">
         <table>
-          <thead><tr><th>Folio</th><th>Fecha</th><th>Venta</th><th>Cliente</th><th>Monto</th><th>Método</th></tr></thead>
-          <tbody id="cobrosTable"><tr><td colspan="6" class="muted">Cargando…</td></tr></tbody>
+          <thead><tr><th>Folio</th><th>Fecha</th><th>Venta</th><th>Cliente/Concepto</th><th>Monto</th><th>Método</th><th></th></tr></thead>
+          <tbody id="cobrosTable"><tr><td colspan="7" class="muted">Cargando…</td></tr></tbody>
         </table>
       </div>
     </section>
@@ -543,9 +543,9 @@
     <section id="tab-expenses" class="panel hidden">
       <div class="toolbar"><h2 style="margin:0;">Registrar gasto</h2></div>
       <details class="helpbox"><summary>¿Para qué sirve y cómo lo uso?</summary>
-        <p>Aquí anotas <b>todo lo que el negocio gasta</b> (renta, luz, gasolina, material, nómina...). Cada gasto recibe un folio <b>GAS-</b> automático.</p>
-        <p><b>¿Ya lo pagaste?</b> Selecciona <b>"Sí, ya lo pagué"</b> y el sistema registra el gasto <b>y el pago en un solo paso</b> (folio PAG-). Si aún no lo pagas, déjalo en "No": el gasto queda <b>por pagar</b> y cuando lo cubras vas a <b>Cuentas por pagar</b> y le das clic en <b>Pagar</b>.</p>
-        <p><b>Consejo:</b> la categoría la eliges de la lista (o escribes una nueva). En <b>Descripción</b> pon siempre algo que te recuerde qué fue (ej. "Recibo CFE local Nogales").</p>
+        <p>Aquí anotas <b>todo lo que el negocio gasta</b> (material, renta, luz, gasolina, nómina...). Cada gasto recibe un folio <b>GAS-</b> automático y <b>queda PAGADO de inmediato</b> — así tu caja siempre refleja el dinero real que salió.</p>
+        <p><b>Cómo usarlo:</b> elige la categoría de la lista (o "✏️ Otra" para escribir una nueva), escribe el monto (con comas automáticas), el método de pago y guarda. Si te equivocas en algo, usa el botón <b>✏️ Editar</b> de la tabla (los gastos cancelados no se pueden editar).</p>
+        <p><b>¿Y lo que aún NO pago?</b> Eso va en <b>Dinero → Gastos fijos (programados)</b>: ahí programas pagos futuros (semanal, quincenal, mensual...) y el sistema te avisa antes de que venzan.</p>
       </details>
       <div class="card-box">
         <div class="row">
@@ -553,7 +553,6 @@
           <div><label>Categoría *</label><select id="gCategoria" onchange="categoriaGastoCambiada()"></select><input id="gCategoriaOtra" placeholder="Escribe la categoría nueva..." style="display:none;margin-top:0.4rem;"><datalist id="gCatList"></datalist></div>
           <div><label>Monto *</label><div class="monto-wrap"><span class="monto-sign">$</span><input type="text" inputmode="decimal" class="monto" id="gMonto" placeholder="0.00" oninput="mascaraMonto(this)"></div></div>
           <div><label>Moneda</label><select id="gMoneda"><option value="MXN">MXN</option><option value="USD">USD</option></select></div>
-          <div><label>¿Ya lo pagaste?</label><select id="gPagado"><option value="no">No — quedará por pagar</option><option value="si">Sí, ya lo pagué (gasto y pago juntos)</option></select></div>
           <div><label>Método de pago</label><select id="gMetodo"><option>Transferencia</option><option>Efectivo</option><option>Tarjeta</option><option>Depósito</option><option>Otro</option></select></div>
         </div>
         <label>Descripción</label>

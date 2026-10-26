@@ -105,8 +105,9 @@ function loadCXC(){
     }).join('');
     $('cobrosTable').innerHTML = cobrosCache.length ? cobrosCache.map(c=>
       '<tr><td class="gold">'+esc(c.folio||'—')+'</td><td>'+esc(c.fecha)+'</td><td>'+esc(c.venta_folio||'—')+'</td>' +
-      '<td>'+esc(c.cliente||'—')+'</td><td class="gold">'+fmtMoney(c.monto)+' '+esc(c.moneda)+'</td><td>'+esc(c.metodo||'—')+'</td></tr>').join('')
-      : '<tr><td colspan="6" class="muted">Sin cobros registrados.</td></tr>';
+      '<td>'+esc(c.cliente||'—')+'</td><td class="gold">'+fmtMoney(c.monto)+' '+esc(c.moneda)+'</td><td>'+esc(c.metodo||'—')+'</td>' +
+      '<td style="white-space:nowrap;">'+(c.id && !c.venta_id ? '<button class="btn btn-sm" onclick="showIngresoEditForm(\''+c.id+'\')">✏️ Editar</button>' : '<span class="muted">venta</span>')+'</td></tr>').join('')
+      : '<tr><td colspan="7" class="muted">Sin cobros registrados.</td></tr>';
   }).catch(()=>{});
 }
 function showCobroForm(ventaId){

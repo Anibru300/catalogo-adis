@@ -1609,6 +1609,64 @@ function doPostInterno(data) {
     return json({ ok: true });
   });
 
+  // Edicion de un gasto capturado (categoria, monto, descripcion, fecha, moneda).
+  // No aplica a cancelados; el monto nunca puede quedar por debajo de lo pagado.
+  if (tipo === 'gasto_editar') return conLock(function () {
+    var filaE = filaPorId(SHEET_EXPENSES, data.id);
+    if (!filaE) throw AdisError('NO_ENCONTRADO', 'Gasto no encontrado.');
+    var hE = ss().getSheetByName(SHEET_EXPENSES);
+    if (String(hE.getRange(filaE, 11).getValue()) === 'CANCELADA') throw AdisError('NO_PERMITIDO', 'El gasto está cancelado; no puede editarse.');
+    var categoriaE = String(data.categoria || '').trim();
+    if (!categoriaE) throw AdisError('VALIDACION', 'El gasto necesita una categoría.');
+    var montoE = Number(data.monto);
+    if (!isFinite(montoE) || montoE <= 0) throw AdisError('VALIDACION', 'El monto debe ser mayor que cero.');
+    var monedaE = validarMoneda(data.moneda || hE.getRange(filaE, 5).getValue() || 'MXN');
+    var fechaE = validarFecha(data.fecha) || String(hE.getRange(filaE, 1).getValue());
+    var tcE = Number(cfg('tipo_cambio', '18.5')) || 1;
+    var pagadoBaseE = 0;
+    filasComoObjetos(SHEET_PAGOS).forEach(function (p) {
+      if (String(p.gasto_id) === String(data.id)) pagadoBaseE += Number(p.monto_base) || 0;
+    });
+    var montoBaseE = aBase(montoE, monedaE, tcE);
+    if (pagadoBaseE > montoBaseE + 0.001) {
+      throw AdisError('VALIDACION', 'El monto no puede ser menor a lo ya pagado (' + pagadoBaseE.toFixed(2) + ' ' + cfg('moneda_base', 'MXN') + ').');
+    }
+    hE.getRange(filaE, 1).setValue(fechaE);
+    hE.getRange(filaE, 2).setValue(categoriaE);
+    hE.getRange(filaE, 3).setValue(String(data.descripcion || '').slice(0, 300));
+    hE.getRange(filaE, 4).setValue(montoE);
+    hE.getRange(filaE, 5).setValue(monedaE);
+    hE.getRange(filaE, 6).setValue(tcE);
+    hE.getRange(filaE, 7).setValue(montoBaseE);
+    log_('gasto_editado', String(hE.getRange(filaE, 10).getValue()) + ' · ' + categoriaE + ' · ' + montoE + ' ' + monedaE);
+    return json({ ok: true });
+  });
+
+  // Edicion de un ingreso capturado a mano (sin venta ligada).
+  if (tipo === 'ingreso_editar') return conLock(function () {
+    var filaI = filaPorId(SHEET_COBROS, data.id);
+    if (!filaI) throw AdisError('NO_ENCONTRADO', 'Ingreso no encontrado.');
+    var hI = ss().getSheetByName(SHEET_COBROS);
+    if (String(hI.getRange(filaI, 3).getValue())) throw AdisError('NO_PERMITIDO', 'Este cobro pertenece a una venta; no puede editarse aquí.');
+    var conceptoI = String(data.concepto || '').trim();
+    if (!conceptoI) throw AdisError('VALIDACION', 'El ingreso necesita un concepto.');
+    var montoI = Number(data.monto);
+    if (!isFinite(montoI) || montoI <= 0) throw AdisError('VALIDACION', 'El monto debe ser mayor que cero.');
+    var monedaI = validarMoneda(data.moneda || hI.getRange(filaI, 9).getValue() || 'MXN');
+    var fechaI = validarFecha(data.fecha) || String(hI.getRange(filaI, 7).getValue());
+    var tcI = Number(cfg('tipo_cambio', '18.5')) || 1;
+    hI.getRange(filaI, 5).setValue(conceptoI);
+    hI.getRange(filaI, 7).setValue(fechaI);
+    hI.getRange(filaI, 8).setValue(montoI);
+    hI.getRange(filaI, 9).setValue(monedaI);
+    hI.getRange(filaI, 10).setValue(aBase(montoI, monedaI, tcI));
+    hI.getRange(filaI, 11).setValue(data.metodo || '');
+    hI.getRange(filaI, 12).setValue(String(data.notas || '').slice(0, 300));
+    hI.getRange(filaI, 14).setValue(String(data.tipo_ingreso || 'venta') === 'otro' ? 'otro' : 'venta');
+    log_('ingreso_editado', String(hI.getRange(filaI, 2).getValue()) + ' · ' + conceptoI + ' · ' + montoI + ' ' + monedaI);
+    return json({ ok: true });
+  });
+
   /* ---------- Gastos fijos (programados: renta, internet, nómina...) ----------
      Se repiten semanal/quincenal/mensual/anual. El panel alerta los vencimientos
      (calculo 100% cliente, sin triggers). "generar" crea un gasto GAS- normal

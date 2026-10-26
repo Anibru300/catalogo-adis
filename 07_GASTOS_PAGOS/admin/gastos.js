@@ -13,8 +13,10 @@ function fmtNum_(n){ return (Number(n)||0).toLocaleString('en-US',{maximumFracti
 
 /* ----- otros ingresos (reembolsos, venta de activos...) ----- */
 function addIngreso(){
-  const concepto=$('ingConcepto').value.trim(), monto=leerMonto('ingMonto');
-  if (!concepto || !monto) { notice('Falta el concepto o el monto.', false); return; }
+  let concepto = $('ingConcepto') ? $('ingConcepto').value : '';
+  if (concepto==='__otra__') concepto = $('ingConceptoOtra').value.trim();
+  const monto=leerMonto('ingMonto');
+  if (!concepto || !monto) { notice(concepto?'Falta el monto.':'Elige el concepto (o escribe uno nuevo).', false); return; }
   notice('⏳ Guardando ingreso…', true);
   apiPost({tipo:'ingreso', fecha:$('ingFecha').value, concepto,
     monto, moneda:$('ingMoneda').value, metodo:$('ingMetodo').value, notas:$('ingNotas').value.trim(),
@@ -22,7 +24,10 @@ function addIngreso(){
     notice(d&&d.ok
       ? '✅ Ingreso correcto — folio '+(d.folio||'—')+' · '+fmtMoney(monto)+' '+$('ingMoneda').value+'. Ya está en tus Ventas del mes.'
       : errMsg(d,'No se pudo guardar.'), !!(d&&d.ok));
-    if(d&&d.ok){ $('ingMonto').value=''; $('ingNotas').value=''; loadCXC(); }
+    if(d&&d.ok){ $('ingMonto').value=''; $('ingNotas').value='';
+      if ($('ingConcepto')) $('ingConcepto').selectedIndex=0;
+      if ($('ingConceptoOtra')) { $('ingConceptoOtra').value=''; $('ingConceptoOtra').style.display='none'; }
+      loadCXC(); }
   }).catch(()=>notice('Error de conexión. Revisa tu internet e intenta de nuevo.', false));
 }
 
@@ -46,6 +51,12 @@ function poblarCategorias(){
     $('gCategoria').innerHTML = cg.map(c=>'<option value="'+esc(c)+'">'+esc(c)+'</option>').join('') +
       '<option value="__otra__">✏️ Otra (escribir...)</option>';
     if (prev && (cg.indexOf(prev)!==-1 || prev==='__otra__')) $('gCategoria').value = prev;
+  }
+  if ($('ingConcepto')) { // mismo formato: lista desplegable + 'Otra'
+    const prevI = $('ingConcepto').value;
+    $('ingConcepto').innerHTML = ci.map(c=>'<option value="'+esc(c)+'">'+esc(c)+'</option>').join('') +
+      '<option value="__otra__">✏️ Otra (escribir...)</option>';
+    if (prevI === '__otra__') $('ingConcepto').value = '__otra__';
   }
   if ($('gCatList')) $('gCatList').innerHTML = cg.map(c=>'<option value="'+esc(c)+'"></option>').join('');
   if ($('ingCatList')) $('ingCatList').innerHTML = ci.map(c=>'<option value="'+esc(c)+'"></option>').join('');
@@ -116,35 +127,31 @@ function addExpense(){
     poblarCategorias();
   }
   notice('⏳ Guardando gasto…', true);
-  const yaPagado = $('gPagado') && $('gPagado').value==='si';
   const monedaG = $('gMoneda').value;
   apiPost({tipo:'gasto', fecha:$('gFecha').value, categoria:cat, descripcion:$('gDesc').value.trim(),
     monto, moneda:monedaG}).then(d=>{
     if (!(d&&d.ok)) { notice(errMsg(d,'No se pudo guardar.'), false); logCliente('error','gasto', errMsg(d,'respuesta sin ok')+' | categoria='+cat+' monto='+monto); return; }
-    if (!yaPagado) {
-      notice('✅ Gasto correcto — folio '+(d.folio||'—')+' · '+fmtMoney(monto)+' '+monedaG+'. Quedó POR PAGAR: cuando lo cubras, ve a "Cuentas por pagar" y dale clic en Pagar.', true);
-      limpiarFormGasto(); loadBiz();
-      return;
-    }
-    // "Ya lo pagué": gasto y pago registrados en un solo paso
+    // Regla del negocio: todo gasto capturado queda PAGADO de inmediato.
+    // Lo pendiente de pago se maneja en Gastos fijos (programados).
     notice('⏳ Registrando el pago…', true);
     apiPost({tipo:'gasto_pago', gasto_id:d.id, fecha:fLocal(), monto, moneda:monedaG,
       metodo:$('gMetodo')?$('gMetodo').value:'Transferencia', notas:''}).then(p=>{
-      if (!(p&&p.ok)) logCliente('error','gasto_pago_auto', 'gasto '+(d.folio||'—')+' (id='+d.id+') sin pago: '+errMsg(p,'respuesta sin ok'));
       notice(p&&p.ok
-        ? '✅ Gasto y pago registrados — '+(d.folio||'—')+' · '+(p.folio||'—')+' · '+fmtMoney(monto)+' '+monedaG+'. Gasto PAGADA.'
+        ? '✅ Gasto y pago registrados — '+(d.folio||'—')+' · '+(p.folio||'—')+' · '+fmtMoney(monto)+' '+monedaG+'.'
         : '⚠️ El gasto '+(d.folio||'—')+' se guardó, pero el PAGO falló: ve a "Cuentas por pagar" y dale clic en Pagar.',
         !!(p&&p.ok));
-      limpiarFormGasto(); if ($('gPagado')) $('gPagado').value='no'; loadBiz();
+      limpiarFormGasto(); loadBiz();
     }).catch(()=>{
       notice('⚠️ El gasto '+(d.folio||'—')+' se guardó, pero el PAGO no pudo registrarse (conexión). Ve a "Cuentas por pagar" y dale clic en Pagar.', false);
       logCliente('error','gasto_pago_auto', 'gasto '+(d.folio||'—')+' (id='+d.id+') sin pago: error de conexion');
-      limpiarFormGasto(); if ($('gPagado')) $('gPagado').value='no'; loadBiz();
+      limpiarFormGasto(); loadBiz();
     });
   }).catch(()=>{ notice('Error de conexión. Revisa tu internet e intenta de nuevo.', false); logCliente('error','gasto_red', 'sin respuesta del servidor | categoria='+cat+' monto='+monto); });
 }
 // FASE 5: gasto != pago. Cada gasto lleva folio GAS-, estado (ACTIVA/CANCELADA) y pagos parciales.
+let gastosCache = [];
 function renderExpenses(list){
+  gastosCache = list || [];
   if (!list.length) { $('expTable').innerHTML='<tr><td colspan="9" class="muted">Sin gastos registrados.</td></tr>'; return; }
   $('expTable').innerHTML = list.slice().reverse().map(g=>{
     const est = g.estado || 'ACTIVA';
@@ -154,6 +161,7 @@ function renderExpenses(list){
     const colE = cancelada ? '#9a9a9a' : '#e8b96a';
     const acciones = g.id && !cancelada
       ? (saldo>0.001 ? '<button class="btn btn-sm" onclick="showPagoForm(\''+g.id+'\')">Pagar</button> ' : '') +
+        '<button class="btn btn-sm" onclick="showGastoEditForm(\''+g.id+'\')">✏️ Editar</button> ' +
         '<button class="btn btn-danger btn-sm" onclick="cancelarGasto(\''+g.id+'\', this)">Cancelar</button>'
       : (cancelada ? '<span class="muted">cancelado</span>' : '');
     return '<tr><td class="gold">'+esc(g.folio||'—')+'</td><td>'+esc(g.fecha)+'</td><td>'+esc(g.categoria)+'</td><td>'+esc(g.descripcion)+'</td>' +
@@ -344,5 +352,95 @@ function quitarFijo(id, btn){
   apiPost({tipo:'gasto_fijo', accion:'quitar', id}).then(d=>{
     notice(d&&d.ok?'Gasto fijo cancelado (se conserva en el historial).':errMsg(d), !!(d&&d.ok));
     if(d&&d.ok) loadFijos();
+  }).catch(()=>notice('Error de conexión. Intenta de nuevo.', false));
+}
+
+
+/* ----- edicion de gasto e ingreso capturados ----- */
+function opcionesCategoria_(lista, actual) {
+  const cats = lista.concat(['__otra__']);
+  return cats.map(c => c==='__otra__'
+    ? '<option value="__otra__">✏️ Otra (escribir...)</option>'
+    : '<option value="'+esc(c)+'"'+(c===actual?' selected':'')+'>'+esc(c)+'</option>').join('');
+}
+function categoriasGastoActual_(){
+  const unir = (base, cfgList) => {
+    const out = base.slice(), vistos = base.map(c=>c.toLowerCase());
+    ((cfgList)||[]).forEach(c=>{ const x=String(c).trim(); if (x && vistos.indexOf(x.toLowerCase())===-1){ vistos.push(x.toLowerCase()); out.push(x); } });
+    return out;
+  };
+  return unir(CAT_GASTOS_FALLBACK, biz.config && biz.config.categorias_gastos);
+}
+function categoriasIngresoActual_(){
+  const unir = (base, cfgList) => {
+    const out = base.slice(), vistos = base.map(c=>c.toLowerCase());
+    ((cfgList)||[]).forEach(c=>{ const x=String(c).trim(); if (x && vistos.indexOf(x.toLowerCase())===-1){ vistos.push(x.toLowerCase()); out.push(x); } });
+    return out;
+  };
+  return unir(CAT_INGRESOS_FALLBACK, biz.config && biz.config.categorias_ingresos);
+}
+function editCategoriaCambiada_(selId, otraId){
+  const sel=$(selId), otra=$(otraId);
+  if (!sel||!otra) return;
+  const esOtra = sel.value==='__otra__';
+  otra.style.display = esOtra ? '' : 'none';
+  if (esOtra) otra.focus();
+}
+function showGastoEditForm(id){
+  const g = gastosCache.filter(x=>String(x.id)===String(id))[0];
+  if (!g) { notice('Recarga la pestaña para editar este gasto.', false); return; }
+  const cats = categoriasGastoActual_();
+  $('pagoForms').innerHTML = '<div class="card-box"><p style="margin-bottom:0.5rem;"><strong>✏️ Editar gasto — '+esc(g.folio||'—')+'</strong></p><div class="row">' +
+    '<div><label>Fecha</label><input type="date" id="geFecha" value="'+esc(String(g.fecha||'').slice(0,10))+'"></div>' +
+    '<div><label>Categoría *</label><select id="geCategoria" onchange="editCategoriaCambiada_(\'geCategoria\',\'geCategoriaOtra\')">'+opcionesCategoria_(cats, g.categoria)+'</select>' +
+      '<input id="geCategoriaOtra" placeholder="Escribe la categoría..." value="'+esc(cats.indexOf(g.categoria)===-1?g.categoria:'')+'" style="display:'+(cats.indexOf(g.categoria)===-1?'':'none')+';margin-top:0.4rem;"></div>' +
+    '<div><label>Monto *</label><div class="monto-wrap"><span class="monto-sign">$</span><input type="text" inputmode="decimal" class="monto" id="geMonto" value="'+fmtNum_(g.monto)+'" oninput="mascaraMonto(this)"></div></div>' +
+    '<div><label>Moneda</label><select id="geMoneda"><option value="MXN"'+(g.moneda==='MXN'?' selected':'')+'>MXN</option><option value="USD"'+(g.moneda==='USD'?' selected':'')+'>USD</option></select></div>' +
+    '</div><label>Descripción</label><input id="geDesc" value="'+esc(g.descripcion||'')+'">' +
+    '<div class="toolbar" style="margin-top:1rem;"><button class="btn btn-solid btn-sm" onclick="saveGastoEdit(\''+g.id+'\')">💾 Guardar cambios</button> ' +
+    '<button class="btn btn-sm" onclick="$(\'pagoForms\').innerHTML=\'\'">Cerrar</button></div></div>';
+  $('pagoForms').scrollIntoView({behavior:'smooth', block:'nearest'});
+}
+function saveGastoEdit(id){
+  let cat = $('geCategoria').value;
+  if (cat==='__otra__') cat = $('geCategoriaOtra').value.trim();
+  const monto = leerMonto('geMonto');
+  if (!cat || !monto) { notice(cat?'Falta el monto.':'Elige la categoría.', false); return; }
+  notice('⏳ Guardando cambios…', true);
+  apiPost({tipo:'gasto_editar', id, fecha:$('geFecha').value, categoria:cat,
+    descripcion:$('geDesc').value.trim(), monto, moneda:$('geMoneda').value}).then(d=>{
+    notice(d&&d.ok?('✅ Gasto actualizado — '+cat+' · '+fmtMoney(monto)+' '+$('geMoneda').value+'.'):errMsg(d,'No se pudo editar.'), !!(d&&d.ok));
+    if(d&&d.ok){ $('pagoForms').innerHTML=''; loadBiz(); }
+  }).catch(()=>notice('Error de conexión. Intenta de nuevo.', false));
+}
+function showIngresoEditForm(id){
+  const c = (typeof cobrosCache!=='undefined' ? cobrosCache : []).filter(x=>String(x.id)===String(id))[0];
+  if (!c) { notice('Recarga la pestaña para editar este ingreso.', false); return; }
+  const cats = categoriasIngresoActual_();
+  const concepto = c.cliente || '';
+  $('cobForms').innerHTML = '<div class="card-box"><p style="margin-bottom:0.5rem;"><strong>✏️ Editar ingreso — '+esc(c.folio||'—')+'</strong></p><div class="row">' +
+    '<div><label>Fecha</label><input type="date" id="ieFecha" value="'+esc(String(c.fecha||'').slice(0,10))+'"></div>' +
+    '<div><label>Concepto / Categoría *</label><select id="ieConcepto" onchange="editCategoriaCambiada_(\'ieConcepto\',\'ieConceptoOtra\')">'+opcionesCategoria_(cats, concepto)+'</select>' +
+      '<input id="ieConceptoOtra" placeholder="Escribe el concepto..." value="'+esc(cats.indexOf(concepto)===-1?concepto:'')+'" style="display:'+(cats.indexOf(concepto)===-1?'':'none')+';margin-top:0.4rem;"></div>' +
+    '<div><label>Monto *</label><div class="monto-wrap"><span class="monto-sign">$</span><input type="text" inputmode="decimal" class="monto" id="ieMonto" value="'+fmtNum_(c.monto)+'" oninput="mascaraMonto(this)"></div></div>' +
+    '<div><label>Moneda</label><select id="ieMoneda"><option value="MXN"'+(c.moneda==='MXN'?' selected':'')+'>MXN</option><option value="USD"'+(c.moneda==='USD'?' selected':'')+'>USD</option></select></div>' +
+    '<div><label>Método</label><select id="ieMetodo">'+['Efectivo','Transferencia','Tarjeta','Depósito','Otro'].map(m=>'<option'+(c.metodo===m?' selected':'')+'>'+m+'</option>').join('')+'</select></div>' +
+    '<div><label>Tipo</label><select id="ieTipo"><option value="venta"'+(String(c.tipo)!=='otro'?' selected':'')+'>Venta</option><option value="otro"'+(String(c.tipo)==='otro'?' selected':'')+'>Otro ingreso</option></select></div>' +
+    '</div><label>Notas</label><input id="ieNotas" value="'+esc(c.notas||'')+'">' +
+    '<div class="toolbar" style="margin-top:1rem;"><button class="btn btn-solid btn-sm" onclick="saveIngresoEdit(\''+c.id+'\')">💾 Guardar cambios</button> ' +
+    '<button class="btn btn-sm" onclick="$(\'cobForms\').innerHTML=\'\'">Cerrar</button></div></div>';
+  $('cobForms').scrollIntoView({behavior:'smooth', block:'nearest'});
+}
+function saveIngresoEdit(id){
+  let concepto = $('ieConcepto').value;
+  if (concepto==='__otra__') concepto = $('ieConceptoOtra').value.trim();
+  const monto = leerMonto('ieMonto');
+  if (!concepto || !monto) { notice(concepto?'Falta el monto.':'Elige el concepto.', false); return; }
+  notice('⏳ Guardando cambios…', true);
+  apiPost({tipo:'ingreso_editar', id, fecha:$('ieFecha').value, concepto, monto,
+    moneda:$('ieMoneda').value, metodo:$('ieMetodo').value, notas:$('ieNotas').value.trim(),
+    tipo_ingreso:$('ieTipo').value}).then(d=>{
+    notice(d&&d.ok?('✅ Ingreso actualizado — '+concepto+' · '+fmtMoney(monto)+' '+$('ieMoneda').value+'.'):errMsg(d,'No se pudo editar.'), !!(d&&d.ok));
+    if(d&&d.ok){ $('cobForms').innerHTML=''; loadCXC(); }
   }).catch(()=>notice('Error de conexión. Intenta de nuevo.', false));
 }
