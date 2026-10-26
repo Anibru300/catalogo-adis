@@ -502,7 +502,7 @@ function calcularEstadoResultados(mes, proyFiltro) {
       return enRango(g.fecha) && String(g.estado) !== 'CANCELADA';
     });
   }
-  var ingresosExtra = 0, numIngresosExtra = 0, numVentasExtra = 0;
+  var ingresosExtra = 0, numIngresosExtra = 0, ventasExtra = 0, numVentasExtra = 0;
   if (!proyFiltro) { // cobros sin venta: por default son VENTAS (dinero de
     // productos/servicios); solo cuentan como "otros ingresos" los que se
     // marcaron explicitamente tipo='otro' (reembolsos, venta de activos).
@@ -513,11 +513,12 @@ function calcularEstadoResultados(mes, proyFiltro) {
         ingresosExtra += Number(c.monto_base) || 0;
         numIngresosExtra++;
       } else {
+        ventasExtra += Number(c.monto_base) || 0; // BUG 2026-10-25: faltaba sumar el monto
         numVentasExtra++;
       }
     });
   }
-  var ingresos = ingresosExtra, costos = 0;
+  var ingresos = ingresosExtra + ventasExtra, costos = 0;
   ventas.forEach(function (v) { ingresos += Number(v.total_base) || 0; costos += Number(v.costo_total_base) || 0; });
   var porCategoria = {};
   var totalGastos = 0;
