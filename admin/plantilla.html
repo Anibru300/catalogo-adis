@@ -649,6 +649,15 @@
       </div>
       <div id="estNativo">
         <div class="pnl-cards" id="estKpis"></div>
+        <div class="card-box" style="margin:1rem 0;">
+          <div class="row" style="margin:0;align-items:flex-end;">
+            <div><label>📅 Meses a comparar</label><select id="estFMeses" onchange="estFiltroCambiado('meses')" style="width:auto;"><option value="3">Últimos 3 meses</option><option value="6">Últimos 6 meses</option><option value="12" selected>Últimos 12 meses</option></select></div>
+            <div><label>🗓️ Mes del desglose de gastos</label><input type="month" id="estFMes" onchange="estFiltroCambiado('mes')" style="width:auto;"></div>
+            <div><label>🏷️ Categorías a mostrar</label><select id="estFTop" onchange="estFiltroCambiado('top')" style="width:auto;"><option value="5">Top 5</option><option value="8" selected>Top 8</option><option value="15">Top 15</option><option value="999">Todas</option></select></div>
+            <div><label>💧 Flujo de caja</label><select id="estFFlujo" onchange="estFiltroCambiado('flujoDias')" style="width:auto;"><option value="7">Últimos 7 días</option><option value="14">Últimos 14 días</option><option value="30" selected>Últimos 30 días</option><option value="60">Últimos 60 días</option></select></div>
+          </div>
+          <p class="muted" style="margin:0.5rem 0 0;font-size:0.75rem;">Los filtros se aplican al instante; solo cambia lo que necesites.</p>
+        </div>
         <div class="flow-grid" style="margin-top:1rem;">
           <div class="card-box" style="grid-column:1/-1;">
             <h3 class="flow-h">📈 Ingresos, gastos y utilidad por mes</h3>
