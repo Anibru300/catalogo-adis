@@ -20,7 +20,7 @@ function addIngreso(){
   notice('⏳ Guardando ingreso…', true);
   apiPost({tipo:'ingreso', fecha:$('ingFecha').value, concepto,
     monto, moneda:$('ingMoneda').value, metodo:$('ingMetodo').value, notas:$('ingNotas').value.trim(),
-    tipo_ingreso: $('ingTipo') ? $('ingTipo').value : 'venta'}).then(d=>{
+    tipo_ingreso: 'venta'}).then(d=>{
     notice(d&&d.ok
       ? '✅ Ingreso correcto — folio '+(d.folio||'—')+' · '+fmtMoney(monto)+' '+$('ingMoneda').value+'. Ya está en tus Ventas del mes.'
       : errMsg(d,'No se pudo guardar.'), !!(d&&d.ok));
@@ -425,7 +425,6 @@ function showIngresoEditForm(id){
     '<div><label>Monto *</label><div class="monto-wrap"><span class="monto-sign">$</span><input type="text" inputmode="decimal" class="monto" id="ieMonto" value="'+fmtNum_(c.monto)+'" oninput="mascaraMonto(this)"></div></div>' +
     '<div><label>Moneda</label><select id="ieMoneda"><option value="MXN"'+(c.moneda==='MXN'?' selected':'')+'>MXN</option><option value="USD"'+(c.moneda==='USD'?' selected':'')+'>USD</option></select></div>' +
     '<div><label>Método</label><select id="ieMetodo">'+['Efectivo','Transferencia','Tarjeta','Depósito','Otro'].map(m=>'<option'+(c.metodo===m?' selected':'')+'>'+m+'</option>').join('')+'</select></div>' +
-    '<div><label>Tipo</label><select id="ieTipo"><option value="venta"'+(String(c.tipo)!=='otro'?' selected':'')+'>Venta</option><option value="otro"'+(String(c.tipo)==='otro'?' selected':'')+'>Otro ingreso</option></select></div>' +
     '</div><label>Notas</label><input id="ieNotas" value="'+esc(c.notas||'')+'">' +
     '<div class="toolbar" style="margin-top:1rem;"><button class="btn btn-solid btn-sm" onclick="saveIngresoEdit(\''+c.id+'\')">💾 Guardar cambios</button> ' +
     '<button class="btn btn-sm" onclick="$(\'cobForms\').innerHTML=\'\'">Cerrar</button></div></div>';
@@ -436,10 +435,11 @@ function saveIngresoEdit(id){
   if (concepto==='__otra__') concepto = $('ieConceptoOtra').value.trim();
   const monto = leerMonto('ieMonto');
   if (!concepto || !monto) { notice(concepto?'Falta el monto.':'Elige el concepto.', false); return; }
+  const cEx = (typeof cobrosCache!=='undefined' ? cobrosCache : []).filter(x=>String(x.id)===String(id))[0];
   notice('⏳ Guardando cambios…', true);
   apiPost({tipo:'ingreso_editar', id, fecha:$('ieFecha').value, concepto, monto,
     moneda:$('ieMoneda').value, metodo:$('ieMetodo').value, notas:$('ieNotas').value.trim(),
-    tipo_ingreso:$('ieTipo').value}).then(d=>{
+    tipo_ingreso: cEx && String(cEx.tipo)==='otro' ? 'otro' : 'venta'}).then(d=>{
     notice(d&&d.ok?('✅ Ingreso actualizado — '+concepto+' · '+fmtMoney(monto)+' '+$('ieMoneda').value+'.'):errMsg(d,'No se pudo editar.'), !!(d&&d.ok));
     if(d&&d.ok){ $('cobForms').innerHTML=''; loadCXC(); }
   }).catch(()=>notice('Error de conexión. Intenta de nuevo.', false));
