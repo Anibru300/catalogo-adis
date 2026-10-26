@@ -200,11 +200,13 @@ function validarFecha(f) {
 }
 // Normaliza un valor de celda que puede venir como Date (Sheets convierte las
 // fechas al guardarlas) o como texto, a 'yyyy-MM-dd'. Vacio si no es fecha util.
+// Usa la zona horaria DE LA HOJA (no asumir Hermosillo: la hoja del dueño
+// tiene otra tz y formatear con la incorrecta mueve las fechas un dia).
 function fechaISO_(v) {
   if (!v) return '';
   if (Object.prototype.toString.call(v) === '[object Date]') {
     if (isNaN(v.getTime())) return '';
-    return Utilities.formatDate(v, 'America/Hermosillo', 'yyyy-MM-dd');
+    return Utilities.formatDate(v, ss().getSpreadsheetTimeZone(), 'yyyy-MM-dd');
   }
   var s = String(v).trim();
   return /^\d{4}-\d{2}-\d{2}/.test(s) ? s.slice(0, 10) : '';
@@ -1661,8 +1663,16 @@ function doPostInterno(data) {
         '(Gasto fijo) ' + conceptoGf, montoGf, monedaGf, tcGf,
         aBase(montoGf, monedaGf, tcGf), nuevoId(), USUARIO_ACTUAL, folioGf, 'ACTIVA', 0]);
       var siguienteGf = siguienteOcurrencia(proximaGf, frecGf);
-      hF.getRange(filaGf, 7).setValue(siguienteGf);   // proxima_fecha
-      hF.getRange(filaGf, 10).setValue(folioGf);      // gasto_folio_ultimo
+      // Si la proxima fecha aun es futura (generaron antes de la fecha), la
+      // ocurrencia generada ES esa: programar la SIGUIENTE para no duplicarla.
+      if (siguienteGf === proximaGf) {
+        var dPaso = parseF(proximaGf);
+        unPaso(dPaso, frecGf);
+        siguienteGf = Utilities.formatDate(dPaso, TZ, 'yyyy-MM-dd');
+      }
+      // guardar como TEXTO (formato '@') para que Sheets no la convierta a Date
+      hF.getRange(filaGf, 7).setNumberFormat('@').setValue(siguienteGf);   // proxima_fecha
+      hF.getRange(filaGf, 10).setValue(folioGf);                           // gasto_folio_ultimo
       log_('gasto_fijo_generado', folioGf + ' · ' + conceptoGf + ' · próximo ' + siguienteGf);
       return json({ ok: true, folio: folioGf, proxima_fecha: siguienteGf });
     }
@@ -1678,6 +1688,9 @@ function doPostInterno(data) {
     hF.appendRow([nuevoId(), conceptoF, String(data.categoria || '').trim() || 'Gastos fijos',
       montoF, validarMoneda(data.moneda || cfg('moneda_base', 'MXN')), frecF, proximaF,
       data.notas || '', 'ACTIVA', '', hoy_()]);
+    // la fecha debe quedar como TEXTO: si Sheets la convierte a Date, al leerla
+    // con otra zona horaria se mueve un dia (bug 2026-10-31 vs 2026-11-01)
+    hF.getRange(hF.getLastRow(), 7).setNumberFormat('@').setValue(proximaF);
     log_('gasto_fijo_agregado', conceptoF + ' · ' + montoF + ' · ' + frecF + ' · próximo ' + proximaF);
     return json({ ok: true, proxima_fecha: proximaF });
   });
