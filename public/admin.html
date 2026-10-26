@@ -891,7 +891,7 @@
       <div class="card-box">
         <div class="row">
           <div><label>Fecha</label><input type="date" id="gFecha"></div>
-          <div><label>Categoría *</label><input id="gCategoria" list="gCatList" placeholder="Renta, Luz, Nómina..."><datalist id="gCatList"></datalist></div>
+          <div><label>Categoría *</label><select id="gCategoria" onchange="categoriaGastoCambiada()"></select><input id="gCategoriaOtra" placeholder="Escribe la categoría nueva..." style="display:none;margin-top:0.4rem;"><datalist id="gCatList"></datalist></div>
           <div><label>Monto *</label><input type="number" id="gMonto" min="0" step="0.01" placeholder="0.00"></div>
           <div><label>Moneda</label><select id="gMoneda"><option value="MXN">MXN</option><option value="USD">USD</option></select></div>
           <div><label>¿Ya lo pagaste?</label><select id="gPagado"><option value="no">No — quedará por pagar</option><option value="si">Sí, ya lo pagué (gasto y pago juntos)</option></select></div>
@@ -3840,8 +3840,22 @@ function poblarCategorias(){
   };
   const cg = unir(CAT_GASTOS_FALLBACK, biz.config && biz.config.categorias_gastos);
   const ci = unir(CAT_INGRESOS_FALLBACK, biz.config && biz.config.categorias_ingresos);
+  if ($('gCategoria')) { // select desplegable (el datalist no se abre igual en todos los navegadores)
+    const prev = $('gCategoria').value;
+    $('gCategoria').innerHTML = cg.map(c=>'<option value="'+esc(c)+'">'+esc(c)+'</option>').join('') +
+      '<option value="__otra__">✏️ Otra (escribir...)</option>';
+    if (prev && (cg.indexOf(prev)!==-1 || prev==='__otra__')) $('gCategoria').value = prev;
+  }
   if ($('gCatList')) $('gCatList').innerHTML = cg.map(c=>'<option value="'+esc(c)+'"></option>').join('');
   if ($('ingCatList')) $('ingCatList').innerHTML = ci.map(c=>'<option value="'+esc(c)+'"></option>').join('');
+}
+// "Otra" en el select de categoria: muestra el campo para escribirla
+function categoriaGastoCambiada(){
+  const sel=$('gCategoria'), otra=$('gCategoriaOtra');
+  if (!sel || !otra) return;
+  const esOtra = sel.value==='__otra__';
+  otra.style.display = esOtra ? '' : 'none';
+  if (esOtra) otra.focus();
 }
 function pintarCategoriasConfig(){
   const box = (id, tipo, lista) => {
@@ -3885,9 +3899,21 @@ function quitarCategoria(el){
 }
 
 /* ----- gastos ----- */
+function limpiarFormGasto(){
+  $('gMonto').value=''; $('gDesc').value=''; $('gCategoriaOtra').value='';
+  if ($('gCategoria')) $('gCategoria').selectedIndex = 0;
+  categoriaGastoCambiada();
+}
 function addExpense(){
-  const cat=$('gCategoria').value.trim(), monto=parseFloat($('gMonto').value)||0;
-  if (!cat || !monto) { notice('Falta la categoría o el monto.', false); return; }
+  let cat = $('gCategoria') ? $('gCategoria').value : '';
+  if (cat==='__otra__') cat = $('gCategoriaOtra').value.trim();
+  const monto=parseFloat($('gMonto').value)||0;
+  if (!cat || !monto) { notice(cat?'Falta el monto.':'Elige la categoría (o escribe la nueva).', false); return; }
+  // categoría nueva escrita a mano: agregarla a la lista de la sesión para no repetir
+  if (cat && CAT_GASTOS_FALLBACK.map(c=>c.toLowerCase()).indexOf(cat.toLowerCase())===-1) {
+    CAT_GASTOS_FALLBACK.push(cat);
+    poblarCategorias();
+  }
   notice('⏳ Guardando gasto…', true);
   const yaPagado = $('gPagado') && $('gPagado').value==='si';
   const monedaG = $('gMoneda').value;
@@ -3896,7 +3922,7 @@ function addExpense(){
     if (!(d&&d.ok)) { notice(errMsg(d,'No se pudo guardar.'), false); logCliente('error','gasto', errMsg(d,'respuesta sin ok')+' | categoria='+cat+' monto='+monto); return; }
     if (!yaPagado) {
       notice('✅ Gasto correcto — folio '+(d.folio||'—')+' · '+fmtMoney(monto)+' '+monedaG+'. Quedó POR PAGAR: cuando lo cubras, ve a "Cuentas por pagar" y dale clic en Pagar.', true);
-      $('gMonto').value=''; $('gDesc').value=''; loadBiz();
+      limpiarFormGasto(); loadBiz();
       return;
     }
     // "Ya lo pagué": gasto y pago registrados en un solo paso
@@ -3908,11 +3934,11 @@ function addExpense(){
         ? '✅ Gasto y pago registrados — '+(d.folio||'—')+' · '+(p.folio||'—')+' · '+fmtMoney(monto)+' '+monedaG+'. Gasto PAGADA.'
         : '⚠️ El gasto '+(d.folio||'—')+' se guardó, pero el PAGO falló: ve a "Cuentas por pagar" y dale clic en Pagar.',
         !!(p&&p.ok));
-      $('gMonto').value=''; $('gDesc').value=''; if ($('gPagado')) $('gPagado').value='no'; loadBiz();
+      limpiarFormGasto(); if ($('gPagado')) $('gPagado').value='no'; loadBiz();
     }).catch(()=>{
       notice('⚠️ El gasto '+(d.folio||'—')+' se guardó, pero el PAGO no pudo registrarse (conexión). Ve a "Cuentas por pagar" y dale clic en Pagar.', false);
       logCliente('error','gasto_pago_auto', 'gasto '+(d.folio||'—')+' (id='+d.id+') sin pago: error de conexion');
-      $('gMonto').value=''; $('gDesc').value=''; if ($('gPagado')) $('gPagado').value='no'; loadBiz();
+      limpiarFormGasto(); if ($('gPagado')) $('gPagado').value='no'; loadBiz();
     });
   }).catch(()=>{ notice('Error de conexión. Revisa tu internet e intenta de nuevo.', false); logCliente('error','gasto_red', 'sin respuesta del servidor | categoria='+cat+' monto='+monto); });
 }
