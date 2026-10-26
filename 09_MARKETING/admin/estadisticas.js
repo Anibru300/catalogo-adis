@@ -77,6 +77,7 @@ function _estPintarKpis(pnl, ventas, flujo, quotes, mes) {
   let html = '';
   if (pnl && pnl.ok) {
     html += '<div class="pnl-card"><div class="k">Ventas del mes (' + (pnl.num_ventas || 0) + ')</div><div class="v">' + _estMoney(pnl.ingresos) + ' ' + moneda + '</div></div>';
+    html += '<div class="pnl-card"><div class="k">Gastos del mes</div><div class="v">' + _estMoney(pnl.total_gastos) + ' ' + moneda + '</div></div>';
     html += '<div class="pnl-card ' + ((Number(pnl.utilidad_neta) || 0) >= 0 ? 'good' : 'bad') + '"><div class="k">Utilidad neta del mes</div><div class="v">' + _estMoney(pnl.utilidad_neta) + ' ' + moneda + '</div></div>';
   }
   if (flujo && flujo.ok) {
