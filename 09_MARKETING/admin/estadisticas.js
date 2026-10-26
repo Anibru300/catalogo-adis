@@ -62,6 +62,7 @@ function loadEstadisticas() {
       _estPintarFlujo(flujo, hace29, hoy);
       // Evolución 12 meses: solo si el backend ya tiene el endpoint (redeploy)
       if (finanzas && finanzas.ok && finanzas.meses) {
+        _estPintarResumen(finanzas);
         _estPintarFinanzas(finanzas);
         _estPintarGastosMes(finanzas);
       }
@@ -122,6 +123,50 @@ function _estPintarVentas(ventas, finanzas) {
       scales: { y: { beginAtZero: true, ticks: { callback: v => '$' + Number(v).toLocaleString('es-MX') } } }
     }
   });
+}
+
+function _estPintarResumen(finanzas) {
+  const meses = (finanzas && finanzas.ok && finanzas.meses) ? finanzas.meses : [];
+  const conDatos = meses.filter(m => Number(m.ingresos) > 0 || Number(m.gastos) > 0);
+  const labels = conDatos.map(m => m.mes);
+  const hay = labels.length > 0;
+  _estChart('estResumenBar', {
+    type: 'bar',
+    data: {
+      labels: hay ? labels : ['Sin datos'],
+      datasets: [
+        { type: 'bar', label: 'Ingresos', data: hay ? conDatos.map(m => Number(m.ingresos) || 0) : [0],
+          backgroundColor: 'rgba(30,122,70,0.75)', borderColor: '#1e7a46', borderWidth: 1,
+          borderRadius: 6, maxBarThickness: 42 },
+        { type: 'bar', label: 'Gastos', data: hay ? conDatos.map(m => Number(m.gastos) || 0) : [0],
+          backgroundColor: 'rgba(192,57,43,0.7)', borderColor: '#c0392b', borderWidth: 1,
+          borderRadius: 6, maxBarThickness: 42 },
+        { type: 'line', label: 'Utilidad', data: hay ? conDatos.map(m => (Number(m.ingresos) || 0) - (Number(m.gastos) || 0)) : [0],
+          borderColor: '#B08C3D', backgroundColor: '#B08C3D', borderWidth: 2,
+          tension: 0.25, pointRadius: 4, pointStyle: 'circle' }
+      ]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { position: 'top' },
+        tooltip: { callbacks: { label: c => ' ' + c.dataset.label + ': ' + _estMoney(c.parsed.y) } }
+      },
+      scales: { y: { beginAtZero: true, ticks: { callback: v => '$' + Number(v).toLocaleString('es-MX') } } }
+    }
+  });
+  // Explicacion en lenguaje del dueno, con las cifras reales del ultimo mes con datos
+  const ult = conDatos[conDatos.length - 1];
+  if (ult && $('estResumenTxt')) {
+    const ing = Number(ult.ingresos) || 0, gas = Number(ult.gastos) || 0, util = ing - gas;
+    $('estResumenTxt').innerHTML =
+      '<b>¿De dónde salen estos números?</b> Los <b style="color:#1e7a46;">Ingresos</b> (verde) son todo el dinero que entró en el mes: las ventas más los ingresos que registraste en "Registrar ingreso". ' +
+      'Los <b style="color:#c0392b;">Gastos</b> (rojo) son todo lo que salió: la suma de cada gasto que capturaste. ' +
+      'La <b style="color:#8A6D2F;">Utilidad</b> (línea dorada) = Ingresos − Gastos. ' +
+      '<br>Mes <b>' + ult.mes + '</b>: $' + ing.toLocaleString('es-MX') + ' − $' + gas.toLocaleString('es-MX') + ' = <b>' +
+      (util < 0 ? '−$' + Math.abs(util).toLocaleString('es-MX') : '$' + util.toLocaleString('es-MX')) + '</b>. ' +
+      '<i>Ojo: si el mes incluye compras de material o inventario, ese dinero no se perdió — se recupera cuando vendas esa mercancía.</i>';
+  }
 }
 
 function _estPintarGastos(pnl) {
