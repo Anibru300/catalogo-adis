@@ -441,7 +441,7 @@ function filaPorId(nombreHoja, id) {
 /* ---------- Finanzas: catalogo de categorias + estado de resultados ----------
    Catalogo configurable en hoja Config (separado por comas). Los defaults
    reproducen la lista historica del panel. */
-var CATEGORIAS_GASTOS_DEFAULT = 'Renta,Luz,Agua,Nómina,Gasolina,Publicidad,Mantenimiento,Envíos,Otro';
+var CATEGORIAS_GASTOS_DEFAULT = 'Compra de material,Materiales,Compra de inventario,Publicidad,Inversión,Renta,Luz,Agua,Nómina,Gasolina,Alimentos,Mantenimiento,Envíos,Honorarios,Gastos personales,Equipos,Muestrario,Otro';
 var CATEGORIAS_INGRESOS_DEFAULT = 'Venta de activos,Reembolso,Otro ingreso,Otro';
 function listaCfg_(clave, defecto) {
   return String(cfg(clave, defecto)).split(',').map(function (s) { return s.trim(); })

@@ -13,9 +13,20 @@ function addIngreso(){
 }
 
 /* ----- catalogo de categorias (configurable desde INVENTARIO > Configuracion) ----- */
+// Fallback local: si el backend aun no devuelve categorias (redeploy pendiente),
+// la lista desplegable sigue teniendo las opciones que el dueño usa siempre.
+const CAT_GASTOS_FALLBACK = ['Compra de material','Materiales','Compra de inventario','Publicidad','Inversión','Renta','Luz','Agua','Nómina','Gasolina','Alimentos','Mantenimiento','Envíos','Honorarios','Gastos personales','Equipos','Muestrario','Otro'];
+const CAT_INGRESOS_FALLBACK = ['Venta','Reembolso','Otro ingreso','Otro'];
 function poblarCategorias(){
-  const cg = (biz.config && biz.config.categorias_gastos) || [];
-  const ci = (biz.config && biz.config.categorias_ingresos) || [];
+  // Union: las de uso diario del dueño siempre presentes, mas las del catalogo
+  // configurable (backend), sin duplicar. El campo sigue aceptando texto libre.
+  const unir = (base, cfgList) => {
+    const out = base.slice(), vistos = base.map(c=>c.toLowerCase());
+    (cfgList||[]).forEach(c=>{ const x=String(c).trim(); if (x && vistos.indexOf(x.toLowerCase())===-1){ vistos.push(x.toLowerCase()); out.push(x); } });
+    return out;
+  };
+  const cg = unir(CAT_GASTOS_FALLBACK, biz.config && biz.config.categorias_gastos);
+  const ci = unir(CAT_INGRESOS_FALLBACK, biz.config && biz.config.categorias_ingresos);
   if ($('gCatList')) $('gCatList').innerHTML = cg.map(c=>'<option value="'+esc(c)+'"></option>').join('');
   if ($('ingCatList')) $('ingCatList').innerHTML = ci.map(c=>'<option value="'+esc(c)+'"></option>').join('');
 }
