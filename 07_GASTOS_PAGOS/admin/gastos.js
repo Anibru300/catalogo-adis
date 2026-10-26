@@ -1,6 +1,19 @@
+/* ----- montos: miles con coma + signo de pesos fijo (ver .monto-wrap en CSS) ----- */
+// Mientras escribe: 2500 -> 2,500 ; 532022 -> 5,320.22 ; solo un punto decimal
+function mascaraMonto(el){
+  let v = String(el.value).replace(/[^\d.]/g,'');
+  const dot = v.indexOf('.');
+  const ent = (dot===-1 ? v : v.slice(0,dot)).replace(/\B(?=(\d{3})+(?!\d))/g,',');
+  const dec = dot===-1 ? '' : v.slice(dot+1).replace(/\./g,'').slice(0,2);
+  el.value = ent + (dot!==-1 ? '.'+dec : '');
+}
+// Leer un campo con comas como numero real (parseFloat('2,500') daria 2 — por eso existe esto)
+function leerMonto(id){ return parseFloat(String($(id).value).replace(/,/g,''))||0; }
+function fmtNum_(n){ return (Number(n)||0).toLocaleString('en-US',{maximumFractionDigits:2}); }
+
 /* ----- otros ingresos (reembolsos, venta de activos...) ----- */
 function addIngreso(){
-  const concepto=$('ingConcepto').value.trim(), monto=parseFloat($('ingMonto').value)||0;
+  const concepto=$('ingConcepto').value.trim(), monto=leerMonto('ingMonto');
   if (!concepto || !monto) { notice('Falta el concepto o el monto.', false); return; }
   notice('⏳ Guardando ingreso…', true);
   apiPost({tipo:'ingreso', fecha:$('ingFecha').value, concepto,
@@ -95,7 +108,7 @@ function limpiarFormGasto(){
 function addExpense(){
   let cat = $('gCategoria') ? $('gCategoria').value : '';
   if (cat==='__otra__') cat = $('gCategoriaOtra').value.trim();
-  const monto=parseFloat($('gMonto').value)||0;
+  const monto=leerMonto('gMonto');
   if (!cat || !monto) { notice(cat?'Falta el monto.':'Elige la categoría (o escribe la nueva).', false); return; }
   // categoría nueva escrita a mano: agregarla a la lista de la sesión para no repetir
   if (cat && CAT_GASTOS_FALLBACK.map(c=>c.toLowerCase()).indexOf(cat.toLowerCase())===-1) {
@@ -178,7 +191,7 @@ function showPagoForm(gastoId){
   if (!x) { notice('Recarga la pestaña para ver el saldo actualizado.', false); return; }
   $('pagoForms').innerHTML = '<div class="card-box"><p style="margin-bottom:0.5rem;"><strong>Registrar pago — '+esc(x.folio)+'</strong> <span class="muted">'+esc(x.categoria)+' · saldo '+fmtMoney(x.saldo)+' '+esc(x.moneda)+'</span></p><div class="row">' +
     '<div><label>Fecha</label><input type="date" id="pgFecha" value="'+fLocal()+'"></div>' +
-    '<div><label>Monto *</label><input type="number" id="pgMonto" min="0" step="0.01" value="'+x.saldo+'"></div>' +
+    '<div><label>Monto *</label><div class="monto-wrap"><span class="monto-sign">$</span><input type="text" inputmode="decimal" class="monto" id="pgMonto" value="'+fmtNum_(x.saldo)+'" oninput="mascaraMonto(this)"></div></div>' +
     '<div><label>Moneda</label><select id="pgMoneda"><option value="'+esc(x.moneda)+'">'+esc(x.moneda)+'</option><option value="MXN">MXN</option><option value="USD">USD</option></select></div>' +
     '<div><label>Método</label><select id="pgMetodo"><option>Efectivo</option><option>Transferencia</option><option>Tarjeta</option><option>Depósito</option><option>Otro</option></select></div>' +
     '</div><label>Notas</label><input id="pgNotas">' +
@@ -187,7 +200,7 @@ function showPagoForm(gastoId){
   $('pagoForms').scrollIntoView({behavior:'smooth', block:'nearest'});
 }
 function savePago(gastoId){
-  const monto = parseFloat($('pgMonto').value)||0;
+  const monto = leerMonto('pgMonto');
   if (monto <= 0) { notice('El monto debe ser mayor que cero.', false); return; }
   notice('⏳ Registrando pago…', true);
   apiPost({tipo:'gasto_pago', gasto_id:gastoId, fecha:$('pgFecha').value, monto,
@@ -289,7 +302,7 @@ function avisarVencimientosFijos(){
 }
 
 function addFijo(){
-  const concepto=$('fConcepto').value.trim(), monto=parseFloat($('fMonto').value)||0;
+  const concepto=$('fConcepto').value.trim(), monto=leerMonto('fMonto');
   if (!concepto || !monto) { notice('Falta el concepto o el monto.', false); return; }
   if (!$('fProxima').value) { notice('Elige la fecha del próximo pago.', false); return; }
   notice('⏳ Guardando gasto fijo…', true);

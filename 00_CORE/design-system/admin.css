@@ -144,6 +144,11 @@
   .helpbox[open] summary { margin-bottom:0.35rem; }
   .helpbox p { margin:0.35rem 0; color:var(--muted); line-height:1.45; }
   .helpbox p b, .helpbox p strong { color:var(--texto, #3a2f1d); }
+  /* Campos de monto: signo de pesos fijo dentro del campo y miles con coma */
+  .monto-wrap { position:relative; }
+  .monto-sign { position:absolute; left:0.75rem; top:50%; transform:translateY(-50%);
+    color:var(--muted); font-weight:700; pointer-events:none; font-size:0.9rem; }
+  input.monto { padding-left:1.7rem; }
   .items { margin:0.8rem 0; display:flex; flex-direction:column; gap:0.5rem; }
   .item-row { display:grid; grid-template-columns:1fr 70px 110px 36px; gap:0.5rem; align-items:center; }
   .item-row .del { background:none; border:1px solid rgba(192,57,43,0.4); color:#c0392b; border-radius:6px; height:38px; cursor:pointer; }
