@@ -122,3 +122,41 @@ Token admin (rol único). Sin endpoints públicos.
 2. **Proveedor de compra (02→07, hoy manual)**: la recepción de OC no genera
    gasto automático; el usuario registra el gasto a mano con el proveedor como
    texto (mejora futura: CxP de OC con oc_id).
+
+## GASTOS FIJOS (programados) — 2026-10-25
+
+- Hoja nueva `GastosFijos` (esquema `ENC_GASTOS_FIJOS` en `00_CORE/backend/core.gs`,
+  se crea sola al primer uso via `hoja()`). Columnas: id, concepto, categoria,
+  monto, moneda, frecuencia (semanal|quincenal|mensual|anual), proxima_fecha,
+  notas, estado (ACTIVA|CANCELADA), gasto_folio_ultimo, creado.
+- Endpoints: `GET gastos_fijos` · `POST gasto_fijo` (accion: agregar | generar |
+  quitar=baja lógica). `generar` crea un gasto GAS- normal ("(Gasto fijo) ...",
+  queda POR PAGAR) y avanza proxima_fecha con `siguienteOcurrencia()` (salta al
+  futuro según frecuencia; fechas parseadas a mediodía para no sufrir DST).
+- Panel: pestaña nueva `Dinero → Gastos fijos (programados)` (tab `fijos` en
+  `admin/plantilla.html` + JS en `07_GASTOS_PAGOS/admin/gastos.js`: loadFijos,
+  addFijo, generarFijo, quitarFijo, alertas por `diasHasta_`).
+- Alertas 100% cliente (sin triggers): 🔴 vencido/vence hoy, 🟠 ≤3 días. Aviso
+  global 1 vez por sesión al entrar (enterApp → loadFijos → avisarVencimientosFijos).
+- Renombres de menú pedidos por el dueño: "Cobros / cuentas por cobrar" →
+  "Registrar ingreso"; "Gastos / cuentas por pagar" → "Registrar gasto".
+- Avisos del panel (`notice`) ahora son toast flotante fijo (`#notice` fixed en
+  `00_CORE/design-system/admin.css`) — antes quedaban arriba del todo y se
+  perdían con el scroll. Mensajes de éxito explícitos: "✅ Ingreso/Gasto
+  correcto — folio ...".
+- `ingFecha` ahora se pre-llena con hoy (fLocal; antes quedaba vacío) y `gFecha`
+  usa fLocal (antes toISOString UTC, se adelantaba un día después de las 6pm).
+- REQUIERE REDEPLOY de `admin/apps-script.gs` (sin él la pestaña Gastos fijos
+  no carga y los mensajes nuevos del panel tampoco se ven en producción).
+
+## MEJORA DE UX — 2026-10-25 (regla del dueño: facil, intuitivo, automatizado)
+
+- **Cuadro de ayuda en cada sección** (`details.helpbox` en `00_CORE/design-system/
+  admin.css`): 17 secciones del panel explican "¿para qué sirve y cómo lo uso?"
+  (la 18ª, Ayuda, es la guía completa). Textos en `admin/plantilla.html`.
+- **Auto-pago de gastos**: el formulario de Registrar gasto ahora tiene
+  "¿Ya lo pagaste?" (No/Sí) + método de pago. Con "Sí" registra gasto Y pago en
+  un solo paso (`addExpense` encadena `gasto` → `gasto_pago` con el `id` que el
+  backend ahora devuelve). Requiere redeploy del backend.
+- Mensajes de confirmación tipo "✅ Gasto y pago registrados — GAS- · PAG- ·
+  monto. Gasto PAGADA."

@@ -41,7 +41,7 @@ function showTab(name){
   document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active', t.dataset.tab===name));
   document.querySelectorAll('.mgroup').forEach(g=>{ g.removeAttribute('open'); g.classList.toggle('active', (g.dataset.group||'').split(' ').indexOf(name)!==-1); });
   const nav = $('mainMenu'); if (nav) nav.classList.remove('open');
-  ['dash','leads','clientes','quotes','proposal','inventory','oc','sales','proyectos','cobros','expenses','pnl','reviews','analytics','flujocaja','flow','ayuda'].forEach(n=>$('tab-'+n).classList.toggle('hidden', n!==name));
+  ['dash','leads','clientes','quotes','proposal','inventory','oc','sales','proyectos','cobros','fijos','expenses','pnl','reviews','analytics','flujocaja','flow','ayuda'].forEach(n=>$('tab-'+n).classList.toggle('hidden', n!==name));
   if (name==='dash') loadDash();
   if (name==='pnl' && !$('pnlCards').innerHTML) generarPNL();
   if (name==='flow') loadFlow();
@@ -50,6 +50,7 @@ function showTab(name){
   if (name==='clientes') loadClientes();
   if (name==='proyectos') loadProyectos();
   if (name==='cobros') loadCXC();
+  if (name==='fijos') loadFijos();
   if (name==='flujocaja') loadFlujoCaja();
   if (name==='pnl') loadAlertas();
 }

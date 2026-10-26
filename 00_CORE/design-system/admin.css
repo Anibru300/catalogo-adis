@@ -123,7 +123,23 @@
   .msg { padding:0.8rem 1rem; border-radius:8px; font-size:0.85rem; margin-bottom:1rem; }
   .msg.ok { background:rgba(39,174,96,0.10); border:1px solid rgba(39,174,96,0.35); color:#1e7a46; }
   .msg.err { background:rgba(192,57,43,0.08); border:1px solid rgba(192,57,43,0.35); color:#c0392b; }
+  /* Avisos flotantes: visibles desde cualquier punto del panel (antes quedaban
+     arriba de todo y se perdian si el usuario tenia el scroll abajo). */
+  #notice { position:fixed; top:14px; left:50%; transform:translateX(-50%); z-index:999;
+    width:min(92%,540px); pointer-events:none; }
+  #notice:empty { display:none; }
+  #notice .msg { margin-bottom:0; box-shadow:0 8px 28px rgba(0,0,0,0.35); }
   .toolbar { display:flex; gap:0.6rem; align-items:center; flex-wrap:wrap; margin-bottom:1rem; }
+  /* Cuadro de ayuda contextual: cada seccion explica para que sirve y como usarla.
+     Componente reutilizable: <details class="helpbox"><summary>…</summary><p>…</p></details> */
+  .helpbox { border:1px dashed rgba(176,140,61,0.45); background:rgba(176,140,61,0.07);
+    border-radius:8px; padding:0.55rem 0.9rem; margin:0 0 1rem; font-size:0.82rem; }
+  .helpbox summary { cursor:pointer; font-weight:600; color:var(--gold-strong); list-style:none; }
+  .helpbox summary::-webkit-details-marker { display:none; }
+  .helpbox summary::before { content:'💡 Guía rápida — '; }
+  .helpbox[open] summary { margin-bottom:0.35rem; }
+  .helpbox p { margin:0.35rem 0; color:var(--muted); line-height:1.45; }
+  .helpbox p b, .helpbox p strong { color:var(--texto, #3a2f1d); }
   .items { margin:0.8rem 0; display:flex; flex-direction:column; gap:0.5rem; }
   .item-row { display:grid; grid-template-columns:1fr 70px 110px 36px; gap:0.5rem; align-items:center; }
   .item-row .del { background:none; border:1px solid rgba(192,57,43,0.4); color:#c0392b; border-radius:6px; height:38px; cursor:pointer; }

@@ -73,6 +73,7 @@ var SHEET_PAGOS      = 'Pagos';
 var SHEET_PROY_MOVS  = 'Proyectos_Movs';
 var SHEET_PO         = 'OrdenesCompra';
 var SHEET_RECEP      = 'Recepciones';
+var SHEET_GASTOS_FIJOS = 'GastosFijos';
 var VISITS_MAX_FILAS = 5000;   // activas; el excedente se ARCHIVA (no se borra)
 var TOKEN_MINUTOS  = 8 * 60;
 
@@ -115,6 +116,10 @@ var ENC_OC = ['id', 'folio', 'proveedor_id', 'proveedor', 'fecha', 'fecha_espera
 var ENC_RECEP = ['id', 'oc_id', 'oc_folio', 'fecha', 'items', 'usuario'];
 var ENC_VISITS = ['fecha', 'hora', 'pagina', 'seccion', 'origen', 'referrer', 'idioma',
   'dispositivo', 'navegador', 'ancho', 'ua'];
+// Gastos fijos (programados): se repiten semanal/quincenal/mensual/anual y el
+// panel alerta cuando están por vencer. Generar uno crea un gasto GAS- normal.
+var ENC_GASTOS_FIJOS = ['id', 'concepto', 'categoria', 'monto', 'moneda', 'frecuencia',
+  'proxima_fecha', 'notas', 'estado', 'gasto_folio_ultimo', 'creado'];
 
 /* ============================ UTILIDADES ============================ */
 
@@ -613,6 +618,7 @@ function doGetInterno(e) {
     return json({ ok: true, porMes: porMes, ventas: vs.slice(-100) });
   }
   if (action === 'gastos') return json({ ok: true, gastos: filasComoObjetos(SHEET_EXPENSES) });
+  if (action === 'gastos_fijos') return json({ ok: true, fijos: filasComoObjetos(SHEET_GASTOS_FIJOS) });
 
   if (action === 'estado_resultados') {
     return json(calcularEstadoResultados(e.parameter.mes, String(e.parameter.proyecto_id || '')));
@@ -1500,10 +1506,11 @@ function doPostInterno(data) {
     var tcg = Number(data.tipo_cambio) || Number(cfg('tipo_cambio', '18.5')) || 1;
     var fechaG = validarFecha(data.fecha) || hoy_();
     var folioG = siguienteFolio('GAS', 'folio_gasto', 4);
+    var idG = nuevoId();
     hoja(SHEET_EXPENSES, ENC_GASTOS).appendRow([fechaG, categoria, data.descripcion || '',
-      monto, monedaG, tcg, aBase(monto, monedaG, tcg), nuevoId(), USUARIO_ACTUAL, folioG, 'ACTIVA', 0]);
+      monto, monedaG, tcg, aBase(monto, monedaG, tcg), idG, USUARIO_ACTUAL, folioG, 'ACTIVA', 0]);
     log_('gasto_registrado', folioG + ' · ' + categoria + ' - ' + monto + ' ' + monedaG);
-    return json({ ok: true, folio: folioG });
+    return json({ ok: true, folio: folioG, id: idG });
   });
 
   // FASE 5: pago parcial/total de un gasto (gasto != pago; flujo de efectivo real)
@@ -1558,6 +1565,81 @@ function doPostInterno(data) {
     hGC.getRange(filaGC, 11).setValue('CANCELADA');
     log_('gasto_cancelado', 'id=' + (data.id || ''));
     return json({ ok: true });
+  });
+
+  /* ---------- Gastos fijos (programados: renta, internet, nómina...) ----------
+     Se repiten semanal/quincenal/mensual/anual. El panel alerta los vencimientos
+     (calculo 100% cliente, sin triggers). "generar" crea un gasto GAS- normal
+     (queda por pagar, se liquida con el flujo Pagar existente) y programa la
+     siguiente ocurrencia. */
+  if (tipo === 'gasto_fijo') return conLock(function () {
+    var hF = hoja(SHEET_GASTOS_FIJOS, ENC_GASTOS_FIJOS);
+    var FRECUENCIAS = ['semanal', 'quincenal', 'mensual', 'anual'];
+    var TZ = 'America/Hermosillo';
+    function parseF(fecha) {
+      var p = String(fecha).split('-');
+      return new Date(Number(p[0]), Number(p[1]) - 1, Number(p[2]), 12); // mediodia: sin corrimientos DST
+    }
+    function unPaso(d, frec) {
+      if (frec === 'semanal') d.setDate(d.getDate() + 7);
+      else if (frec === 'quincenal') d.setDate(d.getDate() + 14);
+      else if (frec === 'mensual') d.setMonth(d.getMonth() + 1);
+      else d.setFullYear(d.getFullYear() + 1);
+      return d;
+    }
+    // Primera fecha > hoy empezando desde `desde` (si `desde` ya pasó, salta hasta el futuro)
+    function siguienteOcurrencia(desde, frec) {
+      var d = parseF(desde), hoyMs = parseF(hoy_()).getTime(), guard = 500;
+      while (d.getTime() <= hoyMs && guard-- > 0) unPaso(d, frec);
+      return Utilities.formatDate(d, TZ, 'yyyy-MM-dd');
+    }
+
+    if (data.accion === 'quitar') {
+      var filaQ = filaPorId(SHEET_GASTOS_FIJOS, data.id);
+      if (!filaQ) throw AdisError('NO_ENCONTRADO', 'Gasto fijo no encontrado.');
+      if (String(hF.getRange(filaQ, 9).getValue()) === 'CANCELADA') return json({ ok: true, ya_cancelada: true });
+      hF.getRange(filaQ, 9).setValue('CANCELADA');
+      log_('gasto_fijo_cancelado', String(hF.getRange(filaQ, 2).getValue()));
+      return json({ ok: true });
+    }
+
+    if (data.accion === 'generar') {
+      var filaGf = filaPorId(SHEET_GASTOS_FIJOS, data.id);
+      if (!filaGf) throw AdisError('NO_ENCONTRADO', 'Gasto fijo no encontrado.');
+      if (String(hF.getRange(filaGf, 9).getValue()) === 'CANCELADA') throw AdisError('NO_PERMITIDO', 'El gasto fijo está cancelado.');
+      var conceptoGf = String(hF.getRange(filaGf, 2).getValue() || '').trim();
+      var categoriaGf = String(hF.getRange(filaGf, 3).getValue() || '').trim() || 'Gastos fijos';
+      var montoGf = Number(hF.getRange(filaGf, 4).getValue());
+      if (!isFinite(montoGf) || montoGf <= 0) throw AdisError('VALIDACION', 'El gasto fijo no tiene un monto válido.');
+      var monedaGf = validarMoneda(hF.getRange(filaGf, 5).getValue() || cfg('moneda_base', 'MXN'));
+      var frecGf = String(hF.getRange(filaGf, 6).getValue() || 'mensual');
+      if (FRECUENCIAS.indexOf(frecGf) === -1) frecGf = 'mensual';
+      var proximaGf = String(hF.getRange(filaGf, 7).getValue() || hoy_());
+      var tcGf = Number(cfg('tipo_cambio', '18.5')) || 1;
+      var folioGf = siguienteFolio('GAS', 'folio_gasto', 4);
+      hoja(SHEET_EXPENSES, ENC_GASTOS).appendRow([hoy_(), categoriaGf,
+        '(Gasto fijo) ' + conceptoGf, montoGf, monedaGf, tcGf,
+        aBase(montoGf, monedaGf, tcGf), nuevoId(), USUARIO_ACTUAL, folioGf, 'ACTIVA', 0]);
+      var siguienteGf = siguienteOcurrencia(proximaGf, frecGf);
+      hF.getRange(filaGf, 7).setValue(siguienteGf);   // proxima_fecha
+      hF.getRange(filaGf, 10).setValue(folioGf);      // gasto_folio_ultimo
+      log_('gasto_fijo_generado', folioGf + ' · ' + conceptoGf + ' · próximo ' + siguienteGf);
+      return json({ ok: true, folio: folioGf, proxima_fecha: siguienteGf });
+    }
+
+    // accion default: agregar
+    var conceptoF = String(data.concepto || '').trim();
+    if (!conceptoF) throw AdisError('VALIDACION', 'El gasto fijo necesita un concepto (ej. Renta del local).');
+    var montoF = Number(data.monto);
+    if (!isFinite(montoF) || montoF <= 0) throw AdisError('VALIDACION', 'El monto debe ser mayor que cero.');
+    var frecF = String(data.frecuencia || 'mensual');
+    if (FRECUENCIAS.indexOf(frecF) === -1) throw AdisError('VALIDACION', 'Frecuencia no soportada: ' + frecF);
+    var proximaF = validarFecha(data.proxima_fecha) || siguienteOcurrencia(hoy_(), frecF);
+    hF.appendRow([nuevoId(), conceptoF, String(data.categoria || '').trim() || 'Gastos fijos',
+      montoF, validarMoneda(data.moneda || cfg('moneda_base', 'MXN')), frecF, proximaF,
+      data.notas || '', 'ACTIVA', '', hoy_()]);
+    log_('gasto_fijo_agregado', conceptoF + ' · ' + montoF + ' · ' + frecF + ' · próximo ' + proximaF);
+    return json({ ok: true, proxima_fecha: proximaF });
   });
 
   // FASE 5: delete_gasto queda como alias de CANCELAR (baja logica trazable, no fisica)

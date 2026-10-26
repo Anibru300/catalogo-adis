@@ -82,10 +82,11 @@ function enterApp(u){
   $('loginView').classList.add('hidden');
   $('appView').classList.remove('hidden');
   $('userEmail').textContent = 'Sesión: ' + u;
-  loadLeads(); loadQuotes(); loadReviewsAdmin(); loadProducts(); loadBiz(); loadClientes();
+  loadLeads(); loadQuotes(); loadReviewsAdmin(); loadProducts(); loadBiz(); loadClientes(); loadFijos();
   initProposal();
   $('sFecha').value = new Date().toISOString().slice(0,10);
-  $('gFecha').value = new Date().toISOString().slice(0,10);
+  $('gFecha').value = fLocal();
+  $('ingFecha').value = fLocal();
   $('pnlMes').value = new Date().toISOString().slice(0,7);
   showTab('dash');
 }

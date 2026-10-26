@@ -5,9 +5,11 @@ function addIngreso(){
   apiPost({tipo:'ingreso', fecha:$('ingFecha').value, concepto,
     monto, moneda:$('ingMoneda').value, metodo:$('ingMetodo').value, notas:$('ingNotas').value.trim(),
     tipo_ingreso: $('ingTipo') ? $('ingTipo').value : 'venta'}).then(d=>{
-    notice(d&&d.ok?('Ingreso '+(d.folio||'')+' guardado.'):errMsg(d,'No se pudo guardar.'), !!(d&&d.ok));
+    notice(d&&d.ok
+      ? '✅ Ingreso correcto — folio '+(d.folio||'—')+' · '+fmtMoney(monto)+' '+$('ingMoneda').value+'. Ya está en tus Ventas del mes.'
+      : errMsg(d,'No se pudo guardar.'), !!(d&&d.ok));
     if(d&&d.ok){ $('ingMonto').value=''; $('ingNotas').value=''; loadCXC(); }
-  });
+  }).catch(()=>notice('Error de conexión. Revisa tu internet e intenta de nuevo.', false));
 }
 
 /* ----- catalogo de categorias (configurable desde INVENTARIO > Configuracion) ----- */
@@ -62,11 +64,29 @@ function quitarCategoria(el){
 function addExpense(){
   const cat=$('gCategoria').value.trim(), monto=parseFloat($('gMonto').value)||0;
   if (!cat || !monto) { notice('Falta la categoría o el monto.', false); return; }
+  const yaPagado = $('gPagado') && $('gPagado').value==='si';
+  const monedaG = $('gMoneda').value;
   apiPost({tipo:'gasto', fecha:$('gFecha').value, categoria:cat, descripcion:$('gDesc').value.trim(),
-    monto, moneda:$('gMoneda').value}).then(d=>{
-    notice(d&&d.ok?('Gasto '+(d.folio||'')+' guardado.'):errMsg(d,'No se pudo guardar.'), !!(d&&d.ok));
-    if(d&&d.ok){ $('gMonto').value=''; $('gDesc').value=''; loadBiz(); }
-  });
+    monto, moneda:monedaG}).then(d=>{
+    if (!(d&&d.ok)) { notice(errMsg(d,'No se pudo guardar.'), false); return; }
+    if (!yaPagado) {
+      notice('✅ Gasto correcto — folio '+(d.folio||'—')+' · '+fmtMoney(monto)+' '+monedaG+'. Quedó POR PAGAR: cuando lo cubras, ve a "Cuentas por pagar" y dale clic en Pagar.', true);
+      $('gMonto').value=''; $('gDesc').value=''; loadBiz();
+      return;
+    }
+    // "Ya lo pagué": gasto y pago registrados en un solo paso
+    apiPost({tipo:'gasto_pago', gasto_id:d.id, fecha:fLocal(), monto, moneda:monedaG,
+      metodo:$('gMetodo')?$('gMetodo').value:'Transferencia', notas:''}).then(p=>{
+      notice(p&&p.ok
+        ? '✅ Gasto y pago registrados — '+(d.folio||'—')+' · '+(p.folio||'—')+' · '+fmtMoney(monto)+' '+monedaG+'. Gasto PAGADA.'
+        : '⚠️ El gasto '+(d.folio||'—')+' se guardó, pero el PAGO falló: ve a "Cuentas por pagar" y dale clic en Pagar.',
+        !!(p&&p.ok));
+      $('gMonto').value=''; $('gDesc').value=''; if ($('gPagado')) $('gPagado').value='no'; loadBiz();
+    }).catch(()=>{
+      notice('⚠️ El gasto '+(d.folio||'—')+' se guardó, pero el PAGO no pudo registrarse (conexión). Ve a "Cuentas por pagar" y dale clic en Pagar.', false);
+      $('gMonto').value=''; $('gDesc').value=''; if ($('gPagado')) $('gPagado').value='no'; loadBiz();
+    });
+  }).catch(()=>notice('Error de conexión. Revisa tu internet e intenta de nuevo.', false));
 }
 // FASE 5: gasto != pago. Cada gasto lleva folio GAS-, estado (ACTIVA/CANCELADA) y pagos parciales.
 function renderExpenses(list){
@@ -146,3 +166,123 @@ function cancelarGasto(id, btn){
   });
 }
 
+
+
+/* ----- gastos fijos (programados) ----- */
+let fijosCache = [];
+let fijosAvisados = false; // el aviso global de vencimientos se muestra 1 vez por sesion
+
+function loadFijos(){
+  if (!$('fijosTable')) return;
+  apiGet('gastos_fijos').then(d=>{
+    fijosCache = (d && d.fijos) || [];
+    renderFijos();
+    avisarVencimientosFijos();
+  }).catch(()=>{ $('fijosTable').innerHTML='<tr><td colspan="8" class="muted">No se pudo cargar. Intenta de nuevo.</td></tr>'; });
+}
+
+// dias desde hoy hasta la fecha (negativo = vencido). Base local, sin sorpasas de horario.
+function diasHasta_(fecha){
+  if (!fecha || !/^\d{4}-\d{2}-\d{2}$/.test(String(fecha))) return null;
+  const hoy = new Date(); hoy.setHours(0,0,0,0);
+  const d = new Date(String(fecha)+'T00:00:00');
+  return Math.round((d - hoy) / 86400000);
+}
+
+function alertaFijo_(f){
+  const dias = diasHasta_(f.proxima_fecha);
+  if (dias === null) return {txt:'<span class="muted">sin fecha</span>', nivel:0, dias};
+  if (dias < 0)  return {txt:'🔴 Vencido hace '+(-dias)+' día'+(-dias===1?'':'s'), nivel:2, dias};
+  if (dias === 0) return {txt:'🔴 Vence HOY', nivel:2, dias};
+  if (dias <= 3) return {txt:'🟠 Por vencer en '+dias+' día'+(dias===1?'':'s'), nivel:1, dias};
+  return {txt:'🟢 En '+dias+' días', nivel:0, dias};
+}
+
+function renderFijos(){
+  if (!$('fijosTable')) return;
+  const orden = fijosCache.slice().sort((a,b)=>{
+    const ea = String(a.estado)==='CANCELADA' ? 1 : 0, eb = String(b.estado)==='CANCELADA' ? 1 : 0;
+    if (ea !== eb) return ea - eb;
+    return String(a.proxima_fecha||'').localeCompare(String(b.proxima_fecha||''));
+  });
+  const activos = orden.filter(f=>String(f.estado)!=='CANCELADA');
+  const vencidos = activos.filter(f=>alertaFijo_(f).nivel===2).length;
+  const porVencer = activos.filter(f=>alertaFijo_(f).nivel===1).length;
+  if ($('fijosDash')) $('fijosDash').innerHTML =
+    '<div class="pnl-card '+(vencidos?'bad':'good')+'"><div class="k">🔴 Vencidos</div><div class="v">'+vencidos+'</div></div>' +
+    '<div class="pnl-card '+(porVencer?'bad':'')+'"><div class="k">🟠 Por vencer (≤3 días)</div><div class="v">'+porVencer+'</div></div>' +
+    '<div class="pnl-card"><div class="k">Gastos fijos activos</div><div class="v">'+activos.length+'</div></div>';
+  if (!orden.length) { $('fijosTable').innerHTML='<tr><td colspan="8" class="muted">Sin gastos fijos. Programa el primero arriba (renta, internet, nómina...).</td></tr>'; return; }
+  const FREC_TXT = {semanal:'Cada semana', quincenal:'Cada 2 semanas', mensual:'Cada mes', anual:'Cada año'};
+  $('fijosTable').innerHTML = orden.map(f=>{
+    const cancelado = String(f.estado)==='CANCELADA';
+    const al = alertaFijo_(f);
+    const acciones = cancelado ? '<span class="muted">cancelado</span>'
+      : '<button class="btn btn-sm" onclick="generarFijo(\''+f.id+'\', this)">Generar gasto</button> ' +
+        '<button class="btn btn-danger btn-sm" onclick="quitarFijo(\''+f.id+'\', this)">Cancelar</button>';
+    return '<tr'+(cancelado?' style="opacity:0.5;"':'')+'><td><strong>'+esc(f.concepto)+'</strong>'+(f.notas?'<br><span class="muted">'+esc(f.notas)+'</span>':'')+'</td>' +
+      '<td>'+esc(f.categoria)+'</td>' +
+      '<td class="gold">'+fmtMoney(f.monto)+' '+esc(f.moneda)+'</td>' +
+      '<td>'+esc(FREC_TXT[f.frecuencia]||f.frecuencia)+'</td>' +
+      '<td>'+esc(f.proxima_fecha||'—')+'</td>' +
+      '<td style="font-weight:600;font-size:0.78rem;white-space:nowrap;">'+al.txt+'</td>' +
+      '<td>'+(f.gasto_folio_ultimo?'<span class="muted">'+esc(f.gasto_folio_ultimo)+'</span>':'—')+'</td>' +
+      '<td style="white-space:nowrap;">'+acciones+'</td></tr>';
+  }).join('');
+}
+
+// Aviso una sola vez por sesion si hay vencidos o proximos a vencer
+function avisarVencimientosFijos(){
+  if (fijosAvisados) return;
+  fijosAvisados = true;
+  const activos = fijosCache.filter(f=>String(f.estado)!=='CANCELADA');
+  const vencidos = activos.filter(f=>alertaFijo_(f).nivel===2);
+  const proximos = activos.filter(f=>alertaFijo_(f).nivel===1);
+  if (vencidos.length) {
+    notice('🔴 Gastos fijos VENCIDOS: '+vencidos.map(f=>esc(f.concepto)).join(', ')+'. Ve a Dinero → Gastos fijos.', false);
+  } else if (proximos.length) {
+    notice('🟠 Pronto vence(n): '+proximos.map(f=>esc(f.concepto)+' ('+esc(f.proxima_fecha)+')').join(', ')+'.', true);
+  }
+}
+
+function addFijo(){
+  const concepto=$('fConcepto').value.trim(), monto=parseFloat($('fMonto').value)||0;
+  if (!concepto || !monto) { notice('Falta el concepto o el monto.', false); return; }
+  if (!$('fProxima').value) { notice('Elige la fecha del próximo pago.', false); return; }
+  apiPost({tipo:'gasto_fijo', accion:'agregar', concepto, categoria:$('fCategoria').value.trim(),
+    monto, moneda:$('fMoneda').value, frecuencia:$('fFrecuencia').value,
+    proxima_fecha:$('fProxima').value, notas:$('fNotas').value.trim()}).then(d=>{
+    notice(d&&d.ok
+      ? '✅ Gasto fijo correcto — '+esc(concepto)+'. Próximo pago: '+(d.proxima_fecha||$('fProxima').value)+'.'
+      : errMsg(d,'No se pudo guardar.'), !!(d&&d.ok));
+    if(d&&d.ok){ $('fConcepto').value=''; $('fMonto').value=''; $('fNotas').value=''; $('fCategoria').value=''; loadFijos(); }
+  }).catch(()=>notice('Error de conexión. Revisa tu internet e intenta de nuevo.', false));
+}
+
+// doble paso sin confirm(): el boton pide confirmacion a si mismo
+function generarFijo(id, btn){
+  if (btn.dataset.confirm!=='1') {
+    btn.dataset.confirm='1'; btn.textContent='¿Seguro? Genera el gasto';
+    setTimeout(()=>{ if (btn.isConnected){ btn.dataset.confirm=''; btn.textContent='Generar gasto'; } }, 3000);
+    return;
+  }
+  apiPost({tipo:'gasto_fijo', accion:'generar', id}).then(d=>{
+    notice(d&&d.ok
+      ? '✅ Gasto '+(d.folio||'—')+' generado (quedó POR PAGAR). Próximo pago programado: '+d.proxima_fecha+'.'
+      : errMsg(d,'No se pudo generar.'), !!(d&&d.ok));
+    if(d&&d.ok) loadFijos();
+  }).catch(()=>notice('Error de conexión. Intenta de nuevo.', false));
+}
+
+// doble paso sin confirm(): el boton pide confirmacion a si mismo
+function quitarFijo(id, btn){
+  if (btn.dataset.confirm!=='1') {
+    btn.dataset.confirm='1'; btn.textContent='¿Seguro?';
+    setTimeout(()=>{ if (btn.isConnected){ btn.dataset.confirm=''; btn.textContent='Cancelar'; } }, 3000);
+    return;
+  }
+  apiPost({tipo:'gasto_fijo', accion:'quitar', id}).then(d=>{
+    notice(d&&d.ok?'Gasto fijo cancelado (se conserva en el historial).':errMsg(d), !!(d&&d.ok));
+    if(d&&d.ok) loadFijos();
+  }).catch(()=>notice('Error de conexión. Intenta de nuevo.', false));
+}

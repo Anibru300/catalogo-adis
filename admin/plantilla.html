@@ -89,13 +89,14 @@
           <button class="tab" data-tab="proyectos" onclick="showTab('proyectos'); showProyectoForm()">＋ Nuevo proyecto</button>
         </div>
       </details>
-      <details class="mgroup" data-group="cobros flujocaja expenses pnl">
+      <details class="mgroup" data-group="cobros fijos flujocaja expenses pnl">
         <summary>Dinero</summary>
         <div class="mdrop">
-          <button class="tab" data-tab="cobros" onclick="showTab('cobros')">Cobros / cuentas por cobrar</button>
+          <button class="tab" data-tab="cobros" onclick="showTab('cobros')">Registrar ingreso</button>
           <button class="tab" data-tab="flujocaja" onclick="showTab('flujocaja')">Caja (efectivo real)</button>
           <hr>
-          <button class="tab" data-tab="expenses" onclick="showTab('expenses')">Gastos / cuentas por pagar</button>
+          <button class="tab" data-tab="expenses" onclick="showTab('expenses')">Registrar gasto</button>
+          <button class="tab" data-tab="fijos" onclick="showTab('fijos')">Gastos fijos (programados)</button>
           <button class="tab" data-tab="pnl" onclick="showTab('pnl')">Resultados (P&amp;L y alertas)</button>
         </div>
       </details>
@@ -118,6 +119,10 @@
 
     <!-- RESUMEN (FASE 7: dashboard ejecutivo) -->
     <section id="tab-dash" class="panel">
+      <details class="helpbox"><summary>¿Para qué sirve y cómo lo uso?</summary>
+        <p>Es tu <b>tablero de control</b>: ventas del mes, cobros reales, gastos y utilidad de un vistazo, más las <b>alertas</b> importantes del negocio.</p>
+        <p><b>Cómo usarlo:</b> échale un ojo cada mañana. Si algo aparece en <b>rojo</b> (stock bajo, dinero atrasado, gastos por vencer), atiende eso primero. Los botones te llevan directo a la sección correspondiente.</p>
+      </details>
       <div class="toolbar">
         <h2 style="margin:0;">Resumen del negocio</h2>
         <span class="muted" id="dashFecha"></span>
@@ -138,6 +143,10 @@
 
     <!-- LEADS -->
     <section id="tab-leads" class="panel hidden">
+      <details class="helpbox"><summary>¿Para qué sirve y cómo lo uso?</summary>
+        <p>Personas que <b>dejaron sus datos en el sitio web</b>. Son clientes potenciales: entre más rápido los atiendes, más vendes.</p>
+        <p><b>Cómo usarlo:</b> cuando contactes a alguien, márcalo como <b>Contactado</b>. Si te compra, dale clic en <b>Convertir en cliente</b> y se agrega solo a tu directorio.</p>
+      </details>
       <div class="toolbar">
         <h2 style="margin:0;">Contactos del formulario</h2>
         <button class="btn btn-sm" onclick="loadLeads()">↻ Actualizar</button>
@@ -155,6 +164,10 @@
 
     <!-- CLIENTES -->
     <section id="tab-clientes" class="panel hidden">
+      <details class="helpbox"><summary>¿Para qué sirve y cómo lo uso?</summary>
+        <p>Tu <b>directorio de clientes</b>. Desde aquí los eliges al cotizar, vender o crear proyectos.</p>
+        <p><b>Cómo usarlo:</b> dale clic en <b>＋ Nuevo cliente</b>, escribe nombre y teléfono (el teléfono es único: si ya existe, el sistema avisa para no duplicar). Puedes ver todo su historial desde su ficha.</p>
+      </details>
       <div class="toolbar">
         <h2 style="margin:0;">Clientes</h2>
         <button class="btn btn-sm" onclick="showClienteForm()">＋ Cliente</button>
@@ -171,6 +184,10 @@
 
     <!-- COTIZACIONES -->
     <section id="tab-quotes" class="panel hidden">
+      <details class="helpbox"><summary>¿Para qué sirve y cómo lo uso?</summary>
+        <p>El historial de tus <b>cotizaciones</b> (propuestas con precio). Cada una tiene folio <b>ADIS-</b> automático.</p>
+        <p><b>Cómo usarlo:</b> cuando el cliente acepte, cambia el estado a <b>Aprobada</b>. Solo una cotización aprobada puede convertirse en proyecto o venta. Las rechazadas quedan guardadas para tu registro.</p>
+      </details>
       <div class="toolbar">
         <h2 style="margin:0;">Cotizaciones</h2>
         <button class="btn btn-sm" onclick="showTab('proposal')">＋ Nueva cotización (Cotizador)</button>
@@ -187,6 +204,10 @@
 
     <!-- COTIZADOR PROFESIONAL -->
     <section id="tab-proposal" class="panel hidden">
+      <details class="helpbox"><summary>¿Para qué sirve y cómo lo uso?</summary>
+        <p>Aquí <b>creas la cotización profesional</b> que le mandas al cliente: con folio, fotos, condiciones y el precio final en formato ADIS. Puedes enviarla por <b>WhatsApp</b>, imprimirla o guardarla.</p>
+        <p><b>Cómo usarlo:</b> elige el cliente (o escríbelo), captura el <b>precio final</b> que le darás y listo — el documento se genera solo. El <b>costo</b> es opcional y es solo tuyo: sirve para estimar tu utilidad y <b>nunca</b> sale en el documento.</p>
+      </details>
       <div class="toolbar">
         <h2 style="margin:0;">📝 Cotizador · Propuesta de remodelación</h2>
         <span style="flex:1;"></span>
@@ -306,6 +327,10 @@
 
     <!-- RESEÑAS -->
     <section id="tab-reviews" class="panel hidden">
+      <details class="helpbox"><summary>¿Para qué sirve y cómo lo uso?</summary>
+        <p>Las <b>reseñas</b> que los clientes dejan en tu sitio web.</p>
+        <p><b>Cómo usarlo:</b> aprueba las buenas para <b>publicarlas en la página</b> (se muestran solas) o desactívalas si no quieres que se vean.</p>
+      </details>
       <div class="toolbar"><h2 style="margin:0;">Publicar reseña en el sitio</h2></div>
       <div class="card-box">
         <div class="row">
@@ -330,6 +355,10 @@
 
     <!-- INVENTARIO -->
     <section id="tab-oc" class="panel hidden">
+      <details class="helpbox"><summary>¿Para qué sirve y cómo lo uso?</summary>
+        <p><b>Órdenes de compra</b>: pedidos que les haces a tus proveedores, con folio <b>OC-</b>.</p>
+        <p><b>Cómo usarlo:</b> crea la orden con el proveedor y los productos. Cuando te llegue el material, dale clic en <b>Recibir</b> (puede ser parcial): lo recibido <b>entra solo al inventario</b>. El pago al proveedor se registra después en <b>Registrar gasto</b>.</p>
+      </details>
       <div class="toolbar">
         <h2 style="margin:0;">Órdenes de compra</h2>
         <select id="ocFiltro" onchange="renderOC()"><option value="">Todos los estados</option><option>BORRADOR</option><option>AUTORIZADA</option><option>ENVIADA</option><option>PARCIAL</option><option>RECIBIDA</option><option>CANCELADA</option></select>
@@ -353,6 +382,10 @@
     </section>
 
     <section id="tab-inventory" class="panel hidden">
+      <details class="helpbox"><summary>¿Para qué sirve y cómo lo uso?</summary>
+        <p>Tus <b>productos y existencias</b>. La regla de oro: la existencia solo cambia con <b>movimientos</b> (entrada / salida / ajuste), cada uno con fecha, usuario y folio — así sabes exactamente qué pasó con tu material.</p>
+        <p><b>Cómo usarlo:</b> para dar de alta productos usa <b>Productos → Nuevo</b>. Para meter o sacar material, usa <b>Entrada</b> (compras, ajustes) o <b>Salida</b>. Si intentas sacar más de lo que hay, el sistema lo bloquea.</p>
+      </details>
       <div class="toolbar">
         <h2 style="margin:0;">Inventario</h2>
         <input id="invSearch" placeholder="Buscar código o nombre..." oninput="renderInventory()" style="width:200px;">
@@ -401,6 +434,10 @@
 
     <!-- VENTAS -->
     <section id="tab-sales" class="panel hidden">
+      <details class="helpbox"><summary>¿Para qué sirve y cómo lo uso?</summary>
+        <p>Aquí registras las <b>ventas</b>: qué material salió, a qué cliente y a qué precio. El sistema calcula la <b>utilidad</b> solo (precio − costo) y descuenta el inventario.</p>
+        <p><b>Cómo usarlo:</b> dale clic en <b>＋ Nueva venta</b>, elige cliente y productos de la lista, guarda. Si te equivocas, usa <b>Anular</b>: revierte el stock y queda fuera de los resultados. Las ventas no se borran, se anulan.</p>
+      </details>
       <div class="toolbar"><h2 style="margin:0;">Registrar venta</h2></div>
       <div class="card-box">
         <div class="row">
@@ -435,6 +472,10 @@
 
     <!-- PROYECTOS -->
     <section id="tab-proyectos" class="panel hidden">
+      <details class="helpbox"><summary>¿Para qué sirve y cómo lo uso?</summary>
+        <p>La <b>ficha financiera de cada obra</b>: presupuesto, lo cobrado, los gastos directos y la utilidad real del proyecto.</p>
+        <p><b>Cómo usarlo:</b> lo más fácil es crear el proyecto <b>desde una cotización aprobada</b> (se copian cliente y presupuesto solos). Ahí le agregas cobros y gastos directos. Cuando termine, márcalo <b>TERMINADO</b>.</p>
+      </details>
       <div class="toolbar">
         <h2 style="margin:0;">Proyectos</h2>
         <select id="proyDesdeCot"></select>
@@ -453,9 +494,13 @@
 
     <!-- COBROS / CUENTAS POR COBRAR -->
     <section id="tab-cobros" class="panel hidden">
-      <div class="toolbar"><h2 style="margin:0;">Cuentas por cobrar</h2><button class="btn btn-sm" onclick="loadCXC()">↻ Actualizar</button></div>
+      <details class="helpbox"><summary>¿Para qué sirve y cómo lo uso?</summary>
+        <p>Dos cosas en una sección: <b>1) Registrar ingreso</b> — dinero que te pagan (por default cuenta como <b>venta del mes</b>; elige "Otro ingreso" solo si fue un reembolso o algo fuera del negocio). <b>2) Cobrar ventas</b> — abajo ves las ventas con saldo pendiente y les das clic en <b>Cobrar</b>.</p>
+        <p><b>Cómo usarlo:</b> la fecha viene puesta (cámbiala solo si es de otro día), elige el concepto de la lista, escribe el monto y guarda. Verás el folio <b>ING-</b> en el aviso ✅.</p>
+      </details>
+      <div class="toolbar"><h2 style="margin:0;">Registrar ingreso</h2><button class="btn btn-sm" onclick="loadCXC()">↻ Actualizar</button></div>
       <div class="card-box" style="margin-bottom:1rem;">
-        <h3 class="flow-h" style="margin-top:0;">➕ Registrar ingreso <span class="muted">(dinero recibido — por default cuenta como venta)</span></h3>
+        <h3 class="flow-h" style="margin-top:0;">➕ Ingreso recibido <span class="muted">(por default cuenta como venta del mes)</span></h3>
         <div class="row">
           <div><label>Fecha</label><input type="date" id="ingFecha"></div>
           <div><label>Concepto *</label><input id="ingConcepto" list="ingCatList" placeholder="Venta de ..."><datalist id="ingCatList"></datalist></div>
@@ -491,12 +536,19 @@
     <!-- GASTOS -->
     <section id="tab-expenses" class="panel hidden">
       <div class="toolbar"><h2 style="margin:0;">Registrar gasto</h2></div>
+      <details class="helpbox"><summary>¿Para qué sirve y cómo lo uso?</summary>
+        <p>Aquí anotas <b>todo lo que el negocio gasta</b> (renta, luz, gasolina, material, nómina...). Cada gasto recibe un folio <b>GAS-</b> automático.</p>
+        <p><b>¿Ya lo pagaste?</b> Selecciona <b>"Sí, ya lo pagué"</b> y el sistema registra el gasto <b>y el pago en un solo paso</b> (folio PAG-). Si aún no lo pagas, déjalo en "No": el gasto queda <b>por pagar</b> y cuando lo cubras vas a <b>Cuentas por pagar</b> y le das clic en <b>Pagar</b>.</p>
+        <p><b>Consejo:</b> la categoría la eliges de la lista (o escribes una nueva). En <b>Descripción</b> pon siempre algo que te recuerde qué fue (ej. "Recibo CFE local Nogales").</p>
+      </details>
       <div class="card-box">
         <div class="row">
           <div><label>Fecha</label><input type="date" id="gFecha"></div>
           <div><label>Categoría *</label><input id="gCategoria" list="gCatList" placeholder="Renta, Luz, Nómina..."><datalist id="gCatList"></datalist></div>
           <div><label>Monto *</label><input type="number" id="gMonto" min="0" step="0.01" placeholder="0.00"></div>
           <div><label>Moneda</label><select id="gMoneda"><option value="MXN">MXN</option><option value="USD">USD</option></select></div>
+          <div><label>¿Ya lo pagaste?</label><select id="gPagado"><option value="no">No — quedará por pagar</option><option value="si">Sí, ya lo pagué (gasto y pago juntos)</option></select></div>
+          <div><label>Método de pago</label><select id="gMetodo"><option>Transferencia</option><option>Efectivo</option><option>Tarjeta</option><option>Depósito</option><option>Otro</option></select></div>
         </div>
         <label>Descripción</label>
         <input id="gDesc" placeholder="Ej. Recibo CFE local Nogales">
@@ -529,8 +581,44 @@
       </div>
     </section>
 
+    <!-- GASTOS FIJOS (programados: se repiten y el panel alerta vencimientos) -->
+    <section id="tab-fijos" class="panel hidden">
+      <div class="toolbar"><h2 style="margin:0;">Gastos fijos (programados)</h2><button class="btn btn-sm" onclick="loadFijos()">↻ Actualizar</button></div>
+      <details class="helpbox"><summary>¿Para qué sirve y cómo lo uso?</summary>
+        <p>Programa aquí los gastos que <b>se repiten solos</b> (renta, internet, nómina, membresías...). El sistema te avisa cuándo <b>🔴 vencen</b> o <b>🟠 están por vencer (3 días antes)</b> — también te avisa al entrar al panel.</p>
+        <p><b>Cómo capturar:</b> escribe el concepto, elige la categoría de la lista, monto y <b>cada cuánto se repite</b> (semana, 2 semanas, mes, año), y pon la fecha del próximo pago. Listo.</p>
+        <p><b>Cuando llegue la fecha:</b> dale clic en <b>Generar gasto</b> y se crea el gasto de esa ocurrencia (folio GAS-, queda por pagar) <b>y la siguiente fecha se programa sola</b>.</p>
+      </details>
+      <div class="card-box" style="margin-bottom:1rem;">
+        <div class="row">
+          <div><label>Concepto *</label><input id="fConcepto" placeholder="Renta del local"></div>
+          <div><label>Categoría</label><input id="fCategoria" list="gCatList" placeholder="Renta, Nómina..."></div>
+          <div><label>Monto *</label><input type="number" id="fMonto" min="0" step="0.01" placeholder="0.00"></div>
+          <div><label>Moneda</label><select id="fMoneda"><option value="MXN">MXN</option><option value="USD">USD</option></select></div>
+          <div><label>Se repite</label><select id="fFrecuencia"><option value="semanal">Cada semana</option><option value="quincenal">Cada 2 semanas</option><option value="mensual" selected>Cada mes</option><option value="anual">Cada año</option></select></div>
+          <div><label>Próximo pago *</label><input type="date" id="fProxima"></div>
+        </div>
+        <label>Notas</label>
+        <input id="fNotas" placeholder="Opcional (ej. día de corte, contrato, cuenta...)">
+        <div class="toolbar" style="margin-top:0.6rem;">
+          <button class="btn btn-solid" onclick="addFijo()">💾 Guardar gasto fijo</button>
+        </div>
+      </div>
+      <div id="fijosDash" class="pnl-cards" style="margin-bottom:1rem;"></div>
+      <div class="card-box table-scroll">
+        <table>
+          <thead><tr><th>Concepto</th><th>Categoría</th><th>Monto</th><th>Se repite</th><th>Próximo pago</th><th>Alerta</th><th>Último gasto</th><th></th></tr></thead>
+          <tbody id="fijosTable"><tr><td colspan="8" class="muted">Cargando…</td></tr></tbody>
+        </table>
+      </div>
+    </section>
+
     <!-- RESULTADOS -->
     <section id="tab-pnl" class="panel hidden">
+      <details class="helpbox"><summary>¿Para qué sirve y cómo lo uso?</summary>
+        <p>El <b>estado de resultados</b> (P&amp;L): ingresos − costo de lo vendido − gastos = <b>utilidad real del mes</b>. Es la pregunta "¿el mes dejó ganancia de verdad?".</p>
+        <p><b>Cómo usarlo:</b> elige el mes con el selector de arriba. Revisa de dónde salió la utilidad (o la pérdida): ventas, costos y gastos por categoría. Las ventas anuladas y gastos cancelados no cuentan.</p>
+      </details>
       <div class="toolbar">
         <h2 style="margin:0;">Estado de resultados</h2>
         <input type="month" id="pnlMes" style="width:auto;">
@@ -547,6 +635,9 @@
 
     <!-- NEGOCIO (finanzas: ingresos, utilidad y flujo de efectivo — nada de tráfico web) -->
     <section id="tab-analytics" class="panel hidden">
+      <details class="helpbox"><summary>¿Para qué sirve y cómo lo uso?</summary>
+        <p>Tus <b>finanzas en gráficas</b>: ingresos vs gastos y gastos por categoría de los últimos 12 meses. Son las mismas cifras de Resultados, dibujadas para ver tendencias de un vistazo.</p>
+      </details>
       <div class="toolbar">
         <h2 style="margin:0;">💼 Negocio</h2>
         <span class="muted">Ingresos, utilidad y flujo de efectivo</span>
@@ -581,6 +672,10 @@
 
     <!-- FLUJO DE EFECTIVO (FASE 5: entradas = cobros reales, salidas = pagos reales) -->
     <section id="tab-flujocaja" class="panel hidden">
+      <details class="helpbox"><summary>¿Para qué sirve y cómo lo uso?</summary>
+        <p>Tu <b>efectivo real</b>: dinero que entró (cobros) menos dinero que salió (pagos), desglosado por día.</p>
+        <p><b>Ojo:</b> no es lo mismo que las ventas — aquí solo cuenta dinero que <b>efectivamente se movió</b>. Ejemplo: vendes $10,000 a crédito → en Resultados ya es venta; en Caja entra hasta que te paguen.</p>
+      </details>
       <div class="toolbar">
         <h2 style="margin:0;">Flujo de efectivo</h2>
         <select id="flujoRango" onchange="loadFlujoCaja()" style="width:auto;">
@@ -608,6 +703,10 @@
 
     <!-- SITIO WEB (analítica del sitio, alimentada por el tracker; Looker Studio opcional) -->
     <section id="tab-flow" class="panel hidden">
+      <details class="helpbox"><summary>¿Para qué sirve y cómo lo uso?</summary>
+        <p>La <b>analítica de tu página web</b>: cuántas visitas hay hoy y en 7/30 días, de dónde llegan (Google, Facebook...), qué páginas ven y con qué dispositivo.</p>
+        <p><b>Para qué sirve:</b> saber qué publicidad funciona y qué productos miran más. Solo consulta — no necesitas capturar nada aquí.</p>
+      </details>
       <div class="toolbar">
         <h2 style="margin:0;">🌐 Sitio web</h2>
         <span class="muted" id="flowRango"></span>
@@ -679,6 +778,7 @@
         <details class="ayuda-item"><summary>💰 Cobros</summary><p>Cuentas por cobrar: qué ventas tienen <b>saldo pendiente</b>. Registrar un cobro = <b>dinero real que te pagaron</b>. Una venta puede cobrarse en partes: <b>PENDIENTE → PARCIAL → PAGADA</b>. No se puede cobrar de más ni cobrar una venta anulada.</p></details>
         <details class="ayuda-item"><summary>🧮 Caja</summary><p>Tu <b>efectivo real del mes</b>: suma de cobros que entraron menos pagos que salieron, desglosado por día. Ojo: <b>no es lo mismo que las ventas ni que el estado de resultados</b> — aquí solo entra dinero que efectivamente se movió.</p></details>
         <details class="ayuda-item"><summary>📉 Gastos</summary><p>Gastos del negocio (renta, luz, gasolina, etc.) con folio <b>GAS-</b>. Conceptos clave: <b>gasto ≠ pago</b>. Registrar el gasto dice “me debo esto”; el <b>pago</b> (folio PAG-) es cuando sale el dinero. Puedes cancelar un gasto solo si aún no le has pagado nada.</p></details>
+        <details class="ayuda-item"><summary>🔁 Gastos fijos (programados)</summary><p>Para gastos que se repiten (renta, internet, nómina...): indica concepto, monto y cada cuánto se repite (semana, 2 semanas, mes, año) con su fecha del próximo pago. El panel te avisa con <b>🔴 vencido / 🟠 por vencer (≤3 días)</b> y con un aviso al entrar. Con <b>Generar gasto</b> se crea el gasto de esta ocurrencia (folio GAS-, queda por pagar) y se programa la siguiente fecha automáticamente.</p></details>
         <details class="ayuda-item"><summary>📊 Resultados (P&amp;L)</summary><p>Estado de resultados por mes o por proyecto: <b>ingresos − costo de lo vendido − gastos = utilidad</b>. Las ventas anuladas no cuentan como ingreso. Incluye las <b>alertas</b> del negocio. Sirve para saber si el mes dejó ganancia de verdad.</p></details>
         <details class="ayuda-item"><summary>⭐ Reseñas</summary><p>Las reseñas que dejan clientes en el sitio. Apruébalas para <b>publicarlas en la página</b> o desactívalas si no quieres mostrarlas.</p></details>
         <details class="ayuda-item"><summary>💼 Negocio</summary><p>Las finanzas de un vistazo: <b>ventas del mes, utilidad neta, flujo de efectivo de los últimos 30 días, gastos por categoría y cotizaciones del mes</b>. Son las mismas cifras del estado de resultados y la caja, dibujadas en gráficas.</p></details>
