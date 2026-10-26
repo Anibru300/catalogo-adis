@@ -2,29 +2,15 @@
 
 ## ➡️ PRÓXIMOS PASOS (continuar aquí)
 
-1. **REDEPLOY del Apps Script** (pendiente, único paso que solo puede hacer el
-   dueño). Ahora activa TODO de golpe:
-   - Fix del endpoint de categorías (campo `clase` — sin esto falla el gestor
-     INVENTARIO → Configuración).
-   - Ingresos sin venta cuentan como **Ventas del mes** (`tipo=venta|otro`).
-   - **Gastos fijos** (nuevo): hoja `GastosFijos` + endpoint `gasto_fijo`.
-   - **"Ya lo pagué"**: el endpoint `gasto` ahora devuelve `id` para el pago
-     automático (gasto + pago en un paso).
-   Pasos: Hoja ERP → Extensiones > Apps Script → borrar todo → pegar
-   `admin/apps-script.gs` del disco (2,291 líneas) → Implementar > Administrar
-   implementaciones > ✏️ > **Nueva versión** > Implementar → esperar 2-5 min.
-2. **Tras el redeploy, pruebas en vivo con el dueño:**
-   - Registrar un gasto con "Sí, ya lo pagué" → debe salir `✅ Gasto y pago
-     registrados — GAS- · PAG-` y el gasto quedar PAGADA.
-   - Registrar un ingreso tipo Venta → dashboard debe mostrarlo en Ventas.
-   - Alta de un gasto fijo de prueba (ej. Renta $3,000 mensual) → ver la
-     alerta 🟠/🔴 y "Generar gasto".
-3. **Verificar el ingreso de $25,000** que capturó el dueño el 18-oct: debe
-   aparecer en Dinero → Registrar ingreso → Cobros recientes (folio ING-0006).
-   El aviso no lo vio porque antes aparecía arriba de todo; ahora los avisos
-   son toast flotante.
-4. Días **09–14 y 16–18 oct siguen sin datos** — cargarlos con el dueño usando
-   los formularios del panel (ya sabe usarlos).
+1. ~~REDEPLOY del Apps Script~~ ✅ **HECHO el 2026-10-25** (cuenta
+   `ing.carlosurbona300@gmail.com`, proyecto con código, vía ✏️ Nueva versión).
+   Verificado en vivo: bitácora, 18 categorías, gastos fijos (fechas exactas,
+   sin corrimiento de día), "Ya lo pagué" (gasto+pago en un paso), log_cliente.
+2. **Pendiente del dueño (uso real)**: probar en producción un gasto con
+   "Sí, ya lo pagué" y programar sus gastos fijos reales (renta, internet...).
+   La Bitácora (Sistema → Bitácora) ya registra errores si algo falla.
+3. Días **09–14 y 16–18 oct siguen sin datos** — cargarlos con el dueño usando
+   los formularios del panel.
 
 ## Hecho hoy (commit `40e15b5`, en producción tras deploy de Pages)
 
