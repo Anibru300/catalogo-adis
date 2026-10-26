@@ -198,6 +198,17 @@ function validarFecha(f) {
   f = String(f || '').trim();
   return /^\d{4}-\d{2}-\d{2}$/.test(f) ? f : null;
 }
+// Normaliza un valor de celda que puede venir como Date (Sheets convierte las
+// fechas al guardarlas) o como texto, a 'yyyy-MM-dd'. Vacio si no es fecha util.
+function fechaISO_(v) {
+  if (!v) return '';
+  if (Object.prototype.toString.call(v) === '[object Date]') {
+    if (isNaN(v.getTime())) return '';
+    return Utilities.formatDate(v, 'America/Hermosillo', 'yyyy-MM-dd');
+  }
+  var s = String(v).trim();
+  return /^\d{4}-\d{2}-\d{2}/.test(s) ? s.slice(0, 10) : '';
+}
 function validarMoneda(m) {
   m = String(m || '').trim().toUpperCase();
   if (!m) return cfg('moneda_base', 'MXN');
@@ -618,7 +629,13 @@ function doGetInterno(e) {
     return json({ ok: true, porMes: porMes, ventas: vs.slice(-100) });
   }
   if (action === 'gastos') return json({ ok: true, gastos: filasComoObjetos(SHEET_EXPENSES) });
-  if (action === 'gastos_fijos') return json({ ok: true, fijos: filasComoObjetos(SHEET_GASTOS_FIJOS) });
+  if (action === 'gastos_fijos') {
+    var fijosL = filasComoObjetos(SHEET_GASTOS_FIJOS).map(function (f) {
+      f.proxima_fecha = fechaISO_(f.proxima_fecha); // Sheets la devuelve como Date
+      return f;
+    });
+    return json({ ok: true, fijos: fijosL });
+  }
   if (action === 'logs') { // bitacora: ultimos 300 registros, mas nuevos primero
     var hL = ss().getSheetByName(SHEET_LOG);
     if (!hL || hL.getLastRow() < 2) return json({ ok: true, logs: [] });
@@ -1637,7 +1654,7 @@ function doPostInterno(data) {
       var monedaGf = validarMoneda(hF.getRange(filaGf, 5).getValue() || cfg('moneda_base', 'MXN'));
       var frecGf = String(hF.getRange(filaGf, 6).getValue() || 'mensual');
       if (FRECUENCIAS.indexOf(frecGf) === -1) frecGf = 'mensual';
-      var proximaGf = String(hF.getRange(filaGf, 7).getValue() || hoy_());
+      var proximaGf = fechaISO_(hF.getRange(filaGf, 7).getValue()) || hoy_();
       var tcGf = Number(cfg('tipo_cambio', '18.5')) || 1;
       var folioGf = siguienteFolio('GAS', 'folio_gasto', 4);
       hoja(SHEET_EXPENSES, ENC_GASTOS).appendRow([hoy_(), categoriaGf,
