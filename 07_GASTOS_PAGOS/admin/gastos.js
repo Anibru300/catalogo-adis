@@ -198,6 +198,7 @@ function showPagoForm(gastoId){
     '<div class="toolbar" style="margin-top:1rem;"><button class="btn btn-solid btn-sm" onclick="savePago(\''+x.gasto_id+'\')">Guardar pago</button> ' +
     '<button class="btn btn-sm" onclick="$(\'pagoForms\').innerHTML=\'\'">Cerrar</button></div></div>';
   $('pagoForms').scrollIntoView({behavior:'smooth', block:'nearest'});
+  notice('👇 Completa los datos del pago abajo y dale clic en "Guardar pago".', true);
 }
 function savePago(gastoId){
   const monto = leerMonto('pgMonto');
@@ -212,14 +213,15 @@ function savePago(gastoId){
 // doble paso sin confirm(): el boton pide confirmacion a si mismo
 function cancelarGasto(id, btn){
   if (btn.dataset.confirm !== '1') {
-    btn.dataset.confirm = '1'; btn.textContent = '¿Seguro?';
-    setTimeout(()=>{ if (btn.isConnected){ btn.dataset.confirm=''; btn.textContent='Cancelar'; } }, 3000);
+    btn.dataset.confirm = '1'; btn.textContent = '¿Seguro? Clic de nuevo';
+    setTimeout(()=>{ if (btn.isConnected){ btn.dataset.confirm=''; btn.textContent='Cancelar'; } }, 4000);
     return;
   }
+  notice('⏳ Cancelando gasto…', false);
   apiPost({tipo:'gasto_cancelar', id}).then(d=>{
     notice(d&&d.ok?'Gasto cancelado (baja lógica; queda en el historial).':errMsg(d), !!(d&&d.ok));
     if(d&&d.ok) loadBiz();
-  });
+  }).catch(()=>{ notice('Error de conexión. Intenta de nuevo.', false); logCliente('error','cancelar_gasto', 'id='+id); });
 }
 
 
