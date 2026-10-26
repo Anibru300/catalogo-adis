@@ -79,7 +79,7 @@ function addExpense(){
   const monedaG = $('gMoneda').value;
   apiPost({tipo:'gasto', fecha:$('gFecha').value, categoria:cat, descripcion:$('gDesc').value.trim(),
     monto, moneda:monedaG}).then(d=>{
-    if (!(d&&d.ok)) { notice(errMsg(d,'No se pudo guardar.'), false); return; }
+    if (!(d&&d.ok)) { notice(errMsg(d,'No se pudo guardar.'), false); logCliente('error','gasto', errMsg(d,'respuesta sin ok')+' | categoria='+cat+' monto='+monto); return; }
     if (!yaPagado) {
       notice('✅ Gasto correcto — folio '+(d.folio||'—')+' · '+fmtMoney(monto)+' '+monedaG+'. Quedó POR PAGAR: cuando lo cubras, ve a "Cuentas por pagar" y dale clic en Pagar.', true);
       $('gMonto').value=''; $('gDesc').value=''; loadBiz();
@@ -88,6 +88,7 @@ function addExpense(){
     // "Ya lo pagué": gasto y pago registrados en un solo paso
     apiPost({tipo:'gasto_pago', gasto_id:d.id, fecha:fLocal(), monto, moneda:monedaG,
       metodo:$('gMetodo')?$('gMetodo').value:'Transferencia', notas:''}).then(p=>{
+      if (!(p&&p.ok)) logCliente('error','gasto_pago_auto', 'gasto '+(d.folio||'—')+' (id='+d.id+') sin pago: '+errMsg(p,'respuesta sin ok'));
       notice(p&&p.ok
         ? '✅ Gasto y pago registrados — '+(d.folio||'—')+' · '+(p.folio||'—')+' · '+fmtMoney(monto)+' '+monedaG+'. Gasto PAGADA.'
         : '⚠️ El gasto '+(d.folio||'—')+' se guardó, pero el PAGO falló: ve a "Cuentas por pagar" y dale clic en Pagar.',
@@ -95,9 +96,10 @@ function addExpense(){
       $('gMonto').value=''; $('gDesc').value=''; if ($('gPagado')) $('gPagado').value='no'; loadBiz();
     }).catch(()=>{
       notice('⚠️ El gasto '+(d.folio||'—')+' se guardó, pero el PAGO no pudo registrarse (conexión). Ve a "Cuentas por pagar" y dale clic en Pagar.', false);
+      logCliente('error','gasto_pago_auto', 'gasto '+(d.folio||'—')+' (id='+d.id+') sin pago: error de conexion');
       $('gMonto').value=''; $('gDesc').value=''; if ($('gPagado')) $('gPagado').value='no'; loadBiz();
     });
-  }).catch(()=>notice('Error de conexión. Revisa tu internet e intenta de nuevo.', false));
+  }).catch(()=>{ notice('Error de conexión. Revisa tu internet e intenta de nuevo.', false); logCliente('error','gasto_red', 'sin respuesta del servidor | categoria='+cat+' monto='+monto); });
 }
 // FASE 5: gasto != pago. Cada gasto lleva folio GAS-, estado (ACTIVA/CANCELADA) y pagos parciales.
 function renderExpenses(list){

@@ -108,6 +108,12 @@
           <button class="tab" data-tab="flow" onclick="showTab('flow')">Sitio web</button>
         </div>
       </details>
+      <details class="mgroup" data-group="logs">
+        <summary>Sistema</summary>
+        <div class="mdrop">
+          <button class="tab" data-tab="logs" onclick="showTab('logs')">Bitácora (errores y movimientos)</button>
+        </div>
+      </details>
           <button class="tab" data-tab="ayuda" onclick="showTab('ayuda')">Ayuda</button>
     </nav>
     <button id="menuToggle" onclick="document.getElementById('mainMenu').classList.toggle('open')" aria-label="Menú">☰</button>
@@ -743,6 +749,28 @@
         <h3 class="flow-h">🕘 Últimas visitas</h3>
         <table><thead><tr><th>Fecha</th><th>Hora</th><th>Página</th><th>Apartado</th><th>Origen</th><th>Dispositivo</th><th>Navegador</th></tr></thead><tbody id="flowTabla"></tbody></table>
       </div>
+      </div>
+    </section>
+
+    <!-- BITACORA (errores y movimientos del sistema: para diagnosticar sin adivinar) -->
+    <section id="tab-logs" class="panel hidden">
+      <div class="toolbar"><h2 style="margin:0;">Bitácora del sistema</h2><button class="btn btn-sm" onclick="loadLogs()">↻ Actualizar</button></div>
+      <details class="helpbox"><summary>¿Para qué sirve y cómo lo uso?</summary>
+        <p>Aquí se guarda <b>todo lo que hace el sistema</b>: gastos e ingresos registrados, pagos, errores y avisos del panel. Es la "caja negra" para saber <b>qué pasó y por qué</b> cuando algo sale mal.</p>
+        <p><b>Cómo usarlo:</b> si en el panel te apareció un error, abre esta sección y busca las líneas marcadas en <b>rojo</b> (acciones <code>cliente_error</code> o <code>error_interno</code>). El detalle dice la causa. Puedes filtrar por palabra (ej. "gasto", "token", "pago"). Orden: lo más reciente primero.</p>
+      </details>
+      <div class="card-box" style="margin-bottom:1rem;">
+        <div class="row">
+          <div style="flex:1;min-width:220px;"><label>Buscar en la bitácora</label><input id="logFiltro" placeholder="Ej. gasto, error, token, pago..." oninput="renderLogs()"></div>
+          <div><label>Mostrar</label><select id="logTipo" onchange="renderLogs()"><option value="">Todo</option><option value="error">Solo errores y avisos</option><option value="cliente_">Solo del panel (cliente)</option></select></div>
+        </div>
+      </div>
+      <div id="logsDash" class="pnl-cards" style="margin-bottom:1rem;"></div>
+      <div class="card-box table-scroll">
+        <table>
+          <thead><tr><th>Fecha y hora</th><th>Usuario</th><th>Acción</th><th>Detalle</th></tr></thead>
+          <tbody id="logsTable"><tr><td colspan="4" class="muted">Cargando…</td></tr></tbody>
+        </table>
       </div>
     </section>
 

@@ -445,6 +445,12 @@
           <button class="tab" data-tab="flow" onclick="showTab('flow')">Sitio web</button>
         </div>
       </details>
+      <details class="mgroup" data-group="logs">
+        <summary>Sistema</summary>
+        <div class="mdrop">
+          <button class="tab" data-tab="logs" onclick="showTab('logs')">Bitácora (errores y movimientos)</button>
+        </div>
+      </details>
           <button class="tab" data-tab="ayuda" onclick="showTab('ayuda')">Ayuda</button>
     </nav>
     <button id="menuToggle" onclick="document.getElementById('mainMenu').classList.toggle('open')" aria-label="Menú">☰</button>
@@ -1083,6 +1089,28 @@
       </div>
     </section>
 
+    <!-- BITACORA (errores y movimientos del sistema: para diagnosticar sin adivinar) -->
+    <section id="tab-logs" class="panel hidden">
+      <div class="toolbar"><h2 style="margin:0;">Bitácora del sistema</h2><button class="btn btn-sm" onclick="loadLogs()">↻ Actualizar</button></div>
+      <details class="helpbox"><summary>¿Para qué sirve y cómo lo uso?</summary>
+        <p>Aquí se guarda <b>todo lo que hace el sistema</b>: gastos e ingresos registrados, pagos, errores y avisos del panel. Es la "caja negra" para saber <b>qué pasó y por qué</b> cuando algo sale mal.</p>
+        <p><b>Cómo usarlo:</b> si en el panel te apareció un error, abre esta sección y busca las líneas marcadas en <b>rojo</b> (acciones <code>cliente_error</code> o <code>error_interno</code>). El detalle dice la causa. Puedes filtrar por palabra (ej. "gasto", "token", "pago"). Orden: lo más reciente primero.</p>
+      </details>
+      <div class="card-box" style="margin-bottom:1rem;">
+        <div class="row">
+          <div style="flex:1;min-width:220px;"><label>Buscar en la bitácora</label><input id="logFiltro" placeholder="Ej. gasto, error, token, pago..." oninput="renderLogs()"></div>
+          <div><label>Mostrar</label><select id="logTipo" onchange="renderLogs()"><option value="">Todo</option><option value="error">Solo errores y avisos</option><option value="cliente_">Solo del panel (cliente)</option></select></div>
+        </div>
+      </div>
+      <div id="logsDash" class="pnl-cards" style="margin-bottom:1rem;"></div>
+      <div class="card-box table-scroll">
+        <table>
+          <thead><tr><th>Fecha y hora</th><th>Usuario</th><th>Acción</th><th>Detalle</th></tr></thead>
+          <tbody id="logsTable"><tr><td colspan="4" class="muted">Cargando…</td></tr></tbody>
+        </table>
+      </div>
+    </section>
+
     <!-- AYUDA (FASE 8: guia del dueno del negocio) -->
     <section id="tab-ayuda" class="panel hidden">
       <div class="toolbar"><h2 style="margin:0;">❓ Ayuda — ¿Para qué sirve cada sección?</h2></div>
@@ -1185,6 +1213,21 @@ function manejarSesion(d){
   }
   return d;
 }
+/* ---------- bitacora de errores: reportar al backend para diagnosticar ----------
+   Sin esto, un fallo en el celular/computadora del dueño desaparecia sin dejar
+   rastro. Ahora todo error del panel queda en la hoja Log (Sistema > Bitacora).
+   Fire-and-forget: jamas interrumpe al usuario; solo con sesion activa. */
+function logCliente(nivel, contexto, detalle){
+  try {
+    if (!token) return;
+    apiPost({tipo:'log_cliente', nivel:String(nivel).slice(0,20), contexto:String(contexto).slice(0,80),
+      detalle:String(detalle).slice(0,450)}).catch(()=>{});
+  } catch (e) {}
+}
+window.addEventListener('error', ev=>logCliente('error','js',
+  (ev.message||'error desconocido')+' @ '+String(ev.filename||'').split('/').pop()+':'+(ev.lineno||'')));
+window.addEventListener('unhandledrejection', ev=>logCliente('error','promesa',
+  String((ev.reason && (ev.reason.message||ev.reason)) || ev.reason).slice(0,300)));
 function _fetchJson(url, opciones, reintento){
   return fetch(url, opciones)
     .then(function(r){ return r.json().catch(function(){ return null; }); })
@@ -1192,6 +1235,11 @@ function _fetchJson(url, opciones, reintento){
       /* respuesta no-JSON (propagación/302 a HTML): reintentar una vez antes de fallar */
       if (d === null && !reintento){
         return new Promise(function(res){ setTimeout(function(){ res(_fetchJson(url, opciones, true)); }, 2500); });
+      }
+      if (d === null) {
+        let desc = url.slice(-60);
+        try { if (opciones && opciones.method==='POST') desc = 'POST '+(JSON.parse(opciones.body||'{}').tipo||''); } catch (eP) {}
+        logCliente('error','api_no_json', desc+': el servidor respondio HTML o vacio (tipico de Apps Script sin redeploy o con error de ejecucion)');
       }
       return manejarSesion(d);
     });
@@ -1351,7 +1399,7 @@ function showTab(name){
   document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active', t.dataset.tab===name));
   document.querySelectorAll('.mgroup').forEach(g=>{ g.removeAttribute('open'); g.classList.toggle('active', (g.dataset.group||'').split(' ').indexOf(name)!==-1); });
   const nav = $('mainMenu'); if (nav) nav.classList.remove('open');
-  ['dash','leads','clientes','quotes','proposal','inventory','oc','sales','proyectos','cobros','fijos','expenses','pnl','reviews','analytics','flujocaja','flow','ayuda'].forEach(n=>$('tab-'+n).classList.toggle('hidden', n!==name));
+  ['dash','leads','clientes','quotes','proposal','inventory','oc','sales','proyectos','cobros','fijos','expenses','pnl','reviews','analytics','flujocaja','flow','logs','ayuda'].forEach(n=>$('tab-'+n).classList.toggle('hidden', n!==name));
   if (name==='dash') loadDash();
   if (name==='pnl' && !$('pnlCards').innerHTML) generarPNL();
   if (name==='flow') loadFlow();
@@ -1361,6 +1409,7 @@ function showTab(name){
   if (name==='proyectos') loadProyectos();
   if (name==='cobros') loadCXC();
   if (name==='fijos') loadFijos();
+  if (name==='logs') loadLogs();
   if (name==='flujocaja') loadFlujoCaja();
   if (name==='pnl') loadAlertas();
 }
@@ -3838,7 +3887,7 @@ function addExpense(){
   const monedaG = $('gMoneda').value;
   apiPost({tipo:'gasto', fecha:$('gFecha').value, categoria:cat, descripcion:$('gDesc').value.trim(),
     monto, moneda:monedaG}).then(d=>{
-    if (!(d&&d.ok)) { notice(errMsg(d,'No se pudo guardar.'), false); return; }
+    if (!(d&&d.ok)) { notice(errMsg(d,'No se pudo guardar.'), false); logCliente('error','gasto', errMsg(d,'respuesta sin ok')+' | categoria='+cat+' monto='+monto); return; }
     if (!yaPagado) {
       notice('✅ Gasto correcto — folio '+(d.folio||'—')+' · '+fmtMoney(monto)+' '+monedaG+'. Quedó POR PAGAR: cuando lo cubras, ve a "Cuentas por pagar" y dale clic en Pagar.', true);
       $('gMonto').value=''; $('gDesc').value=''; loadBiz();
@@ -3847,6 +3896,7 @@ function addExpense(){
     // "Ya lo pagué": gasto y pago registrados en un solo paso
     apiPost({tipo:'gasto_pago', gasto_id:d.id, fecha:fLocal(), monto, moneda:monedaG,
       metodo:$('gMetodo')?$('gMetodo').value:'Transferencia', notas:''}).then(p=>{
+      if (!(p&&p.ok)) logCliente('error','gasto_pago_auto', 'gasto '+(d.folio||'—')+' (id='+d.id+') sin pago: '+errMsg(p,'respuesta sin ok'));
       notice(p&&p.ok
         ? '✅ Gasto y pago registrados — '+(d.folio||'—')+' · '+(p.folio||'—')+' · '+fmtMoney(monto)+' '+monedaG+'. Gasto PAGADA.'
         : '⚠️ El gasto '+(d.folio||'—')+' se guardó, pero el PAGO falló: ve a "Cuentas por pagar" y dale clic en Pagar.',
@@ -3854,9 +3904,10 @@ function addExpense(){
       $('gMonto').value=''; $('gDesc').value=''; if ($('gPagado')) $('gPagado').value='no'; loadBiz();
     }).catch(()=>{
       notice('⚠️ El gasto '+(d.folio||'—')+' se guardó, pero el PAGO no pudo registrarse (conexión). Ve a "Cuentas por pagar" y dale clic en Pagar.', false);
+      logCliente('error','gasto_pago_auto', 'gasto '+(d.folio||'—')+' (id='+d.id+') sin pago: error de conexion');
       $('gMonto').value=''; $('gDesc').value=''; if ($('gPagado')) $('gPagado').value='no'; loadBiz();
     });
-  }).catch(()=>notice('Error de conexión. Revisa tu internet e intenta de nuevo.', false));
+  }).catch(()=>{ notice('Error de conexión. Revisa tu internet e intenta de nuevo.', false); logCliente('error','gasto_red', 'sin respuesta del servidor | categoria='+cat+' monto='+monto); });
 }
 // FASE 5: gasto != pago. Cada gasto lleva folio GAS-, estado (ACTIVA/CANCELADA) y pagos parciales.
 function renderExpenses(list){
@@ -4211,6 +4262,43 @@ window.addEventListener('load', ()=>{
     apiGet('me').then(d=>{ if (d && d.ok) enterApp(usuario); else logout(); }).catch(()=>logout());
   }
 });
+
+/* ---------- bitacora del sistema: ver errores y saber que pasó ---------- */
+let logsCache = [];
+function loadLogs(){
+  if (!$('logsTable')) return;
+  apiGet('logs').then(d=>{
+    logsCache = (d && d.logs) || [];
+    renderLogs();
+  }).catch(()=>{ $('logsTable').innerHTML='<tr><td colspan="4" class="muted">No se pudo cargar la bitácora. Intenta de nuevo.</td></tr>'; });
+}
+function esErrorLog_(accion){
+  const a = String(accion||'').toLowerCase();
+  return a.indexOf('error')!==-1 || a.indexOf('cliente_')!==-1 || a.indexOf('invalido')!==-1 || a.indexOf('divergente')!==-1;
+}
+function renderLogs(){
+  if (!$('logsTable')) return;
+  const filtro = ($('logFiltro') ? $('logFiltro').value : '').trim().toLowerCase();
+  const tipo = $('logTipo') ? $('logTipo').value : '';
+  const errs = logsCache.filter(l=>esErrorLog_(l.accion)).length;
+  if ($('logsDash')) $('logsDash').innerHTML =
+    '<div class="pnl-card '+(errs?'bad':'good')+'"><div class="k">Errores / avisos (últimos 300)</div><div class="v">'+errs+'</div></div>' +
+    '<div class="pnl-card"><div class="k">Total de registros</div><div class="v">'+logsCache.length+'</div></div>';
+  let lista = logsCache;
+  if (tipo) lista = lista.filter(l=>String(l.accion||'').indexOf(tipo)!==-1 || (tipo==='error'&&esErrorLog_(l.accion)));
+  if (filtro) lista = lista.filter(l=>
+    String(l.accion||'').toLowerCase().indexOf(filtro)!==-1 ||
+    String(l.detalle||'').toLowerCase().indexOf(filtro)!==-1 ||
+    String(l.usuario||'').toLowerCase().indexOf(filtro)!==-1);
+  if (!lista.length) { $('logsTable').innerHTML='<tr><td colspan="4" class="muted">Sin registros que coincidan.</td></tr>'; return; }
+  $('logsTable').innerHTML = lista.slice(0, 300).map(l=>{
+    const err = esErrorLog_(l.accion);
+    return '<tr'+(err?' style="background:rgba(192,57,43,0.06);"':'')+'><td style="white-space:nowrap;">'+esc(l.fecha)+'</td>' +
+      '<td>'+esc(l.usuario)+'</td>' +
+      '<td style="font-weight:600;color:'+(err?'#c0392b':'inherit')+';white-space:nowrap;">'+esc(l.accion)+'</td>' +
+      '<td>'+esc(l.detalle)+'</td></tr>';
+  }).join('');
+}
 </script>
 </body>
 </html>

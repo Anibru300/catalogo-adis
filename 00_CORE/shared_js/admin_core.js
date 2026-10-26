@@ -38,6 +38,21 @@ function manejarSesion(d){
   }
   return d;
 }
+/* ---------- bitacora de errores: reportar al backend para diagnosticar ----------
+   Sin esto, un fallo en el celular/computadora del dueño desaparecia sin dejar
+   rastro. Ahora todo error del panel queda en la hoja Log (Sistema > Bitacora).
+   Fire-and-forget: jamas interrumpe al usuario; solo con sesion activa. */
+function logCliente(nivel, contexto, detalle){
+  try {
+    if (!token) return;
+    apiPost({tipo:'log_cliente', nivel:String(nivel).slice(0,20), contexto:String(contexto).slice(0,80),
+      detalle:String(detalle).slice(0,450)}).catch(()=>{});
+  } catch (e) {}
+}
+window.addEventListener('error', ev=>logCliente('error','js',
+  (ev.message||'error desconocido')+' @ '+String(ev.filename||'').split('/').pop()+':'+(ev.lineno||'')));
+window.addEventListener('unhandledrejection', ev=>logCliente('error','promesa',
+  String((ev.reason && (ev.reason.message||ev.reason)) || ev.reason).slice(0,300)));
 function _fetchJson(url, opciones, reintento){
   return fetch(url, opciones)
     .then(function(r){ return r.json().catch(function(){ return null; }); })
@@ -45,6 +60,11 @@ function _fetchJson(url, opciones, reintento){
       /* respuesta no-JSON (propagación/302 a HTML): reintentar una vez antes de fallar */
       if (d === null && !reintento){
         return new Promise(function(res){ setTimeout(function(){ res(_fetchJson(url, opciones, true)); }, 2500); });
+      }
+      if (d === null) {
+        let desc = url.slice(-60);
+        try { if (opciones && opciones.method==='POST') desc = 'POST '+(JSON.parse(opciones.body||'{}').tipo||''); } catch (eP) {}
+        logCliente('error','api_no_json', desc+': el servidor respondio HTML o vacio (tipico de Apps Script sin redeploy o con error de ejecucion)');
       }
       return manejarSesion(d);
     });

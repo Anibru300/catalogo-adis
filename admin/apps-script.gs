@@ -619,6 +619,19 @@ function doGetInterno(e) {
   }
   if (action === 'gastos') return json({ ok: true, gastos: filasComoObjetos(SHEET_EXPENSES) });
   if (action === 'gastos_fijos') return json({ ok: true, fijos: filasComoObjetos(SHEET_GASTOS_FIJOS) });
+  if (action === 'logs') { // bitacora: ultimos 300 registros, mas nuevos primero
+    var hL = ss().getSheetByName(SHEET_LOG);
+    if (!hL || hL.getLastRow() < 2) return json({ ok: true, logs: [] });
+    var ultimaL = hL.getLastRow(), desdeL = Math.max(2, ultimaL - 299);
+    var encL = hL.getRange(1, 1, 1, hL.getLastColumn()).getValues()[0].map(String);
+    var valsL = hL.getRange(desdeL, 1, ultimaL - desdeL + 1, encL.length).getValues();
+    var logsL = valsL.map(function (fila) {
+      var o = {};
+      encL.forEach(function (c, ix) { o[c] = fila[ix]; });
+      return o;
+    }).reverse();
+    return json({ ok: true, logs: logsL });
+  }
 
   if (action === 'estado_resultados') {
     return json(calcularEstadoResultados(e.parameter.mes, String(e.parameter.proyecto_id || '')));
@@ -896,6 +909,16 @@ function doPostInterno(data) {
 
   /* ----- a partir de aqui se exige token valido ----- */
   exigirToken(data);
+
+  // Bitacora de errores del panel: el frontend reporta fallos con contexto para
+  // poder diagnosticar sin adivinar. Nunca lanza (es solo logging) y trunca.
+  if (tipo === 'log_cliente') {
+    try {
+      log_('cliente_' + String(data.nivel || 'info').slice(0, 20),
+        '[' + String(data.contexto || '').slice(0, 80) + '] ' + String(data.detalle || '').slice(0, 400));
+    } catch (eL) {}
+    return json({ ok: true });
+  }
 
   if (tipo === 'upload_foto') {
     // Subida de fotografia de producto a la carpeta de Drive del negocio.
