@@ -1647,7 +1647,7 @@ function loadEstadisticas() {
         return;
       }
       _estPintarKpis(pnl, ventas, flujo, quotes, mes);
-      _estPintarVentas(ventas);
+      _estPintarVentas(ventas, finanzas);
       _estPintarGastos(pnl);
       _estPintarFlujo(flujo, hace29, hoy);
       // Evolución 12 meses: solo si el backend ya tiene el endpoint (redeploy)
@@ -1676,10 +1676,16 @@ function _estPintarKpis(pnl, ventas, flujo, quotes, mes) {
   $('estKpis').innerHTML = html || '<p class="muted">Sin datos todavía.</p>';
 }
 
-function _estPintarVentas(ventas) {
-  // Preferimos el agregado por mes del backend (exacto, sin límite de filas);
-  // si aún no está desplegado, caemos a calcularlo desde las últimas ventas.
-  let porMes = (ventas && ventas.porMes) || null;
+function _estPintarVentas(ventas, finanzas) {
+  // Fuente principal: finanzas_mensual (sus 'ingresos' = ventas de la hoja +
+  // cobros tipo venta; es la misma cifra del KPI y no deja huecos). Si no hay,
+  // caemos al agregado por mes de la hoja Ventas y luego al calculo local.
+  let porMes = null;
+  if (finanzas && finanzas.ok && finanzas.meses) {
+    porMes = {};
+    finanzas.meses.forEach(function (f) { if (Number(f.ingresos) > 0) porMes[f.mes] = Number(f.ingresos) || 0; });
+  }
+  if (!porMes) porMes = (ventas && ventas.porMes) || null;
   if (!porMes) {
     porMes = {};
     ((ventas && ventas.ventas) || []).forEach(function (v) {
