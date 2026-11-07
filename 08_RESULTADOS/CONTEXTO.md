@@ -42,6 +42,24 @@
 - **ALIMENTA A**: el dashboard (mismo módulo) es la primera pantalla del panel.
 - **COMPARTE CON**: todos (solo lectura).
 
+## CAMBIOS 2026-11-06 (FASE 0/1 — P&L por niveles y flujo por actividad)
+
+- **Estado de resultados por niveles** (`calcularEstadoResultados`): VENTAS
+  NETAS (VEN- no canceladas + cobros ING tipo `venta`) − COSTO DE VENTAS
+  (costo_total_base de ventas; los ING tipo venta no tienen costo →
+  `advertencia` de utilidad provisional, nunca se inventan costos) = UTILIDAD
+  BRUTA − GASTOS OPERATIVOS (gastos con naturaleza `operativo`/`costo_directo`)
+  = UTILIDAD OPERATIVA + OTROS RESULTADOS (`otro`/`reembolso`) − IMPUESTOS
+  (campo explícito, hoy 0) = UTILIDAD NETA.
+- **Excluidos del resultado** (se reportan aparte en la respuesta): retiros del
+  propietario, compras de inventario, inversiones y `por_clasificar`. Los
+  cobros tipo `aportacion`/`prestamo`/`anticipo` son financiamiento: entran al
+  flujo de efectivo, NUNCA al P&L.
+- **Flujo de caja por actividad** (`por_actividad`): operación / inversión /
+  financiamiento. Los pagos de gastos `retiro` son salida de financiamiento.
+- `enRango` normaliza fechas con `fechaISO_`; `ventas.porMes` excluye
+  CANCELADA; cxc/cxp exponen flag `sobrepago` (no se ocultan sobrecobros).
+
 ## REGLAS DE NEGOCIO
 
 1. **P&L contable, caja efectiva**: el P&L cuenta ventas/gastos por fecha de

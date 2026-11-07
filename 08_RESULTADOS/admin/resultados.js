@@ -10,10 +10,21 @@ function loadFlujoCaja(){
     if (!d || !d.ok) { $('flujoKpis').innerHTML = '<p class="muted">'+esc(errMsg(d,'Sin acceso.'))+'</p>'; return; }
     const f = n => fmtMoney(n) + ' ' + d.moneda_base;
     const clsN = d.neto >= 0 ? 'good' : 'bad';
-    $('flujoKpis').innerHTML =
+    let kpis =
       '<div class="pnl-card good"><div class="k">Entradas ('+d.num_cobros+' cobro(s))</div><div class="v">'+f(d.entradas)+'</div></div>' +
       '<div class="pnl-card bad"><div class="k">Salidas ('+d.num_pagos+' pago(s))</div><div class="v">'+f(d.salidas)+'</div></div>' +
       '<div class="pnl-card '+clsN+'"><div class="k">Flujo neto</div><div class="v">'+f(d.neto)+'</div></div>';
+    // FASE 0-1: desglose por actividad (solo si el backend ya lo devuelve)
+    const pa = d.por_actividad;
+    if (pa) {
+      const acts = [['operacion','Operación'],['inversion','Inversión'],['financiamiento','Financiamiento']];
+      kpis += acts.map(a=>{
+        const x = pa[a[0]] || {entradas:0, salidas:0};
+        const n = (Number(x.entradas)||0) - (Number(x.salidas)||0);
+        return '<div class="pnl-card '+(n>=0?'good':'bad')+'"><div class="k">'+a[1]+' <span style="font-size:0.68rem;">(E '+f(x.entradas)+' · S '+f(x.salidas)+')</span></div><div class="v">'+f(n)+'</div></div>';
+      }).join('');
+    }
+    $('flujoKpis').innerHTML = kpis;
     const dias = d.dias || [];
     const mx = Math.max(1, ...dias.map(x => Math.max(x.entradas, x.salidas)));
     $('flujoDiario').innerHTML = dias.length ? dias.map(x => {
@@ -110,25 +121,51 @@ function generarPNL(){
       if (!d || !d.ok) { $('pnlCards').innerHTML='<p class="muted">'+esc(errMsg(d,'Error'))+'</p>'; return; }
       pnlData = d;
       const f = n => fmtMoney(n)+' '+d.moneda_base;
-      const clsBruta = d.utilidad_bruta>=0?'good':'bad', clsNeta = d.utilidad_neta>=0?'good':'bad';
+      const n = v => Number(v)||0; // FASE 0-1: compatibilidad — campos nuevos pueden venir undefined (backend sin redeploy)
       const tituloProy = d.proyecto_id ? ' <span class="muted" style="font-size:0.75rem;">(proyecto)</span>' : '';
+      // niveles del estado de resultados (retrocompatible con backend viejo)
+      const ventas = n(d.ingresos);
+      const costos = n(d.costos);
+      const uBruta = n(d.utilidad_bruta);
+      const gOp = n(d.total_gastos);
+      const uOp = d.utilidad_operativa!=null ? n(d.utilidad_operativa) : uBruta - gOp;
+      const otros = n(d.otros_resultados);
+      const uNeta = d.utilidad_neta!=null ? n(d.utilidad_neta) : uOp + otros;
+      const margenBruto = n(d.margen_bruto), margenOp = n(d.margen_operativo), margenNeto = n(d.margen_neto);
+      const vExtra = n(d.ventas_extra);
       $('pnlCards').innerHTML = '<div class="pnl-cards">' +
-        '<div class="pnl-card"><div class="k">Ventas ('+d.num_ventas+')'+tituloProy+'</div><div class="v">'+f(d.ingresos)+'</div></div>' +
-        '<div class="pnl-card"><div class="k">Costo mercancía</div><div class="v">'+f(d.costos)+'</div></div>' +
-        '<div class="pnl-card '+clsBruta+'"><div class="k">Utilidad bruta</div><div class="v">'+f(d.utilidad_bruta)+' <small style="font-size:0.7rem;">'+d.margen_bruto.toFixed(1)+'%</small></div></div>' +
-        '<div class="pnl-card"><div class="k">Gastos operativos</div><div class="v">'+f(d.total_gastos)+'</div></div>' +
-        '<div class="pnl-card '+clsNeta+'"><div class="k">Utilidad operativa</div><div class="v">'+f(d.utilidad_operativa!=null?d.utilidad_operativa:d.utilidad_neta)+' <small style="font-size:0.7rem;">'+(d.margen_operativo!=null?d.margen_operativo:d.margen_neto).toFixed(1)+'%</small></div></div>' +
+        '<div class="pnl-card"><div class="k">Ventas netas ('+n(d.num_ventas)+')'+tituloProy+'</div><div class="v">'+f(ventas)+'</div></div>' +
+        '<div class="pnl-card"><div class="k">Costo de ventas</div><div class="v">'+f(costos)+'</div></div>' +
+        '<div class="pnl-card '+(uBruta>=0?'good':'bad')+'"><div class="k">Utilidad bruta</div><div class="v">'+f(uBruta)+' <small style="font-size:0.7rem;">'+margenBruto.toFixed(1)+'%</small></div></div>' +
+        '<div class="pnl-card"><div class="k">Gastos operativos</div><div class="v">'+f(gOp)+'</div></div>' +
+        '<div class="pnl-card '+(uOp>=0?'good':'bad')+'"><div class="k">Utilidad operativa</div><div class="v">'+f(uOp)+' <small style="font-size:0.7rem;">'+margenOp.toFixed(1)+'%</small></div></div>' +
+        '<div class="pnl-card '+(otros>=0?'good':'bad')+'"><div class="k">Otros resultados ('+n(d.num_otros_resultados)+')</div><div class="v">'+f(otros)+'</div></div>' +
+        '<div class="pnl-card '+(uNeta>=0?'good':'bad')+'"><div class="k">Utilidad neta</div><div class="v">'+f(uNeta)+' <small style="font-size:0.7rem;">'+margenNeto.toFixed(1)+'%</small></div></div>' +
         '</div>';
-      const cats = Object.keys(d.gastos).sort();
+      const cats = Object.keys(d.gastos||{}).sort();
+      const finIn = n(d.financiamiento_entrante);
+      const excluidos = [
+        ['Retiros del propietario', n(d.retiros)],
+        ['Compras de inventario', n(d.inventario)],
+        ['Inversiones', n(d.inversiones)],
+        ['Sin clasificar', n(d.sin_clasificar)]
+      ].filter(x=>x[1]>0);
       $('pnlBox').style.display='block';
       $('pnlTable').innerHTML =
-        '<tr><td>Ventas</td><td style="text-align:right;">'+f(d.ingresos)+'</td></tr>' +
-        '<tr><td>(−) Costo de la mercancía vendida</td><td style="text-align:right;">'+f(d.costos)+'</td></tr>' +
-        '<tr><td><strong>= Utilidad bruta</strong></td><td style="text-align:right;"><strong>'+f(d.utilidad_bruta)+'</strong></td></tr>' +
-        '<tr><td colspan="2" style="color:var(--gold);">Gastos por categoría</td></tr>' +
-        (cats.length ? cats.map(c=>'<tr><td>&nbsp;&nbsp;'+esc(c)+'</td><td style="text-align:right;">'+f(d.gastos[c])+'</td></tr>').join('') : '<tr><td colspan="2" class="muted">Sin gastos este mes.</td></tr>') +
-        '<tr><td>(−) Total gastos</td><td style="text-align:right;">'+f(d.total_gastos)+'</td></tr>' +
-        '<tr><td><strong>= Utilidad operativa del mes</strong></td><td style="text-align:right;"><strong>'+f(d.utilidad_neta)+'</strong></td></tr>';
+        '<tr><td><strong>VENTAS NETAS</strong> <span class="muted">('+n(d.num_ventas)+' ventas'+(vExtra>0?' + '+f(vExtra)+' en ventas extra':'')+')</span></td><td style="text-align:right;"><strong>'+f(ventas)+'</strong></td></tr>' +
+        '<tr><td>(−) COSTO DE VENTAS</td><td style="text-align:right;">'+f(costos)+'</td></tr>' +
+        '<tr><td><strong>= UTILIDAD BRUTA</strong></td><td style="text-align:right;"><strong>'+f(uBruta)+'</strong> <span class="muted" style="font-size:0.72rem;">'+margenBruto.toFixed(1)+'%</span></td></tr>' +
+        '<tr><td colspan="2" style="color:var(--gold);">Gastos operativos por categoría</td></tr>' +
+        (cats.length ? cats.map(c=>'<tr><td>&nbsp;&nbsp;'+esc(c)+'</td><td style="text-align:right;">'+f(d.gastos[c])+'</td></tr>').join('') : '<tr><td colspan="2" class="muted">Sin gastos operativos este mes.</td></tr>') +
+        '<tr><td>(−) TOTAL GASTOS OPERATIVOS</td><td style="text-align:right;">'+f(gOp)+'</td></tr>' +
+        '<tr><td><strong>= UTILIDAD OPERATIVA</strong></td><td style="text-align:right;"><strong>'+f(uOp)+'</strong> <span class="muted" style="font-size:0.72rem;">'+margenOp.toFixed(1)+'%</span></td></tr>' +
+        '<tr><td>(+/−) OTROS RESULTADOS <span class="muted">('+n(d.num_otros_resultados)+' mov.)</span></td><td style="text-align:right;">'+f(otros)+'</td></tr>' +
+        (finIn>0 ? '<tr><td colspan="2" class="muted" style="font-size:0.78rem;">Entradas de financiamiento (no son ingreso): '+f(finIn)+'</td></tr>' : '') +
+        '<tr><td>(−) IMPUESTOS</td><td style="text-align:right;">'+f(n(d.impuestos))+'</td></tr>' +
+        '<tr><td><strong>= UTILIDAD NETA</strong></td><td style="text-align:right;"><strong>'+f(uNeta)+'</strong> <span class="muted" style="font-size:0.72rem;">'+margenNeto.toFixed(1)+'%</span></td></tr>' +
+        (excluidos.length ? '<tr><td colspan="2" class="muted" style="font-size:0.78rem;padding-top:0.8rem;">Movimientos excluidos del resultado: ' + excluidos.map(x=>x[0]+' '+f(x[1])).join(' · ') + '</td></tr>' : '');
+      const adv = $('pnlAdvertencia');
+      if (adv) adv.innerHTML = d.advertencia ? '<div class="card-box" style="border-left:3px solid #e8b96a;margin-bottom:1rem;"><strong>⚠️ Revisar clasificación:</strong> <span class="muted">'+esc(d.advertencia)+'</span></div>' : '';
     }).catch(()=>{ $('pnlCards').innerHTML='<p class="muted">Error de conexion.</p>'; });
 }
 function printPNL(){
@@ -138,7 +175,8 @@ function printPNL(){
   $('printArea').innerHTML =
     '<h1>ADIS Diseño & Remodelación</h1><div class="pq-meta">Estado de resultados · ' + mesTxt + ' · Moneda: ' + d.moneda_base + '</div>' +
     '<table><tbody>' + $('pnlTable').innerHTML + '</tbody></table>' +
-    '<p style="margin-top:1rem;font-size:0.85rem;">Ventas: '+d.num_ventas+' · Margen bruto: '+d.margen_bruto.toFixed(1)+'% · Margen neto: '+d.margen_neto.toFixed(1)+'%</p>' +
+    '<p style="margin-top:1rem;font-size:0.85rem;">Ventas: '+(Number(d.num_ventas)||0)+' · Margen bruto: '+(Number(d.margen_bruto)||0).toFixed(1)+'% · Margen operativo: '+(Number(d.margen_operativo)||0).toFixed(1)+'% · Margen neto: '+(Number(d.margen_neto)||0).toFixed(1)+'%</p>' +
+    (d.advertencia ? '<p style="font-size:0.8rem;">⚠️ ' + esc(d.advertencia) + '</p>' : '') +
     '<div class="pq-foot">Generado desde el panel administrativo ADIS</div>';
   window.print();
 }

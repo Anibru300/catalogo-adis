@@ -20,11 +20,12 @@ function addIngreso(){
   notice('⏳ Guardando ingreso…', true);
   apiPost({tipo:'ingreso', fecha:$('ingFecha').value, concepto,
     monto, moneda:$('ingMoneda').value, metodo:$('ingMetodo').value, notas:$('ingNotas').value.trim(),
-    tipo_ingreso: 'venta'}).then(d=>{
+    tipo_ingreso: ($('ingTipo') ? $('ingTipo').value : 'venta')}).then(d=>{
     notice(d&&d.ok
       ? '✅ Ingreso correcto — folio '+(d.folio||'—')+' · '+fmtMoney(monto)+' '+$('ingMoneda').value+'. Ya está en tus Ventas del mes.'
       : errMsg(d,'No se pudo guardar.'), !!(d&&d.ok));
     if(d&&d.ok){ $('ingMonto').value=''; $('ingNotas').value='';
+      if ($('ingTipo')) $('ingTipo').selectedIndex=0;
       if ($('ingConcepto')) $('ingConcepto').selectedIndex=0;
       if ($('ingConceptoOtra')) { $('ingConceptoOtra').value=''; $('ingConceptoOtra').style.display='none'; }
       loadCXC(); }
@@ -68,6 +69,42 @@ function categoriaGastoCambiada(){
   const esOtra = sel.value==='__otra__';
   otra.style.display = esOtra ? '' : 'none';
   if (esOtra) otra.focus();
+  sugerirNaturalezaGasto_();
+}
+/* ----- FASE 0-1: naturaleza del gasto (operativo / costo directo / inventario / inversion / retiro) ----- */
+const NAT_GASTO_OPTS = {
+  operativo:'Gasto operativo',
+  costo_directo:'Costo directo de proyecto',
+  inventario:'Compra de inventario',
+  inversion:'Inversión o adquisición de activo',
+  retiro:'Retiro del propietario',
+  por_clasificar:'Otro movimiento por clasificar'
+};
+const TIPO_INGRESO_OPTS = {
+  venta:'Venta / cobro operativo',
+  otro:'Otro ingreso',
+  reembolso:'Reembolso',
+  aportacion:'Aportación del propietario',
+  prestamo:'Préstamo recibido',
+  anticipo:'Anticipo de cliente'
+};
+function opcionesNaturaleza_(actual){
+  actual = actual || 'por_clasificar';
+  return Object.keys(NAT_GASTO_OPTS).map(k=>'<option value="'+k+'"'+(k===actual?' selected':'')+'>'+NAT_GASTO_OPTS[k]+'</option>').join('');
+}
+function opcionesTipoIngreso_(actual){
+  actual = actual || 'venta';
+  return Object.keys(TIPO_INGRESO_OPTS).map(k=>'<option value="'+k+'"'+(k===actual?' selected':'')+'>'+TIPO_INGRESO_OPTS[k]+'</option>').join('');
+}
+// Sugerencia por categoria (biz.config.mapa_naturalezas, puede estar vacio).
+// NUNCA asumir 'operativo' por defecto: sin sugerencia va a 'por_clasificar'.
+function sugerirNaturalezaGasto_(){
+  const sel = $('gNaturaleza'); if (!sel) return;
+  let cat = $('gCategoria') ? $('gCategoria').value : '';
+  if (cat==='__otra__') cat = $('gCategoriaOtra') ? $('gCategoriaOtra').value.trim() : '';
+  const mapa = biz.config && biz.config.mapa_naturalezas;
+  const sug = (mapa && cat && NAT_GASTO_OPTS[mapa[cat]]) ? mapa[cat] : 'por_clasificar';
+  sel.value = sug;
 }
 function pintarCategoriasConfig(){
   const box = (id, tipo, lista) => {
@@ -114,6 +151,7 @@ function quitarCategoria(el){
 function limpiarFormGasto(){
   $('gMonto').value=''; $('gDesc').value=''; $('gCategoriaOtra').value='';
   if ($('gCategoria')) $('gCategoria').selectedIndex = 0;
+  if ($('gNaturaleza')) $('gNaturaleza').value = 'por_clasificar';
   categoriaGastoCambiada();
 }
 function addExpense(){
@@ -129,7 +167,7 @@ function addExpense(){
   notice('⏳ Guardando gasto…', true);
   const monedaG = $('gMoneda').value;
   apiPost({tipo:'gasto', fecha:$('gFecha').value, categoria:cat, descripcion:$('gDesc').value.trim(),
-    monto, moneda:monedaG}).then(d=>{
+    monto, moneda:monedaG, naturaleza: ($('gNaturaleza') ? $('gNaturaleza').value : 'por_clasificar')}).then(d=>{
     if (!(d&&d.ok)) { notice(errMsg(d,'No se pudo guardar.'), false); logCliente('error','gasto', errMsg(d,'respuesta sin ok')+' | categoria='+cat+' monto='+monto); return; }
     // Regla del negocio: todo gasto capturado queda PAGADO de inmediato.
     // Lo pendiente de pago se maneja en Gastos fijos (programados).
@@ -396,6 +434,7 @@ function showGastoEditForm(id){
       '<input id="geCategoriaOtra" placeholder="Escribe la categoría..." value="'+esc(cats.indexOf(g.categoria)===-1?g.categoria:'')+'" style="display:'+(cats.indexOf(g.categoria)===-1?'':'none')+';margin-top:0.4rem;"></div>' +
     '<div><label>Monto *</label><div class="monto-wrap"><span class="monto-sign">$</span><input type="text" inputmode="decimal" class="monto" id="geMonto" value="'+fmtNum_(g.monto)+'" oninput="mascaraMonto(this)"></div></div>' +
     '<div><label>Moneda</label><select id="geMoneda"><option value="MXN"'+(g.moneda==='MXN'?' selected':'')+'>MXN</option><option value="USD"'+(g.moneda==='USD'?' selected':'')+'>USD</option></select></div>' +
+    '<div><label>Tipo de movimiento</label><select id="geNaturaleza">'+opcionesNaturaleza_(g.naturaleza)+'</select></div>' +
     '</div><label>Descripción</label><input id="geDesc" value="'+esc(g.descripcion||'')+'">' +
     '<div class="toolbar" style="margin-top:1rem;"><button class="btn btn-solid btn-sm" onclick="saveGastoEdit(\''+g.id+'\')">💾 Guardar cambios</button> ' +
     '<button class="btn btn-sm" onclick="$(\'pagoForms\').innerHTML=\'\'">Cerrar</button></div></div>';
@@ -408,7 +447,8 @@ function saveGastoEdit(id){
   if (!cat || !monto) { notice(cat?'Falta el monto.':'Elige la categoría.', false); return; }
   notice('⏳ Guardando cambios…', true);
   apiPost({tipo:'gasto_editar', id, fecha:$('geFecha').value, categoria:cat,
-    descripcion:$('geDesc').value.trim(), monto, moneda:$('geMoneda').value}).then(d=>{
+    descripcion:$('geDesc').value.trim(), monto, moneda:$('geMoneda').value,
+    naturaleza: ($('geNaturaleza') ? $('geNaturaleza').value : undefined)}).then(d=>{
     notice(d&&d.ok?('✅ Gasto actualizado — '+cat+' · '+fmtMoney(monto)+' '+$('geMoneda').value+'.'):errMsg(d,'No se pudo editar.'), !!(d&&d.ok));
     if(d&&d.ok){ $('pagoForms').innerHTML=''; loadBiz(); }
   }).catch(()=>notice('Error de conexión. Intenta de nuevo.', false));
@@ -425,6 +465,7 @@ function showIngresoEditForm(id){
     '<div><label>Monto *</label><div class="monto-wrap"><span class="monto-sign">$</span><input type="text" inputmode="decimal" class="monto" id="ieMonto" value="'+fmtNum_(c.monto)+'" oninput="mascaraMonto(this)"></div></div>' +
     '<div><label>Moneda</label><select id="ieMoneda"><option value="MXN"'+(c.moneda==='MXN'?' selected':'')+'>MXN</option><option value="USD"'+(c.moneda==='USD'?' selected':'')+'>USD</option></select></div>' +
     '<div><label>Método</label><select id="ieMetodo">'+['Efectivo','Transferencia','Tarjeta','Depósito','Otro'].map(m=>'<option'+(c.metodo===m?' selected':'')+'>'+m+'</option>').join('')+'</select></div>' +
+    '<div><label>Tipo de ingreso</label><select id="ieTipo">'+opcionesTipoIngreso_(c.tipo)+'</select></div>' +
     '</div><label>Notas</label><input id="ieNotas" value="'+esc(c.notas||'')+'">' +
     '<div class="toolbar" style="margin-top:1rem;"><button class="btn btn-solid btn-sm" onclick="saveIngresoEdit(\''+c.id+'\')">💾 Guardar cambios</button> ' +
     '<button class="btn btn-sm" onclick="$(\'cobForms\').innerHTML=\'\'">Cerrar</button></div></div>';
@@ -439,8 +480,49 @@ function saveIngresoEdit(id){
   notice('⏳ Guardando cambios…', true);
   apiPost({tipo:'ingreso_editar', id, fecha:$('ieFecha').value, concepto, monto,
     moneda:$('ieMoneda').value, metodo:$('ieMetodo').value, notas:$('ieNotas').value.trim(),
-    tipo_ingreso: cEx && String(cEx.tipo)==='otro' ? 'otro' : 'venta'}).then(d=>{
+    tipo_ingreso: ($('ieTipo') ? $('ieTipo').value : (cEx && String(cEx.tipo)==='otro' ? 'otro' : 'venta'))}).then(d=>{
     notice(d&&d.ok?('✅ Ingreso actualizado — '+concepto+' · '+fmtMoney(monto)+' '+$('ieMoneda').value+'.'):errMsg(d,'No se pudo editar.'), !!(d&&d.ok));
     if(d&&d.ok){ $('cobForms').innerHTML=''; loadCXC(); }
   }).catch(()=>notice('Error de conexión. Intenta de nuevo.', false));
+}
+
+
+/* ----- FASE 0-1: retiros del propietario (seccion dentro del tab de Gastos) ----- */
+function loadRetiros(){
+  if (!$('retirosBox')) return;
+  const desde = ($('retDesde') && $('retDesde').value) || '';
+  const hasta = ($('retHasta') && $('retHasta').value) || '';
+  const agrupar = ($('retAgrupar') && $('retAgrupar').value) || 'total';
+  const tBody = $('retirosTable'), gBody = $('retirosGrupos'), tot = $('retirosTotal');
+  if (tBody) tBody.innerHTML = '<tr><td colspan="6" class="muted">Cargando…</td></tr>';
+  apiGet('retiros&desde=' + encodeURIComponent(desde) + '&hasta=' + encodeURIComponent(hasta) + '&agrupar=' + agrupar).then(d=>{
+    if (!d || !d.ok) {
+      if (tot) tot.innerHTML = '<p class="muted">'+esc(errMsg(d,'Sin acceso.'))+'</p>';
+      if (tBody) tBody.innerHTML = '<tr><td colspan="6" class="muted">Sin datos.</td></tr>';
+      if (gBody) gBody.innerHTML = '';
+      return;
+    }
+    const base = d.moneda_base || (biz.config && biz.config.moneda_base) || 'MXN';
+    const f = n => fmtMoney(n) + ' ' + base;
+    if (tot) tot.innerHTML =
+      '<div class="pnl-card bad"><div class="k">Total retirado ('+esc(base)+')</div><div class="v">'+f(d.total_base)+'</div></div>' +
+      '<div class="pnl-card"><div class="k">Movimientos</div><div class="v">'+fmtNum_(d.total_movimientos)+'</div></div>';
+    const rets = d.retiros || [];
+    if (tBody) tBody.innerHTML = rets.length ? rets.map(r=>
+      '<tr><td class="gold">'+esc(r.folio||'—')+'</td><td>'+esc(r.fecha)+'</td>' +
+      '<td>'+esc(r.descripcion||r.categoria||'—')+'</td>' +
+      '<td class="gold">'+fmtMoney(r.monto)+' '+esc(r.moneda||'')+'</td>' +
+      '<td>'+esc(r.metodo||'—')+'</td>' +
+      '<td class="muted">'+f(r.monto_base)+'</td></tr>').join('')
+      : '<tr><td colspan="6" class="muted">Sin retiros en el rango.</td></tr>';
+    const grupos = d.grupos || [];
+    if (gBody) gBody.innerHTML = grupos.length
+      ? '<p class="muted" style="margin:0.3rem 0;">Agrupado por '+esc(agrupar)+':</p><table><tbody>' + grupos.map(g=>
+        '<tr><td>'+esc(g.periodo)+'</td><td style="text-align:right;" class="muted">'+fmtNum_(g.movimientos)+' mov.</td>' +
+        '<td style="text-align:right;" class="gold">'+f(g.monto_base)+'</td></tr>').join('') + '</tbody></table>'
+      : '';
+  }).catch(()=>{
+    if (tot) tot.innerHTML = '<p class="muted">Error de conexión.</p>';
+    if (tBody) tBody.innerHTML = '<tr><td colspan="6" class="muted">Error de conexión.</td></tr>';
+  });
 }

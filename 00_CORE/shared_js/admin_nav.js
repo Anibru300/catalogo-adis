@@ -51,6 +51,7 @@ function showTab(name){
   if (name==='proyectos') loadProyectos();
   if (name==='cobros') loadCXC();
   if (name==='fijos') loadFijos();
+  if (name==='expenses') loadRetiros();
   if (name==='logs') loadLogs();
   if (name==='flujocaja') loadFlujoCaja();
   if (name==='pnl') loadAlertas();

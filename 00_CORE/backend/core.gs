@@ -77,12 +77,23 @@ var SHEET_GASTOS_FIJOS = 'GastosFijos';
 var VISITS_MAX_FILAS = 5000;   // activas; el excedente se ARCHIVA (no se borra)
 var TOKEN_MINUTOS  = 8 * 60;
 
-// Limpieza administrativa permitida. Ventas/Movimientos NO se pueden borrar:
-// son historico financiero e inventario (usar compensaciones, no deleciones).
-var HOJAS_BORRABLES = [SHEET_LEADS, SHEET_QUOTES, SHEET_REVIEWS, SHEET_EXPENSES, SHEET_STOCK, SHEET_VISITS];
+// Limpieza administrativa permitida. Ventas/Movimientos/Gastos/Stock NO se pueden
+// borrar: son historico financiero e inventario (usar cancelaciones logicas y
+// movimientos, no deleciones). FASE 0 (2026-11-06): Gastos y Stock salen de la
+// lista tras proteccion de registros financieros.
+var HOJAS_BORRABLES = [SHEET_LEADS, SHEET_QUOTES, SHEET_REVIEWS, SHEET_VISITS];
 
 var MONEDAS = ['MXN', 'USD'];
 var TIPOS_MOVIMIENTO = ['entrada', 'salida', 'ajuste'];
+// FASE 1 (2026-11-06): naturaleza financiera del gasto. La categoria sigue siendo
+// descriptiva; la naturaleza determina el tratamiento contable. 'por_clasificar'
+// es el valor seguro por defecto: nunca se asume una clasificacion que pueda
+// distorsionar los resultados cuando falta informacion.
+var NATURALEZAS_GASTO = ['operativo', 'costo_directo', 'inventario', 'inversion', 'retiro', 'por_clasificar'];
+// Vocabulario ampliado del tipo de ingreso (hoja Cobros, col 14). Solo 'venta'
+// entra a ventas del P&L; 'otro'/'reembolso' van a otros resultados; los demas
+// son financiamiento (entran al flujo de efectivo, NO al estado de resultados).
+var TIPOS_INGRESO = ['venta', 'otro', 'reembolso', 'aportacion', 'prestamo', 'anticipo'];
 
 /* ----- Esquemas (columnas NUEVAS siempre se agregan al final; nunca se
    renombran ni reordenan las existentes para no romper datos vivos) ----- */
@@ -99,7 +110,7 @@ var ENC_VENTAS = ['fecha', 'cliente', 'almacen', 'items', 'total', 'moneda', 'ti
   'total_base', 'costo_total_base', 'utilidad_base', 'notas', 'id', 'folio', 'usuario',
   'cliente_id', 'proyecto_id', 'estado_pago', 'almacen_id', 'items_json'];
 var ENC_GASTOS = ['fecha', 'categoria', 'descripcion', 'monto', 'moneda', 'tipo_cambio', 'monto_base',
-  'id', 'usuario', 'folio', 'estado', 'pagado'];
+  'id', 'usuario', 'folio', 'estado', 'pagado', 'naturaleza']; // col 13 FASE 1: ver NATURALEZAS_GASTO
 var ENC_PAGOS = ['id', 'folio', 'gasto_id', 'gasto_folio', 'categoria', 'fecha', 'monto', 'moneda',
   'monto_base', 'metodo', 'notas', 'usuario'];
 var ENC_PROY_MOVS = ['id', 'proyecto_id', 'tipo', 'monto', 'moneda', 'tipo_cambio', 'monto_base',
@@ -110,7 +121,7 @@ var ENC_CLIENTES = ['id', 'nombre', 'telefono', 'email', 'ciudad', 'direccion', 
 var ENC_PROY = ['id', 'folio', 'nombre', 'cliente_id', 'cliente', 'cotizacion_id', 'cotizacion_folio',
   'ubicacion', 'fecha_inicio', 'fecha_fin', 'presupuesto', 'moneda', 'estado', 'notas', 'usuario', 'fecha_actualizacion'];
 var ENC_COBROS = ['id', 'folio', 'venta_id', 'venta_folio', 'cliente', 'proyecto_id', 'fecha', 'monto',
-  'moneda', 'monto_base', 'metodo', 'notas', 'usuario', 'tipo']; // tipo: venta|otro (cobros sin venta_id)
+  'moneda', 'monto_base', 'metodo', 'notas', 'usuario', 'tipo']; // tipo: ver TIPOS_INGRESO (cobros sin venta_id)
 var ENC_OC = ['id', 'folio', 'proveedor_id', 'proveedor', 'fecha', 'fecha_esperada', 'almacen_id', 'almacen',
   'moneda', 'subtotal', 'iva', 'descuento', 'total', 'estado', 'notas', 'usuario', 'fecha_actualizacion', 'partidas'];
 var ENC_RECEP = ['id', 'oc_id', 'oc_folio', 'fecha', 'items', 'usuario'];
@@ -214,8 +225,23 @@ function fechaISO_(v) {
 function validarMoneda(m) {
   m = String(m || '').trim().toUpperCase();
   if (!m) return cfg('moneda_base', 'MXN');
-  if (MONEDAS.indexOf(m) === -1) throw AdisError('VALIDACION', 'Moneda no soportada: ' + m);
+  if (MONEDAS.indexOf(m) === -1) throw AdisError('VALIDACION', 'Moneda no soportada: ' + m + ' (' + MONEDAS.join('/') + ').');
   return m;
+}
+// FASE 1: valida la naturaleza financiera de un gasto/ingreso. Valor seguro por
+// defecto 'por_clasificar' (nunca se asume clasificacion que distorsione).
+function validarNaturaleza(n) {
+  n = String(n || '').trim();
+  return NATURALEZAS_GASTO.indexOf(n) !== -1 ? n : 'por_clasificar';
+}
+// FASE 1: normaliza el campo naturaleza de una fila de Gastos ya leida.
+function naturalezaDe(g) {
+  return validarNaturaleza(g && g.naturaleza);
+}
+// FASE 1: vocabulario del tipo de ingreso; default 'venta' (retrocompatible).
+function validarTipoIngreso(t) {
+  t = String(t || '').trim();
+  return TIPOS_INGRESO.indexOf(t) !== -1 ? t : 'venta';
 }
 function padN(n, d) { var s = String(n); while (s.length < d) s = '0' + s; return s; }
 
@@ -460,6 +486,15 @@ function listaCfg_(clave, defecto) {
   return String(cfg(clave, defecto)).split(',').map(function (s) { return s.trim(); })
     .filter(function (s) { return !!s; });
 }
+// FASE 1: lee el mapeo categoria -> naturaleza (claves 'nat_<categoria>' en Config).
+function mapaNaturalezas_() {
+  var mapa = {};
+  filasComoObjetos(SHEET_CONFIG).forEach(function (f) {
+    var k = String(f.clave || '');
+    if (k.indexOf('nat_') === 0 && String(f.valor || '')) mapa[k.slice(4)] = validarNaturaleza(f.valor);
+  });
+  return mapa;
+}
 function normalizarCategoria_(nombre) {
   var n = String(nombre || '').trim().replace(/\s+/g, ' ');
   if (!n) return '';
@@ -482,7 +517,7 @@ function calcularEstadoResultados(mes, proyFiltro) {
   }
   var enRango = function (fecha) {
     if (!desde || !hasta) return true;
-    var f = String(fecha).slice(0, 10);
+    var f = fechaISO_(fecha) || String(fecha).slice(0, 10); // FASE 0: normalizar
     return f >= desde && f <= hasta;
   };
   var ventas = filasComoObjetos(SHEET_SALES).filter(function (v) {
@@ -503,43 +538,66 @@ function calcularEstadoResultados(mes, proyFiltro) {
     });
   }
   var ingresosExtra = 0, numIngresosExtra = 0, ventasExtra = 0, numVentasExtra = 0;
-  if (!proyFiltro) { // cobros sin venta: por default son VENTAS (dinero de
-    // productos/servicios); solo cuentan como "otros ingresos" los que se
-    // marcaron explicitamente tipo='otro' (reembolsos, venta de activos).
+  var otrosResultados = 0, numOtrosResultados = 0; // FASE 1: reembolsos/otros ingresos
+  var financiamientoIn = 0; // FASE 1: aportaciones/prestamos/anticipos (NO son ingreso del P&L)
+  if (!proyFiltro) { // cobros sin venta: tipo 'venta' suman a ventas; 'otro'/'reembolso'
+    // a otros resultados; 'aportacion'/'prestamo'/'anticipo' son financiamiento
+    // (entran al flujo de efectivo, nunca al estado de resultados).
     filasComoObjetos(SHEET_COBROS).forEach(function (c) {
       if (String(c.venta_id || '') !== '') return;
       if (!enRango(c.fecha)) return;
-      if (String(c.tipo || 'venta') === 'otro') {
-        ingresosExtra += Number(c.monto_base) || 0;
-        numIngresosExtra++;
-      } else {
-        ventasExtra += Number(c.monto_base) || 0; // BUG 2026-10-25: faltaba sumar el monto
-        numVentasExtra++;
-      }
+      var t = validarTipoIngreso(c.tipo);
+      var m = Number(c.monto_base) || 0;
+      if (t === 'otro' || t === 'reembolso') { otrosResultados += m; numOtrosResultados++; }
+      else if (t === 'aportacion' || t === 'prestamo' || t === 'anticipo') { financiamientoIn += m; }
+      else { ventasExtra += m; numVentasExtra++; }
     });
   }
-  var ingresos = ingresosExtra + ventasExtra, costos = 0;
+  var ingresos = otrosResultados + ventasExtra, costos = 0;
   ventas.forEach(function (v) { ingresos += Number(v.total_base) || 0; costos += Number(v.costo_total_base) || 0; });
+  // FASE 1: la naturaleza financiera manda el tratamiento contable. Retiros del
+  // propietario, compras de inventario e inversiones NO son gasto del periodo;
+  // se reportan aparte. 'por_clasificar' nunca se asume como operativo.
   var porCategoria = {};
-  var totalGastos = 0;
+  var totalGastos = 0, totalRetiros = 0, totalInventario = 0, totalInversion = 0, totalSinClasificar = 0;
   gastos.forEach(function (g) {
     var m = Number(g.monto_base) || 0;
+    if (!proyFiltro) {
+      var nat = naturalezaDe(g);
+      if (nat === 'retiro') { totalRetiros += m; return; }
+      if (nat === 'inventario') { totalInventario += m; return; }
+      if (nat === 'inversion') { totalInversion += m; return; }
+      if (nat === 'por_clasificar') { totalSinClasificar += m; return; }
+    }
     totalGastos += m;
     var cat = g.categoria || 'Otro';
     porCategoria[cat] = (porCategoria[cat] || 0) + m;
   });
   var utilBruta = ingresos - costos;
-  var utilNeta = utilBruta - totalGastos;
+  var utilOperativa = utilBruta - totalGastos;
+  var utilNeta = utilOperativa + otrosResultados; // impuestos: 0 por ahora (campo explicito)
+  var advertencia = '';
+  if (ventasExtra > 0) advertencia = 'Utilidad bruta provisional: ' + numVentasExtra +
+    ' ingreso(s) tipo "venta" sin costo de venta capturado.';
+  else if (totalSinClasificar > 0) advertencia = totalSinClasificar.toFixed(2) + ' ' +
+    cfg('moneda_base', 'MXN') + ' de gastos sin clasificar (naturaleza "por_clasificar"). El resultado puede variar al clasificarlos.';
   return { ok: true, mes: mes || 'Todos', moneda_base: cfg('moneda_base', 'MXN'),
     proyecto_id: proyFiltro || '',
     ingresos: ingresos, ventas_extra: ventasExtra, num_ventas_extra: numVentasExtra,
-    ingresos_extra: ingresosExtra, num_ingresos_extra: numIngresosExtra, costos: costos, utilidad_bruta: utilBruta,
-    gastos: porCategoria, total_gastos: totalGastos, utilidad_neta: utilNeta,
-    utilidad_operativa: utilNeta, // FASE 6: gastos operativos ya descontados
+    ingresos_extra: otrosResultados, num_ingresos_extra: numOtrosResultados,
+    otros_resultados: otrosResultados, num_otros_resultados: numOtrosResultados,
+    financiamiento_entrante: financiamientoIn,
+    costos: costos, utilidad_bruta: utilBruta,
+    gastos: porCategoria, total_gastos: totalGastos,
+    retiros: totalRetiros, inventario: totalInventario, inversiones: totalInversion,
+    sin_clasificar: totalSinClasificar,
+    utilidad_operativa: utilOperativa,
+    utilidad_neta: utilNeta, impuestos: 0,
     num_ventas: ventas.length + numVentasExtra,
     margen_bruto: ingresos ? (utilBruta / ingresos * 100) : 0,
     margen_neto: ingresos ? (utilNeta / ingresos * 100) : 0,
-    margen_operativo: ingresos ? (utilNeta / ingresos * 100) : 0 };
+    margen_operativo: ingresos ? (utilOperativa / ingresos * 100) : 0,
+    advertencia: advertencia };
 }
 
 /* ============================ GET (lectura) ============================ */
@@ -579,7 +637,8 @@ function doGetInterno(e) {
       tipo_cambio: cfg('tipo_cambio', '18.5'),
       alertas_email: PropertiesService.getScriptProperties().getProperty('ALERTAS_EMAIL') || '',
       categorias_gastos: listaCfg_('categorias_gastos', CATEGORIAS_GASTOS_DEFAULT),
-      categorias_ingresos: listaCfg_('categorias_ingresos', CATEGORIAS_INGRESOS_DEFAULT)
+      categorias_ingresos: listaCfg_('categorias_ingresos', CATEGORIAS_INGRESOS_DEFAULT),
+      mapa_naturalezas: mapaNaturalezas_() // FASE 1: sugerencia categoria -> naturaleza
     });
   }
   if (action === 'productos') {
@@ -625,6 +684,7 @@ function doGetInterno(e) {
     var vs = filasComoObjetos(SHEET_SALES);
     var porMes = {};
     vs.forEach(function (v) {
+      if (String(v.estado_pago) === 'CANCELADA') return; // FASE 0: coherente con cxc/estado_resultados
       var m = String(v.fecha || '').slice(0, 7);
       if (m.length !== 7) return;
       porMes[m] = (porMes[m] || 0) + (Number(v.total) || 0);
@@ -805,6 +865,7 @@ function doGetInterno(e) {
       return { venta_id: v.id, folio: v.folio, fecha: v.fecha, cliente: v.cliente, moneda: v.moneda,
         total: total, cobrado: cobrado, saldo: Math.max(0, total - cobrado),
         total_base: totalBase, cobrado_base: cobradoBase, saldo_base: Math.max(0, totalBase - cobradoBase),
+        sobrepago: (totalBase - cobradoBase) < -0.001, // FASE 0: no ocultar sobrecobros por TC
         estado_pago: v.estado_pago || (cobrado >= total && total > 0 ? 'PAGADA' : (cobrado > 0 ? 'PARCIAL' : 'PENDIENTE')),
         ultimo_cobro: ultimoCobro, proyecto_id: v.proyecto_id || '' };
     });
@@ -833,6 +894,7 @@ function doGetInterno(e) {
         descripcion: g.descripcion || '', moneda: g.moneda, total: totalCp, pagado: pagadoP,
         saldo: Math.max(0, totalCp - pagadoP), total_base: totalBaseCp, pagado_base: pagadoBaseP,
         saldo_base: Math.max(0, totalBaseCp - pagadoBaseP), estado: g.estado || 'ACTIVA',
+        sobrepago: (totalBaseCp - pagadoBaseP) < -0.001, // FASE 0: no ocultar sobrepagos por TC
         estado_pago: (pagadoBaseP >= totalBaseCp - 0.001 && totalBaseCp > 0) ? 'PAGADA' : (pagadoBaseP > 0 ? 'PARCIAL' : 'PENDIENTE'),
         ultimo_pago: ultimoPago };
     });
@@ -848,9 +910,24 @@ function doGetInterno(e) {
       desdeFc = yFc + '-' + (mFc < 10 ? '0' : '') + mFc + '-01';
       hastaFc = Utilities.formatDate(ahoraFc, 'America/Hermosillo', 'yyyy-MM-dd');
     }
-    var enRangoFc = function (fecha) { var f = String(fecha).slice(0, 10); return f >= desdeFc && f <= hastaFc; };
+    var enRangoFc = function (fecha) { var f = fechaISO_(fecha) || String(fecha).slice(0, 10); return f >= desdeFc && f <= hastaFc; };
     var cobrosFc = filasComoObjetos(SHEET_COBROS).filter(function (c) { return enRangoFc(c.fecha); });
     var pagosFc = filasComoObjetos(SHEET_PAGOS).filter(function (p) { return enRangoFc(p.fecha); });
+    // FASE 1: actividad del flujo (operacion / inversion / financiamiento).
+    var natPorGastoFc = {};
+    filasComoObjetos(SHEET_EXPENSES).forEach(function (g) { natPorGastoFc[String(g.id)] = naturalezaDe(g); });
+    var actividadDePago = function (p) {
+      var nat = natPorGastoFc[String(p.gasto_id)] || 'por_clasificar';
+      if (nat === 'retiro') return 'financiamiento';
+      if (nat === 'inversion') return 'inversion';
+      return 'operacion';
+    };
+    var actividadDeCobro = function (c) {
+      var t = validarTipoIngreso(c.tipo);
+      if (t === 'aportacion' || t === 'prestamo' || t === 'anticipo') return 'financiamiento';
+      return 'operacion';
+    };
+    var porActividad = { operacion: { entradas: 0, salidas: 0 }, inversion: { entradas: 0, salidas: 0 }, financiamiento: { entradas: 0, salidas: 0 } };
     var porDiaFc = {};
     cobrosFc.forEach(function (c) {
       var f = String(c.fecha).slice(0, 10);
@@ -861,6 +938,10 @@ function doGetInterno(e) {
       var f = String(p.fecha).slice(0, 10);
       porDiaFc[f] = porDiaFc[f] || { fecha: f, entradas: 0, salidas: 0 };
       porDiaFc[f].salidas += Number(p.monto_base) || 0;
+      porActividad[actividadDePago(p)].salidas += Number(p.monto_base) || 0;
+    });
+    cobrosFc.forEach(function (c) {
+      porActividad[actividadDeCobro(c)].entradas += Number(c.monto_base) || 0;
     });
     var diasFc = Object.keys(porDiaFc).sort().map(function (k) { return porDiaFc[k]; });
     var entradasFc = cobrosFc.reduce(function (s, c) { return s + (Number(c.monto_base) || 0); }, 0);
@@ -876,7 +957,51 @@ function doGetInterno(e) {
     })).sort(function (a, b) { return String(a.fecha) < String(b.fecha) ? 1 : -1; }).slice(0, 100);
     return json({ ok: true, desde: desdeFc, hasta: hastaFc, moneda_base: cfg('moneda_base', 'MXN'),
       entradas: entradasFc, salidas: salidasFc, neto: entradasFc - salidasFc,
+      por_actividad: porActividad,
       num_cobros: cobrosFc.length, num_pagos: pagosFc.length, dias: diasFc, movimientos: movsFc });
+  }
+
+  // FASE 1: reporte independiente de retiros del propietario (naturaleza='retiro').
+  // No toca el estado de resultados; alimenta el reporte de retiros del panel.
+  if (action === 'retiros') {
+    var desdeR = validarFecha(e.parameter.desde), hastaR = validarFecha(e.parameter.hasta);
+    var agruparR = String(e.parameter.agrupar || 'total'); // dia | mes | anio | total
+    var metodoPorGastoR = {};
+    filasComoObjetos(SHEET_PAGOS).forEach(function (p) {
+      if (!metodoPorGastoR[String(p.gasto_id)]) metodoPorGastoR[String(p.gasto_id)] = p.metodo || '';
+    });
+    var retirosR = filasComoObjetos(SHEET_EXPENSES).filter(function (g) {
+      if (String(g.estado) === 'CANCELADA') return false;
+      if (naturalezaDe(g) !== 'retiro') return false;
+      var f = fechaISO_(g.fecha) || String(g.fecha).slice(0, 10);
+      if (desdeR && f < desdeR) return false;
+      if (hastaR && f > hastaR) return false;
+      return true;
+    }).map(function (g) {
+      return { id: g.id, folio: g.folio, fecha: g.fecha, categoria: g.categoria,
+        descripcion: g.descripcion || '', monto: Number(g.monto) || 0, moneda: g.moneda,
+        monto_base: Number(g.monto_base) || 0, metodo: metodoPorGastoR[String(g.id)] || '', usuario: g.usuario || '' };
+    });
+    var claveR = function (f) {
+      var s = fechaISO_(f) || String(f).slice(0, 10);
+      if (agruparR === 'dia') return s;
+      if (agruparR === 'mes') return s.slice(0, 7);
+      if (agruparR === 'anio') return s.slice(0, 4);
+      return 'total';
+    };
+    var gruposR = {};
+    retirosR.forEach(function (r) {
+      var k = claveR(r.fecha);
+      gruposR[k] = gruposR[k] || { periodo: k, movimientos: 0, monto_base: 0 };
+      gruposR[k].movimientos++;
+      gruposR[k].monto_base += r.monto_base;
+    });
+    return json({ ok: true, moneda_base: cfg('moneda_base', 'MXN'),
+      desde: desdeR || '', hasta: hastaR || '', agrupar: agruparR,
+      total_movimientos: retirosR.length,
+      total_base: retirosR.reduce(function (s, r) { return s + r.monto_base; }, 0),
+      retiros: retirosR.reverse(),
+      grupos: Object.keys(gruposR).sort().map(function (k) { return gruposR[k]; }) });
   }
 
   throw AdisError('ACCION_DESCONOCIDA', 'Acción desconocida: ' + action);
@@ -1093,6 +1218,14 @@ function doPostInterno(data) {
       var fc = Math.round(Number(data.folio_cotizacion));
       if (!isFinite(fc) || fc < 1) throw AdisError('VALIDACION', 'El folio debe ser un entero mayor o igual a 1.');
       cfgSet('folio_cotizacion', String(fc));
+    }
+    // FASE 1: mapeo categoria -> naturaleza sugerida (Config, claves nat_*).
+    if (data.mapa_naturalezas && typeof data.mapa_naturalezas === 'object') {
+      Object.keys(data.mapa_naturalezas).forEach(function (cat) {
+        var v = data.mapa_naturalezas[cat];
+        if (v === null || v === '') { cfgSet('nat_' + String(cat).trim(), ''); return; }
+        cfgSet('nat_' + String(cat).trim(), validarNaturaleza(v));
+      });
     }
     return json({ ok: true, moneda_base: cfg('moneda_base', 'MXN'), tipo_cambio: cfg('tipo_cambio', '18.5') });
   });
@@ -1548,11 +1681,12 @@ function doPostInterno(data) {
     var monedaG = validarMoneda(data.moneda || cfg('moneda_base', 'MXN'));
     var tcg = Number(data.tipo_cambio) || Number(cfg('tipo_cambio', '18.5')) || 1;
     var fechaG = validarFecha(data.fecha) || hoy_();
+    var naturalezaG = validarNaturaleza(data.naturaleza); // FASE 1 (default seguro: por_clasificar)
     var folioG = siguienteFolio('GAS', 'folio_gasto', 4);
     var idG = nuevoId();
     hoja(SHEET_EXPENSES, ENC_GASTOS).appendRow([fechaG, categoria, data.descripcion || '',
-      monto, monedaG, tcg, aBase(monto, monedaG, tcg), idG, USUARIO_ACTUAL, folioG, 'ACTIVA', 0]);
-    log_('gasto_registrado', folioG + ' · ' + categoria + ' - ' + monto + ' ' + monedaG);
+      monto, monedaG, tcg, aBase(monto, monedaG, tcg), idG, USUARIO_ACTUAL, folioG, 'ACTIVA', 0, naturalezaG]);
+    log_('gasto_registrado', folioG + ' · ' + categoria + ' - ' + monto + ' ' + monedaG + ' · ' + naturalezaG);
     return json({ ok: true, folio: folioG, id: idG });
   });
 
@@ -1623,12 +1757,21 @@ function doPostInterno(data) {
     if (!isFinite(montoE) || montoE <= 0) throw AdisError('VALIDACION', 'El monto debe ser mayor que cero.');
     var monedaE = validarMoneda(data.moneda || hE.getRange(filaE, 5).getValue() || 'MXN');
     var fechaE = validarFecha(data.fecha) || String(hE.getRange(filaE, 1).getValue());
-    var tcE = Number(cfg('tipo_cambio', '18.5')) || 1;
+    // FASE 0: nunca reescribir el historico. El tipo de cambio y monto_base
+    // originales se conservan salvo que cambie monto o moneda; en ese caso se
+    // recalcula con el TC original del registro (o uno explicito) y se deja
+    // constancia en la bitacora.
+    var montoOrigE = Number(hE.getRange(filaE, 4).getValue());
+    var monedaOrigE = String(hE.getRange(filaE, 5).getValue()) || 'MXN';
+    var tcOrigE = Number(hE.getRange(filaE, 6).getValue()) || Number(cfg('tipo_cambio', '18.5')) || 1;
+    var cambioMontarioE = (montoE !== montoOrigE) || (monedaE !== monedaOrigE);
+    var tcE = cambioMontarioE ? (Number(data.tipo_cambio) || tcOrigE) : tcOrigE;
+    var montoBaseOrigE = Number(hE.getRange(filaE, 7).getValue()) || 0;
+    var montoBaseE = cambioMontarioE ? aBase(montoE, monedaE, tcE) : montoBaseOrigE;
     var pagadoBaseE = 0;
     filasComoObjetos(SHEET_PAGOS).forEach(function (p) {
       if (String(p.gasto_id) === String(data.id)) pagadoBaseE += Number(p.monto_base) || 0;
     });
-    var montoBaseE = aBase(montoE, monedaE, tcE);
     if (pagadoBaseE > montoBaseE + 0.001) {
       throw AdisError('VALIDACION', 'El monto no puede ser menor a lo ya pagado (' + pagadoBaseE.toFixed(2) + ' ' + cfg('moneda_base', 'MXN') + ').');
     }
@@ -1639,8 +1782,25 @@ function doPostInterno(data) {
     hE.getRange(filaE, 5).setValue(monedaE);
     hE.getRange(filaE, 6).setValue(tcE);
     hE.getRange(filaE, 7).setValue(montoBaseE);
-    log_('gasto_editado', String(hE.getRange(filaE, 10).getValue()) + ' · ' + categoriaE + ' · ' + montoE + ' ' + monedaE);
+    if (data.naturaleza) hE.getRange(filaE, 13).setValue(validarNaturaleza(data.naturaleza)); // FASE 1
+    log_('gasto_editado', String(hE.getRange(filaE, 10).getValue()) + ' · ' + categoriaE + ' · ' + montoE + ' ' + monedaE +
+      (cambioMontarioE ? ' · monto_base recalculado (TC ' + tcE + ')' : ''));
     return json({ ok: true });
+  });
+
+  // FASE 1: reclasificar solo la naturaleza financiera de un gasto (operativo,
+  // costo_directo, inventario, inversion, retiro, por_clasificar). No toca
+  // montos, fechas ni folios; queda en la bitacora. Uso: revision historica.
+  if (tipo === 'gasto_clasificar') return conLock(function () {
+    var filaCl = filaPorId(SHEET_EXPENSES, data.id);
+    if (!filaCl) throw AdisError('NO_ENCONTRADO', 'Gasto no encontrado.');
+    var hCl = ss().getSheetByName(SHEET_EXPENSES);
+    if (String(hCl.getRange(filaCl, 11).getValue()) === 'CANCELADA') throw AdisError('NO_PERMITIDO', 'El gasto está cancelado.');
+    var natCl = validarNaturaleza(data.naturaleza);
+    var natAntCl = validarNaturaleza(hCl.getRange(filaCl, 13).getValue());
+    hCl.getRange(filaCl, 13).setValue(natCl);
+    log_('gasto_clasificado', String(hCl.getRange(filaCl, 10).getValue()) + ' · ' + natAntCl + ' → ' + natCl);
+    return json({ ok: true, folio: hCl.getRange(filaCl, 10).getValue(), naturaleza: natCl });
   });
 
   // Edicion de un ingreso capturado a mano (sin venta ligada).
@@ -1655,16 +1815,24 @@ function doPostInterno(data) {
     if (!isFinite(montoI) || montoI <= 0) throw AdisError('VALIDACION', 'El monto debe ser mayor que cero.');
     var monedaI = validarMoneda(data.moneda || hI.getRange(filaI, 9).getValue() || 'MXN');
     var fechaI = validarFecha(data.fecha) || String(hI.getRange(filaI, 7).getValue());
-    var tcI = Number(cfg('tipo_cambio', '18.5')) || 1;
+    // FASE 0: conservar monto_base si no cambia monto/moneda (no reescribir
+    // historico con el TC actual). Si cambia, recalcular con TC explicito o el
+    // de Config, dejando constancia en bitacora.
+    var montoOrigI = Number(hI.getRange(filaI, 8).getValue());
+    var monedaOrigI = String(hI.getRange(filaI, 9).getValue()) || 'MXN';
+    var cambioMontarioI = (montoI !== montoOrigI) || (monedaI !== monedaOrigI);
+    var tcI = Number(data.tipo_cambio) || Number(cfg('tipo_cambio', '18.5')) || 1;
+    var montoBaseI = cambioMontarioI ? aBase(montoI, monedaI, tcI) : (Number(hI.getRange(filaI, 10).getValue()) || 0);
     hI.getRange(filaI, 5).setValue(conceptoI);
     hI.getRange(filaI, 7).setValue(fechaI);
     hI.getRange(filaI, 8).setValue(montoI);
     hI.getRange(filaI, 9).setValue(monedaI);
-    hI.getRange(filaI, 10).setValue(aBase(montoI, monedaI, tcI));
+    hI.getRange(filaI, 10).setValue(montoBaseI);
     hI.getRange(filaI, 11).setValue(data.metodo || '');
     hI.getRange(filaI, 12).setValue(String(data.notas || '').slice(0, 300));
-    hI.getRange(filaI, 14).setValue(String(data.tipo_ingreso || 'venta') === 'otro' ? 'otro' : 'venta');
-    log_('ingreso_editado', String(hI.getRange(filaI, 2).getValue()) + ' · ' + conceptoI + ' · ' + montoI + ' ' + monedaI);
+    hI.getRange(filaI, 14).setValue(validarTipoIngreso(data.tipo_ingreso)); // FASE 1: vocabulario amplio
+    log_('ingreso_editado', String(hI.getRange(filaI, 2).getValue()) + ' · ' + conceptoI + ' · ' + montoI + ' ' + monedaI +
+      (cambioMontarioI ? ' · monto_base recalculado (TC ' + tcI + ')' : ''));
     return json({ ok: true });
   });
 
@@ -1720,7 +1888,9 @@ function doPostInterno(data) {
       var folioGf = siguienteFolio('GAS', 'folio_gasto', 4);
       hoja(SHEET_EXPENSES, ENC_GASTOS).appendRow([hoy_(), categoriaGf,
         '(Gasto fijo) ' + conceptoGf, montoGf, monedaGf, tcGf,
-        aBase(montoGf, monedaGf, tcGf), nuevoId(), USUARIO_ACTUAL, folioGf, 'ACTIVA', 0]);
+        aBase(montoGf, monedaGf, tcGf), nuevoId(), USUARIO_ACTUAL, folioGf, 'ACTIVA', 0, 'operativo']);
+      // 'operativo' es seguro aqui: un gasto fijo es por definicion un gasto
+      // recurrente del negocio (renta, servicios, nomina); editable despues.
       var siguienteGf = siguienteOcurrencia(proximaGf, frecGf);
       // Si la proxima fecha aun es futura (generaron antes de la fecha), la
       // ocurrencia generada ES esa: programar la SIGUIENTE para no duplicarla.
@@ -1986,12 +2156,11 @@ function doPostInterno(data) {
     var tcI = Number(data.tipo_cambio) || Number(cfg('tipo_cambio', '18.5')) || 1;
     var fechaI = validarFecha(data.fecha) || hoy_();
     var folioI = siguienteFolio('ING', 'folio_ingreso', 4);
+    var tipoI = validarTipoIngreso(data.tipo_ingreso); // FASE 1: ver TIPOS_INGRESO
     hoja(SHEET_COBROS, ENC_COBROS).appendRow([nuevoId(), folioI, '', '',
       conceptoI, '', fechaI, montoI, monedaI, aBase(montoI, monedaI, tcI),
-      data.metodo || '', data.notas || '', USUARIO_ACTUAL,
-      String(data.tipo_ingreso || 'venta') === 'otro' ? 'otro' : 'venta']);
-    log_('ingreso_registrado', folioI + ' · ' + conceptoI + ' · ' + montoI + ' ' + monedaI + ' · ' + (String(data.tipo_ingreso || 'venta') === 'otro' ? 'otro ingreso' : 'venta')); 
-    log_('ingreso_registrado', folioI + ' · ' + conceptoI + ' · ' + montoI + ' ' + monedaI);
+      data.metodo || '', data.notas || '', USUARIO_ACTUAL, tipoI]);
+    log_('ingreso_registrado', folioI + ' · ' + conceptoI + ' · ' + montoI + ' ' + monedaI + ' · ' + tipoI);
     return json({ ok: true, folio: folioI });
   });
 

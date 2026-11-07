@@ -88,6 +88,7 @@ def capturar(mov, token):
     if tipo == "gasto":
         payload = dict(base, tipo="gasto", categoria=mov.get("categoria", ""),
                        descripcion=mov.get("descripcion", mov.get("concepto", "")),
+                       naturaleza=mov.get("naturaleza", ""),  # FASE 1: operativo/costo_directo/inventario/inversion/retiro
                        monto=mov.get("monto"))
     elif tipo == "ingreso":
         payload = dict(base, tipo="ingreso", concepto=mov.get("concepto", mov.get("categoria", "")),

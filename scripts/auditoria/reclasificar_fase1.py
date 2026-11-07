@@ -1,0 +1,156 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""Reclasificacion historica FASE 1 (autorizada 2026-11-06).
+
+Aplica la naturaleza financiera a los gastos historicos autorizados por el
+dueno (grupos: retiros / inventario / operativos). Usa el endpoint
+tipo:'gasto_clasificar' (solo toca la columna naturaleza; bitacora incluida).
+
+IMPORTANTE: ejecutar SOLO despues del redeploy de Fase 0/1.
+Por defecto es --dry-run (muestra el plan sin escribir). Con --aplicar escribe.
+
+Los folios ambiguos (pendientes/insuficientes de la tabla de revision) NO estan
+en esta lista: el dueno los decide folio por folio.
+"""
+import argparse
+import json
+import re
+import sys
+import urllib.request
+import urllib.parse
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[2]
+API = None
+for cand in ["00_CORE/shared_js/admin_core.js", "00_CORE/shared_js/admin_core.src.js"]:
+    p = ROOT / cand
+    if p.exists():
+        m = re.search(r"API_URL:\s*'([^']+)'", p.read_text(encoding="utf-8"))
+        if m:
+            API = m.group(1)
+            break
+if not API:
+    sys.exit("No encontre CONFIG.API_URL")
+
+USUARIO = "Adis"
+CLAVE = "Adisdiseño2026"
+
+# Grupos autorizados por el dueno el 2026-11-06 (tabla de revision).
+# Los marcados con '*' quedaron 'pendientes de autorizacion' dentro de su grupo
+# operativo/inventario y se incluyen aqui salvo que el dueno diga lo contrario.
+RECLASIFICAR = {
+    # Retiros del propietario — categoria Gastos personales / Gastos Medicos (16)
+    "retiro": [
+        "GAS-2026-0004", "GAS-2026-0009", "GAS-2026-0010", "GAS-2026-0029",
+        "GAS-2026-0030", "GAS-2026-0031", "GAS-2026-0032", "GAS-2026-0034",
+        "GAS-2026-0036", "GAS-2026-0041", "GAS-2026-0046", "GAS-2026-0050",
+        "GAS-2026-0051", "GAS-2026-0055", "GAS-2026-0056",
+    ],
+    # Compras de inventario — lambrines, placas, plafones (6)
+    "inventario": [
+        "GAS-2026-0005", "GAS-2026-0006", "GAS-2026-0018", "GAS-2026-0019",
+        "GAS-2026-0039", "GAS-2026-0040",
+    ],
+    # Gastos operativos confirmados (10)
+    "operativo": [
+        "GAS-2026-0001", "GAS-2026-0003", "GAS-2026-0008", "GAS-2026-0015",
+        "GAS-2026-0035", "GAS-2026-0042", "GAS-2026-0043", "GAS-2026-0044",
+        "GAS-2026-0049", "GAS-2026-0054",
+    ],
+    # AMBIGUOS: el dueno debe confirmar cada uno antes de moverlo de aqui.
+    "por_clasificar": [
+        # Gasolinas sin contexto / alimentos / materiales grandes / muestrario /
+        # 'plataforma' / ajuste menor — NO se tocan sin autorizacion folio por folio.
+        "GAS-2026-0002", "GAS-2026-0007", "GAS-2026-0012", "GAS-2026-0013",
+        "GAS-2026-0014", "GAS-2026-0016", "GAS-2026-0017", "GAS-2026-0020",
+        "GAS-2026-0025", "GAS-2026-0033", "GAS-2026-0037", "GAS-2026-0038",
+        "GAS-2026-0045", "GAS-2026-0047", "GAS-2026-0048", "GAS-2026-0052",
+        "GAS-2026-0053",
+    ],
+}
+
+
+def post(payload):
+    req = urllib.request.Request(API, data=json.dumps(payload).encode("utf-8"),
+                                 headers={"Content-Type": "text/plain;charset=utf-8"}, method="POST")
+    with urllib.request.urlopen(req, timeout=90) as r:
+        return json.loads(r.read().decode("utf-8"))
+
+
+def get(action, token):
+    url = f"{API}?action={action}&token={urllib.parse.quote(token)}"
+    with urllib.request.urlopen(url, timeout=90) as r:
+        return json.loads(r.read().decode("utf-8"))
+
+
+def main():
+    ap = argparse.ArgumentParser(description="Reclasificacion historica Fase 1 (autorizada)")
+    ap.add_argument("--aplicar", action="store_true", help="escribe (default: dry-run)")
+    args = ap.parse_args()
+
+    tok = post({"tipo": "login", "usuario": USUARIO, "clave": CLAVE})
+    if not tok.get("ok"):
+        sys.exit(f"Login fallo: {tok}")
+    token = tok["token"]
+
+    gastos = get("gastos", token)["gastos"]
+    por_folio = {str(x.get("folio")): x for x in gastos}
+
+    plan = []  # (folio, naturaleza_actual, naturaleza_nueva, id)
+    for naturaleza, folios in RECLASIFICAR.items():
+        if naturaleza == "por_clasificar":
+            continue  # nunca se tocan automaticamente
+        for folio in folios:
+            g = por_folio.get(folio)
+            if not g:
+                print(f"AVISO: {folio} no existe (omitido)")
+                continue
+            if str(g.get("estado")) == "CANCELADA":
+                print(f"AVISO: {folio} esta CANCELADA (omitido)")
+                continue
+            actual = str(g.get("naturaleza") or "por_clasificar")
+            plan.append((folio, actual, naturaleza, g["id"]))
+
+    print(f"\nPlan: {len(plan)} gastos a reclasificar (dry-run={not args.aplicar})")
+    tot = {}
+    for folio, actual, nueva, _ in plan:
+        g = por_folio[folio]
+        base = float(g.get("monto_base") or 0)
+        tot[nueva] = tot.get(nueva, 0) + base
+        print(f"  {folio} · {str(g.get('categoria'))[:24]:<24} · {actual:<14} -> {nueva:<10} · ${base:,.2f} base")
+    print("  Totales:", {k: f"${v:,.0f}" for k, v in tot.items()})
+
+    if not args.aplicar:
+        print("\nDry-run: nada escrito. Corre con --aplicar para ejecutar.")
+        return
+
+    ok = fail = 0
+    for folio, _, nueva, gid in plan:
+        try:
+            r = post({"tipo": "gasto_clasificar", "id": gid, "naturaleza": nueva, "token": token})
+            if r.get("ok"):
+                ok += 1
+                print(f"  OK {folio} -> {nueva}")
+            else:
+                fail += 1
+                print(f"  FAIL {folio}: {r}")
+        except Exception as e:
+            fail += 1
+            print(f"  ERROR {folio}: {e}")
+    print(f"\nReclasificados: {ok} · fallos: {fail}")
+
+    # Verificacion post: P&L debe reflejar la separacion
+    er = get("estado_resultados", token)
+    print("\nP&L despues de reclasificar:")
+    for k in ["ingresos", "costos", "utilidad_bruta", "total_gastos", "utilidad_operativa",
+              "otros_resultados", "utilidad_neta", "retiros", "inventario", "sin_clasificar"]:
+        print(f"  {k}: {er.get(k)}")
+    print("  advertencia:", er.get("advertencia"))
+
+
+if __name__ == "__main__":
+    try:
+        sys.stdout.reconfigure(encoding="utf-8")
+    except Exception:
+        pass
+    main()

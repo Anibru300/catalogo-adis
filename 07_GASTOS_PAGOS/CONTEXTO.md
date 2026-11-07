@@ -41,6 +41,29 @@
   de caja).
 - **COMPARTE CON**: 08 (lectura agregada), 02 (proveedores).
 
+## CAMBIOS 2026-11-06 (FASE 0/1 — clasificación financiera, autorizada)
+
+- **Nueva columna al final de Gastos: `naturaleza`** (operativo | costo_directo |
+  inventario | inversion | retiro | por_clasificar). La categoría sigue siendo
+  descriptiva; la naturaleza determina el tratamiento contable. Default seguro:
+  `por_clasificar` (nunca se asume una clasificación que distorsione). Sugerencia
+  por categoría configurable en Config (claves `nat_<categoria>`, campo
+  `mapa_naturalezas` en GET/POST `config`).
+- **Retiro del propietario**: no afecta utilidad bruta/operativa/neta; sí el
+  flujo de efectivo (financiamiento). Nuevo endpoint GET `retiros`
+  (?desde=&hasta=&agrupar=dia|mes|anio|total) y sección "Retiros del
+  propietario" en el tab de Gastos.
+- **Nuevo POST `gasto_clasificar`** {id, naturaleza}: reclasifica solo la
+  naturaleza (revisión histórica; bitácora `gasto_clasificado`). No toca montos.
+- **Tipos de ingreso ampliados** (Cobros col 14): venta | otro | reembolso |
+  aportacion | prestamo | anticipo. Solo `venta` entra a ventas del P&L;
+  `otro`/`reembolso` van a otros resultados; los demás son financiamiento
+  (flujo de efectivo, NO estado de resultados). Selector en el formulario ING-.
+- **FASE 0**: `gasto_editar`/`ingreso_editar` conservan `tipo_cambio` y
+  `monto_base` históricos si no cambia monto/moneda (si cambia: recalculo
+  explícito + bitácora). Gastos y Stock FUERA de `HOJAS_BORRABLES`. Eliminado
+  `log_` duplicado en POST `ingreso`. cxc/cxp agregan flag `sobrepago`.
+
 ## REGLAS DE NEGOCIO
 
 1. **`gasto ≠ pago`**: el gasto nace ACTIVO/pendiente; los pagos lo van

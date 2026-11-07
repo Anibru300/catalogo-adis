@@ -510,6 +510,7 @@
         <div class="row">
           <div><label>Fecha</label><input type="date" id="ingFecha"></div>
           <div><label>Concepto / Categoría *</label><select id="ingConcepto" onchange="editCategoriaCambiada_('ingConcepto','ingConceptoOtra')"></select><input id="ingConceptoOtra" placeholder="Escribe el concepto..." style="display:none;margin-top:0.4rem;"><datalist id="ingCatList"></datalist></div>
+          <div><label>Tipo de ingreso</label><select id="ingTipo"><option value="venta">Venta / cobro operativo</option><option value="otro">Otro ingreso</option><option value="reembolso">Reembolso</option><option value="aportacion">Aportación del propietario</option><option value="prestamo">Préstamo recibido</option><option value="anticipo">Anticipo de cliente</option></select></div>
           <div><label>Monto *</label><div class="monto-wrap"><span class="monto-sign">$</span><input type="text" inputmode="decimal" class="monto" id="ingMonto" placeholder="0.00" oninput="mascaraMonto(this)"></div></div>
           <div><label>Moneda</label><select id="ingMoneda"><option value="MXN">MXN</option><option value="USD">USD</option></select></div>
           <div><label>Método</label><select id="ingMetodo"><option>Efectivo</option><option>Transferencia</option><option>Tarjeta</option><option>Depósito</option><option>Otro</option></select></div>
@@ -549,7 +550,8 @@
       <div class="card-box">
         <div class="row">
           <div><label>Fecha</label><input type="date" id="gFecha"></div>
-          <div><label>Categoría *</label><select id="gCategoria" onchange="categoriaGastoCambiada()"></select><input id="gCategoriaOtra" placeholder="Escribe la categoría nueva..." style="display:none;margin-top:0.4rem;"><datalist id="gCatList"></datalist></div>
+          <div><label>Categoría *</label><select id="gCategoria" onchange="categoriaGastoCambiada()"></select><input id="gCategoriaOtra" placeholder="Escribe la categoría nueva..." style="display:none;margin-top:0.4rem;" onchange="sugerirNaturalezaGasto_()"><datalist id="gCatList"></datalist></div>
+          <div><label>Tipo de movimiento</label><select id="gNaturaleza"><option value="operativo">Gasto operativo</option><option value="costo_directo">Costo directo de proyecto</option><option value="inventario">Compra de inventario</option><option value="inversion">Inversión o adquisición de activo</option><option value="retiro">Retiro del propietario</option><option value="por_clasificar" selected>Otro movimiento por clasificar</option></select></div>
           <div><label>Monto *</label><div class="monto-wrap"><span class="monto-sign">$</span><input type="text" inputmode="decimal" class="monto" id="gMonto" placeholder="0.00" oninput="mascaraMonto(this)"></div></div>
           <div><label>Moneda</label><select id="gMoneda"><option value="MXN">MXN</option><option value="USD">USD</option></select></div>
           <div><label>Método de pago</label><select id="gMetodo"><option>Transferencia</option><option>Efectivo</option><option>Tarjeta</option><option>Depósito</option><option>Otro</option></select></div>
@@ -582,6 +584,25 @@
           <thead><tr><th>Folio</th><th>Fecha</th><th>Gasto</th><th>Categoría</th><th>Monto</th><th>Método</th></tr></thead>
           <tbody id="pagosTable"><tr><td colspan="6" class="muted">Cargando…</td></tr></tbody>
         </table>
+      </div>
+      <h2 style="margin-top:1.5rem;">Retiros del propietario</h2>
+      <div class="card-box" id="retirosBox">
+        <div class="row">
+          <div><label>Desde</label><input type="date" id="retDesde"></div>
+          <div><label>Hasta</label><input type="date" id="retHasta"></div>
+          <div><label>Agrupar por</label><select id="retAgrupar"><option value="total" selected>Total</option><option value="dia">Día</option><option value="mes">Mes</option><option value="anio">Año</option></select></div>
+        </div>
+        <div class="toolbar" style="margin-top:0.6rem;">
+          <button class="btn btn-sm btn-solid" onclick="loadRetiros()">🔍 Consultar</button>
+        </div>
+        <div id="retirosTotal" class="pnl-cards" style="margin-top:0.8rem;"></div>
+        <div class="table-scroll" style="margin-top:0.8rem;">
+          <table>
+            <thead><tr><th>Folio</th><th>Fecha</th><th>Descripción</th><th>Monto</th><th>Método</th><th>En moneda base</th></tr></thead>
+            <tbody id="retirosTable"></tbody>
+          </table>
+        </div>
+        <div id="retirosGrupos" style="margin-top:0.8rem;"></div>
       </div>
     </section>
 
@@ -631,6 +652,7 @@
         <button class="btn btn-sm" onclick="printPNL()">🖨️ Imprimir</button>
       </div>
       <div id="alertasBox" style="margin-bottom:1rem;"></div>
+      <div id="pnlAdvertencia"></div>
       <div id="pnlCards"></div>
       <div class="card-box table-scroll" id="pnlBox" style="display:none;">
         <table><thead><tr><th>Concepto</th><th style="text-align:right;">Monto</th></tr></thead><tbody id="pnlTable"></tbody></table>
