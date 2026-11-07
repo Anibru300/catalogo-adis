@@ -370,6 +370,10 @@
     <label for="loginPass">Contraseña</label>
     <input id="loginPass" type="password" autocomplete="current-password" onkeydown="if(event.key==='Enter')login()">
     <button class="btn btn-solid" style="justify-content:center; margin-top:1.3rem; width:100%; padding:0.85rem;" onclick="login()">Entrar al panel</button>
+    <div style="display:flex; gap:0.6rem; margin-top:0.8rem;">
+      <a class="btn" style="flex:1; justify-content:center; text-decoration:none; padding:0.6rem; font-size:0.8rem;" href="./" title="Regresar al sitio público">← Página pública</a>
+      <button type="button" class="btn" style="flex:1; justify-content:center; padding:0.6rem; font-size:0.8rem;" onclick="salirDelPanel()" title="Cerrar sesión y salir del panel">Salir</button>
+    </div>
     <p id="loginStatus"></p>
     <div class="login-foot">Acceso exclusivo para administración</div>
   </div>
@@ -1446,6 +1450,13 @@ function logout(){
 }
 
 /* ---------- tabs ---------- */
+/* ---------- Salir del panel: cierra sesión (si hay) y vuelve al sitio público ---------- */
+function salirDelPanel() {
+  try { if (sessionStorage.getItem('adis_admin_token')) logout(); } catch (e) {}
+  try { sessionStorage.removeItem('adis_admin_token'); sessionStorage.removeItem('adis_admin_user'); } catch (e) {}
+  window.location.href = './';
+}
+
 /* ---------- FASE 7: confirmación en dos pasos (sin confirm()) ---------- */
 const _confPend = new Set();
 function confirma(key, msg){

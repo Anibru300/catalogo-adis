@@ -121,6 +121,13 @@ function logout(){
 }
 
 /* ---------- tabs ---------- */
+/* ---------- Salir del panel: cierra sesión (si hay) y vuelve al sitio público ---------- */
+function salirDelPanel() {
+  try { if (sessionStorage.getItem('adis_admin_token')) logout(); } catch (e) {}
+  try { sessionStorage.removeItem('adis_admin_token'); sessionStorage.removeItem('adis_admin_user'); } catch (e) {}
+  window.location.href = './';
+}
+
 /* ---------- FASE 7: confirmación en dos pasos (sin confirm()) ---------- */
 const _confPend = new Set();
 function confirma(key, msg){
