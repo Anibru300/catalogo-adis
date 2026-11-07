@@ -1,0 +1,102 @@
+{
+  "ok": true,
+  "moneda_base": "MXN",
+  "meses": [
+    {
+      "mes": "2025-12",
+      "ingresos": 0,
+      "gastos": 0,
+      "por_categoria": {}
+    },
+    {
+      "mes": "2026-01",
+      "ingresos": 0,
+      "gastos": 0,
+      "por_categoria": {}
+    },
+    {
+      "mes": "2026-02",
+      "ingresos": 0,
+      "gastos": 0,
+      "por_categoria": {}
+    },
+    {
+      "mes": "2026-03",
+      "ingresos": 0,
+      "gastos": 0,
+      "por_categoria": {}
+    },
+    {
+      "mes": "2026-04",
+      "ingresos": 0,
+      "gastos": 0,
+      "por_categoria": {}
+    },
+    {
+      "mes": "2026-05",
+      "ingresos": 0,
+      "gastos": 0,
+      "por_categoria": {}
+    },
+    {
+      "mes": "2026-06",
+      "ingresos": 0,
+      "gastos": 0,
+      "por_categoria": {}
+    },
+    {
+      "mes": "2026-07",
+      "ingresos": 0,
+      "gastos": 0,
+      "por_categoria": {}
+    },
+    {
+      "mes": "2026-08",
+      "ingresos": 0,
+      "gastos": 0,
+      "por_categoria": {}
+    },
+    {
+      "mes": "2026-09",
+      "ingresos": 0,
+      "gastos": 0,
+      "por_categoria": {}
+    },
+    {
+      "mes": "2026-10",
+      "ingresos": 38790,
+      "gastos": 77781.04000000001,
+      "por_categoria": {
+        "Honorarios": 1500,
+        "Gasolina": 3050,
+        "Mantenimiento": 837,
+        "Gastos personales": 12303.720000000001,
+        "Compra de inventario": 8595.470000000001,
+        "Alimentos": 950,
+        "Envíos": 500,
+        "Equipos": 4200,
+        "Materiales": 17793.63,
+        "Nómina": 1500,
+        "Muestrario": 2500,
+        "Otro": 7621.22,
+        "Compra de material": 8430,
+        "Gastos Medicos": 7000,
+        "Inversión": 1000
+      }
+    },
+    {
+      "mes": "2026-11",
+      "ingresos": 59250,
+      "gastos": 19590,
+      "por_categoria": {
+        "Material Indirecto o papeleria": 370,
+        "Gasolina": 1425,
+        "Gastos personales": 5500,
+        "Alimentos": 1055,
+        "Inversión": 2000,
+        "Renta": 8140,
+        "Otro": 1100
+      }
+    }
+  ]
+}

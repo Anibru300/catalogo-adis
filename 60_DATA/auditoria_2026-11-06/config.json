@@ -1,0 +1,32 @@
+{
+  "ok": true,
+  "moneda_base": "MXN",
+  "tipo_cambio": "18.5",
+  "alertas_email": "ing.carlosurbina300@gmail.com",
+  "categorias_gastos": [
+    "Compra de material",
+    "Materiales",
+    "Compra de inventario",
+    "Publicidad",
+    "Inversión",
+    "Renta",
+    "Luz",
+    "Agua",
+    "Nómina",
+    "Gasolina",
+    "Alimentos",
+    "Mantenimiento",
+    "Envíos",
+    "Honorarios",
+    "Gastos personales",
+    "Equipos",
+    "Muestrario",
+    "Otro"
+  ],
+  "categorias_ingresos": [
+    "Venta de activos",
+    "Reembolso",
+    "Otro ingreso",
+    "Otro"
+  ]
+}

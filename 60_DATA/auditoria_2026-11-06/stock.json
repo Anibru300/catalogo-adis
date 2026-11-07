@@ -1,0 +1,166 @@
+{
+  "ok": true,
+  "stock": [
+    {
+      "producto_id": "aa8a8958",
+      "producto": "AGATA",
+      "almacen_id": "e6a5e282",
+      "almacen": "Nogales",
+      "cantidad": 5
+    },
+    {
+      "producto_id": "86081f45",
+      "producto": "ARENA",
+      "almacen_id": "e6a5e282",
+      "almacen": "Nogales",
+      "cantidad": 3
+    },
+    {
+      "producto_id": "0b83d902",
+      "producto": "Carrara Oscuro",
+      "almacen_id": "e6a5e282",
+      "almacen": "Nogales",
+      "cantidad": 5
+    },
+    {
+      "producto_id": "91550c11",
+      "producto": "Onix",
+      "almacen_id": "e6a5e282",
+      "almacen": "Nogales",
+      "cantidad": 3
+    },
+    {
+      "producto_id": "dc51a1f4",
+      "producto": "OBSIDIANA",
+      "almacen_id": "e6a5e282",
+      "almacen": "Nogales",
+      "cantidad": 3
+    },
+    {
+      "producto_id": "c8af8923",
+      "producto": "Topacio",
+      "almacen_id": "e6a5e282",
+      "almacen": "Nogales",
+      "cantidad": 5
+    },
+    {
+      "producto_id": "615b791d",
+      "producto": "ZAFIRO",
+      "almacen_id": "e6a5e282",
+      "almacen": "Nogales",
+      "cantidad": 1
+    },
+    {
+      "producto_id": 24635921,
+      "producto": "Cuarzo",
+      "almacen_id": "e6a5e282",
+      "almacen": "Nogales",
+      "cantidad": 3
+    },
+    {
+      "producto_id": "dd5117ab",
+      "producto": "KAYLI",
+      "almacen_id": "e6a5e282",
+      "almacen": "Nogales",
+      "cantidad": 2
+    },
+    {
+      "producto_id": "3110ffbf",
+      "producto": "NEGRA SAHARA",
+      "almacen_id": "e6a5e282",
+      "almacen": "Nogales",
+      "cantidad": 1
+    },
+    {
+      "producto_id": "f6f4bfd4",
+      "producto": "CHOCOLATA",
+      "almacen_id": "e6a5e282",
+      "almacen": "Nogales",
+      "cantidad": 5
+    },
+    {
+      "producto_id": "36adf076",
+      "producto": "DALMATA",
+      "almacen_id": "e6a5e282",
+      "almacen": "Nogales",
+      "cantidad": 3
+    },
+    {
+      "producto_id": "536ec4ba",
+      "producto": "ISA",
+      "almacen_id": "e6a5e282",
+      "almacen": "Nogales",
+      "cantidad": 4
+    },
+    {
+      "producto_id": "c8fdf45e",
+      "producto": "Perla",
+      "almacen_id": "e6a5e282",
+      "almacen": "Nogales",
+      "cantidad": 1
+    },
+    {
+      "producto_id": "2e317f39",
+      "producto": "KL8267",
+      "almacen_id": "369dc79a",
+      "almacen": "Decosonora",
+      "cantidad": 5
+    },
+    {
+      "producto_id": "53e40954",
+      "producto": "KL8055",
+      "almacen_id": "369dc79a",
+      "almacen": "Decosonora",
+      "cantidad": 2
+    },
+    {
+      "producto_id": "0edaa331",
+      "producto": "KL8276",
+      "almacen_id": "369dc79a",
+      "almacen": "Decosonora",
+      "cantidad": 10
+    },
+    {
+      "producto_id": "7cc17257",
+      "producto": "AGATA 2",
+      "almacen_id": "07d53c1e",
+      "almacen": "Rio rico",
+      "cantidad": 1
+    },
+    {
+      "producto_id": "8fb75af2",
+      "producto": "GOLDEN",
+      "almacen_id": "07d53c1e",
+      "almacen": "Rio rico",
+      "cantidad": 1
+    },
+    {
+      "producto_id": "f80f4636",
+      "producto": "Grafito",
+      "almacen_id": "07d53c1e",
+      "almacen": "Rio rico",
+      "cantidad": 1
+    },
+    {
+      "producto_id": "738f32a1",
+      "producto": "Adler",
+      "almacen_id": "e6a5e282",
+      "almacen": "Nogales",
+      "cantidad": 10
+    },
+    {
+      "producto_id": "2a3cd5db",
+      "producto": "PRODUCTO LOTE A",
+      "almacen_id": "e6a5e282",
+      "almacen": "Nogales",
+      "cantidad": 0
+    },
+    {
+      "producto_id": "e029499b",
+      "producto": "PRODUCTO LOTE B",
+      "almacen_id": "e6a5e282",
+      "almacen": "Nogales",
+      "cantidad": 0
+    }
+  ]
+}

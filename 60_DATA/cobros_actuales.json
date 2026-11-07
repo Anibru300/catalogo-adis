@@ -1,0 +1,7 @@
+{
+  "ok": false,
+  "error": {
+    "code": "ACCION_DESCONOCIDA",
+    "message": "Acción desconocida: cobros"
+  }
+}

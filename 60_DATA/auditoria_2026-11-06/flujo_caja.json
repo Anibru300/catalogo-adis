@@ -1,0 +1,201 @@
+{
+  "ok": true,
+  "desde": "2026-11-01",
+  "hasta": "2026-11-06",
+  "moneda_base": "MXN",
+  "entradas": 59250,
+  "salidas": 28140,
+  "neto": 31110,
+  "num_cobros": 3,
+  "num_pagos": 19,
+  "dias": [
+    {
+      "fecha": "2026-11-05",
+      "entradas": 57350,
+      "salidas": 0
+    },
+    {
+      "fecha": "2026-11-06",
+      "entradas": 1900,
+      "salidas": 28140
+    }
+  ],
+  "movimientos": [
+    {
+      "tipo": "salida",
+      "fecha": "2026-11-06 00:00",
+      "folio": "PAG-2026-0049",
+      "concepto": "Gastos personales · GAS-2026-0056",
+      "monto_base": 600,
+      "metodo": "Efectivo"
+    },
+    {
+      "tipo": "salida",
+      "fecha": "2026-11-06 00:00",
+      "folio": "PAG-2026-0048",
+      "concepto": "Gastos personales · GAS-2026-0055",
+      "monto_base": 3000,
+      "metodo": "Efectivo"
+    },
+    {
+      "tipo": "salida",
+      "fecha": "2026-11-06 00:00",
+      "folio": "PAG-2026-0047",
+      "concepto": "Otro · GAS-2026-0054",
+      "monto_base": 1100,
+      "metodo": "Efectivo"
+    },
+    {
+      "tipo": "salida",
+      "fecha": "2026-11-06 00:00",
+      "folio": "PAG-2026-0046",
+      "concepto": "Gasolina · GAS-2026-0053",
+      "monto_base": 925,
+      "metodo": "Efectivo"
+    },
+    {
+      "tipo": "salida",
+      "fecha": "2026-11-06 00:00",
+      "folio": "PAG-2026-0045",
+      "concepto": "Alimentos · GAS-2026-0052",
+      "monto_base": 555,
+      "metodo": "Efectivo"
+    },
+    {
+      "tipo": "salida",
+      "fecha": "2026-11-06 00:00",
+      "folio": "PAG-2026-0044",
+      "concepto": "Gastos personales · GAS-2026-0051",
+      "monto_base": 500,
+      "metodo": "Efectivo"
+    },
+    {
+      "tipo": "salida",
+      "fecha": "2026-11-06 00:00",
+      "folio": "PAG-2026-0043",
+      "concepto": "Gastos personales · GAS-2026-0050",
+      "monto_base": 200,
+      "metodo": "Efectivo"
+    },
+    {
+      "tipo": "salida",
+      "fecha": "2026-11-06 00:00",
+      "folio": "PAG-2026-0042",
+      "concepto": "Renta · GAS-2026-0049",
+      "monto_base": 8140,
+      "metodo": "Efectivo"
+    },
+    {
+      "tipo": "salida",
+      "fecha": "2026-11-06 00:00",
+      "folio": "PAG-2026-0041",
+      "concepto": "Inversión · GAS-2026-0048",
+      "monto_base": 2000,
+      "metodo": "Efectivo"
+    },
+    {
+      "tipo": "salida",
+      "fecha": "2026-11-06 00:00",
+      "folio": "PAG-2026-0040",
+      "concepto": "Alimentos · GAS-2026-0047",
+      "monto_base": 500,
+      "metodo": "Efectivo"
+    },
+    {
+      "tipo": "salida",
+      "fecha": "2026-11-06 00:00",
+      "folio": "PAG-2026-0039",
+      "concepto": "Gastos personales · GAS-2026-0046",
+      "monto_base": 1200,
+      "metodo": "Efectivo"
+    },
+    {
+      "tipo": "salida",
+      "fecha": "2026-11-06 00:00",
+      "folio": "PAG-2026-0038",
+      "concepto": "Gasolina · GAS-2026-0045",
+      "monto_base": 500,
+      "metodo": "Efectivo"
+    },
+    {
+      "tipo": "salida",
+      "fecha": "2026-11-06 00:00",
+      "folio": "PAG-2026-0037",
+      "concepto": "Material Indirecto o papeleria · GAS-2026-0044",
+      "monto_base": 370,
+      "metodo": "Efectivo"
+    },
+    {
+      "tipo": "salida",
+      "fecha": "2026-11-06 00:00",
+      "folio": "PAG-2026-0036",
+      "concepto": "Otro · GAS-2026-0043",
+      "monto_base": 1850,
+      "metodo": "Efectivo"
+    },
+    {
+      "tipo": "salida",
+      "fecha": "2026-11-06 00:00",
+      "folio": "PAG-2026-0035",
+      "concepto": "Otro · GAS-2026-0042",
+      "monto_base": 450,
+      "metodo": "Efectivo"
+    },
+    {
+      "tipo": "salida",
+      "fecha": "2026-11-06 00:00",
+      "folio": "PAG-2026-0034",
+      "concepto": "Gastos personales · GAS-2026-0041",
+      "monto_base": 350,
+      "metodo": "Efectivo"
+    },
+    {
+      "tipo": "salida",
+      "fecha": "2026-11-06 00:00",
+      "folio": "PAG-2026-0033",
+      "concepto": "Compra de material · GAS-2026-0040",
+      "monto_base": 1900,
+      "metodo": "Tarjeta"
+    },
+    {
+      "tipo": "salida",
+      "fecha": "2026-11-06 00:00",
+      "folio": "PAG-2026-0032",
+      "concepto": "Compra de material · GAS-2026-0039",
+      "monto_base": 2200,
+      "metodo": "Tarjeta"
+    },
+    {
+      "tipo": "salida",
+      "fecha": "2026-11-06 00:00",
+      "folio": "PAG-2026-0031",
+      "concepto": "Gastos personales · GAS-2026-0038",
+      "monto_base": 1800,
+      "metodo": "Tarjeta"
+    },
+    {
+      "tipo": "entrada",
+      "fecha": "2026-11-06 00:00",
+      "folio": "ING-2026-0012",
+      "concepto": "Venta",
+      "monto_base": 1900,
+      "metodo": "Transferencia"
+    },
+    {
+      "tipo": "entrada",
+      "fecha": "2026-11-05 00:00",
+      "folio": "ING-2026-0011",
+      "concepto": "Venta",
+      "monto_base": 42550,
+      "metodo": "Transferencia"
+    },
+    {
+      "tipo": "entrada",
+      "fecha": "2026-11-05 00:00",
+      "folio": "ING-2026-0010",
+      "concepto": "Venta",
+      "monto_base": 14800,
+      "metodo": "Transferencia"
+    }
+  ]
+}

@@ -1,0 +1,44 @@
+{
+  "ok": true,
+  "fijos": [
+    {
+      "id": "76d0ba40",
+      "concepto": "__PRUEBA__ Renta",
+      "categoria": "Renta",
+      "monto": 1,
+      "moneda": "MXN",
+      "frecuencia": "mensual",
+      "proxima_fecha": "1969-12-31",
+      "notas": "",
+      "estado": "CANCELADA",
+      "gasto_folio_ultimo": "GAS-2026-0023",
+      "creado": "2026-10-25 00:00"
+    },
+    {
+      "id": "6f2cc57f",
+      "concepto": "__PRUEBA2__",
+      "categoria": "Renta",
+      "monto": 1,
+      "moneda": "MXN",
+      "frecuencia": "mensual",
+      "proxima_fecha": "2026-10-31",
+      "notas": "",
+      "estado": "CANCELADA",
+      "gasto_folio_ultimo": "GAS-2026-0024",
+      "creado": "2026-10-25 00:00"
+    },
+    {
+      "id": "21f6bff3",
+      "concepto": "__PRUEBA3__",
+      "categoria": "Renta",
+      "monto": 1,
+      "moneda": "MXN",
+      "frecuencia": "mensual",
+      "proxima_fecha": "2026-12-01",
+      "notas": "",
+      "estado": "CANCELADA",
+      "gasto_folio_ultimo": "GAS-2026-0026",
+      "creado": "2026-10-25 00:00"
+    }
+  ]
+}
