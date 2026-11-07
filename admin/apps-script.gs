@@ -512,7 +512,10 @@ function calcularEstadoResultados(mes, proyFiltro) {
   var hasta = null;
   if (mes && /^\d{4}-\d{2}$/.test(mes)) {
     var partes = mes.split('-');
-    var fin = new Date(Number(partes[0]), Number(partes[1]), 0);
+    // FASE 0 (2026-11-06): calcular el ultimo dia al MEDIODIA para que ningun
+    // desfase de zona horaria (script vs hoja vs Hermosillo) lo mueva de dia:
+    // el bug hacia que los filtros mensuales pierdan el ultimo dia del mes.
+    var fin = new Date(Number(partes[0]), Number(partes[1]), 0, 12, 0, 0);
     hasta = Utilities.formatDate(fin, 'America/Hermosillo', 'yyyy-MM-dd');
   }
   var enRango = function (fecha) {
@@ -1038,22 +1041,29 @@ function doGetInterno(e) {
     filasComoObjetos(SHEET_EXPENSES).forEach(function (g) { gastoPorIdCI[String(g.id)] = g; });
     var sumBaseCI = function (arr) { return arr.reduce(function (s, x) { return s + (Number(x.monto_base) || 0); }, 0); };
 
-    var egresosMovsCI = filasComoObjetos(SHEET_PAGOS).filter(function (p) {
-      if (!enRangoCI(p.fecha)) return false;
-      if (filtroMonCI && String(p.moneda) !== filtroMonCI) return false;
-      var g = gastoPorIdCI[String(p.gasto_id)];
-      var nat = g ? naturalezaDe(g) : 'por_clasificar';
-      var cat = g && g.categoria ? String(g.categoria) : String(p.categoria || 'Otro');
-      if (filtroNatCI && nat !== filtroNatCI) return false;
-      if (filtroCatCI && cat !== filtroCatCI) return false;
-      return true;
-    }).map(function (p) {
+    // Egresos: el dinero que salio son los PAGOS (una sola vez; la hoja Gastos
+    // solo aporta naturaleza/categoria del gasto ligado, NUNCA se suma: no hay
+    // doble conteo). Los totales GENERALES siempre ignoran los filtros de
+    // naturaleza/categoria (rango y moneda si aplican, a ambos lados por igual)
+    // para no producir indicadores enganosos; el detalle filtrado va aparte.
+    var mapEgresoCI = function (p) {
       var g = gastoPorIdCI[String(p.gasto_id)];
       return { folio: p.folio || '', fecha: p.fecha, gasto_folio: p.gasto_folio || '',
         categoria: g && g.categoria ? String(g.categoria) : String(p.categoria || 'Otro'),
         descripcion: g ? String(g.descripcion || '') : '',
         naturaleza: g ? naturalezaDe(g) : 'por_clasificar',
         monto: Number(p.monto) || 0, moneda: p.moneda, monto_base: Number(p.monto_base) || 0, metodo: p.metodo || '' };
+    };
+    var enBaseCI = function (p) {
+      if (!enRangoCI(p.fecha)) return false;
+      if (filtroMonCI && String(p.moneda) !== filtroMonCI) return false;
+      return true;
+    };
+    var egresosGeneralCI = filasComoObjetos(SHEET_PAGOS).filter(enBaseCI).map(mapEgresoCI);
+    var egresosMovsCI = egresosGeneralCI.filter(function (m) {
+      if (filtroNatCI && m.naturaleza !== filtroNatCI) return false;
+      if (filtroCatCI && m.categoria !== filtroCatCI) return false;
+      return true;
     });
     var ingresosMovsCI = filasComoObjetos(SHEET_COBROS).filter(function (c) {
       if (!enRangoCI(c.fecha)) return false;
@@ -1065,14 +1075,15 @@ function doGetInterno(e) {
         monto_base: Number(c.monto_base) || 0, metodo: c.metodo || '' };
     });
     var porNatCI = {}, porCatCI = {}, porConcCI = {}, nPorNatCI = {};
-    egresosMovsCI.forEach(function (m) {
+    egresosGeneralCI.forEach(function (m) {
       porNatCI[m.naturaleza] = (porNatCI[m.naturaleza] || 0) + m.monto_base;
       nPorNatCI[m.naturaleza] = (nPorNatCI[m.naturaleza] || 0) + 1;
       porCatCI[m.categoria] = (porCatCI[m.categoria] || 0) + m.monto_base;
       var conc = m.descripcion || m.categoria;
       porConcCI[conc] = (porConcCI[conc] || 0) + m.monto_base;
     });
-    var totalEgresosCI = sumBaseCI(egresosMovsCI);
+    var totalEgresosCI = sumBaseCI(egresosGeneralCI); // general del periodo (sin filtros nat/cat)
+    var totalFiltradoCI = sumBaseCI(egresosMovsCI);
     var pctCatCI = {};
     Object.keys(porCatCI).forEach(function (k) {
       pctCatCI[k] = totalEgresosCI > 0 ? Math.round(porCatCI[k] / totalEgresosCI * 1000) / 10 : 0;
@@ -1108,7 +1119,9 @@ function doGetInterno(e) {
       filtros: { naturaleza: filtroNatCI, categoria: filtroCatCI, moneda: filtroMonCI },
       ingresos: { total_base: totalIngresosCI, movimientos: ingresosMovsCI.length,
         detalle: ingresosMovsCI.sort(function (a, b) { return String(a.fecha) < String(b.fecha) ? 1 : -1; }).slice(0, 200) },
-      egresos: { total_base: totalEgresosCI, movimientos: egresosMovsCI.length,
+      egresos: { total_base: totalEgresosCI, movimientos: egresosGeneralCI.length,
+        filtrado: { activo: !!(filtroNatCI || filtroCatCI), naturaleza: filtroNatCI,
+          categoria: filtroCatCI, total_base: totalFiltradoCI, movimientos: egresosMovsCI.length },
         por_naturaleza: porNatCI, num_por_naturaleza: nPorNatCI,
         por_categoria: porCatCI, porcentaje_categoria: pctCatCI,
         principales_conceptos: Object.keys(porConcCI).sort(function (a, b) { return porConcCI[b] - porConcCI[a]; })
@@ -1118,7 +1131,7 @@ function doGetInterno(e) {
       retiros: { total_base: porNatCI.retiro || 0, movimientos: nPorNatCI.retiro || 0 },
       pendientes_clasificar: { total_base: porNatCI.por_clasificar || 0, movimientos: nPorNatCI.por_clasificar || 0 },
       mensual: mensualCI,
-      nota: 'Efectivo real: incluye retiros, compras de inventario e inversiones en la variacion neta. No es un estado de resultados.' });
+      nota: 'Efectivo real: incluye retiros, compras de inventario e inversiones en la variacion neta. No es un estado de resultados. Los totales son GENERALES del periodo; los filtros de naturaleza/categoria solo acotan el detalle.' });
   }
 
   throw AdisError('ACCION_DESCONOCIDA', 'Acción desconocida: ' + action);

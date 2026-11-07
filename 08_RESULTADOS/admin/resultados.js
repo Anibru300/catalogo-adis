@@ -401,6 +401,16 @@ function ciePintar(d){
     boxP.style.display = 'none';
   }
 
-  // --- nota del reporte
-  $('cieNota').textContent = d.nota || '';
+  // --- nota del reporte + aviso de filtrado (totales generales vs filtrados)
+  var fil = d.egresos && d.egresos.filtrado;
+  var avisoFiltro = '';
+  if (fil && fil.activo) {
+    var descF = [];
+    if (fil.naturaleza) descF.push('naturaleza=' + (CIE_NAT[fil.naturaleza] || fil.naturaleza));
+    if (fil.categoria) descF.push('categoría=' + fil.categoria);
+    avisoFiltro = '⚠ Detalle filtrado (' + descF.join(' · ') + '): ' + num(fil.movimientos) +
+      ' egreso(s) por ' + f(fil.total_base) + '. Los indicadores, gráficas y la variación neta ' +
+      'muestran el TOTAL GENERAL del periodo. — ';
+  }
+  $('cieNota').textContent = avisoFiltro + (d.nota || '');
 }
