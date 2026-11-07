@@ -11,6 +11,7 @@ Compara contra 60_DATA/auditoria_2026-11-06/ (snapshot pre-Fase0/1, commit 47ce9
 No escribe nada: nada de POSTs de negocio; el unico POST es login.
 """
 import json
+import os
 import re
 import sys
 import urllib.request
@@ -19,19 +20,22 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 SNAP = ROOT / "60_DATA" / "auditoria_2026-11-06"
-API = None
-for cand in ["00_CORE/shared_js/admin_core.js", "00_CORE/shared_js/admin_core.src.js"]:
-    p = ROOT / cand
-    if p.exists():
-        m = re.search(r"API_URL:\s*'([^']+)'", p.read_text(encoding="utf-8"))
-        if m:
-            API = m.group(1)
-            break
+# Objetivo de las pruebas: por defecto produccion (solo lectura). Para apuntar
+# al ENTORNO AISLADO de prueba:  set ADIS_API_URL=https://script.google.com/.../exec
+API = os.environ.get("ADIS_API_URL")
+if not API:
+    for cand in ["00_CORE/shared_js/admin_core.js", "00_CORE/shared_js/admin_core.src.js"]:
+        p = ROOT / cand
+        if p.exists():
+            m = re.search(r"API_URL:\s*'([^']+)'", p.read_text(encoding="utf-8"))
+            if m:
+                API = m.group(1)
+                break
 if not API:
     sys.exit("No encontre CONFIG.API_URL")
 
-USUARIO = "Adis"
-CLAVE = "Adisdiseño2026"
+USUARIO = os.environ.get("ADIS_USUARIO", "Adis")
+CLAVE = os.environ.get("ADIS_CLAVE", "Adisdiseño2026")
 POST = "--post" in sys.argv
 
 resultados = []

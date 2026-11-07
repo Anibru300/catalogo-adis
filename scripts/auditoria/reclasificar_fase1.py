@@ -14,6 +14,7 @@ en esta lista: el dueno los decide folio por folio.
 """
 import argparse
 import json
+import os
 import re
 import sys
 import urllib.request
@@ -21,19 +22,21 @@ import urllib.parse
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
-API = None
-for cand in ["00_CORE/shared_js/admin_core.js", "00_CORE/shared_js/admin_core.src.js"]:
-    p = ROOT / cand
-    if p.exists():
-        m = re.search(r"API_URL:\s*'([^']+)'", p.read_text(encoding="utf-8"))
-        if m:
-            API = m.group(1)
-            break
+# Objetivo: por defecto produccion. Entorno aislado: set ADIS_API_URL=<url copia>.
+API = os.environ.get("ADIS_API_URL")
+if not API:
+    for cand in ["00_CORE/shared_js/admin_core.js", "00_CORE/shared_js/admin_core.src.js"]:
+        p = ROOT / cand
+        if p.exists():
+            m = re.search(r"API_URL:\s*'([^']+)'", p.read_text(encoding="utf-8"))
+            if m:
+                API = m.group(1)
+                break
 if not API:
     sys.exit("No encontre CONFIG.API_URL")
 
-USUARIO = "Adis"
-CLAVE = "Adisdiseño2026"
+USUARIO = os.environ.get("ADIS_USUARIO", "Adis")
+CLAVE = os.environ.get("ADIS_CLAVE", "Adisdiseño2026")
 
 # Grupos autorizados por el dueno el 2026-11-06 (tabla de revision).
 # Los marcados con '*' quedaron 'pendientes de autorizacion' dentro de su grupo
@@ -87,6 +90,26 @@ def main():
     ap = argparse.ArgumentParser(description="Reclasificacion historica Fase 1 (autorizada)")
     ap.add_argument("--aplicar", action="store_true", help="escribe (default: dry-run)")
     args = ap.parse_args()
+
+    # SEGURIDAD (2026-11-06): la reclasificacion esta SIN AUTORIZAR. En produccion
+    # exige doble confirmacion explicita; en la copia de prueba (ADIS_API_URL
+    # apuntando a otra URL) basta --aplicar.
+    prod = None
+    for cand in ["00_CORE/shared_js/admin_core.js", "00_CORE/shared_js/admin_core.src.js"]:
+        p = ROOT / cand
+        if p.exists():
+            m = re.search(r"API_URL:\s*'([^']+)'", p.read_text(encoding="utf-8"))
+            if m:
+                prod = m.group(1)
+                break
+    es_produccion = prod and API.rstrip("/") == prod.rstrip("/")
+    if args.aplicar and es_produccion and os.environ.get("ADIS_RECLASIFICAR_PROD") != "si":
+        sys.exit("BLOQUEADO: reclasificacion en PRODUCCION sin autorizacion. "
+                 "La reclasificacion de los 31 folios esta pendiente de revision del dueno. "
+                 "Para la copia de prueba usa: set ADIS_API_URL=<url copia>. "
+                 "(Solo si el dueno autoriza expresamente: ADIS_RECLASIFICAR_PROD=si)")
+    if args.aplicar and es_produccion:
+        print("ADVERTENCIA: escribiendo en PRODUCCION con autorizacion explicita del dueno.")
 
     tok = post({"tipo": "login", "usuario": USUARIO, "clave": CLAVE})
     if not tok.get("ok"):

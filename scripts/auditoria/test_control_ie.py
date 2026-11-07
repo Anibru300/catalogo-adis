@@ -58,14 +58,21 @@ if "--api" not in sys.argv:
     sys.exit(0 if ok else 1)
 
 # --- Modo API: compara endpoint real vs esperados del snapshot ---
-API = None
-for cand in ["00_CORE/shared_js/admin_core.js", "00_CORE/shared_js/admin_core.src.js"]:
-    p = ROOT / cand
-    if p.exists():
-        m = re.search(r"API_URL:\s*'([^']+)'", p.read_text(encoding="utf-8"))
-        if m:
-            API = m.group(1)
-            break
+# Objetivo: produccion por defecto (solo lectura); entorno aislado con
+#   set ADIS_API_URL=<url del despliegue de la copia de prueba>
+import os
+API = os.environ.get("ADIS_API_URL")
+if not API:
+    for cand in ["00_CORE/shared_js/admin_core.js", "00_CORE/shared_js/admin_core.src.js"]:
+        p = ROOT / cand
+        if p.exists():
+            m = re.search(r"API_URL:\s*'([^']+)'", p.read_text(encoding="utf-8"))
+            if m:
+                API = m.group(1)
+                break
+
+USUARIO = os.environ.get("ADIS_USUARIO", "Adis")
+CLAVE = os.environ.get("ADIS_CLAVE", "Adisdiseño2026")
 
 def post(payload):
     req = urllib.request.Request(API, data=json.dumps(payload).encode("utf-8"),
@@ -78,7 +85,7 @@ def get(action, token):
     with urllib.request.urlopen(url, timeout=90) as r:
         return json.loads(r.read().decode("utf-8"))
 
-tok = post({"tipo": "login", "usuario": "Adis", "clave": "Adisdiseño2026"})["token"]
+tok = post({"tipo": "login", "usuario": USUARIO, "clave": CLAVE})["token"]
 ci = get(f"control_ie&desde={MES}-01&hasta={MES}-31", tok)
 
 checks = [
