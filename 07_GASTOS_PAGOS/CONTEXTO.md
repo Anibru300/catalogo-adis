@@ -63,6 +63,24 @@
   `monto_base` históricos si no cambia monto/moneda (si cambia: recalculo
   explícito + bitácora). Gastos y Stock FUERA de `HOJAS_BORRABLES`. Eliminado
   `log_` duplicado en POST `ingreso`. cxc/cxp agregan flag `sobrepago`.
+  El pago de un gasto hereda su actividad de flujo según la naturaleza del
+  gasto (retiro→financiamiento, inversión→inversión, resto→operación) — ver 08.
+
+## ETAPA 1 (2026-11-06) — control del efectivo, no rentabilidad
+
+- **Reporte principal: GET `control_ie`** (?desde=&hasta=&naturaleza=&categoria=&moneda=).
+  Efectivo REAL: ingresos recibidos (Cobros) vs egresos pagados (Pagos). La
+  **variación neta incluye TODOS los movimientos** (retiros, compras de
+  inventario e inversiones incluidos) — es dinero que salió, no utilidad.
+  Desgloses: por naturaleza, por categoría (con %), principales conceptos,
+  comparativo mensual (12 meses) y pendientes de clasificar. Tab "Control de
+  Ingresos y Egresos" en el panel, con simulador de escenarios.
+- **El estado de resultados es PROVISIONAL** (campo `provisional:true`): sin
+  costos de venta no hay utilidad bruta ni neta — se muestra "Resultado
+  provisional del periodo", jamás como utilidad. El dinero real vive en
+  `control_ie`. No se vinculan ingresos con costos ni se exige
+  producto/cliente/proyecto para capturar; los formularios ING-/GAS- quedaron
+  intactos.
 
 ## REGLAS DE NEGOCIO
 

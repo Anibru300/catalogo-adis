@@ -122,6 +122,24 @@ def main():
         check("F1 gastos: columna naturaleza expuesta",
               all("naturaleza" in x for x in g[:5]))
         check("F1 cxc: flag sobrepago presente", all("sobrepago" in x for x in cx.get("cxc", [])[:5]))
+        # --- ETAPA 1: control_ie (reporte principal de efectivo) ---
+        ci = get("control_ie", token)
+        check("E1 control_ie ok", bool(ci.get("ok")))
+        if ci.get("ok"):
+            ti = float(ci["ingresos"]["total_base"]); te = float(ci["egresos"]["total_base"])
+            check("E1 variacion_neta == ingresos - egresos (incluye retiros/inventario/inversion)",
+                  abs(ci["variacion_neta"] - (ti - te)) < 0.01)
+            check("E1 retiros == por_naturaleza.retiro",
+                  abs(float(ci["retiros"]["total_base"]) -
+                      float(ci["egresos"]["por_naturaleza"].get("retiro", 0))) < 0.01)
+            check("E1 mensual trae 12 meses con neto", len(ci.get("mensual", [])) == 12 and
+                  all(abs(m["neto"] - (m["ingresos"] - m["egresos"])) < 0.01 for m in ci["mensual"]))
+            # Sin doble conteo: mismas entradas/salidas que flujo_caja (mismo periodo default)
+            fl2 = get("flujo_caja", token)
+            check("E1 control_ie == flujo_caja (mismo rango, sin doble conteo)",
+                  abs(float(fl2["entradas"]) - ti) < 0.01 and abs(float(fl2["salidas"]) - te) < 0.01)
+        er2 = get("estado_resultados", token)
+        check("E1 P&L marcado provisional", er2.get("provisional") is True and "resultado_provisional" in er2)
 
     fails = [r for r in resultados if not r[1]]
     print(f"\n{len(resultados) - len(fails)}/{len(resultados)} PASS" + (f" — FALLOS: {[f[0] for f in fails]}" if fails else ""))

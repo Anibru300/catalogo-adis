@@ -23,8 +23,7 @@ function loadDash(){
     const ventasMes = pnl ? (Number(pnl.ingresos)||0) - (Number(pnl.ingresos_extra)||0) : 0;
     const otrosIng = pnl ? Number(pnl.ingresos_extra)||0 : 0;
     const nOtrosIng = pnl ? Number(pnl.num_ingresos_extra)||0 : 0;
-    const utilOp = pnl ? Number(pnl.utilidad_operativa != null ? pnl.utilidad_operativa : pnl.utilidad_neta)||0 : 0;
-    const margen = pnl ? Number(pnl.margen_operativo != null ? pnl.margen_operativo : pnl.margen_neto)||0 : 0;
+    const utilOp = pnl ? Number(pnl.resultado_provisional != null ? pnl.resultado_provisional : (pnl.utilidad_operativa != null ? pnl.utilidad_operativa : pnl.utilidad_neta))||0 : 0;
     const als = (alertas && alertas.alertas) || [];
     const nCrit = als.filter(a=>a.prioridad==='CRITICA').length;
     const nAlta = als.filter(a=>a.prioridad==='ALTA').length;
@@ -32,7 +31,7 @@ function loadDash(){
     $('dashKpis').innerHTML =
       '<div class="pnl-card"><div class="k">Ventas del mes ('+(pnl?pnl.num_ventas:0)+')</div><div class="v">'+f(ventasMes)+' '+moneda+'</div></div>' +
       (otrosIng > 0 ? '<div class="pnl-card"><div class="k">Otros ingresos del mes ('+nOtrosIng+')</div><div class="v">'+f(otrosIng)+' '+moneda+'</div></div>' : '') +
-      '<div class="pnl-card '+(utilOp>=0?'good':'bad')+'"><div class="k">Utilidad operativa</div><div class="v">'+f(utilOp)+' <small style="font-size:0.7rem;">'+margen.toFixed(1)+'%</small></div></div>' +
+      '<div class="pnl-card '+(utilOp>=0?'good':'bad')+'"><div class="k">Resultado provisional <small style="font-size:0.68rem;">(Etapa 1 — no es utilidad neta)</small></div><div class="v">'+f(utilOp)+' '+moneda+'</div></div>' +
       '<div class="pnl-card '+(porCobrar?'bad':'good')+'"><div class="k">Por cobrar</div><div class="v">'+f(porCobrar)+' '+moneda+'</div></div>' +
       '<div class="pnl-card '+(porPagar?'bad':'good')+'"><div class="k">Por pagar</div><div class="v">'+f(porPagar)+' '+moneda+'</div></div>' +
       '<div class="pnl-card '+(neto>=0?'good':'bad')+'"><div class="k">Flujo neto del mes</div><div class="v">'+f(neto)+' '+moneda+'</div></div>' +

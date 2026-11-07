@@ -89,11 +89,12 @@
           <button class="tab" data-tab="proyectos" onclick="showTab('proyectos'); showProyectoForm()">＋ Nuevo proyecto</button>
         </div>
       </details>
-      <details class="mgroup" data-group="cobros fijos flujocaja expenses pnl">
+      <details class="mgroup" data-group="cobros control fijos flujocaja expenses pnl">
         <summary>Dinero</summary>
         <div class="mdrop">
           <button class="tab" data-tab="cobros" onclick="showTab('cobros')">Registrar ingreso</button>
           <button class="tab" data-tab="flujocaja" onclick="showTab('flujocaja')">Caja (efectivo real)</button>
+          <button class="tab" data-tab="control" onclick="showTab('control')">Control de ingresos y egresos</button>
           <hr>
           <button class="tab" data-tab="expenses" onclick="showTab('expenses')">Registrar gasto</button>
           <button class="tab" data-tab="fijos" onclick="showTab('fijos')">Gastos fijos (programados)</button>
@@ -645,7 +646,7 @@
         <p><b>Cómo usarlo:</b> elige el mes con el selector de arriba. Revisa de dónde salió la utilidad (o la pérdida): ventas, costos y gastos por categoría. Las ventas anuladas y gastos cancelados no cuentan.</p>
       </details>
       <div class="toolbar">
-        <h2 style="margin:0;">Estado de resultados</h2>
+        <h2 style="margin:0;">Estado de resultados — PROVISIONAL (Etapa 1)</h2>
         <input type="month" id="pnlMes" style="width:auto;">
         <select id="pnlProyecto" style="width:auto;"><option value="">Todo el negocio</option></select>
         <button class="btn btn-sm btn-solid" onclick="generarPNL()">Generar</button>
@@ -699,6 +700,10 @@
             <canvas id="estFinanzasBar" height="230"></canvas>
           </div>
           <div class="card-box">
+            <h3 class="flow-h">🍩 Egresos por naturaleza (mes)</h3>
+            <canvas id="estNaturalezaDough" height="230"></canvas>
+          </div>
+          <div class="card-box">
             <h3 class="flow-h">🗂️ Gastos por categoría (12 meses)</h3>
             <canvas id="estGastosMesBar" height="230"></canvas>
           </div>
@@ -739,6 +744,96 @@
           <tbody id="flujoMovs"><tr><td colspan="6" class="muted">Cargando…</td></tr></tbody>
         </table>
       </div>
+    </section>
+
+    <!-- CONTROL DE INGRESOS Y EGRESOS (ETAPA 1: a dónde se va el efectivo — no es utilidad contable) -->
+    <section id="tab-control" class="panel hidden">
+      <details class="helpbox"><summary>¿Para qué sirve y cómo lo uso?</summary>
+        <p>El <b>control del efectivo</b>: cuánto dinero entró, cuánto salió y <b>a dónde se fue</b> (mercancía, operación, inversiones, retiros). Es la Etapa 1 del sistema: <b>no es la utilidad contable</b> del negocio.</p>
+        <p><b>Cómo usarlo:</b> elige el periodo (o un botón rápido), filtra por naturaleza, categoría o moneda si lo necesitas y dale a <b>Consultar</b>. Los movimientos en dólares se convierten a la moneda base con el tipo de cambio histórico de cada uno. El simulador de abajo te deja probar escenarios cambiando los importes.</p>
+      </details>
+      <div class="toolbar">
+        <h2 style="margin:0;">Control de ingresos y egresos</h2>
+        <button class="btn btn-sm" onclick="loadControlIE()">↻ Actualizar</button>
+      </div>
+      <div class="card-box" style="margin-bottom:1rem;">
+        <div class="row" style="margin:0;align-items:flex-end;">
+          <div><label>Desde</label><input type="date" id="cieDesde"></div>
+          <div><label>Hasta</label><input type="date" id="cieHasta"></div>
+          <div><label>Rápido</label>
+            <button class="btn btn-sm" onclick="ciePeriodoRapido('mes')">Este mes</button>
+            <button class="btn btn-sm" onclick="ciePeriodoRapido('anterior')">Mes anterior</button>
+            <button class="btn btn-sm" onclick="ciePeriodoRapido('anio')">Año</button>
+          </div>
+          <div><label>Naturaleza</label><select id="cieNaturaleza" style="width:auto;">
+            <option value="">Todas</option>
+            <option value="operativo">Gastos operativos</option>
+            <option value="costo_directo">Costos directos</option>
+            <option value="inventario">Compra de mercancía</option>
+            <option value="inversion">Inversiones</option>
+            <option value="retiro">Retiros del propietario</option>
+            <option value="por_clasificar">Pendientes de clasificar</option>
+          </select></div>
+          <div><label>Categoría</label><select id="cieCategoria" style="width:auto;"><option value="">Todas</option></select></div>
+          <div><label>Moneda</label><select id="cieMoneda" style="width:auto;"><option value="">Todas</option><option value="MXN">MXN</option><option value="USD">USD</option></select></div>
+        </div>
+        <div class="toolbar" style="margin-top:0.6rem;">
+          <button class="btn btn-sm btn-solid" onclick="loadControlIE()">🔍 Consultar</button>
+        </div>
+      </div>
+      <div class="pnl-cards" id="cieKpis"></div>
+      <div class="card-box" style="margin-top:1rem;">
+        <h3 class="flow-h">🧪 Simulador de control financiero</h3>
+        <p class="muted" style="font-size:0.78rem;margin:0.2rem 0 0.6rem;">Modifica los importes para observar cómo cambia el flujo de dinero. No representa la utilidad contable.</p>
+        <div class="row">
+          <div><label>Ingresos recibidos</label><input type="number" id="cieSimIngresos" step="0.01" oninput="cieSimular()"></div>
+          <div><label>Gastos operativos</label><input type="number" id="cieSimOperativo" step="0.01" oninput="cieSimular()"></div>
+          <div><label>Compra de mercancía</label><input type="number" id="cieSimMercancia" step="0.01" oninput="cieSimular()"></div>
+          <div><label>Retiros personales</label><input type="number" id="cieSimRetiros" step="0.01" oninput="cieSimular()"></div>
+          <div><label>Inversiones</label><input type="number" id="cieSimInversiones" step="0.01" oninput="cieSimular()"></div>
+          <div><label>Costos directos</label><input type="number" id="cieSimCostos" step="0.01" oninput="cieSimular()"></div>
+          <div><label>Egresos totales</label><input type="text" id="cieSimEgresos" readonly></div>
+          <div><label>Variación neta simulada</label><input type="text" id="cieSimNeto" readonly></div>
+        </div>
+      </div>
+      <div class="flow-grid" style="margin-top:1rem;">
+        <div class="card-box" style="grid-column:1/-1;">
+          <h3 class="flow-h">📊 Ingresos vs egresos por mes (12 meses)</h3>
+          <canvas id="cieMensualBar" height="170"></canvas>
+        </div>
+        <div class="card-box">
+          <h3 class="flow-h">🍩 Distribución de las salidas por naturaleza</h3>
+          <canvas id="cieNaturalezaDough" height="230"></canvas>
+        </div>
+        <div class="card-box">
+          <h3 class="flow-h">🏷️ Egresos por categoría</h3>
+          <canvas id="cieCategoriaBar" height="230"></canvas>
+        </div>
+        <div class="card-box">
+          <h3 class="flow-h">📈 Tendencia del flujo neto</h3>
+          <canvas id="cieNetoLine" height="230"></canvas>
+        </div>
+        <div class="card-box">
+          <h3 class="flow-h">🧾 Principales conceptos de gasto</h3>
+          <canvas id="cieConceptosBar" height="230"></canvas>
+        </div>
+      </div>
+      <div class="card-box table-scroll" style="margin-top:1rem;">
+        <h3 class="flow-h">Desglose de egresos por naturaleza</h3>
+        <table>
+          <thead><tr><th>Naturaleza</th><th>Movimientos</th><th style="text-align:right;">Monto</th><th style="text-align:right;">% del total</th></tr></thead>
+          <tbody id="cieNatTable"></tbody>
+        </table>
+      </div>
+      <div class="card-box table-scroll" id="ciePendBox" style="display:none;margin-top:1rem;">
+        <h3 class="flow-h">⚠️ Pendientes de clasificar</h3>
+        <p class="muted" style="font-size:0.78rem;margin:0.2rem 0 0.6rem;">Total: <strong id="ciePendTotal"></strong> — clasifícalos en <b>Registrar gasto</b> para saber a dónde fue ese dinero.</p>
+        <table>
+          <thead><tr><th>Folio</th><th>Fecha</th><th>Categoría</th><th>Descripción</th><th style="text-align:right;">Monto (base)</th></tr></thead>
+          <tbody id="ciePendTable"></tbody>
+        </table>
+      </div>
+      <p class="muted" id="cieNota" style="font-size:0.75rem;margin-top:0.8rem;"></p>
     </section>
 
     <!-- SITIO WEB (analítica del sitio, alimentada por el tracker; Looker Studio opcional) -->

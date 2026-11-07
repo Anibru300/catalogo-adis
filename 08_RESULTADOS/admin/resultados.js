@@ -133,14 +133,20 @@ function generarPNL(){
       const uNeta = d.utilidad_neta!=null ? n(d.utilidad_neta) : uOp + otros;
       const margenBruto = n(d.margen_bruto), margenOp = n(d.margen_operativo), margenNeto = n(d.margen_neto);
       const vExtra = n(d.ventas_extra);
+      // ETAPA 1: sin costos registrados la utilidad bruta no es calculable (no mostrar 100%)
+      const sinCostos = costos === 0 && ventas > 0;
+      const txtBruta = sinCostos ? 'No calculable (sin costos registrados)' : f(uBruta);
+      const txtMargenBruto = sinCostos ? '—' : margenBruto.toFixed(1) + '%';
+      const txtMargenOp = '—', txtMargenNeto = '—'; // Etapa 1: márgenes op/neto engañosos sin costos
+      const rProv = d.resultado_provisional != null ? n(d.resultado_provisional) : uNeta;
       $('pnlCards').innerHTML = '<div class="pnl-cards">' +
         '<div class="pnl-card"><div class="k">Ventas netas ('+n(d.num_ventas)+')'+tituloProy+'</div><div class="v">'+f(ventas)+'</div></div>' +
         '<div class="pnl-card"><div class="k">Costo de ventas</div><div class="v">'+f(costos)+'</div></div>' +
-        '<div class="pnl-card '+(uBruta>=0?'good':'bad')+'"><div class="k">Utilidad bruta</div><div class="v">'+f(uBruta)+' <small style="font-size:0.7rem;">'+margenBruto.toFixed(1)+'%</small></div></div>' +
+        '<div class="pnl-card '+(uBruta>=0?'good':'bad')+'"><div class="k">Utilidad bruta</div><div class="v"'+(sinCostos?' style="font-size:0.85rem;"':'')+'>'+txtBruta+' <small style="font-size:0.7rem;">'+txtMargenBruto+'</small></div></div>' +
         '<div class="pnl-card"><div class="k">Gastos operativos</div><div class="v">'+f(gOp)+'</div></div>' +
-        '<div class="pnl-card '+(uOp>=0?'good':'bad')+'"><div class="k">Utilidad operativa</div><div class="v">'+f(uOp)+' <small style="font-size:0.7rem;">'+margenOp.toFixed(1)+'%</small></div></div>' +
+        '<div class="pnl-card '+(uOp>=0?'good':'bad')+'"><div class="k">Utilidad operativa</div><div class="v">'+f(uOp)+' <small style="font-size:0.7rem;">'+txtMargenOp+'</small></div></div>' +
         '<div class="pnl-card '+(otros>=0?'good':'bad')+'"><div class="k">Otros resultados ('+n(d.num_otros_resultados)+')</div><div class="v">'+f(otros)+'</div></div>' +
-        '<div class="pnl-card '+(uNeta>=0?'good':'bad')+'"><div class="k">Utilidad neta</div><div class="v">'+f(uNeta)+' <small style="font-size:0.7rem;">'+margenNeto.toFixed(1)+'%</small></div></div>' +
+        '<div class="pnl-card '+(rProv>=0?'good':'bad')+'"><div class="k">Resultado provisional del periodo</div><div class="v">'+f(rProv)+' <small style="font-size:0.7rem;">'+txtMargenNeto+'</small></div></div>' +
         '</div>';
       const cats = Object.keys(d.gastos||{}).sort();
       const finIn = n(d.financiamiento_entrante);
@@ -154,30 +160,247 @@ function generarPNL(){
       $('pnlTable').innerHTML =
         '<tr><td><strong>VENTAS NETAS</strong> <span class="muted">('+n(d.num_ventas)+' ventas'+(vExtra>0?' + '+f(vExtra)+' en ventas extra':'')+')</span></td><td style="text-align:right;"><strong>'+f(ventas)+'</strong></td></tr>' +
         '<tr><td>(−) COSTO DE VENTAS</td><td style="text-align:right;">'+f(costos)+'</td></tr>' +
-        '<tr><td><strong>= UTILIDAD BRUTA</strong></td><td style="text-align:right;"><strong>'+f(uBruta)+'</strong> <span class="muted" style="font-size:0.72rem;">'+margenBruto.toFixed(1)+'%</span></td></tr>' +
+        '<tr><td><strong>= UTILIDAD BRUTA</strong></td><td style="text-align:right;"><strong>'+txtBruta+'</strong> <span class="muted" style="font-size:0.72rem;">'+txtMargenBruto+'</span></td></tr>' +
         '<tr><td colspan="2" style="color:var(--gold);">Gastos operativos por categoría</td></tr>' +
         (cats.length ? cats.map(c=>'<tr><td>&nbsp;&nbsp;'+esc(c)+'</td><td style="text-align:right;">'+f(d.gastos[c])+'</td></tr>').join('') : '<tr><td colspan="2" class="muted">Sin gastos operativos este mes.</td></tr>') +
         '<tr><td>(−) TOTAL GASTOS OPERATIVOS</td><td style="text-align:right;">'+f(gOp)+'</td></tr>' +
-        '<tr><td><strong>= UTILIDAD OPERATIVA</strong></td><td style="text-align:right;"><strong>'+f(uOp)+'</strong> <span class="muted" style="font-size:0.72rem;">'+margenOp.toFixed(1)+'%</span></td></tr>' +
+        '<tr><td><strong>= UTILIDAD OPERATIVA</strong></td><td style="text-align:right;"><strong>'+f(uOp)+'</strong> <span class="muted" style="font-size:0.72rem;">'+txtMargenOp+'</span></td></tr>' +
         '<tr><td>(+/−) OTROS RESULTADOS <span class="muted">('+n(d.num_otros_resultados)+' mov.)</span></td><td style="text-align:right;">'+f(otros)+'</td></tr>' +
         (finIn>0 ? '<tr><td colspan="2" class="muted" style="font-size:0.78rem;">Entradas de financiamiento (no son ingreso): '+f(finIn)+'</td></tr>' : '') +
         '<tr><td>(−) IMPUESTOS</td><td style="text-align:right;">'+f(n(d.impuestos))+'</td></tr>' +
-        '<tr><td><strong>= UTILIDAD NETA</strong></td><td style="text-align:right;"><strong>'+f(uNeta)+'</strong> <span class="muted" style="font-size:0.72rem;">'+margenNeto.toFixed(1)+'%</span></td></tr>' +
+        '<tr><td><strong>= RESULTADO PROVISIONAL DEL PERIODO</strong></td><td style="text-align:right;"><strong>'+f(rProv)+'</strong> <span class="muted" style="font-size:0.72rem;">'+txtMargenNeto+'</span></td></tr>' +
         (excluidos.length ? '<tr><td colspan="2" class="muted" style="font-size:0.78rem;padding-top:0.8rem;">Movimientos excluidos del resultado: ' + excluidos.map(x=>x[0]+' '+f(x[1])).join(' · ') + '</td></tr>' : '');
       const adv = $('pnlAdvertencia');
-      if (adv) adv.innerHTML = d.advertencia ? '<div class="card-box" style="border-left:3px solid #e8b96a;margin-bottom:1rem;"><strong>⚠️ Revisar clasificación:</strong> <span class="muted">'+esc(d.advertencia)+'</span></div>' : '';
+      if (adv) {
+        const notas = [];
+        if (d.motivo_provisional) notas.push('<strong>ℹ️ Resultado provisional (Etapa 1):</strong> <span class="muted">'+esc(d.motivo_provisional)+'</span>');
+        if (d.advertencia) notas.push('<strong>⚠️ Revisar clasificación:</strong> <span class="muted">'+esc(d.advertencia)+'</span>');
+        adv.innerHTML = notas.length ? '<div class="card-box" style="border-left:3px solid #e8b96a;margin-bottom:1rem;">' + notas.join('<br>') + '</div>' : '';
+      }
     }).catch(()=>{ $('pnlCards').innerHTML='<p class="muted">Error de conexion.</p>'; });
 }
 function printPNL(){
   if (!pnlData) { notice('Primero genera el resultado.', false); return; }
   const d = pnlData, f = n => fmtMoney(n)+' '+d.moneda_base;
   const mesTxt = $('pnlMes').value;
+  const sinCostos = (Number(d.costos)||0) === 0 && (Number(d.ingresos)||0) > 0;
   $('printArea').innerHTML =
-    '<h1>ADIS Diseño & Remodelación</h1><div class="pq-meta">Estado de resultados · ' + mesTxt + ' · Moneda: ' + d.moneda_base + '</div>' +
+    '<h1>ADIS Diseño & Remodelación</h1><div class="pq-meta">Estado de resultados — PROVISIONAL (Etapa 1) · ' + mesTxt + ' · Moneda: ' + d.moneda_base + '</div>' +
     '<table><tbody>' + $('pnlTable').innerHTML + '</tbody></table>' +
-    '<p style="margin-top:1rem;font-size:0.85rem;">Ventas: '+(Number(d.num_ventas)||0)+' · Margen bruto: '+(Number(d.margen_bruto)||0).toFixed(1)+'% · Margen operativo: '+(Number(d.margen_operativo)||0).toFixed(1)+'% · Margen neto: '+(Number(d.margen_neto)||0).toFixed(1)+'%</p>' +
+    '<p style="margin-top:1rem;font-size:0.85rem;">Ventas: '+(Number(d.num_ventas)||0)+' · Margen bruto: '+(sinCostos?'—':(Number(d.margen_bruto)||0).toFixed(1)+'%')+' · Margen operativo y neto: — (Etapa 1)</p>' +
+    (d.motivo_provisional ? '<p style="font-size:0.8rem;">ℹ️ ' + esc(d.motivo_provisional) + '</p>' : '') +
     (d.advertencia ? '<p style="font-size:0.8rem;">⚠️ ' + esc(d.advertencia) + '</p>' : '') +
     '<div class="pq-foot">Generado desde el panel administrativo ADIS</div>';
   window.print();
 }
 
+
+
+/* ----- ETAPA 1: control de ingresos y egresos (a dónde se va el efectivo; no es utilidad contable) ----- */
+const CIE_NAT = { operativo:'Gastos operativos', costo_directo:'Costos directos', inventario:'Compra de mercancía',
+  inversion:'Inversiones', retiro:'Retiros del propietario', por_clasificar:'Pendientes de clasificar' };
+let cieData = null;
+
+function ciePeriodoRapido(tipo){
+  const hoy = fLocal();
+  if (tipo === 'mes') { $('cieDesde').value = hoy.slice(0,8)+'01'; $('cieHasta').value = hoy; }
+  else if (tipo === 'anterior') {
+    const ini = new Date(); ini.setDate(1); ini.setMonth(ini.getMonth()-1);
+    const fin = new Date(); fin.setDate(0);
+    $('cieDesde').value = fLocal(ini); $('cieHasta').value = fLocal(fin);
+  } else if (tipo === 'anio') { $('cieDesde').value = hoy.slice(0,4)+'-01-01'; $('cieHasta').value = hoy; }
+  loadControlIE();
+}
+
+function loadControlIE(){
+  const hoy = fLocal();
+  if ($('cieDesde') && !$('cieDesde').value) $('cieDesde').value = hoy.slice(0,8)+'01';
+  if ($('cieHasta') && !$('cieHasta').value) $('cieHasta').value = hoy;
+  // categorías configurables (mismo catálogo del negocio)
+  const selCat = $('cieCategoria');
+  if (selCat && selCat.options.length <= 1) {
+    const cats = (biz.config && biz.config.categorias_gastos) || [];
+    selCat.innerHTML = '<option value="">Todas</option>' + cats.map(c=>'<option value="'+esc(c)+'">'+esc(c)+'</option>').join('');
+  }
+  const params = [];
+  if ($('cieDesde').value) params.push('desde='+$('cieDesde').value);
+  if ($('cieHasta').value) params.push('hasta='+$('cieHasta').value);
+  const nat = $('cieNaturaleza').value, cat = selCat.value, mon = $('cieMoneda').value;
+  if (nat) params.push('naturaleza='+encodeURIComponent(nat));
+  if (cat) params.push('categoria='+encodeURIComponent(cat));
+  if (mon) params.push('moneda='+encodeURIComponent(mon));
+  $('cieKpis').innerHTML = '<div class="pnl-card"><div class="k">Cargando…</div><div class="v">—</div></div>';
+  cargarChartJS().then(()=>{
+    apiGet('control_ie&'+params.join('&')).then(d=>{
+      if (!d || !d.ok) { $('cieKpis').innerHTML = '<p class="muted">'+esc(errMsg(d,'Sin acceso.'))+'</p>'; return; }
+      cieData = d;
+      ciePintar(d);
+    }).catch(()=>{ $('cieKpis').innerHTML = '<p class="muted">Error de conexión.</p>'; });
+  }).catch(()=>{ $('cieKpis').innerHTML = '<p class="muted">No se pudo cargar la librería de gráficas (sin conexión al CDN).</p>'; });
+}
+
+// simulador: recalcula en vivo (Egresos totales = suma de los 5 rubros; Variación = Ingresos − Egresos)
+function cieSimular(){
+  const g = id => parseFloat($(id).value)||0;
+  const ing = g('cieSimIngresos');
+  const eg = g('cieSimOperativo') + g('cieSimMercancia') + g('cieSimRetiros') + g('cieSimInversiones') + g('cieSimCostos');
+  const neto = ing - eg;
+  const base = (cieData && cieData.moneda_base) || 'MXN';
+  $('cieSimEgresos').value = fmtMoney(eg)+' '+base;
+  const ne = $('cieSimNeto');
+  ne.value = (neto>=0?'+':'−')+fmtMoney(Math.abs(neto))+' '+base;
+  ne.style.color = neto>=0 ? '#1e7a46' : '#c0392b';
+}
+
+function ciePintar(d){
+  const base = d.moneda_base || 'MXN';
+  const f = n => fmtMoney(n)+' '+base;
+  const pn = (d.egresos && d.egresos.por_naturaleza) || {};
+  const nPn = (d.egresos && d.egresos.num_por_naturaleza) || {};
+  const num = (v)=>Number(v)||0;
+  const neto = num(d.variacion_neta);
+
+  // --- indicadores (6 cards)
+  $('cieKpis').innerHTML =
+    '<div class="pnl-card good"><div class="k">Ingresos recibidos</div><div class="v">'+f(d.ingresos.total_base)+'</div></div>' +
+    '<div class="pnl-card bad"><div class="k">Egresos pagados</div><div class="v">'+f(d.egresos.total_base)+'</div></div>' +
+    '<div class="pnl-card '+(neto>=0?'good':'bad')+'"><div class="k">Flujo neto</div><div class="v">'+f(neto)+'</div></div>' +
+    '<div class="pnl-card"><div class="k">Retiros del propietario</div><div class="v">'+f(num(pn.retiro))+'</div></div>' +
+    '<div class="pnl-card"><div class="k">Compra de mercancía</div><div class="v">'+f(num(pn.inventario))+'</div></div>' +
+    '<div class="pnl-card"><div class="k">Gastos operativos</div><div class="v">'+f(num(pn.operativo))+'</div></div>';
+
+  // --- simulador: precargar con los valores reales del periodo
+  $('cieSimIngresos').value = num(d.ingresos.total_base).toFixed(2);
+  $('cieSimOperativo').value = num(pn.operativo).toFixed(2);
+  $('cieSimMercancia').value = num(pn.inventario).toFixed(2);
+  $('cieSimRetiros').value = num(pn.retiro).toFixed(2);
+  $('cieSimInversiones').value = num(pn.inversion).toFixed(2);
+  $('cieSimCostos').value = num(pn.costo_directo).toFixed(2);
+  cieSimular();
+
+  // --- (a) barras comparativas ingresos vs egresos por mes
+  const mensual = ((d.mensual)||[]).filter(m=>num(m.ingresos)>0 || num(m.egresos)>0);
+  const hayMes = mensual.length > 0;
+  _estChart('cieMensualBar', {
+    type: 'bar',
+    data: {
+      labels: hayMes ? mensual.map(m=>_estLabelMes(m.mes)) : ['Sin datos'],
+      datasets: [
+        { label: 'Ingresos', data: hayMes ? mensual.map(m=>num(m.ingresos)) : [0],
+          backgroundColor: 'rgba(30,122,70,0.8)', borderColor: '#1e7a46', borderWidth: 1,
+          borderRadius: 6, maxBarThickness: 44, categoryPercentage: 0.72, barPercentage: 0.86 },
+        { label: 'Egresos', data: hayMes ? mensual.map(m=>num(m.egresos)) : [0],
+          backgroundColor: 'rgba(192,57,43,0.75)', borderColor: '#c0392b', borderWidth: 1,
+          borderRadius: 6, maxBarThickness: 44, categoryPercentage: 0.72, barPercentage: 0.86 }
+      ]
+    },
+    options: { responsive: true, animation: { duration: 600 },
+      plugins: { legend: _estLegend(),
+        tooltip: Object.assign(_estTooltip(), { callbacks: { label: c => ' '+c.dataset.label+': '+_estMoney(c.parsed.y) } }) },
+      scales: { x: _estEjeX(), y: _estEjeY(true) } }
+  });
+
+  // --- (b) doughnut: distribución de las salidas por naturaleza
+  const natKeys = Object.keys(pn).filter(k=>num(pn[k])>0);
+  _estChart('cieNaturalezaDough', {
+    type: 'doughnut',
+    data: {
+      labels: natKeys.length ? natKeys.map(k=>CIE_NAT[k]||k) : ['Sin egresos'],
+      datasets: [{ data: natKeys.length ? natKeys.map(k=>num(pn[k])) : [1],
+        backgroundColor: natKeys.length ? natKeys.map((_,i)=>EST_COLORS[i%EST_COLORS.length]) : ['#EAE2D0'],
+        borderColor: '#fff', borderWidth: 2 }]
+    },
+    options: { responsive: true, cutout: '58%',
+      plugins: { legend: _estLegend(),
+        tooltip: Object.assign(_estTooltip(), { callbacks: { label: c=>' '+c.label+': '+_estMoney(c.parsed)+(natKeys.length?' ('+(num(d.egresos.total_base)>0?(num(c.parsed)/num(d.egresos.total_base)*100).toFixed(1):'0.0')+'%)':'') } }) } }
+  });
+
+  // --- (c) barras horizontales: egresos por categoría (monto y %)
+  const porCat = (d.egresos && d.egresos.por_categoria) || {};
+  const pctCat = (d.egresos && d.egresos.porcentaje_categoria) || {};
+  const cats = Object.keys(porCat).map(k=>[k, num(porCat[k])]).sort((a,b)=>b[1]-a[1]);
+  const hayCat = cats.length > 0;
+  _estChart('cieCategoriaBar', {
+    type: 'bar',
+    data: {
+      labels: hayCat ? cats.map(x=>x[0]) : ['Sin datos'],
+      datasets: [{ label: 'Egresos', data: hayCat ? cats.map(x=>x[1]) : [0],
+        backgroundColor: hayCat ? cats.map((_,i)=>'rgba(176,140,61,'+(0.85-i*0.04)+')') : 'rgba(176,140,61,0.5)',
+        borderColor: '#8A6D2F', borderWidth: 1, borderRadius: 5, maxBarThickness: 24,
+        categoryPercentage: 0.75, barPercentage: 0.9 }]
+    },
+    options: { indexAxis: 'y', responsive: true, animation: { duration: 600 },
+      plugins: { legend: { display: false },
+        tooltip: Object.assign(_estTooltip(), { callbacks: { label: c => {
+          const pct = pctCat[c.label] != null ? num(pctCat[c.label]).toFixed(1)+'%' : '—';
+          return ' '+_estMoney(c.parsed.x)+' ('+pct+')';
+        } } }) },
+      scales: { x: _estEjeY(false), y: _estEjeX() } }
+  });
+
+  // --- (d) línea: tendencia del flujo neto (puntos negativos en rojo)
+  const netos = hayMes ? mensual.map(m=>num(m.neto)) : [0];
+  _estChart('cieNetoLine', {
+    type: 'line',
+    data: {
+      labels: hayMes ? mensual.map(m=>_estLabelMes(m.mes)) : ['Sin datos'],
+      datasets: [{ label: 'Flujo neto', data: netos,
+        borderColor: '#B08C3D', backgroundColor: 'rgba(176,140,61,0.15)', borderWidth: 2.5,
+        fill: true, tension: 0.3, pointRadius: 4, pointHoverRadius: 6, pointStyle: 'circle',
+        pointBackgroundColor: netos.map(v=>v<0?'#c0392b':'#1e7a46'),
+        pointBorderColor: netos.map(v=>v<0?'#c0392b':'#1e7a46') }]
+    },
+    options: { responsive: true, animation: { duration: 600 },
+      plugins: { legend: { display: false },
+        tooltip: Object.assign(_estTooltip(), { callbacks: { label: c => ' Flujo neto: '+_estMoney(c.parsed.y) } }) },
+      scales: { x: _estEjeX(), y: { grid: { color: '#EAE2D0' }, border: { display: false },
+        ticks: { callback: v => _estTick(v, true), font: { size: 11 } } } } }
+  });
+
+  // --- (e) barras horizontales: principales conceptos de gasto (top 10)
+  const conceptos = ((d.egresos && d.egresos.principales_conceptos)||[]).slice(0,10);
+  const hayCon = conceptos.length > 0;
+  _estChart('cieConceptosBar', {
+    type: 'bar',
+    data: {
+      labels: hayCon ? conceptos.map(c=>c.concepto) : ['Sin datos'],
+      datasets: [{ label: 'Gasto', data: hayCon ? conceptos.map(c=>num(c.monto_base)) : [0],
+        backgroundColor: hayCon ? conceptos.map((_,i)=>'rgba(192,57,43,'+(0.85-i*0.05)+')') : 'rgba(192,57,43,0.65)',
+        borderColor: '#c0392b', borderWidth: 1, borderRadius: 5, maxBarThickness: 22,
+        categoryPercentage: 0.75, barPercentage: 0.9 }]
+    },
+    options: { indexAxis: 'y', responsive: true, animation: { duration: 600 },
+      plugins: { legend: { display: false },
+        tooltip: Object.assign(_estTooltip(), { callbacks: { label: c => ' '+_estMoney(c.parsed.x) } }) },
+      scales: { x: _estEjeY(false), y: _estEjeX() } }
+  });
+
+  // --- (f) tabla: desglose por naturaleza
+  const totalEg = num(d.egresos.total_base);
+  $('cieNatTable').innerHTML = natKeys.length ? natKeys.map(k=>{
+    const monto = num(pn[k]);
+    const pct = totalEg > 0 ? (monto/totalEg*100).toFixed(1)+'%' : '—';
+    return '<tr><td>'+esc(CIE_NAT[k]||k)+'</td><td>'+(num(nPn[k]))+'</td>' +
+      '<td style="text-align:right;">'+f(monto)+'</td><td style="text-align:right;">'+pct+'</td></tr>';
+  }).join('') : '<tr><td colspan="4" class="muted">Sin egresos en el periodo.</td></tr>';
+
+  // --- (g) pendientes de clasificar (solo si hay movimientos)
+  const pc = d.pendientes_clasificar || { total_base: 0, movimientos: 0 };
+  const boxP = $('ciePendBox');
+  if (num(pc.movimientos) > 0) {
+    boxP.style.display = 'block';
+    $('ciePendTotal').textContent = f(pc.total_base);
+    const det = (pc.detalle && pc.detalle.length ? pc.detalle :
+      ((d.egresos.detalle)||[]).filter(x=>x.naturaleza==='por_clasificar')).slice(0, 20);
+    $('ciePendTable').innerHTML = det.length ? det.map(x=>
+      '<tr><td class="gold">'+esc(x.gasto_folio||x.folio||'—')+'</td><td>'+esc(x.fecha||'—')+'</td>' +
+      '<td>'+esc(x.categoria||'—')+'</td><td>'+esc(x.descripcion||'—')+'</td>' +
+      '<td style="text-align:right;">'+f(x.monto_base)+'</td></tr>').join('')
+      : '<tr><td colspan="5" class="muted">'+num(pc.movimientos)+' movimiento(s) sin detalle disponible.</td></tr>';
+  } else {
+    boxP.style.display = 'none';
+  }
+
+  // --- nota del reporte
+  $('cieNota').textContent = d.nota || '';
+}

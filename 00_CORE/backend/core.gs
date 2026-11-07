@@ -597,6 +597,12 @@ function calcularEstadoResultados(mes, proyFiltro) {
     margen_bruto: ingresos ? (utilBruta / ingresos * 100) : 0,
     margen_neto: ingresos ? (utilNeta / ingresos * 100) : 0,
     margen_operativo: ingresos ? (utilOperativa / ingresos * 100) : 0,
+    // ETAPA 1: sin costos de venta completos este NO es un estado de resultados
+    // confiable: el resultado es provisional y jamas debe presentarse como
+    // utilidad neta. Los reportes de dinero real viven en 'control_ie'.
+    provisional: true,
+    resultado_provisional: utilNeta,
+    motivo_provisional: 'Etapa 1: costos de venta no capturados. Este resultado es provisional y NO es utilidad neta.',
     advertencia: advertencia };
 }
 
@@ -1002,6 +1008,117 @@ function doGetInterno(e) {
       total_base: retirosR.reduce(function (s, r) { return s + r.monto_base; }, 0),
       retiros: retirosR.reverse(),
       grupos: Object.keys(gruposR).sort().map(function (k) { return gruposR[k]; }) });
+  }
+
+  // ETAPA 1 (2026-11-06): reporte principal CONTROL DE INGRESOS Y EGRESOS.
+  // Efectivo REAL: cobros recibidos vs pagos salidos. Incluye TODOS los
+  // movimientos (retiros, compras de inventario e inversiones incluidos) en la
+  // variacion neta: el objetivo es saber en que se usa el dinero, no la
+  // rentabilidad. Sin cambios de estructura: solo lee Cobros, Pagos y Gastos.
+  if (action === 'control_ie') {
+    var desdeCI = validarFecha(e.parameter.desde), hastaCI = validarFecha(e.parameter.hasta);
+    if (!desdeCI || !hastaCI) {
+      var ahoraCI = new Date();
+      var yCI = ahoraCI.getFullYear(), mCI = ahoraCI.getMonth() + 1;
+      desdeCI = yCI + '-' + (mCI < 10 ? '0' : '') + mCI + '-01';
+      hastaCI = Utilities.formatDate(ahoraCI, 'America/Hermosillo', 'yyyy-MM-dd');
+    }
+    var enRangoCI = function (fecha) {
+      var f = fechaISO_(fecha) || String(fecha).slice(0, 10);
+      return f >= desdeCI && f <= hastaCI;
+    };
+    // Filtros opcionales (reporte, no restriccion de captura)
+    var filtroNatCI = String(e.parameter.naturaleza || '').trim();
+    if (filtroNatCI && NATURALEZAS_GASTO.indexOf(filtroNatCI) === -1) filtroNatCI = '';
+    var filtroCatCI = String(e.parameter.categoria || '').trim();
+    var filtroMonCI = String(e.parameter.moneda || '').trim().toUpperCase();
+    if (filtroMonCI && MONEDAS.indexOf(filtroMonCI) === -1) filtroMonCI = '';
+    // Naturaleza/categoria vienen del gasto ligado al pago (no del texto del pago)
+    var gastoPorIdCI = {};
+    filasComoObjetos(SHEET_EXPENSES).forEach(function (g) { gastoPorIdCI[String(g.id)] = g; });
+    var sumBaseCI = function (arr) { return arr.reduce(function (s, x) { return s + (Number(x.monto_base) || 0); }, 0); };
+
+    var egresosMovsCI = filasComoObjetos(SHEET_PAGOS).filter(function (p) {
+      if (!enRangoCI(p.fecha)) return false;
+      if (filtroMonCI && String(p.moneda) !== filtroMonCI) return false;
+      var g = gastoPorIdCI[String(p.gasto_id)];
+      var nat = g ? naturalezaDe(g) : 'por_clasificar';
+      var cat = g && g.categoria ? String(g.categoria) : String(p.categoria || 'Otro');
+      if (filtroNatCI && nat !== filtroNatCI) return false;
+      if (filtroCatCI && cat !== filtroCatCI) return false;
+      return true;
+    }).map(function (p) {
+      var g = gastoPorIdCI[String(p.gasto_id)];
+      return { folio: p.folio || '', fecha: p.fecha, gasto_folio: p.gasto_folio || '',
+        categoria: g && g.categoria ? String(g.categoria) : String(p.categoria || 'Otro'),
+        descripcion: g ? String(g.descripcion || '') : '',
+        naturaleza: g ? naturalezaDe(g) : 'por_clasificar',
+        monto: Number(p.monto) || 0, moneda: p.moneda, monto_base: Number(p.monto_base) || 0, metodo: p.metodo || '' };
+    });
+    var ingresosMovsCI = filasComoObjetos(SHEET_COBROS).filter(function (c) {
+      if (!enRangoCI(c.fecha)) return false;
+      if (filtroMonCI && String(c.moneda) !== filtroMonCI) return false;
+      return true;
+    }).map(function (c) {
+      return { folio: c.folio || '', fecha: c.fecha, concepto: String(c.cliente || ''),
+        tipo: validarTipoIngreso(c.tipo), monto: Number(c.monto) || 0, moneda: c.moneda,
+        monto_base: Number(c.monto_base) || 0, metodo: c.metodo || '' };
+    });
+    var porNatCI = {}, porCatCI = {}, porConcCI = {}, nPorNatCI = {};
+    egresosMovsCI.forEach(function (m) {
+      porNatCI[m.naturaleza] = (porNatCI[m.naturaleza] || 0) + m.monto_base;
+      nPorNatCI[m.naturaleza] = (nPorNatCI[m.naturaleza] || 0) + 1;
+      porCatCI[m.categoria] = (porCatCI[m.categoria] || 0) + m.monto_base;
+      var conc = m.descripcion || m.categoria;
+      porConcCI[conc] = (porConcCI[conc] || 0) + m.monto_base;
+    });
+    var totalEgresosCI = sumBaseCI(egresosMovsCI);
+    var pctCatCI = {};
+    Object.keys(porCatCI).forEach(function (k) {
+      pctCatCI[k] = totalEgresosCI > 0 ? Math.round(porCatCI[k] / totalEgresosCI * 1000) / 10 : 0;
+    });
+    // Comparativo mensual: ultimos 12 meses cerrando en el mes de 'hasta'.
+    // Incluye TODOS los egresos (dinero que salio, cualquiera sea su naturaleza).
+    var mensualCI = [];
+    var refCI = parseF(hastaCI) || new Date();
+    for (var iCI = 11; iCI >= 0; iCI--) {
+      var dCI = new Date(refCI.getFullYear(), refCI.getMonth() - iCI, 1);
+      var mesCI = dCI.getFullYear() + '-' + (dCI.getMonth() + 1 < 10 ? '0' : '') + (dCI.getMonth() + 1);
+      mensualCI.push({ mes: mesCI, ingresos: 0, egresos: 0, neto: 0 });
+    }
+    var idxMesCI = {};
+    mensualCI.forEach(function (m, ix) { idxMesCI[m.mes] = ix; });
+    var acumMesCI = function (fecha, campo, monto) {
+      var f = fechaISO_(fecha) || String(fecha).slice(0, 10);
+      var ix = idxMesCI[f.slice(0, 7)];
+      if (ix !== undefined) mensualCI[ix][campo] += Number(monto) || 0;
+    };
+    filasComoObjetos(SHEET_COBROS).forEach(function (c) {
+      if (filtroMonCI && String(c.moneda) !== filtroMonCI) return;
+      acumMesCI(c.fecha, 'ingresos', c.monto_base);
+    });
+    filasComoObjetos(SHEET_PAGOS).forEach(function (p) {
+      if (filtroMonCI && String(p.moneda) !== filtroMonCI) return;
+      acumMesCI(p.fecha, 'egresos', p.monto_base);
+    });
+    mensualCI.forEach(function (m) { m.neto = m.ingresos - m.egresos; });
+
+    var totalIngresosCI = sumBaseCI(ingresosMovsCI);
+    return json({ ok: true, desde: desdeCI, hasta: hastaCI, moneda_base: cfg('moneda_base', 'MXN'),
+      filtros: { naturaleza: filtroNatCI, categoria: filtroCatCI, moneda: filtroMonCI },
+      ingresos: { total_base: totalIngresosCI, movimientos: ingresosMovsCI.length,
+        detalle: ingresosMovsCI.sort(function (a, b) { return String(a.fecha) < String(b.fecha) ? 1 : -1; }).slice(0, 200) },
+      egresos: { total_base: totalEgresosCI, movimientos: egresosMovsCI.length,
+        por_naturaleza: porNatCI, num_por_naturaleza: nPorNatCI,
+        por_categoria: porCatCI, porcentaje_categoria: pctCatCI,
+        principales_conceptos: Object.keys(porConcCI).sort(function (a, b) { return porConcCI[b] - porConcCI[a]; })
+          .slice(0, 10).map(function (k) { return { concepto: k, monto_base: porConcCI[k] }; }),
+        detalle: egresosMovsCI.sort(function (a, b) { return String(a.fecha) < String(b.fecha) ? 1 : -1; }).slice(0, 200) },
+      variacion_neta: totalIngresosCI - totalEgresosCI,
+      retiros: { total_base: porNatCI.retiro || 0, movimientos: nPorNatCI.retiro || 0 },
+      pendientes_clasificar: { total_base: porNatCI.por_clasificar || 0, movimientos: nPorNatCI.por_clasificar || 0 },
+      mensual: mensualCI,
+      nota: 'Efectivo real: incluye retiros, compras de inventario e inversiones en la variacion neta. No es un estado de resultados.' });
   }
 
   throw AdisError('ACCION_DESCONOCIDA', 'Acción desconocida: ' + action);

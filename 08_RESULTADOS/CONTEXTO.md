@@ -60,6 +60,22 @@
 - `enRango` normaliza fechas con `fechaISO_`; `ventas.porMes` excluye
   CANCELADA; cxc/cxp exponen flag `sobrepago` (no se ocultan sobrecobros).
 
+## ETAPA 1 (2026-11-06) — el reporte principal es el efectivo, no el resultado
+
+- **GET `control_ie`** es el reporte principal (tab "Control de Ingresos y
+  Egresos" + simulador): ingresos recibidos, egresos pagados, variación neta
+  (incluye retiros/inventario/inversiones), desgloses por naturaleza y
+  categoría con %, comparativo mensual 12 meses, principales conceptos y
+  pendientes de clasificar. Filtros: periodo, naturaleza, categoría, moneda
+  (conversión vía `monto_base` = TC histórico por registro).
+- **El P&L se presenta como PROVISIONAL** (`provisional:true`,
+  `resultado_provisional`, `motivo_provisional`): sin costos de venta no se
+  muestra utilidad bruta (100%) ni utilidad neta; la línea final es "Resultado
+  provisional del periodo". La diferencia ingresos−egresos NUNCA se etiqueta
+  como utilidad.
+- El dashboard de Etapa 1 mide dinero: ingresos/egresos/flujo neto/retiros/
+  mercancía/operativos; el tab Negocio usa `control_ie.mensual`.
+
 ## REGLAS DE NEGOCIO
 
 1. **P&L contable, caja efectiva**: el P&L cuenta ventas/gastos por fecha de

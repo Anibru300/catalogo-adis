@@ -10,7 +10,7 @@ const _estCharts = {};
 /* Estado compartido: los datos se descargan UNA vez y los filtros solo
    re-pintan (slicing local). Solo 'mes' del desglose y rango del flujo
    piden datos nuevos al servidor (y quedan en caché). */
-const EST = { finanzas: null, ventas: null, flujo: null, quotes: null, pnlActual: null, pnlPorMes: {}, flujoCache: {} };
+const EST = { finanzas: null, ventas: null, flujo: null, quotes: null, pnlActual: null, pnlPorMes: {}, flujoCache: {}, controlIE: null };
 const EST_F = { meses: 12, mes: null, top: 8, flujoDias: 30 };
 
 function _estChart(id, cfg) {
@@ -86,7 +86,8 @@ function loadEstadisticas() {
       getj(base + '&action=flujo_caja&desde=' + hace29 + '&hasta=' + hoy),
       apiGet('quotes'),
       getj(base + '&action=finanzas_mensual'),
-    ]).then(function ([pnl, ventas, flujo, quotes, finanzas]) {
+      getj(base + '&action=control_ie'), // ETAPA 1: egresos por naturaleza (default = mes actual)
+    ]).then(function ([pnl, ventas, flujo, quotes, finanzas, controlIE]) {
       const sinConexion = !pnl && !ventas && !flujo && !quotes;
       if (sinConexion) {
         $('estKpis').innerHTML = '<p class="muted">Sin acceso o error de conexión. Si acabas de actualizar el script, despliega una <b>nueva versión</b> en Apps Script.</p>';
@@ -94,6 +95,7 @@ function loadEstadisticas() {
       }
       EST.pnlActual = pnl; EST.pnlPorMes[EST_F.mes] = pnl;
       EST.ventas = ventas; EST.flujo = flujo; EST.quotes = quotes; EST.finanzas = finanzas;
+      EST.controlIE = controlIE;
       EST.flujoCache[30] = flujo;
       pintarTodoEst();
     });
@@ -136,22 +138,25 @@ function estFiltroCambiado(clave) {
 
 function pintarTodoEst() {
   if (!EST.finanzas) return;
-  _estPintarKpis(EST.pnlActual, EST.ventas, EST.flujo, EST.quotes, EST_F.mes);
-  _estPintarResumen(EST.finanzas, EST_F.meses);
+  _estPintarKpis(EST.pnlActual, EST.ventas, EST.flujo, EST.quotes, EST_F.mes, EST.controlIE);
+  _estPintarResumen(EST.finanzas, EST_F.meses, EST.controlIE);
   _estPintarVentas(EST.ventas, EST.finanzas, EST_F.meses);
   _estPintarGastos(EST.pnlActual, EST_F.top);
-  _estPintarFinanzas(EST.finanzas, EST_F.meses);
+  _estPintarFinanzas(EST.finanzas, EST_F.meses, EST.controlIE);
   _estPintarGastosMes(EST.finanzas, EST_F.meses, EST_F.top);
   _estPintarFlujo(EST.flujo, EST_F.flujoDias);
+  _estPintarNaturaleza(EST.controlIE);
 }
 
-function _estPintarKpis(pnl, ventas, flujo, quotes, mes) {
+function _estPintarKpis(pnl, ventas, flujo, quotes, mes, controlIE) {
   const moneda = (pnl && pnl.moneda_base) || 'MXN';
   let html = '';
   if (pnl && pnl.ok) {
     html += '<div class="pnl-card"><div class="k">Ventas del mes (' + (pnl.num_ventas || 0) + ')</div><div class="v">' + _estMoney(pnl.ingresos) + ' ' + moneda + '</div></div>';
     html += '<div class="pnl-card"><div class="k">Gastos del mes</div><div class="v">' + _estMoney(pnl.total_gastos) + ' ' + moneda + '</div></div>';
-    html += '<div class="pnl-card ' + ((Number(pnl.utilidad_neta) || 0) >= 0 ? 'good' : 'bad') + '"><div class="k">Utilidad neta del mes</div><div class="v">' + _estMoney(pnl.utilidad_neta) + ' ' + moneda + '</div></div>';
+    // ETAPA 1: flujo neto de efectivo (control_ie del mes); no es utilidad contable
+    const flujoMes = (controlIE && controlIE.ok) ? Number(controlIE.variacion_neta) || 0 : (flujo && flujo.ok ? Number(flujo.neto) || 0 : 0);
+    html += '<div class="pnl-card ' + (flujoMes >= 0 ? 'good' : 'bad') + '"><div class="k">Flujo neto del mes</div><div class="v">' + _estMoney(flujoMes) + ' ' + ((controlIE && controlIE.ok && controlIE.moneda_base) || moneda) + '</div></div>';
   }
   if (flujo && flujo.ok) {
     html += '<div class="pnl-card ' + ((Number(flujo.neto) || 0) >= 0 ? 'good' : 'bad') + '"><div class="k">Flujo neto ' + (EST_F.flujoDias || 30) + ' días</div><div class="v">' + _estMoney(flujo.neto) + ' ' + (flujo.moneda_base || moneda) + '</div></div>';
@@ -161,9 +166,17 @@ function _estPintarKpis(pnl, ventas, flujo, quotes, mes) {
   $('estKpis').innerHTML = html || '<p class="muted">Sin datos todavía.</p>';
 }
 
-function _estPintarResumen(finanzas, nMeses) {
-  const todos = (finanzas && finanzas.ok && finanzas.meses) ? finanzas.meses : [];
-  const conDatos = todos.filter(m => Number(m.ingresos) > 0 || Number(m.gastos) > 0).slice(-(nMeses || 12));
+function _estPintarResumen(finanzas, nMeses, controlIE) {
+  // ETAPA 1: la fuente principal es control_ie.mensual (ingresos/egresos/efectivo);
+  // si el backend aún no lo devuelve, caemos a finanzas_mensual.
+  let conDatos, esControlIE = false;
+  if (controlIE && controlIE.ok && controlIE.mensual) {
+    conDatos = controlIE.mensual.filter(m => Number(m.ingresos) > 0 || Number(m.egresos) > 0).slice(-(nMeses || 12));
+    esControlIE = true;
+  } else {
+    const todos = (finanzas && finanzas.ok && finanzas.meses) ? finanzas.meses : [];
+    conDatos = todos.filter(m => Number(m.ingresos) > 0 || Number(m.gastos) > 0).slice(-(nMeses || 12));
+  }
   const labels = conDatos.map(m => _estLabelMes(m.mes));
   const hay = labels.length > 0;
   _estChart('estResumenBar', {
@@ -174,10 +187,12 @@ function _estPintarResumen(finanzas, nMeses) {
         { type: 'bar', label: 'Ingresos', data: hay ? conDatos.map(m => Number(m.ingresos) || 0) : [0],
           backgroundColor: 'rgba(30,122,70,0.8)', borderColor: '#1e7a46', borderWidth: 1,
           borderRadius: 6, maxBarThickness: 44, categoryPercentage: 0.72, barPercentage: 0.86 },
-        { type: 'bar', label: 'Gastos', data: hay ? conDatos.map(m => Number(m.gastos) || 0) : [0],
+        { type: 'bar', label: 'Egresos', data: hay ? conDatos.map(m => Number(esControlIE ? m.egresos : m.gastos) || 0) : [0],
           backgroundColor: 'rgba(192,57,43,0.75)', borderColor: '#c0392b', borderWidth: 1,
           borderRadius: 6, maxBarThickness: 44, categoryPercentage: 0.72, barPercentage: 0.86 },
-        { type: 'line', label: 'Utilidad', data: hay ? conDatos.map(m => (Number(m.ingresos) || 0) - (Number(m.gastos) || 0)) : [0],
+        { type: 'line', label: 'Flujo neto', data: hay ? conDatos.map(m => esControlIE
+            ? (Number(m.neto) || 0)
+            : (Number(m.ingresos) || 0) - (Number(m.gastos) || 0)) : [0],
           borderColor: '#B08C3D', backgroundColor: '#B08C3D', borderWidth: 2.5,
           tension: 0.3, pointRadius: 4, pointHoverRadius: 6, pointStyle: 'circle' }
       ]
@@ -195,14 +210,12 @@ function _estPintarResumen(finanzas, nMeses) {
   // Explicacion con las cifras del MES SELECCIONADO en el filtro
   const sel = conDatos.filter(m => m.mes === EST_F.mes)[0] || conDatos[conDatos.length - 1];
   if (sel && $('estResumenTxt')) {
-    const ing = Number(sel.ingresos) || 0, gas = Number(sel.gastos) || 0, util = ing - gas;
+    const ing = Number(sel.ingresos) || 0, gas = Number(esControlIE ? sel.egresos : sel.gastos) || 0, neto = esControlIE ? (Number(sel.neto) || 0) : ing - gas;
     $('estResumenTxt').innerHTML =
-      '<b>¿De dónde salen estos números?</b> Los <b style="color:#1e7a46;">Ingresos</b> (verde) son todo el dinero que entró en el mes: las ventas más los ingresos que registraste en "Registrar ingreso". ' +
-      'Los <b style="color:#c0392b;">Gastos</b> (rojo) son todo lo que salió: la suma de cada gasto que capturaste. ' +
-      'La <b style="color:#8A6D2F;">Utilidad</b> (línea dorada) = Ingresos − Gastos. ' +
+      '<b>¿De dónde salen estos números?</b> Los <b style="color:#1e7a46;">Ingresos</b> (verde) son dinero que entró en el mes y los <b style="color:#c0392b;">Egresos</b> (rojo) dinero que salió (operación, mercancía, inversiones, retiros). ' +
+      'La línea dorada es el <b style="color:#8A6D2F;">Flujo neto</b> = Ingresos − Egresos: <i>no es la utilidad contable</i> — es cuánto efectivo se movió. ' +
       '<br>Mes <b>' + sel.mes + '</b>: $' + ing.toLocaleString('es-MX') + ' − $' + gas.toLocaleString('es-MX') + ' = <b>' +
-      (util < 0 ? '−$' + Math.abs(util).toLocaleString('es-MX') : '$' + util.toLocaleString('es-MX')) + '</b>. ' +
-      '<i>Ojo: si el mes incluye compras de material o inventario, ese dinero no se perdió — se recupera cuando vendas esa mercancía.</i>';
+      (neto < 0 ? '−$' + Math.abs(neto).toLocaleString('es-MX') : '$' + neto.toLocaleString('es-MX')) + '</b>.';
   }
 }
 
@@ -269,9 +282,15 @@ function _estPintarGastos(pnl, topN) {
   });
 }
 
-// Ingresos (ventas + otros ingresos) vs egresos (gastos)
-function _estPintarFinanzas(fm, nMeses) {
-  const datos = (fm.meses || []).slice(-(nMeses || 12));
+// Ingresos vs egresos por mes — ETAPA 1: fuente control_ie.mensual; si no, finanzas_mensual
+function _estPintarFinanzas(fm, nMeses, controlIE) {
+  let datos, esControlIE = false;
+  if (controlIE && controlIE.ok && controlIE.mensual) {
+    datos = controlIE.mensual.slice(-(nMeses || 12));
+    esControlIE = true;
+  } else {
+    datos = (fm.meses || []).slice(-(nMeses || 12));
+  }
   const hay = datos.length > 0;
   _estChart('estFinanzasBar', {
     type: 'bar',
@@ -281,7 +300,7 @@ function _estPintarFinanzas(fm, nMeses) {
         { label: 'Ingresos', data: hay ? datos.map(x => Number(x.ingresos) || 0) : [0],
           backgroundColor: 'rgba(30,122,70,0.8)', borderColor: '#1e7a46', borderWidth: 1,
           borderRadius: 5, maxBarThickness: 28, categoryPercentage: 0.68, barPercentage: 0.88 },
-        { label: 'Egresos', data: hay ? datos.map(x => Number(x.gastos) || 0) : [0],
+        { label: 'Egresos', data: hay ? datos.map(x => Number(esControlIE ? x.egresos : x.gastos) || 0) : [0],
           backgroundColor: 'rgba(192,57,43,0.75)', borderColor: '#c0392b', borderWidth: 1,
           borderRadius: 5, maxBarThickness: 28, categoryPercentage: 0.68, barPercentage: 0.88 }
       ]
@@ -292,6 +311,27 @@ function _estPintarFinanzas(fm, nMeses) {
         tooltip: Object.assign(_estTooltip(), { callbacks: { label: c => ' ' + c.dataset.label + ': ' + _estMoney(c.parsed.y) } }) },
       scales: { x: _estEjeX(), y: _estEjeY((nMeses || 12) > 6) }
     }
+  });
+}
+
+// Egresos por naturaleza del mes (control_ie; ETAPA 1)
+function _estPintarNaturaleza(controlIE) {
+  const NATS = { operativo:'Gastos operativos', costo_directo:'Costos directos', inventario:'Compra de mercancía',
+    inversion:'Inversiones', retiro:'Retiros del propietario', por_clasificar:'Pendientes de clasificar' };
+  const mapa = (controlIE && controlIE.ok && controlIE.egresos && controlIE.egresos.por_naturaleza) || null;
+  const ks = mapa ? Object.keys(mapa).filter(k => Number(mapa[k]) > 0) : [];
+  const hay = ks.length > 0;
+  _estChart('estNaturalezaDough', {
+    type: 'doughnut',
+    data: {
+      labels: hay ? ks.map(k => NATS[k] || k) : ['Sin egresos en el mes'],
+      datasets: [{ data: hay ? ks.map(k => Number(mapa[k]) || 0) : [1],
+        backgroundColor: hay ? ks.map((_, i) => EST_COLORS[i % EST_COLORS.length]) : ['#EAE2D0'],
+        borderColor: '#fff', borderWidth: 2 }]
+    },
+    options: { responsive: true, cutout: '58%',
+      plugins: { legend: _estLegend(),
+        tooltip: Object.assign(_estTooltip(), { callbacks: { label: c => hay ? ' ' + c.label + ': ' + _estMoney(c.parsed) : '' } }) } }
   });
 }
 

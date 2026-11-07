@@ -2,7 +2,7 @@
 const CMDK_TABS = [
   ['dash','Resumen'], ['leads','Contactos'], ['clientes','Clientes'], ['quotes','Cotizaciones'],
   ['proposal','Cotizador'], ['inventory','Inventario'], ['oc','Compras'], ['sales','Ventas'],
-  ['proyectos','🏗️ Proyectos'], ['cobros','💰 Cobros'], ['flujocaja','🧮 Caja'], ['expenses','📉 Gastos'],
+  ['proyectos','🏗️ Proyectos'], ['cobros','💰 Cobros'], ['flujocaja','🧮 Caja'], ['control','💸 Control I/E'], ['expenses','📉 Gastos'],
   ['pnl','📊 Resultados'], ['reviews','⭐ Reseñas'], ['analytics','💼 Negocio'], ['flow','🌐 Sitio web'], ['ayuda','❓ Ayuda'],
 ];
 let cmdkSel = 0;
@@ -41,7 +41,7 @@ function showTab(name){
   document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active', t.dataset.tab===name));
   document.querySelectorAll('.mgroup').forEach(g=>{ g.removeAttribute('open'); g.classList.toggle('active', (g.dataset.group||'').split(' ').indexOf(name)!==-1); });
   const nav = $('mainMenu'); if (nav) nav.classList.remove('open');
-  ['dash','leads','clientes','quotes','proposal','inventory','oc','sales','proyectos','cobros','fijos','expenses','pnl','reviews','analytics','flujocaja','flow','logs','ayuda'].forEach(n=>$('tab-'+n).classList.toggle('hidden', n!==name));
+  ['dash','leads','clientes','quotes','proposal','inventory','oc','sales','proyectos','cobros','fijos','expenses','control','pnl','reviews','analytics','flujocaja','flow','logs','ayuda'].forEach(n=>$('tab-'+n).classList.toggle('hidden', n!==name));
   if (name==='dash') loadDash();
   if (name==='pnl' && !$('pnlCards').innerHTML) generarPNL();
   if (name==='flow') loadFlow();
@@ -54,6 +54,7 @@ function showTab(name){
   if (name==='expenses') loadRetiros();
   if (name==='logs') loadLogs();
   if (name==='flujocaja') loadFlujoCaja();
+  if (name==='control') loadControlIE();
   if (name==='pnl') loadAlertas();
 }
 
