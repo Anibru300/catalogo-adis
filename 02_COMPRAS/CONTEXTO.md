@@ -108,3 +108,8 @@ Token admin (rol único). Sin endpoints públicos.
    (stock +60, OC recibida; trazada a folio OC-AAAA-NNNN).
 2. **Proveedor → gasto (07)**: el gasto manual captura proveedor como texto;
    la futura CxP de OC deberá referenciar `proveedor_id` (pendiente de producto).
+3. **Gasto de mercancía → stock (07→01, ETAPA 2 2026-11-07)**: el gasto con
+   `naturaleza=inventario` puede entrar al stock (endpoint `gasto_inventario` o
+   `items_inventario` al capturar): un MOV- de entrada por partida con
+   `documento_tipo=GASTO`, `documento_id=folio GAS-`. Cierra la mitad de la deuda
+   OC↔gasto: la mercancía comprada de improviso ya no queda fuera del stock.

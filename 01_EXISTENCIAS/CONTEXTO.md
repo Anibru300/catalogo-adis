@@ -139,3 +139,11 @@
    entradas COMPENSACION.
 3. **Salida por obra (05→01)**: salida con `proyecto_id` → `documento_tipo=PROYECTO`,
    el folio LOTE va en columna `lote` para agrupar.
+4. **Entrada desde gasto (07→01, ETAPA 2 2026-11-07)**: `gasto` (con
+   `items_inventario`) y `gasto_inventario` (gastos existentes) aplican
+   `aplicarMovimiento(entrada, doc GASTO, doc_id folioGAS)` por partida, con la
+   fecha del gasto (retroactiva permitida). Idempotente: un folio GAS- solo admite
+   una entrada (se rechaza si ya hay MOV- con ese documento_id). Marca el gasto en
+   las cols 14/15 (`entrada_inventario`, `items_json`) y actualiza el último costo
+   del producto (col 8). El panel muestra estas entradas en Movimientos como
+   "🧾 Gasto <folio>". NO mueve dinero: control_ie/P&L no cambian.

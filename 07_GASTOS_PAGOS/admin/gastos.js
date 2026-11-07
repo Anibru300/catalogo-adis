@@ -121,6 +121,64 @@ function sugerirNaturalezaGasto_(){
     : (cat && NAT_GASTO_OPTS[NAT_SUGERIDA[cat]] ? NAT_SUGERIDA[cat] : 'por_clasificar');
   sel.value = sug;
 }
+/* ----- ETAPA 2: entrada a inventario desde el gasto (naturaleza=inventario) ----- */
+function gNaturalezaCambiada(){
+  const sel = $('gNaturaleza');
+  if ($('gInvBox')) $('gInvBox').style.display = (sel && sel.value==='inventario') ? '' : 'none';
+}
+function gInvAgregarFila(){
+  const box = $('gInvItems');
+  if (!box) return;
+  const div = document.createElement('div');
+  div.className = 'row g-inv-fila';
+  div.style.alignItems = 'flex-end';
+  div.innerHTML =
+    '<div style="flex:2;min-width:200px;"><label>Producto</label><div style="display:flex;gap:0.4rem;align-items:center;">'+
+    '<input type="hidden" class="gInvPid"><span class="gInvNom muted" style="flex:1;font-size:0.8rem;">— elegir —</span>'+
+    '<button class="btn btn-sm" type="button" onclick="gInvElegir(this)">Elegir…</button></div></div>'+
+    '<div><label>Cantidad *</label><input type="number" class="gInvCant" min="0" step="any" placeholder="0" style="width:90px;"></div>'+
+    '<div><label>Costo por pieza</label><input type="text" class="gInvCosto" inputmode="decimal" placeholder="0.00" oninput="mascaraMonto(this)" style="width:110px;"></div>'+
+    '<div><button class="btn btn-danger btn-sm" type="button" onclick="this.closest(\'.g-inv-fila\').remove()" title="Quitar">✕</button></div>';
+  box.appendChild(div);
+}
+function gInvElegir(btn){
+  elegirProducto(pid=>{
+    const fila = btn.closest('.g-inv-fila');
+    const p = (biz.productos||[]).filter(x=>String(x.id)===String(pid))[0];
+    if (!p || !fila) return;
+    fila.querySelector('.gInvPid').value = p.id;
+    const nom = fila.querySelector('.gInvNom');
+    nom.textContent = (p.codigo ? p.codigo+' · ' : '')+p.nombre;
+    nom.classList.remove('muted');
+  });
+}
+// Lee las filas de la seccion inventario. Devuelve {items, almacen_id, error}.
+function gInvLeerItems(){
+  const out = { items: [], almacen_id: '', error: '' };
+  if (!$('gInvActiva') || !$('gInvActiva').checked) return out;
+  out.almacen_id = $('gInvAlmacen') ? $('gInvAlmacen').value : '';
+  if (!out.almacen_id) { out.error = 'Elige el almacén destino.'; return out; }
+  const filas = document.querySelectorAll('#gInvItems .g-inv-fila');
+  for (let i = 0; i < filas.length; i++) {
+    const f = filas[i];
+    const pid = f.querySelector('.gInvPid').value;
+    const cantTxt = f.querySelector('.gInvCant').value;
+    if (!pid && !cantTxt) continue; // fila vacía
+    const cant = Number(cantTxt);
+    if (!pid) { out.error = 'Cada fila con cantidad necesita un producto (botón “Elegir…”).'; return out; }
+    if (!isFinite(cant) || cant <= 0) { out.error = 'La cantidad debe ser mayor que cero.'; return out; }
+    const it = { producto_id: pid, cantidad: cant };
+    const costoTxt = f.querySelector('.gInvCosto').value.trim().replace(/,/g, '');
+    if (costoTxt) {
+      const costo = Number(costoTxt);
+      if (!isFinite(costo) || costo < 0) { out.error = 'Costo inválido.'; return out; }
+      it.costo_unit = costo;
+    }
+    out.items.push(it);
+  }
+  if (!out.items.length) out.error = 'Agrega al menos un producto con cantidad.';
+  return out;
+}
 // Categoría de ingreso: muestra/oculta el campo "Otra" y sugiere el tipo de ingreso (el usuario lo puede cambiar)
 function categoriaIngresoCambiada_(){
   const sel=$('ingCategoria'), otra=$('ingCategoriaOtra');
@@ -182,6 +240,9 @@ function limpiarFormGasto(){
   $('gMonto').value=''; $('gDesc').value=''; $('gCategoriaOtra').value='';
   if ($('gCategoria')) $('gCategoria').selectedIndex = 0;
   if ($('gNaturaleza')) $('gNaturaleza').value = 'por_clasificar';
+  if ($('gInvActiva')) { $('gInvActiva').checked = false; $('gInvDetalle').style.display = 'none'; }
+  if ($('gInvItems')) $('gInvItems').innerHTML = '';
+  gNaturalezaCambiada();
   categoriaGastoCambiada();
 }
 function addExpense(){
@@ -196,8 +257,12 @@ function addExpense(){
   }
   notice('⏳ Guardando gasto…', true);
   const monedaG = $('gMoneda').value;
+  const inv = ($('gInvBox') && $('gInvBox').style.display !== 'none') ? gInvLeerItems() : { items: [] };
+  if (inv.error) { notice(inv.error, false); return; }
+  const conInv = inv.items.length > 0;
   apiPost({tipo:'gasto', fecha:$('gFecha').value, categoria:cat, descripcion:$('gDesc').value.trim(),
-    monto, moneda:monedaG, naturaleza: ($('gNaturaleza') ? $('gNaturaleza').value : 'por_clasificar')}).then(d=>{
+    monto, moneda:monedaG, naturaleza: ($('gNaturaleza') ? $('gNaturaleza').value : 'por_clasificar'),
+    ...(conInv ? { almacen_id: inv.almacen_id, items_inventario: inv.items } : {})}).then(d=>{
     if (!(d&&d.ok)) { notice(errMsg(d,'No se pudo guardar.'), false); logCliente('error','gasto', errMsg(d,'respuesta sin ok')+' | categoria='+cat+' monto='+monto); return; }
     // Regla del negocio: todo gasto capturado queda PAGADO de inmediato.
     // Lo pendiente de pago se maneja en Gastos fijos (programados).
@@ -205,7 +270,7 @@ function addExpense(){
     apiPost({tipo:'gasto_pago', gasto_id:d.id, fecha:fLocal(), monto, moneda:monedaG,
       metodo:$('gMetodo')?$('gMetodo').value:'Transferencia', notas:''}).then(p=>{
       notice(p&&p.ok
-        ? '✅ Gasto y pago registrados — '+(d.folio||'—')+' · '+(p.folio||'—')+' · '+fmtMoney(monto)+' '+monedaG+'.'
+        ? '✅ Gasto y pago registrados — '+(d.folio||'—')+' · '+(p.folio||'—')+' · '+fmtMoney(monto)+' '+monedaG+(conInv?' · 📦 mercancía en inventario.':'.')
         : '⚠️ El gasto '+(d.folio||'—')+' se guardó, pero el PAGO falló: ve a "Cuentas por pagar" y dale clic en Pagar.',
         !!(p&&p.ok));
       limpiarFormGasto(); loadBiz();

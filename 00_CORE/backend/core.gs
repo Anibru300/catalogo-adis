@@ -110,7 +110,8 @@ var ENC_VENTAS = ['fecha', 'cliente', 'almacen', 'items', 'total', 'moneda', 'ti
   'total_base', 'costo_total_base', 'utilidad_base', 'notas', 'id', 'folio', 'usuario',
   'cliente_id', 'proyecto_id', 'estado_pago', 'almacen_id', 'items_json'];
 var ENC_GASTOS = ['fecha', 'categoria', 'descripcion', 'monto', 'moneda', 'tipo_cambio', 'monto_base',
-  'id', 'usuario', 'folio', 'estado', 'pagado', 'naturaleza']; // col 13 FASE 1: ver NATURALEZAS_GASTO
+  'id', 'usuario', 'folio', 'estado', 'pagado', 'naturaleza', // col 13 FASE 1: ver NATURALEZAS_GASTO
+  'entrada_inventario', 'items_json']; // cols 14-15 ETAPA 2: marca SI + JSON de partidas aplicadas
 var ENC_PAGOS = ['id', 'folio', 'gasto_id', 'gasto_folio', 'categoria', 'fecha', 'monto', 'moneda',
   'monto_base', 'metodo', 'notas', 'usuario'];
 var ENC_PROY_MOVS = ['id', 'proyecto_id', 'tipo', 'monto', 'moneda', 'tipo_cambio', 'monto_base',
@@ -1826,6 +1827,53 @@ function doPostInterno(data) {
   });
 
   /* ---------- Gasto ---------- */
+  // ETAPA 2: entrada de mercancia de un gasto (naturaleza=inventario) al stock.
+  // Un MOV de entrada por partida vinculado al folio GAS- (doc_tipo GASTO),
+  // actualiza el ultimo costo del producto y marca el gasto (cols 14/15).
+  // Precondicion: conLock. Idempotente: rechaza si el folio ya tiene entradas.
+  // Usada por 'gasto' (items_inventario al capturar) y 'gasto_inventario'
+  // (gastos existentes, p.ej. carga retroactiva). NO toca montos ni pagos.
+  function aplicarEntradaInvGasto(hG, filaG, almacenId, itemsIn) {
+    hoja(SHEET_EXPENSES, ENC_GASTOS); // ETAPA 2: garantizar cols 14/15 antes de escribir
+    var folioG = String(hG.getRange(filaG, 10).getValue());
+    var yaHay = filasComoObjetos(SHEET_MOVES).some(function (m) {
+      return String(m.documento_tipo) === 'GASTO' && String(m.documento_id) === folioG;
+    });
+    if (yaHay) throw AdisError('NO_PERMITIDO', 'El gasto ' + folioG + ' ya tiene entradas de inventario registradas.');
+    var almG = filasComoObjetos(SHEET_WAREHOUSES).filter(function (a) { return String(a.id) === String(almacenId); })[0] || {};
+    if (!almG.id) throw AdisError('NO_ENCONTRADO', 'Almacén destino no encontrado.');
+    var mapaProdG = {};
+    filasComoObjetos(SHEET_PRODUCTS).forEach(function (p) { mapaProdG[String(p.id)] = p; });
+    // costo_unit opcional por partida: si falta, toma el ultimo costo del producto
+    var itemsNorm = (itemsIn || []).map(function (it) {
+      var prod = mapaProdG[String(it.producto_id)] || {};
+      return { producto_id: it.producto_id, cantidad: it.cantidad,
+        costo_unit: (it.costo_unit !== undefined && it.costo_unit !== '') ? it.costo_unit : (Number(prod.costo) || 0) };
+    });
+    var partidasG = validarPartidasOC(itemsNorm, mapaProdG);
+    var fechaGI = String(hG.getRange(filaG, 1).getValue());
+    var monedaGI = String(hG.getRange(filaG, 5).getValue()) || cfg('moneda_base', 'MXN');
+    var descGI = String(hG.getRange(filaG, 3).getValue()) || '';
+    var stockNuevoG = {};
+    partidasG.forEach(function (pt) {
+      stockNuevoG[String(pt.producto_id)] = aplicarMovimiento({ tipo: 'entrada',
+        producto_id: pt.producto_id, producto: pt.producto, almacen_id: almG.id, almacen: almG.nombre,
+        cantidad: pt.cantidad, costo_unit: pt.costo_unit, moneda: monedaGI, fecha: fechaGI,
+        referencia: 'Gasto ' + folioG, notas: 'Entrada de mercancía · ' + descGI.slice(0, 120),
+        doc_tipo: 'GASTO', doc_id: folioG });
+      var filaProdG = filaPorId(SHEET_PRODUCTS, pt.producto_id);
+      if (filaProdG) {
+        var hpG = ss().getSheetByName(SHEET_PRODUCTS);
+        hpG.getRange(filaProdG, 8).setValue(pt.costo_unit); // ultimo costo
+        hpG.getRange(filaProdG, ENC_PROD.indexOf('fecha_actualizacion') + 1).setValue(ahora_());
+      }
+    });
+    hG.getRange(filaG, 14).setValue('SI');
+    hG.getRange(filaG, 15).setValue(JSON.stringify(partidasG));
+    log_('gasto_inventario', folioG + ' · ' + partidasG.length + ' entradas en ' + almG.nombre);
+    return stockNuevoG;
+  }
+
   if (tipo === 'gasto') return conLock(function () {
     var categoria = String(data.categoria || '').trim();
     if (!categoria) throw AdisError('VALIDACION', 'El gasto necesita una categoría.');
@@ -1835,12 +1883,36 @@ function doPostInterno(data) {
     var tcg = Number(data.tipo_cambio) || Number(cfg('tipo_cambio', '18.5')) || 1;
     var fechaG = validarFecha(data.fecha) || hoy_();
     var naturalezaG = validarNaturaleza(data.naturaleza); // FASE 1 (default seguro: por_clasificar)
+    // ETAPA 2: si pide entrada a inventario, la naturaleza debe ser 'inventario'
+    var quiereInv = (Array.isArray(data.items_inventario) && data.items_inventario.length) || false;
+    if (quiereInv && naturalezaG !== 'inventario') {
+      throw AdisError('VALIDACION', 'Para entrar mercancía a inventario la naturaleza debe ser "inventario".');
+    }
+    if (quiereInv) { // pre-validar TODO antes de crear el gasto (sin folios ni filas huérfanas)
+      var almPrev = filasComoObjetos(SHEET_WAREHOUSES).filter(function (a) { return String(a.id) === String(data.almacen_id); })[0] || {};
+      if (!almPrev.id) throw AdisError('NO_ENCONTRADO', 'Almacén destino no encontrado.');
+      var mapaPrev = {};
+      filasComoObjetos(SHEET_PRODUCTS).forEach(function (p) { mapaPrev[String(p.id)] = p; });
+      var itemsPrev = data.items_inventario.map(function (it) {
+        var prod = mapaPrev[String(it.producto_id)] || {};
+        return { producto_id: it.producto_id, cantidad: it.cantidad,
+          costo_unit: (it.costo_unit !== undefined && it.costo_unit !== '') ? it.costo_unit : (Number(prod.costo) || 0) };
+      });
+      validarPartidasOC(itemsPrev, mapaPrev);
+    }
     var folioG = siguienteFolio('GAS', 'folio_gasto', 4);
     var idG = nuevoId();
-    hoja(SHEET_EXPENSES, ENC_GASTOS).appendRow([fechaG, categoria, data.descripcion || '',
+    var hGastos = hoja(SHEET_EXPENSES, ENC_GASTOS);
+    hGastos.appendRow([fechaG, categoria, data.descripcion || '',
       monto, monedaG, tcg, aBase(monto, monedaG, tcg), idG, USUARIO_ACTUAL, folioG, 'ACTIVA', 0, naturalezaG]);
-    log_('gasto_registrado', folioG + ' · ' + categoria + ' - ' + monto + ' ' + monedaG + ' · ' + naturalezaG);
-    return json({ ok: true, folio: folioG, id: idG });
+    var stockNuevoInv = null;
+    if (quiereInv) {
+      stockNuevoInv = aplicarEntradaInvGasto(ss().getSheetByName(SHEET_EXPENSES),
+        hGastos.getLastRow(), data.almacen_id, data.items_inventario);
+    }
+    log_('gasto_registrado', folioG + ' · ' + categoria + ' - ' + monto + ' ' + monedaG + ' · ' + naturalezaG +
+      (quiereInv ? ' · entrada a inventario' : ''));
+    return json({ ok: true, folio: folioG, id: idG, stock_nuevo: stockNuevoInv });
   });
 
   // FASE 5: pago parcial/total de un gasto (gasto != pago; flujo de efectivo real)
@@ -1956,6 +2028,23 @@ function doPostInterno(data) {
     hCl.getRange(filaCl, 13).setValue(natCl);
     log_('gasto_clasificado', String(hCl.getRange(filaCl, 10).getValue()) + ' · ' + natAntCl + ' → ' + natCl);
     return json({ ok: true, folio: hCl.getRange(filaCl, 10).getValue(), naturaleza: natCl });
+  });
+
+  // ETAPA 2: registrar en el stock la mercancia de un gasto EXISTENTE
+  // (naturaleza=inventario). Mismo camino que al capturar: entradas MOV-
+  // vinculadas al folio GAS-, actualizacion de ultimo costo y marca cols 14/15.
+  // Idempotente: un gasto solo admite una entrada de inventario.
+  if (tipo === 'gasto_inventario') return conLock(function () {
+    hoja(SHEET_EXPENSES, ENC_GASTOS); // ETAPA 2: garantizar cols 14/15
+    var filaGI = filaPorId(SHEET_EXPENSES, data.id);
+    if (!filaGI) throw AdisError('NO_ENCONTRADO', 'Gasto no encontrado.');
+    var hGI = ss().getSheetByName(SHEET_EXPENSES);
+    if (String(hGI.getRange(filaGI, 11).getValue()) === 'CANCELADA') throw AdisError('NO_PERMITIDO', 'El gasto está cancelado.');
+    if (validarNaturaleza(hGI.getRange(filaGI, 13).getValue()) !== 'inventario') {
+      throw AdisError('NO_PERMITIDO', 'Solo los gastos con naturaleza "inventario" admiten entrada a stock (reclasifícalo primero con gasto_clasificar).');
+    }
+    var stockGI = aplicarEntradaInvGasto(hGI, filaGI, data.almacen_id, data.items || data.items_inventario);
+    return json({ ok: true, folio: String(hGI.getRange(filaGI, 10).getValue()), stock_nuevo: stockGI });
   });
 
   // Edicion de un ingreso capturado a mano (sin venta ligada).

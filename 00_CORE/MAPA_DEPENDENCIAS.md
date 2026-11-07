@@ -121,10 +121,15 @@
 ## 07_GASTOS_PAGOS — Gastos, pagos, CxP
 
 - **DEPENDE DE**: 00_CORE (02_COMPRAS solo como referencia futura de proveedor).
-- **ALIMENTA A**: 08_RESULTADOS (gastos), flujo de caja (pagos), P&L.
+  ETAPA 2 (2026-11-07): también 01_EXISTENCIAS — el gasto con naturaleza=inventario
+  entra al stock (dependencia real vía `aplicarMovimiento`).
+- **ALIMENTA A**: 08_RESULTADOS (gastos), flujo de caja (pagos), P&L,
+  01_EXISTENCIAS (entradas de stock doc GASTO).
 - **COMPARTE CON**: hoja Proveedores se lee en frontend para sugerir (texto libre hoy).
 - **FUENTE DE DATOS**: Sheets Gastos, Pagos.
-- **API**: GET `gastos`, `pagos`, `cxp`; POST `gasto`, `gasto_pago`/`registrar_pago`,
+- **API**: GET `gastos`, `pagos`, `cxp`; POST `gasto` (acepta `items_inventario` +
+  `almacen_id` para entrada opcional a stock), `gasto_inventario` (entrada de un
+  gasto existente; idempotente), `gasto_pago`/`registrar_pago`,
   `gasto_cancelar`, `delete_gasto`.
 - **FUNCIONES CORE**: `siguienteFolio` (GAS-, PAG-), `aBase`, `filaPorId`.
 - **PERMISOS**: token admin.

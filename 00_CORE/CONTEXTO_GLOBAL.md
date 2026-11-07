@@ -10,7 +10,7 @@
 - Stack: generador Python estático → `public/` (GitHub Pages) + panel HTML/JS +
   backend Google Apps Script (V8) sobre Google Sheets.
 - Repo: `https://github.com/Anibru300/catalogo-adis.git` · Sitio: `https://xn--adis-diseo-19a.com/`
-- Última sincronización de este documento: **2026-09-13** (con el código en commit `7419450`).
+- Última sincronización de este documento: **2026-11-07** (Etapa 2: gasto-mercancia ↔ stock; commit pendiente de Etapa 1 `4fbc01b` como base).
 
 ---
 
@@ -51,7 +51,7 @@ El sitio público solo usa 3 endpoints **públicos** del backend: `lead`, `track
 | `04_COTIZADOR` | Cotizador profesional + historial | `quotes`,`quote`,`set_estado_quote`,`crear_proyecto_desde_cotizacion` | `proposal`, `quotes` |
 | `05_PROYECTOS` | Proyectos / obras | `proyectos`,`save_proyecto`,`proyecto_mov`,`cambiar_estado_proyecto` | `proyectos` |
 | `06_VENTAS_COBROS` | Ventas, cobros, CxC | `ventas`,`venta`,`cxc`,`registrar_cobro`,`anular_venta` | `sales`, `cobros` |
-| `07_GASTOS_PAGOS` | Gastos, pagos, CxP, otros ingresos, catálogo de categorías | `gastos`,`gasto`,`gasto_pago`,`registrar_pago`,`gasto_cancelar`,`delete_gasto`,`pagos`,`cxp`,`ingreso`,`categoria` | `expenses` (+formulario otro ingreso en `cobros`) |
+| `07_GASTOS_PAGOS` | Gastos, pagos, CxP, otros ingresos, catálogo de categorías | `gastos`,`gasto` (con entrada opcional a inventario),`gasto_inventario`,`gasto_pago`,`registrar_pago`,`gasto_cancelar`,`delete_gasto`,`pagos`,`cxp`,`ingreso`,`categoria` | `expenses` (+formulario otro ingreso en `cobros`) |
 | `08_RESULTADOS` | P&L, flujo de caja, alertas, dashboard, evolución 12m | `estado_resultados`,`finanzas_mensual`,`flujo_caja`,`alertas` | `pnl`, `flujocaja`, `dash` |
 | `09_MARKETING` | Reseñas y analítica web | `reviews`,`reviews_admin`,`review`,`delete_review`,`visitas` + público `track` | `reviews`, `flow`, `analytics` |
 | `10_SITIO_PUBLICO` | Sitio web, chatbot, buscador, tracker | (los 3 públicos) | — |

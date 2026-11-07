@@ -898,18 +898,34 @@
         <p>Aquí anotas <b>todo lo que el negocio gasta</b> (material, renta, luz, gasolina, nómina...). Cada gasto recibe un folio <b>GAS-</b> automático y <b>queda PAGADO de inmediato</b> — así tu caja siempre refleja el dinero real que salió.</p>
         <p><b>Cómo usarlo:</b> elige la categoría de la lista (o "✏️ Otra" para escribir una nueva), escribe el monto (con comas automáticas), el método de pago y guarda. Si te equivocas en algo, usa el botón <b>✏️ Editar</b> de la tabla (los gastos cancelados no se pueden editar).</p>
         <p><b>¿Y lo que aún NO pago?</b> Eso va en <b>Dinero → Gastos fijos (programados)</b>: ahí programas pagos futuros (semanal, quincenal, mensual...) y el sistema te avisa antes de que venzan.</p>
+        <p><b>¿Compraste mercancía para revender?</b> Pon el tipo <b>“Compra de inventario”</b> y marca <b>“Entrar esta mercancía al inventario”</b>: el material entra solo al almacén (con la fecha y el folio del gasto) y el costo por pieza se guarda en el producto. Así tu stock siempre sabe qué hay.</p>
       </details>
       <div class="card-box">
         <div class="row">
           <div><label>Fecha</label><input type="date" id="gFecha"></div>
           <div><label>Categoría *</label><select id="gCategoria" onchange="categoriaGastoCambiada()"></select><input id="gCategoriaOtra" placeholder="Escribe la categoría nueva..." style="display:none;margin-top:0.4rem;" onchange="sugerirNaturalezaGasto_()"><datalist id="gCatList"></datalist></div>
-          <div><label>Tipo de movimiento</label><select id="gNaturaleza"><option value="operativo">Gasto operativo</option><option value="costo_directo">Costo directo de proyecto</option><option value="inventario">Compra de inventario</option><option value="inversion">Inversión o adquisición de activo</option><option value="retiro">Retiro del propietario</option><option value="por_clasificar" selected>Otro movimiento por clasificar</option></select></div>
+          <div><label>Tipo de movimiento</label><select id="gNaturaleza" onchange="gNaturalezaCambiada()"><option value="operativo">Gasto operativo</option><option value="costo_directo">Costo directo de proyecto</option><option value="inventario">Compra de inventario</option><option value="inversion">Inversión o adquisición de activo</option><option value="retiro">Retiro del propietario</option><option value="por_clasificar" selected>Otro movimiento por clasificar</option></select></div>
           <div><label>Monto *</label><div class="monto-wrap"><span class="monto-sign">$</span><input type="text" inputmode="decimal" class="monto" id="gMonto" placeholder="0.00" oninput="mascaraMonto(this)"></div></div>
           <div><label>Moneda</label><select id="gMoneda"><option value="MXN">MXN</option><option value="USD">USD</option></select></div>
           <div><label>Método de pago</label><select id="gMetodo"><option>Transferencia</option><option>Efectivo</option><option>Tarjeta</option><option>Depósito</option><option>Otro</option></select></div>
         </div>
         <label>Descripción</label>
         <input id="gDesc" placeholder="Ej. Recibo CFE local Nogales">
+        <div id="gInvBox" style="display:none;margin-top:0.9rem;border:1px dashed #3a3428;border-radius:8px;padding:0.7rem;">
+          <label style="display:flex;align-items:center;gap:0.45rem;cursor:pointer;font-size:0.85rem;">
+            <input type="checkbox" id="gInvActiva" onchange="$('gInvDetalle').style.display=this.checked?'':'none'">
+            <span>📦 <b>Entrar esta mercancía al inventario</b> (opcional: crea las entradas de stock ligadas a este gasto)</span>
+          </label>
+          <div id="gInvDetalle" style="display:none;margin-top:0.6rem;">
+            <div class="row">
+              <div><label>Almacén destino *</label><select id="gInvAlmacen"></select></div>
+            </div>
+            <label style="margin-top:0.5rem;">Productos que entran</label>
+            <div id="gInvItems"></div>
+            <button class="btn btn-sm" type="button" onclick="gInvAgregarFila()">+ Agregar producto</button>
+            <p class="muted" style="font-size:0.72rem;margin:0.4rem 0 0;">Cada producto entra al stock con la fecha de este gasto y queda ligado a su folio GAS-. Si dejas el costo vacío, se usa el último costo conocido del producto.</p>
+          </div>
+        </div>
         <div class="toolbar" style="margin-top:1rem;">
           <button class="btn btn-solid" onclick="addExpense()">💾 Guardar gasto</button>
         </div>
@@ -2913,6 +2929,7 @@ function fillWarehouseSelects(){
   $('invAlmacen').innerHTML = '<option value="">Todos los almacenes</option>'+opts;
   $('sAlmacen').innerHTML = '<option value="">— Selecciona —</option>'+opts;
   if ($('movFAlmacen')) $('movFAlmacen').innerHTML = '<option value="">Todos los almacenes</option>'+opts;
+  if ($('gInvAlmacen')) $('gInvAlmacen').innerHTML = '<option value="">— Selecciona —</option>'+opts;
 }
 
 function stockTotal(pid){
@@ -3123,6 +3140,7 @@ function movDocTxt(m){
   }
   else if (dt==='LOTE' && did) txt = 'Lote '+esc(did);
   else if (dt==='ORDEN_COMPRA' && did) txt = 'OC '+esc(did);
+  else if (dt==='GASTO' && did) txt = '🧾 Gasto '+esc(did);
   else txt = dt ? esc(dt) : '—';
   if (m.lote && dt!=='LOTE') txt += ' <span class="muted">· Lote '+esc(m.lote)+'</span>';
   return txt;
@@ -3143,7 +3161,7 @@ function movCSV(){
   const rows = movFiltered();
   if (!rows.length) { notice('No hay movimientos con estos filtros.', false); return; }
   const docTxt = m=>{ const dt=String(m.documento_tipo||''),did=String(m.documento_id||'');
-    return dt==='LOTE'?'Lote '+did: dt==='PROYECTO'?'Proyecto '+did: dt==='ORDEN_COMPRA'?'OC '+did: dt; };
+    return dt==='LOTE'?'Lote '+did: dt==='PROYECTO'?'Proyecto '+did: dt==='ORDEN_COMPRA'?'OC '+did: dt==='GASTO'?'Gasto '+did: dt; };
   const cab = ['Fecha','Tipo','Producto','Almacen','Cantidad','Exist. anterior','Exist. posterior','Documento','Lote','Referencia','Proveedor','Folio mov.','Usuario','Notas'];
   const txt = '\ufeff'+cab.join(',')+'\n'+rows.map(m=>
     [m.fecha,m.tipo,m.producto,m.almacen,m.cantidad,m.existencia_anterior,m.existencia_posterior,
@@ -4278,6 +4296,64 @@ function sugerirNaturalezaGasto_(){
     : (cat && NAT_GASTO_OPTS[NAT_SUGERIDA[cat]] ? NAT_SUGERIDA[cat] : 'por_clasificar');
   sel.value = sug;
 }
+/* ----- ETAPA 2: entrada a inventario desde el gasto (naturaleza=inventario) ----- */
+function gNaturalezaCambiada(){
+  const sel = $('gNaturaleza');
+  if ($('gInvBox')) $('gInvBox').style.display = (sel && sel.value==='inventario') ? '' : 'none';
+}
+function gInvAgregarFila(){
+  const box = $('gInvItems');
+  if (!box) return;
+  const div = document.createElement('div');
+  div.className = 'row g-inv-fila';
+  div.style.alignItems = 'flex-end';
+  div.innerHTML =
+    '<div style="flex:2;min-width:200px;"><label>Producto</label><div style="display:flex;gap:0.4rem;align-items:center;">'+
+    '<input type="hidden" class="gInvPid"><span class="gInvNom muted" style="flex:1;font-size:0.8rem;">— elegir —</span>'+
+    '<button class="btn btn-sm" type="button" onclick="gInvElegir(this)">Elegir…</button></div></div>'+
+    '<div><label>Cantidad *</label><input type="number" class="gInvCant" min="0" step="any" placeholder="0" style="width:90px;"></div>'+
+    '<div><label>Costo por pieza</label><input type="text" class="gInvCosto" inputmode="decimal" placeholder="0.00" oninput="mascaraMonto(this)" style="width:110px;"></div>'+
+    '<div><button class="btn btn-danger btn-sm" type="button" onclick="this.closest(\'.g-inv-fila\').remove()" title="Quitar">✕</button></div>';
+  box.appendChild(div);
+}
+function gInvElegir(btn){
+  elegirProducto(pid=>{
+    const fila = btn.closest('.g-inv-fila');
+    const p = (biz.productos||[]).filter(x=>String(x.id)===String(pid))[0];
+    if (!p || !fila) return;
+    fila.querySelector('.gInvPid').value = p.id;
+    const nom = fila.querySelector('.gInvNom');
+    nom.textContent = (p.codigo ? p.codigo+' · ' : '')+p.nombre;
+    nom.classList.remove('muted');
+  });
+}
+// Lee las filas de la seccion inventario. Devuelve {items, almacen_id, error}.
+function gInvLeerItems(){
+  const out = { items: [], almacen_id: '', error: '' };
+  if (!$('gInvActiva') || !$('gInvActiva').checked) return out;
+  out.almacen_id = $('gInvAlmacen') ? $('gInvAlmacen').value : '';
+  if (!out.almacen_id) { out.error = 'Elige el almacén destino.'; return out; }
+  const filas = document.querySelectorAll('#gInvItems .g-inv-fila');
+  for (let i = 0; i < filas.length; i++) {
+    const f = filas[i];
+    const pid = f.querySelector('.gInvPid').value;
+    const cantTxt = f.querySelector('.gInvCant').value;
+    if (!pid && !cantTxt) continue; // fila vacía
+    const cant = Number(cantTxt);
+    if (!pid) { out.error = 'Cada fila con cantidad necesita un producto (botón “Elegir…”).'; return out; }
+    if (!isFinite(cant) || cant <= 0) { out.error = 'La cantidad debe ser mayor que cero.'; return out; }
+    const it = { producto_id: pid, cantidad: cant };
+    const costoTxt = f.querySelector('.gInvCosto').value.trim().replace(/,/g, '');
+    if (costoTxt) {
+      const costo = Number(costoTxt);
+      if (!isFinite(costo) || costo < 0) { out.error = 'Costo inválido.'; return out; }
+      it.costo_unit = costo;
+    }
+    out.items.push(it);
+  }
+  if (!out.items.length) out.error = 'Agrega al menos un producto con cantidad.';
+  return out;
+}
 // Categoría de ingreso: muestra/oculta el campo "Otra" y sugiere el tipo de ingreso (el usuario lo puede cambiar)
 function categoriaIngresoCambiada_(){
   const sel=$('ingCategoria'), otra=$('ingCategoriaOtra');
@@ -4339,6 +4415,9 @@ function limpiarFormGasto(){
   $('gMonto').value=''; $('gDesc').value=''; $('gCategoriaOtra').value='';
   if ($('gCategoria')) $('gCategoria').selectedIndex = 0;
   if ($('gNaturaleza')) $('gNaturaleza').value = 'por_clasificar';
+  if ($('gInvActiva')) { $('gInvActiva').checked = false; $('gInvDetalle').style.display = 'none'; }
+  if ($('gInvItems')) $('gInvItems').innerHTML = '';
+  gNaturalezaCambiada();
   categoriaGastoCambiada();
 }
 function addExpense(){
@@ -4353,8 +4432,12 @@ function addExpense(){
   }
   notice('⏳ Guardando gasto…', true);
   const monedaG = $('gMoneda').value;
+  const inv = ($('gInvBox') && $('gInvBox').style.display !== 'none') ? gInvLeerItems() : { items: [] };
+  if (inv.error) { notice(inv.error, false); return; }
+  const conInv = inv.items.length > 0;
   apiPost({tipo:'gasto', fecha:$('gFecha').value, categoria:cat, descripcion:$('gDesc').value.trim(),
-    monto, moneda:monedaG, naturaleza: ($('gNaturaleza') ? $('gNaturaleza').value : 'por_clasificar')}).then(d=>{
+    monto, moneda:monedaG, naturaleza: ($('gNaturaleza') ? $('gNaturaleza').value : 'por_clasificar'),
+    ...(conInv ? { almacen_id: inv.almacen_id, items_inventario: inv.items } : {})}).then(d=>{
     if (!(d&&d.ok)) { notice(errMsg(d,'No se pudo guardar.'), false); logCliente('error','gasto', errMsg(d,'respuesta sin ok')+' | categoria='+cat+' monto='+monto); return; }
     // Regla del negocio: todo gasto capturado queda PAGADO de inmediato.
     // Lo pendiente de pago se maneja en Gastos fijos (programados).
@@ -4362,7 +4445,7 @@ function addExpense(){
     apiPost({tipo:'gasto_pago', gasto_id:d.id, fecha:fLocal(), monto, moneda:monedaG,
       metodo:$('gMetodo')?$('gMetodo').value:'Transferencia', notas:''}).then(p=>{
       notice(p&&p.ok
-        ? '✅ Gasto y pago registrados — '+(d.folio||'—')+' · '+(p.folio||'—')+' · '+fmtMoney(monto)+' '+monedaG+'.'
+        ? '✅ Gasto y pago registrados — '+(d.folio||'—')+' · '+(p.folio||'—')+' · '+fmtMoney(monto)+' '+monedaG+(conInv?' · 📦 mercancía en inventario.':'.')
         : '⚠️ El gasto '+(d.folio||'—')+' se guardó, pero el PAGO falló: ve a "Cuentas por pagar" y dale clic en Pagar.',
         !!(p&&p.ok));
       limpiarFormGasto(); loadBiz();

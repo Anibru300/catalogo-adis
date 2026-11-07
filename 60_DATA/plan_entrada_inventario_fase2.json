@@ -1,0 +1,78 @@
+{
+  "_documentacion": "Plan de entrada a inventario ETAPA 2 (2026-11-07). Cada folio GAS- con naturaleza=inventario que entrara al stock. items: lista de {producto_id, cantidad, costo_unit} (costo_unit opcional; si falta, usa el ultimo costo del producto). producto es solo referencia legible (no se envia). DECISION DEL DUENO 2026-11-07: NO se aplica carga retroactiva de los 9 folios historicos; a partir de hoy las compras se capturan bien (producto/piezas/costo) con el nuevo flujo del panel ('Compra de inventario' + 'Entrar esta mercancía al inventario'). Este plan queda como referencia/documentacion, no ejecutar --aplicar.",
+  "_almacen_default": "e6a5e282",
+  "plan": [
+    {
+      "folio": "GAS-2026-0005",
+      "fecha": "2026-10-07",
+      "descripcion": "5 lambrines negros + 4 Brasil a inventario ($1,055.47)",
+      "almacen_id": "e6a5e282",
+      "items": [],
+      "nota": "PENDIENTE: confirmar cual lambrin es 'negro' (candidatos: Negro Sahara, Obsidiana...) y costo por pieza."
+    },
+    {
+      "folio": "GAS-2026-0006",
+      "fecha": "2026-10-07",
+      "descripcion": "14 lambrines cerezo macapa + 14 lambrines negros ($3,640.00)",
+      "almacen_id": "e6a5e282",
+      "items": [],
+      "nota": "PENDIENTE: Cerezo Macapa existe (d323c929); confirmar lambrin 'negro' y costos."
+    },
+    {
+      "folio": "GAS-2026-0013",
+      "fecha": "2026-10-15",
+      "descripcion": "Compra de materiales ($7,093.63)",
+      "almacen_id": "e6a5e282",
+      "items": [],
+      "nota": "PENDIENTE: solo monto, sin producto ni cantidad. El dueno debe decir que entro (o dejarlo fuera del stock)."
+    },
+    {
+      "folio": "GAS-2026-0014",
+      "fecha": "2026-10-15",
+      "descripcion": "Compra de material ($10,700.00)",
+      "almacen_id": "e6a5e282",
+      "items": [],
+      "nota": "PENDIENTE: igual que GAS-0013."
+    },
+    {
+      "folio": "GAS-2026-0018",
+      "fecha": "2026-10-15",
+      "descripcion": "Pago de 6 placas PVC ($3,900.00)",
+      "almacen_id": "e6a5e282",
+      "items": [],
+      "nota": "PENDIENTE: 6 placas pero sin modelo. Confirmar cual placa y costo (650/pza?)."
+    },
+    {
+      "folio": "GAS-2026-0019",
+      "fecha": "2026-10-25",
+      "descripcion": "Entrada se 6 cajas de plafon rio ($5,320.22)",
+      "almacen_id": "e6a5e282",
+      "items": [],
+      "nota": "PENDIENTE: no existe producto 'plafon rio' en el catalogo; confirmar modelo y piezas por caja."
+    },
+    {
+      "folio": "GAS-2026-0020",
+      "fecha": "2026-10-21",
+      "descripcion": "Compra de 5 placas pvc y molduras para placa ($4,330.00)",
+      "almacen_id": "e6a5e282",
+      "items": [],
+      "nota": "PENDIENTE: placas sin modelo; 'molduras' no existe como producto."
+    },
+    {
+      "folio": "GAS-2026-0039",
+      "fecha": "2026-10-28",
+      "descripcion": "Compra de material, lambirn ($2,200.00)",
+      "almacen_id": "e6a5e282",
+      "items": [],
+      "nota": "PENDIENTE: lambrin sin modelo ni cantidad."
+    },
+    {
+      "folio": "GAS-2026-0040",
+      "fecha": "2026-10-28",
+      "descripcion": "compra de lamrbin ($1,900.00)",
+      "almacen_id": "e6a5e282",
+      "items": [],
+      "nota": "PENDIENTE: igual que GAS-0039."
+    }
+  ]
+}

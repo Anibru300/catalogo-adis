@@ -552,18 +552,34 @@
         <p>Aquí anotas <b>todo lo que el negocio gasta</b> (material, renta, luz, gasolina, nómina...). Cada gasto recibe un folio <b>GAS-</b> automático y <b>queda PAGADO de inmediato</b> — así tu caja siempre refleja el dinero real que salió.</p>
         <p><b>Cómo usarlo:</b> elige la categoría de la lista (o "✏️ Otra" para escribir una nueva), escribe el monto (con comas automáticas), el método de pago y guarda. Si te equivocas en algo, usa el botón <b>✏️ Editar</b> de la tabla (los gastos cancelados no se pueden editar).</p>
         <p><b>¿Y lo que aún NO pago?</b> Eso va en <b>Dinero → Gastos fijos (programados)</b>: ahí programas pagos futuros (semanal, quincenal, mensual...) y el sistema te avisa antes de que venzan.</p>
+        <p><b>¿Compraste mercancía para revender?</b> Pon el tipo <b>“Compra de inventario”</b> y marca <b>“Entrar esta mercancía al inventario”</b>: el material entra solo al almacén (con la fecha y el folio del gasto) y el costo por pieza se guarda en el producto. Así tu stock siempre sabe qué hay.</p>
       </details>
       <div class="card-box">
         <div class="row">
           <div><label>Fecha</label><input type="date" id="gFecha"></div>
           <div><label>Categoría *</label><select id="gCategoria" onchange="categoriaGastoCambiada()"></select><input id="gCategoriaOtra" placeholder="Escribe la categoría nueva..." style="display:none;margin-top:0.4rem;" onchange="sugerirNaturalezaGasto_()"><datalist id="gCatList"></datalist></div>
-          <div><label>Tipo de movimiento</label><select id="gNaturaleza"><option value="operativo">Gasto operativo</option><option value="costo_directo">Costo directo de proyecto</option><option value="inventario">Compra de inventario</option><option value="inversion">Inversión o adquisición de activo</option><option value="retiro">Retiro del propietario</option><option value="por_clasificar" selected>Otro movimiento por clasificar</option></select></div>
+          <div><label>Tipo de movimiento</label><select id="gNaturaleza" onchange="gNaturalezaCambiada()"><option value="operativo">Gasto operativo</option><option value="costo_directo">Costo directo de proyecto</option><option value="inventario">Compra de inventario</option><option value="inversion">Inversión o adquisición de activo</option><option value="retiro">Retiro del propietario</option><option value="por_clasificar" selected>Otro movimiento por clasificar</option></select></div>
           <div><label>Monto *</label><div class="monto-wrap"><span class="monto-sign">$</span><input type="text" inputmode="decimal" class="monto" id="gMonto" placeholder="0.00" oninput="mascaraMonto(this)"></div></div>
           <div><label>Moneda</label><select id="gMoneda"><option value="MXN">MXN</option><option value="USD">USD</option></select></div>
           <div><label>Método de pago</label><select id="gMetodo"><option>Transferencia</option><option>Efectivo</option><option>Tarjeta</option><option>Depósito</option><option>Otro</option></select></div>
         </div>
         <label>Descripción</label>
         <input id="gDesc" placeholder="Ej. Recibo CFE local Nogales">
+        <div id="gInvBox" style="display:none;margin-top:0.9rem;border:1px dashed #3a3428;border-radius:8px;padding:0.7rem;">
+          <label style="display:flex;align-items:center;gap:0.45rem;cursor:pointer;font-size:0.85rem;">
+            <input type="checkbox" id="gInvActiva" onchange="$('gInvDetalle').style.display=this.checked?'':'none'">
+            <span>📦 <b>Entrar esta mercancía al inventario</b> (opcional: crea las entradas de stock ligadas a este gasto)</span>
+          </label>
+          <div id="gInvDetalle" style="display:none;margin-top:0.6rem;">
+            <div class="row">
+              <div><label>Almacén destino *</label><select id="gInvAlmacen"></select></div>
+            </div>
+            <label style="margin-top:0.5rem;">Productos que entran</label>
+            <div id="gInvItems"></div>
+            <button class="btn btn-sm" type="button" onclick="gInvAgregarFila()">+ Agregar producto</button>
+            <p class="muted" style="font-size:0.72rem;margin:0.4rem 0 0;">Cada producto entra al stock con la fecha de este gasto y queda ligado a su folio GAS-. Si dejas el costo vacío, se usa el último costo conocido del producto.</p>
+          </div>
+        </div>
         <div class="toolbar" style="margin-top:1rem;">
           <button class="btn btn-solid" onclick="addExpense()">💾 Guardar gasto</button>
         </div>

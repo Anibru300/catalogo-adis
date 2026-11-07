@@ -21,6 +21,7 @@ function fillWarehouseSelects(){
   $('invAlmacen').innerHTML = '<option value="">Todos los almacenes</option>'+opts;
   $('sAlmacen').innerHTML = '<option value="">— Selecciona —</option>'+opts;
   if ($('movFAlmacen')) $('movFAlmacen').innerHTML = '<option value="">Todos los almacenes</option>'+opts;
+  if ($('gInvAlmacen')) $('gInvAlmacen').innerHTML = '<option value="">— Selecciona —</option>'+opts;
 }
 
 function stockTotal(pid){
@@ -231,6 +232,7 @@ function movDocTxt(m){
   }
   else if (dt==='LOTE' && did) txt = 'Lote '+esc(did);
   else if (dt==='ORDEN_COMPRA' && did) txt = 'OC '+esc(did);
+  else if (dt==='GASTO' && did) txt = '🧾 Gasto '+esc(did);
   else txt = dt ? esc(dt) : '—';
   if (m.lote && dt!=='LOTE') txt += ' <span class="muted">· Lote '+esc(m.lote)+'</span>';
   return txt;
@@ -251,7 +253,7 @@ function movCSV(){
   const rows = movFiltered();
   if (!rows.length) { notice('No hay movimientos con estos filtros.', false); return; }
   const docTxt = m=>{ const dt=String(m.documento_tipo||''),did=String(m.documento_id||'');
-    return dt==='LOTE'?'Lote '+did: dt==='PROYECTO'?'Proyecto '+did: dt==='ORDEN_COMPRA'?'OC '+did: dt; };
+    return dt==='LOTE'?'Lote '+did: dt==='PROYECTO'?'Proyecto '+did: dt==='ORDEN_COMPRA'?'OC '+did: dt==='GASTO'?'Gasto '+did: dt; };
   const cab = ['Fecha','Tipo','Producto','Almacen','Cantidad','Exist. anterior','Exist. posterior','Documento','Lote','Referencia','Proveedor','Folio mov.','Usuario','Notas'];
   const txt = '\ufeff'+cab.join(',')+'\n'+rows.map(m=>
     [m.fecha,m.tipo,m.producto,m.almacen,m.cantidad,m.existencia_anterior,m.existencia_posterior,
