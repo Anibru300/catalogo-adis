@@ -47,45 +47,24 @@
   - 🔧 Inversión (teléfono + muestrario): **$6,200.00** (6.4%) — 2 movimientos
 - Los 7 registros de prueba cancelados quedaron intactos; bitácora con 49 eventos.
 
-## 3. DESARROLLADO Y VALIDADO — PENDIENTE DE AUTORIZACIÓN PARA DESPLEGAR (commit `55dc8ce`)
-**Actividades 2–3** (formularios con listas desplegables + reportes):
-- Dropdown de **categorías de gasto** organizadas según la operación real (20),
-  con sugerencia automática de naturaleza (siempre editable).
-- Dropdown de **categoría de ingreso** (7) que se guarda y aparece en reportes;
-  sugiere tipo de ingreso (aportación/anticipo nunca se asumen como venta).
-- **Ingresos por categoría** en Control I/E (doughnut + tabla).
-- Backend: columna `categoria` al final de Cobros (aditiva) +
-  `control_ie.ingresos.por_categoria`.
-- Script de sincronización de catálogos listo (dry-run aprobado: +16 categorías
-  gasto, +7 ingreso, mapeo de 20 sugerencias). **Sandbox: 40/40 PASS.**
-- Despliegue sugerido: nuevo backend → sincronizar catálogos → publicar panel.
-
-## 4. LA PLATAFORMA HOY (forma actual del ERP ADIS)
-- **12 módulos operativos** (existencias, compras, comercial, cotizador, proyectos,
-  ventas/cobros, gastos/pagos, resultados, marketing, sitio público, sistema) con
-  backend modular (core.gs + analítica), panel por build y folios bajo LockService.
-- **Finanzas Etapa 1 COMPLETA**: captura simple (ingreso/egreso en segundos),
-  clasificación por naturaleza, retiros separados, efectivo real visible con
-  simulador, P&L honesto (provisional) y 100% de los históricos clasificados.
-- Infraestructura de calidad: respaldos (git + JSON + copias físicas), sandbox en
-  Node que ejecuta el código real contra snapshots (40 pruebas), suites de
-  regresión de solo lectura, procedimiento de despliegue/reversión documentado
-  (`99_DOCUMENTACION/PROCEDIMIENTO_DESPLIEGUE_ETAPA1.md`).
-
-## 5. PENDIENTES Y PRÓXIMOS PASOS (requieren decisión del propietario)
-1. **Autorizar despliegue de Actividades 2–3** (listas desplegables y reportes).
-2. Decidir si se retiran las categorías viejas del catálogo (`--quitar-viejas`).
-3. Observación para Etapa 2: las compras de mercancía de oct (~$40,139) no
-   entraron como movimientos de inventario — si la mercancía está en almacén,
-   el stock no la refleja (se resuelve con el módulo Compras/Inventario).
-4. Rotación de credenciales (pendiente desde sep-2026; procedimiento seguro listo).
-5. Etapas futuras (congeladas hasta autorización): 2 = integración operativa
-   (ventas con productos/clientes, compras→inventario, CxP de OC);
-   3 = rentabilidad (costos de venta, utilidad real por producto/proyecto);
-   4 = análisis avanzado (balance, presupuestos, proyecciones).
+## 3. DESPLEGADO TAMBIÉN HOY (autorizado) — Actividades 2–3 COMPLETAS EN PRODUCCIÓN
+- **Backend**: nueva versión de Apps Script (columna `categoria` al final de Cobros,
+  `control_ie.ingresos.por_categoria`, guard de esquema en Cobros, nuevas categorías
+  por defecto). Verificado en vivo: 9/9 y 20/24 (los 4 restantes eran comparación
+  contra snapshot viejo: el dueño ya había capturado 3 gastos reales nuevos,
+  todos bien clasificados: GAS-0057 inventario, GAS-0058/0059 operativo).
+- **Catálogos sincronizados**: 20 categorías de gasto + 7 de ingreso + mapeo de
+  20 sugerencias categoria→naturaleza en Config (`mapa_naturalezas`). Las viejas
+  se conservan en transición (retirables con `--quitar-viejas`).
+- **Panel publicado** (push `25b929a..786f8d2`): botones "Página pública" y
+  "Salir" en el login; Resumen con la distribución Etapa 1 del mes (gastos
+  operativos, compra de mercancía, retiros, inversiones, pendientes); dropdowns
+  de categorías con sugerencia de naturaleza/tipo; "Ingresos por categoría".
+- Uso real inmediato: 3 gastos capturados por el dueño con clasificación correcta.
 
 ## Commits de la jornada
 `a11c8cc` Fase 0/1 → `598ef4d` control_ie + simulador → `2f44d59` validación final →
 `96a25cb` procedimiento seguro → `3d70be4` sandbox Node + 2 bugs críticos →
-`25b929a` panel en producción → `d6ca0fa` respaldo + conciliación posterior →
-`0a097af` conciliación definitiva → `55dc8ce` Actividades 2–3 (sin desplegar).
+`25b929a` panel Etapa 1 en producción → `d6ca0fa` respaldo + conciliación posterior →
+`0a097af` conciliación definitiva → `55dc8ce` Actividades 2–3 → `d9eeaac` resumen sesión →
+`c4619a2` botones login → `786f8d2` Resumen con distribución Etapa 1.
