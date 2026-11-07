@@ -15,10 +15,13 @@ function fmtNum_(n){ return (Number(n)||0).toLocaleString('en-US',{maximumFracti
 function addIngreso(){
   let concepto = $('ingConcepto') ? $('ingConcepto').value : '';
   if (concepto==='__otra__') concepto = $('ingConceptoOtra').value.trim();
+  let categoria = $('ingCategoria') ? $('ingCategoria').value : '';
+  if (categoria==='__otra__') categoria = $('ingCategoriaOtra').value.trim();
+  if (!categoria) categoria = 'Otros';
   const monto=leerMonto('ingMonto');
   if (!concepto || !monto) { notice(concepto?'Falta el monto.':'Elige el concepto (o escribe uno nuevo).', false); return; }
   notice('⏳ Guardando ingreso…', true);
-  apiPost({tipo:'ingreso', fecha:$('ingFecha').value, concepto,
+  apiPost({tipo:'ingreso', fecha:$('ingFecha').value, concepto, categoria,
     monto, moneda:$('ingMoneda').value, metodo:$('ingMetodo').value, notas:$('ingNotas').value.trim(),
     tipo_ingreso: ($('ingTipo') ? $('ingTipo').value : 'venta')}).then(d=>{
     notice(d&&d.ok
@@ -28,6 +31,8 @@ function addIngreso(){
       if ($('ingTipo')) $('ingTipo').selectedIndex=0;
       if ($('ingConcepto')) $('ingConcepto').selectedIndex=0;
       if ($('ingConceptoOtra')) { $('ingConceptoOtra').value=''; $('ingConceptoOtra').style.display='none'; }
+      if ($('ingCategoria')) $('ingCategoria').value='Venta de mercancía';
+      if ($('ingCategoriaOtra')) { $('ingCategoriaOtra').value=''; $('ingCategoriaOtra').style.display='none'; }
       loadCXC(); }
   }).catch(()=>notice('Error de conexión. Revisa tu internet e intenta de nuevo.', false));
 }
@@ -35,8 +40,8 @@ function addIngreso(){
 /* ----- catalogo de categorias (configurable desde INVENTARIO > Configuracion) ----- */
 // Fallback local: si el backend aun no devuelve categorias (redeploy pendiente),
 // la lista desplegable sigue teniendo las opciones que el dueño usa siempre.
-const CAT_GASTOS_FALLBACK = ['Compra de material','Materiales','Compra de inventario','Publicidad','Inversión','Renta','Luz','Agua','Nómina','Gasolina','Alimentos','Mantenimiento','Envíos','Honorarios','Gastos personales','Equipos','Muestrario','Otro'];
-const CAT_INGRESOS_FALLBACK = ['Venta','Reembolso','Otro ingreso','Otro'];
+const CAT_GASTOS_FALLBACK = ['Compra de mercancía','Materiales para obra','Gasolina y combustible','Viáticos','Alimentos de trabajo','Nómina','Renta','Servicios','Paquetería','Papelería','Mantenimiento','Contabilidad','Publicidad y marketing','Plataformas y software','Equipo y maquinaria','Muestrarios','Gastos personales','Gastos médicos personales','Retiros del propietario','Otros'];
+const CAT_INGRESOS_FALLBACK = ['Venta de mercancía','Servicios de instalación','Anticipo de cliente','Cobro de proyecto','Otros ingresos operativos','Aportación del propietario','Otros'];
 function poblarCategorias(){
   // Union: las de uso diario del dueño siempre presentes, mas las del catalogo
   // configurable (backend), sin duplicar. El campo sigue aceptando texto libre.
@@ -58,6 +63,13 @@ function poblarCategorias(){
     $('ingConcepto').innerHTML = ci.map(c=>'<option value="'+esc(c)+'">'+esc(c)+'</option>').join('') +
       '<option value="__otra__">✏️ Otra (escribir...)</option>';
     if (prevI === '__otra__') $('ingConcepto').value = '__otra__';
+  }
+  if ($('ingCategoria')) { // categoría contable del ingreso (mismo patrón: lista + 'Otra')
+    const prevC = $('ingCategoria').value;
+    $('ingCategoria').innerHTML = ci.map(c=>'<option value="'+esc(c)+'">'+esc(c)+'</option>').join('') +
+      '<option value="__otra__">✏️ Otra (escribir...)</option>';
+    if (prevC && (ci.indexOf(prevC)!==-1 || prevC==='__otra__')) $('ingCategoria').value = prevC;
+    else $('ingCategoria').value = 'Venta de mercancía'; // default
   }
   if ($('gCatList')) $('gCatList').innerHTML = cg.map(c=>'<option value="'+esc(c)+'"></option>').join('');
   if ($('ingCatList')) $('ingCatList').innerHTML = ci.map(c=>'<option value="'+esc(c)+'"></option>').join('');
@@ -96,15 +108,33 @@ function opcionesTipoIngreso_(actual){
   actual = actual || 'venta';
   return Object.keys(TIPO_INGRESO_OPTS).map(k=>'<option value="'+k+'"'+(k===actual?' selected':'')+'>'+TIPO_INGRESO_OPTS[k]+'</option>').join('');
 }
-// Sugerencia por categoria (biz.config.mapa_naturalezas, puede estar vacio).
-// NUNCA asumir 'operativo' por defecto: sin sugerencia va a 'por_clasificar'.
+// Sugerencia local categoria -> naturaleza (usada si el backend aun no tiene mapa_naturalezas)
+const NAT_SUGERIDA = {'Compra de mercancía':'inventario','Materiales para obra':'costo_directo','Gasolina y combustible':'operativo','Viáticos':'operativo','Alimentos de trabajo':'operativo','Nómina':'operativo','Renta':'operativo','Servicios':'operativo','Paquetería':'operativo','Papelería':'operativo','Mantenimiento':'operativo','Contabilidad':'operativo','Publicidad y marketing':'operativo','Plataformas y software':'operativo','Equipo y maquinaria':'inversion','Muestrarios':'inversion','Gastos personales':'retiro','Gastos médicos personales':'retiro','Retiros del propietario':'retiro','Otros':'por_clasificar'};
+// Sugerencia por categoria: mapa_naturalezas del backend -> NAT_SUGERIDA local -> 'por_clasificar'.
+// El usuario SIEMPRE puede cambiar el select manualmente.
 function sugerirNaturalezaGasto_(){
   const sel = $('gNaturaleza'); if (!sel) return;
   let cat = $('gCategoria') ? $('gCategoria').value : '';
   if (cat==='__otra__') cat = $('gCategoriaOtra') ? $('gCategoriaOtra').value.trim() : '';
   const mapa = biz.config && biz.config.mapa_naturalezas;
-  const sug = (mapa && cat && NAT_GASTO_OPTS[mapa[cat]]) ? mapa[cat] : 'por_clasificar';
+  let sug = (mapa && cat && NAT_GASTO_OPTS[mapa[cat]]) ? mapa[cat]
+    : (cat && NAT_GASTO_OPTS[NAT_SUGERIDA[cat]] ? NAT_SUGERIDA[cat] : 'por_clasificar');
   sel.value = sug;
+}
+// Categoría de ingreso: muestra/oculta el campo "Otra" y sugiere el tipo de ingreso (el usuario lo puede cambiar)
+function categoriaIngresoCambiada_(){
+  const sel=$('ingCategoria'), otra=$('ingCategoriaOtra');
+  if (sel && otra) {
+    const esOtra = sel.value==='__otra__';
+    otra.style.display = esOtra ? '' : 'none';
+    if (esOtra) otra.focus();
+  }
+  const t = $('ingTipo'); if (!t || !sel) return;
+  const cat = sel.value==='__otra__' ? (otra ? otra.value.trim() : '') : sel.value;
+  const sug = cat==='Aportación del propietario' ? 'aportacion'
+    : cat==='Anticipo de cliente' ? 'anticipo'
+    : cat==='Otros ingresos operativos' ? 'otro' : 'venta';
+  t.value = sug;
 }
 function pintarCategoriasConfig(){
   const box = (id, tipo, lista) => {
@@ -458,10 +488,13 @@ function showIngresoEditForm(id){
   if (!c) { notice('Recarga la pestaña para editar este ingreso.', false); return; }
   const cats = categoriasIngresoActual_();
   const concepto = c.cliente || '';
+  const catIng = c.categoria || 'Otros'; // ingresos capturados antes de la categoría: 'Otros'
   $('cobForms').innerHTML = '<div class="card-box"><p style="margin-bottom:0.5rem;"><strong>✏️ Editar ingreso — '+esc(c.folio||'—')+'</strong></p><div class="row">' +
     '<div><label>Fecha</label><input type="date" id="ieFecha" value="'+esc(String(c.fecha||'').slice(0,10))+'"></div>' +
     '<div><label>Concepto / Categoría *</label><select id="ieConcepto" onchange="editCategoriaCambiada_(\'ieConcepto\',\'ieConceptoOtra\')">'+opcionesCategoria_(cats, concepto)+'</select>' +
       '<input id="ieConceptoOtra" placeholder="Escribe el concepto..." value="'+esc(cats.indexOf(concepto)===-1?concepto:'')+'" style="display:'+(cats.indexOf(concepto)===-1?'':'none')+';margin-top:0.4rem;"></div>' +
+    '<div><label>Categoría</label><select id="ieCategoria" onchange="editCategoriaCambiada_(\'ieCategoria\',\'ieCategoriaOtra\')">'+opcionesCategoria_(cats, catIng)+'</select>' +
+      '<input id="ieCategoriaOtra" placeholder="Escribe la categoría..." value="'+esc(cats.indexOf(catIng)===-1?catIng:'')+'" style="display:'+(cats.indexOf(catIng)===-1?'':'none')+';margin-top:0.4rem;"></div>' +
     '<div><label>Monto *</label><div class="monto-wrap"><span class="monto-sign">$</span><input type="text" inputmode="decimal" class="monto" id="ieMonto" value="'+fmtNum_(c.monto)+'" oninput="mascaraMonto(this)"></div></div>' +
     '<div><label>Moneda</label><select id="ieMoneda"><option value="MXN"'+(c.moneda==='MXN'?' selected':'')+'>MXN</option><option value="USD"'+(c.moneda==='USD'?' selected':'')+'>USD</option></select></div>' +
     '<div><label>Método</label><select id="ieMetodo">'+['Efectivo','Transferencia','Tarjeta','Depósito','Otro'].map(m=>'<option'+(c.metodo===m?' selected':'')+'>'+m+'</option>').join('')+'</select></div>' +
@@ -474,11 +507,14 @@ function showIngresoEditForm(id){
 function saveIngresoEdit(id){
   let concepto = $('ieConcepto').value;
   if (concepto==='__otra__') concepto = $('ieConceptoOtra').value.trim();
+  let categoria = $('ieCategoria') ? $('ieCategoria').value : '';
+  if (categoria==='__otra__') categoria = $('ieCategoriaOtra').value.trim();
+  if (!categoria) categoria = 'Otros';
   const monto = leerMonto('ieMonto');
   if (!concepto || !monto) { notice(concepto?'Falta el monto.':'Elige el concepto.', false); return; }
   const cEx = (typeof cobrosCache!=='undefined' ? cobrosCache : []).filter(x=>String(x.id)===String(id))[0];
   notice('⏳ Guardando cambios…', true);
-  apiPost({tipo:'ingreso_editar', id, fecha:$('ieFecha').value, concepto, monto,
+  apiPost({tipo:'ingreso_editar', id, fecha:$('ieFecha').value, concepto, categoria, monto,
     moneda:$('ieMoneda').value, metodo:$('ieMetodo').value, notas:$('ieNotas').value.trim(),
     tipo_ingreso: ($('ieTipo') ? $('ieTipo').value : (cEx && String(cEx.tipo)==='otro' ? 'otro' : 'venta'))}).then(d=>{
     notice(d&&d.ok?('✅ Ingreso actualizado — '+concepto+' · '+fmtMoney(monto)+' '+$('ieMoneda').value+'.'):errMsg(d,'No se pudo editar.'), !!(d&&d.ok));

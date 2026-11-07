@@ -511,6 +511,7 @@
         <div class="row">
           <div><label>Fecha</label><input type="date" id="ingFecha"></div>
           <div><label>Concepto / Categoría *</label><select id="ingConcepto" onchange="editCategoriaCambiada_('ingConcepto','ingConceptoOtra')"></select><input id="ingConceptoOtra" placeholder="Escribe el concepto..." style="display:none;margin-top:0.4rem;"><datalist id="ingCatList"></datalist></div>
+          <div><label>Categoría</label><select id="ingCategoria" onchange="categoriaIngresoCambiada_()"></select><input id="ingCategoriaOtra" placeholder="Escribe la categoría..." style="display:none;margin-top:0.4rem;"></div>
           <div><label>Tipo de ingreso</label><select id="ingTipo"><option value="venta">Venta / cobro operativo</option><option value="otro">Otro ingreso</option><option value="reembolso">Reembolso</option><option value="aportacion">Aportación del propietario</option><option value="prestamo">Préstamo recibido</option><option value="anticipo">Anticipo de cliente</option></select></div>
           <div><label>Monto *</label><div class="monto-wrap"><span class="monto-sign">$</span><input type="text" inputmode="decimal" class="monto" id="ingMonto" placeholder="0.00" oninput="mascaraMonto(this)"></div></div>
           <div><label>Moneda</label><select id="ingMoneda"><option value="MXN">MXN</option><option value="USD">USD</option></select></div>
@@ -816,6 +817,17 @@
         <div class="card-box">
           <h3 class="flow-h">🧾 Principales conceptos de gasto</h3>
           <canvas id="cieConceptosBar" height="230"></canvas>
+        </div>
+        <div class="card-box">
+          <h3 class="flow-h">💰 Ingresos por categoría</h3>
+          <canvas id="cieIngCatDough" height="230"></canvas>
+        </div>
+        <div class="card-box table-scroll">
+          <h3 class="flow-h">Detalle de ingresos por categoría</h3>
+          <table>
+            <thead><tr><th>Categoría</th><th style="text-align:right;">Monto</th><th style="text-align:right;">% del total</th></tr></thead>
+            <tbody id="cieIngCatTable"></tbody>
+          </table>
         </div>
       </div>
       <div class="card-box table-scroll" style="margin-top:1rem;">

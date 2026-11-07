@@ -106,6 +106,7 @@ global.SpreadsheetApp = { getActiveSpreadsheet: () => libro };
 global.Utilities = {
   formatDate: (d, tz, fmt) => {
     const s = `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+    if (fmt === 'yyyy') return String(d.getFullYear());
     return fmt === 'yyyy-MM-dd HH:mm' ? `${s} ${pad(d.getHours())}:${pad(d.getMinutes())}` : s;
   },
   getUuid: () => Math.random().toString(16).slice(2) + Date.now().toString(16),
@@ -150,6 +151,8 @@ function apiPost(obj) {
 
 /* ---------------- Validaciones ---------------- */
 const OCT = '2026-10-01', OCTF = '2026-10-31';
+const _h = new Date();
+const HOY = `${_h.getFullYear()}-${String(_h.getMonth() + 1).padStart(2, '0')}-${String(_h.getDate()).padStart(2, '0')}`;
 
 // 0. pre-migracion: sin columna naturaleza
 const g0 = apiGet('action=gastos');
@@ -227,6 +230,23 @@ check('F0 ingreso_editar conserva monto_base (4,440) al editar solo concepto', M
 // 8. config con mapa_naturalezas
 const cfgR = apiGet('action=config');
 check('F1 config: mapa_naturalezas presente', 'mapa_naturalezas' in cfgR && typeof cfgR.mapa_naturalezas === 'object');
+
+// 9. ETAPA 1: categoria de ingreso (col 15 de Cobros) + por_categoria en control_ie
+const cfgCats = cfgR.categorias_ingresos || [];
+check('E2 config: nuevas categorias de ingreso por defecto', cfgCats.includes('Venta de mercancía') && cfgCats.includes('Aportación del propietario'));
+const ingN = apiPost({ tipo: 'ingreso', fecha: HOY, concepto: 'prueba categoria', monto: 100,
+  moneda: 'MXN', metodo: 'Efectivo', tipo_ingreso: 'venta', categoria: 'Venta de mercancía' });
+check('E2 alta ingreso con categoria', ingN.ok === true, ingN.folio);
+const cobN = apiGet('action=cxc').cobros.find(c => String(c.folio) === String(ingN.folio));
+check('E2 categoria persistida en Cobros', cobN && cobN.categoria === 'Venta de mercancía');
+const ciN = apiGet(`action=control_ie&desde=${HOY}&hasta=${HOY}`);
+check('E3 control_ie ingresos.por_categoria refleja la categoria',
+  ((ciN.ingresos || {}).por_categoria || {})['Venta de mercancía'] >= 100,
+  JSON.stringify((ciN.ingresos || {}).por_categoria || {}).slice(0, 80));
+apiPost({ tipo: 'ingreso_editar', id: cobN.id, fecha: HOY, concepto: 'prueba categoria', monto: 100,
+  moneda: 'MXN', metodo: 'Efectivo', tipo_ingreso: 'venta', categoria: 'Otros' });
+const cobN2 = apiGet('action=cxc').cobros.find(c => String(c.folio) === String(ingN.folio));
+check('E2 ingreso_editar actualiza categoria', cobN2 && cobN2.categoria === 'Otros');
 
 console.log(`\n${pass}/${pass + fail} PASS` + (fail ? ` — FALLOS: ${fail}` : ''));
 process.exit(fail ? 1 : 0);

@@ -121,7 +121,7 @@ var ENC_CLIENTES = ['id', 'nombre', 'telefono', 'email', 'ciudad', 'direccion', 
 var ENC_PROY = ['id', 'folio', 'nombre', 'cliente_id', 'cliente', 'cotizacion_id', 'cotizacion_folio',
   'ubicacion', 'fecha_inicio', 'fecha_fin', 'presupuesto', 'moneda', 'estado', 'notas', 'usuario', 'fecha_actualizacion'];
 var ENC_COBROS = ['id', 'folio', 'venta_id', 'venta_folio', 'cliente', 'proyecto_id', 'fecha', 'monto',
-  'moneda', 'monto_base', 'metodo', 'notas', 'usuario', 'tipo']; // tipo: ver TIPOS_INGRESO (cobros sin venta_id)
+  'moneda', 'monto_base', 'metodo', 'notas', 'usuario', 'tipo', 'categoria']; // col 15 ETAPA 1: categoria del ingreso; tipo: ver TIPOS_INGRESO
 var ENC_OC = ['id', 'folio', 'proveedor_id', 'proveedor', 'fecha', 'fecha_esperada', 'almacen_id', 'almacen',
   'moneda', 'subtotal', 'iva', 'descuento', 'total', 'estado', 'notas', 'usuario', 'fecha_actualizacion', 'partidas'];
 var ENC_RECEP = ['id', 'oc_id', 'oc_folio', 'fecha', 'items', 'usuario'];
@@ -480,14 +480,19 @@ function filaPorId(nombreHoja, id) {
 /* ---------- Finanzas: catalogo de categorias + estado de resultados ----------
    Catalogo configurable en hoja Config (separado por comas). Los defaults
    reproducen la lista historica del panel. */
-var CATEGORIAS_GASTOS_DEFAULT = 'Compra de material,Materiales,Compra de inventario,Publicidad,Inversión,Renta,Luz,Agua,Nómina,Gasolina,Alimentos,Mantenimiento,Envíos,Honorarios,Gastos personales,Equipos,Muestrario,Otro';
-var CATEGORIAS_INGRESOS_DEFAULT = 'Venta de activos,Reembolso,Otro ingreso,Otro';
+var CATEGORIAS_GASTOS_DEFAULT = 'Compra de mercancía,Materiales para obra,Gasolina y combustible,Viáticos,Alimentos de trabajo,Nómina,Renta,Servicios,Paquetería,Papelería,Mantenimiento,Contabilidad,Publicidad y marketing,Plataformas y software,Equipo y maquinaria,Muestrarios,Gastos personales,Gastos médicos personales,Retiros del propietario,Otros';
+var CATEGORIAS_INGRESOS_DEFAULT = 'Venta de mercancía,Servicios de instalación,Anticipo de cliente,Cobro de proyecto,Otros ingresos operativos,Aportación del propietario,Otros';
 // FASE 1: lee la hoja Gastos GARANTIZANDO el esquema (crea la columna
 // 'naturaleza' al final si aun no existe). Sin esto, un GET puro leeria sin el
 // encabezado y una clasificacion temprana quedaria en una columna ciega.
 function gastos_() {
   hoja(SHEET_EXPENSES, ENC_GASTOS);
   return filasComoObjetos(SHEET_EXPENSES);
+}
+// ETAPA 1 (2026-11-06): igual para Cobros (columna 'categoria', col 15).
+function cobros_() {
+  hoja(SHEET_COBROS, ENC_COBROS);
+  return filasComoObjetos(SHEET_COBROS);
 }
 function listaCfg_(clave, defecto) {
   return String(cfg(clave, defecto)).split(',').map(function (s) { return s.trim(); })
@@ -553,7 +558,7 @@ function calcularEstadoResultados(mes, proyFiltro) {
   if (!proyFiltro) { // cobros sin venta: tipo 'venta' suman a ventas; 'otro'/'reembolso'
     // a otros resultados; 'aportacion'/'prestamo'/'anticipo' son financiamiento
     // (entran al flujo de efectivo, nunca al estado de resultados).
-    filasComoObjetos(SHEET_COBROS).forEach(function (c) {
+    cobros_().forEach(function (c) {
       if (String(c.venta_id || '') !== '') return;
       if (!enRango(c.fecha)) return;
       var t = validarTipoIngreso(c.tipo);
@@ -770,7 +775,7 @@ function doGetInterno(e) {
       if (!(Number(p.costo) > 0)) alertas.push({ prioridad: 'MEDIA', tipo: 'sin_costo', detalle: p.nombre + ': sin costo (la utilidad no se calcula bien)' });
     });
     var hace30 = Utilities.formatDate(new Date(Date.now() - 30 * 864e5), 'America/Hermosillo', 'yyyy-MM-dd');
-    var cobrosA = filasComoObjetos(SHEET_COBROS);
+    var cobrosA = cobros_();
     filasComoObjetos(SHEET_SALES).forEach(function (v) {
       if (String(v.estado_pago) === 'CANCELADA' || !v.id) return;
       var cobrado = 0;
@@ -843,7 +848,7 @@ function doGetInterno(e) {
       // cobrado del proyecto = cobros de ventas vinculadas
       var cobrado = 0, cobradoBase = 0;
       var ventasProy = filasComoObjetos(SHEET_SALES).filter(function (v) { return String(v.proyecto_id) === String(p.id) && String(v.estado_pago) !== 'CANCELADA'; });
-      var cobros = filasComoObjetos(SHEET_COBROS);
+      var cobros = cobros_();
       ventasProy.forEach(function (v) {
         cobros.forEach(function (c) {
           if (String(c.venta_id) === String(v.id)) { cobrado += Number(c.monto) || 0; cobradoBase += Number(c.monto_base) || 0; }
@@ -868,7 +873,7 @@ function doGetInterno(e) {
   }
   if (action === 'cxc') { // cuentas por cobrar: ventas (no canceladas) vs cobros reales
     var ventasCx = filasComoObjetos(SHEET_SALES).filter(function (v) { return String(v.estado_pago) !== 'CANCELADA' && v.id; });
-    var cobrosCx = filasComoObjetos(SHEET_COBROS);
+    var cobrosCx = cobros_();
     var cxc = ventasCx.map(function (v) {
       var cobrado = 0, cobradoBase = 0, ultimoCobro = '';
       cobrosCx.forEach(function (c) {
@@ -927,7 +932,7 @@ function doGetInterno(e) {
       hastaFc = Utilities.formatDate(ahoraFc, 'America/Hermosillo', 'yyyy-MM-dd');
     }
     var enRangoFc = function (fecha) { var f = fechaISO_(fecha) || String(fecha).slice(0, 10); return f >= desdeFc && f <= hastaFc; };
-    var cobrosFc = filasComoObjetos(SHEET_COBROS).filter(function (c) { return enRangoFc(c.fecha); });
+    var cobrosFc = cobros_().filter(function (c) { return enRangoFc(c.fecha); });
     var pagosFc = filasComoObjetos(SHEET_PAGOS).filter(function (p) { return enRangoFc(p.fecha); });
     // FASE 1: actividad del flujo (operacion / inversion / financiamiento).
     var natPorGastoFc = {};
@@ -1072,13 +1077,14 @@ function doGetInterno(e) {
       if (filtroCatCI && m.categoria !== filtroCatCI) return false;
       return true;
     });
-    var ingresosMovsCI = filasComoObjetos(SHEET_COBROS).filter(function (c) {
+    var ingresosMovsCI = cobros_().filter(function (c) {
       if (!enRangoCI(c.fecha)) return false;
       if (filtroMonCI && String(c.moneda) !== filtroMonCI) return false;
       return true;
     }).map(function (c) {
       return { folio: c.folio || '', fecha: c.fecha, concepto: String(c.cliente || ''),
-        tipo: validarTipoIngreso(c.tipo), monto: Number(c.monto) || 0, moneda: c.moneda,
+        tipo: validarTipoIngreso(c.tipo), categoria: String(c.categoria || ''),
+        monto: Number(c.monto) || 0, moneda: c.moneda,
         monto_base: Number(c.monto_base) || 0, metodo: c.metodo || '' };
     });
     var porNatCI = {}, porCatCI = {}, porConcCI = {}, nPorNatCI = {};
@@ -1114,7 +1120,7 @@ function doGetInterno(e) {
       var ix = idxMesCI[f.slice(0, 7)];
       if (ix !== undefined) mensualCI[ix][campo] += Number(monto) || 0;
     };
-    filasComoObjetos(SHEET_COBROS).forEach(function (c) {
+    cobros_().forEach(function (c) {
       if (filtroMonCI && String(c.moneda) !== filtroMonCI) return;
       acumMesCI(c.fecha, 'ingresos', c.monto_base);
     });
@@ -1125,9 +1131,16 @@ function doGetInterno(e) {
     mensualCI.forEach(function (m) { m.neto = m.ingresos - m.egresos; });
 
     var totalIngresosCI = sumBaseCI(ingresosMovsCI);
+    // ETAPA 1: ingresos por categoria (la categoria se guarda en Cobros col 15).
+    var porCatIngCI = {};
+    ingresosMovsCI.forEach(function (m) {
+      var k = m.categoria || 'Sin categoría';
+      porCatIngCI[k] = (porCatIngCI[k] || 0) + m.monto_base;
+    });
     return json({ ok: true, desde: desdeCI, hasta: hastaCI, moneda_base: cfg('moneda_base', 'MXN'),
       filtros: { naturaleza: filtroNatCI, categoria: filtroCatCI, moneda: filtroMonCI },
       ingresos: { total_base: totalIngresosCI, movimientos: ingresosMovsCI.length,
+        por_categoria: porCatIngCI,
         detalle: ingresosMovsCI.sort(function (a, b) { return String(a.fecha) < String(b.fecha) ? 1 : -1; }).slice(0, 200) },
       egresos: { total_base: totalEgresosCI, movimientos: egresosGeneralCI.length,
         filtrado: { activo: !!(filtroNatCI || filtroCatCI), naturaleza: filtroNatCI,
@@ -1947,6 +1960,7 @@ function doPostInterno(data) {
 
   // Edicion de un ingreso capturado a mano (sin venta ligada).
   if (tipo === 'ingreso_editar') return conLock(function () {
+    hoja(SHEET_COBROS, ENC_COBROS); // ETAPA 1: garantizar columna categoria
     var filaI = filaPorId(SHEET_COBROS, data.id);
     if (!filaI) throw AdisError('NO_ENCONTRADO', 'Ingreso no encontrado.');
     var hI = ss().getSheetByName(SHEET_COBROS);
@@ -1973,6 +1987,7 @@ function doPostInterno(data) {
     hI.getRange(filaI, 11).setValue(data.metodo || '');
     hI.getRange(filaI, 12).setValue(String(data.notas || '').slice(0, 300));
     hI.getRange(filaI, 14).setValue(validarTipoIngreso(data.tipo_ingreso)); // FASE 1: vocabulario amplio
+    if (data.categoria !== undefined) hI.getRange(filaI, 15).setValue(String(data.categoria || '').slice(0, 60)); // ETAPA 1
     log_('ingreso_editado', String(hI.getRange(filaI, 2).getValue()) + ' · ' + conceptoI + ' · ' + montoI + ' ' + monedaI +
       (cambioMontarioI ? ' · monto_base recalculado (TC ' + tcI + ')' : ''));
     return json({ ok: true });
@@ -2269,8 +2284,7 @@ function doPostInterno(data) {
         cobradoPrevBase += Number(c.monto_base) || 0;
         if (String(c.moneda) === monedaV2) cobradoPrev += Number(c.monto) || 0;
       }
-    });
-    var totalBaseV = Number(hV2.getRange(filaV, 8).getValue()) || 0;
+    });    var totalBaseV = Number(hV2.getRange(filaV, 8).getValue()) || 0;
     var montoBaseC = aBase(montoC, monedaC, tc2);
     if (cobradoPrevBase + montoBaseC > totalBaseV + 0.001) {
       throw AdisError('VALIDACION', 'El cobro excede el saldo pendiente de la venta ' + folioV2 + '.');
@@ -2299,10 +2313,12 @@ function doPostInterno(data) {
     var fechaI = validarFecha(data.fecha) || hoy_();
     var folioI = siguienteFolio('ING', 'folio_ingreso', 4);
     var tipoI = validarTipoIngreso(data.tipo_ingreso); // FASE 1: ver TIPOS_INGRESO
+    var catI = String(data.categoria || '').trim().slice(0, 60); // ETAPA 1: categoria del ingreso
     hoja(SHEET_COBROS, ENC_COBROS).appendRow([nuevoId(), folioI, '', '',
       conceptoI, '', fechaI, montoI, monedaI, aBase(montoI, monedaI, tcI),
-      data.metodo || '', data.notas || '', USUARIO_ACTUAL, tipoI]);
-    log_('ingreso_registrado', folioI + ' · ' + conceptoI + ' · ' + montoI + ' ' + monedaI + ' · ' + tipoI);
+      data.metodo || '', data.notas || '', USUARIO_ACTUAL, tipoI, catI]);
+    log_('ingreso_registrado', folioI + ' · ' + conceptoI + ' · ' + montoI + ' ' + monedaI + ' · ' + tipoI +
+      (catI ? ' · ' + catI : ''));
     return json({ ok: true, folio: folioI });
   });
 

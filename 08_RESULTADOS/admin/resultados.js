@@ -375,6 +375,28 @@ function ciePintar(d){
       scales: { x: _estEjeY(false), y: _estEjeX() } }
   });
 
+  // --- (f2) doughnut: ingresos por categoría + mini-tabla (monto y % sobre ingresos totales)
+  const porCatIng = (d.ingresos && d.ingresos.por_categoria) || {};
+  const catIng = Object.keys(porCatIng).map(k=>[k || 'Sin categoría', num(porCatIng[k])]).sort((a,b)=>b[1]-a[1]);
+  const hayCatIng = catIng.length > 0;
+  const totalIng = num(d.ingresos.total_base);
+  _estChart('cieIngCatDough', {
+    type: 'doughnut',
+    data: {
+      labels: hayCatIng ? catIng.map(x=>x[0]) : ['Sin ingresos'],
+      datasets: [{ data: hayCatIng ? catIng.map(x=>x[1]) : [1],
+        backgroundColor: hayCatIng ? catIng.map((_,i)=>EST_COLORS[(i+3)%EST_COLORS.length]) : ['#EAE2D0'],
+        borderColor: '#fff', borderWidth: 2 }]
+    },
+    options: { responsive: true, cutout: '58%',
+      plugins: { legend: _estLegend(),
+        tooltip: Object.assign(_estTooltip(), { callbacks: { label: c=>' '+c.label+': '+_estMoney(c.parsed)+(hayCatIng&&totalIng>0?' ('+(num(c.parsed)/totalIng*100).toFixed(1)+'%)':'') } }) } }
+  });
+  if ($('cieIngCatTable')) $('cieIngCatTable').innerHTML = hayCatIng ? catIng.map(x=>{
+    const pct = totalIng > 0 ? (x[1]/totalIng*100).toFixed(1)+'%' : '—';
+    return '<tr><td>'+esc(x[0])+'</td><td style="text-align:right;">'+f(x[1])+'</td><td style="text-align:right;">'+pct+'</td></tr>';
+  }).join('') : '<tr><td colspan="3" class="muted">Sin ingresos en el periodo.</td></tr>';
+
   // --- (f) tabla: desglose por naturaleza
   const totalEg = num(d.egresos.total_base);
   $('cieNatTable').innerHTML = natKeys.length ? natKeys.map(k=>{
