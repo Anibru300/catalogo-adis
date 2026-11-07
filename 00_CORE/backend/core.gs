@@ -482,6 +482,13 @@ function filaPorId(nombreHoja, id) {
    reproducen la lista historica del panel. */
 var CATEGORIAS_GASTOS_DEFAULT = 'Compra de material,Materiales,Compra de inventario,Publicidad,Inversión,Renta,Luz,Agua,Nómina,Gasolina,Alimentos,Mantenimiento,Envíos,Honorarios,Gastos personales,Equipos,Muestrario,Otro';
 var CATEGORIAS_INGRESOS_DEFAULT = 'Venta de activos,Reembolso,Otro ingreso,Otro';
+// FASE 1: lee la hoja Gastos GARANTIZANDO el esquema (crea la columna
+// 'naturaleza' al final si aun no existe). Sin esto, un GET puro leeria sin el
+// encabezado y una clasificacion temprana quedaria en una columna ciega.
+function gastos_() {
+  hoja(SHEET_EXPENSES, ENC_GASTOS);
+  return filasComoObjetos(SHEET_EXPENSES);
+}
 function listaCfg_(clave, defecto) {
   return String(cfg(clave, defecto)).split(',').map(function (s) { return s.trim(); })
     .filter(function (s) { return !!s; });
@@ -536,7 +543,7 @@ function calcularEstadoResultados(mes, proyFiltro) {
       return { categoria: String(m.descripcion || 'Gasto de proyecto').slice(0, 40), monto_base: Number(m.monto_base) || 0, estado: 'ACTIVA' };
     });
   } else {
-    gastos = filasComoObjetos(SHEET_EXPENSES).filter(function (g) {
+    gastos = gastos_().filter(function (g) {
       return enRango(g.fecha) && String(g.estado) !== 'CANCELADA';
     });
   }
@@ -700,7 +707,7 @@ function doGetInterno(e) {
     });
     return json({ ok: true, porMes: porMes, ventas: vs.slice(-100) });
   }
-  if (action === 'gastos') return json({ ok: true, gastos: filasComoObjetos(SHEET_EXPENSES) });
+  if (action === 'gastos') return json({ ok: true, gastos: gastos_() });
   if (action === 'gastos_fijos') {
     var fijosL = filasComoObjetos(SHEET_GASTOS_FIJOS).map(function (f) {
       f.proxima_fecha = fechaISO_(f.proxima_fecha); // Sheets la devuelve como Date
@@ -773,7 +780,7 @@ function doGetInterno(e) {
         alertas.push({ prioridad: 'ALTA', tipo: 'cxc_vencida', detalle: 'Venta ' + (v.folio || '') + ' · ' + (v.cliente || '') + ': saldo ' + (totalV - cobrado).toFixed(2) + ' desde ' + String(v.fecha).slice(0, 10) });
     });
     var pagosA = filasComoObjetos(SHEET_PAGOS);
-    filasComoObjetos(SHEET_EXPENSES).forEach(function (g) {
+    gastos_().forEach(function (g) {
       if (String(g.estado) === 'CANCELADA' || !g.id) return;
       var pagado = 0;
       pagosA.forEach(function (p) { if (String(p.gasto_id) === String(g.id)) pagado += Number(p.monto_base) || 0; });
@@ -888,7 +895,7 @@ function doGetInterno(e) {
       moneda_base: cfg('moneda_base', 'MXN') });
   }
   if (action === 'cxp') { // cuentas por pagar: gastos (no cancelados) vs pagos reales
-    var gastosCp = filasComoObjetos(SHEET_EXPENSES).filter(function (g) { return g.id && String(g.estado) !== 'CANCELADA'; });
+    var gastosCp = gastos_().filter(function (g) { return g.id && String(g.estado) !== 'CANCELADA'; });
     var pagosCp = filasComoObjetos(SHEET_PAGOS);
     var cxp = gastosCp.map(function (g) {
       var pagadoP = 0, pagadoBaseP = 0, ultimoPago = '';
@@ -979,7 +986,7 @@ function doGetInterno(e) {
     filasComoObjetos(SHEET_PAGOS).forEach(function (p) {
       if (!metodoPorGastoR[String(p.gasto_id)]) metodoPorGastoR[String(p.gasto_id)] = p.metodo || '';
     });
-    var retirosR = filasComoObjetos(SHEET_EXPENSES).filter(function (g) {
+    var retirosR = gastos_().filter(function (g) {
       if (String(g.estado) === 'CANCELADA') return false;
       if (naturalezaDe(g) !== 'retiro') return false;
       var f = fechaISO_(g.fecha) || String(g.fecha).slice(0, 10);
@@ -1038,7 +1045,7 @@ function doGetInterno(e) {
     if (filtroMonCI && MONEDAS.indexOf(filtroMonCI) === -1) filtroMonCI = '';
     // Naturaleza/categoria vienen del gasto ligado al pago (no del texto del pago)
     var gastoPorIdCI = {};
-    filasComoObjetos(SHEET_EXPENSES).forEach(function (g) { gastoPorIdCI[String(g.id)] = g; });
+    gastos_().forEach(function (g) { gastoPorIdCI[String(g.id)] = g; });
     var sumBaseCI = function (arr) { return arr.reduce(function (s, x) { return s + (Number(x.monto_base) || 0); }, 0); };
 
     // Egresos: el dinero que salio son los PAGOS (una sola vez; la hoja Gastos
@@ -1091,7 +1098,10 @@ function doGetInterno(e) {
     // Comparativo mensual: ultimos 12 meses cerrando en el mes de 'hasta'.
     // Incluye TODOS los egresos (dinero que salio, cualquiera sea su naturaleza).
     var mensualCI = [];
-    var refCI = parseF(hastaCI) || new Date();
+    // parseF es local de otro handler: se replica aqui (mediodia = sin DST).
+    var refCI = hastaCI
+      ? new Date(Number(hastaCI.slice(0, 4)), Number(hastaCI.slice(5, 7)) - 1, Number(hastaCI.slice(8, 10)), 12)
+      : new Date();
     for (var iCI = 11; iCI >= 0; iCI--) {
       var dCI = new Date(refCI.getFullYear(), refCI.getMonth() - iCI, 1);
       var mesCI = dCI.getFullYear() + '-' + (dCI.getMonth() + 1 < 10 ? '0' : '') + (dCI.getMonth() + 1);
@@ -1877,6 +1887,7 @@ function doPostInterno(data) {
   // Edicion de un gasto capturado (categoria, monto, descripcion, fecha, moneda).
   // No aplica a cancelados; el monto nunca puede quedar por debajo de lo pagado.
   if (tipo === 'gasto_editar') return conLock(function () {
+    hoja(SHEET_EXPENSES, ENC_GASTOS); // FASE 1: garantizar columna naturaleza
     var filaE = filaPorId(SHEET_EXPENSES, data.id);
     if (!filaE) throw AdisError('NO_ENCONTRADO', 'Gasto no encontrado.');
     var hE = ss().getSheetByName(SHEET_EXPENSES);
@@ -1922,6 +1933,7 @@ function doPostInterno(data) {
   // costo_directo, inventario, inversion, retiro, por_clasificar). No toca
   // montos, fechas ni folios; queda en la bitacora. Uso: revision historica.
   if (tipo === 'gasto_clasificar') return conLock(function () {
+    hoja(SHEET_EXPENSES, ENC_GASTOS); // FASE 1: garantizar encabezado antes de escribir col 13
     var filaCl = filaPorId(SHEET_EXPENSES, data.id);
     if (!filaCl) throw AdisError('NO_ENCONTRADO', 'Gasto no encontrado.');
     var hCl = ss().getSheetByName(SHEET_EXPENSES);
