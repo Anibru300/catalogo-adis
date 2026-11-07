@@ -39,37 +39,40 @@ USUARIO = os.environ.get("ADIS_USUARIO", "Adis")
 CLAVE = os.environ.get("ADIS_CLAVE", "Adisdiseño2026")
 
 # Grupos autorizados por el dueno el 2026-11-06 (tabla de revision).
-# Los marcados con '*' quedaron 'pendientes de autorizacion' dentro de su grupo
-# operativo/inventario y se incluyen aqui salvo que el dueno diga lo contrario.
+# ACTUALIZADO 2026-11-06 (conciliacion definitiva): cubre los 49 activos.
+# Estado: PREPARADO PARA APROBACION — no ejecutar --aplicar sin autorizacion
+# expresa. Ver 99_DOCUMENTACION/CONCILIACION_DEFINITIVA_CLASIFICACION_2026-11-06.md
 RECLASIFICAR = {
-    # Retiros del propietario — categoria Gastos personales / Gastos Medicos (16)
+    # Retiros del propietario — 17 folios ($24,804.72)
     "retiro": [
-        "GAS-2026-0004", "GAS-2026-0009", "GAS-2026-0010", "GAS-2026-0029",
-        "GAS-2026-0030", "GAS-2026-0031", "GAS-2026-0032", "GAS-2026-0034",
-        "GAS-2026-0036", "GAS-2026-0041", "GAS-2026-0046", "GAS-2026-0050",
-        "GAS-2026-0051", "GAS-2026-0055", "GAS-2026-0056",
+        "GAS-2026-0004", "GAS-2026-0009", "GAS-2026-0010", "GAS-2026-0025",
+        "GAS-2026-0029", "GAS-2026-0030", "GAS-2026-0031", "GAS-2026-0032",
+        "GAS-2026-0034", "GAS-2026-0036", "GAS-2026-0038", "GAS-2026-0041",
+        "GAS-2026-0046", "GAS-2026-0050", "GAS-2026-0051", "GAS-2026-0055",
+        "GAS-2026-0056",
     ],
-    # Compras de inventario — lambrines, placas, plafones (6)
+    # Compras de inventario / mercancia — 9 folios ($40,139.32; incluye GAS-0013/0014 segun dueno)
     "inventario": [
-        "GAS-2026-0005", "GAS-2026-0006", "GAS-2026-0018", "GAS-2026-0019",
-        "GAS-2026-0039", "GAS-2026-0040",
+        "GAS-2026-0005", "GAS-2026-0006", "GAS-2026-0013", "GAS-2026-0014",
+        "GAS-2026-0018", "GAS-2026-0019", "GAS-2026-0020", "GAS-2026-0039",
+        "GAS-2026-0040",
     ],
-    # Gastos operativos confirmados (10)
+    # Inversion en activos — 2 folios ($6,200.00: telefono + muestrario)
+    "inversion": [
+        "GAS-2026-0011", "GAS-2026-0016",
+    ],
+    # Gastos operativos — 21 folios ($26,227.00; incluye 5 gasolinas y 4 alimentos segun dueno)
     "operativo": [
-        "GAS-2026-0001", "GAS-2026-0003", "GAS-2026-0008", "GAS-2026-0015",
-        "GAS-2026-0035", "GAS-2026-0042", "GAS-2026-0043", "GAS-2026-0044",
-        "GAS-2026-0049", "GAS-2026-0054",
+        "GAS-2026-0001", "GAS-2026-0002", "GAS-2026-0003", "GAS-2026-0007",
+        "GAS-2026-0008", "GAS-2026-0012", "GAS-2026-0015", "GAS-2026-0017",
+        "GAS-2026-0033", "GAS-2026-0035", "GAS-2026-0037", "GAS-2026-0042",
+        "GAS-2026-0043", "GAS-2026-0044", "GAS-2026-0045", "GAS-2026-0047",
+        "GAS-2026-0048", "GAS-2026-0049", "GAS-2026-0052", "GAS-2026-0053",
+        "GAS-2026-0054",
     ],
-    # AMBIGUOS: el dueno debe confirmar cada uno antes de moverlo de aqui.
-    "por_clasificar": [
-        # Gasolinas sin contexto / alimentos / materiales grandes / muestrario /
-        # 'plataforma' / ajuste menor — NO se tocan sin autorizacion folio por folio.
-        "GAS-2026-0002", "GAS-2026-0007", "GAS-2026-0012", "GAS-2026-0013",
-        "GAS-2026-0014", "GAS-2026-0016", "GAS-2026-0017", "GAS-2026-0020",
-        "GAS-2026-0025", "GAS-2026-0033", "GAS-2026-0037", "GAS-2026-0038",
-        "GAS-2026-0045", "GAS-2026-0047", "GAS-2026-0048", "GAS-2026-0052",
-        "GAS-2026-0053",
-    ],
+    # Los 7 cancelados (0021/0022/0023/0024/0026/0027/0028) NO se tocan:
+    # estan excluidos por baja logica.
+    "por_clasificar": [],  # vacio: las 49 activas quedan decididas por el dueno
 }
 
 
