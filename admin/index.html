@@ -2843,12 +2843,14 @@ async function buildProposalPDF(){
   const M = 10, PW = 215.9, PH = 279.4, W = PW - 2 * M, H = PH - 2 * M;
   const doc = new jsPDF({ unit: 'mm', format: 'letter' });
   const pagePx = Math.max(1, Math.floor(canvas.width * H / W));
-  // Bloques que deben quedar JUNTOS en una pagina: fotos de productos y firmas.
+  // Bloques que deben quedar JUNTOS en una pagina: cada foto con su leyenda
+  // (FIX 2026-11-07: antes se protegia todo el bloque .qp-fotos y, cuando era
+  // mas alto que 0.85 pagina, se partia una foto de su descripcion) y las firmas.
   // Se miden ANTES de limpiar el holder (fuera del DOM los rects dan 0).
   const escala = canvas.width / rootEl.offsetWidth;
   const rootTop = rootEl.getBoundingClientRect().top;
   const protegidos = [];
-  rootEl.querySelectorAll('.qp-fotos, .qp-firmas').forEach(function (el) {
+  rootEl.querySelectorAll('.qp-fotos .qp-foto, .qp-firmas').forEach(function (el) {
     const r = el.getBoundingClientRect();
     const y0 = (r.top - rootTop) * escala;
     const y1 = (r.bottom - rootTop) * escala;
