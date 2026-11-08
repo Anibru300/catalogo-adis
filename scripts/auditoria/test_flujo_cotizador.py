@@ -1,3 +1,7 @@
+# OBSOLETO 2026-11-07: este test prueba la tabla de partidas y el boton
+# "Agregar partida", eliminados del formulario en el commit 3844246
+# (cotizador de precio final unico). La suite vigente del cotizador es
+# test_cotizador_precio_final.py. No ejecutar contra el panel actual.
 # -*- coding: utf-8 -*-
 """Prueba funcional: Cotizador (sec. 03 sin desglose) + pestaña Flujo del panel admin.
 Simula el backend de Apps Script con fetch stub vía playwright."""

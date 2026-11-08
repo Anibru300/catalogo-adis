@@ -598,12 +598,8 @@
           <details class="prop-sec" open>
             <summary>02 · Alcance del proyecto</summary>
             <div class="sec-body">
-              <label>Fotografía / render del proyecto</label>
-              <div class="photo-grid" style="grid-template-columns:1fr;">
-                <div class="photo-slot" id="pFotoProySlot">
-                  <input type="file" id="pFotoProy" accept="image/*" onchange="setFotoProyecto(this)">
-                </div>
-              </div>
+              <label>Fotografías / renders del proyecto (hasta 3)</label>
+              <div class="photo-grid" id="pFotoProyGrid"></div>
               <label>Tipo de proyecto (marca los que apliquen)</label>
               <div class="tipos-grid" id="pTipos"></div>
               <div class="row">
@@ -634,8 +630,18 @@
                   </select>
                 </div>
               </div>
+              <div class="row" style="align-items:end; margin-top:0.3rem;">
+                <div>
+                  <label style="display:flex;align-items:center;gap:0.4rem;cursor:pointer;"><input type="checkbox" id="pIncluirIva" onchange="prop.incluirIva=this.checked;updateTotalsUI();scheduleProp();"> 🧾 Agregar IVA</label>
+                </div>
+                <div>
+                  <label>Tasa %</label>
+                  <input type="number" id="pTasaIva" min="0" max="100" step="0.01" value="16" style="width:90px;" oninput="prop.tasaIva=parseFloat(this.value)||0;updateTotalsUI();scheduleProp();">
+                </div>
+              </div>
               <div class="prop-tot" id="pTotales" style="flex-direction:column; align-items:flex-start; gap:0.45rem;">
                 <span>INVERSIÓN TOTAL: <b class="gold" id="pTotalTxt"></b></span>
+                <span class="muted" id="pDesgloseTxt" style="font-size:0.78rem;"></span>
                 <span class="muted" style="display:flex; gap:0.6rem; align-items:center; flex-wrap:wrap;">Costo total (interno, opcional):
                   <input type="number" id="pCosto" min="0" step="0.01" placeholder="0.00" oninput="prop.costo=this.value;renderUtilidad();scheduleProp();">
                   <b id="pUtil"></b>
@@ -649,7 +655,7 @@
             <div class="sec-body">
               <label>Sube las fotos de los productos que se incluirán en la propuesta</label>
               <div class="photo-grid" id="pFotosGrid"></div>
-              <button class="btn btn-sm" style="margin-top:0.5rem;" onclick="addFotoSlot()">＋ Agregar foto</button>
+              <button class="btn btn-sm" style="margin-top:0.5rem;" onclick="addFotoSlot()">＋ Agregar otra foto (hasta 12)</button>
             </div>
           </details>
 
@@ -2355,10 +2361,11 @@ const GARANTIA_NO_CUBRE = ['Golpes, accidentes o mal uso; desgaste normal de mat
 const LOGISTICA = [['PROTECCIÓN DEL ESPACIO','Barreras contra polvo y residuos; protección de pisos, muebles y superficies; delimitación del área de trabajo.'],['HORARIOS Y COORDINACIÓN','Programación previa de días y horarios, coordinación de cuadrilla y comunicación de avances relevantes.'],['ORDEN Y LIMPIEZA','Recolección de residuos y limpieza del área al final de cada jornada y al concluir el proyecto.'],['SUPERVISIÓN Y ENTREGA','Supervisión durante la instalación, inspección final y entrega del proyecto conforme a lo acordado.']];
 
 function defaultProp(){
-  return { folio:'', savedFolio:'', fecha:new Date().toISOString().slice(0,10), cliente:'', telefono:'', proyecto:'', ubicacion:'',
+  return { folio:'', savedFolio:'', savedId:'', fecha:new Date().toISOString().slice(0,10), cliente:'', telefono:'', proyecto:'', ubicacion:'',
     elaboro:'Josías Espinoza · Gerente', vigencia:30,
-    fotoProyecto:null, tipos:[], otroTipo:'', area:'', materiales:'', descripcion:'',
-    moneda:'MXN', costo:'', precioFinal:'', items:[], incluirIva:true, tasaIva:16,
+    fotoProyecto:null, fotosProyecto:[{data:null},{data:null},{data:null}],
+    tipos:[], otroTipo:'', area:'', materiales:'', descripcion:'',
+    moneda:'MXN', costo:'', precioFinal:'', items:[], incluirIva:false, tasaIva:16,
     fotos:[{data:null,desc:''},{data:null,desc:''},{data:null,desc:''}],
     especificaciones:'',
     formaPago:'50% al iniciar la instalación · 50% al finalizar el proyecto, contra entrega.',
@@ -2371,14 +2378,28 @@ let propTimer = null;
 function initProposal(){
   try {
     const d = JSON.parse(localStorage.getItem('adis_prop_draft') || 'null');
-    if (d && d.items) prop = Object.assign(defaultProp(), d);
+    if (d && d.items) { prop = Object.assign(defaultProp(), d); migraFotosProyecto_(); }
   } catch (e) {}
   renderTiposChk(); applyPropToForm(); renderItemRows(); renderFotoProy(); renderFotosGrid(); renderProposal();
+}
+// FIX 2026-11-07: borradores/cotizaciones viejas traen fotoProyecto unica; se migra
+// a las 3 ranuras nuevas (fotosProyecto) y se normaliza el arreglo.
+function migraFotosProyecto_(){
+  if (!Array.isArray(prop.fotosProyecto)) prop.fotosProyecto = [];
+  while (prop.fotosProyecto.length < 3) prop.fotosProyecto.push({data:null});
+  if (prop.fotoProyecto && !prop.fotosProyecto.some(f => f && f.data)) prop.fotosProyecto[0].data = prop.fotoProyecto;
+  prop.fotoProyecto = null;
+}
+let __quotaAvisado = false;
+function avisoQuotaDraft_(){
+  if (__quotaAvisado) return;
+  __quotaAvisado = true;
+  notice('⚠️ El borrador local no se pudo guardar (las fotos pesan demasiado). Descarga el PDF como respaldo.', false);
 }
 function scheduleProp(){ schedulePropDraft(); renderProposal(); }
 function schedulePropDraft(){
   clearTimeout(propTimer);
-  propTimer = setTimeout(()=>{ try { localStorage.setItem('adis_prop_draft', JSON.stringify(prop)); } catch (e) {} }, 400);
+  propTimer = setTimeout(()=>{ try { localStorage.setItem('adis_prop_draft', JSON.stringify(prop)); } catch (e) { avisoQuotaDraft_(); } }, 400);
 }
 
 function applyPropToForm(){
@@ -2389,6 +2410,8 @@ function applyPropToForm(){
   $('pDescripcion').value = prop.descripcion; $('pMoneda').value = prop.moneda;
   const pf = $('pPrecioFinal'); if (pf) pf.value = prop.precioFinal;
   const ct = $('pCosto'); if (ct && document.activeElement !== ct) ct.value = prop.costo;
+  const iv = $('pIncluirIva'); if (iv) iv.checked = !!prop.incluirIva;
+  const tv = $('pTasaIva'); if (tv) tv.value = prop.tasaIva;
   $('pEspec').value = prop.especificaciones; $('pFormaPago').value = prop.formaPago;
   $('pTiempoEntrega').value = prop.tiempoEntrega; $('pAlcanceExtra').value = prop.alcanceExtra;
   $('pIncluirGarantia').checked = prop.incluirGarantia; $('pIncluirLogistica').checked = prop.incluirLogistica;
@@ -2435,8 +2458,10 @@ function toggleTipo(i, on){
 
 function fileToDataURL(file, cb){
   const r = new FileReader();
+  r.onerror = ()=>notice('No se pudo leer la imagen. Intenta con otra foto.', false);
   r.onload = e => {
     const img = new Image();
+    img.onerror = ()=>notice('La imagen está dañada o no es válida. Intenta con otra.', false);
     img.onload = () => {
       const max = 1280; let w = img.width, h = img.height;
       if (Math.max(w,h) > max) { const s = max/Math.max(w,h); w = Math.round(w*s); h = Math.round(h*s); }
@@ -2448,18 +2473,21 @@ function fileToDataURL(file, cb){
   };
   r.readAsDataURL(file);
 }
-function setFotoProyecto(input){
+function setFotoProyecto(idx, input){
   const f = input.files && input.files[0];
   if (!f) return;
-  fileToDataURL(f, url => { prop.fotoProyecto = url; renderFotoProy(); renderProposal(); schedulePropDraft(); });
+  fileToDataURL(f, url => { migraFotosProyecto_(); prop.fotosProyecto[idx].data = url; renderFotoProy(); renderProposal(); schedulePropDraft(); });
   input.value = '';
 }
 function renderFotoProy(){
-  $('pFotoProySlot').className = 'photo-slot' + (prop.fotoProyecto ? ' filled' : '');
-  $('pFotoProySlot').innerHTML = prop.fotoProyecto
-    ? '<img src="'+prop.fotoProyecto+'" alt="Foto del proyecto"><button class="del" onclick="prop.fotoProyecto=null;renderFotoProy();renderProposal();schedulePropDraft()">✕</button>'
-    : '<label class="ph-add" for="pFotoProy">📷 Subir fotografía / render del proyecto<br><span class="muted" style="font-size:0.68rem;">JPG, PNG — se comprime automáticamente</span></label>' +
-      '<input type="file" id="pFotoProy" accept="image/*" onchange="setFotoProyecto(this)">';
+  migraFotosProyecto_();
+  const g = $('pFotoProyGrid'); if (!g) return;
+  g.innerHTML = prop.fotosProyecto.map((f,i)=>
+    '<div class="photo-slot'+(f.data?' filled':'')+'">' +
+    (f.data ? '<img src="'+f.data+'" alt="Proyecto"><button class="del" onclick="prop.fotosProyecto['+i+'].data=null;renderFotoProy();renderProposal();schedulePropDraft()">✕</button>'
+            : '<label class="ph-add" for="pFotoProy'+i+'">📷 Foto '+(i+1)+'<br><span class="muted" style="font-size:0.68rem;">JPG, PNG — se comprime sola</span></label>') +
+    '<input type="file" id="pFotoProy'+i+'" accept="image/*" onchange="setFotoProyecto('+i+',this)">' +
+    '</div>').join('');
 }
 
 function setFotoProducto(idx, input){
@@ -2478,7 +2506,7 @@ function renderFotosGrid(){
     '</div>'
   ).join('');
 }
-function addFotoSlot(){ if (prop.fotos.length >= 6) { notice('Máximo 6 fotos de productos.', false); return; } prop.fotos.push({data:null,desc:''}); renderFotosGrid(); schedulePropDraft(); }
+function addFotoSlot(){ if (prop.fotos.length >= 12) { notice('Máximo 12 fotos de productos.', false); return; } prop.fotos.push({data:null,desc:''}); renderFotosGrid(); schedulePropDraft(); }
 
 /* ----- partidas ----- */
 function parseNum(v){ return parseFloat(String(v==null?'':v).replace(/[^0-9.]/g,'')) || 0; }
@@ -2524,17 +2552,24 @@ function itemProduct(i, pid){
 function updItem(i){ const it = prop.items[i]; $('pImp'+i).textContent = fmtMoney((Number(it.cantidad)||0)*(Number(it.precio)||0)); updateTotalsUI(); }
 function addPropItem(){ prop.items.push({pid:'',codigo:'',descripcion:'',cantidad:1,unidad:'PZS',precio:0}); renderItemRows(); schedulePropDraft(); }
 function calcTotals(){
-  // Precio final manual: un solo cuadro; si esta vacio, compat con borradores viejos que tengan partidas
+  // FIX 2026-11-07: el precio capturado es la BASE; con IVA marcado se suma la
+  // tasa (default 16%). Sin IVA, el total es el precio tal cual.
+  const tasa = Number(prop.tasaIva)||0;
+  const ivaDe = sub => prop.incluirIva ? sub * tasa / 100 : 0;
   const manual = parseFloat(prop.precioFinal);
-  if (isFinite(manual) && manual > 0) return { subtotal: manual, iva: 0, total: manual };
+  if (isFinite(manual) && manual > 0) { const iva = ivaDe(manual); return { subtotal: manual, iva: iva, total: manual + iva }; }
   const sub = prop.items.reduce((s,it)=> s + (String(it.descripcion).trim() ? (Number(it.cantidad)||0)*(Number(it.precio)||0) : 0), 0);
-  const iva = prop.incluirIva ? sub * (Number(prop.tasaIva)||0) / 100 : 0;
+  const iva = ivaDe(sub);
   return { subtotal: sub, iva: iva, total: sub + iva };
 }
 function updateTotalsUI(){
   // Solo actualiza textos: NUNCA re-renderiza inputs (destruiria el foco al teclear)
   const t = calcTotals();
   const el = $('pTotalTxt'); if (el) el.textContent = fmtMoney(t.total) + ' ' + prop.moneda;
+  const dEl = $('pDesgloseTxt');
+  if (dEl) dEl.textContent = t.iva > 0
+    ? ('Subtotal ' + fmtMoney(t.subtotal) + ' + IVA (' + (Number(prop.tasaIva)||0) + '%) ' + fmtMoney(t.iva))
+    : '';
   renderUtilidad();
 }
 function renderUtilidad(){
@@ -2555,6 +2590,8 @@ function buildProposalHTML(){
   const t = calcTotals();
   const checks = TIPOS_PROYECTO.map(tp => '<span class="'+(prop.tipos.indexOf(tp)!==-1?'on':'')+'">'+esc(tp)+'</span>').join('');
   const fotosLlenas = prop.fotos.filter(f => f.data);
+  migraFotosProyecto_();
+  const fotosProy = prop.fotosProyecto.filter(f => f.data);
   let h = '<div class="qp">';
   h += '<div class="qp-header"><div>' +
     '<img src="LOGO%20ADIS.webp" onerror="this.onerror=null;this.src=\'LOGO%20ADIS.png\'" alt="ADIS">' +
@@ -2572,8 +2609,9 @@ function buildProposalHTML(){
     '</tbody></table></div>';
 
   h += '<div class="qp-sec"><div class="qp-sec-t">02 · ALCANCE DEL PROYECTO</div>' +
-    (prop.fotoProyecto ? '<div class="qp-photo-box" style="border-style:solid; padding:0.25rem;"><img src="'+prop.fotoProyecto+'" alt="Proyecto"></div>'
-                       : '<div class="qp-photo-box">FOTOGRAFÍA / RENDER DEL PROYECTO<br><span style="font-size:0.55rem;">(se mostrará aquí la imagen que subas en la sección 02 del formulario)</span></div>') +
+    (fotosProy.length
+      ? '<div class="qp-fotos">' + fotosProy.map(f => '<div class="qp-foto"><img src="'+f.data+'" alt="Proyecto"></div>').join('') + '</div>'
+      : '<div class="qp-photo-box">FOTOGRAFÍA / RENDER DEL PROYECTO<br><span style="font-size:0.55rem;">(se mostrará aquí la imagen que subas en la sección 02 del formulario)</span></div>') +
     '<div class="qp-checks">'+checks+'</div>' +
     (prop.otroTipo ? '<div style="font-size:0.64rem; color:#333; margin:0.15rem 0;">Otro: <b>'+esc(prop.otroTipo)+'</b></div>' : '') +
     '<table class="qp-table qp-kv"><tbody>' +
@@ -2587,6 +2625,13 @@ function buildProposalHTML(){
     '<tr><td style="width:22%;">USD</td><td>'+(prop.moneda==='USD' && t.total ? '<b>'+fmtMoney(t.total)+' USD</b>' : '—')+'</td></tr>' +
     '<tr><td>MXN</td><td>'+(prop.moneda==='MXN' && t.total ? '<b>'+fmtMoney(t.total)+' MXN</b>' : '—')+'</td></tr>' +
     '</tbody></table>' +
+    (t.iva > 0
+      ? '<table class="qp-table qp-kv" style="margin-top:0.4rem;"><tbody>' +
+        '<tr><td style="width:22%;">SUBTOTAL</td><td>'+fmtMoney(t.subtotal)+' '+esc(prop.moneda)+'</td></tr>' +
+        '<tr><td>IVA ('+(Number(prop.tasaIva)||0)+'%)</td><td>'+fmtMoney(t.iva)+' '+esc(prop.moneda)+'</td></tr>' +
+        '<tr><td><b>TOTAL</b></td><td><b>'+fmtMoney(t.total)+' '+esc(prop.moneda)+'</b></td></tr>' +
+        '</tbody></table>'
+      : '') +
     '<div class="qp-moneda">La inversión contempla los materiales, insumos, preparación, instalación y servicios especificados en esta propuesta.</div></div>';
 
   h += '<div class="qp-sec"><div class="qp-sec-t">04 · FOTOGRAFÍAS DE PRODUCTOS Y MATERIALES</div>' +
@@ -2639,10 +2684,11 @@ function saveProposal(){
   if (!(parseFloat(prop.precioFinal) > 0) && !prop.items.some(it => String(it.descripcion).trim())) { notice('Escribe el precio final de la cotización (sección 03).', false); return; }
   const t = calcTotals();
   const datos = Object.assign({}, prop, {
-    fotoProyecto: prop.fotoProyecto ? '(foto guardada en el borrador local del navegador)' : '',
+    fotoProyecto: '',
+    fotosProyecto: prop.fotosProyecto.map(f => ({ data: f.data ? '(foto guardada en el borrador local del navegador)' : '' })),
     fotos: prop.fotos.map(f => ({ data: f.data ? '(foto en borrador local)' : '', desc: f.desc }))
   });
-  apiPost({ tipo:'quote', folio: prop.savedFolio || '', cliente: prop.cliente, telefono: prop.telefono,
+  apiPost({ tipo:'quote', folio: prop.savedFolio || '', id: prop.savedId || '', cliente: prop.cliente, telefono: prop.telefono,
     ciudad: prop.ubicacion, proyecto: prop.proyecto, ubicacion: prop.ubicacion, moneda: prop.moneda,
     cliente_id: prop.clienteId || '',
     items: prop.items.map(it => ({ codigo: it.codigo, descripcion: it.descripcion, cantidad: it.cantidad, unidad: it.unidad, precio: it.precio })),
@@ -2669,6 +2715,10 @@ function syncFormToProp(){
   prop.precioFinal = v('pPrecioFinal'); prop.costo = v('pCosto');
   prop.especificaciones = v('pEspec'); prop.formaPago = v('pFormaPago');
   prop.tiempoEntrega = v('pTiempoEntrega'); prop.alcanceExtra = v('pAlcanceExtra');
+  const ivaChk = document.getElementById('pIncluirIva');
+  if (ivaChk) prop.incluirIva = ivaChk.checked;
+  const tasaTxt = parseFloat(v('pTasaIva'));
+  if (isFinite(tasaTxt) && tasaTxt >= 0) prop.tasaIva = tasaTxt;
   const chk = id => { const el = document.getElementById(id); return el ? el.checked : true; };
   prop.incluirGarantia = chk('pIncluirGarantia'); prop.incluirLogistica = chk('pIncluirLogistica');
   prop.incluirAceptacion = chk('pIncluirAceptacion');
@@ -2689,7 +2739,7 @@ async function descargarPDF(){
     const folio = prop.savedFolio || qpFolio();
     doc.save('Propuesta-ADIS-' + String(folio).replace(/[^A-Za-z0-9-]/g, '') + '.pdf');
     notice('PDF descargado.', true);
-  } catch (e) { notice('No se pudo generar el PDF (revisa tu conexión).', false); }
+  } catch (e) { notice('No se pudo generar el PDF (revisa tu conexión).', false); logCliente('error','pdf_cotizador', String((e && e.message) || e).slice(0, 150)); }
 }
 function printProposal(){
   syncFormToProp();
@@ -2863,7 +2913,9 @@ function loadProposalFromQuote(idx){
     const d = JSON.parse(q.datos);
     if (!d || !d.items) throw 0;
     prop = Object.assign(defaultProp(), d);
+    migraFotosProyecto_();
     prop.savedFolio = q.folio || prop.savedFolio;
+    prop.savedId = q.id || '';
     prop.clienteId = q.cliente_id || prop.clienteId || '';
     renderTiposChk(); applyPropToForm(); renderItemRows(); renderFotoProy(); renderFotosGrid(); renderProposal(); schedulePropDraft();
     showTab('proposal');

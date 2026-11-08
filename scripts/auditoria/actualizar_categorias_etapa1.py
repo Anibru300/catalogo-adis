@@ -46,8 +46,11 @@ CATS_INGRESOS_NUEVAS = ["Venta de mercancía", "Servicios de instalación", "Ant
     "Otros ingresos operativos", "Aportación del propietario", "Otros"]
 # catalogo viejo a retirar (solo con --quitar-viejas); el texto de los gastos historicos NO cambia
 CATS_VIEJAS = ["Compra de material", "Materiales", "Compra de inventario", "Publicidad", "Inversión",
-    "Envíos", "Honorarios", "Equipos", "Muestrario", "Otro", "Gasolina", "Alimentos", "Mantenimiento",
-    "Luz", "Agua", "Venta de activos", "Reembolso", "Otro ingreso"]
+    "Envíos", "Honorarios", "Equipos", "Muestrario", "Otro", "Gasolina", "Alimentos", "Luz", "Agua",
+    "Venta de activos", "Reembolso", "Otro ingreso"]
+# NOTA 2026-11-07: 'Mantenimiento' se REMOVIO de esta lista: colisiona con la
+# categoria NUEVA del mismo nombre (esta en CATS_GASTOS_NUEVAS y en uso). La
+# categoria viva se queda; nada que retirar.
 NAT_SUGERIDA = {"Compra de mercancía": "inventario", "Materiales para obra": "costo_directo",
     "Gasolina y combustible": "operativo", "Viáticos": "operativo", "Alimentos de trabajo": "operativo",
     "Nómina": "operativo", "Renta": "operativo", "Servicios": "operativo", "Paquetería": "operativo",

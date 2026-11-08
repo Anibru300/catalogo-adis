@@ -16,7 +16,8 @@
 - **Responsabilidad**: hoja Cotizaciones; tabs `proposal` (editor) y `quotes`
   (historial); el endpoint público no existe — todo con token.
 - **Problema que resuelve**: cotizar con imagen profesional, numeración
-  oficial y trazabilidad de estados (borrador → enviada → aprobada).
+  oficial y trazabilidad de estados (Activa → Aprobada/Vencida/Cancelada;
+  Aprobada → Vencida).
 
 ## ALCANCE
 
@@ -37,7 +38,7 @@
   total, notas, folio, proyecto, ubicacion, moneda, subtotal, iva, estado,
   datos, id, usuario). Esquema: `apps-script.gs` L79.
 - **Campos importantes**: `datos` = JSON string con el estado completo del
-  cotizador (secciones 01–09); `estado` (borrador/enviada/aprobada…);
+  cotizador (secciones 01–09); `estado` (Activa/Aprobada/Vencida/Cancelada);
   `folio` ADIS-AAAA-NNN.
 - **Consume**: Productos del ERP (para partidas/autollenado), Clientes/Leads (03),
   Config (`folio_cotizacion`).
@@ -56,12 +57,19 @@
 ## REGLAS DE NEGOCIO
 
 1. Folio consecutivo bajo LockService; **re-guardar no consume folio nuevo** (se
-   respeta el folio existente).
+   respeta el folio existente). FIX 2026-11-07: re-guardar con folio existente
+   **actualiza la fila** (antes duplicaba la cotización en el historial);
+   conserva fecha de creación, id y estado originales.
 2. La sección 03 del documento es **"INVERSIÓN TOTAL DEL PROYECTO"** — el PDF no
-   muestra desglose de partidas (decisión del dueño, 2026-09-05); las partidas
-   son uso interno para calcular el total.
+   muestra tabla de partidas (decisión del dueño, 2026-09-05). FIX 2026-11-07:
+   con IVA marcado sí muestra desglose SUBTOTAL / IVA (tasa%) / TOTAL; el precio
+   capturado es la BASE y el total se calcula (×1.16 con tasa 16). Casilla
+   "🧾 Agregar IVA" + tasa editable en el formulario (sección 03).
 3. Las fotos **no viajan a Sheets** (límite 50k chars/celda): van a localStorage
    (`adis_prop_draft`). Cargar una cotización guardada en otro equipo no recupera fotos.
+   FIX 2026-11-07: fotos de proyecto **hasta 3** (`fotosProyecto`, migración
+   automática de la foto única vieja); fotos de producto hasta **12**.
+   Si el borrador local no cabe (cuota), el panel avisa en lugar de fallar en silencio.
 4. El handler `quote` es **retrocompatible**: acepta el payload simple (tab quotes)
    y el profesional (tab proposal). No romper el formato simple hasta unificar.
 5. Cotizaciones ∈ HOJAS_BORRABLES (se pueden borrar filas desde el panel).
@@ -105,8 +113,9 @@ por WhatsApp a terceros (es el propósito).
 |---|---|
 | `admin/index.html` L1354–1430 (simple), L1419–1941 (profesional) | ambos cotizadores |
 | `admin/apps-script.gs` L79, L812–835, L1399–1473 | esquema + handlers |
-| `scripts/auditoria/test_cotizador_precio_final.py` | precio final único + IVA |
-| `scripts/auditoria/test_flujo_cotizador.py` | flujo del cotizador (backend simulado) |
+| `scripts/auditoria/test_cotizador_precio_final.py` | precio final único + IVA + fotos (suite vigente) |
+| `scripts/auditoria/harness_node/run_cotizador_fix.js` | re-guardar no duplica (sandbox Node) |
+| ~~`scripts/auditoria/test_flujo_cotizador.py`~~ | OBSOLETO 2026-11-07 (tabla de partidas eliminada) |
 | `scripts/auditoria/test_fase3_api.py` | `quote`/`set_estado_quote` en vivo |
 | `ARCHIVO_ADIS\documentos\Formato de Cotizacion nuevo.docx` | referencia de diseño (fuente) |
 
@@ -126,7 +135,7 @@ por WhatsApp a terceros (es el propósito).
 ## PRUEBAS
 
 - `python scripts/auditoria/test_cotizador_precio_final.py`
-- `python scripts/auditoria/test_flujo_cotizador.py`
+- `node scripts/auditoria/harness_node/run_cotizador_fix.js`
 - `python scripts/auditoria/test_fase3_api.py` (quote en vivo; tras redeploy).
 - Casos críticos: folio consecutivo sin duplicar, re-guardar conserva folio,
   PDF sin hojas en blanco ni fotos partidas, IVA correcto (2 placas × $850 + IVA

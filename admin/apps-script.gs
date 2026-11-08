@@ -1317,13 +1317,36 @@ function doPostInterno(data) {
     // Folio ADIS-AAAA-NNN bajo lock: imposible duplicar por concurrencia.
     // Se respeta si se re-guarda una cotizacion cargada (placeholder '___').
     var folio = data.folio ? String(data.folio) : '';
-    if (!folio || folio.indexOf('___') !== -1) {
-      folio = siguienteFolio('ADIS', 'folio_cotizacion', 3);
-    }
+    var esNueva = (!folio || folio.indexOf('___') !== -1);
+    if (esNueva) folio = siguienteFolio('ADIS', 'folio_cotizacion', 3);
     var items = (data.items || []).map(function (it) {
       return (it.codigo ? it.codigo + ' ' : '') + (it.descripcion || it.nombre || '') +
         ' x' + (it.cantidad || 1) + ' ' + (it.unidad || '') + ' @' + (it.precio || 0);
     }).join(' | ');
+    // FIX 2026-11-07: re-guardar una cotizacion cargada ACTUALIZA su fila en vez
+    // de agregar un duplicado con el mismo folio. Se localiza por folio y se
+    // conservan fecha de creacion, id y estado originales.
+    var filaExistente = null, valsCot = null;
+    if (!esNueva) {
+      valsCot = hCot.getDataRange().getValues();
+      var colFolioCot = valsCot.length ? valsCot[0].map(String).indexOf('folio') : -1;
+      if (colFolioCot !== -1) {
+        for (var iF = valsCot.length - 1; iF >= 1; iF--) {
+          if (String(valsCot[iF][colFolioCot]) === folio) { filaExistente = iF + 1; break; }
+        }
+      }
+    }
+    if (filaExistente) {
+      var vAnt = valsCot[filaExistente - 1];
+      hCot.getRange(filaExistente, 1, 1, ENC_COTIZ.length).setValues([[vAnt[0], cliente,
+        data.telefono || '', data.ciudad || data.ubicacion || '', items, data.total || 0,
+        data.notas || '', folio, data.proyecto || '', data.ubicacion || '',
+        validarMoneda(data.moneda || 'MXN'), data.subtotal || 0, data.iva || 0,
+        data.estado || String(vAnt[13]) || 'Activa', JSON.stringify(data.datos || {}),
+        vAnt[15], USUARIO_ACTUAL, data.cliente_id || String(vAnt[17]) || '']]);
+      log_('cotizacion_actualizada', folio + ' · ' + cliente + ' · ' + (data.moneda || '') + ' ' + (data.total || 0));
+      return json({ ok: true, folio: folio });
+    }
     hCot.appendRow([ahora_(), cliente, data.telefono || '', data.ciudad || data.ubicacion || '',
       items, data.total || 0, data.notas || '', folio, data.proyecto || '', data.ubicacion || '',
       validarMoneda(data.moneda || 'MXN'), data.subtotal || 0, data.iva || 0, data.estado || 'Activa',

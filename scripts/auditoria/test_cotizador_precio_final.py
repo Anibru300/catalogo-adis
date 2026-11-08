@@ -118,6 +118,50 @@ with sync_playwright() as p:
     print(('  PASS ' if txt_cliente == 'Cliente Prueba Sync' else '  FAIL ') + 'syncFormToProp corrigio prop.cliente: ' + txt_cliente)
     print(('  PASS ' if 'wa.me/526311204943' in wa_url else '  FAIL ') + 'WhatsApp abrio al numero del cliente: ' + wa_url[:110])
 
+    # 10. IVA (FIX 2026-11-07): precio 1000 CON IVA 16% -> total 1,160 y desglose
+    page.fill('#pPrecioFinal', '1000')
+    page.evaluate('() => { prop.precioFinal="1000"; }')
+    page.check('#pIncluirIva')
+    page.wait_for_timeout(300)
+    total = page.text_content('#pTotalTxt') or ''
+    desglose = page.text_content('#pDesgloseTxt') or ''
+    print(('  PASS ' if '$1,160.00' in total else '  FAIL ') + 'IVA: total con 16% = ' + total)
+    print(('  PASS ' if 'Subtotal $1,000.00' in desglose and 'IVA (16%) $160.00' in desglose else '  FAIL ') + 'IVA: desglose = ' + desglose)
+    doc = page.inner_html('#propPreview')
+    print(('  PASS ' if 'IVA (16%)' in doc and 'SUBTOTAL' in doc else '  FAIL ') + 'IVA: documento muestra desglose')
+
+    # 11. Sin IVA: total = precio tal cual
+    page.uncheck('#pIncluirIva')
+    page.wait_for_timeout(300)
+    total = page.text_content('#pTotalTxt') or ''
+    print(('  PASS ' if '$1,000.00' in total else '  FAIL ') + 'sin IVA: total = ' + total)
+
+    # 12. Fotos de proyecto: 3 fotos migran/renderizan en el documento (seccion 02)
+    n_fotos = page.evaluate('''() => {
+      const px = 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEASABIAAD/2wBDAP//////////////////////////////////////////////////////////////////////////////////////2wBDAf//////////////////////////////////////////////////////////////////////////////////////wAARCAABAAEDASIAAhEBAxEB/8QAFAABAAAAAAAAAAAAAAAAAAAAAP/EABQQAQAAAAAAAAAAAAAAAAAAAAD/xAAUAQEAAAAAAAAAAAAAAAAAAAAA/8QAFBEBAAAAAAAAAAAAAAAAAAAAAP/aAAwDAQACEQMRAD8AvwA//9k=';
+      prop.fotosProyecto = [{data:px},{data:px},{data:px}];
+      renderProposal();
+      const html = buildProposalHTML();
+      return (html.split('02 · ALCANCE')[1].split('03 · INVERSIÓN')[0].match(/qp-foto/g) || []).length;
+    }''')
+    print(('  PASS ' if n_fotos >= 3 else '  FAIL ') + 'fotos proyecto: %d renderizadas en seccion 02' % n_fotos)
+
+    # 13. Slots de producto: tope de 12
+    n_slots = page.evaluate('''() => {
+      prop.fotos = [{data:null,desc:''},{data:null,desc:''},{data:null,desc:''}];
+      for (let i = 0; i < 20; i++) addFotoSlot();
+      return prop.fotos.length;
+    }''')
+    print(('  PASS ' if n_slots == 12 else '  FAIL ') + 'slots de producto respetan tope 12: %d' % n_slots)
+
+    # 14. Migracion: borrador viejo con fotoProyecto unica pasa al slot 1
+    migro = page.evaluate('''() => {
+      prop = Object.assign(defaultProp(), { items: [], fotoProyecto: 'data:image/jpeg;base64,xxx', fotosProyecto: [{data:null},{data:null},{data:null}] });
+      migraFotosProyecto_();
+      return prop.fotosProyecto[0].data === 'data:image/jpeg;base64,xxx' && prop.fotoProyecto === null;
+    }''')
+    print(('  PASS ' if migro else '  FAIL ') + 'migracion foto unica -> slot 1')
+
     browser.close()
 
 print('Errores de JS capturados: %d' % len(errores))
