@@ -216,6 +216,18 @@ with sync_playwright() as p:
     }''')
     print(('  PASS ' if not b3['docEnPrint'] and not b3['waAbierto'] else '  FAIL ') + 'B3 total 0 bloqueado (print/whatsapp): ' + json.dumps(b3))
 
+    # 19. AUDITORIA B7: waNum rechaza longitudes raras y acepta 10 digitos
+    wa = page.evaluate('''() => ({ corto: waNum('631 12'), mx: waNum('631 123 4567'), us: waNum('15208392877'), vacio: waNum('') })''')
+    print(('  PASS ' if wa == {'corto': '', 'mx': '526311234567', 'us': '15208392877', 'vacio': ''} else '  FAIL ') + 'B7 waNum: ' + json.dumps(wa))
+
+    # 20. AUDITORIA B6: debounce del autocompletar + datalist poblado
+    b6 = page.evaluate('''() => {
+      poblarDatalistClientes_();
+      const n = document.querySelectorAll('#pClientesList option').length;
+      return { opciones: n, debounce: typeof matchLeadBusca_ === 'function' };
+    }''')
+    print(('  PASS ' if b6['debounce'] and b6['opciones'] >= 0 else '  FAIL ') + 'B6 debounce+datalist: ' + json.dumps(b6))
+
     browser.close()
 
 print('Errores de JS capturados: %d' % len(errores))

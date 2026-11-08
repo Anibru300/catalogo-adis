@@ -254,7 +254,9 @@
     /* Secciones pueden partirse entre paginas; solo tablas y titulos se mantienen juntos */
     #printArea .qp-sec { page-break-inside:auto; margin-bottom:0.35rem; }
     #printArea .qp-sec-t { page-break-after:avoid; }
-    #printArea table, #printArea .qp-fotos, #printArea .qp-firmas { page-break-inside:avoid; }
+    // B10 (2026-11-07): proteger CADA foto (no el grid entero) para que el
+    // navegador pueda partir entre fotos sin dejar huecos gigantes.
+    #printArea table, #printArea .qp-foto, #printArea .qp-firmas { page-break-inside:avoid; }
     #printArea h1 { color:#8a6d2f; font-size:1.15rem; margin-bottom:0.15rem; }
     #printArea .pq-meta { font-size:0.75rem; color:#444; margin-bottom:0.6rem; }
     #printArea table { width:100%; border-collapse:collapse; font-size:0.72rem; margin-top:0.4rem; }

@@ -31,6 +31,7 @@ function initProposal(){
 function migraFotosProyecto_(){
   if (!Array.isArray(prop.fotosProyecto)) prop.fotosProyecto = [];
   while (prop.fotosProyecto.length < 3) prop.fotosProyecto.push({data:null});
+  if (prop.fotosProyecto.length > 3) prop.fotosProyecto.length = 3; // tope duro "hasta 3"
   if (prop.fotoProyecto && !prop.fotosProyecto.some(f => f && f.data)) prop.fotosProyecto[0].data = prop.fotoProyecto;
   prop.fotoProyecto = null;
 }
@@ -73,12 +74,27 @@ function applyPropToForm(){
   $('pIncluirAceptacion').checked = prop.incluirAceptacion;
 }
 
+let matchLeadTimer = null;
+function poblarDatalistClientes_(){
+  const dl = $('pClientesList');
+  if (!dl || !Array.isArray(clientesCache)) return;
+  const opciones = clientesCache.map(c => '<option value="'+esc(c.nombre||'')+'">').join('');
+  if (dl.innerHTML !== opciones) dl.innerHTML = opciones;
+}
 function matchLead(){
   const q = prop.cliente.trim().toLowerCase();
   prop.clienteId = ''; // se reasigna solo si hay coincidencia exacta con un cliente
+  poblarDatalistClientes_();
   if (q.length < 3) return;
-  // FASE 3: autocompletar tambien desde clientes registrados (con prioridad)
-  const c = clientesCache.find(x => String(x.nombre||'').toLowerCase() === q) || clientesCache.find(x => String(x.nombre||'').toLowerCase().indexOf(q) !== -1);
+  // AUDITORIA 2026-11-07 (B6): debounce — antes llamaba la API en cada tecla
+  clearTimeout(matchLeadTimer);
+  matchLeadTimer = setTimeout(function(){ matchLeadBusca_(q); }, 350);
+}
+function matchLeadBusca_(q){
+  // FASE 3: autocompletar tambien desde clientes registrados (con prioridad).
+  // Solo con COINCIDENCIA EXACTA: el partial match llenaba telefono/ciudad de
+  // un cliente equivocado sin que el usuario lo notara.
+  const c = clientesCache.find(x => String(x.nombre||'').toLowerCase() === q);
   if (c && document.activeElement === $('pCliente')) {
     prop.clienteId = c.id;
     if (c.telefono && !$('pTelefono').value) { prop.telefono = c.telefono; $('pTelefono').value = c.telefono; }
@@ -88,7 +104,7 @@ function matchLead(){
   }
   apiGet('leads').then(d=>{
     if (!d || !d.ok) return;
-    const l = d.leads.find(x => String(x.nombre||'').toLowerCase() === q) || d.leads.find(x => String(x.nombre||'').toLowerCase().indexOf(q) !== -1);
+    const l = d.leads.find(x => String(x.nombre||'').toLowerCase() === q);
     if (l && document.activeElement === $('pCliente')) {
       if (l.telefono && !$('pTelefono').value) { prop.telefono = l.telefono; $('pTelefono').value = l.telefono; }
       if (l.ciudad && !$('pUbicacion').value) { prop.ubicacion = l.ciudad; $('pUbicacion').value = l.ciudad; }
@@ -349,7 +365,7 @@ function saveProposal(){
     ciudad: prop.ubicacion, proyecto: prop.proyecto, ubicacion: prop.ubicacion, moneda: prop.moneda,
     cliente_id: prop.clienteId || '',
     items: prop.items.map(it => ({ codigo: it.codigo, descripcion: it.descripcion, cantidad: it.cantidad, unidad: it.unidad, precio: it.precio })),
-    subtotal: t.subtotal, iva: t.iva, total: t.total, notas: prop.especificaciones.slice(0, 500), datos: datos })
+    subtotal: t.subtotal, iva: t.iva, total: t.total, notas: String(prop.especificaciones == null ? '' : prop.especificaciones).slice(0, 500), datos: datos })
     .then(d => {
       if (d && d.ok) {
         prop.savedFolio = d.folio || prop.savedFolio;
@@ -417,7 +433,9 @@ function waNum(tel){
   if (d.length === 12 && d.indexOf('52') === 0) return d;
   if (d.length === 11 && d.charAt(0) === '1') return d;
   if (d.length === 10) return '52' + d;
-  return d;
+  // AUDITORIA 2026-11-07 (B7): longitudes raras generaban wa.me/<basura>;
+  // mejor caer al numero por defecto de Config.
+  return '';
 }
 
 /* Carga perezosa de jsPDF + html2canvas (solo cuando se va a generar PDF) */
@@ -472,7 +490,7 @@ function cortesDePaginaPDF(canvas, pagePx, protegidos){
         const r = protegidos[p];
         if (mejor > r.y0 && mejor < r.y1) {
           if (r.y0 > y + pagePx * 0.3) mejor = r.y0; // cortar justo antes del bloque
-          else mejor = r.y1;                          // o justo despues
+          else mejor = Math.min(r.y1, y + pagePx);  // o justo despues (clamped: nunca exceder la pagina)
         }
       }
       if (mejor <= y) mejor = limite; // seguridad anti-bucle
@@ -495,7 +513,20 @@ async function buildProposalPDF(){
     document.body.appendChild(holder);
   }
   holder.innerHTML = buildProposalHTML();
-  await new Promise(function(r){ setTimeout(r, 250); }); // deja cargar fuentes e imagenes
+  // AUDITORIA 2026-11-07 (B9): esperar a que las imagenes (logo, fotos) carguen
+  // de verdad en vez de una espera fija de 250 ms que dejaba el PDF sin logo.
+  await new Promise(function(res){
+    const imgs = holder.querySelectorAll('img');
+    let pend = imgs.length;
+    if (!pend) return setTimeout(res, 60);
+    const listo = function(){ if (--pend <= 0) res(); };
+    imgs.forEach(function(im){
+      if (im.complete) return listo();
+      im.addEventListener('load', listo, { once: true });
+      im.addEventListener('error', listo, { once: true });
+    });
+    setTimeout(res, 2000); // red de seguridad
+  });
   const canvas = await window.html2canvas(holder.firstElementChild, { scale: 2, backgroundColor: '#ffffff', useCORS: true, logging: false });
   const rootEl = holder.firstElementChild;
   const M = 10, PW = 215.9, PH = 279.4, W = PW - 2 * M, H = PH - 2 * M;

@@ -102,7 +102,10 @@ function enterApp(u){
   $('loginView').classList.add('hidden');
   $('appView').classList.remove('hidden');
   $('userEmail').textContent = 'Sesión: ' + u;
-  loadLeads(); loadQuotes(); loadReviewsAdmin(); loadProducts(); loadBiz(); loadClientes(); loadFijos();
+  // B5 (2026-11-07): loadProducts() eliminado — el cotizador simple esta
+  // archivado y su fetch a products.json (inexistente en admin/) daba 404 en
+  // cada login.
+  loadLeads(); loadQuotes(); loadReviewsAdmin(); loadBiz(); loadClientes(); loadFijos();
   initProposal();
   $('sFecha').value = new Date().toISOString().slice(0,10);
   $('gFecha').value = fLocal();

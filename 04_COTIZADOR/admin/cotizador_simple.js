@@ -67,9 +67,9 @@ function printQuote(){
 let quotesCache = [];
 function loadQuotes(){
   apiGet('quotes').then(data=>{
-    if (!data || !data.ok) { $('quotesTable').innerHTML='<tr><td colspan="6" class="muted">Sin acceso.</td></tr>'; return; }
+    if (!data || !data.ok) { $('quotesTable').innerHTML='<tr><td colspan="7" class="muted">Sin acceso.</td></tr>'; return; }
     quotesCache = data.quotes || [];
-    if (!quotesCache.length) { $('quotesTable').innerHTML='<tr><td colspan="6" class="muted">Aún no hay cotizaciones guardadas.</td></tr>'; return; }
+    if (!quotesCache.length) { $('quotesTable').innerHTML='<tr><td colspan="7" class="muted">Aún no hay cotizaciones guardadas.</td></tr>'; return; }
     $('quotesTable').innerHTML = quotesCache.slice().reverse().map((q,i)=>{
       const rev = quotesCache.length - 1 - i;
       const estado = q.estado || 'Activa';
