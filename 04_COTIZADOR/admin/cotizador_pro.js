@@ -22,7 +22,7 @@ let propTimer = null;
 function initProposal(){
   try {
     const d = JSON.parse(localStorage.getItem('adis_prop_draft') || 'null');
-    if (d && d.items) { prop = Object.assign(defaultProp(), d); migraFotosProyecto_(); }
+    if (d && d.items) { prop = Object.assign(defaultProp(), d); limpiaPlaceholdersFotos_(); }
   } catch (e) {}
   renderTiposChk(); applyPropToForm(); renderItemRows(); renderFotoProy(); renderFotosGrid(); renderProposal();
 }
@@ -33,6 +33,17 @@ function migraFotosProyecto_(){
   while (prop.fotosProyecto.length < 3) prop.fotosProyecto.push({data:null});
   if (prop.fotoProyecto && !prop.fotosProyecto.some(f => f && f.data)) prop.fotosProyecto[0].data = prop.fotoProyecto;
   prop.fotoProyecto = null;
+}
+// AUDITORIA 2026-11-07 (B1): Sheets guarda fotos como texto placeholder
+// '(foto guardada en el borrador local...)'. Si se toma como imagen real, el
+// documento/PDF muestra un icono de imagen rota y el borrador local se
+// sobrescribe con el placeholder (pérdida de las fotos reales).
+function esPlaceholderFoto_(s){ return typeof s === 'string' && s.charAt(0) === '('; }
+function limpiaPlaceholdersFotos_(){
+  migraFotosProyecto_();
+  (prop.fotosProyecto || []).forEach(f => { if (f && esPlaceholderFoto_(f.data)) f.data = null; });
+  (prop.fotos || []).forEach(f => { if (f && esPlaceholderFoto_(f.data)) f.data = null; });
+  if (esPlaceholderFoto_(prop.fotoProyecto)) prop.fotoProyecto = null;
 }
 let __quotaAvisado = false;
 function avisoQuotaDraft_(){
@@ -127,8 +138,8 @@ function renderFotoProy(){
   migraFotosProyecto_();
   const g = $('pFotoProyGrid'); if (!g) return;
   g.innerHTML = prop.fotosProyecto.map((f,i)=>
-    '<div class="photo-slot'+(f.data?' filled':'')+'">' +
-    (f.data ? '<img src="'+f.data+'" alt="Proyecto"><button class="del" onclick="prop.fotosProyecto['+i+'].data=null;renderFotoProy();renderProposal();schedulePropDraft()">✕</button>'
+    '<div class="photo-slot'+(f && f.data?' filled':'')+'">' +
+    (f && f.data ? '<img src="'+f.data+'" alt="Proyecto"><button class="del" onclick="prop.fotosProyecto['+i+'].data=null;renderFotoProy();renderProposal();schedulePropDraft()">✕</button>'
             : '<label class="ph-add" for="pFotoProy'+i+'">📷 Foto '+(i+1)+'<br><span class="muted" style="font-size:0.68rem;">JPG, PNG — se comprime sola</span></label>') +
     '<input type="file" id="pFotoProy'+i+'" accept="image/*" onchange="setFotoProyecto('+i+',this)">' +
     '</div>').join('');
@@ -137,16 +148,16 @@ function renderFotoProy(){
 function setFotoProducto(idx, input){
   const f = input.files && input.files[0];
   if (!f) return;
-  fileToDataURL(f, url => { prop.fotos[idx].data = url; renderFotosGrid(); renderProposal(); schedulePropDraft(); });
+  fileToDataURL(f, url => { if (!prop.fotos[idx]) prop.fotos[idx] = {data:null,desc:''}; prop.fotos[idx].data = url; renderFotosGrid(); renderProposal(); schedulePropDraft(); });
   input.value = '';
 }
 function renderFotosGrid(){
   $('pFotosGrid').innerHTML = prop.fotos.map((f,i)=>
-    '<div class="photo-slot'+(f.data?' filled':'')+'">' +
-    (f.data ? '<img src="'+f.data+'" alt="Foto de producto"><button class="del" onclick="prop.fotos['+i+'].data=null;renderFotosGrid();renderProposal();schedulePropDraft()">✕</button>'
+    '<div class="photo-slot'+(f && f.data?' filled':'')+'">' +
+    (f && f.data ? '<img src="'+f.data+'" alt="Foto de producto"><button class="del" onclick="prop.fotos['+i+'].data=null;renderFotosGrid();renderProposal();schedulePropDraft()">✕</button>'
             : '<label class="ph-add" for="pFoto'+i+'">📷 Foto '+(i+1)+'</label>') +
     '<input type="file" id="pFoto'+i+'" accept="image/*" onchange="setFotoProducto('+i+',this)">' +
-    '<input placeholder="Descripción:" value="'+esc(f.desc)+'" oninput="prop.fotos['+i+'].desc=this.value;scheduleProp()" style="font-size:0.75rem; padding:0.4rem 0.5rem;">' +
+    '<input placeholder="Descripción:" value="'+esc((f && f.desc) || '')+'" oninput="prop.fotos['+i+'].desc=this.value;scheduleProp()" style="font-size:0.75rem; padding:0.4rem 0.5rem;">' +
     '</div>'
   ).join('');
 }
@@ -221,8 +232,10 @@ function renderUtilidad(){
   const c = parseFloat(prop.costo);
   if (!isFinite(c) || c <= 0) { el.textContent = ''; el.className = ''; return; }
   const t = calcTotals();
-  const u = t.total - c;
-  el.textContent = 'Utilidad estimada: ' + fmtMoney(u) + ' ' + prop.moneda + ' (' + (t.total ? Math.round(u / t.total * 100) : 0) + '%)';
+  // AUDITORIA 2026-11-07 (B2): la utilidad se calcula sobre el SUBTOTAL
+  // (sin IVA): el IVA es traslado, no ingreso del negocio.
+  const u = t.subtotal - c;
+  el.textContent = 'Utilidad estimada: ' + fmtMoney(u) + ' ' + prop.moneda + ' (' + (t.subtotal ? Math.round(u / t.subtotal * 100) : 0) + '%)';
   el.className = u >= 0 ? 'gold' : 'stock-alert';
 }
 
@@ -387,6 +400,7 @@ async function descargarPDF(){
 }
 function printProposal(){
   syncFormToProp();
+  if (!(parseFloat(prop.precioFinal) > 0) && !calcTotals().total) { notice('Escribe el precio final de la cotización (sección 03) antes de imprimir.', false); return; }
   $('printArea').innerHTML = buildProposalHTML();
   document.body.classList.add('imprimiendo');
   const limpiar = ()=>document.body.classList.remove('imprimiendo');
@@ -519,6 +533,7 @@ async function buildProposalPDF(){
 }
 async function sendProposalWhatsApp(){
   syncFormToProp();
+  if (!(parseFloat(prop.precioFinal) > 0) && !calcTotals().total) { notice('Escribe el precio final de la cotización (sección 03) antes de enviar.', false); return; }
   const t = calcTotals();
   const dest = waNum(prop.telefono) || CONFIG.WHATSAPP;
   const folio = prop.savedFolio || qpFolio();
@@ -556,16 +571,26 @@ function loadProposalFromQuote(idx){
   const q = quotesCache[idx];
   if (!q || !q.datos) { notice('Esta cotización no tiene datos completos para cargar (guárdala de nuevo con el Cotizador).', false); return; }
   try {
+    // AUDITORIA 2026-11-07 (B1): si la cotización cargada es la MISMA que la del
+    // editor actual, conservar las fotos reales del borrador local (Sheets solo
+    // guarda placeholders; sin esto, cargar borraba las fotos para siempre).
+    const folioPrevio = prop.savedFolio;
+    const prevProy = (prop.fotosProyecto || []).map(f => f && f.data).filter(d => d && !esPlaceholderFoto_(d));
+    const prevProd = (prop.fotos || []).map(f => f && f.data).filter(d => d && !esPlaceholderFoto_(d));
     const d = JSON.parse(q.datos);
     if (!d || !d.items) throw 0;
     prop = Object.assign(defaultProp(), d);
-    migraFotosProyecto_();
+    limpiaPlaceholdersFotos_();
+    if (String(q.folio) === String(folioPrevio)) {
+      (prop.fotosProyecto || []).forEach(f => { if (f && !f.data && prevProy.length) f.data = prevProy.shift(); });
+      (prop.fotos || []).forEach(f => { if (f && !f.data && prevProd.length) f.data = prevProd.shift(); });
+    }
     prop.savedFolio = q.folio || prop.savedFolio;
     prop.savedId = q.id || '';
     prop.clienteId = q.cliente_id || prop.clienteId || '';
     renderTiposChk(); applyPropToForm(); renderItemRows(); renderFotoProy(); renderFotosGrid(); renderProposal(); schedulePropDraft();
     showTab('proposal');
-    notice('Cotización ' + (q.folio || '') + ' cargada en el editor. Las fotos se conservan en el borrador local.');
+    notice('Cotización ' + (q.folio || '') + ' cargada en el editor.');
   } catch (e) { notice('No se pudo leer la cotización guardada.', false); }
 }
 function newProposal(){

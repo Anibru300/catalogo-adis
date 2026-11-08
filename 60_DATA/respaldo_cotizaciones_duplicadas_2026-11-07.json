@@ -1,0 +1,140 @@
+[
+ {
+  "fila_hoja": 3,
+  "cotizacion": {
+   "fecha": "2026-09-06 21:58",
+   "cliente": "Carlo Urbina",
+   "telefono": 4776940272,
+   "ciudad": "Leon Gto.",
+   "items": "",
+   "total": 15000,
+   "notas": "Sin especificaciones",
+   "folio": "ADIS-2026-002",
+   "proyecto": "Remodelacion del cuerto",
+   "ubicacion": "Leon Gto.",
+   "moneda": "MXN",
+   "subtotal": 15000,
+   "iva": 0,
+   "estado": "Activa",
+   "datos": "{\"folio\":\"\",\"savedFolio\":\"\",\"fecha\":\"2026-09-07\",\"cliente\":\"Carlo Urbina\",\"telefono\":\"4776940272\",\"proyecto\":\"Remodelacion del cuerto\",\"ubicacion\":\"Leon Gto.\",\"elaboro\":\"Josías Espinoza · Gerente\",\"vigencia\":1,\"fotoProyecto\":\"(foto guardada en el borrador local del navegador)\",\"tipos\":[],\"otroTipo\":\"Sin especificar\",\"area\":\"Muro principal\",\"materiales\":\"Lambirn. Hojas pvc\",\"descripcion\":\"Remodelacion completa del cliente.\",\"moneda\":\"MXN\",\"costo\":\"7000\",\"precioFinal\":\"15000\",\"items\":[],\"incluirIva\":true,\"tasaIva\":16,\"fotos\":[{\"data\":\"(foto en borrador local)\",\"desc\":\"\"},{\"data\":\"(foto en borrador local)\",\"desc\":\"\"},{\"data\":\"(foto en borrador local)\",\"desc\":\"\"}],\"especificaciones\":\"Sin especificaciones\",\"formaPago\":\"50% al iniciar la instalación · 50% al finalizar el proyecto, contra entrega.\",\"tiempoEntrega\":\"13\",\"alcanceExtra\":\"La propuesta contempla exclusivamente lo especificado. Modificaciones o trabajos adicionales se autorizan previamente y se cotizan por separado.\",\"incluirGarantia\":true,\"incluirLogistica\":true,\"incluirAceptacion\":true,\"clienteId\":\"\"}",
+   "id": "e807fc3e",
+   "usuario": "Adis",
+   "cliente_id": ""
+  }
+ },
+ {
+  "fila_hoja": 5,
+  "cotizacion": {
+   "fecha": "2026-09-07 20:22",
+   "cliente": "karenRamirez",
+   "telefono": 6311912233,
+   "ciudad": "nogales sonora",
+   "items": "",
+   "total": 20000,
+   "notas": "5x5 lambrin",
+   "folio": "ADIS-2026-003",
+   "proyecto": "Salon de uñas",
+   "ubicacion": "nogales sonora",
+   "moneda": "USD",
+   "subtotal": 20000,
+   "iva": 0,
+   "estado": "Activa",
+   "datos": "{\"folio\":\"\",\"savedFolio\":\"\",\"fecha\":\"2026-09-08\",\"cliente\":\"karenRamirez\",\"telefono\":\"6311912233\",\"proyecto\":\"Salon de uñas\",\"ubicacion\":\"nogales sonora\",\"elaboro\":\"Josías Espinoza · Gerente\",\"vigencia\":15,\"fotoProyecto\":\"(foto guardada en el borrador local del navegador)\",\"tipos\":[\"Muro decorativo\"],\"otroTipo\":\"\",\"area\":\"pared salon\",\"materiales\":\"Hoja pvc tipo marmol,lambrin, luz led\",\"descripcion\":\"prueba\",\"moneda\":\"USD\",\"costo\":\"\",\"precioFinal\":\"20000\",\"items\":[],\"incluirIva\":true,\"tasaIva\":16,\"fotos\":[{\"data\":\"(foto en borrador local)\",\"desc\":\"\"},{\"data\":\"\",\"desc\":\"\"},{\"data\":\"\",\"desc\":\"\"}],\"especificaciones\":\"5x5 lambrin\",\"formaPago\":\"50% al iniciar la instalación · 50% al finalizar el proyecto, contra entrega.\",\"tiempoEntrega\":\"2\",\"alcanceExtra\":\"La propuesta contempla exclusivamente lo especificado. Modificaciones o trabajos adicionales se autorizan previamente y se cotizan por separado.\",\"incluirGarantia\":false,\"incluirLogistica\":false,\"incluirAceptacion\":false,\"clienteId\":\"\"}",
+   "id": "0532e1b6",
+   "usuario": "Adis",
+   "cliente_id": ""
+  }
+ },
+ {
+  "fila_hoja": 6,
+  "cotizacion": {
+   "fecha": "2026-09-07 20:32",
+   "cliente": "karenRamirez",
+   "telefono": 6311912233,
+   "ciudad": "nogales sonora",
+   "items": "",
+   "total": 20000,
+   "notas": "5x5 lambrin",
+   "folio": "ADIS-2026-003",
+   "proyecto": "Salon de uñas",
+   "ubicacion": "nogales sonora",
+   "moneda": "USD",
+   "subtotal": 20000,
+   "iva": 0,
+   "estado": "Aprobada",
+   "datos": "{\"folio\":\"\",\"savedFolio\":\"ADIS-2026-003\",\"fecha\":\"2026-09-08\",\"cliente\":\"karenRamirez\",\"telefono\":\"6311912233\",\"proyecto\":\"Salon de uñas\",\"ubicacion\":\"nogales sonora\",\"elaboro\":\"Josías Espinoza · Gerente\",\"vigencia\":15,\"fotoProyecto\":\"(foto guardada en el borrador local del navegador)\",\"tipos\":[\"Muro decorativo\"],\"otroTipo\":\"\",\"area\":\"pared salon\",\"materiales\":\"Hoja pvc tipo marmol,lambrin, luz led\",\"descripcion\":\"prueba\",\"moneda\":\"USD\",\"costo\":\"\",\"precioFinal\":\"20000\",\"items\":[],\"incluirIva\":true,\"tasaIva\":16,\"fotos\":[{\"data\":\"(foto en borrador local)\",\"desc\":\"\"},{\"data\":\"\",\"desc\":\"\"},{\"data\":\"\",\"desc\":\"\"}],\"especificaciones\":\"5x5 lambrin\",\"formaPago\":\"50% al iniciar la instalación · 50% al finalizar el proyecto, contra entrega.\",\"tiempoEntrega\":\"2\",\"alcanceExtra\":\"La propuesta contempla exclusivamente lo especificado. Modificaciones o trabajos adicionales se autorizan previamente y se cotizan por separado.\",\"incluirGarantia\":true,\"incluirLogistica\":true,\"incluirAceptacion\":true,\"clienteId\":\"\"}",
+   "id": "59b1c997",
+   "usuario": "Adis",
+   "cliente_id": ""
+  }
+ },
+ {
+  "fila_hoja": 7,
+  "cotizacion": {
+   "fecha": "2026-09-07 20:39",
+   "cliente": "karenRamirez",
+   "telefono": 6311912233,
+   "ciudad": "nogales sonora",
+   "items": "",
+   "total": 20000,
+   "notas": "5x5 lambrin",
+   "folio": "ADIS-2026-003",
+   "proyecto": "Salon de uñas",
+   "ubicacion": "nogales sonora",
+   "moneda": "USD",
+   "subtotal": 20000,
+   "iva": 0,
+   "estado": "Activa",
+   "datos": "{\"folio\":\"\",\"savedFolio\":\"ADIS-2026-003\",\"fecha\":\"2026-09-08\",\"cliente\":\"karenRamirez\",\"telefono\":\"6311912233\",\"proyecto\":\"Salon de uñas\",\"ubicacion\":\"nogales sonora\",\"elaboro\":\"Josías Espinoza · Gerente\",\"vigencia\":15,\"fotoProyecto\":\"(foto guardada en el borrador local del navegador)\",\"tipos\":[\"Muro decorativo\"],\"otroTipo\":\"\",\"area\":\"pared salon\",\"materiales\":\"Hoja pvc tipo marmol,lambrin, luz led\",\"descripcion\":\"prueba\",\"moneda\":\"USD\",\"costo\":\"\",\"precioFinal\":\"20000\",\"items\":[],\"incluirIva\":true,\"tasaIva\":16,\"fotos\":[{\"data\":\"(foto en borrador local)\",\"desc\":\"\"},{\"data\":\"\",\"desc\":\"\"},{\"data\":\"\",\"desc\":\"\"}],\"especificaciones\":\"5x5 lambrin\",\"formaPago\":\"50% al iniciar la instalación · 50% al finalizar el proyecto, contra entrega.\",\"tiempoEntrega\":\"2\",\"alcanceExtra\":\"La propuesta contempla exclusivamente lo especificado. Modificaciones o trabajos adicionales se autorizan previamente y se cotizan por separado.\",\"incluirGarantia\":true,\"incluirLogistica\":true,\"incluirAceptacion\":true,\"clienteId\":\"\"}",
+   "id": "d9917c5b",
+   "usuario": "Adis",
+   "cliente_id": ""
+  }
+ },
+ {
+  "fila_hoja": 11,
+  "cotizacion": {
+   "fecha": "2026-11-07 10:53",
+   "cliente": "Jesus othon",
+   "telefono": "520 332 0144",
+   "ciudad": "Tucson,Az",
+   "items": "",
+   "total": 2100,
+   "notas": "Mueble flotante madera de melamina mdf, dimensiones 8ft x 1 ft altura x 1 ft profundidad.  ",
+   "folio": "ADIS-2026-006",
+   "proyecto": "Remodelacion centro tv",
+   "ubicacion": "Tucson,Az",
+   "moneda": "USD",
+   "subtotal": 2100,
+   "iva": 0,
+   "estado": "Activa",
+   "datos": "{\"folio\":\"\",\"savedFolio\":\"\",\"fecha\":\"2026-10-08\",\"cliente\":\"Jesus othon\",\"telefono\":\"520 332 0144\",\"proyecto\":\"Remodelacion centro tv\",\"ubicacion\":\"Tucson,Az\",\"elaboro\":\"Josías Espinoza · Gerente\",\"vigencia\":30,\"fotoProyecto\":\"(foto guardada en el borrador local del navegador)\",\"tipos\":[\"Centro de TV decorativo\"],\"otroTipo\":\"\",\"area\":\"Muro principal de sala\",\"materiales\":\"Placa pvc tipo marmol,lambrin,repisas, mueble flotante\",\"descripcion\":\"Se instalará 2 placas pvc estilo marmol,a ambos lados lambrin decorativo, repisas y mueble flotante.\",\"moneda\":\"USD\",\"costo\":\"\",\"precioFinal\":\"2100\",\"items\":[],\"incluirIva\":true,\"tasaIva\":16,\"fotos\":[{\"data\":\"(foto en borrador local)\",\"desc\":\"Placa pvc estilo marmol (golden.)\"},{\"data\":\"(foto en borrador local)\",\"desc\":\"Lambrin decorativo (Brazilia(\"},{\"data\":\"(foto en borrador local)\",\"desc\":\"Repizas flotantes\"},{\"data\":\"(foto en borrador local)\",\"desc\":\"Mueble flotante\"}],\"especificaciones\":\"Mueble flotante madera de melamina mdf, dimensiones 8ft x 1 ft altura x 1 ft profundidad.  \",\"formaPago\":\"600 dls anticipo para carpintería, 500 1er día de trabajo, 1000 al entregar \",\"tiempoEntrega\":\"3\",\"alcanceExtra\":\"La propuesta contempla exclusivamente lo especificado. Modificaciones o trabajos adicionales se autorizan previamente y se cotizan por separado.\",\"incluirGarantia\":true,\"incluirLogistica\":true,\"incluirAceptacion\":true,\"clienteId\":\"\"}",
+   "id": "52df3e2a",
+   "usuario": "Adis",
+   "cliente_id": ""
+  }
+ },
+ {
+  "fila_hoja": 12,
+  "cotizacion": {
+   "fecha": "2026-11-07 10:56",
+   "cliente": "Jesus othon",
+   "telefono": "520 332 0144",
+   "ciudad": "Tucson,Az",
+   "items": "",
+   "total": 2100,
+   "notas": "Mueble flotante madera de melamina mdf, dimensiones 8ft x 1 ft altura x 1 ft profundidad.  ",
+   "folio": "ADIS-2026-006",
+   "proyecto": "Remodelacion centro tv",
+   "ubicacion": "Tucson,Az",
+   "moneda": "USD",
+   "subtotal": 2100,
+   "iva": 0,
+   "estado": "Activa",
+   "datos": "{\"folio\":\"\",\"savedFolio\":\"ADIS-2026-006\",\"fecha\":\"2026-10-08\",\"cliente\":\"Jesus othon\",\"telefono\":\"520 332 0144\",\"proyecto\":\"Remodelacion centro tv\",\"ubicacion\":\"Tucson,Az\",\"elaboro\":\"Josías Espinoza · Gerente\",\"vigencia\":30,\"fotoProyecto\":\"(foto guardada en el borrador local del navegador)\",\"tipos\":[\"Centro de TV decorativo\"],\"otroTipo\":\"\",\"area\":\"Muro principal de sala\",\"materiales\":\"Placa pvc tipo marmol,lambrin,repisas, mueble flotante\",\"descripcion\":\"Se instalará 2 placas pvc estilo marmol,a ambos lados lambrin decorativo, repisas y mueble flotante.\",\"moneda\":\"USD\",\"costo\":\"\",\"precioFinal\":\"2100\",\"items\":[],\"incluirIva\":true,\"tasaIva\":16,\"fotos\":[{\"data\":\"(foto en borrador local)\",\"desc\":\"Placa pvc estilo marmol (golden.)\"},{\"data\":\"(foto en borrador local)\",\"desc\":\"Lambrin decorativo (Brazilia(\"},{\"data\":\"(foto en borrador local)\",\"desc\":\"Repizas flotantes\"},{\"data\":\"(foto en borrador local)\",\"desc\":\"Mueble flotante\"}],\"especificaciones\":\"Mueble flotante madera de melamina mdf, dimensiones 8ft x 1 ft altura x 1 ft profundidad.  \",\"formaPago\":\"600 dls anticipo para carpintería, 500 1er día de trabajo, 1000 al entregar \",\"tiempoEntrega\":\"3\",\"alcanceExtra\":\"La propuesta contempla exclusivamente lo especificado. Modificaciones o trabajos adicionales se autorizan previamente y se cotizan por separado.\",\"incluirGarantia\":true,\"incluirLogistica\":true,\"incluirAceptacion\":true,\"clienteId\":\"\"}",
+   "id": "7fc1a835",
+   "usuario": "Adis",
+   "cliente_id": ""
+  }
+ }
+]

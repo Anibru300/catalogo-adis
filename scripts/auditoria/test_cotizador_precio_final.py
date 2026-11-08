@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""Prueba puntual: cotizador con precio final unico + fix de foco en costo."""
-import sys, pathlib, threading, functools, http.server
+"""Prueba puntual: cotizador con precio final unico + IVA + fotos + fixes auditoria 2026-11-07."""
+import sys, json, pathlib, threading, functools, http.server
 from playwright.sync_api import sync_playwright
 
 ADMIN = pathlib.Path(__file__).resolve().parents[2] / 'public'
@@ -161,6 +161,60 @@ with sync_playwright() as p:
       return prop.fotosProyecto[0].data === 'data:image/jpeg;base64,xxx' && prop.fotoProyecto === null;
     }''')
     print(('  PASS ' if migro else '  FAIL ') + 'migracion foto unica -> slot 1')
+
+    # 15. AUDITORIA B1: placeholders de Sheets NO se toman como fotos (ni rotas ni pisando el borrador)
+    b1 = page.evaluate('''() => {
+      localStorage.removeItem('adis_prop_draft');
+      prop = defaultProp();
+      prop.fotosProyecto = [{data:'(foto guardada en el borrador local del navegador)'},{data:null},{data:null}];
+      prop.fotos = [{data:'(foto en borrador local)', desc:'x'},{data:null,desc:''},{data:null,desc:''}];
+      limpiaPlaceholdersFotos_();
+      const rotasEnDoc = buildProposalHTML().indexOf('src="(foto') !== -1;
+      // simular el draft: guardar y recargar no debe resucitar placeholders
+      localStorage.setItem('adis_prop_draft', JSON.stringify(prop));
+      const d2 = JSON.parse(localStorage.getItem('adis_prop_draft'));
+      prop = Object.assign(defaultProp(), d2); limpiaPlaceholdersFotos_();
+      return { p0: prop.fotosProyecto[0].data, f0: prop.fotos[0].data, rotas: rotasEnDoc };
+    }''')
+    print(('  PASS ' if b1['p0'] is None and b1['f0'] is None and not b1['rotas'] else '  FAIL ') + 'B1 placeholders anulados: ' + json.dumps(b1))
+
+    # 16. AUDITORIA B1b: cargar la MISMA cotización conserva las fotos reales del borrador
+    b1b = page.evaluate('''async () => {
+      const px = 'data:image/jpeg;base64,QUJD';
+      prop = defaultProp();
+      prop.savedFolio = 'ADIS-2026-999';
+      prop.fotosProyecto = [{data:px},{data:null},{data:null}];
+      quotesCache[0] = Object.assign({}, quotesCache[0], { folio:'ADIS-2026-999', id:'x1',
+        datos: JSON.stringify(Object.assign(defaultProp(), { items:[], fotosProyecto:[{data:'(foto guardada en el borrador local del navegador)'}] })) });
+      loadProposalFromQuote(0);
+      await new Promise(r=>setTimeout(r,100));
+      return prop.fotosProyecto[0].data;
+    }''')
+    print(('  PASS ' if b1b == 'data:image/jpeg;base64,QUJD' else '  FAIL ') + 'B1b fotos reales preservadas al cargar: ' + str(b1b)[:40])
+
+    # 17. AUDITORIA B2: utilidad sobre SUBTOTAL (sin IVA): 1000 + IVA, costo 800 -> $200 (20%)
+    page.fill('#pPrecioFinal', '1000')
+    page.fill('#pCosto', '800')
+    page.evaluate('() => { prop.precioFinal="1000"; }')
+    page.check('#pIncluirIva')
+    page.evaluate('() => { syncFormToProp(); updateTotalsUI(); }')
+    util = page.text_content('#pUtil') or ''
+    print(('  PASS ' if '$200.00' in util and '20%' in util else '  FAIL ') + 'B2 utilidad sin IVA: ' + util)
+
+    # 18. AUDITORIA B3: imprimir/WhatsApp bloqueados con total 0
+    b3 = page.evaluate('''() => {
+      prop = defaultProp(); prop.items = []; applyPropToForm();
+      let avisos = 0; const old = window.notice;
+      try { printProposal(); } catch(e) {}
+      const docEnPrint = document.getElementById('printArea').innerHTML.length > 50 && prop.precioFinal === '';
+      let waAbierto = false;
+      window.open = function(){ waAbierto = true; return null; };
+      return new Promise(res => {
+        sendProposalWhatsApp().then(()=>res({ docEnPrint, waAbierto })).catch(()=>res({ docEnPrint, waAbierto }));
+        setTimeout(()=>res({ docEnPrint, waAbierto }), 1500);
+      });
+    }''')
+    print(('  PASS ' if not b3['docEnPrint'] and not b3['waAbierto'] else '  FAIL ') + 'B3 total 0 bloqueado (print/whatsapp): ' + json.dumps(b3))
 
     browser.close()
 
