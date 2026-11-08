@@ -66,3 +66,18 @@
 
 ## Commits de la jornada
 `d62a47d` Etapa 2 completa: backend + panel + sandbox 28/28 + respaldos + docs.
+`fc13d89` Fix cotizador (IVA con/sin, fotos 1→3 proyecto / 12 producto, re-guardar
+edita en vez de duplicar) + PDF revisado visualmente.
+`8df02b0` Paginación PDF: cada foto viaja con su leyenda (nada partido/encimado).
+`daf8877` Auditoría minuciosa: fix placeholders de fotos (B1), utilidad sin IVA (B2),
+validación imprimir/WhatsApp (B3) + limpieza de 7 duplicados históricos en
+producción (respaldo 60_DATA/respaldo_cotizaciones_duplicadas_2026-11-07.json).
+`10d72cb` Cierre de auditoría BAJA (B4-B10): colspan, 404 login, debounce cliente,
+waNum, paginación/logo PDF, impresión foto-a-foto. Suite 24/24 PASS.
+
+## 6. CIERRE DE JORNADA (verificación final 2026-11-07)
+- Sandbox: Etapa 1 **40/40** · Etapa 2 **28/28** · cotizador **11/11** PASS.
+- Producción: `control_ie` **9/9** (conciliación oct-2026 exacta) · suite panel
+  Playwright **24/24 PASS, 0 errores JS** · PDF verificado visualmente.
+- Repo: sin cambios pendientes, todo commiteado y pusheado a `main`.
+- Historial de cotizaciones: 5 folios únicos, 0 duplicados, estados correctos.
