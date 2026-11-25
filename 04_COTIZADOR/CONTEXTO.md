@@ -96,6 +96,15 @@
   `syncFormToProp` L1723, `descargarPDF` L1744 + `buildProposalPDF` L1842
   (html2canvas + jsPDF, cortes keep-together), `printProposal` L1756,
   `sendProposalWhatsApp` L1886, `loadProposalFromQuote` L1921, `newProposal` L1935.
+- **PDF directo desde el historial (2026-11-25)**: cada fila del tab `quotes`
+  tiene botones 👁️ Ver / ⬇️ PDF / ✏️ Editar (`loadQuotes` en
+  `cotizador_simple.js`). La lógica vive en `cotizador_pro.js`:
+  `propDesdeQuote(q)` (helper puro que construye `prop` desde la fila SIN tocar
+  la UI ni el editor; reutilizado por `loadProposalFromQuote`) y
+  `pdfDesdeHistorial(rev, modo)` ('ver' abre pestaña nueva con `<embed>` del
+  blob; 'descargar' hace `doc.save`). El editor visible y su borrador NO se
+  modifican (prop se restaura en `finally`). Prueba:
+  `scripts/auditoria/test_pdf_historial.py` (8/8).
 - **Cotizador simple** (historial): `quoteData` L1354, `saveQuote` L1358,
   `quoteText` L1363, `sendQuoteWhatsApp` L1372, `printQuote` L1373, `loadQuotes`
   L1386, `aprobarQuote` L1405.
@@ -114,6 +123,7 @@ por WhatsApp a terceros (es el propósito).
 | `admin/index.html` L1354–1430 (simple), L1419–1941 (profesional) | ambos cotizadores |
 | `admin/apps-script.gs` L79, L812–835, L1399–1473 | esquema + handlers |
 | `scripts/auditoria/test_cotizador_precio_final.py` | precio final único + IVA + fotos (suite vigente) |
+| `scripts/auditoria/test_pdf_historial.py` | PDF directo desde historial: botones, editor intacto (8/8) |
 | `scripts/auditoria/harness_node/run_cotizador_fix.js` | re-guardar no duplica (sandbox Node) |
 | ~~`scripts/auditoria/test_flujo_cotizador.py`~~ | OBSOLETO 2026-11-07 (tabla de partidas eliminada) |
 | `scripts/auditoria/test_fase3_api.py` | `quote`/`set_estado_quote` en vivo |

@@ -2345,7 +2345,9 @@ function loadQuotes(){
       return '<tr><td>'+esc(String(q.fecha||'').slice(0,10))+'</td><td class="gold">'+esc(q.folio||'—')+'</td><td>'+esc(q.cliente)+'</td>' +
         '<td>'+esc(q.telefono)+'</td><td class="gold">'+esc(q.total)+'</td>' +
         '<td>'+(q.id ? '<span class="muted">'+esc(estado)+'</span>' : '<span class="muted">'+(q.datos?'Activa':'simple')+'</span>')+'</td>' +
-        '<td style="white-space:nowrap;">'+(q.datos ? '<button class="btn btn-sm" onclick="loadProposalFromQuote('+rev+')">📂 Cargar</button> ' : '')+
+        '<td style="white-space:nowrap;">'+(q.datos ? '<button class="btn btn-sm" title="Ver PDF" onclick="pdfDesdeHistorial('+rev+',\'ver\')">👁️</button> ' : '')+
+        (q.datos ? '<button class="btn btn-sm" title="Descargar PDF" onclick="pdfDesdeHistorial('+rev+',\'descargar\')">⬇️ PDF</button> ' : '')+
+        (q.datos ? '<button class="btn btn-sm" title="Editar cotización (carga el editor)" onclick="loadProposalFromQuote('+rev+')">✏️ Editar</button> ' : '')+
         (puedeAprobar ? '<button class="btn btn-sm" onclick="aprobarQuote(\''+q.id+'\')">✔ Aprobar</button> ' : '')+
         (puedeProyecto ? '<button class="btn btn-sm" onclick="crearProyectoDesdeQuote(\''+q.id+'\')">🏗️ Proyecto</button>' : '')+'</td></tr>';
     }).join('');
@@ -2959,31 +2961,80 @@ async function sendProposalWhatsApp(){
   }
   window.open('https://wa.me/' + dest + '?text=' + encodeURIComponent(txt), '_blank');
 }
+/* Construye el objeto prop desde una fila del historial SIN tocar la UI.
+   AUDITORIA 2026-11-07 (B1): si la cotización cargada es la MISMA que la del
+   editor actual, conservar las fotos reales del borrador local (Sheets solo
+   guarda placeholders; sin esto, cargar borraba las fotos para siempre). */
+function propDesdeQuote(q){
+  const folioPrevio = prop.savedFolio;
+  const prevProy = (prop.fotosProyecto || []).map(f => f && f.data).filter(d => d && !esPlaceholderFoto_(d));
+  const prevProd = (prop.fotos || []).map(f => f && f.data).filter(d => d && !esPlaceholderFoto_(d));
+  const d = JSON.parse(q.datos);
+  if (!d || !d.items) return null;
+  const nueva = Object.assign(defaultProp(), d);
+  const vieja = prop;
+  prop = nueva; // limpiaPlaceholdersFotos_ opera sobre el global
+  limpiaPlaceholdersFotos_();
+  prop = vieja;
+  if (String(q.folio) === String(folioPrevio)) {
+    (nueva.fotosProyecto || []).forEach(f => { if (f && !f.data && prevProy.length) f.data = prevProy.shift(); });
+    (nueva.fotos || []).forEach(f => { if (f && !f.data && prevProd.length) f.data = prevProd.shift(); });
+  }
+  nueva.savedFolio = q.folio || nueva.savedFolio;
+  nueva.savedId = q.id || '';
+  nueva.clienteId = q.cliente_id || nueva.clienteId || '';
+  return nueva;
+}
 function loadProposalFromQuote(idx){
   const q = quotesCache[idx];
   if (!q || !q.datos) { notice('Esta cotización no tiene datos completos para cargar (guárdala de nuevo con el Cotizador).', false); return; }
   try {
-    // AUDITORIA 2026-11-07 (B1): si la cotización cargada es la MISMA que la del
-    // editor actual, conservar las fotos reales del borrador local (Sheets solo
-    // guarda placeholders; sin esto, cargar borraba las fotos para siempre).
-    const folioPrevio = prop.savedFolio;
-    const prevProy = (prop.fotosProyecto || []).map(f => f && f.data).filter(d => d && !esPlaceholderFoto_(d));
-    const prevProd = (prop.fotos || []).map(f => f && f.data).filter(d => d && !esPlaceholderFoto_(d));
-    const d = JSON.parse(q.datos);
-    if (!d || !d.items) throw 0;
-    prop = Object.assign(defaultProp(), d);
-    limpiaPlaceholdersFotos_();
-    if (String(q.folio) === String(folioPrevio)) {
-      (prop.fotosProyecto || []).forEach(f => { if (f && !f.data && prevProy.length) f.data = prevProy.shift(); });
-      (prop.fotos || []).forEach(f => { if (f && !f.data && prevProd.length) f.data = prevProd.shift(); });
-    }
-    prop.savedFolio = q.folio || prop.savedFolio;
-    prop.savedId = q.id || '';
-    prop.clienteId = q.cliente_id || prop.clienteId || '';
+    const nueva = propDesdeQuote(q);
+    if (!nueva) throw 0;
+    prop = nueva;
     renderTiposChk(); applyPropToForm(); renderItemRows(); renderFotoProy(); renderFotosGrid(); renderProposal(); schedulePropDraft();
     showTab('proposal');
     notice('Cotización ' + (q.folio || '') + ' cargada en el editor.');
   } catch (e) { notice('No se pudo leer la cotización guardada.', false); }
+}
+/* PDF directo desde el historial: genera el documento con los datos guardados
+   sin cambiar de pestaña ni tocar el borrador/editor visible.
+   modo: 'ver' (pestaña nueva) | 'descargar'. */
+async function pdfDesdeHistorial(rev, modo){
+  const q = quotesCache[rev];
+  if (!q || !q.datos) { notice('Esta cotización no tiene datos completos para generar PDF (guárdala de nuevo con el Cotizador).', false); return; }
+  const prevProp = prop;
+  let ventana = null;
+  if (modo === 'ver') {
+    ventana = window.open('about:blank', '_blank');
+    if (!ventana) { notice('El navegador bloqueó la pestaña nueva. Permite pop-ups para este sitio o usa “Descargar PDF”.', false); return; }
+  }
+  try {
+    const nueva = propDesdeQuote(q);
+    if (!nueva) throw new Error('sin datos');
+    prop = nueva;
+    if (!(parseFloat(prop.precioFinal) > 0) && !calcTotals().total) throw new Error('sin total');
+    await cargarPdfLibs();
+    const doc = await buildProposalPDF();
+    if (modo === 'ver') {
+      if (ventana.closed) { notice('La pestaña se cerró antes de terminar; usa “Descargar PDF”.', false); return; }
+      const url = doc.output('bloburl');
+      ventana.document.open();
+      ventana.document.write('<!doctype html><html><head><meta charset="utf-8"><title>' + esc(q.folio || 'Cotización') + ' — ADIS</title></head>' +
+        '<body style="margin:0;height:100vh;"><embed src="' + url + '" type="application/pdf" width="100%" height="100%"></body></html>');
+      ventana.document.close();
+      notice('PDF ' + (q.folio || '') + ' abierto en pestaña nueva.', true);
+    } else {
+      doc.save('Cotizacion-' + String(q.folio || '').replace(/[^A-Za-z0-9-]/g, '') + '.pdf');
+      notice('PDF ' + (q.folio || '') + ' descargado.', true);
+    }
+  } catch (e) {
+    if (ventana) ventana.close();
+    notice('No se pudo generar el PDF (revisa tu conexión).', false);
+    logCliente('error', 'pdf_historial', String((e && e.message) || e).slice(0, 150));
+  } finally {
+    prop = prevProp; // el editor visible y su borrador no se tocan
+  }
 }
 function newProposal(){
   if (!confirma('newprop', 'Empezar una cotización nueva (se limpia el formulario; lo guardado en Sheets no se toca).')) return;

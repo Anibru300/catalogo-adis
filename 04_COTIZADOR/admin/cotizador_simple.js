@@ -78,7 +78,9 @@ function loadQuotes(){
       return '<tr><td>'+esc(String(q.fecha||'').slice(0,10))+'</td><td class="gold">'+esc(q.folio||'—')+'</td><td>'+esc(q.cliente)+'</td>' +
         '<td>'+esc(q.telefono)+'</td><td class="gold">'+esc(q.total)+'</td>' +
         '<td>'+(q.id ? '<span class="muted">'+esc(estado)+'</span>' : '<span class="muted">'+(q.datos?'Activa':'simple')+'</span>')+'</td>' +
-        '<td style="white-space:nowrap;">'+(q.datos ? '<button class="btn btn-sm" onclick="loadProposalFromQuote('+rev+')">📂 Cargar</button> ' : '')+
+        '<td style="white-space:nowrap;">'+(q.datos ? '<button class="btn btn-sm" title="Ver PDF" onclick="pdfDesdeHistorial('+rev+',\'ver\')">👁️</button> ' : '')+
+        (q.datos ? '<button class="btn btn-sm" title="Descargar PDF" onclick="pdfDesdeHistorial('+rev+',\'descargar\')">⬇️ PDF</button> ' : '')+
+        (q.datos ? '<button class="btn btn-sm" title="Editar cotización (carga el editor)" onclick="loadProposalFromQuote('+rev+')">✏️ Editar</button> ' : '')+
         (puedeAprobar ? '<button class="btn btn-sm" onclick="aprobarQuote(\''+q.id+'\')">✔ Aprobar</button> ' : '')+
         (puedeProyecto ? '<button class="btn btn-sm" onclick="crearProyectoDesdeQuote(\''+q.id+'\')">🏗️ Proyecto</button>' : '')+'</td></tr>';
     }).join('');
