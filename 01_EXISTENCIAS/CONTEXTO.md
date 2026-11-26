@@ -54,6 +54,10 @@
 6. Movimientos son histórico protegido: no se borran, no están en HOJAS_BORRABLES.
 7. Productos y almacenes usan **baja lógica** (`estado/activo = no`), no borrado físico.
 8. Columnas nuevas SIEMPRE al final del ENC_ (migración aditiva).
+9. **Traspaso entre almacenes (2026-11-25)**: solo vía endpoint `traspaso` — UN lock,
+   pre-validación todo-o-nada en origen, folio TRA- compartido por el par
+   salida+entrada (`doc_tipo=TRASPASO`), compensación inversa si falla a mitad
+   (patrón VENTA). El traspaso NO modifica el último costo del producto.
 
 ## API / BACKEND (`apps-script.gs`)
 
@@ -68,6 +72,7 @@
 | `delete_product` / `restore_product` | POST | Baja/alta lógica |
 | `save_almacen` / `delete_almacen` | POST | CRUD almacenes (baja lógica) |
 | `movimiento` | POST | Entrada/salida/ajuste 1 producto **o lote** `items[]` (máx 100). Payload: fecha (no futura), referencia, proveedor, moneda, costo_unit, proyecto_id, notas |
+| `traspaso` | POST | **(2026-11-25)** Traspaso multi-producto entre almacenes: `{almacen_origen_id, almacen_destino_id, fecha?, notas?, items:[{producto_id, cantidad}]}` → folio TRA-, par salida+entrada por partida con `doc_tipo=TRASPASO`, todo-o-nada (pre-valida stock en origen) + compensación ante error. NO cambia costos. Respuesta: `{ok, folio, stock_nuevo (posterior en destino), alertas}` |
 | `import_productos` | POST | Migración masiva con reset opcional (destructivo) |
 
 - **Errores propios**: `STOCK_INSUFICIENTE`, `TIPO_MOVIMIENTO_INVALIDO`,
@@ -87,6 +92,13 @@
   `searchMovProducts` L2386, `renderInventory` L2008, `loadProductHistory` L2091,
   `renderMovs/renderMovFiltered` L2119/2149, `movCSV` L2161, `printMovs` L2176,
   `showPricesForm` L2197, `savePrices` L2229, `showProductForm` L2239, `saveAdjust` L2345.
+- **Traspasos (2026-11-25)**: botón "⇄ Traspaso" (toolbar inventory) →
+  `showTraspasoForm` (multi-producto: `searchTraProducts` solo muestra productos
+  con existencia en el origen, `renderTraItems` con disponible por fila,
+  `saveTraspaso` = 1 POST). El traslado rápido por chip de almacén
+  (`transferForm`/`applyTransfer`) usa el MISMO endpoint (antes: 2 POSTs
+  no atómicos). Historial muestra `doc_tipo=TRASPASO` como "🔀 TRA-…"
+  (`movDocTxt`/`movCSV`).
 - **Estados**: cache `movsCache`, `priceRowsCache`; filtros del historial en cliente.
 
 ## PERMISOS
@@ -125,6 +137,10 @@
 - `python scripts/auditoria/test_fase1_api.py` (API, tras redeploy).
 - `python scripts/auditoria/test_movimientos_ui.py` (Playwright, backend simulado).
 - `python scripts/auditoria/test_movimientos_lote_api.py` (API en vivo).
+- `python scripts/auditoria/test_traspaso_api.py` (API en vivo; auto-skip si el
+  backend aún no tiene el endpoint; usa almacenes TEST aislados).
+- `python scripts/auditoria/test_traspaso_ui.py` (Playwright, backend simulado:
+  formulario, validaciones, payload, chip, historial 🔀).
 - Casos críticos: salida que excede stock (todo intacto), fecha futura rechazada,
   entrada con costo actualiza costo, lote con proyecto agrupa por folio.
 - Tras modificar: correr las 3 suites + `test_fase0_regresion.py` (19 pruebas del panel).

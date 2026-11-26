@@ -162,7 +162,7 @@ with sync_playwright() as p:
     page.wait_for_timeout(1200)
 
     page.evaluate('''() => { const g = document.querySelector('.tab[data-tab="inventory"]').closest('details.mgroup'); if (g) g.open = true; }''')
-    page.click('.tab:has-text("Entrada de material")')
+    page.click('.tab:has-text("Movimiento de material")')  # menu renombrado 2026-10-25 (antes "Entrada de material")
     page.wait_for_selector('#mFecha', timeout=5000)
     reg('formulario de entrada abierto (fecha/almacen/proveedor/ref)', True)
     reg('entrada: sin selector de proyecto', page.locator('#mProy').count() == 0)
@@ -199,7 +199,9 @@ with sync_playwright() as p:
 
     # ---------- salida con proyecto ----------
     page.evaluate('''() => { const g = document.querySelector('.tab[data-tab="inventory"]').closest('details.mgroup'); if (g) g.open = true; }''')
-    page.click('.tab:has-text("Salida de material")')
+    page.click('.tab:has-text("Movimiento de material")')  # un solo menu; el tipo se elige en #mTipoMov
+    page.wait_for_selector('#mTipoMov', timeout=5000)
+    page.select_option('#mTipoMov', 'salida')
     page.wait_for_selector('#mProy', timeout=5000)
     reg('formulario de salida: con selector de proyecto', page.locator('#mProy').count() == 1)
     reg('salida: sin selector de proveedor', page.locator('#mProv').count() == 0)

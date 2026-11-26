@@ -1753,6 +1753,84 @@ function doPostInterno(data) {
     return json({ ok: true, stock_nuevo: stockNuevo, lote: loteId, alertas: alertasMov });
   });
 
+  /* ---------- Traspaso entre almacenes (2026-11-25) ----------
+     Multi-producto, todo-o-nada bajo UN lock: pre-valida el stock TOTAL en el
+     almacen ORIGEN antes de escribir nada; cada partida genera el par
+     salida(origen)+entrada(destino) con doc_tipo TRASPASO y folio TRA-AAAA-NNNN
+     compartido. El costo del producto NO cambia (la entrada usa el costo actual).
+     Si algo falla a mitad, compensa lo ya aplicado (patron VENTA). */
+  if (tipo === 'traspaso') return conLock(function () {
+    var almOrig = filasComoObjetos(SHEET_WAREHOUSES).filter(function (a) { return String(a.id) === String(data.almacen_origen_id); })[0] || {};
+    if (!almOrig.id) throw AdisError('NO_ENCONTRADO', 'Almacén origen no encontrado.');
+    var almDest = filasComoObjetos(SHEET_WAREHOUSES).filter(function (a) { return String(a.id) === String(data.almacen_destino_id); })[0] || {};
+    if (!almDest.id) throw AdisError('NO_ENCONTRADO', 'Almacén destino no encontrado.');
+    if (String(almOrig.id) === String(almDest.id)) throw AdisError('VALIDACION', 'El almacén origen y el destino deben ser distintos.');
+
+    // Fecha: pasado permitido, futuro no (misma regla que 'movimiento')
+    var fechaT = ahora_();
+    var fT = validarFecha(data.fecha);
+    if (data.fecha && !fT) throw AdisError('VALIDACION', 'Fecha inválida (usa formato AAAA-MM-DD).');
+    if (fT && fT > hoy_()) throw AdisError('VALIDACION', 'La fecha del traspaso no puede ser futura.');
+    if (fT) fechaT = fT + ' ' + ahora_().slice(11);
+
+    var mapaProdT = {};
+    filasComoObjetos(SHEET_PRODUCTS).forEach(function (p) { mapaProdT[String(p.id)] = p; });
+    // validarPartidasOC: producto existe, cantidad > 0, sin repetidos, máx 100.
+    // costo_unit se fuerza al costo actual del producto: el traspaso NO cambia costos.
+    var itemsT = (Array.isArray(data.items) ? data.items : []).map(function (it) {
+      var prodT = mapaProdT[String(it.producto_id)] || {};
+      return { producto_id: it.producto_id, cantidad: it.cantidad, costo_unit: Number(prodT.costo) || 0 };
+    });
+    if (!itemsT.length) throw AdisError('VALIDACION', 'El traspaso necesita al menos un producto.');
+    var partidasT = validarPartidasOC(itemsT, mapaProdT);
+
+    // PRE-VALIDACION todo-o-nada: stock TOTAL por producto en el ORIGEN antes
+    // de mover nada (los items vienen sin duplicados, garantizado arriba).
+    partidasT.forEach(function (pt) {
+      var antT = stockSnapDe(pt.producto_id, almOrig.id).cantidad;
+      if (antT - pt.cantidad < 0) {
+        throw AdisError('STOCK_INSUFICIENTE', 'Existencia insuficiente de "' + pt.producto + '" en ' + almOrig.nombre + ': hay ' + antT + ', se piden ' + pt.cantidad + '.');
+      }
+    });
+
+    var folioT = siguienteFolio('TRA', 'folio_traspaso', 4);
+    var refT = 'Traspaso: ' + almOrig.nombre + ' → ' + almDest.nombre;
+    var notasT = String(data.notas || '').trim() || 'Traspaso entre almacenes';
+    var monedaT = validarMoneda(data.moneda);
+    var aplicadosT = []; // rastro para compensar si algo falla a mitad
+    var stockNuevoT = {};
+    try {
+      partidasT.forEach(function (pt) {
+        var baseT = { producto_id: pt.producto_id, producto: pt.producto,
+          cantidad: pt.cantidad, costo_unit: pt.costo_unit, moneda: monedaT,
+          fecha: fechaT, referencia: refT, notas: notasT,
+          doc_tipo: 'TRASPASO', doc_id: folioT };
+        aplicarMovimiento(Object.assign({ tipo: 'salida', almacen_id: almOrig.id, almacen: almOrig.nombre }, baseT));
+        aplicadosT.push({ tipo: 'salida', m: baseT, almacen_id: almOrig.id, almacen: almOrig.nombre });
+        stockNuevoT[String(pt.producto_id)] = aplicarMovimiento(Object.assign({ tipo: 'entrada', almacen_id: almDest.id, almacen: almDest.nombre }, baseT));
+        aplicadosT.push({ tipo: 'entrada', m: baseT, almacen_id: almDest.id, almacen: almDest.nombre });
+      });
+    } catch (errT) {
+      aplicadosT.reverse().forEach(function (a) {
+        try {
+          aplicarMovimiento({ tipo: a.tipo === 'salida' ? 'entrada' : 'salida',
+            producto_id: a.m.producto_id, producto: a.m.producto,
+            almacen_id: a.almacen_id, almacen: a.almacen,
+            cantidad: a.m.cantidad, costo_unit: '', moneda: a.m.moneda, fecha: a.m.fecha,
+            referencia: 'Reversión ' + folioT, notas: 'Compensación por error en traspaso',
+            doc_tipo: 'COMPENSACION', doc_id: folioT });
+        } catch (eCT) {
+          log_('error_compensacion', folioT + ' · ' + String((eCT && eCT.message) || eCT).slice(0, 200));
+        }
+      });
+      throw errT;
+    }
+    log_('traspaso', folioT + ' · ' + partidasT.length + ' partida(s) · ' + almOrig.nombre + ' → ' + almDest.nombre);
+    var alertasT = alertasStockBajo();
+    notificarAlertasStock('traspaso ' + folioT, alertasT);
+    return json({ ok: true, folio: folioT, stock_nuevo: stockNuevoT, alertas: alertasT });
+  });
+
   /* ---------- Venta (atomica bajo lock + compensacion best-effort) ----------
      Sheets no tiene transacciones ACID: la estrategia es (1) hacer TODA la
      validacion antes de escribir, (2) aplicar movimientos + venta dentro de
@@ -2734,7 +2812,7 @@ function doPostInterno(data) {
     borrados['Stock(huerfano)'] = stockBorrados;
     // Reiniciar folios para arranque real
     var folios = ['folio_cotizacion', 'folio_venta', 'folio_movimiento', 'folio_proyecto',
-      'folio_gasto', 'folio_pago', 'folio_cobro', 'folio_oc', 'folio_lote'];
+      'folio_gasto', 'folio_pago', 'folio_cobro', 'folio_oc', 'folio_lote', 'folio_traspaso'];
     folios.forEach(function (f) { cfgSet(f, '1'); });
     STOCK_SNAP = null;
     log_('purge_pruebas', 'PURGAR ejecutado: ' + JSON.stringify(borrados));

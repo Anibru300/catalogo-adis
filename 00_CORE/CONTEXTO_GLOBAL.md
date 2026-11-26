@@ -122,6 +122,7 @@ duplicado imposible). IDs internos: UUID 8 chars.
 | Venta | `VEN-AAAA-NNNN` | `folio_venta` | 06_VENTAS_COBROS |
 | Movimiento | `MOV-AAAA-NNNNN` | `folio_movimiento` | 01_EXISTENCIAS |
 | Lote | `LOTE-AAAA-NNNN` | `folio_lote` | 01_EXISTENCIAS |
+| Traspaso | `TRA-AAAA-NNNN` | `folio_traspaso` | 01_EXISTENCIAS |
 | Orden de compra | `OC-AAAA-NNNN` | `folio_oc` | 02_COMPRAS |
 | Proyecto | `PRY-AAAA-NNNN` | `folio_proyecto` | 05_PROYECTOS |
 | Gasto | `GAS-AAAA-NNNN` | `folio_gasto` | 07_GASTOS_PAGOS |

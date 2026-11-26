@@ -759,6 +759,7 @@
         <button class="btn btn-sm" onclick="showProductForm()">＋ Producto</button>
         <button class="btn btn-sm" onclick="showPricesForm()">Precios</button>
         <button class="btn btn-sm" onclick="showWarehouseForm()">＋ Almacén</button>
+        <button class="btn btn-sm" onclick="showTraspasoForm()" title="Mover material de un almacén a otro (multi-producto, con folio TRA-)">⇄ Traspaso</button>
         <button class="btn btn-sm" onclick="showConfigForm()">Moneda</button>
         <button class="btn btn-sm" onclick="invExcel()" title="Descargar Excel profesional (.xlsx) con los filtros actuales">⬇ Excel</button>
         <button class="btn btn-sm" onclick="printInventory()" title="Vista de impresión / PDF con los filtros actuales">🖨 Imprimir</button>
@@ -3140,17 +3141,13 @@ function applyTransfer(pid, fromAid){
   if (!destino || !p) return;
   if (!(cant>0)) { notice('Escribe una cantidad mayor que cero.', false); return; }
   if (cant > stockEn(pid, fromAid)) { notice('No hay suficiente existencia en el almacén origen.', false); return; }
-  const ref = 'Traslado: '+origen.nombre+' → '+destino.nombre;
-  apiPost({tipo:'movimiento', tipo_mov:'salida', almacen_id:fromAid, fecha:fHoyLocal(),
-    referencia:ref, notas:'Traslado entre almacenes', moneda:p.moneda||'MXN',
-    items:[{producto_id:pid, cantidad:cant, costo_unit:''}]}).then(d=>{
-    if (!d || !d.ok) { notice(errMsg(d,'No se pudo sacar del almacén origen.'), false); return; }
-    apiPost({tipo:'movimiento', tipo_mov:'entrada', almacen_id:destino.id, fecha:fHoyLocal(),
-      referencia:ref, notas:'Traslado entre almacenes', moneda:p.moneda||'MXN',
-      items:[{producto_id:pid, cantidad:cant, costo_unit:Number(p.costo)||0}]}).then(d2=>{
-      notice(d2&&d2.ok ? 'Traslado aplicado: '+cant+' pieza(s) de '+origen.nombre+' a '+destino.nombre+'.' : errMsg(d2,'Entró al origen pero falló la entrada al destino. Revisa y registra la entrada manualmente.'), !!(d2&&d2.ok));
-      closeBizForms(); loadBiz();
-    });
+  // Endpoint 'traspaso' (2026-11-25): UNA llamada atómica con folio TRA- bajo un
+  // solo lock (antes: 2 POSTs 'movimiento' no atómicos que podían quedar a medias).
+  apiPost({tipo:'traspaso', almacen_origen_id:fromAid, almacen_destino_id:destino.id,
+    fecha:fHoyLocal(), notas:'Traslado rápido entre almacenes',
+    items:[{producto_id:pid, cantidad:cant}]}).then(d=>{
+    notice(d&&d.ok ? '🔀 Traspaso '+d.folio+' aplicado: '+cant+' pieza(s) de '+origen.nombre+' a '+destino.nombre+'.' : errMsg(d,'No se pudo aplicar el traspaso.'), !!(d&&d.ok));
+    if(d&&d.ok){ avisoAlertasStock(d); closeBizForms(); loadBiz(); }
   });
 }
 
@@ -3307,6 +3304,7 @@ function movDocTxt(m){
   else if (dt==='LOTE' && did) txt = 'Lote '+esc(did);
   else if (dt==='ORDEN_COMPRA' && did) txt = 'OC '+esc(did);
   else if (dt==='GASTO' && did) txt = '🧾 Gasto '+esc(did);
+  else if (dt==='TRASPASO' && did) txt = '🔀 '+esc(did);
   else txt = dt ? esc(dt) : '—';
   if (m.lote && dt!=='LOTE') txt += ' <span class="muted">· Lote '+esc(m.lote)+'</span>';
   return txt;
@@ -3327,7 +3325,7 @@ function movCSV(){
   const rows = movFiltered();
   if (!rows.length) { notice('No hay movimientos con estos filtros.', false); return; }
   const docTxt = m=>{ const dt=String(m.documento_tipo||''),did=String(m.documento_id||'');
-    return dt==='LOTE'?'Lote '+did: dt==='PROYECTO'?'Proyecto '+did: dt==='ORDEN_COMPRA'?'OC '+did: dt==='GASTO'?'Gasto '+did: dt; };
+    return dt==='LOTE'?'Lote '+did: dt==='PROYECTO'?'Proyecto '+did: dt==='ORDEN_COMPRA'?'OC '+did: dt==='GASTO'?'Gasto '+did: dt==='TRASPASO'?'Traspaso '+did: dt; };
   const cab = ['Fecha','Tipo','Producto','Almacen','Cantidad','Exist. anterior','Exist. posterior','Documento','Lote','Referencia','Proveedor','Folio mov.','Usuario','Notas'];
   const txt = '\ufeff'+cab.join(',')+'\n'+rows.map(m=>
     [m.fecha,m.tipo,m.producto,m.almacen,m.cantidad,m.existencia_anterior,m.existencia_posterior,
@@ -3927,6 +3925,103 @@ function saveMovLote(){
     proyecto_id: (tipo==='salida' && $('mProy')) ? $('mProy').value : '',
     items}).then(d=>{
     notice(d&&d.ok?((d.lote?('Lote '+d.lote+' aplicado ('+items.length+' producto(s)). '):'Movimiento aplicado. ')+'Stock actualizado.'):errMsg(d), !!(d&&d.ok));
+    if(d&&d.ok){ avisoAlertasStock(d); closeBizForms(); loadBiz(); }
+  });
+}
+
+/* ---------- Traspaso entre almacenes (multi-producto, atómico) ----------
+   Un solo POST al endpoint 'traspaso': el backend mueve todo bajo un lock
+   (todo-o-nada, con compensación ante error) y folio TRA-AAAA-NNNN trazable
+   (doc_tipo TRASPASO en cada par salida+entrada). El costo NO cambia. */
+let traItems = [];
+function showTraspasoForm(preOrigen){
+  if (biz.almacenes.length < 2) { notice('Necesitas al menos dos almacenes. Crea uno con "＋ Almacén".', false); return; }
+  traItems = [];
+  const hoy = fHoyLocal();
+  const opts = biz.almacenes.map(a=>'<option value="'+esc(a.id)+'">'+esc(a.nombre)+'</option>').join('');
+  $('bizForms').innerHTML = '<div class="card-box">' +
+    '<div class="toolbar" style="margin-bottom:0.5rem;"><strong>⇄ Traspaso entre almacenes</strong>' +
+    '<span class="muted">Saca material de un almacén y entra al otro en una sola operación (todo o nada)</span></div>' +
+    '<div class="row">' +
+    '<div><label>De (almacén origen) *</label><select id="tOrigen" onchange="traAlmacenCambio()">'+opts+'</select></div>' +
+    '<div><label>A (almacén destino) *</label><select id="tDestino">'+opts+'</select></div>' +
+    '<div><label>Fecha</label><input type="date" id="tFecha" value="'+hoy+'" max="'+hoy+'"></div>' +
+    '</div>' +
+    '<label>Agregar producto (solo los que tienen existencia en el origen)</label>' +
+    '<div class="search-results"><input id="tSearch" placeholder="Escribe el nombre o código del producto..." autocomplete="off" oninput="searchTraProducts()"><div id="tSearchResults"></div></div>' +
+    '<div class="items" id="tItems"></div>' +
+    '<div class="total-line"><span class="muted" id="tTotalTxt">Piezas: 0</span></div>' +
+    '<label>Notas</label><input id="tNotas" placeholder="Observaciones...">' +
+    '<div class="toolbar" style="margin-top:1rem;">' +
+    '<button class="btn btn-solid btn-sm" onclick="saveTraspaso()">Aplicar traspaso</button> ' +
+    '<button class="btn btn-sm" onclick="closeBizForms()">Cancelar</button></div></div>';
+  if (preOrigen) $('tOrigen').value = preOrigen;
+  traAlmacenCambio();
+  setTimeout(()=>{ const el=$('bizForms'); if (el) el.scrollIntoView({behavior:'smooth', block:'start'}); }, 100);
+}
+/* Si el destino coincide con el origen, lo mueve al primer almacén distinto;
+   además re-pinta las filas (el disponible depende del origen elegido). */
+function traAlmacenCambio(){
+  if ($('tDestino').value === $('tOrigen').value) {
+    const dist = biz.almacenes.filter(a=>String(a.id)!==String($('tOrigen').value))[0];
+    if (dist) $('tDestino').value = dist.id;
+  }
+  renderTraItems();
+}
+function searchTraProducts(){
+  const q = $('tSearch').value.trim().toLowerCase();
+  const box = $('tSearchResults');
+  if (q.length < 2) { box.innerHTML=''; return; }
+  const ori = $('tOrigen').value;
+  const matches = biz.productos.filter(p => p.estado!=='inactivo' && stockEn(p.id, ori) > 0 &&
+    ((p.nombre||'')+' '+(p.codigo||'')+' '+(p.categoria||'')).toLowerCase().includes(q)).slice(0,8);
+  box.innerHTML = '<div class="sr-list">' + (matches.length
+    ? matches.map(p=>'<div class="sr-item" onclick="traAddProduct(\''+p.id+'\')"><span>'+esc(p.codigo||'')+' · '+esc(p.nombre)+'</span><span class="gold">en origen: '+stockEn(p.id, ori)+'</span></div>').join('')
+    : '<div class="sr-item muted">Sin existencia en el almacén origen</div>') + '</div>';
+}
+function traAddProduct(pid){
+  const p = biz.productos.filter(x=>String(x.id)===String(pid))[0];
+  if (!p) return;
+  if (traItems.some(it=>String(it.producto_id)===String(pid))) { notice('Ese producto ya está en la lista.', false); return; }
+  traItems.push({producto_id:p.id, codigo:p.codigo||'', nombre:p.nombre, cantidad:1});
+  $('tSearch').value=''; $('tSearchResults').innerHTML='';
+  renderTraItems();
+}
+function renderTraItems(){
+  const box = $('tItems');
+  if (!box) return;
+  const ori = $('tOrigen') ? $('tOrigen').value : '';
+  box.innerHTML = (traItems.length ? '<div class="item-row" style="opacity:.65;"><input value="Producto" disabled>' +
+    '<input type="text" value="Cantidad" disabled>' +
+    '<input type="text" value="Disp. en origen" disabled>' +
+    '<input type="text" value="" disabled></div>' : '<p class="muted" style="font-size:0.75rem;">Sin productos todavía. Búscalos arriba para agregarlos.</p>') +
+    traItems.map((it,i)=>{
+      const disp = stockEn(it.producto_id, ori);
+      const mal = (Number(it.cantidad)||0) > disp;
+      return '<div class="item-row">' +
+      '<input value="'+esc(it.codigo?it.codigo+' · ':'')+esc(it.nombre)+'" disabled>' +
+      '<input type="number" min="0.01" step="0.01" value="'+it.cantidad+'" style="'+(mal?'border-color:#c0392b;':'')+'" onchange="traItems['+i+'].cantidad=parseFloat(this.value)||1; renderTraItems()">' +
+      '<input type="text" value="'+disp+(mal?' ⚠️ insuficiente':'')+'" disabled>' +
+      '<button class="del" onclick="traItems.splice('+i+',1); renderTraItems()">✕</button></div>';
+    }).join('');
+  const n = traItems.reduce((s,it)=>s+(Number(it.cantidad)||0),0);
+  const el = $('tTotalTxt'); if (el) el.textContent = 'Piezas: '+n;
+}
+function saveTraspaso(){
+  const ori = $('tOrigen').value, dest = $('tDestino').value;
+  if (!ori || !dest) { notice('Selecciona almacén origen y destino.', false); return; }
+  if (String(ori)===String(dest)) { notice('El almacén origen y el destino deben ser distintos.', false); return; }
+  if (!traItems.length) { notice('Agrega al menos un producto.', false); return; }
+  for (const it of traItems) {
+    const disp = stockEn(it.producto_id, ori);
+    if (!((Number(it.cantidad)||0) > 0)) { notice('Cantidad inválida en '+it.nombre+'.', false); return; }
+    if (Number(it.cantidad) > disp) { notice('No hay suficiente "'+it.nombre+'" en el origen (hay '+disp+').', false); return; }
+  }
+  const nombres = {}; biz.almacenes.forEach(a=>{ nombres[a.id]=a.nombre; });
+  apiPost({tipo:'traspaso', almacen_origen_id:ori, almacen_destino_id:dest,
+    fecha:$('tFecha').value, notas:$('tNotas').value.trim(),
+    items: traItems.map(it=>({producto_id:it.producto_id, cantidad:it.cantidad}))}).then(d=>{
+    notice(d&&d.ok?('🔀 Traspaso '+d.folio+' aplicado ('+traItems.length+' producto(s)): '+(nombres[ori]||'')+' → '+(nombres[dest]||'')):errMsg(d), !!(d&&d.ok));
     if(d&&d.ok){ avisoAlertasStock(d); closeBizForms(); loadBiz(); }
   });
 }
