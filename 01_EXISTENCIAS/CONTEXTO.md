@@ -82,7 +82,9 @@
 ## FRONTEND (`admin/index.html`, tab `inventory` + formularios del menú)
 
 - **Vista**: `inventory` — dashboard (total/activos/sin foto/revisión), buscador con
-  filtros, tabla de productos con foto lateral al seleccionar, historial por producto.
+  filtros, tabla de productos con foto lateral al seleccionar, **kardex por producto**
+  (2026-11-25: cantidades con signo +/− coloreado, columnas Almacén/Proveedor/Notas,
+  filtros fecha+tipo, export CSV e imprimir).
 - **Formularios**: `showMovForm(tipo)` unificado entrada/salida (proveedor+factura en
   entrada, proyecto en salida, tabla de items multi-producto, totales); `showAdjustForm`
   (ajuste simple 1 producto); `showProductForm` (CRUD + descripción/fotos);
@@ -141,6 +143,10 @@
   backend aún no tiene el endpoint; usa almacenes TEST aislados).
 - `python scripts/auditoria/test_traspaso_ui.py` (Playwright, backend simulado:
   formulario, validaciones, payload, chip, historial 🔀).
+- `python scripts/auditoria/test_kardex_ui.py` (Playwright, backend simulado:
+  signos +/−, columna Proveedor, filtros, CSV, campo proveedor en gasto).
+- `python scripts/auditoria/test_gasto_proveedor_api.py` (API en vivo: el
+  proveedor del gasto llega a la columna proveedor del MOVIMIENTO).
 - Casos críticos: salida que excede stock (todo intacto), fecha futura rechazada,
   entrada con costo actualiza costo, lote con proyecto agrupa por folio.
 - Tras modificar: correr las 3 suites + `test_fase0_regresion.py` (19 pruebas del panel).
@@ -158,7 +164,9 @@
 4. **Entrada desde gasto (07→01, ETAPA 2 2026-11-07)**: `gasto` (con
    `items_inventario`) y `gasto_inventario` (gastos existentes) aplican
    `aplicarMovimiento(entrada, doc GASTO, doc_id folioGAS)` por partida, con la
-   fecha del gasto (retroactiva permitida). Idempotente: un folio GAS- solo admite
+   fecha del gasto (retroactiva permitida). Desde 2026-11-25 el movimiento
+   también recibe `proveedor` (5to param de `aplicarEntradaInvGasto`, campo
+   del formulario de gasto) para que el kardex del producto lo muestre directo. Idempotente: un folio GAS- solo admite
    una entrada (se rechaza si ya hay MOV- con ese documento_id). Marca el gasto en
    las cols 14/15 (`entrada_inventario`, `items_json`) y actualiza el último costo
    del producto (col 8). El panel muestra estas entradas en Movimientos como

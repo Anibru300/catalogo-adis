@@ -432,6 +432,7 @@
           <p class="muted" style="margin-top:2rem;margin-bottom:2rem;">Toca un producto<br>para ver su foto</p>
         </aside>
       </div>
+      <div id="invKardex"></div>
       <h2>Movimientos recientes</h2>
       <div class="toolbar" style="margin-bottom:0.5rem;">
         <input type="date" id="movFDesde" onchange="renderMovFiltered()" title="Desde" style="width:145px;">
@@ -569,9 +570,10 @@
           <div><label>Monto *</label><div class="monto-wrap"><span class="monto-sign">$</span><input type="text" inputmode="decimal" class="monto" id="gMonto" placeholder="0.00" oninput="mascaraMonto(this)"></div></div>
           <div><label>Moneda</label><select id="gMoneda"><option value="MXN">MXN</option><option value="USD">USD</option></select></div>
           <div><label>Método de pago</label><select id="gMetodo"><option>Transferencia</option><option>Efectivo</option><option>Tarjeta</option><option>Depósito</option><option>Otro</option></select></div>
+          <div><label>Proveedor (opcional)</label><input id="gProveedor" placeholder="Ej. Teknostep, Home Depot…"></div>
         </div>
         <label>Descripción</label>
-        <input id="gDesc" placeholder="Ej. Recibo CFE local Nogales">
+        <input id="gDesc" placeholder="Ej. Recibo CFE local Nogales / Factura 28024799">
         <div id="gInvBox" style="display:none;margin-top:0.9rem;border:1px dashed #3a3428;border-radius:8px;padding:0.7rem;">
           <label style="display:flex;align-items:center;gap:0.45rem;cursor:pointer;font-size:0.85rem;">
             <input type="checkbox" id="gInvActiva" onchange="$('gInvDetalle').style.display=this.checked?'':'none'">

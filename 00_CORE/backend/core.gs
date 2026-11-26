@@ -1934,7 +1934,9 @@ function doPostInterno(data) {
   // Precondicion: conLock. Idempotente: rechaza si el folio ya tiene entradas.
   // Usada por 'gasto' (items_inventario al capturar) y 'gasto_inventario'
   // (gastos existentes, p.ej. carga retroactiva). NO toca montos ni pagos.
-  function aplicarEntradaInvGasto(hG, filaG, almacenId, itemsIn) {
+  // proveedor (opcional, 5to param, 2026-11-25): va a la columna 'proveedor'
+  // del MOVIMIENTO para que el kardex del producto lo muestre directo.
+  function aplicarEntradaInvGasto(hG, filaG, almacenId, itemsIn, proveedor) {
     hoja(SHEET_EXPENSES, ENC_GASTOS); // ETAPA 2: garantizar cols 14/15 antes de escribir
     var folioG = String(hG.getRange(filaG, 10).getValue());
     var yaHay = filasComoObjetos(SHEET_MOVES).some(function (m) {
@@ -1961,6 +1963,7 @@ function doPostInterno(data) {
         producto_id: pt.producto_id, producto: pt.producto, almacen_id: almG.id, almacen: almG.nombre,
         cantidad: pt.cantidad, costo_unit: pt.costo_unit, moneda: monedaGI, fecha: fechaGI,
         referencia: 'Gasto ' + folioG, notas: 'Entrada de mercancía · ' + descGI.slice(0, 120),
+        proveedor: proveedor || '',
         doc_tipo: 'GASTO', doc_id: folioG });
       var filaProdG = filaPorId(SHEET_PRODUCTS, pt.producto_id);
       if (filaProdG) {
@@ -2009,7 +2012,7 @@ function doPostInterno(data) {
     var stockNuevoInv = null;
     if (quiereInv) {
       stockNuevoInv = aplicarEntradaInvGasto(ss().getSheetByName(SHEET_EXPENSES),
-        hGastos.getLastRow(), data.almacen_id, data.items_inventario);
+        hGastos.getLastRow(), data.almacen_id, data.items_inventario, data.proveedor);
     }
     log_('gasto_registrado', folioG + ' · ' + categoria + ' - ' + monto + ' ' + monedaG + ' · ' + naturalezaG +
       (quiereInv ? ' · entrada a inventario' : ''));
@@ -2144,7 +2147,7 @@ function doPostInterno(data) {
     if (validarNaturaleza(hGI.getRange(filaGI, 13).getValue()) !== 'inventario') {
       throw AdisError('NO_PERMITIDO', 'Solo los gastos con naturaleza "inventario" admiten entrada a stock (reclasifícalo primero con gasto_clasificar).');
     }
-    var stockGI = aplicarEntradaInvGasto(hGI, filaGI, data.almacen_id, data.items || data.items_inventario);
+    var stockGI = aplicarEntradaInvGasto(hGI, filaGI, data.almacen_id, data.items || data.items_inventario, data.proveedor);
     return json({ ok: true, folio: String(hGI.getRange(filaGI, 10).getValue()), stock_nuevo: stockGI });
   });
 

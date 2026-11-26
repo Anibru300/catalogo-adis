@@ -168,29 +168,107 @@ function selectProduct(id){
     'Stock total: <strong>'+st+'</strong> '+(p.unidad||'')+'<br>' +
     (Number(p.precio)?'Precio: <strong class="gold">'+fmtMoney(p.precio)+' '+esc(p.moneda||'MXN')+'</strong>':'Precio: pendiente') +
     '</div>' +
-    '<div style="margin-top:0.8rem;"><button class="btn btn-sm" onclick="showProductForm(\''+p.id+'\')">✎ Editar producto</button></div>' +
-    '<div id="invHist" style="margin-top:0.8rem;"></div>';
+    '<div style="margin-top:0.8rem;"><button class="btn btn-sm" onclick="showProductForm(\''+p.id+'\')">✎ Editar producto</button></div>';
   loadProductHistory(p.id);
 }
 
-// FASE 1: historial de movimientos del producto seleccionado (trazabilidad completa)
+/* FASE 1: historial de movimientos del producto seleccionado (trazabilidad completa).
+   2026-11-25: kardex completo — cantidades con signo (+/- coloreado), almacén,
+   proveedor y notas por fila, filtros por fecha/tipo y export CSV/imprimir. */
+let histCache = [], histPid = null;
 function loadProductHistory(pid){
-  const box = $('invHist');
+  histPid = pid;
+  const box = $('invKardex');
   if (!box) return;
-  box.innerHTML = '<p class="muted" style="font-size:0.72rem;">Cargando historial…</p>';
+  const p = biz.productos.filter(x=>String(x.id)===String(pid))[0] || {};
+  box.innerHTML = '<p class="muted" style="font-size:0.78rem;padding:0.4rem 0;">Cargando kardex…</p>';
   apiGet('movimientos&producto_id='+encodeURIComponent(pid)).then(d=>{
     let movs = (d && d.movimientos) || [];
     // filtro cliente ademas del server: compatible con backend viejo (sin filtro)
-    movs = movs.filter(m=>String(m.producto_id)===String(pid));
-    if (!movs.length) { box.innerHTML='<p class="muted" style="font-size:0.72rem;">Sin movimientos registrados.</p>'; return; }
-    box.innerHTML = '<table class="hist-table"><thead><tr><th>Fecha</th><th>Tipo</th><th>Cant.</th><th>Existencia</th><th>Documento</th></tr></thead><tbody>' +
-      movs.slice().reverse().slice(0,30).map(m=>
-        '<tr><td>'+esc(String(m.fecha||'').slice(0,16))+'</td><td>'+esc(m.tipo)+'</td><td>'+esc(m.cantidad)+'</td>' +
-        '<td>'+(m.existencia_anterior!==undefined && m.existencia_anterior!=='' ? esc(m.existencia_anterior)+' → '+esc(m.existencia_posterior) : '—')+'</td>' +
-        '<td>'+movDocTxt(m)+(m.referencia?' <span class="muted">'+esc(m.referencia)+'</span>':'')+(m.id?' <span class="muted">'+esc(m.id)+'</span>':'')+'</td></tr>').join('') +
-      '</tbody></table>' +
-      (movs.length>30 ? '<p class="muted" style="font-size:0.7rem;margin-top:0.3rem;">Mostrando los últimos 30 de '+movs.length+' movimientos.</p>' : '');
-  }).catch(()=>{ box.innerHTML='<p class="muted" style="font-size:0.72rem;">No se pudo cargar el historial.</p>'; });
+    histCache = movs.filter(m=>String(m.producto_id)===String(pid));
+    const hoy = fHoyLocal();
+    box.innerHTML = '<div class="card-box" style="margin-bottom:1rem;">' +
+      '<div class="toolbar" style="margin-bottom:0.5rem;">' +
+        '<h3 style="margin:0;font-size:0.95rem;">📒 Kardex: '+esc(p.codigo||'')+' · '+esc(p.nombre||'')+'</h3>' +
+        '<span class="muted" style="font-size:0.75rem;">Toca un producto de la tabla para cambiar de kardex · + entradas · − salidas</span>' +
+      '</div>' +
+      '<div class="toolbar" style="margin-bottom:0.5rem;">' +
+        '<label style="font-size:0.72rem;margin:0;">Desde <input type="date" id="kDesde" onchange="renderHistFiltered()" style="width:140px;"></label>' +
+        '<label style="font-size:0.72rem;margin:0;">Hasta <input type="date" id="kHasta" value="'+hoy+'" max="'+hoy+'" onchange="renderHistFiltered()" style="width:140px;"></label>' +
+        '<select id="kTipo" onchange="renderHistFiltered()" style="width:140px;"><option value="">Todos los tipos</option><option value="entrada">Entradas</option><option value="salida">Salidas</option><option value="ajuste">Ajustes</option></select>' +
+        '<button class="btn btn-sm" onclick="histCSV()" title="Descargar el kardex filtrado">⬇ CSV</button> ' +
+        '<button class="btn btn-sm" onclick="printHist()" title="Imprimir / PDF del kardex filtrado">🖨 Imprimir</button>' +
+        '<span class="muted" style="font-size:0.72rem;margin-left:auto;" id="kResumen"></span>' +
+      '</div>' +
+      '<div id="kTableWrap"></div></div>';
+    renderHistFiltered();
+  }).catch(()=>{ box.innerHTML='<p class="muted" style="font-size:0.78rem;padding:0.4rem 0;">No se pudo cargar el kardex.</p>'; });
+}
+function histFiltered(){
+  const desde = ($('kDesde')||{}).value || '', hasta = ($('kHasta')||{}).value || '',
+    tipo = ($('kTipo')||{}).value || '';
+  return histCache.filter(m=>{
+    const f = String(m.fecha||'').slice(0,10);
+    if (desde && f < desde) return false;
+    if (hasta && f > hasta) return false;
+    if (tipo && String(m.tipo)!==tipo) return false;
+    return true;
+  });
+}
+function histCantTxt(m){
+  const c = esc(m.cantidad);
+  if (m.tipo==='entrada') return '<span style="color:#3fb96a;font-weight:600;">+'+c+'</span>';
+  if (m.tipo==='salida') return '<span style="color:#d96b5f;font-weight:600;">-'+c+'</span>';
+  return '<span class="muted">='+c+'</span>';
+}
+function renderHistFiltered(){
+  const wrap = $('kTableWrap');
+  if (!wrap) return;
+  const list = histFiltered().slice().reverse();
+  const resumen = $('kResumen');
+  if (resumen) resumen.textContent = list.length + ' de ' + histCache.length + ' movimiento(s)';
+  if (!list.length) { wrap.innerHTML = '<p class="muted" style="font-size:0.75rem;padding:0.5rem 0;">Sin movimientos con estos filtros ('+histCache.length+' en total).</p>'; return; }
+  wrap.innerHTML = '<div class="table-scroll"><table class="hist-table"><thead><tr><th>Fecha</th><th>Tipo</th><th>Almacén</th><th>Cant.</th><th>Existencia</th><th>Documento</th><th>Proveedor</th><th>Notas</th></tr></thead><tbody>' +
+    list.map(m=>
+      '<tr><td>'+esc(String(m.fecha||'').slice(0,16))+'</td><td>'+esc(m.tipo)+'</td><td>'+esc(m.almacen||'—')+'</td>' +
+      '<td>'+histCantTxt(m)+'</td>' +
+      '<td>'+(m.existencia_anterior!==undefined && m.existencia_anterior!=='' ? esc(m.existencia_anterior)+' → '+esc(m.existencia_posterior) : '—')+'</td>' +
+      '<td>'+movDocTxt(m)+(m.id?' <span class="muted">'+esc(m.id)+'</span>':'')+'</td>' +
+      '<td>'+(m.proveedor?esc(m.proveedor):'—')+'</td>' +
+      '<td title="'+esc(m.notas||'')+'">'+esc(String(m.notas||'').slice(0,42))+(String(m.notas||'').length>42?'…':'')+'</td></tr>').join('') +
+    '</tbody></table></div>';
+}
+function histCSV(){
+  const rows = histFiltered();
+  if (!rows.length) { notice('No hay movimientos con estos filtros.', false); return; }
+  const docTxt = m=>{ const dt=String(m.documento_tipo||''),did=String(m.documento_id||'');
+    return dt==='LOTE'?'Lote '+did: dt==='PROYECTO'?'Proyecto '+did: dt==='ORDEN_COMPRA'?'OC '+did: dt==='GASTO'?'Gasto '+did: dt==='TRASPASO'?'Traspaso '+did: dt; };
+  const p = biz.productos.filter(x=>String(x.id)===String(histPid))[0] || {};
+  const cab = ['Fecha','Tipo','Almacen','Cantidad','Exist. anterior','Exist. posterior','Documento','Referencia','Proveedor','Folio mov.','Notas'];
+  const txt = '\ufeffKARDEX: '+(p.codigo||'')+' '+(p.nombre||'')+'\n'+cab.join(',')+'\n'+rows.slice().reverse().map(m=>
+    [m.fecha,m.tipo,m.almacen,(m.tipo==='salida'?-(Number(m.cantidad)||0):(m.tipo==='entrada'?(Number(m.cantidad)||0):(Number(m.cantidad)||0))),
+     m.existencia_anterior,m.existencia_posterior,docTxt(m),m.referencia,m.proveedor,m.id,m.notas].map(movCSVEsc).join(',')).join('\n');
+  const blob = new Blob([txt],{type:'text/csv;charset=utf-8'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'kardex_'+(p.codigo||histPid||'producto')+'_'+fHoyLocal()+'.csv';
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(()=>URL.revokeObjectURL(a.href), 5000);
+}
+function printHist(){
+  const rows = histFiltered().slice().reverse();
+  if (!rows.length) { notice('No hay movimientos con estos filtros.', false); return; }
+  const p = biz.productos.filter(x=>String(x.id)===String(histPid))[0] || {};
+  const w = window.open('', '_blank');
+  if (!w) { notice('El navegador bloqueó la ventana de impresión.', false); return; }
+  w.document.write('<!doctype html><html><head><meta charset="utf-8"><title>Kardex</title>' +
+    '<style>body{font-family:Arial,sans-serif;font-size:11px;padding:20px;}h1{font-size:16px;margin:0 0 4px;}p{margin:0 0 12px;color:#555;}table{width:100%;border-collapse:collapse;}th,td{border:1px solid #bbb;padding:4px 6px;text-align:left;vertical-align:top;}th{background:#eee;}</style></head><body>' +
+    '<h1>ADIS — Kardex: '+esc(p.codigo||'')+' '+esc(p.nombre||'')+' ('+rows.length+' movimientos)</h1><p>Generado: '+new Date().toLocaleString()+'</p>' +
+    '<table><thead><tr><th>Fecha</th><th>Tipo</th><th>Almacén</th><th>Cant.</th><th>Existencia</th><th>Documento</th><th>Proveedor</th><th>Notas</th></tr></thead><tbody>' +
+    rows.map(m=>'<tr><td>'+esc(String(m.fecha||'').slice(0,16))+'</td><td>'+esc(m.tipo)+'</td><td>'+esc(m.almacen||'')+'</td><td>'+(m.tipo==='entrada'?'+':m.tipo==='salida'?'-':'=')+esc(m.cantidad)+'</td><td>'+esc(m.existencia_anterior)+' → '+esc(m.existencia_posterior)+'</td><td>'+movDocTxt(m)+'</td><td>'+esc(m.proveedor||'')+'</td><td>'+esc(m.notas||'')+'</td></tr>').join('') +
+    '</tbody></table></body></html>');
+  w.document.close();
+  w.focus(); setTimeout(()=>{ w.print(); }, 400);
 }
 
 function restoreProduct(id){

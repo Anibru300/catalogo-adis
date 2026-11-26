@@ -101,7 +101,7 @@
 | `gastos` | GET | Todos |
 | `pagos` | GET | Todos |
 | `cxp` | GET | Gastos no cancelados vs pagos reales (saldo por gasto) |
-| `gasto` | POST | `{fecha, categoria, descripcion, monto, moneda, tipo_cambio?, metodo?, notas}` → folio GAS- |
+| `gasto` | POST | `{fecha, categoria, descripcion, monto, moneda, tipo_cambio?, metodo?, notas, proveedor?}` → folio GAS-. El `proveedor` (2026-11-25, campo opcional del formulario) NO se guarda en la fila del gasto (ENC_GASTOS sin esa columna): se pasa a `aplicarEntradaInvGasto` y queda en la **columna proveedor de cada MOVIMIENTO de entrada** para el kardex del producto |
 | `gasto_pago` / `registrar_pago` | POST | `{gasto_id, monto, moneda, metodo, notas}` → folio PAG-; actualiza `pagado`/estado |
 | `gasto_cancelar` | POST | Baja lógica (estado CANCELADA) |
 | `delete_gasto` | POST | Borrado físico (legado; acepta id + row como respaldo) |

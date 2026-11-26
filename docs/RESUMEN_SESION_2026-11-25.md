@@ -1,75 +1,122 @@
 # RESUMEN DE SESIÓN — 2026-11-25
 
-> Cotizador: **PDF directo desde el historial desplegado en producción y auditado
-> en vivo (22/22 PASS, 0 errores JS)**. Todo commiteado y pusheado (`cc82e9a`).
+> Jornada triple: **compra Teknostep registrada (factura 28024799)**,
+> **módulo de Traspasos entre almacenes desplegado** (multi-producto, atómico,
+> folio TRA-) y **Kardex por producto** con proveedor en movimientos.
+> Todo commiteado y pusheado (`e2a1cb0` traspasos + `eff2c3a` reintento
+> deploy Pages + cierre del día con kardex).
 
 ---
 
-## 1. LO QUE SE DESPLEGÓ (commit `cc82e9a`, en línea)
+## 1. COMPRA TEKNOSTEP — FACTURA 28024799 (commit `e2a1cb0`)
 
-### Historial de cotizaciones — botones de acción por fila
-- Cada fila del tab `quotes` ahora tiene:
-  - **👁️ Ver** → abre el PDF en pestaña nueva (popup con `<embed>` del blob)
-  - **⬇️ PDF** → descarga `Cotizacion-<folio>.pdf`
-  - **✏️ Editar** → (antes "📂 Cargar") precarga toda la cotización en el editor;
-    re-guardar actualiza la misma fila (folio/fecha/estado se conservan)
-  - ✔ Aprobar / 🏗️ Proyecto sin cambios.
+- **Registrada vía script one-off** `60_DATA/registrar_compra_teknostep_28024799.py`
+  (dry-run + `--aplicar`, con pre-chequeo anti-duplicados por factura).
+- **Gasto `GAS-2026-0060`** — categoría "Compra de mercancía", naturaleza
+  inventario, **$3,460.88 MXN** (subtotal $2,983.52 + IVA $477.36), descripción
+  con factura. **Pago `PAG-2026-0053`** total, tarjeta de débito (PUE).
+- **Entradas a Nogales** (doc GASTO trazado): LAM-015 Río +14 @ $99.57 (c/IVA),
+  LAM-005 Brasilia +14 @ $99.57, y productos nuevos **LAM-040 Ángulo Río** y
+  **LAM-041 Ángulo Brasilia** (5 pzas c/u @ $67.28, claves prov. en notas).
+- Corrección del dueño aplicada: las 2 cajas de lambrín "1 caja = 14 pzas"
+  (6.496 m² caja); ángulos 5 pzas c/u (14.5 m.l.). Verificado contra el PDF.
+- Stock resultante Nogales: Río 14, Brasilia 14, ángulos 5+5. Costos con IVA
+  (IVA no acreditable RESICO ⇒ costo real). Factura PDF en
+  `Archivos de Inventario/FACTURA No. 28024799.pdf`.
 
-### Cambios técnicos
-- **Refactor en `04_COTIZADOR/admin/cotizador_pro.js`**: nuevo helper
-  `propDesdeQuote(q)` (construye el objeto `prop` desde la fila SIN tocar la UI;
-  reutilizado por `loadProposalFromQuote` — la lógica del fix B1 de preservación
-  de fotos quedó dentro). Nuevo `pdfDesdeHistorial(rev, modo)` que genera el
-  PDF desde el historial **sin cambiar de pestaña y sin tocar el editor ni el
-  borrador local** (`prop` se restaura en `finally`).
-- Detalle: para "Ver" se abre la pestaña en el clic (antes del async) para no
-  caer en el bloqueador de pop-ups, y se le inyecta `<embed>` con el blob
-  (navegar la pestaña directo al blob daba ERR_ABORTED en Chromium).
-- Fuente: `04_COTIZADOR/admin/cotizador_pro.js` + `cotizador_simple.js`
-  (render de filas en `loadQuotes`). Artefactos re-ensamblados con
-  `python 50_BUILD/build_admin.py` (`admin/index.html` → `public/admin.html`).
-- **Backend: SIN cambios.**
+## 2. MÓDULO DE TRASPASOS ENTRE ALMACENES (commit `e2a1cb0`)
 
-## 2. VERIFICACIÓN
+### Backend (`00_CORE/backend/core.gs`)
+- Nuevo endpoint **`traspaso`**: `{almacen_origen_id, almacen_destino_id,
+  fecha?, notas?, items:[{producto_id, cantidad}]}`. Bajo UN `conLock`:
+  pre-validación todo-o-nada en origen (STOCK_INSUFICIENTE antes de escribir
+  nada), folio **`TRA-AAAA-NNNN`** (`folio_traspaso`, se autocrea en Config),
+  par salida+entrada por partida con `doc_tipo=TRASPASO` y doc_id compartido,
+  **compensación inversa** si falla a mitad (patrón VENTA), alertas de stock
+  bajo. NO cambia costos. Respuesta `{ok, folio, stock_nuevo, alertas}`.
+- `folio_traspaso` agregado a la lista del purge. `admin/apps-script.gs`
+  regenerado con `50_BUILD/concat_backend.py`. Sin cambios de esquema.
 
-### Local (pre-push)
-- `test_pdf_historial.py` (nueva, contra backend real con quote falso
-  interceptado por HTTP): **8/8 PASS** — botones, descarga con folio correcto,
-  popup con blob, editor intacto tras ambos modos.
-- Regresión `test_cotizador_precio_final.py`: **19/19 PASS** (incl. B1b fotos).
-- Sintaxis JS del monolito validada con `node --check`.
+### Frontend (`01_EXISTENCIAS/admin/existencias.js` + `plantilla.html`)
+- Botón **"⇄ Traspaso"** en toolbar de Inventario → formulario multi-producto:
+  origen/destino (auto-distintos), fecha (retroactiva OK, futura no), buscador
+  que solo lista productos **con existencia en el origen** (muestra
+  disponible), validación por fila (borde rojo + "insuficiente"), 1 solo POST.
+- Traslado rápido por **chip de almacén** re-enrutado al endpoint nuevo
+  (antes: 2 POSTs no atómicos).
+- Historial/CSV/imprimir: `doc_tipo=TRASPASO` se muestra **🔀 TRA-…**
+  (`movDocTxt`/`movCSV`).
 
-### Producción (post-push, auditoría en vivo — solo lectura)
-- `auditoria_pdf_historial_prod.py` (nueva): **22/22 PASS, 0 errores JS**
-  contra `https://xn--adis-diseo-19a.com/admin.html`:
-  - 6 cotizaciones reales (001, 002, 003, 004, 006, 008) con los 3 botones.
-  - Las 6 descargas: nombre con folio, PDF válido (~700 KB c/u), 2 págs
-    formato carta (612×792) con documento raster completo.
-  - "Ver PDF" abre popup con el PDF embebido.
-  - "Editar" precarga editor + vista previa correctamente (ADIS-2026-001).
-  - Historial idéntico antes/después (sin escrituras).
-- Capturas: `screenshots/check_pdf_historial_prod_*.png`.
-- ⚠️ Matiz: el "Ver PDF" en el navegador headless de prueba muestra
-  "Couldn't load plugin" (no trae visor de PDF); en Chrome/Edge normales el
-  PDF inline funciona. **Pendiente de confirmación visual del dueño.**
+### Pruebas (todas en verde)
+- `test_traspaso_api.py` **22/22 en producción** (TRA-2026-0002/0003 reales,
+  todo-o-nada verificado, limpieza total con almacenes TEST aislados).
+- `test_traspaso_ui.py` **20/20** (backend simulado).
+- Regresión: `test_movimientos_ui.py` **21/21** (reparada: selectores del
+  renombrado de menús 2026-10-25 — estaba rota desde entonces),
+  `test_movimientos_lote_api.py` **19/19**, `test_fase1_api.py` **11/11**,
+  `test_fase0_regresion.py` **19/19**.
 
-## 3. PENDIENTES PARA MAÑANA
-1. **Confirmar visualmente "👁️ Ver PDF"** en Chrome/Edge del dueño (pestaña nueva
-   muestra la cotización renderizada). Si no se ve, plan B: renderizar el PDF
-   con pdf.js en el popup.
-2. **Rotar `ADMIN_CLAVE`** (sigue expuesta en el repo) — pendiente heredado, el
-   más importante en seguridad.
-3. Catálogo duplicado (`public/catalogos/` vs hoja Productos).
-4. Retirar viejas categorías de transición (flag `--quitar-viejas`).
-5. Deuda conocida: fotos de cotizaciones solo viven en el navegador creador
-   (placeholders en Sheets). Si se quiere atacar: subir fotos a Drive como en
-   inventario, o aceptar límites.
-6. GAS-2026-0025 ($1, clasificado retiro) — sin impacto.
+## 3. KARDEX POR PRODUCTO + PROVEEDOR EN MOVIMIENTOS (cierre del día)
+
+### Qué pidió el dueño
+Ver el kardex de un producto con entradas tipo **"+14 por compra de material,
+factura tal, del proveedor tal"**. El historial por producto existía pero era
+pobre (5 columnas, últimos 30, sin proveedor propio, a 300px de ancho).
+
+### Backend (`core.gs`)
+- `aplicarEntradaInvGasto` acepta **5to param `proveedor`** (desde `gasto` y
+  `gasto_inventario`) que queda en la **columna proveedor de cada MOVIMIENTO
+  de entrada** (ENC_MOV ya tenía la columna — cero migración).
+- ⚠️ **FALTA REDEPLOY del backend con este cambio** (ver pendientes).
+
+### Frontend
+- **Kardex a ancho completo** (nuevo `#invKardex` entre la tabla y
+  "Movimientos recientes"; se libera la barra lateral que queda compacta con
+  foto/datos/editar). Título "📒 Kardex: código · nombre", filtros
+  **desde/hasta/tipo**, contador "N de M movimiento(s)", botones **⬇ CSV** y
+  **🖨 Imprimir** del kardex filtrado.
+- Cantidades **con signo coloreado**: **+14** 🟢 entrada, **−2** 🔴 salida,
+  `=N` ajuste. Columnas: Fecha, Tipo, Almacén, Cant., Existencia (ant→post),
+  Documento (🧾/🔀/OC/Lote/🏗), **Proveedor**, Notas (completa en tooltip).
+- **Campo "Proveedor (opcional)"** en Registrar gasto (`gProveedor`) → se
+  envía con el POST y cae al kardex. Limpieza del formulario incluida.
+
+### Pruebas
+- `test_kardex_ui.py` **12/12** (signos, proveedor Teknostep, filtros, CSV,
+  payload del gasto). `test_traspaso_ui.py` 20/20, `test_movimientos_ui.py`
+  21/21, `test_fase0_regresion.py` 19/19 tras el rediseño.
+- `test_gasto_proveedor_api.py` lista; **queda correrla en vivo tras el
+  redeploy** (hoy dio 6/7 con el único FAIL = proveedor vacío por backend
+  viejo; limpieza OK).
+
+### Diseño verificado con capturas (`screenshots/kardex_check_*.png`)
+Kardex full-width bien distribuido (el sidebar de 300px cortaba las 8
+columnas — por eso se movió). Form de traspaso y de gasto revisados.
+
+## 4. INFRA / COMMITS
+- `e2a1cb0` — traspasos + compra Teknostep + tests + docs.
+- `eff2c3a` — commit vacío: reintento de deploy Pages (el step deploy-pages
+  falló transitorio 2 veces; el reintento pasó). **Ojo: si vuelve a fallar,
+  Re-run failed jobs en la pestaña Actions.**
+- Docs actualizados: `01_EXISTENCIAS/CONTEXTO.md` (traspaso API/regla/UI,
+  kardex, pruebas), `07_GASTOS_PAGOS/CONTEXTO.md` (gasto.proveedor),
+  `00_CORE/CONTEXTO_GLOBAL.md` §7 (folio TRA-).
+
+## 5. PENDIENTES PARA MAÑANA (2026-11-26)
+1. **Redeploy backend** en Apps Script con el `admin/apps-script.gs` actual
+   (2,923 líneas — incluye proveedor en movimientos). 2 min. Luego correr
+   `python scripts/auditoria/test_gasto_proveedor_api.py` → debe dar 7/7.
+2. **Backfill opcional**: las 4 entradas de hoy (GAS-2026-0060) tienen la
+   columna proveedor vacía (Teknostep va en notas). Si se quiere la columna
+   llena, script one-off en Apps Script; pedirlo y se genera.
+3. Heredados de ayer: rotar `ADMIN_CLAVE` 🔴 (sigue expuesta en el repo),
+   catálogo duplicado (public/catalogos vs hoja Productos), retirar viejas
+   categorías de transición (--quitar-viejas), fotos de cotizaciones solo en
+   navegador creador.
+4. Idea anotada por el dueño: datalist de proveedores en el campo Proveedor
+   (sugerir los del directorio) — el campo es texto libre por ahora.
 
 ## Commits de la jornada
-`cc82e9a` Cotizador: PDF directo desde el historial + suite nueva + docs.
-(audit + resumen del 2026-11-25 se agregan en el commit de cierre)
-
-## 6. CIERRE DE JORNADA (2026-11-25)
-- Producción verificada en vivo: descarga de PDF ×6, Ver PDF, Editar.
-- Repo: limpio, todo en `main`.
+`e2a1cb0` Inventario: modulo de traspasos entre almacenes (+ compra Teknostep)
+`eff2c3a` ci: reintento de deploy Pages
+(+ commit de cierre: kardex + proveedor + tests + resumen)

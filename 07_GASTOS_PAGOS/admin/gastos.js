@@ -238,6 +238,7 @@ function quitarCategoria(el){
 /* ----- gastos ----- */
 function limpiarFormGasto(){
   $('gMonto').value=''; $('gDesc').value=''; $('gCategoriaOtra').value='';
+  if ($('gProveedor')) $('gProveedor').value='';
   if ($('gCategoria')) $('gCategoria').selectedIndex = 0;
   if ($('gNaturaleza')) $('gNaturaleza').value = 'por_clasificar';
   if ($('gInvActiva')) { $('gInvActiva').checked = false; $('gInvDetalle').style.display = 'none'; }
@@ -262,6 +263,7 @@ function addExpense(){
   const conInv = inv.items.length > 0;
   apiPost({tipo:'gasto', fecha:$('gFecha').value, categoria:cat, descripcion:$('gDesc').value.trim(),
     monto, moneda:monedaG, naturaleza: ($('gNaturaleza') ? $('gNaturaleza').value : 'por_clasificar'),
+    proveedor: ($('gProveedor') ? $('gProveedor').value.trim() : ''),
     ...(conInv ? { almacen_id: inv.almacen_id, items_inventario: inv.items } : {})}).then(d=>{
     if (!(d&&d.ok)) { notice(errMsg(d,'No se pudo guardar.'), false); logCliente('error','gasto', errMsg(d,'respuesta sin ok')+' | categoria='+cat+' monto='+monto); return; }
     // Regla del negocio: todo gasto capturado queda PAGADO de inmediato.
