@@ -103,9 +103,10 @@ columnas — por eso se movió). Form de traspaso y de gasto revisados.
   `00_CORE/CONTEXTO_GLOBAL.md` §7 (folio TRA-).
 
 ## 5. PENDIENTES PARA MAÑANA (2026-11-26)
-1. **Redeploy backend** en Apps Script con el `admin/apps-script.gs` actual
-   (2,923 líneas — incluye proveedor en movimientos). 2 min. Luego correr
-   `python scripts/auditoria/test_gasto_proveedor_api.py` → debe dar 7/7.
+1. ~~Redeploy backend~~ ✅ **HECHO en la noche del 25** — verificado:
+   `test_gasto_proveedor_api.py` **7/7** en producción (el proveedor del gasto
+   ya llega a la columna del movimiento/kardex) y `test_traspaso_api.py`
+   **22/22** (sin regresiones tras el redeploy).
 2. **Backfill opcional**: las 4 entradas de hoy (GAS-2026-0060) tienen la
    columna proveedor vacía (Teknostep va en notas). Si se quiere la columna
    llena, script one-off en Apps Script; pedirlo y se genera.
